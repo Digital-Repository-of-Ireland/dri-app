@@ -623,7 +623,8 @@ ga:
           read: Cén atá in ann rochtain a bheith acu ar do chuid sócmhainní?
           registered: Déan rochtain a shrianaigh chuig úsáideoirí atá logáilte isteach amháin.
           restricted: Srianaigh rochtain chucu siúd amháin a cheadaíonn mé
-        buttons:          
+        buttons:
+          advanced_options: Tuilleadh roghanna
           advanced_search: Cuardach casta
           cancel: Cealaigh
           delete_object: Scrios an Oibiacht

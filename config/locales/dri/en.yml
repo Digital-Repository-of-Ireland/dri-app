@@ -636,6 +636,7 @@ en:
           registered: Limit access to logged-in users
           restricted: Restrict access to users who I approve
         buttons:
+          advanced_options: More options
           advanced_search: Advanced Search
           cancel: Cancel
           delete_object: Delete Object
