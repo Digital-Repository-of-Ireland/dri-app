@@ -9,6 +9,12 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user!
 
   configure_blacklight do |config|
+
+    config.advanced_search = {
+      query_parser: 'edismax',
+      url_key: 'advanced'
+    }
+
     config.search_builder_class = ::MyCollectionsSearchBuilder
 
     config.show.route = { controller: 'my_collections' }
