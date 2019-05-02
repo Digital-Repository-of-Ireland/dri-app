@@ -535,6 +535,13 @@ a .dri_signin_edugate {
     background-color: $dri_extralightgrey;
 
     }
+
+    #advanced_search_button_mobile {
+        display: inline-flex;
+        max-width: 100px;
+        min-width: 50px;
+        text-overflow: ellipsis;
+    }
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
