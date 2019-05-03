@@ -10,7 +10,7 @@ gem 'rails', '>= 4', '< 5'
 
 gem 'blacklight', '~> 6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
-
+gem 'tzinfo-data'
 
 gem 'hydra-head', '~> 10.6'
 
