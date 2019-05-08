@@ -24,12 +24,12 @@ shared_context 'doi_config_exists' do
     stub_const(
       'DoiConfig',
       OpenStruct.new(
-        { 
+        {
           :username => "user",
           :password => "password",
           :prefix => '10.5072',
           :base_url => "http://repository.dri.ie",
-          :publisher => "Digital Repository of Ireland" 
+          :publisher => "Digital Repository of Ireland"
         }
       )
     )

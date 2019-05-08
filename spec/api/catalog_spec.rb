@@ -1,11 +1,12 @@
 require 'swagger_helper'
 
 describe "Catalog API" do
+  include_context 'rswag_user_with_collections', status: 'published'
+  include_context 'doi_config_exists'
+
   path "/catalog" do
     get "retrieves published (public) objects, collections, or subcollections" do
       # add subcollections?
-      include_context 'rswag_user_with_collections', status: 'published'
-      include_context 'doi_config_exists'
 
       produces 'application/json', 'application/xml', 'application/ttl'
 
@@ -31,8 +32,8 @@ describe "Catalog API" do
 
   path "/catalog/{id}" do
     get "retrieves a specific object from the catalog" do
-      include_context 'rswag_user_with_collections', status: 'published'
-      include_context 'doi_config_exists'
+      # include_context 'rswag_user_with_collections', status: 'published'
+      # include_context 'doi_config_exists'
 
       produces 'application/json', 'application/xml', 'application/ttl'
       
