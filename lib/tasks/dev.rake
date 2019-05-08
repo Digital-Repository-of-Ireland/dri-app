@@ -2,7 +2,7 @@ require 'fcrepo_wrapper'
 require 'fcrepo_wrapper/rake_task'
 require 'solr_wrapper'
 
-namespace :jetty do
+namespace :server do
 
   task(:config).clear
 
@@ -22,12 +22,12 @@ namespace :jetty do
   end
 
   task restart: :environment do
-    Rake::Task['jetty:stop'].invoke
-    Rake::Task['jetty:start'].invoke
+    Rake::Task['dev:stop'].invoke
+    Rake::Task['dev:start'].invoke
   end
 
   task config: :environment do
-    Rake::Task['jetty:start'].invoke unless solr.started?
+    Rake::Task['dev:start'].invoke unless solr.started?
 
     begin
       update_core('development')

@@ -306,7 +306,7 @@ describe CollectionsController do
       sign_in @login_user
       @collection = FactoryBot.create(:collection)
       
-      request.env["HTTP_REFERER"] = catalog_index_path
+      request.env["HTTP_REFERER"] = search_catalog_path
     end
 
     after(:each) do
@@ -358,7 +358,7 @@ describe CollectionsController do
       @collection = FactoryBot.create(:collection)
       CollectionLock.create(collection_id: @collection.id)
       
-      request.env["HTTP_REFERER"] = catalog_index_path
+      request.env["HTTP_REFERER"] = search_catalog_path
     end
 
     after(:each) do

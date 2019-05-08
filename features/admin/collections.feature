@@ -6,7 +6,7 @@ Feature: Collections
   And to retrieve my Digital Objects by collection
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
 
 @wip
 Scenario: Navigating to the collections page
@@ -87,7 +87,7 @@ Scenario: Creating Digital Object in a governing collection using the web forms
 
 Scenario: Deleting a collection as an admin
   Given I am not logged in
-  Given I am logged in as "admin" in the group "admin" and accept cookies
+  Given I am logged in as "admin" in the group "admin"
   Given a collection with pid "coll6" created by "user1@user1.com"
   And the collection with pid "coll6" has status published
   When I go to the "my collections" "show" page for "coll6"

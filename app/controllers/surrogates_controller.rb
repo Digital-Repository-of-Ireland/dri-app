@@ -9,7 +9,7 @@ class SurrogatesController < ApplicationController
 
     @surrogates = {}
 
-    object_docs = solr_query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
+    object_docs = solr_query(ActiveFedora.index_field_mapper.construct_query_for_ids([params[:id]]))
     raise DRI::Exceptions::NotFound if object_docs.empty?
 
     all_surrogates(object_docs)
@@ -86,7 +86,7 @@ class SurrogatesController < ApplicationController
       if doc.collection?
         # Changed query to work with collections that have sub-collections (e.g. EAD)
         # - ancestor_id rather than collection_id field
-        query = Solr::Query.new("#{ActiveFedora::SolrQueryBuilder.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
+        query = Solr::Query.new("#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{doc.id}\"")
         query.each { |object_doc| generate_surrogates(object_doc.id) }
       else
         generate_surrogates(doc.id)

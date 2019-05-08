@@ -4,7 +4,7 @@ Feature: Collection Manager Tools
   I should have appropriate tools for managing collections
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
   And a collection with pid "col1" created by "user1"
 
 # Bug 1833

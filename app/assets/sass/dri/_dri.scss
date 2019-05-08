@@ -2646,13 +2646,14 @@ ul.dri_collection_institutes_list {
     border: none;
 }
 
-.ui-autocomplete-loading { 
+.ui-autocomplete-loading {
     background:url('colorbox/loading.gif') no-repeat right center;
 }
 
 .choose-vocab-container {
     .vocab-dropdown {
         margin-bottom: 5px;
+        width: auto !important;
     }
     display: none;
 }

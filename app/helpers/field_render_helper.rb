@@ -72,11 +72,11 @@ module FieldRenderHelper
       value ||= args[:document].highlight_field(args[:field]).map { |x| x.html_safe } if field_config.highlight
     end
 
-    value ||= args[:document].get(args[:field], sep: nil) if args[:document] && args[:field]
+    value ||= args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     value = [value] unless value.is_a?(Array)
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
-    indexed_value = args[:document].get(args[:field], sep: nil) if args[:document] && args[:field]
+    indexed_value = args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 

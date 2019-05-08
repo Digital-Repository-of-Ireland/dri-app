@@ -8,7 +8,7 @@ Feature: Licences
 
 
   Background:
-    Given I am logged in as "admin" in the group "admin" and accept cookies
+    Given I am logged in as "admin" in the group "admin"
     And a collection with pid "lcoll" and title "Licence Test Collection" created by "admin@admin.com"
     And a Digital Object with pid "lobject" and title "Licence Test Object"
     And the object with pid "lobject" is in the collection with pid "lcoll"

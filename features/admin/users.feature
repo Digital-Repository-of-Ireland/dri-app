@@ -101,7 +101,7 @@ Scenario: A user should be able to recover their password
 
 @javascript 
 Scenario: an admin user creates a new user account
-  Given I am logged in as "adminuser" in the group "admin" and accept cookies
+  Given I am logged in as "adminuser" in the group "admin"
   And I am on the User Sign up page
   When I submit a valid email, password and password confirmation
   Then I should be logged in as "adminuser"

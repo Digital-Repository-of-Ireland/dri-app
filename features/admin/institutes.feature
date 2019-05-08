@@ -4,7 +4,7 @@ Feature: Institutes
   and view them in the repository
 
   Background:
-    Given I am logged in as "admin" in the group "admin" and accept cookies
+    Given I am logged in as "admin" in the group "admin"
     #And I create a collection and save the pid
 
   Scenario: Adding a new institute

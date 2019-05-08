@@ -6,7 +6,7 @@ Feature: Autocomplete
   When I use the coverages, places, temporal, or subjects text inputs
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
   And I am on the home page
   When I go to "create new collection"
 
@@ -43,10 +43,10 @@ Scenario: Choosing an autocomplete result, then changing your mind
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
   Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
+  # # Tested without puffing billy stubbing
+  # Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/id.loc.gov\/authorities\/subjects\/sh2004010472"
   And the text in "batch_subject][" should have link styling
   When I fill in "batch_subject][" with "asdf"
-  # requires click on any other element to trigger on change
-  And I press the edit collection button with text "Add Subject"
   Then I should not see a hidden "input#batch_subject][" within "fieldset#subject"
   Then the text in "batch_subject][" should not have link styling
 
@@ -80,6 +80,36 @@ Scenario: Re-enabling autocomplete
   And I select "Disable" from the autocomplete menu
   And I fill in "batch[coverage][]" with "test"
   Then I should see 0 visible elements ".ui-autocomplete"
-  When I select "NUTS3" from the autocomplete menu
+  When I select "Nuts3" from the autocomplete menu
   And I fill in "batch[coverage][]" with "dublin"
   Then I should see 1 visible elements ".ui-autocomplete"
+
+Scenario Outline: Local authorities should be hidden if the data is missing
+  When I press the edit collection button with text "Add Coverage"
+  Then I should see "Nuts3" in the autocomplete menu
+  Given the local authority "<AUTHORITY_NAME>" is empty
+  When I refresh the page
+  And I press the edit collection button with text "Add Coverage"
+  Then I should not see "<AUTHORITY_NAME>" in the autocomplete menu
+
+  Examples:
+    | AUTHORITY_NAME |
+    | Hasset         |
+    | Nuts3          |
+
+# Scenario: Endpoint failure warns user and removes loading gif
+#   Given the hasset autocomplete endpoint is errored
+#   When I press the edit collection button with text "Add Coverage"
+#   And I select "Hasset" from the autocomplete menu
+#   And I fill in "batch[coverage][]" with "test"
+#   Then I should see 1 visible element ".ui-autocomplete-loading"
+#   # timeout for autocomplete, set in "endpoint is errored"
+#   When I wait for "1" seconds
+#   Then I should see 0 visible elements ".ui-autocomplete-loading"
+#   # # ajax.failure not triggering
+#   # And I should see a dialog with text ""
+
+# TODO: once puffing billy issue is resolved,
+# test that js fallback to response.item.value works
+# /app/assets/javascripts/dri/autocomplete_vocabs.js#62
+# var label = response.item.label || response.item.value;

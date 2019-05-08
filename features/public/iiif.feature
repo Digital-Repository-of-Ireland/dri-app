@@ -4,7 +4,7 @@ Feature: IIIF
   I should be able to view images in a iiif viewer
 
 Background:
-  Given I am logged in as "admin" in the group "admin" and accept cookies
+  Given I am logged in as "admin" in the group "admin"
 
 Scenario Outline: Published collections and objects with images should have a iiif link
   Given a collection with pid "col1" created by "admin"
@@ -42,6 +42,7 @@ Scenario: Collections with no images should not have a iiif link
   When I am on the show Digital Object page for id col2
   Then I should not see the image "Iiif logo"
 
+@test
 Scenario: Objects with no image should not have a iiif link
   Given a collection with pid "col2" created by "admin"
   And a Digital Object with pid "object1" in collection "col2"

@@ -12,7 +12,31 @@ DriApp::Application.routes.draw do
     mount Riiif::Engine => '/images'
     mount DriBatchIngest::Engine => '/ingest'
 
-    Blacklight.add_routes(self)
+    mount Blacklight::Engine => '/'
+
+    concern :searchable, Blacklight::Routes::Searchable.new
+    concern :exportable, Blacklight::Routes::Exportable.new
+
+    resource :catalog, only: [:index], controller: 'catalog' do
+      concerns :searchable
+    end
+    get 'catalog/:id', to: 'catalog#show', as: :catalog
+
+    resource :my_collections, only: [:index], controller: 'my_collections' do
+      concerns :searchable
+    end
+
+    resources :solr_documents, only: [:show], path: "/catalog", controller: "catalog" do
+      concerns :exportable
+    end
+
+    resources :bookmarks do
+      concerns :exportable
+
+      collection do
+        delete 'clear'
+      end
+    end
 
     concern :oai_provider, BlacklightOaiProvider::Routes.new
     scope controller: "oai_pmh", as: "oai_pmh" do

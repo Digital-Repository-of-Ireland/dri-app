@@ -341,7 +341,7 @@ describe AssetsController do
         sign_in @login_user
         @object = FactoryBot.create(:sound)
 
-        request.env["HTTP_REFERER"] = catalog_index_path
+        request.env["HTTP_REFERER"] = search_catalog_path
       end
 
       after(:each) do

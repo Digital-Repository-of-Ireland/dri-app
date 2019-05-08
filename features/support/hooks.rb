@@ -1,3 +1,11 @@
+After do
+  FileUtils.remove_dir(@tmp_assets_dir, force: true)
+end
+
+# Before do
+#   # standardize window size (generic, runs on any driver, but slower than passing in config env.rb)
+#   Capybara.page.driver.browser.manage.window.resize_to(1200, 800)
+# end
 
 Before('not @javascript') do
   page.driver.browser.header('Accept-Language', 'en')
@@ -6,7 +14,7 @@ end
 Before('@stub_requests') do
   # stub questioning authority autocomplete requests
   qa_base = /http:\/\/(localhost|127.0.0.1):\d+\/qa\/search/
-  loc_base = /#{qa_base}\/loc\/subjects/
+  loc_base = /#{qa_base}\/loc\/(.*)/
   logainm_base = /#{qa_base}\/logainm\/subjects/
   nuts3_base = /#{qa_base}\/nuts3\/subjects/
   oclc_base = /#{qa_base}\/assign_fast\/all/
@@ -26,10 +34,6 @@ Before('@stub_requests') do
       }
     })
   end
-end
-
-After do
-  FileUtils.remove_dir(@tmp_assets_dir, force: true)
 end
 
 Before('@random_pid') do
@@ -55,11 +59,19 @@ After('@read_only') do
   Settings.read_only = false
 end
 
+Before('@enforce_cookies') do
+  ENV['enforce_cookies'] = 'true'
+end
+
+After('@enforce_cookies') do
+  ENV['enforce_cookies'] = 'false'
+end
+
 # can't use around hook to catch expectation failure because it gets rescued internally
 After do |scenario|
   # using byebug stop interaction with browser, just sleep on failure
   if ENV['headless']&.downcase&.strip == 'false' && scenario.failed?
-    sleeptime = 600
+    sleeptime = 600 # 10 minutes
     STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
     sleep(sleeptime)
   end

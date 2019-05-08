@@ -8,12 +8,9 @@ class MyCollectionsController < ApplicationController
   include DRI::MyCollectionsSearchExtension
   before_action :authenticate_user!
 
-  # This applies appropriate access controls to all solr queries
-  MyCollectionsController.solr_search_params_logic += [:add_workspace_access_controls_to_solr_params]
-  # This filters out objects that you want to exclude from search results, like FileAssets
-  MyCollectionsController.search_params_logic += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
-
   configure_blacklight do |config|
+    config.search_builder_class = ::MyCollectionsSearchBuilder
+
     config.show.route = { controller: 'my_collections' }
     config.per_page = [9, 18, 36]
     config.default_per_page = 9
@@ -172,10 +169,10 @@ class MyCollectionsController < ApplicationController
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields.
-    
+
     %i[
-      title subject description 
-      creator contributor publisher 
+      title subject description
+      creator contributor publisher
       person place
     ].each do |field_name|
       config.add_search_field(field_name) do |field|
@@ -186,7 +183,7 @@ class MyCollectionsController < ApplicationController
         field.label = self.solr_field_to_label(field_name)
       end
     end
-    
+
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
@@ -225,7 +222,7 @@ class MyCollectionsController < ApplicationController
 
   def index
     params[:q] = params.delete(:q_ws)
-    (@response, @document_list) = search_results(params, search_params_logic)
+    (@response, @document_list) = search_results(params)
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')

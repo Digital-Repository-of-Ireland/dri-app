@@ -4,7 +4,7 @@ Feature: Browse Mode
   I should be able to browse Collections, Sub-Collections and objects in the catalog
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
   And a collection with pid "col1" and title "Parent" created by "user1"
   And a collection with pid "sub_col1" and title "Child" created by "user1"
 

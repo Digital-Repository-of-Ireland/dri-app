@@ -4,7 +4,6 @@ Feature: bug-1902
 Background:
   Given I am not logged in
   And I go to "the home page"
-  And I accept cookies terms
   # need existing published collection for facets to display
   Given a collection with pid "collection1"
   And the collection with pid "collection1" is published

@@ -2,22 +2,20 @@ module Storage
   module CoverImages
 
     def self.validate_and_store(cover_image, collection)
-      if cover_image.present?
-        return false unless %w(image/jpeg image/png image/gif).include?(Validators.file_type(cover_image))
+      return unless cover_image.present?
 
-        return false if self.virus?(cover_image)
+      return false unless %w(image/jpeg image/png image/gif).include?(Validators.file_type(cover_image))
+      return false if self.virus?(cover_image)
 
-        url = self.store_cover(cover_image, collection)
-        if url
-          collection.properties.cover_image = url
-          collection.save
- 
-          return true
-        else
-          Rails.logger.error "Unable to save cover image."
-          return false
-        end
+      url = self.store_cover(cover_image, collection)
+      unless url
+        Rails.logger.error "Unable to save cover image."
+        return false
       end
+      collection.properties.cover_image = url
+      collection.save
+
+      true
     end
 
     private
@@ -33,15 +31,23 @@ module Storage
     def self.store_cover(cover_image, collection)
       url = nil
       storage = StorageService.new
-      storage.create_bucket(collection.pid)
+      storage.create_bucket(collection.id)
 
-      if (storage.store_file(collection.pid, cover_image.tempfile.path,
-            "#{collection.pid}.#{cover_image.original_filename.split(".").last}"))
-        url = storage.file_url(collection.pid,
-            "#{collection.pid}.#{cover_image.original_filename.split(".").last}")
+      cover_filename = create_cover_filename(cover_image, collection)
+      if (
+        storage.store_file(
+          collection.id,
+          cover_image.tempfile.path,
+          cover_filename)
+        )
+        url = storage.file_url(collection.id, cover_filename)
       end
-      
+
       url
+    end
+
+    def self.create_cover_filename(cover_image, collection)
+      "#{collection.id}.#{cover_image.original_filename.split(".").last}"
     end
   end
 end

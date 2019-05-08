@@ -7,7 +7,7 @@ Feature: Internationalisation
   @wip
   Scenario Outline: Not logged in user should see their own language based on their browser
     Given I reset the sessions
-    Given I am not logged in and accept cookies
+    Given I am not logged in
     And my browser language is "<lang>"
     When I go to "the home page"
     Then I should see the language "<lang>"

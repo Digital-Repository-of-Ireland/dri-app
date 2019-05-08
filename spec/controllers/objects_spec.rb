@@ -326,7 +326,7 @@ describe ObjectsController do
         @collection = FactoryBot.create(:collection)
         @object = FactoryBot.create(:sound)
 
-        request.env["HTTP_REFERER"] = catalog_path(@collection.id)
+        request.env["HTTP_REFERER"] = my_collections_path(@collection.id)
       end
 
       after(:each) do
@@ -375,7 +375,7 @@ describe ObjectsController do
         @object = FactoryBot.create(:sound)
         CollectionLock.create(collection_id: @collection.id)
 
-        request.env["HTTP_REFERER"] = catalog_path(@collection.id)
+        request.env["HTTP_REFERER"] = my_collections_path(@collection.id)
       end
 
       after(:each) do

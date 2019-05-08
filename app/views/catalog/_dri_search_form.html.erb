@@ -1,7 +1,7 @@
 
-  <%= form_tag main_app.catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
-    <% 
-      ui_search_fields = search_fields.select do |arr| 
+  <%= form_tag main_app.search_catalog_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
+    <%
+      ui_search_fields = search_fields.select do |arr|
         %w[all_fields title subject person place].include?(arr[1])
       end
     %>
@@ -11,7 +11,7 @@
                    id: "search_field",
                    class: "custom-select search-field")
     %>
-  
+
     <% if params[:mode].blank? %>
         <%= hidden_field_tag 'mode', 'objects' %>
     <% end %>

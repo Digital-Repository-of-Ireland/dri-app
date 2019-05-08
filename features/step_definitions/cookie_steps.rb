@@ -42,4 +42,7 @@ end
 
 Given /^I accept cookies terms$/ do
   page.execute_script("document.querySelector('#accept_cookies').click()")
+  # wait appropriate amount of time to ensure modal and backdrop are not covering other elements
+  # causes intermittent failures without this assertion
+  expect(page).to_not have_css('.modal-backdrop', visible: true)
 end

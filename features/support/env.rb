@@ -32,7 +32,8 @@ Capybara.register_driver :selenium do |app|
               args: [
                 *headless,
                 "no-sandbox",
-                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
+                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}",
+                "window-size=1200,800"
               ]
             )
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
@@ -122,7 +123,6 @@ end
 Before do
   allow(DRI.queue).to receive(:push) 
   allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
-  allow(Feedjira::Feed).to receive(:fetch_and_parse)
 
   clean_repo
 

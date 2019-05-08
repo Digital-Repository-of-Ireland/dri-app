@@ -15,7 +15,7 @@
             <div class="dri_saved_search_title_block">
               <div class="dri_float_right">
 
-                <%= button_to t('blacklight.saved_searches.delete'), forget_search_path(search.id), :id => 'delete_saved_search', :class => "btn btn-danger btn-small dri_delete_button" %>
+                <%= button_to t('blacklight.saved_searches.delete'), blacklight.forget_search_path(search.id), id: 'delete_saved_search', class: "btn btn-danger btn-small dri_delete_button" %>
               </div>
               <div class="dri_float_left dri_saved_search_params">
                 <% search_count = @search_info[search.id][:count] %>
@@ -24,7 +24,7 @@
               </div>
 
               <% if search_count > 0 %>
-                  <%= link_to catalog_index_path(search.query_params), :class => "dri_save_search_link_block" do %>
+                  <%= link_to search_catalog_path(search.query_params), class: "dri_save_search_link_block" do %>
 
                       <% @search_info[search.id][:snippets].each do |document| %>
                           <article class="dri_no_mobile_display">

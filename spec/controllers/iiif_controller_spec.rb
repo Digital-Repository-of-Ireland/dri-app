@@ -72,7 +72,7 @@ describe IiifController do
     end
   end
 
-  describe 'Get sequence', type: :requeset do
+  describe 'Get sequence' do
     let(:collection) { FactoryBot.create(:collection) }
     let(:object) { FactoryBot.create(:image) }
     let(:login_user) { FactoryBot.create(:admin) }

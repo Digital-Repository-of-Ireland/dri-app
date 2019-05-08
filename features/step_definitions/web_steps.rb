@@ -265,6 +265,11 @@ When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
   )
 end
 
+When /^I refresh the page$/ do
+  # page.driver.browser.navigate.refresh
+  visit current_path
+end
+
 Then /^I should( not)? see a popover$/ do |negate|
   expectation = negate ? :should_not : :should
   page.send(expectation, have_css('div.popover', visible: true))
@@ -465,7 +470,7 @@ end
 
 # used for vocab autocomplete
 # .vocab-dropdown always exists, but is hidden. using see element will always pass
-Then /^I should (not )?see (\d+) visible element(s)? "([^"]*)"$/ do |negate, num, _, selector|
+Then /^I should (not )?see (\d+) visible element(s)? "([^\"]*)"$/ do |negate, num, _, selector|
   expectation = negate ? :to_not : :to
   expect(find_all(selector, visible: true).count).send(expectation, eq(num))
 end

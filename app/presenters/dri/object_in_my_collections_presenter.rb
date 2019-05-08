@@ -8,7 +8,7 @@ module DRI
     end
 
     def displayfiles(files)
-      @displayfiles ||= files.reject { |file| file.preservation_only? }
+      @displayfiles ||= files.reject(&:preservation_only?)
     end
 
     def relationships
