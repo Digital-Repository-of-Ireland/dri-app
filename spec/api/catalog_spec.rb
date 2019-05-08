@@ -6,8 +6,6 @@ describe "Catalog API" do
 
   path "/catalog" do
     get "retrieves published (public) objects, collections, or subcollections" do
-      # add subcollections?
-
       produces 'application/json', 'application/xml', 'application/ttl'
 
       # helper methods that call rswag parameter methods
@@ -32,11 +30,8 @@ describe "Catalog API" do
 
   path "/catalog/{id}" do
     get "retrieves a specific object from the catalog" do
-      # include_context 'rswag_user_with_collections', status: 'published'
-      # include_context 'doi_config_exists'
-
       produces 'application/json', 'application/xml', 'application/ttl'
-      
+
       parameter name: :id, description: 'Object ID',
                 in: :path, :type => :string
       pretty_json_param

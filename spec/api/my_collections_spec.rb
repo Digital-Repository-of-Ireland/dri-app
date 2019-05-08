@@ -1,11 +1,11 @@
 require 'swagger_helper'
 
 describe "My Collections API" do
+  include_context 'rswag_user_with_collections'
+  include_context 'doi_config_exists'
+
   path "/my_collections" do
     get "retrieves published (public) and draft (private) objects, collections, or subcollections" do
-      include_context 'rswag_user_with_collections'
-      include_context 'doi_config_exists'
-      
       produces 'application/json'
       security [ apiKey: [], appId: [] ]
       tags 'collections'
@@ -23,11 +23,9 @@ describe "My Collections API" do
       pretty_json_param
 
       let(:q_ws) { nil }
-        
       # # issue with facets being empty string
       # parameter name: :f, description: 'Search facet (solr fields to filter results)',
         # in: :query, type: :string, default: nil
-      
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
         let(:user_email) { nil }
@@ -52,7 +50,7 @@ describe "My Collections API" do
           include_context 'rswag_include_json_spec_output', '/my_collections.json?mode=collections' do
             it_behaves_like 'a pretty json response'
           end
-        end 
+        end
         context 'Show subcollections' do
           let(:mode) { 'collections' }
           let(:show_subs) { true }
@@ -77,9 +75,6 @@ describe "My Collections API" do
 
   path "/my_collections/{id}/" do
     get "retrieves a specific object, collection or subcollection" do
-      include_context 'rswag_user_with_collections'
-      include_context 'doi_config_exists'
-
       produces 'application/json', 'application/xml', 'application/ttl'
       tags 'collections'
       security [ apiKey: [], appId: [] ]

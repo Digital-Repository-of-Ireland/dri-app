@@ -7,7 +7,7 @@ describe "Get Objects API" do
     post "retrieves objects by id" do
       include_context 'rswag_user_with_collections', status: 'published'
       include_context 'doi_config_exists'
-      
+
       produces 'application/json'
       consumes 'application/json'
       tags 'objects'
@@ -45,8 +45,8 @@ describe "Get Objects API" do
           # refactor, must be a better way to get array of hashes for objects in collections
            # @collections.map {|c| c.governed_items.map {|i| [[i.id, i.id]].to_h} }.flatten
           let(:object_ids) {
-            @collections.map do |c| 
-              c.governed_items.map do |i| 
+            @collections.map do |c|
+              c.governed_items.map do |i|
                 [[i.id, i.id]].to_h
               end
             end.flatten
@@ -60,7 +60,7 @@ describe "Get Objects API" do
               json_response.each do |object|
                 # get licence (stored at collection level)
                 pid = object['pid']
-                governing_collection = @collections.select do |c| 
+                governing_collection = @collections.select do |c|
                   c.governed_items.map(&:id).include?(pid)
                 end
                 licence = Licence.find_by(name: governing_collection.first.licence)
