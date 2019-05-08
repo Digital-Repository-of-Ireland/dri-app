@@ -18,8 +18,8 @@ gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.0.0'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.3.0'
 gem 'paper_trail', '~> 4'
 
 # batch ingest

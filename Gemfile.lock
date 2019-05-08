@@ -60,8 +60,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: afe5e86db6629622942c8330fd17a97a912d31e0
-  branch: develop
+  revision: c139ec420e36b237ea36bd4b74ab465aaea184ad
+  tag: v3.0.0
   specs:
     dri_data_models (3.0.0)
       active-fedora (>= 10, < 11)
@@ -79,8 +79,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 31a93e164e8de9ea9d4fa4781207ece1b63f8b61
-  branch: develop
+  revision: 31869fe6fbfe35f7a02ea324055591619b22c1a4
+  tag: v1.3.0
   specs:
     user_group (1.3.0)
       devise
@@ -159,7 +159,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     arel (6.0.4)
     ast (2.4.0)
-    autoprefixer-rails (9.5.1)
+    autoprefixer-rails (9.5.1.1)
       execjs
     aws-eventstream (1.0.2)
     aws-partitions (1.149.0)
@@ -400,7 +400,7 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-analytics-rails (1.1.0)
-    google-api-client (0.28.7)
+    google-api-client (0.29.1)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.5, < 0.10.0)
       httpclient (>= 2.8.1, < 3.0)
@@ -456,7 +456,7 @@ GEM
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
-    hydra-file_characterization (1.0.0)
+    hydra-file_characterization (1.1.0)
       activesupport (>= 3.0.0)
     hydra-head (10.6.2)
       hydra-access-controls (= 10.6.2)
@@ -596,7 +596,7 @@ GEM
     multi_json (1.13.1)
     multi_test (0.1.2)
     multi_xml (0.6.0)
-    multipart-post (2.0.0)
+    multipart-post (2.1.0)
     mysql2 (0.4.10)
     nest (3.1.2)
       redic
@@ -604,7 +604,7 @@ GEM
     net_http_ssl_fix (0.0.10)
     netrc (0.11.0)
     noid (0.9.0)
-    nokogiri (1.10.2)
+    nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     nokogiri-happymapper (0.8.0)
       nokogiri (~> 1.5)
@@ -638,7 +638,7 @@ GEM
     openseadragon (0.5.0)
       rails (> 3.2.0)
     orm_adapter (0.5.0)
-    os (1.0.0)
+    os (1.0.1)
     paper_trail (4.2.0)
       activerecord (>= 3.0, < 6.0)
       activesupport (>= 3.0, < 6.0)
@@ -759,7 +759,7 @@ GEM
     rdoc (6.1.1)
     redic (1.5.1)
       hiredis
-    redis (4.1.0)
+    redis (4.1.1)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
     redisk (0.2.2)
