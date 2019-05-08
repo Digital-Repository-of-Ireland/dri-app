@@ -7,6 +7,10 @@ end
 #   Capybara.page.driver.browser.manage.window.resize_to(1200, 800)
 # end
 
+Before('@javascript') do
+  @javascript_driver = true
+end
+
 Before('not @javascript') do
   page.driver.browser.header('Accept-Language', 'en')
 end

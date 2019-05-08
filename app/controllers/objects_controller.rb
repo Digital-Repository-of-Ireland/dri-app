@@ -6,7 +6,9 @@ class ObjectsController < BaseObjectsController
   include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
 
-  Mime::Type.register "application/zip", :zip
+  # Is this necessary? zip sees to be defined in
+  # actionpack-4.2.11.1/lib/action_dispatch/http/mime_type.rb
+  Mime::Type.register "application/zip", :zip unless Mime::Type.lookup_by_extension(:zip)
 
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]

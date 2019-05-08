@@ -104,7 +104,7 @@ When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, 
 end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
-  if Capybara.current_driver == Capybara.javascript_driver
+  if @javascript_driver
     element = page.find_link(link_to_id(link_name), { visible: false})
     page.execute_script("return arguments[0].click();", element)
   else
@@ -116,7 +116,7 @@ end
 # - it ignores overlaping <a> elements and just fires the click
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
-  if Capybara.current_driver == Capybara.javascript_driver
+  if @javascript_driver
     element = page.find_link(link_to_id(link_name), { visible: false})
     page.execute_script("return arguments[0].click();", element)
   else
@@ -269,9 +269,7 @@ Then /^I should( not)? see a popover$/ do |negate|
 end
 
 Then /^I should see a popover with the title "([^\"]+)"$/ do |title|
-  popover = find('div.popover', visible: true)
-  popover_title = popover.find('.popover-title').text
-  expect(popover_title).to eq title
+  expect(page).to have_selector('div.popover .popover-title', visible: true, text: title)
 end
 
 Then /^I should see the (valid|modified) metadata$/ do |type|

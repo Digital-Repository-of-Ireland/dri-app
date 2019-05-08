@@ -121,17 +121,13 @@ class Module
 end
 
 Before do
-  allow(DRI.queue).to receive(:push) 
+  allow(DRI.queue).to receive(:push)
   allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
 
   clean_repo
 
   @tmp_assets_dir = Dir.mktmpdir
   Settings.dri.files = @tmp_assets_dir
-end
-
-After do
-  Capybara.use_default_driver
 end
 
 def last_json

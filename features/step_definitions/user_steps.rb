@@ -118,6 +118,7 @@ Then /^I should see an edit link for "([^\"]*)"$/ do |login|
   page.should have_link(email, href: "/user_groups/users/edit")
 end
 
+# slow
 Given /^I am not logged in$/ do
   step 'I am on the home page'
   Capybara.reset_sessions!
