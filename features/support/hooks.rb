@@ -68,11 +68,13 @@ After('@enforce_cookies') do
 end
 
 # can't use around hook to catch expectation failure because it gets rescued internally
-After do |scenario|
-  # using byebug stop interaction with browser, just sleep on failure
-  if ENV['headless']&.downcase&.strip == 'false' && scenario.failed?
-    sleeptime = 600 # 10 minutes
-    STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
-    sleep(sleeptime)
+if ENV['headless']&.downcase&.strip == 'false'
+  After do |scenario|
+    if scenario.failed?
+      # using byebug stop interaction with browser, just sleep on failure
+      sleeptime = 600 # 10 minutes
+      STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
+      sleep(sleeptime)
+    end
   end
 end

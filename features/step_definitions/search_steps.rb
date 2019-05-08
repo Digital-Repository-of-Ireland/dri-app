@@ -17,7 +17,7 @@ When /^I search for "(.*?)" in facet "(.*?)" with id "(.*?)"$/ do |search,facetn
     end
     element.click
 
-    with_scope("div.#{facetid}") do
+    within("div.#{facetid}") do
       click_on search
     end
   end

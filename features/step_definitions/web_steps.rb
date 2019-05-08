@@ -1,10 +1,3 @@
-module WithinHelpers
-  def with_scope(locator)
-    locator ? within(locator) { yield } : yield
-  end
-end
-World(WithinHelpers)
-
 Given /^"(.*?)" has created a Digital Object$/ do |user|
   col_pid = "#{rand.to_s[2..11]}"
   @obj_pid = "#{rand.to_s[2..11]}"
@@ -139,7 +132,7 @@ When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, scope|
 end
 
 When /^(?:|I )click the first "([^\"]+)" within "([^"]*)"$/ do |selector, scope|
-  with_scope(scope) do
+  within(scope) do
     page.find_all(selector).first.click
   end
 end
@@ -477,7 +470,7 @@ end
 
 Then /^I should (not )?see a hidden "([^"]*)" within "([^"]*)"$/ do |negate, element, scope|
   expectation = negate ? :to_not : :to
-  with_scope(scope) do
+  within(scope) do
     expect(find_all(escape_id(element), visible: :hidden).count).send(expectation, be > 0)
   end
 end
@@ -539,7 +532,7 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
                   end
 
   expect(page).to have_selector(scope)
-  with_scope(scope) do
+  within(scope) do
     objects = page.find_all(selector)
     expect(objects.count).to be >= 1
     objects.each do |obj|
