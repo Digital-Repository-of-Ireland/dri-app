@@ -340,26 +340,24 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
-  url = current_url
-  @obj_pid = URI(url).path.split('/').last
-  begin
-    negate ? (expect(page).to_not have_selector ".dri_messages_container", text: flash_for(message)): (expect(page).to have_selector ".dri_messages_container", text: flash_for(message))
-  rescue
-    #save_and_open_page
-    raise
-  end
+  # @obj_pid = URI(current_url).path.split('/').last
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".dri_messages_container", text: flash_for(message)))
 end
 
 Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
-  negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)) : (page.should have_selector ".dri_messages_container", text: flash_for(message))
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".dri_messages_container", text: flash_for(message)))
 end
 
 Then /^(?:|I )should( not)? see a window about cookies$/ do |negate|
-  negate ? (page.should_not have_selector ".modal-title", text: flash_for("cookie terms")) : (page.should have_selector ".modal-title", text: flash_for("cookie terms"))
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".modal-title", text: flash_for("cookie terms")))
 end
 
 Then /^(?:|I )should( not)? see a message about cookies$/ do |negate|
-  negate ? (page.should_not have_selector ".alert", text: flash_for("cookie notification")) : (page.should have_selector ".alert", text: flash_for("cookie notification"))
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".alert", text: flash_for("cookie notification")))
 end
 
 Then /^(?:|I )should( not)? see "([^"]*)"(?: within "([^"]*)")?$/ do |negate, text, selector|
@@ -440,10 +438,6 @@ Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain
       negate ? assert_no_match(/#{value}/, field_value) : assert_match(/#{value}/, field_value)
     end
   end
-end
-
-Then /^show me the page$/ do
-  save_and_open_page
 end
 
 Then /^I should see the error "([^\"]*)"$/ do |error|
