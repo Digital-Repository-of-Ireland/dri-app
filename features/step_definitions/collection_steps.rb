@@ -9,7 +9,7 @@ module CollectionHelper
     if pid == 'the saved pid'
       pid = @collection_pid ? @collection_pid : @pid
     end
-    ActiveFedora::Base.find(pid ,cast: true)
+    ActiveFedora::Base.find(pid, cast: true)
   end
 end
 World(CollectionHelper)
@@ -86,26 +86,27 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   else
     @digital_object = DRI::Batch.with_standard(:qdc)
   end
+
   @digital_object.title = title ? [title] : ["Test Object"]
   @digital_object.type = type ? [type] : ["Sound"]
   @digital_object.description = desc ? [desc] : ["A test object"]
 
   user ||= 'test'
-  if user
-    email = "#{user}@#{user}.com"
-    User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
+  email = "#{user}@#{user}.com"
+  @obj_user = User.find_by_email(email)
+  @obj_user ||= User.create(email: email, password: "password", password_confirmation: "password",
+                          locale: "en", first_name: "fname", second_name: "sname",
+                          image_link: File.join(cc_fixture_path, 'sample_image.png'))
+  obj_user_str = @obj_user.to_s
 
-    @digital_object.depositor=User.find_by_email(email).to_s
-    @digital_object.manager_users_string=User.find_by_email(email).to_s
-    @digital_object.creator = ["#{user}@#{user}.com"]
-  end
+  @digital_object.depositor = obj_user_str
+  @digital_object.manager_users_string = obj_user_str
+  @digital_object.creator = [email]
   @digital_object.rights = ["This is a statement of rights"]
   @digital_object.creation_date = ["2000-01-01"]
   @digital_object.status = 'draft'
 
-  if coll.nil?
-    coll = @collection.id unless @collection.nil?
-  end
+  coll ||= @collection.id unless @collection.nil?
 
   @digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
 
@@ -137,9 +138,8 @@ Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: c
 end
 
 Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|
-  collection = ActiveFedora::Base.find(colid, {:cast => true})
   subcollection = ActiveFedora::Base.find(subcolid, {:cast => true})
-  subcollection.governing_collection = collection
+  subcollection.governing_collection_id = colid
   subcollection.save
 end
 
@@ -181,16 +181,14 @@ end
 
 Given /^I have associated the institute "([^\"]+)" with the collection with pid "([^\"]+)"$/ do |institute_name, pid|
   collection = get_collection(pid)
-  institute = Institute.new
-  institute.name = institute_name
-  institute.url = "http://www.dri.ie"
+  institute = Institute.new(name: institute_name, url: "http://www.dri.ie")
 
   logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
   institute.store_logo(logo, institute_name)
   institute.save
 
-  collection.institute = collection.institute.push(institute.name)
-  collection.depositing_institute = institute.name
+  collection.institute = collection.institute.push(institute_name)
+  collection.depositing_institute = institute_name
   collection.save
 end
 
