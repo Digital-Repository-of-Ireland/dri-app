@@ -24,7 +24,7 @@
               </div>
 
               <% if search_count > 0 %>
-                  <%= link_to search_catalog_path(search.query_params), class: "dri_save_search_link_block" do %>
+                  <%= link_to search_catalog_path(search.query_params.symbolize_keys), class: "dri_save_search_link_block" do %>
 
                       <% @search_info[search.id][:snippets].each do |document| %>
                           <article class="dri_no_mobile_display">

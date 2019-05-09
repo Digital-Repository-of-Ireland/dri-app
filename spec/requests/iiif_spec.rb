@@ -3,7 +3,7 @@ require 'swagger_helper'
 require 'ostruct'
 
 describe IiifController, type: :request do
-  include_context 'rswag_user_with_collections', 
+  include_context 'rswag_user_with_collections',
     status: 'published', num_collections: 1, num_objects: 2,
     subcollection: false, doi: false, docs: false, object_type: :image do
     before(:each) do
@@ -12,8 +12,8 @@ describe IiifController, type: :request do
       sign_in @example_user
 
       # set up fake image for iiif_viewable#create_canvas
-      HEIGHT_SOLR_FIELD = 'height_isi'
-      WIDTH_SOLR_FIELD = 'width_isi'
+      # HEIGHT_SOLR_FIELD = 'height_isi'
+      # WIDTH_SOLR_FIELD = 'width_isi'
       LABEL_SOLR_FIELD = ActiveFedora.index_field_mapper.solr_name('label')
 
       allow_any_instance_of(
