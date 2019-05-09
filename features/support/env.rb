@@ -22,6 +22,8 @@ require 'rake'
 require 'rspec'
 require 'billy/capybara/cucumber'
 require 'shoulda/matchers'
+require 'cucumber/rails'
+require 'factory_bot'
 
 Capybara.register_driver :selenium do |app|
   # run chrome headless by default. only turn off if headless == false
@@ -47,9 +49,6 @@ Capybara.server = :webrick
 # newer version of cucumber-rails. Consider adding your own code to a new file
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
-
-require 'cucumber/rails'
-require 'factory_bot'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -101,6 +100,8 @@ ActionController::Base.allow_rescue = false
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+include Warden::Test::Helpers
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

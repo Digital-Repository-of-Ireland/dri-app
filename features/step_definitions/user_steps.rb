@@ -2,12 +2,7 @@ Given /^I am logged in as "([^\"]*)"$/ do |login|
   email = "#{login}@#{login}.com"
   @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm
-  delete destroy_user_session_path(@user)
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
-  click_button("Login")
-  step 'I should be logged in'
+  login_as @user
 end
 
 Given /^I am logged in as "([^\"]*)" and accept cookies$/ do |login|
@@ -19,26 +14,23 @@ Given /^I am logged in as "([^\"]*)" and accept cookies$/ do |login|
   step 'I accept cookies terms'
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  #step 'I accept cookies terms'
+  step 'I accept cookies terms'
   click_button("Login")
-  step 'I should be logged in'
 end
 
 Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
   email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
+  @user = User.find_by_email(email)
+  @user ||= User.create(email: email, password: "password", password_confirmation: "password",
+                        locale: "en", first_name: "fname", second_name: "sname",
+                        image_link: File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm
   @user.save
   group_id = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true).id
   membership = @user.join_group(group_id)
   membership.approved_by = @user.id
   membership.save
-  delete destroy_user_session_path(@user)
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
-  click_button("Login")
-  step 'I should be logged in'
+  login_as @user
 end
 
 Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$/ do |login, group|
@@ -120,11 +112,12 @@ end
 
 # slow
 Given /^I am not logged in$/ do
-  step 'I am on the home page'
-  Capybara.reset_sessions!
-  if Capybara.current_driver.to_s == "rack_test"
-    page.driver.submit :delete, "/user_groups/users/sign_out", {}
-  end
+  logout
+  # step 'I am on the home page'
+  # Capybara.reset_sessions!
+  # if Capybara.current_driver.to_s == "rack_test"
+  #   page.driver.submit :delete, "/user_groups/users/sign_out", {}
+  # end
 end
 
 Given /^an account for "([^\"]*)" already exists$/ do |login|

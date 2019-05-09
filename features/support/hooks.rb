@@ -1,5 +1,6 @@
 After do
   FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  Warden.test_reset!
 end
 
 # Before do
