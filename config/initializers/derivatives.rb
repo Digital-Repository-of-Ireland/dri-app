@@ -28,7 +28,7 @@ DRI::Asset::Derivatives.module_eval do
         outputs: [
           { format: 'webm', label: :webm, object: self.batch.id, file: self.id },
           { format: 'mp4', label: :mp4, object: self.batch.id, file: self.id },
-          { format: 'jpg', label: 'thumbnail', object: self.batch.id, file: self.id }
+          { format: 'jpg', label: :thumbnail, object: self.batch.id, file: self.id }
         ]
       )
     when *self.class.image_mime_types
