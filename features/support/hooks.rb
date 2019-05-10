@@ -1,11 +1,16 @@
 After do
   FileUtils.remove_dir(@tmp_assets_dir, force: true)
+  Warden.test_reset!
 end
 
 # Before do
 #   # standardize window size (generic, runs on any driver, but slower than passing in config env.rb)
 #   Capybara.page.driver.browser.manage.window.resize_to(1200, 800)
 # end
+
+Before('@javascript') do
+  @javascript_driver = true
+end
 
 Before('not @javascript') do
   page.driver.browser.header('Accept-Language', 'en')
@@ -68,11 +73,13 @@ After('@enforce_cookies') do
 end
 
 # can't use around hook to catch expectation failure because it gets rescued internally
-After do |scenario|
-  # using byebug stop interaction with browser, just sleep on failure
-  if ENV['headless']&.downcase&.strip == 'false' && scenario.failed?
-    sleeptime = 600 # 10 minutes
-    STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
-    sleep(sleeptime)
+if ENV['headless']&.downcase&.strip == 'false'
+  After do |scenario|
+    if scenario.failed?
+      # using byebug stop interaction with browser, just sleep on failure
+      sleeptime = 600 # 10 minutes
+      STDOUT.puts("\nScenario failed. Sleeping for #{sleeptime} seconds.")
+      sleep(sleeptime)
+    end
   end
 end

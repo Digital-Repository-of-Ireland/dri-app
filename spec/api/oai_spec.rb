@@ -10,10 +10,10 @@ describe "Open Archives Initiative API" do
 
       parameter name: :verb, in: :query, type: :string, required: true,
                 enum: %w[
-                          Identify ListRecords ListSets 
+                          Identify ListRecords ListSets
                           ListMetadataFormats ListIdentifiers
                         ]
-      parameter name: :metadataPrefix, in: :query, 
+      parameter name: :metadataPrefix, in: :query,
                 type: :string, required: false,
                 description: 'must be oai_dri for ListRecords and ListIdentifiers'
 
@@ -29,9 +29,9 @@ describe "Open Archives Initiative API" do
           include_context 'rswag_include_xml_spec_output', "/oai (error missing verb)"
           run_test!
         end
-        # TODO better test using nokogiri to make sure response 
+        # TODO better test using nokogiri to make sure response
         # doesn't contain errors
-        { 
+        {
           'Identify' => {verb: 'Identify'},
           'List records' => {verb: 'ListRecords', metadataPrefix: 'oai_dri'},
           'List sets' => {verb: 'ListSets'},

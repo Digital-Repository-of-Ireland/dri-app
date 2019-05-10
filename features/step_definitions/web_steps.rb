@@ -1,10 +1,3 @@
-module WithinHelpers
-  def with_scope(locator)
-    locator ? within(locator) { yield } : yield
-  end
-end
-World(WithinHelpers)
-
 Given /^"(.*?)" has created a Digital Object$/ do |user|
   col_pid = "#{rand.to_s[2..11]}"
   @obj_pid = "#{rand.to_s[2..11]}"
@@ -111,7 +104,7 @@ When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, 
 end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
-  if Capybara.current_driver == Capybara.javascript_driver
+  if @javascript_driver
     element = page.find_link(link_to_id(link_name), { visible: false})
     page.execute_script("return arguments[0].click();", element)
   else
@@ -123,7 +116,7 @@ end
 # - it ignores overlaping <a> elements and just fires the click
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
-  if Capybara.current_driver == Capybara.javascript_driver
+  if @javascript_driver
     element = page.find_link(link_to_id(link_name), { visible: false})
     page.execute_script("return arguments[0].click();", element)
   else
@@ -139,7 +132,7 @@ When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, scope|
 end
 
 When /^(?:|I )click the first "([^\"]+)" within "([^"]*)"$/ do |selector, scope|
-  with_scope(scope) do
+  within(scope) do
     page.find_all(selector).first.click
   end
 end
@@ -276,9 +269,7 @@ Then /^I should( not)? see a popover$/ do |negate|
 end
 
 Then /^I should see a popover with the title "([^\"]+)"$/ do |title|
-  popover = find('div.popover', visible: true)
-  popover_title = popover.find('.popover-title').text
-  expect(popover_title).to eq title
+  expect(page).to have_selector('div.popover .popover-title', visible: true, text: title)
 end
 
 Then /^I should see the (valid|modified) metadata$/ do |type|
@@ -349,26 +340,24 @@ Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
-  url = current_url
-  @obj_pid = URI(url).path.split('/').last
-  begin
-    negate ? (expect(page).to_not have_selector ".dri_messages_container", text: flash_for(message)): (expect(page).to have_selector ".dri_messages_container", text: flash_for(message))
-  rescue
-    #save_and_open_page
-    raise
-  end
+  # @obj_pid = URI(current_url).path.split('/').last
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".dri_messages_container", text: flash_for(message)))
 end
 
 Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
-  negate ? (page.should_not have_selector ".dri_messages_container", text: flash_for(message)) : (page.should have_selector ".dri_messages_container", text: flash_for(message))
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".dri_messages_container", text: flash_for(message)))
 end
 
 Then /^(?:|I )should( not)? see a window about cookies$/ do |negate|
-  negate ? (page.should_not have_selector ".modal-title", text: flash_for("cookie terms")) : (page.should have_selector ".modal-title", text: flash_for("cookie terms"))
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".modal-title", text: flash_for("cookie terms")))
 end
 
 Then /^(?:|I )should( not)? see a message about cookies$/ do |negate|
-  negate ? (page.should_not have_selector ".alert", text: flash_for("cookie notification")) : (page.should have_selector ".alert", text: flash_for("cookie notification"))
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector(".alert", text: flash_for("cookie notification")))
 end
 
 Then /^(?:|I )should( not)? see "([^"]*)"(?: within "([^"]*)")?$/ do |negate, text, selector|
@@ -451,10 +440,6 @@ Then /^the( hidden)? "([^"]*)" field(?: within "([^"]*)")? should( not)? contain
   end
 end
 
-Then /^show me the page$/ do
-  save_and_open_page
-end
-
 Then /^I should see the error "([^\"]*)"$/ do |error|
   page.should have_content error
 end
@@ -477,7 +462,7 @@ end
 
 Then /^I should (not )?see a hidden "([^"]*)" within "([^"]*)"$/ do |negate, element, scope|
   expectation = negate ? :to_not : :to
-  with_scope(scope) do
+  within(scope) do
     expect(find_all(escape_id(element), visible: :hidden).count).send(expectation, be > 0)
   end
 end
@@ -539,7 +524,7 @@ Then /^all "([^\"]+)" within "([^\"]+)" should link to (.+)$/ do |selector, scop
                   end
 
   expect(page).to have_selector(scope)
-  with_scope(scope) do
+  within(scope) do
     objects = page.find_all(selector)
     expect(objects.count).to be >= 1
     objects.each do |obj|

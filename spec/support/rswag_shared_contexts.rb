@@ -20,7 +20,7 @@ end
 
 shared_context 'rswag_user_with_collections' do |status: 'draft', num_collections: 2, num_objects: 2, subcollection: true, doi: true, docs: true, object_type: :sound|
   include_context 'tmp_assets'
-  before(:each) do
+  before(:all) do
     @licence = Licence.create(
       name: 'test', description: 'this is a test', url: 'http://example.com'
     )
@@ -61,7 +61,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @collections << create_subcollection_for(@example_user) if subcollection
     sign_out_all # just to make sure requests aren't using session
   end
-  after(:each) do
+  after(:all) do
     @licence.destroy
     @institute.delete if @institute
     @example_user.delete
