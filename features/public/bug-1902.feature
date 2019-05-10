@@ -16,4 +16,3 @@ Scenario: Toggle search facets
   # wait for data-collapse animation
   And I wait for "1" second
   Then I should see 0 visible elements "#facet-panel-collapse"
-  

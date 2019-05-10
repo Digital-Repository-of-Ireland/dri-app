@@ -1,0 +1,37 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API V1",
+    "version": "v1"
+  },
+  "paths": {
+    "/bookmarks": {
+      "get": {
+        "summary": "retrieves bookmarks",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "302": {
+            "description": "bookmark redirect"
+          }
+        }
+      }
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "name": "user_token",
+      "in": "query"
+    },
+    "appId": {
+      "type": "apiKey",
+      "name": "user_email",
+      "in": "query"
+    }
+  }
+}

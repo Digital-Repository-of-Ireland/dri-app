@@ -14,9 +14,12 @@ module DeviseRequestSpecHelper
   end
 
   def sign_out_all
-    User.all.each do |user|
-      sign_out(user)
-    end
+    # https://github.com/wardencommunity/warden/wiki/testing
+    # logout without scope should log out all users
+    logout
+    # User.all.each do |user|
+    #   sign_out(user)
+    # end
   end
 
 end

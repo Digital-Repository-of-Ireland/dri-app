@@ -5,8 +5,8 @@ When /^I create a collection and save the pid$/ do
     And I enter valid metadata for a collection
     And I check "deposit"
     And I press the button to "create a collection"
+    And I save the pid
   }
-  @pid = URI.parse(current_url).path.split('/').last
 end
 
 When /^I save the pid$/ do
