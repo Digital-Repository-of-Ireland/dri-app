@@ -12,8 +12,8 @@ describe IiifController, type: :request do
       sign_in @example_user
 
       # set up fake image for iiif_viewable#create_canvas
-      # HEIGHT_SOLR_FIELD = 'height_isi'
-      # WIDTH_SOLR_FIELD = 'width_isi'
+      HEIGHT_SOLR_FIELD = 'height_isi'
+      WIDTH_SOLR_FIELD = 'width_isi'
       LABEL_SOLR_FIELD = ActiveFedora.index_field_mapper.solr_name('label')
 
       allow_any_instance_of(
