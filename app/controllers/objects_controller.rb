@@ -277,7 +277,7 @@ class ObjectsController < BaseObjectsController
             end
 
     if params[:object].present?
-      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_pids([params[:object]])
+      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get(
         'select',
         params: {
