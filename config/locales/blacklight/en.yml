@@ -12,6 +12,7 @@ en:
   blacklight: 
     advanced_search: 
       form: 
+        title: More Search Options
         paginate_label: Results per page
         query_criteria_heading_html: "Find items that match %{select_menu} of"
         sort_label: Sort by
