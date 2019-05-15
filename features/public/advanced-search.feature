@@ -13,31 +13,34 @@ Background:
   And the collection with pid "t3" is published
   And I am not logged in
   And I go to "the home page"
-  And I press "#advanced_search_button"
 
 Scenario: Boolean AND search
-  When I fill in "Title" with "*Two" within "#advanced_search"
+  When I press "#advanced_search_button"
+  And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 1 collection with title "titleTwo"
 
 Scenario: Boolean OR search
-  When I fill in "Title" with "*Two" within "#advanced_search"
+  When I press "#advanced_search_button"
+  And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "any" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 2 collections with titles "titleTwo, titleThree"
 
 Scenario: Boolean NOT search
-  When I fill in "Title" with "-*Two" within "#advanced_search"
+  When I press "#advanced_search_button"
+  And I fill in "Title" with "-*Two" within "#advanced_search"
   When I fill in "Creator" with "*" within "#advanced_search"
   And I select "any" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 2 collections with titles "titleOne, titleThree"
 
 Scenario: Wildcard search
-  When I fill in "Title" with "*e*e*" within "#advanced_search"
+  When I press "#advanced_search_button"
+  And I fill in "Title" with "*e*e*" within "#advanced_search"
   # creator and .query-criteria#op lines should not be necessary but spec fails in headless chrome without them
   # related to https://github.com/Codeception/CodeceptJS/issues/561 ?
   When I fill in "Creator" with "*" within "#advanced_search"
@@ -48,15 +51,15 @@ Scenario: Wildcard search
 Scenario: Single character query
   Given a collection with pid "tZ" and title "Z" created by "userZ"
   And the collection with pid "tZ" is published
-  When I fill in "Title" with "Z" within "#advanced_search"
+  When I press "#advanced_search_button"
+  And I fill in "Title" with "Z" within "#advanced_search"
   And I fill in "Creator" with "*" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 1 collection with title "Z"
 
 Scenario: Resetting all search terms
-  When I press "#dri_advanced_search_modal_id button.close"
-  And I search for "titleOne" in facet "Collection" with id "blacklight-root_collection_id_sim"
+  When I search for "titleOne" in facet "Collection" with id "blacklight-root_collection_id_sim"
   Then I should see 1 visible element "#browse_clear_all"
   And I should see "titleOne" in the facet well
   When I press "#advanced_search_button"
