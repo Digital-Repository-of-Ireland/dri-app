@@ -645,6 +645,7 @@ en:
           reset_search: Reset Search
           save: Save Changes
           save_current_search: Save Current Search
+          upload: Upload
           upload_master: Upload Master Asset
         confirm:
           delete: This will delete the object and all assets attached to it. Continue?

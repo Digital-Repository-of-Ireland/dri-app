@@ -11,7 +11,7 @@ class CreateDerivativesJob < ActiveFedoraIdBasedJob
       type = mime_type.respond_to?(:content_type) ? mime_type.content_type : mime_type
       return if type != 'message/external-body' && !generic_file.content.has_content?
 
-      generic_file.create_derivatives
+      generic_file.create_derivatives(generic_file.label)
     end
   end
 end

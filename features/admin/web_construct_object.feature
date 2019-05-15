@@ -44,8 +44,7 @@ Scenario Outline: Constructing a valid Digital Object
     | SAMPLEA.xml                   | Sound       |
 
 Scenario: Adding a pdf asset to an object
-  When I create a collection and save the pid
-  And I create an object and save the pid
+  When I create an object and save the pid
   And I go to the "object" "modify" page for "the saved pid"
   And I attach the asset file "sample_pdf.pdf"
   And I press the button to "upload a file"

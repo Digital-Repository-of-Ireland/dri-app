@@ -36,23 +36,38 @@ function addVocabAutocomplete(id) {
     return false;
   }
   $(input_selector).autocomplete({
-    source: function (request, response) {
+    source: function(request, response) {
       $.ajax({
         url: endpoint + request.term.toLowerCase(),
+        timeout: 5000,
         type: 'GET',
         dataType: 'json',
-        complete: function (xhr, status) {
+        complete: function(xhr, status) {
           var results = $.parseJSON(xhr.responseText);
           response(results);
         }
+      }).fail(function(){
+        var endpoint_name = $(dropdown_selector).find(':selected').text().trim();
+        var end_message = '. Please try a different autocomplete source';
+        alert('error fetching ' + endpoint_name + end_message);
+      }).always(function(){
+        // remove loading gif
+        $(input_selector).removeClass('ui-autocomplete-loading');
       });
     },
     select: function(request, response) {
+      // jquery autocomplete default is response value.
+      // in some cases (e.g. oclc) value is a truncated version of label,
+      // so try to use label, and if it doesn't exist, use value.
+      var label = response.item.label || response.item.value;
+      request.preventDefault();
+      $(this).val(label);
+
       var current_vocab = $(dropdown_selector).find(':selected').text();
       var vocab_uri = vocabIdToUri(current_vocab.trim(), response.item.id);
       // if a vocab uri was generated, save the uri to a hidden element
       if (vocab_uri) {
-        saveUriInForm($(this), vocab_uri, response.item.label);
+        saveUriInForm($(this), vocab_uri, label);
       }
     },
     autoFocus: true
@@ -75,14 +90,18 @@ function saveUriInForm(element, vocab_uri, label) {
 
   // make it clear this is a label for a link
   $(element).css({'color':'blue', 'text-decoration':'underline'});
+
   // remove the hidden input if the labels don't match
-  $(element).change(function() {
-    handleMismatchedSavedUri(element)
+  $(element).on({
+    change: function(){
+      handleMismatchedSavedUri(element);
+    },
+    input: function(){
+      handleMismatchedSavedUri(element);
+    }
   });
 }
 
-// TODO run on all elements on form submit
-// focus out won't be triggered before form submits
 function handleMismatchedSavedUri(element) {
   var hidden_input = $(element).parent().find('input:hidden');
   var normal_input = $(element);
@@ -110,12 +129,11 @@ function vocabIdToUri(vocab, id) {
     "LOC Names": locIdToUri,
     "Getty Art and Architecture": function(v) {return v;},
     "OCLC FAST": oclcFastIdToUri,
-    "Unesco": function(v) {return v;}, // unseco id is already uri
-    "Logainm": function(v) {return v;}, // logainm id is uri,
-    // but all links data.logainm.ie/place so far are broken
-    // e.g. http://data.logainm.ie/place/1391191 (Whitestown)
-    // will be fixed by fct (facet browser) virtuoso add-on
-    "NUTS3": function(v) {return v;}
+    "Unesco": function(v) {return v;}, // unseco id is already url
+    "Logainm": logainmIdToUri,
+    // will be dereferencable after fct (facet browser) virtuoso add-on
+    "Nuts3": function(v) {return v;},
+    "Hasset": function(v) {return v;}
   };
 
   // assignment to check if it's undefined
@@ -126,22 +144,14 @@ function vocabIdToUri(vocab, id) {
   } // implicit return undefined
 }
 
-// function nuts3ToUri(id) {
-//   id;
-//   // // unofficial source, should not preserve
-//   // return "https://tbed.org/eudemo/index.php?tablename=nuts_vw" +
-//   // "&function=details&where_field=nuts_code&where_value=" + id;
-//   // // official source, but doesn't provide fullf resful service
-//   // // map view available here
-//   // https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/nuts-2016-units.html
-//   // // json loaded e.g.
-//   // https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/distribution/IE052-region-60m-4326-2016.geojson
-// }
-
 function oclcFastIdToUri(id) {
   return 'http://fast.oclc.org/fast/' + id;
 }
 
 function locIdToUri(id) {
   return id.replace('info:lc', 'http://id.loc.gov')
+}
+
+function logainmIdToUri(id) {
+  return 'http://data.logainm.ie/describe/?url=' + id;
 }

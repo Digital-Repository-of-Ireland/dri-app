@@ -28,8 +28,8 @@ When /^I search for "(.*?)" in facet "(.*?)" with id "(.*?)"$/ do |search, facet
     end
     element.click
 
-    with_scope("div.#{facetid}") do
-      find('li', text: search).click
+    within("div.#{facetid}") do
+      click_on search
     end
   end
 end

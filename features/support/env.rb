@@ -22,6 +22,8 @@ require 'rake'
 require 'rspec'
 require 'billy/capybara/cucumber'
 require 'shoulda/matchers'
+require 'cucumber/rails'
+require 'factory_bot'
 
 Capybara.register_driver :selenium do |app|
   # run chrome headless by default. only turn off if headless == false
@@ -32,7 +34,8 @@ Capybara.register_driver :selenium do |app|
               args: [
                 *headless,
                 "no-sandbox",
-                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}"
+                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}",
+                "window-size=1200,800"
               ]
             )
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
@@ -46,9 +49,6 @@ Capybara.server = :webrick
 # newer version of cucumber-rails. Consider adding your own code to a new file
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
-
-require 'cucumber/rails'
-require 'factory_bot'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -120,17 +120,13 @@ class Module
 end
 
 Before do
-  allow(DRI.queue).to receive(:push) 
+  allow(DRI.queue).to receive(:push)
   allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
 
   clean_repo
 
   @tmp_assets_dir = Dir.mktmpdir
   Settings.dri.files = @tmp_assets_dir
-end
-
-After do
-  Capybara.use_default_driver
 end
 
 def last_json

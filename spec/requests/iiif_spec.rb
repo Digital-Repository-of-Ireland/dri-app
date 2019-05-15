@@ -3,7 +3,7 @@ require 'swagger_helper'
 require 'ostruct'
 
 describe IiifController, type: :request do
-  include_context 'rswag_user_with_collections', 
+  include_context 'rswag_user_with_collections',
     status: 'published', num_collections: 1, num_objects: 2,
     subcollection: false, doi: false, docs: false, object_type: :image do
     before(:each) do

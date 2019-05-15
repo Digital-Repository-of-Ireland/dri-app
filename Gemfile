@@ -10,9 +10,8 @@ gem 'rails', '>= 4', '< 5'
 
 gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
-gem 'tzinfo-data'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
-
+gem 'tzinfo-data'
 
 gem 'hydra-head', '~> 10.6'
 
@@ -89,8 +88,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
-  gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
   gem 'simplecov'
   gem 'simplecov-rcov'
   gem 'railroady'
@@ -176,4 +174,9 @@ gem 'remotipart'
 gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
+# authorities
 gem 'qa', '~> 1.2'
+gem 'rdf', '~> 1.99'
+gem 'rdf-vocab', '~> 0.8.8'
+
+gem "seedbank", "~> 0.5.0"

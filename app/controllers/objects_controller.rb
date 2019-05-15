@@ -6,8 +6,6 @@ class ObjectsController < BaseObjectsController
   include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
 
-  Mime::Type.register "application/zip", :zip
-
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
   before_action :read_only, except: [:index, :show, :citation, :related, :retrieve]
@@ -279,7 +277,7 @@ class ObjectsController < BaseObjectsController
             end
 
     if params[:object].present?
-      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_pids([params[:object]])
+      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:object]])
       result = ActiveFedora::SolrService.instance.conn.get(
         'select',
         params: {

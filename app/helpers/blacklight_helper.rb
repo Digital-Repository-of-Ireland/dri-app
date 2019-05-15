@@ -23,7 +23,7 @@ module BlacklightHelper
 
   def link_to_saved_search(params)
     label = title_to_saved_search(params)
-    link_to(raw(label), search_catalog_path(params)).html_safe
+    link_to(raw(label), search_catalog_path(params.symbolize_keys)).html_safe
   end
 
   def title_to_saved_search(params)

@@ -5,22 +5,21 @@
     "version": "v1"
   },
   "paths": {
-    "/test": {
+    "/bookmarks": {
       "get": {
-        "summary": "this is a test",
+        "summary": "retrieves bookmarks",
         "produces": [
           "application/json"
         ],
         "responses": {
-          "200": {
-            "description": "test"
+          "302": {
+            "description": "bookmark redirect"
           }
         }
       }
     }
   },
   "schemes": [
-    "http",
     "https"
   ],
   "securityDefinitions": {

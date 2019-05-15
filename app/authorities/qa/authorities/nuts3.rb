@@ -1,75 +1,42 @@
 module Qa::Authorities
   class Nuts3 < Qa::Authorities::Base
-    # https://ec.europa.eu/eurostat/web/nuts/linked-open-data
-    # select ?s ?p ?o  where {graph <http://data.europa.eu/nuts> {?s ?p ?o}}      LIMIT 10
-    # subset of irish codes in nuts3
-
-    # possible options converting nuts3 IDs to URIs: 
-    # https://ec.europa.eu/eurostat/web/nuts/background
-    # https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02003R1059-20180118&from=EN
-    # http://irelandsdg.geohive.ie/datasets/OSi::nuts3-generalised-100m-2/geoservice
-    # https://tbed.org/eudemo/index.php?tablename=nuts_vw&function=details&where_field=nuts_code&where_value=
-
-    # data from aileen's email, originally https://en.wikipedia.org/wiki/NUTS_3_statistical_regions_of_the_Republic_of_Ireland
-    def all
-      [
-        {
-         "Region Code": "IE041",
-         "Region Name": "Border Region",
-         "Local Government areas included": "Cavan, Donegal, Leitrim, Monaghan, Sligo"
-        },
-        {
-         "Region Code": "IE042",
-         "Region Name": "West Region",
-         "Local Government areas included": "Mayo, Roscommon, Galway and Galway City"
-        },
-        {
-         "Region Code": "IE051",
-         "Region Name": "Mid-West Region",
-         "Local Government areas included": "Clare, Tipperary, Limerick City & County"
-        },
-        {
-         "Region Code": "IE052",
-         "Region Name": "South-East Region",
-         "Local Government areas included": "Carlow, Kilkenny, Wexford, Waterford City & County"
-        },
-        {
-         "Region Code": "IE053",
-         "Region Name": "South-West Region",
-         "Local Government areas included": "Kerry, Cork and Cork City"
-        },
-        {
-         "Region Code": "IE061",
-         "Region Name": "Dublin Region",
-         "Local Government areas included": "Dún Laoghaire–Rathdown, Fingal, South Dublin and Dublin City"
-        },
-        {
-         "Region Code": "IE062",
-         "Region Name": "Mid-East Region",
-         "Local Government areas included": "Kildare, Meath, Wicklow, Louth"
-        },
-        {
-         "Region Code": "IE063",
-         "Region Name": "Midlands Region",
-         "Local Government areas included": "Laois, Longford, Offaly, Westmeath"
-        }
-      ]
-    end
-
     def search(_q)
       # case insensitive match
       regex = Regexp.new(Regexp.escape(_q), 'i')
-      matching_regions = all.select { |_h| _h[:'Region Name'].match? regex }
-      matching_regions.map do |_h|
+
+      matching_regions = all.select do |sub_hash|
+        sub_hash['Region Name'].match? regex
+      end
+
+      matching_regions.map do |region|
         {
-          id: _h[:'Region Code'],
-          label: _h[:'Region Name']
+          id:    region['Region Code'],
+          label: region['Region Name']
         }
       end
     end
 
     def show(id)
-      all[:'Region Code']
+      all.select { |sub_hash| sub_hash['Region Code'] == id }
     end
+
+    # possible options converting nuts3 IDs to URIs:
+    # https://ec.europa.eu/eurostat/web/nuts/background
+    # https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02003R1059-20180118&from=EN
+    # http://irelandsdg.geohive.ie/datasets/OSi::nuts3-generalised-100m-2/geoservice
+    # https://tbed.org/eudemo/index.php?tablename=nuts_vw&function=details&where_field=nuts_code&where_value=
+    def all
+      Psych.safe_load(File.open(nuts_path))
+    end
+
+    def empty?
+      all.empty?
+    end
+
+    private
+
+      def nuts_path
+        Rails.root.join('app', 'authorities', 'qa', 'data', 'nuts3_ie.yml')
+      end
   end
 end
