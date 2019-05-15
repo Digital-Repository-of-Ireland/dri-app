@@ -1,4 +1,4 @@
-  <%= form_tag main_app.search_catalog_path, :method => :get, :id => 'mobile_searchform', :class => 'dri_search_term_input_form' do %>
+  <%= form_tag main_app.search_catalog_path, method: :get, id: 'mobile_searchform', class: 'dri_search_term_input_form' do %>
     <% if search_fields.length > 1 %>
       <%= select_tag(:search_field,
                      options_for_select(search_fields, h(params[:search_field])),
@@ -15,9 +15,9 @@
 
     <%= render_hash_as_hidden_fields(params_for_search().except(:q, :search_field, :qt, :page, :utf8)).html_safe %>
     <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
-    <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "mobile_q", :class => "dri_search_term_text_input dri_no_clear dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "bottom" %>
+    <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.q'), id: "mobile_q", class: "dri_search_term_text_input dri_no_clear dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "bottom" %>
 
-    <%= link_to "+ #{t('dri.views.objects.buttons.advanced_options')}", '',
+    <%= link_to "+  #{t('blacklight.advanced_search.form.title')}", '',
         :'data-target' => '#dri_advanced_search_modal_id',
         :'data-toggle' => 'modal',
         id: 'advanced_search_button_mobile' %>
