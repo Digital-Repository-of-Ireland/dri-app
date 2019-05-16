@@ -1,14 +1,4 @@
-<%#
-https://github.com/projectblacklight/blacklight/blob/1c8084cfb00d51f869c985947f7bd6bab5e59afc/app/helpers/blacklight/render_constraints_helper_behavior.rb#L35
-if ?q is empty, constraints are not rendered
-
-conflicts with blacklight maps gem which checks for has_search_parameters? || super (query_has_constraints?)
-could also be that query_has_constraints? in blacklight doesn't match render_constraints logic either?
-
-check if render constraints will render anything before adding clear all button
-%>
-<% constraints = render_constraints(params) %>
-<% unless constraints.empty? %>
+<% if query_has_constraints? %>
   <div id="dri_facet_restrictions_container_id"
        class="dri_facet_restrictions_container dri_clearfix">
     <ul id="dri_facet_restrictions_links_id"
@@ -18,7 +8,7 @@ check if render constraints will render anything before adding clear all button
         data-trigger="hover"
         data-placement="top">
 
-      <%= constraints %>
+      <%= render_constraints(params) %>
       <% copyParams = params.clone %>
       <% if copyParams[:mode].nil? %>
           <% copyParams[:mode] = "objects" %>

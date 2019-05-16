@@ -97,15 +97,21 @@ module BlacklightHelper
     end
   end
 
+  def query_has_workspace_constraints?(localized_params = params)
+    !(localized_params[:q_ws].blank? and localized_params[:f].blank?)
+  end
+
   def render_workspace_constraints_query(localized_params = params)
     # So simple don't need a view template, we can just do it here.
     scope = localized_params.delete(:route_set) || self
     return "".html_safe if localized_params[:q_ws].blank?
 
-    render_constraint_element(constraint_query_label(localized_params),
+    render_constraint_element(
+	  constraint_query_label(localized_params),
           localized_params[:q_ws],
-          :classes => ["query"],
-          :remove => scope.url_for(localized_params.merge(:q_ws=>nil, :action=>'index')))
+          classes: ["query"],
+          remove: scope.url_for(localized_params.merge(q_ws: nil, action: 'index'))
+    )
   end
 
   # @param [Array<Array>] fields
