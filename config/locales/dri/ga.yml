@@ -411,6 +411,8 @@ ga:
           add_object: Cuir Oibiacht leis
           add_object_xml: Uaslódáil XML na hOibiachta
           add_sub_collection: Cuir fo-bhailiúchán leis
+          advanced_options: Tuilleadh roghanna
+          advanced_search: Cuardach casta
           characterization: Tréithriú
           details: Sonraí na Sócmhainne
           download: Íoslódáil an sócmhainn
@@ -624,8 +626,6 @@ ga:
           registered: Déan rochtain a shrianaigh chuig úsáideoirí atá logáilte isteach amháin.
           restricted: Srianaigh rochtain chucu siúd amháin a cheadaíonn mé
         buttons:
-          advanced_options: Tuilleadh roghanna
-          advanced_search: Cuardach casta
           cancel: Cealaigh
           delete_object: Scrios an Oibiacht
           replace_master: Athchuir Máistirsócmhainn

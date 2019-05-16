@@ -537,15 +537,20 @@ a .dri_signin_edugate {
     }
 
     #advanced_search_button_mobile {
+	padding-left: 10px;
         display: inline-flex;
-        max-width: 175px;
-        min-width: 175px;
+        max-width: 150px;
+        min-width: 150px;
         text-overflow: ellipsis;
+        color: $dri_midgrey;
+        &:hover {
+            color: $dri_darkgrey;
+        }
     }
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
-             background-color: $dri_extralightgrey;
+            background-color: $dri_extralightgrey;
             color: $dri_darkgrey;
             a {
                 padding-top: 12px;
@@ -687,10 +692,10 @@ a .dri_signin_edugate {
 // fit elements to smaller my-collections layout
 #my_collections_searchform {
     #search_field, #q_ws {
-        margin-top: 24px;
+        margin-top: 10px;
     }
     #q_ws {
-        min-width: 150px;
+        min-width: 175px;
         max-width: 65%;
     }
 }
@@ -866,7 +871,7 @@ ol.breadcrumb {
 
 #search_field {
     margin: 54px 0 0 0;
-    padding: 4px 0 4px 0;
+    padding: 5px 0 5px 0;
 }
 
 .dri_search_term_text_input{
@@ -883,6 +888,14 @@ ol.breadcrumb {
     color: $dri_midgrey;
     background: image-url("dri/search_icon.png") no-repeat left;
 }
+
+#advanced_search_button {
+    color: $dri_midgrey;
+    &:hover {
+      color: $dri_darkgrey;
+    }
+}
+
 /*-------------- Grid / table display--------------*/
 
 .dri_change_sort_view {

@@ -421,6 +421,8 @@ en:
           add_object: Add an Object
           add_object_xml: Upload Object XML
           add_sub_collection: Add Sub-Collection
+          advanced_options: More options
+          advanced_search: Advanced Search
           characterization: Characterization
           details: Asset Details
           download: Download asset
@@ -636,8 +638,6 @@ en:
           registered: Limit access to logged-in users
           restricted: Restrict access to users who I approve
         buttons:
-          advanced_options: More options
-          advanced_search: Advanced Search
           cancel: Cancel
           delete_object: Delete Object
           replace_master: Replace Master Asset

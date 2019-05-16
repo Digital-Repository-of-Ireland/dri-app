@@ -15,7 +15,7 @@
     <%= render_hash_as_hidden_fields(params_for_search().except(:q, :search_field, :qt, :page, :utf8)).html_safe %>
     <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.q'), id: "mobile_q", class: "dri_search_term_text_input dri_no_clear dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "bottom" %>
 
-    <%= link_to "+  #{t('blacklight.advanced_search.form.title')}", '',
+    <%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',
         :'data-target' => '#dri_advanced_search_modal_id',
         :'data-toggle' => 'modal',
         id: 'advanced_search_button_mobile' %>
