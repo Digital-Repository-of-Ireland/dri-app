@@ -48,6 +48,7 @@ pipeline {
         stage('Deploy') {
             when {
                 branch 'develop'
+                environment name: 'SKIP_DEPLOY', value: 'false'
             }
             steps {
                 sh './buildshim push'
