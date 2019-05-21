@@ -67,6 +67,29 @@ Scenario Outline: Successful search for "<query>" in "<search_field>"
     | Names        | Third Person         | publisher               | my collections |
     | Places       | Dublin               | geographical_coverage   | my collections |
 
+Scenario Outline: Successful search for name with orcid in "Names"
+  Given I am on the home page
+  Given a collection with pid "collection1"
+  And the collection with pid "collection1" has "contributor" = "name=Stephenson, Stephen; authority=ORCID; identifier=https://orcid.org/1111-2222-3333-4444"
+  And the collection with pid "collection1" has "creator" = "Paulson, Paul"
+  And the collection with pid "collection1" is published
+  When I select "Names" from "#search_field"
+  And I fill in "q" within "#searchform" with:
+    """
+    "<query>"
+    """
+  And I perform a search
+  And I select the "collections" tab
+  Then I should see a search result "<query>"
+  And I should see 1 visible element ".dri_content_block_collection"
+
+  Examples:
+    | query               |
+    | Paulson, Paul       |
+    | Paul Paulson        |
+    | Stephenson, Stephen |
+    | Stephen Stephenson  |
+
 Scenario: Advanced Search Link
   When I press "#advanced_search_button"
   Then I should see a modal with title "Advanced Search"

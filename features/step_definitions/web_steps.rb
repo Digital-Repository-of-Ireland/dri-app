@@ -424,6 +424,12 @@ When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field
   end
 end
 
+When /^(?:|I )fill in "([^"]*)"(?: within "([^"]*)")?(?: with|for):$/ do |field, selector, value|
+  within(selector) do
+    fill_in(field, with: value)
+  end
+end
+
 When /^(?:|I )fill in "([^"]*)" number (.*?) with "([^"]*)"(?: within "([^"]*)")?$/ do |field, index, value, selector|
   with_scope(selector) do
     selected_select = page.all(:xpath, '//input[@id="'+field+'"]')[index.to_i].set(value)
