@@ -6,7 +6,7 @@
         <% @surrogate = @surrogate_mp3 %>
         <% if @surrogate %>
           <% @surrogate_ogg = @presenter.surrogate_url(generic_file.id, "ogg") %>
-          <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, width: "100%", height: "100px" %>
+          <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, class: 'dri_audio' %>
            <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
         <% end %>
 
@@ -14,7 +14,7 @@
         <% @surrogate = @presenter.surrogate_url(generic_file.id, "mp4") %>
         <% if @surrogate %>
             <% @surrogate_webm = @presenter.surrogate_url(generic_file.id, "webm") %>
-            <%= video_tag [@surrogate, @surrogate_webm], controls: true, width:"100%", height: "270px" %>
+            <%= video_tag [@surrogate, @surrogate_webm], controls: true, class: "dri_video" %>
         <% end %>
 
     <% elsif generic_file.pdf? %>
