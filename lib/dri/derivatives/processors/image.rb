@@ -1,18 +1,29 @@
 module DRI::Derivatives::Processors
   class Image < Hydra::Derivatives::Processors::Image
 
-    def create_image
-      xfrm = selected_layers(load_image_transformer)
-      yield(xfrm) if block_given?
-      xfrm.gravity(gravity) if gravity.present?
-      xfrm.crop(crop.to_s) if crop
-      if trim.present?
-        xfrm.trim
-        xfrm.repage('0x0+0+0')
+    def create_resized_image
+      create_image do |xfrm|
+        if size
+          xfrm.flatten
+          xfrm.resize(size)
+        end
       end
-      xfrm.format(directives.fetch(:format))
-      xfrm.quality(quality.to_s) if quality
-      write_image(xfrm)
+    end
+
+    def create_image
+      image = selected_layers(load_image_transformer)
+      image.format(directives.fetch(:format))
+      image.combine_options do |xfrm|
+        yield(xfrm) if block_given?
+        xfrm.gravity(gravity) if gravity.present?
+        xfrm.crop(crop.to_s) if crop
+        if trim.present?
+          xfrm.trim
+          xfrm.repage('0x0+0+0')
+        end
+        xfrm.quality(quality.to_s) if quality
+      end
+      write_image(image)
     end
 
     private
