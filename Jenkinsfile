@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { 
+        docker {
             image 'dri-jenkins-agent'
             label 'master'
             args '-u jenkins:jenkins -v rvm:/home/jenkins/.rvm -v /var/lib/jenkins/.ssh:/home/jenkins/.ssh'
@@ -45,13 +45,20 @@ pipeline {
                 sh './buildshim compile'
             }
         }
+        stage('Update Mirror') {
+            when {
+                branch 'develop'
+            }
+            steps {
+                sh './buildshim push'
+            }
+        }
         stage('Deploy') {
             when {
                 branch 'develop'
                 environment name: 'SKIP_DEPLOY', value: 'false'
             }
             steps {
-                sh './buildshim push'
                 dir('ansible-dri-infrastructure') {
                     git branch: 'master',
                         credentialsId: '5a3ca3b3-d07d-4acd-bfd7-8a308078b6ec',
@@ -76,8 +83,8 @@ pipeline {
             }
         }
     }
-    post { 
-        always { 
+    post {
+        always {
             junit 'spec/reports/*.xml'
             cucumber fileIncludePattern: 'features/reports/*.json'
         }
