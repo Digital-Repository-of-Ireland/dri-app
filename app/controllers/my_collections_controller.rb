@@ -171,11 +171,6 @@ class MyCollectionsController < ApplicationController
     # solr request handler? The one set in config[:default_solr_parameters][:qt],
     # since we aren't specifying it otherwise.
     config.add_search_field 'all_fields', label: 'All Fields'
-
-    # Now we see how to over-ride Solr request handler defaults, in this
-    # case for a BL "search field", which is really a dismax aggregate
-    # of Solr search fields.
-
     config.dri_display_search_fields = %i[all_fields title subject person place]
     config.dri_all_search_fields = %i[
       title subject description creator contributor publisher person place
@@ -202,9 +197,6 @@ class MyCollectionsController < ApplicationController
     # - it is commented out for this reason.
     # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', label: 'year created'
 
-    # We son't use the author_tesi field in DRI so disabling this sort - Damien
-    # config.add_sort_field 'author_tesi asc, title_sorted_ssi asc', label: 'author'
-
     config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', label: 'relevance'
     config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', label: 'title'
     config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', label: 'order/sequence'
@@ -215,14 +207,15 @@ class MyCollectionsController < ApplicationController
 
     config.view.maps.coordinates_field = 'geospatial'
     config.view.maps.placename_property = 'placename'
-    config.view.maps.tileurl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    config.view.maps.mapattribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+    config.view.maps.tileurl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    config.view.maps.mapattribution = 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
     config.view.maps.maxzoom = 18
     config.view.maps.show_initial_zoom = 5
     config.view.maps.facet_mode = 'geojson'
     config.view.maps.placename_field = ActiveFedora.index_field_mapper.solr_name('placename_field', :facetable, type: :string)
     config.view.maps.geojson_field = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol)
-    config.view.maps.search_mode = 'placename'
+    config.view.maps.search_mode = 'coordinates'
+    config.view.maps.spatial_query_dist = 0.5
   end
 
   def self.controller_path
