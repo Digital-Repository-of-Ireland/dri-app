@@ -97,14 +97,50 @@ module BlacklightHelper
     end
   end
 
+  def query_has_workspace_constraints?(localized_params = params)
+    !(localized_params[:q_ws].blank? and localized_params[:f].blank?)
+  end
+
   def render_workspace_constraints_query(localized_params = params)
     # So simple don't need a view template, we can just do it here.
     scope = localized_params.delete(:route_set) || self
     return "".html_safe if localized_params[:q_ws].blank?
 
-    render_constraint_element(constraint_query_label(localized_params),
+    render_constraint_element(
+	  constraint_query_label(localized_params),
           localized_params[:q_ws],
-          :classes => ["query"],
-          :remove => scope.url_for(localized_params.merge(:q_ws=>nil, :action=>'index')))
+          classes: ["query"],
+          remove: scope.url_for(localized_params.merge(q_ws: nil, action: 'index'))
+    )
+  end
+
+  # @param [Array<Array>] fields
+  # @return [Array] blacklight search fields which can be displayed
+  def display_search_fields(fields = search_fields)
+    fields.select do |(label, value)|
+      blacklight_config.dri_display_search_fields.include?(value.to_sym)
+    end
+  end
+
+  # @param [Array<Array>] fields
+  # @return [Array] translated fields
+  def translated_search_fields(fields = search_fields)
+    fields.map do |(label, value)|
+      # if translation doesn't exist, fall back to blacklight label
+      [t("blacklight.search.fields.label.#{value.pluralize}", default: label), value]
+    end
+  end
+
+  # @param [Hash<string, config>] fields
+  # @return [Hash<string, config>]
+  # has side effect of adding translated_label to search_fields_for_advanced_search reference
+  # TODO look into making search_fields_for_advanced_search immutable, or removing this side effect
+  def translated_search_fields_for_andvanced_search(fields = search_fields_for_advanced_search)
+    fields.map do |key, field_def|
+      trans_key = "blacklight.search.fields.label.#{field_def.field.pluralize}"
+      translated_label = t(trans_key, default: field_def.label)
+      field_def.translated_label = translated_label
+      [key, field_def]
+    end.to_h
   end
 end

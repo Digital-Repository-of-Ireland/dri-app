@@ -24,10 +24,6 @@ When /^I "([^\"]+)" and fill in "([^\"]+)" and choose the first autocomplete res
   }
 end
 
-When /^I select "([^\"]+)" from "([^\"]+)"$/ do |text, selector|
-  find(selector, visible: true).select(text)
-end
-
 When /^I select "([^\"]+)" from the autocomplete menu$/ do |text|
   find(".vocab-dropdown", visible: true).select(text)
 end

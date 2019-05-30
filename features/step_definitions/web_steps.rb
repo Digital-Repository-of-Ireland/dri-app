@@ -82,6 +82,8 @@ When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   }
 end
 
+# TODO: refactor to use quotes around arg(s) to avoid ambiguous matches
+# would need to refactor path_translator too
 Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
@@ -147,6 +149,14 @@ end
 
 When /^I select the text "(.*?)" from the selectbox for (.*?)$/ do |option, selector|
   select(option, :from => select_box_to_id(selector))
+end
+
+When /^I select "([^\"]+)" from "([^\"]+)"$/ do |text, selector|
+  find(selector, visible: true).select(text)
+end
+
+Then /^I should see "([^\"]+)" selected in "([^\"]+)"$/ do |text, selector|
+  expect(page).to have_select(selector, selected: text)
 end
 
 When /^I upload the metadata file "(.*?)"$/ do |file|
@@ -281,9 +291,10 @@ Then /^I should see the (valid|modified) metadata$/ do |type|
   end
 end
 
-Then /^I press "(.*?)"$/ do |button|
+Then /^I press "(.*?)"$/ do |selector|  
   Capybara.ignore_hidden_elements = false
-  click_link_or_button(button)
+  # click_on(selector)
+  find(selector).click
 end
 
 Then /^(?:|I )press the modal button to "(.*?)" in "(.*?)"$/ do |button,modal|
@@ -337,6 +348,10 @@ end
 
 Then /^(?:|I )should see a selectbox for "(.*?)"$/ do |id|
   page.should have_select id
+end
+
+Then /^"([^\"]+)" should be selected in "([^\"]+)"$/ do |selected, selector|
+  expect(page).to have_select(selector, selected: selected)
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
@@ -406,6 +421,12 @@ end
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
     fill_in(field, :with => value, :match => :prefer_exact)
+  end
+end
+
+When /^(?:|I )fill in "([^"]*)"(?: within "([^"]*)")?(?: with|for):$/ do |field, selector, value|
+  within(selector) do
+    fill_in(field, with: value)
   end
 end
 
@@ -483,7 +504,7 @@ When /^I accept the alert$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
-And /^I should see a dialog with text "([^"]*)"$/ do |text|
+Then /^I should see a dialog with text "([^"]*)"$/ do |text|
   page.driver.browser.switch_to.alert.text.should include(text)
 end
 
@@ -550,5 +571,11 @@ Then /^I should( not)? see a modal(?: with title "([^\"]+)")?$/ do |negate, titl
       modal_title = modal.find('.modal-title').text
       expect(modal_title).to eq title
     end
+  end
+end
+
+Then /^I should see an input "([^\"]+)" with text "([^\"]+)" within "([^\"]+)"$/ do |fname, text, selector|
+  with_scope(selector) do
+    expect(page).to have_field(fname, with: text)
   end
 end

@@ -26,6 +26,9 @@ module PathTranslator
       when /^(the )?home page$/
         root_path
 
+      when /^(the )?catalog page$?/
+        search_catalog_path
+
       when /^(the )?my collections page$/
         my_collections_index_path
 
@@ -78,13 +81,19 @@ module PathTranslator
         new_organisation_path
 
       when /^(the )?organisations page$/
-        "#{root_path}organisations"
+        organisations_path
 
       when /^(the )?api docs page$/
-        "#{root_path}api-docs"
+        rswag_path
 
       when /^(the )?workspace page$/
         workspace_path
+
+      when /^(the )?advanced search page$/
+        advanced_search_path
+
+      when /^(the )?advanced search page with (\w+) = (.+)$/
+        advanced_search_path("#{$2}": $3.strip)
 
       else
         raise('You specified an invalid path')
@@ -124,7 +133,7 @@ module PathTranslator
             raise('Unknown route')
         end
 
-       when /collection/
+      when /collection/
         case page
           when /show/
             solr_document_path(pid)

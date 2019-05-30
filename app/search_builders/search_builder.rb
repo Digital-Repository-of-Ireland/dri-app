@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 class SearchBuilder < Blacklight::SearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
+  include BlacklightMaps::MapsSearchBuilderBehavior
   include Hydra::AccessControlsEnforcement
 
   self.default_processor_chain += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]

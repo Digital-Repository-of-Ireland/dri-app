@@ -10,6 +10,20 @@ ga:
     models: 
       feedback: Aiseolas
   blacklight: 
+    advanced_search: 
+      form: 
+        paginate_label: Torthaí in aghaidh an leathanach
+        query_criteria_heading_html: "Aimsigh míreanna le match %{select_menu}"
+        sort_label: Eagraigh de réir
+        tips_title: Leideanna cuardaigh
+      tips:
+        boolean: Úsáid "OR", "AND", agus "NOT" chun loighic coimpléascach a cruthú. Is féidir leat lúibíní a úsáid.
+        keywords: Cuingrigh eochairfhocail agus tréithe chun míreanna sainiúil a aimsiú.
+        match_any: Roghnaigh "match any" chun réimse amháin ar a laighead a aimsiú.
+        match_all: Roghnaigh "match all" chun gach réimse a úsáid.
+        minus: Úsáid "-" roimh focal nó frása chun é a eisimh.
+        plus: Úsáid "+" roimh téarma chun é a chur de dhíth. (D'fhéadfadh roinnt torthaí a fháil gan an téarma mura cuirtear + roimhe).
+        quotes: Úsáid comharthaífiriol athfhriotail chun torthaí cruinn a fháil.
     and: agus
     application_name: "Taisclann Dhigiteach na hÉireann"
     back_to_bookmarks: " ⬅ Siar chuig Leabharmharcanna"
@@ -126,10 +140,22 @@ ga:
           geographical_coverage_sim: Áiteanna
           institute_sim: Institúid
           language_sim: Teanga
+          licence_sim: Ceadúnas
           person_sim: Ainmneacha
+          placename_field_sim: Áiteanna
           root_collection_id_sim: Bailiúchán
           subject_sim: Ábhair
           temporal_coverage_sim: "Ábhar (Ré)"
+        label:
+          all_fields: Gach réimse
+          contributors: Rannpháirtithe
+          creators: Cruthaitheoirí
+          descriptions: Cur síos
+          people: Ainmneacha
+          places: Áiteanna
+          publishers: Foilsitheoir
+          titles: Teideal
+          subjects: Ábhair
       filters: 
         label: "%{label}:"
         remove: 
@@ -137,11 +163,13 @@ ga:
           value: "Bain an srian: %{value}"
         title: "Chuardaigh tú"
       form: 
-        q: Cuardaigh
+        q: Cuardaigh...
+        search: Cuardaigh
         search_field: 
           label: Cuardaigh
           post_label: "le haghaidh"
           title: "Roghanna cuardach spriocdhírithe"
+        start_over: "Tosaigh arís"
         submit: Cuardaigh
       librarian_view: 
         leader: "LEADER %{leader}"
@@ -166,8 +194,12 @@ ga:
         title: "%{document_title} - %{application_name}"
       sort: 
         label: "Eagraigh de réir %{field}"
+        newest: Mír is déanaí
+        order/sequence: Ord/sraith
+        relevance: Ábharthacht
+        title: Teideal
         submit: "sórtáil na torthaí"
-      start_over: "Ttosaigh arís"
+      start_over: "Tosaigh arís"
       title: "Torthaí an Chuardaigh %{application_name}"
     search_history: 
       clear: 

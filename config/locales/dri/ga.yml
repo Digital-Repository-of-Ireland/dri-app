@@ -209,6 +209,7 @@ ga:
       licensing_statement: Ráiteas ceadúnaigh
       manage: Bainistigh
       manage_users: Cuir Bainisteoir Bailiúcháin leis
+      manage_om_users: Cuir Bainisteoir Eagrúcháin leis
       membership: Ballríocht
       member_benefits: Buntáistí Ballríochta
       membership_fees: Táilí Ballríochta
@@ -237,6 +238,11 @@ ga:
     help:
       add_documentation_help_text: Tá na hoibiachtaí seo le feiceáil sa gcuid "Ábhair Ghaolmhara" den leathanach na mbailiúchán.
       add_documentation_help_title: Cuir faisnéis chomhthéacsúil leis
+      advanced_search:
+        start_over: Glan an cuardach seo
+        start_over_title: Tosaigh arís
+        search: Tosaigh cuardach leis na socraithe seo
+        search_title: Cuardach
       autocomplete:
         title: Foinse autocomplete
         content: Tugann an roghchlár seo rogha duit foinse autocomplete a roghnú. Tosaigh ag scríobh in aon ionchuir thíos chun moltaí a fháil, nó roghnaigh disable chun an autocomplete a díchumasú.
@@ -406,6 +412,8 @@ ga:
           add_object: Cuir Oibiacht leis
           add_object_xml: Uaslódáil XML na hOibiachta
           add_sub_collection: Cuir fo-bhailiúchán leis
+          advanced_options: Tuilleadh roghanna
+          advanced_search: Cuardach casta
           characterization: Tréithriú
           details: Sonraí na Sócmhainne
           download: Íoslódáil an sócmhainn
@@ -623,6 +631,7 @@ ga:
           delete_object: Scrios an Oibiacht
           replace_master: Athchuir Máistirsócmhainn
           replace_metadata: Uaslódáil Meiteashonraí
+          reset_search: Athsocraigh an cuardach
           save: Sábháil na hathruithe
           save_current_search: Sábháil an cuardach reatha
           upload_master: Uaslódáil Máistirsócmhainn

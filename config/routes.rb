@@ -3,7 +3,7 @@ require 'resque/server'
 DriApp::Application.routes.draw do
   mount Qa::Engine => '/qa'
 
-  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => '/api-docs', as: 'rswag'
   mount Rswag::Api::Engine => '/api-docs'
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
     root :to => redirect('/catalog?mode=collections&search_field=all_fields')
@@ -13,6 +13,7 @@ DriApp::Application.routes.draw do
     mount DriBatchIngest::Engine => '/ingest'
 
     mount Blacklight::Engine => '/'
+    mount BlacklightAdvancedSearch::Engine => '/'
 
     concern :searchable, Blacklight::Routes::Searchable.new
     concern :exportable, Blacklight::Routes::Exportable.new
@@ -61,6 +62,7 @@ DriApp::Application.routes.draw do
     resources :session, :only => ['create']
 
     resources :collections, :only => ['index','new','create','update','edit','destroy']
+
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
 

@@ -5,10 +5,12 @@ describe ManageUsersController do
 
   before(:all) do
     UserGroup::Group.find_or_create_by(name: SETTING_GROUP_CM, description: "collection manager test group")
+    UserGroup::Group.find_or_create_by(name: SETTING_GROUP_OM, description: "organisational manager test group")
   end
 
   after(:all) do
     UserGroup::Group.find_by(name: SETTING_GROUP_CM).delete
+    UserGroup::Group.find_by(name: SETTING_GROUP_OM).delete
   end
 
   describe "create" do
@@ -16,12 +18,24 @@ describe ManageUsersController do
     it "should add a user to the collection manager group" do
       login_user = FactoryBot.create(:admin)
       sign_in login_user
- 
+
       user = FactoryBot.create(:user)
 
       post :create, user: user.email
 
       expect(user.groups.pluck(:name)).to include('cm')
+    end
+
+    it "should add a user to the organisational manager group" do
+      login_user = FactoryBot.create(:admin)
+      sign_in login_user
+
+      user = FactoryBot.create(:user)
+
+      post :create, user: user.email, type: 'om'
+
+      expect(user.groups.pluck(:name)).to include('cm')
+      expect(user.groups.pluck(:name)).to include('om')
     end
 
     it "should display an error if the user is not found" do
@@ -39,7 +53,7 @@ describe ManageUsersController do
 
       user = FactoryBot.create(:user)
       post :create, user: user.email
-      
+
       expect(flash[:error]).to be_present
     end
 

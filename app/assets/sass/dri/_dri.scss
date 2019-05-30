@@ -535,10 +535,22 @@ a .dri_signin_edugate {
     background-color: $dri_extralightgrey;
 
     }
+
+    #advanced_search_button_mobile {
+	padding-left: 10px;
+        display: inline-flex;
+        max-width: 150px;
+        min-width: 150px;
+        text-overflow: ellipsis;
+        color: $dri_midgrey;
+        &:hover {
+            color: $dri_darkgrey;
+        }
+    }
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
-             background-color: $dri_extralightgrey;
+            background-color: $dri_extralightgrey;
             color: $dri_darkgrey;
             a {
                 padding-top: 12px;
@@ -677,6 +689,17 @@ a .dri_signin_edugate {
     }
 }
 
+// fit elements to smaller my-collections layout
+#my_collections_searchform {
+    #search_field, #q_ws {
+        margin-top: 10px;
+    }
+    #q_ws {
+        min-width: 175px;
+        max-width: 65%;
+    }
+}
+
 ul.dropdown a {
     color: $dri_midgrey;
     &:hover {
@@ -808,6 +831,17 @@ ol.breadcrumb {
 }
 /*-------------- Sort by --------------*/
 
+%dri_sort_select {
+    margin: 0;
+    padding: 4px;
+    padding-right: 10px;
+    border: 1px solid $dri_thingrey;
+    @include border_radius;
+    color: $dri_midgrey;
+    font-size: 100%;
+    height: 25px;
+}
+
 .dri_sort_nav {
     float: left;
     margin: 0;
@@ -815,14 +849,18 @@ ol.breadcrumb {
     color: $dri_lightgrey;
     height: 36px;
     select {
-        margin: 0;
-        padding: 4px;
-        padding-right: 10px;
-        border: 1px solid $dri_thingrey;
-        @include border_radius;
-        color: $dri_midgrey;
-        font-size: 100%;
-        height: 25px;
+        @extend %dri_sort_select;
+    }
+}
+.dri_select {
+    cursor: pointer;
+}
+.sort-submit-buttons {
+    select {
+        @extend %dri_sort_select;
+    }
+    .sort-buttons, .page-buttons {
+        padding-left: 25px;
     }
 }
 /*-------------- Search --------------*/
@@ -833,7 +871,7 @@ ol.breadcrumb {
 
 #search_field {
     margin: 54px 0 0 0;
-    padding: 4px 0 4px 0;
+    padding: 5px 0 3px 0;
 }
 
 .dri_search_term_text_input{
@@ -850,6 +888,14 @@ ol.breadcrumb {
     color: $dri_midgrey;
     background: image-url("dri/search_icon.png") no-repeat left;
 }
+
+#advanced_search_button {
+    color: $dri_midgrey;
+    &:hover {
+      color: $dri_darkgrey;
+    }
+}
+
 /*-------------- Grid / table display--------------*/
 
 .dri_change_sort_view {
@@ -1168,6 +1214,8 @@ h4.suggest {
 /* ----------- Facet Filter block ---------- */
 
 .dri_facet_filters_block {
+    width: 100%;
+    min-width: $dri_facet_min_width;
     margin: 25px 0 0 0;
     padding: 0px;
     float: left;
@@ -1176,6 +1224,15 @@ h4.suggest {
     border: 1px solid $dri_thingrey;
     //box-shadow: 1px 2px 6px  #E3E3E3;
     @include border_radius (3px);
+}
+#advanced-help {
+    clear: left;
+}
+#dri_advanced_search_modal_id {
+    text-align: left;
+}
+.advanced-submit-buttons {
+    margin-right: 15px;
 }
 .dri_date_range_block {
     height: 150px;
@@ -1194,16 +1251,21 @@ h4.suggest {
         padding-right: 10px;
     }
 }
+
+.dri_head_title {
+    color: $dri_darkgrey;
+    font-weight: bold;
+    a {
+        color: $dri_darkgrey;
+    }
+}
+
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        *color: $dri_darkgrey;
-        font-weight: bold;
         padding: 15px 0 15px 20px;
-        min-width: 238px;
-        a {
-            color: $dri_darkgrey;
-        }
+        // leave some space for the border
+        min-width: $dri_facet_min_width - 2;
     }
     .dri_search_num {
         float: right;
@@ -1215,7 +1277,7 @@ h4.suggest {
         border: none;
     }
     .panel-group {
-        width: 238px;
+        min-width: $dri_facet_min_width - 2;
         margin-bottom: 2px;
         .panel-default {
             margin: 0px;
