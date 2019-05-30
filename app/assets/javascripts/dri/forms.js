@@ -4,13 +4,13 @@ $(document).ready(function() {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
     var model_name = $(this).attr('model-name');
-    var new_elemenet_type = ['description', 'rights'].includes(fieldset_id) ?
+    var new_element_type = ['description', 'rights'].includes(fieldset_id) ?
       'textarea' :
       'input';
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
 
-    var new_element_html = (new_elemenet_type == 'textarea') ?
+    var new_element_html = (new_element_type == 'textarea') ?
       createTextArea(input_id, input_name) :
       createTextInput(input_id, input_name);
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
       $(this).parent()
     ).slideDown('fast');
 
-    var added_element = $("#"+fieldset_id+" > div > "+new_elemenet_type).last();
+    var added_element = $("#"+fieldset_id+" > div > "+new_element_type).last();
     added_element.focus(); // focus on newly added input
   });
 
@@ -30,7 +30,7 @@ $(document).ready(function() {
     // 1. make required fields generic? i.e. can't remove all inputs of type x
     if (fieldset_id === 'roles') {
       // ensure at least one role always exists
-      // otherwise previous_select.html() will be empty 
+      // otherwise previous_select.html() will be empty
       // and the next generated dropdown won't have any options
       if (numberOfRoles() > 1) {
         $(this).parent('div').slideUp('fast', function() {
@@ -40,9 +40,13 @@ $(document).ready(function() {
         alert('You must have at least one Contributor field')
       }
     } else {
-      $(this).parent('div').slideUp('fast', function() {
-        $(this).remove();
-      });
+      if ($(this).parent().siblings('div').length > 1) {
+        $(this).parent('div').slideUp('fast', function() {
+          $(this).remove();
+        });
+      } else {
+        $(this).parent('div').children('input').val("");
+      }
     }
   });
 
@@ -59,7 +63,7 @@ $(document).ready(function() {
     // set new dropdown selected value to the same as the parent select
     added_element.children('select').val(previous_select.val())
     // focus on the new input
-    added_element.children('input').focus();    
+    added_element.children('input').focus();
   });
 
   // ensure at least one date is entered
@@ -80,7 +84,7 @@ $(document).ready(function() {
                 .addClass("dri_form_error")
                 .tooltip(); // Create a new tooltip based on the error messsage we just set in the title
       });
-    }, 
+    },
   });
 
   // ensure at least one date is entered
