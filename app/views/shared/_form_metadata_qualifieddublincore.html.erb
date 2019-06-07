@@ -150,7 +150,7 @@
 	</fieldset>
 
 	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
-	  <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
+	    <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
 		<% if @object.rights.size == 0 %>
 			<div>
 				<%= f.text_area "rights][", value:'', class: "edit span6 dri-textarea", required:'required'  %>
@@ -162,7 +162,7 @@
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_add_text_field_button", action:%w(add rights) %>
+        <%= render "shared/form_add_text_field_button", action:%w(add rights) %>
 	</fieldset>
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
@@ -265,14 +265,14 @@
 
 	<fieldset id="subject">
 	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
-	  <%= render "shared/autocomplete_dropdown" %>
+	  <%= render "shared/autocomplete_dropdown", default:'LOC Subject Headings' %>
 		<% @object.subject.each do |i| %>
 		  <div>
 			  <%= f.text_field "subject][", value:i, class: "edit span6 dri-textfield" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_add_text_field_button", action:%w(add subject) %>
+        <%= render "shared/form_add_text_field_button", action:%w(add subject) %>
 	</fieldset>
 
 	<fieldset id="identifier">
