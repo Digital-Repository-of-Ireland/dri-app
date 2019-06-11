@@ -1,12 +1,17 @@
+
 // Whenever an "add" link is clicked, a new text field is added to the bottom of the list
 $(document).ready(function() {
   $('.add-text-field a').click(function(e) {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
+
+    if (typeof $("#"+fieldset_id+" > div > .edit").last().val() != 'undefined' &&
+        $("#"+fieldset_id+" > div > .edit").last().val().trim() === ''){
+      return;
+    }
+
     var model_name = $(this).attr('model-name');
-    var new_element_type = ['description', 'rights'].includes(fieldset_id) ?
-      'textarea' :
-      'input';
+    var new_element_type = $(this).data('input-type');
     var input_id = [model_name, fieldset_id].join('_')+'][';
     var input_name = model_name+'['+fieldset_id+'][]';
 
@@ -25,34 +30,25 @@ $(document).ready(function() {
   $('.dri_ingest_form').on('click','.destructive', function(e) {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
-
-    // TODO
-    // 1. make required fields generic? i.e. can't remove all inputs of type x
-    if (fieldset_id === 'roles') {
-      // ensure at least one role always exists
-      // otherwise previous_select.html() will be empty
-      // and the next generated dropdown won't have any options
-      if (numberOfRoles() > 1) {
-        $(this).parent('div').slideUp('fast', function() {
-          $(this).remove();
-        });
-      } else {
-        alert('You must have at least one Contributor field')
-      }
+    if ($("#"+fieldset_id+" > div > .edit").length > 1
+        || form_action == "create") {
+      $(this).parent('div').slideUp('fast', function() {
+        $(this).remove();
+      });
     } else {
-      if ($(this).parent().siblings('div').length > 1) {
-        $(this).parent('div').slideUp('fast', function() {
-          $(this).remove();
-        });
-      } else {
-        $(this).parent('div').children('input').val("");
-      }
+      $(this).parent('div').children('.edit').val("");
     }
   });
 
   $('.add-person-fields a').click(function(e) {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
+
+    if (typeof $("#"+fieldset_id+" > div > .edit").last().val() != 'undefined' &&
+        $("#"+fieldset_id+" > div > .edit").last().val().trim() === ''){
+      return;
+    }
+
     var model_name = $(this).attr('model-name');
     var previous_select = $(this).parent().siblings('div').last().children('select');
 
@@ -61,7 +57,9 @@ $(document).ready(function() {
 
     var added_element = $(this).parent().siblings('div').last();
     // set new dropdown selected value to the same as the parent select
-    added_element.children('select').val(previous_select.val())
+    if (typeof previous_select.val() != "undefined") {
+      added_element.children('select').val(previous_select.val());
+    }
     // focus on the new input
     added_element.children('input').focus();
   });
@@ -155,9 +153,14 @@ function createTextInput(id, name, classes) {
 // 1. move to ecma6 template strings
 // 2. Check selected data-field needs to exist? (doesn't update, isn't on first element)
 function createPersonInput(id, name, previous_select) {
+  if (typeof previous_select.html() == "undefined") {
+    roles_options = roles;
+  } else {
+    roles_options = previous_select.html();
+  }
   return '<div>\
-            <select id="'+name+'_'+id+'][type][" selected="'+previous_select.val()+
-              '" name="'+name+'['+id+'][type][]">'+previous_select.html()+
+            <select id="'+name+'_'+id+'][type]["'+
+              ' name="'+name+'['+id+'][type][]">'+roles_options+
             '</select> \
               <input class="edit span6 dri-textfield " id="'+name+'_'+id+'][name][" name="'
               +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton('batch')+
