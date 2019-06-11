@@ -656,9 +656,24 @@ en:
           title: Edit Object
           title_collection: Edit Collection
         forms:
+          add_coverage: Add Coverage
+          add_creation_date: Add Creation Date
+          add_creator: Add Creator
+          add_date: Add Date
+          add_description: Add Description
+          add_format: Add Format
+          add_identifier: Add Identifier
+          add_language: Add Language
           add_place: Add Place
+          add_published_date: Add Published Date
+          add_relation: Add Relation
+          add_rights: Add Rights
+          add_role: Add Role
           add_source: Add Source
           add_subject: Add Subject
+          add_temporal_coverage: Add Temporal Coverage
+          add_title: Add Title
+          add_type: Add Type
           delete: Remove
         legends:
           access_control: Access Controls

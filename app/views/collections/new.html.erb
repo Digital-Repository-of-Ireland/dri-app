@@ -2,7 +2,7 @@
 <div class="dri_ingest_form_container">
   <div class="dri_ingest_form">
   	<%= form_for @object, as: :batch, url: { controller: 'collections', action: 'create' }, method: 'post', html: {:class => 'form-vertical'} do |f| %>
-      <%= render partial: 'shared/form_metadata_qualifieddublincore', locals: { f: f, action: 'update' } %>
+      <%= render partial: 'shared/form_metadata_qualifieddublincore', locals: { f: f, action: 'create' } %>
       <%= render partial: 'shared/form_licence_field', locals: { f: f, action: 'update' } %>
 
       <div class="dri_access_controls">
