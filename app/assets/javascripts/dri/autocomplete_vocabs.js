@@ -2,7 +2,7 @@ $(document).ready(function(){
   // TODO: switch to es6 syntax, use eslint
   // for each fieldset that has a choose-vocab-container in it
   $.each($('fieldset:has(.choose-vocab-container)'), function(_, fieldset) {
-    var id = '#' + fieldset.id;
+    var id = '.dri_ingest_form #' + fieldset.id;
     $(id).on('focusin', function() {
       $(id + ' > .choose-vocab-container').slideDown('fast');
       addVocabAutocomplete(id);

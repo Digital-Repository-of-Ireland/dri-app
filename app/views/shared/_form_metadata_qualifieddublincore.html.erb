@@ -1,3 +1,10 @@
+<% people = qdc_extract_people %>
+
+<%= javascript_tag do %>
+  window.roles = '<%= j grouped_options_for_select(@qdc_people_select_list) %>';
+  window.form_action = '<%= action %>';
+<% end %>
+
 <% if params[:controller] == 'collections' %>
 	<div class="dri_file_upload">
 		<% unless @object.cover_image.blank? %>
@@ -58,32 +65,25 @@
 
 	<%# contributors %>
 	<fieldset id="roles">
-	  <%= render "shared/form_fieldset_label", f:f, source:'roles' %>
-    <% people = qdc_extract_people %>
-    <% if people.length > 0 %>
-      <% people.each do |key, value_array| %>
-		    <% value_array.each do |value| %>
-		      <div>
-			      <select id="batch_roles][type][" name="batch[roles][type][]">
-              <%= grouped_options_for_select(@qdc_people_select_list, key) %>
-			      </select>
-			      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield" %>
-					  <%= render "shared/form_remove_field_button" %>
-		      </div>
-        <% end %>
-      <% end %>
-    <% else %>
-	    <div>
-		    <select id="batch_roles][type][" name="batch[roles][type][]">
-          <%= grouped_options_for_select(@qdc_people_select_list) %>
-        </select>
-        <%= f.text_field "roles][name][", value:'', class: "edit span6 dri-textfield" %>
-			  <%= render "shared/form_remove_field_button" %>
-      </div>
-    <% end %>
-    <%# doesn't match add_text_field partial structure %>
+		<%= render "shared/form_fieldset_label", f:f, source:'roles' %>
+
+	    <% if people.length > 0 %>
+	      <% people.each do |key, value_array| %>
+			    <% value_array.each do |value| %>
+			      <div>
+				      <select id="batch_roles][type][" name="batch[roles][type][]">
+	                    <%= grouped_options_for_select(@qdc_people_select_list, key) %>
+				      </select>
+				      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield" %>
+						  <%= render "shared/form_remove_field_button" %>
+			      </div>
+	        <% end %>
+	      <% end %>
+	    <% end %>
+
+	    <%# doesn't match add_text_field partial structure %>
 		<p class="add-person-fields">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
+		  <i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
 		</p>
 	</fieldset>
 
@@ -146,11 +146,11 @@
 		  </div>
 		<% end %>
 
-    <%= render "shared/form_add_text_field_button", action:%w(add description) %>
+    <%= render "shared/form_add_text_field_button", input_type: 'textarea', action:%w(add description) %>
 	</fieldset>
 
 	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
-	  <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
+	    <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
 		<% if @object.rights.size == 0 %>
 			<div>
 				<%= f.text_area "rights][", value:'', class: "edit span6 dri-textarea", required:'required'  %>
@@ -162,7 +162,7 @@
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_add_text_field_button", action:%w(add rights) %>
+        <%= render "shared/form_add_text_field_button", input_type: 'textarea', action:%w(add rights) %>
 	</fieldset>
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
@@ -265,14 +265,14 @@
 
 	<fieldset id="subject">
 	  <%= render "shared/form_fieldset_label", f:f, source:'subjects' %>
-	  <%= render "shared/autocomplete_dropdown" %>
+	  <%= render "shared/autocomplete_dropdown", default:'LOC Subject Headings' %>
 		<% @object.subject.each do |i| %>
 		  <div>
 			  <%= f.text_field "subject][", value:i, class: "edit span6 dri-textfield" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
 		<% end %>
-    <%= render "shared/form_add_text_field_button", action:%w(add subject) %>
+        <%= render "shared/form_add_text_field_button", action:%w(add subject) %>
 	</fieldset>
 
 	<fieldset id="identifier">
