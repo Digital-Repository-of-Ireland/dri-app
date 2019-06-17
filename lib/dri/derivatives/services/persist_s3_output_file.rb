@@ -8,7 +8,7 @@ module DRI::Derivatives::Services
 
       storage = StorageService.new
 
-      unless content.is_a?(StringIO)
+      unless content.is_a?(StringIO) || content.is_a?(String)
         storage.store_surrogate(bucket_id, content.path, filename)
         return
       end
