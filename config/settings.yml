@@ -7,7 +7,6 @@ dri:
   downloads: dri_files/downloads
 plugins:
   fits_path: /opt/local/fits/fits.sh
-  libreoffice_path: '/Applications/LibreOffice.app/Contents/MacOS/soffice'
 restrict:
   mime_types:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']
