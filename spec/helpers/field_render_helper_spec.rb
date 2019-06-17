@@ -83,13 +83,11 @@ describe FieldRenderHelper, testing: true do
     describe "parse_description" do
 
         it "it will return single desc with no paragraph separator" do
-            expect(helper.parse_description({:field => 'description_tesim',
-                                             :document => {'description_tesim' => ['Sample Description']}})).to eq('<p>Sample Description</p>')
+            expect(helper.parse_description(['Sample Description'])).to eq('<p>Sample Description</p>')
         end
 
         it "it will return multiple desc with paragraph separator" do
-            expect(helper.parse_description({:field => 'description_tesim',
-                                             :document => {'description_tesim' => ['Sample Description 1', 'Sample Description 2']}}).last).to eq('<p>Sample Description 2</p>')
+            expect(helper.parse_description(['Sample Description 1', 'Sample Description 2']).last).to eq('<p>Sample Description 2</p>')
         end
     end
 

@@ -10,42 +10,51 @@ module FieldRenderHelper
   #
   def render_description(args)
     path = { path: request.fullpath }
-    current_ml = cookies[:metadata_language]
-    current_ml = 'all' if current_ml.blank?
+    current_ml = cookies[:metadata_language].blank? ? 'all' : cookies[:metadata_language]
 
-    path[:id] = if I18n.locale == :ga
-                  'ga'
-                else
-                  'en'
-                end
+    path[:id] = I18n.locale == :ga ? 'ga' : 'en'
 
-    if args[:document]['description_gle_tesim']
-      if current_ml == 'all' && args[:field] == 'description_gle_tesim'
-        path[:metadata_language] = "en"
-        return parse_description(args) << (link_to t('dri.views.fields.hide_description_gle'), lang_path(path), class: :dri_toggle_metadata)
-      elsif current_ml == 'all' && args[:field] == 'description_eng_tesim'
-        path[:metadata_language] = "ga"
-        return parse_description(args) << (link_to t('dri.views.fields.hide_description_eng'), lang_path(path), class: :dri_toggle_metadata)
-      else
-        if current_ml == 'ga' && args[:field] == 'description_gle_tesim'
-          path[:metadata_language] = "en"
-          return parse_description(args) << (link_to t('dri.views.fields.hide_description_gle'), lang_path(path), class: :dri_toggle_metadata)
-        elsif current_ml == 'ga' && args[:field] == 'description_eng_tesim'
-          path[:metadata_language] = "all"
-          return (link_to t('dri.views.fields.show_description_eng'), lang_path(path), class: :dri_toggle_metadata)
-        elsif current_ml == 'en' && args[:field] == 'description_eng_tesim'
-          path[:metadata_language] = "ga"
-          return parse_description(args) << (link_to t('dri.views.fields.hide_description_eng'), lang_path(path), class: :dri_toggle_metadata)
-        elsif current_ml == 'en' && args[:field] == 'description_gle_tesim'
-          path[:metadata_language] = "all"
-          return (link_to t('dri.views.fields.show_description_gle'), lang_path(path), class: :dri_toggle_metadata)
-        else
-          parse_description(args)
+    solr_field = args[:field]
+    description = args[:document][solr_field]
+
+    return parse_description(description) unless args[:document]['description_gle_tesim']
+    if current_ml == 'all'
+      lang_code = gle_description?(solr_field) ? 'gle' : 'eng'
+      path[:metadata_language] = lang_code == 'gle' ? 'ga' : 'en'
+      return render_toggle_description(description, lang_code, path, 'hide')
+    else
+      return parse_description(description) unless ['ga','en'].include?(current_ml)
+
+      if current_ml == 'ga'
+        if gle_description?(solr_field)
+          path[:metadata_language] = 'en'
+          return render_toggle_description(description, 'gle', path, 'hide')
+        elsif eng_description?(solr_field)
+          path[:metadata_language] = 'all'
+          return render_toggle_description(description, 'eng', path, 'show')
+        end
+      elsif current_ml == 'en'
+        if eng_description?(solr_field)
+          path[:metadata_language] = 'ga'
+          return render_toggle_description(description, 'eng', path, 'hide')
+        elsif gle_description?(solr_field)
+          path[:metadata_language] = 'all'
+          return render_toggle_description(description, 'gle', path, 'show')
         end
       end
-    else
-      parse_description(args)
     end
+  end
+
+  def gle_description?(field)
+    field == 'description_gle_tesim'
+  end
+
+  def eng_description?(field)
+    field == 'description_eng_tesim'
+  end
+
+  def render_toggle_description(description, lang, path, type)
+    parse_description(description) << link_to(t("dri.views.fields.#{type}_description_#{lang}"), lang_path(path), class: :dri_toggle_metadata)
   end
 
   # Helper method to display the description field if it contains multiple paragraphs/values
@@ -53,11 +62,11 @@ module FieldRenderHelper
   # @param[SolrField] :field
   # @return array of field values with HTML paragraph mark-up
   #
-  def parse_description(args)
-    if args[:document][args[:field]].size > 1
-      args[:document][args[:field]].collect!.each { |value| simple_format(value)  }
+  def parse_description(description)
+    if description.size > 1
+      description.collect!.each { |value| simple_format(value)  }
     else
-      simple_format(args[:document][args[:field]].first)
+      simple_format(description.first)
     end
   end
 
@@ -82,26 +91,27 @@ module FieldRenderHelper
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
 
-    # if (args[:field] and args[:field].match(/_facet$/))
-    if args[:field] && (args[:field][0, 5] == "role_" || blacklight_config.facet_fields[ActiveFedora.index_field_mapper.solr_name(field, :facetable)])
+    if args[:field] && (args[:field][0, 5] == "role_" || facet?(field))
       value = render_facet_link(args, field, value, indexed_value)
     else
-      if value.length > 1
-        unless field.include?("date")
-          value = value.each_with_index.map do |v, i|
-            unless uri?(indexed_value[i])
-              '<dd>' << indexed_value[i] << '</dd>'
-            end
-          end
-        else
-          value = value.each.map do |v|
-            '<dd>' << v << '</dd>'
-          end
-        end
-      end
+      value = render_list(field, value, indexed_value) if value.length > 1
     end
 
     value.join(field_value_separator).html_safe
+  end
+
+  def render_list(field, value, indexed_value)
+    unless field.include?("date")
+      value.each_with_index.map do |v, i|
+        unless uri?(indexed_value[i])
+          '<dd>' << indexed_value[i] << '</dd>'
+        end
+      end
+    else
+      value.each.map do |v|
+        '<dd>' << v << '</dd>'
+      end
+    end
   end
 
   # Overriding the render_document_show_field_label helper method to automatically translate field headers.
@@ -156,7 +166,9 @@ module FieldRenderHelper
   end
 
   def standardise_value(args)
-    if args[:facet_name] == ActiveFedora.index_field_mapper.solr_name('temporal_coverage', :facetable, type: :string) || args[:facet_name] == ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :facetable, type: :string)
+    if [ActiveFedora.index_field_mapper.solr_name('temporal_coverage', :facetable, type: :string),
+        ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :facetable, type: :string)
+       ].include?(args[:facet_name])
       get_value_from_solr_field(args[:value], "name")
     else
       args[:value]
@@ -166,7 +178,7 @@ module FieldRenderHelper
   def render_arbitrary_facet_links(fields)
     url_args = { action: 'index', controller: 'catalog' }
     fields.each do |field, value|
-      next unless blacklight_config.facet_fields[ActiveFedora.index_field_mapper.solr_name(field, :facetable)]
+      next unless facet?(field)
 
       facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
       facet_arg = get_search_arg_from_facet(facet: facet_name)
@@ -174,6 +186,10 @@ module FieldRenderHelper
     end
 
     url_for(url_args)
+  end
+
+  def facet?(field)
+    blacklight_config.facet_fields.key?(ActiveFedora.index_field_mapper.solr_name(field, :facetable))
   end
 
   def render_facet_link(args, field, value, indexed_value)
@@ -199,7 +215,7 @@ module FieldRenderHelper
                               controller: controller_name,
                               facet_arg => standardise_facet(facet: facet_name, value: standardised_value)
                             }
-                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>" 
+                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>"
       else
         "<a href=\"" << url_for(
                             {
@@ -224,7 +240,7 @@ module FieldRenderHelper
 
     @qdc_people_select_list[0][1].each do |value|
       array_result = @object.send(value[1])
-      if !array_result.nil? && !array_result.empty?
+      if !array_result.blank?
         qdc_people.merge!(value[1] => array_result)
       end
     end
@@ -232,7 +248,7 @@ module FieldRenderHelper
     DRI::Vocabulary.marc_relators.each do |role|
       array_result = @object.send("role_" + role)
       marc_relator_select_list.push([role + " - " + t("vocabulary.marc_relator.codes." + role), "role_" + role])
-      if !array_result.nil? && !array_result.empty?
+      if !array_result.blank?
         qdc_people.merge!("role_" + role => array_result)
       end
     end
@@ -248,12 +264,10 @@ module FieldRenderHelper
     dcmi_pairs = {}
     solr_field.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
-      dcmi_pairs[k] = v unless v.nil?
+      dcmi_pairs[k.downcase] = v unless v.nil?
     end
 
-    unless dcmi_pairs.empty?
-      return dcmi_pairs[value].presence
-    end
+    return dcmi_pairs[value].presence unless dcmi_pairs.empty?
 
     solr_field
   end
