@@ -49,29 +49,22 @@ module Preservation
       end
     end
 
-
     # moabify_resource
     def moabify_resource
-      begin
-        File.write(File.join(metadata_path(self.object.id, self.version), 'resource.rdf'), object.resource.dump(:ttl))
-        true
-      rescue StandardError => e
-        Rails.logger.error "unable to write resource: #{e}"
-        false
-      end
+      File.write(File.join(metadata_path(self.object.id, self.version), 'resource.rdf'), object.resource.dump(:ttl))
+      true
+    rescue StandardError => e
+      Rails.logger.error "unable to write resource: #{e}"
+      false
     end
-
 
     # moabify_permissions
     def moabify_permissions
-      begin
-        File.write(File.join(metadata_path(self.object.id, self.version), 'permissions.rdf'), object.permissions.inspect )
-      rescue StandardError => e
-        Rails.logger.error "unable to write permissions: #{e}"
-        false
-      end
+      File.write(File.join(metadata_path(self.object.id, self.version), 'permissions.rdf'), object.permissions.inspect )
+    rescue StandardError => e
+      Rails.logger.error "unable to write permissions: #{e}"
+      false
     end
-
 
     # preserve
     def preserve(resource=false, permissions=false, datastreams=nil)
@@ -86,7 +79,7 @@ module Preservation
         return false unless saved
         dslist << 'resource.rdf'
       end
-      
+
       if permissions
         saved = moabify_permissions
         return false unless saved
@@ -95,7 +88,7 @@ module Preservation
 
       if datastreams.present?
         #object.reload # we must refresh the datastreams list
-        datastreams.each do |ds| 
+        datastreams.each do |ds|
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
         end
@@ -119,9 +112,9 @@ module Preservation
     def preserve_assets(addfiles, delfiles)
       create_moab_dirs()
       moabify_datastream('properties', object.attached_files['properties'])
-      update_manifests({:added => {'content' => addfiles}, deleted: {'content' => delfiles}, modified: {'metadata' => ['properties.xml']}})
+      update_manifests({added: {'content' => addfiles}, deleted: {'content' => delfiles}, modified: {'metadata' => ['properties.xml']}})
     end
-    
+
     # create_manifests
     def create_manifests
       signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.id, version_id: 0)
@@ -129,9 +122,9 @@ module Preservation
       new_manifest_path = manifest_path(object.id, new_version_id)
 
       version_inventory = Moab::FileInventory.new(type: 'version', version_id: new_version_id, digital_object_id: object.id)
-      file_group = Moab::FileGroup.new(:group_id=>'metadata').group_from_directory(Pathname.new(metadata_path(object.id, new_version_id)))
+      file_group = Moab::FileGroup.new(group_id: 'metadata').group_from_directory(Pathname.new(metadata_path(object.id, new_version_id)))
       version_inventory.groups << file_group
-      file_group = Moab::FileGroup.new(:group_id=>'content').group_from_directory(Pathname.new(content_path(object.id, new_version_id)))
+      file_group = Moab::FileGroup.new(group_id: 'content').group_from_directory(Pathname.new(content_path(object.id, new_version_id)))
       version_inventory.groups << file_group
 
       version_additions = signature_catalog.version_additions(version_inventory)
@@ -148,7 +141,7 @@ module Preservation
 
       manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.id, version_id: new_version_id)
       manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(new_manifest_path, recursive=false)
-      
+
       manifest_inventory.write_xml_file(Pathname.new(new_manifest_path))
 
       true
@@ -173,7 +166,7 @@ module Preservation
       if changes.key?(:added)
         changes[:added].keys.each do |type|
           path = path_for_type(type)
-          
+
           changes[:added][type].each { |file| moab_add_file_instance(path, file, type) }
         end
       end
@@ -199,7 +192,7 @@ module Preservation
           end
         end
       end
-      
+
       signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.id)
       signature_catalog.parse(Pathname.new(File.join(previous_manifest_path, 'signatureCatalog.xml')).read)
       version_additions = signature_catalog.version_additions(@version_inventory)
