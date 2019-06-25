@@ -295,16 +295,16 @@ class MyCollectionsController < ApplicationController
     @object = SolrDocument.new(result.first)
 
     params[:per_page] ||= blacklight_config.default_per_page
-    @response, document_list = @object.duplicates
+    @response, document_list = @object.duplicates(params[:sort])
     @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
   end
 
   private
 
     def find_reader_group(document)
-      readgroups = document["#{ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+      read_groups = document["#{ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
 
-      if readgroups.present? && readgroups.include?(document.id)
+      if read_groups.present? && read_groups.include?(document.id)
         UserGroup::Group.find_by(name: document.id)
       end
     end
