@@ -87,6 +87,7 @@ pipeline {
         always {
             junit 'spec/reports/*.xml'
             cucumber fileIncludePattern: 'features/reports/*.json'
+            chuckNorris()
         }
     }
 }
