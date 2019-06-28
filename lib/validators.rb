@@ -27,12 +27,12 @@ module Validators
   #
   def self.valid_file_type?(file, mime_type)
     path, extension = file_path(file)
-    
+
     # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
     raise DRI::Exceptions::UnknownMimeType unless mime_type
 
     # Ensure that the file extension matches the mime type
-    raise DRI::Exceptions::WrongExtension unless MIME::Types.type_for(extension).include?(mime_type)
+    raise DRI::Exceptions::WrongExtension unless extension_matches?(extension, mime_type)
 
     lc_mime_type = mime_type.to_s.downcase
     unless (Settings.restrict.mime_types.image.include? lc_mime_type or
@@ -48,6 +48,11 @@ module Validators
   end  # End validate_file_type method
 
 
+  def self.extension_matches?(extension, mime_type)
+    mime_types = MIME::Types.type_for(extension)
+    mime_types.include?(mime_type) || mime_types.any? { | extension_mime | mime_type.include? extension_mime.sub_type }
+  end
+
   # Returns a MimeMagic or Mime::Types object
   def self.file_type(file)
     init_types
@@ -59,7 +64,7 @@ module Validators
     # If we can't determine from file structure, then determine by extension
     extension_results = MIME::Types.type_for(extension)
     return nil if extension_results.empty?
-      
+
     mime_type = extension_results[0]
     mime_type.content_type
   end
@@ -75,7 +80,7 @@ module Validators
     # If we can't determine from file structure, then determine by extension
     extension_results = MIME::Types.type_for(extension)
     mime_type = extension_results[0] unless extension_results.empty?
-   
+
     mime_type
   end
 
