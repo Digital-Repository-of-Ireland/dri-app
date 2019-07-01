@@ -54,7 +54,10 @@ module FieldRenderHelper
   end
 
   def render_toggle_description(description, lang, path, type)
-    parse_description(description) << link_to(t("dri.views.fields.#{type}_description_#{lang}"), lang_path(path), class: :dri_toggle_metadata)
+    parse_description(description) << link_to(
+                                        t("dri.views.fields.#{type}_description_#{lang}"),
+                                        lang_path(path), class: :dri_toggle_metadata
+                                      )
   end
 
   # Helper method to display the description field if it contains multiple paragraphs/values
@@ -119,7 +122,7 @@ module FieldRenderHelper
     field = args[:field]
     label = blacklight_config.show_fields[field].label
 
-    if label[0, 5] == 'role_'
+    if role_field?(label)
       html_escape t('vocabulary.marc_relator.codes.' + label[5, 3])
     else
       html_escape t('dri.views.fields.' + label)
@@ -130,7 +133,7 @@ module FieldRenderHelper
     field = args[:field]
     label = index_fields[field].label
 
-    if label[0, 5] == 'role_'
+    if role_field?(label)
       html_escape t('vocabulary.marc_relator.codes.' + label[5, 3]) + ":"
     else
       html_escape t('dri.views.fields.' + label) + ":"
@@ -139,11 +142,11 @@ module FieldRenderHelper
 
   # Used when rendering a faceted link in catalog#show. Determines the blacklight search argument
   # for the resulting catalog#index search.
-  def get_search_arg_from_facet(args)
+  def search_arg_from_facet(args)
     facet = args[:facet]
     search_arg = "f[" << facet << "][]"
 
-    if (facet[0, 5] == 'role_') || (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) || (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable))
+    if (role_field?(facet)) || (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) || (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable))
       search_arg = "f[" << ActiveFedora.index_field_mapper.solr_name('person', :facetable) << "][]"
     end
 
@@ -169,7 +172,7 @@ module FieldRenderHelper
     if [ActiveFedora.index_field_mapper.solr_name('temporal_coverage', :facetable, type: :string),
         ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :facetable, type: :string)
        ].include?(args[:facet_name])
-      get_value_from_solr_field(args[:value], "name")
+      value_from_solr_field(args[:value], "name")
     else
       args[:value]
     end
@@ -181,7 +184,7 @@ module FieldRenderHelper
       next unless facet?(field)
 
       facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
-      facet_arg = get_search_arg_from_facet(facet: facet_name)
+      facet_arg = search_arg_from_facet(facet: facet_name)
       url_args[facet_arg] = value
     end
 
@@ -192,40 +195,54 @@ module FieldRenderHelper
     blacklight_config.facet_fields.key?(ActiveFedora.index_field_mapper.solr_name(field, :facetable))
   end
 
+  def role_field?(field)
+    field[0, 5] == "role_"
+  end
+
   def render_facet_link(args, field, value, indexed_value)
     facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
-    if args[:field][0, 5] == "role_"
+    if role_field?(args[:field])
       facet_name = ActiveFedora.index_field_mapper.solr_name("person", :facetable)
     end
-    facet_arg = get_search_arg_from_facet(facet: facet_name)
+    facet_arg = search_arg_from_facet(facet: facet_name)
 
     value.each_with_index.map do |v, i|
       # don't show simple URLs in the UI
       next if uri?(indexed_value[i].gsub('name=', ''))
+
       standardised_value = standardise_value(facet_name: facet_name, value: v)
       next unless standardised_value
-      authority = get_value_from_solr_field(indexed_value[i], "authority")
-      identifier = get_value_from_solr_field(indexed_value[i], "identifier")
+
+      authority = value_from_solr_field(indexed_value[i], "authority")
+      identifier = value_from_solr_field(indexed_value[i], "identifier")
 
       # for orcids include a repository search on name and the orcid link
       if authority.present? && authority.casecmp("ORCID") && uri?(identifier)
-        "<span class=\"orcid\"><a href=\"" << url_for(
-                            {
-                              action: 'index',
-                              controller: controller_name,
-                              facet_arg => standardise_facet(facet: facet_name, value: standardised_value)
-                            }
-                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>"
+        render_orcid(facet_name, standardised_value, identifier)
       else
-        "<a href=\"" << url_for(
-                            {
-                              action: 'index',
-                              controller: controller_name,
-                              facet_arg => standardise_facet(facet: facet_name, value: indexed_value[i])
-                            }
-                      ) << "\">" << standardised_value << "</a>"
+        render_link(facet_name, indexed_value[i], standardised_value)
       end
     end
+  end
+
+  def render_link(facet_name, indexed_value, standardised_value)
+    "<a href=\"" << url_for(
+                            {
+                              action: 'index',
+                              controller: controller_name,
+                              facet_arg: standardise_facet(facet: facet_name, value: indexed_value)
+                            }
+                      ) << "\">" << standardised_value << "</a>"
+  end
+
+  def render_orcid(facet_name, standardised_value, identifier)
+    "<span class=\"orcid\"><a href=\"" << url_for(
+                            {
+                              action: 'index',
+                              controller: controller_name,
+                              facet_arg: standardise_facet(facet: facet_name, value: standardised_value)
+                            }
+                      ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>"
   end
 
   # For form views, returns a list of "people" values in qualifed dublin core that have values.
@@ -258,7 +275,7 @@ module FieldRenderHelper
     qdc_people
   end
 
-  def get_value_from_solr_field(solr_field, value)
+  def value_from_solr_field(solr_field, value)
     return nil if solr_field.blank? || value.blank?
 
     dcmi_pairs = {}

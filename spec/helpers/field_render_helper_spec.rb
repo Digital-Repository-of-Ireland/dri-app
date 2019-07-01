@@ -109,23 +109,23 @@ describe FieldRenderHelper, testing: true do
 
     describe "get_value_from_solr_field" do
         it "will return the requested part of DCMI encoded temporal field" do
-            expect(get_value_from_solr_field('name=Early 20th Century; start=1900-01-01; end=1949-12-31;','name')).to eq('Early 20th Century')
+            expect(value_from_solr_field('name=Early 20th Century; start=1900-01-01; end=1949-12-31;','name')).to eq('Early 20th Century')
         end
 
         it "will return the requested part of DCMI encoded spatial field" do
-            expect(get_value_from_solr_field('name=The 1960s; start=1960-01-01; end=1969-12-31','name')).to eq('The 1960s')
+            expect(value_from_solr_field('name=The 1960s; start=1960-01-01; end=1969-12-31','name')).to eq('The 1960s')
         end
 
         it "will work for other parts aside from names" do
-            expect(get_value_from_solr_field('name=Early 20th Century; start=1900-01-01; end=1949-12-31;','end')).to eq('1949-12-31')
+            expect(value_from_solr_field('name=Early 20th Century; start=1900-01-01; end=1949-12-31;','end')).to eq('1949-12-31')
         end
 
         it "will return the original string if it can't be parsed" do
-            expect(get_value_from_solr_field('this is not a DCMI field','name')).to eq('this is not a DCMI field')
+            expect(value_from_solr_field('this is not a DCMI field','name')).to eq('this is not a DCMI field')
         end
 
         it "will return nil if it can't find the requested field" do
-            expect(get_value_from_solr_field('name=Early 20th Century; start=1900-01-01','end')).to be_nil
+            expect(value_from_solr_field('name=Early 20th Century; start=1900-01-01','end')).to be_nil
         end
 
     end

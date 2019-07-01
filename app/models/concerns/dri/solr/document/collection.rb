@@ -36,7 +36,7 @@ module DRI::Solr::Document::Collection
   end
 
   def published_images
-    published_objects.select do |doc| 
+    published_objects.select do |doc|
       doc.file_type_label == 'Image'
     end
   end
@@ -67,25 +67,24 @@ module DRI::Solr::Document::Collection
     total
   end
 
-  def duplicates
+  def duplicates(sort=nil)
     response = duplicate_query
 
     ids = []
     duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
-    duplicates.each do |dup|
-      pivot = dup["pivot"]
+    duplicates.each do |duplicate|
+      pivot = duplicate["pivot"]
       next unless pivot
       pivot.each { |p| ids << p['value'] }
     end
 
     query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-    response = ActiveFedora::SolrService.get(query, rows: ids.size)
+    response = ActiveFedora::SolrService.get(query, sort: sort, rows: ids.size)
 
     docs = response['response']['docs']
-    duplicates = []
-    docs.each { |d| duplicates << SolrDocument.new(d) }
+    duplicate_docs = docs.collect { |d| SolrDocument.new(d) }
 
-    return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicates
+    return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicate_docs
   end
 
   # @param [String] type
