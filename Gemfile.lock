@@ -979,7 +979,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     ya2yaml (0.31)
-    yard (0.9.18)
+    yard (0.9.20)
 
 PLATFORMS
   ruby
