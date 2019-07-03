@@ -240,27 +240,22 @@ class ObjectsController < BaseObjectsController
     solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(object_ids)
     results = Solr::Query.new(solr_query)
 
-    while results.has_more?
-      docs = results.pop
-      docs.each do |doc|
-        solr_doc = SolrDocument.new(doc)
+    results.each do |solr_doc|
+      next unless solr_doc.published? || (current_user.is_admin? || can(:edit, solr_doc))
 
-        next unless solr_doc.published?
-
-        item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
-          solr_doc.extract_metadata(params[:metadata])
-        end
-
-        item['metadata']['licence'] = DRI::Formatters::Json.licence(solr_doc)
-        item['metadata']['doi'] = DRI::Formatters::Json.dois(solr_doc)
-        item['metadata']['related_objects'] = solr_doc.object_relationships_as_json
-
-        item.merge!(find_assets_and_surrogates(solr_doc))
-        @list << item
+      item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
+        solr_doc.extract_metadata(params[:metadata])
       end
 
-      raise DRI::Exceptions::NotFound if @list.empty?
+      item['metadata']['licence'] = DRI::Formatters::Json.licence(solr_doc)
+      item['metadata']['doi'] = DRI::Formatters::Json.dois(solr_doc)
+      item['metadata']['related_objects'] = solr_doc.object_relationships_as_json
+
+      item.merge!(find_assets_and_surrogates(solr_doc))
+      @list << item
     end
+
+    raise DRI::Exceptions::NotFound if @list.empty?
 
     respond_to do |format|
       format.json { render(json: @list) }
