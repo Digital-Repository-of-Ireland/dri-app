@@ -241,7 +241,7 @@ class ObjectsController < BaseObjectsController
     results = Solr::Query.new(solr_query)
 
     results.each do |solr_doc|
-      next unless solr_doc.published? || (current_user.is_admin? || can(:edit, solr_doc))
+      next unless solr_doc.published? || (current_user.is_admin? || can?(:edit, solr_doc))
 
       item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
         solr_doc.extract_metadata(params[:metadata])
