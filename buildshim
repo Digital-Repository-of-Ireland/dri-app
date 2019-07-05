@@ -10,10 +10,12 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-rvm use ruby-2.4.4 || exit 100
+ruby_version=2.4.6
+
+rvm use ruby-$ruby_version || exit 100
 
 branch=$(echo $GIT_BRANCH | cut -d / -f 2)
-rvm use ruby-2.4.4@$branch --create || exit 100
+rvm use ruby-$ruby_version@$branch --create || exit 100
 
 #branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
@@ -24,7 +26,7 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-2.4.4@$branch || exit 100
+rvm --force gemset empty ruby-$ruby_version@$branch || exit 100
 gem install bundler
 
 rm -rf dri_files/*
