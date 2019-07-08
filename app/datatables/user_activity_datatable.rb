@@ -40,9 +40,9 @@ private
     audit
   end
 
-  def display_on_page 
-    fetch_audit.page(page).per(per_page) 
-  end 
+  def display_on_page
+    fetch_audit.page(page).per(per_page)
+  end
 
   def page
     params[:start].to_i/per_page + 1
@@ -63,10 +63,16 @@ private
 
   def item_id(entry)
     if entry.item_type == 'UserGroup::User'
-        user = UserGroup::User.find(entry.item_id)
-        user.nil? ? entry.item_id : link_to(UserGroup::User.find(entry.item_id).to_s, user_path(entry.item_id))
+      link_to_user_if_exists(entry.item_id)
     elsif entry.item_type == 'UserGroup::Membership'
       entry.item_id
     end
+  end
+
+  def link_to_user_if_exists(item_id)
+    user = UserGroup::User.find(item_id)
+    link_to(user.to_s, user_path(item_id))
+  rescue ActiveRecord::RecordNotFound
+    item_id
   end
 end

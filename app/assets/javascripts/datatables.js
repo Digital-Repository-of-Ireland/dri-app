@@ -28,9 +28,6 @@ $(document).ready(function() {
           { targets: '_all', orderable: false }
         ]
     } );
-} );
-
-$(document).ready(function() {
     $('#datatable_fixity').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -60,9 +57,6 @@ $(document).ready(function() {
           { targets: '_all', orderable: false }
         ]
     } );
-} );
-
-$(document).ready(function() {
     $('#datatable_stats').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -74,9 +68,6 @@ $(document).ready(function() {
           { targets: '_all', orderable: false },
         ]
     } );
-} );
-
-$(document).ready(function() {
     $('#datatable_user_activity').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -88,10 +79,44 @@ $(document).ready(function() {
           { targets: '_all', orderable: false }
         ]
     } );
-} );
+    var datatableUsers = $('#datatable_users').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "stateSave": true,
+        "order": [[ 5, "desc" ]],
+        "ajax": {
+          "url": $('#datatable_users').data('source'),
+          "data": function(d) {
+            d.filter = $('#datatable_users_filter').val();
+          }
+        },
+        columnDefs: [
+          { targets: [0], visible: false, searchable: false },
+          { targets: [1, 3, 4, 5], orderable: true },
+          { "render": function ( data, type, row ) {
+            return "<a rel=\"nofollow\" data-method=\"get\" href=\"" + data + "\">"
+              + "<i class=\"fa fa-edit fa-2x text-success\"></i></a>"
+            },
+            "targets": 8
+          },
+          { "render": function ( data, type, row ) {
+            if(data == true) {
+               return "<i class=\"fa fa-check-circle-o fa-2x text-success\"></i>"
+            } else {
+               return "<i class=\"fa fa-times fa-2x text-danger\"></i>"
+            }
+            },
+            "targets": 7
+          },
+          { targets: '_all', orderable: false }
+        ]
+    } );
+    // Event listener to the two range filtering inputs to redraw on input
+    $('#datatable_users_filter').change( function() {
+        datatableUsers.draw();
+    } );
 
-$(document).ready(function() {
-    var table = $('#datatable_my_collections').DataTable( {
+    $('#datatable_my_collections').DataTable( {
         "processing": true,
         "serverSide": true,
         "order": [[ 0, "desc" ]],
@@ -102,11 +127,7 @@ $(document).ready(function() {
           { targets: '_all', searchable: false }
         ]
     } );
-
-} );
-
-$(document).ready(function() {
-    var table = $('#datatable_show_collection').DataTable( {
+    $('#datatable_show_collection').DataTable( {
         "processing": true,
         "serverSide": true,
         "order": [[ 0, "desc" ]],

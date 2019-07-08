@@ -4,7 +4,6 @@ class ReportsController < ApplicationController
   before_action :authenticate_admin!
 
   def index
-
     retrieve_stats if params[:report].presence == 'stats'
 
     respond_to do |format|
@@ -19,6 +18,9 @@ class ReportsController < ApplicationController
           render json: FixityDatatable.new(view_context)
         when 'stats'
           render json: CollectionStatsDatatable.new(view_context)
+        when 'users'
+          total_users = UserGroup::User.count
+          render json: UsersDatatable.new(total_users, view_context)
         end
       end
     end
