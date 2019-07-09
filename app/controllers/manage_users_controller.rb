@@ -1,7 +1,10 @@
 class ManageUsersController < ApplicationController
+  before_action :authenticate_user_from_token!
+  before_action :authenticate_user!
+
   def create
-    if signed_in? && (current_user.is_admin? || current_user.is_om?)
-      user = UserGroup::User.find_by_email(params[:user].strip)
+    if current_user.is_admin? || current_user.is_om?
+      user = UserGroup::User.find_by(email: params[:user].strip)
       if user.present?
         groups = ['cm']
         groups << 'om' if current_user.is_admin? && assign_om?
@@ -28,7 +31,7 @@ class ManageUsersController < ApplicationController
 
     def add_groups_to_user(user, groups)
       groups.each do |group|
-        group_id = UserGroup::Group.find_by_name(group).id
+        group_id = UserGroup::Group.find_by(name: group).id
         membership = user.join_group(group_id)
         membership.approved_by = current_user.id
         membership.save

@@ -19,14 +19,21 @@ class ReportsController < ApplicationController
         when 'stats'
           render json: CollectionStatsDatatable.new(view_context)
         when 'users'
-          total_users = UserGroup::User.count
-          render json: UsersDatatable.new(total_users, view_context)
+          render json: UsersDatatable.new(user_count, view_context)
         end
       end
     end
   end
 
   private
+
+  def user_count
+    if params[:filter].present? && params[:filter] == 'manage'
+      return UserGroup::User.joins(:groups).where("user_group_groups.name = 'cm'").where('user_group_memberships.approved_by = 2').count
+    end
+
+    UserGroup::User.count
+  end
 
   def retrieve_stats
     @summary_counts = StatsReport.summary

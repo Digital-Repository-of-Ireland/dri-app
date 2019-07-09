@@ -116,6 +116,24 @@ $(document).ready(function() {
         datatableUsers.draw();
     } );
 
+    $('#datatable_cm_users').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "stateSave": true,
+        "order": [[ 1, "asc" ]],
+        "ajax": {
+          "url": $('#datatable_cm_users').data('source'),
+          "data": function(d) {
+            d.filter = 'manage';
+          }
+        },
+        columnDefs: [
+          { targets: [0, 6, 7, 8], "visible": false, searchable: false },
+          { targets: [1, 3, 4, 5], orderable: true },
+          { targets: '_all', orderable: false }
+        ]
+    } );
+
     $('#datatable_my_collections').DataTable( {
         "processing": true,
         "serverSide": true,

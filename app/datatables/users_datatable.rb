@@ -1,5 +1,5 @@
 class UsersDatatable
-  delegate :params, :link_to, :t, to: :@view
+  delegate :params, :link_to, :current_user, :t, to: :@view
   delegate :edit_user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
   def initialize(total_users, view)
@@ -53,6 +53,8 @@ private
   end
 
   def apply_filter(users)
+    return user_filter(users) if params[:filter] == 'manage'
+
     case params[:filter]
     when 'confirmed'
       users.where('confirmed_at is not null')
@@ -63,6 +65,10 @@ private
     else
       users
     end
+  end
+
+  def user_filter(users)
+     users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = #{current_user.id}")
   end
 
   def page
