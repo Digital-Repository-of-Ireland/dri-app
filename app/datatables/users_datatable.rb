@@ -68,7 +68,7 @@ private
   end
 
   def user_filter(users)
-     users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = #{current_user.id}")
+    users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = #{current_user.id}")
   end
 
   def page

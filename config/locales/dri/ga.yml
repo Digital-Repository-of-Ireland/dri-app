@@ -107,6 +107,16 @@ ga:
           file_type: Cineál
           mime_type: Cineál Mime
           count: Comhaireamh
+      users:
+        collection_managers: "Collection Managers"
+        surname: "Surname"
+        first_name: "First Name"
+        email: "Email"
+        created_at: "Created At"
+        last_signed_in: "Síniú isteach deireanach"
+        last_ip: "Last IP"
+        confirmed: "Confirmed"
+        edit: "Edit"
     flash:
       alert:
         create_permission: Níl cead agat an doiciméad seo a chruthú.

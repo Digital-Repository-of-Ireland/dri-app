@@ -13,19 +13,5 @@
 </select>
 
 <table id="datatable_users" class="display" data-source="<%= reports_url(report: "users", format: "json") %>">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>Surname</th>
-      <th>First Name</th>
-      <th>Email</th>
-      <th>Created At</th>
-      <th>Last Signed In</th>
-      <th>Last IP</th>
-      <th>Confirmed</th>
-      <th>Edit</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
+  <%= render partial: 'datatables/users' %>
 </table>

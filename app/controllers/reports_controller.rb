@@ -28,10 +28,6 @@ class ReportsController < ApplicationController
   private
 
   def user_count
-    if params[:filter].present? && params[:filter] == 'manage'
-      return UserGroup::User.joins(:groups).where("user_group_groups.name = 'cm'").where('user_group_memberships.approved_by = 2').count
-    end
-
     UserGroup::User.count
   end
 

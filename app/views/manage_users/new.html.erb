@@ -6,22 +6,8 @@
   <%= submit_tag( t('dri.views.manager_users.buttons.submit') ) %>
 <% end %>
 
-<h2 style="width:100%"> <%= (t :'user_groups.views.users.index.all_users') %></h2>
+<h2 style="width:100%"> <%= t('dri.datatables.users.collection_managers') %></h2>
 </br>
-<table id="datatable_cm_users" class="display" data-source="<%= reports_url(report: "users", format: "json") %>">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>Surname</th>
-      <th>First Name</th>
-      <th>Email</th>
-      <th>Created At</th>
-      <th>Last Signed In</th>
-      <th>Last IP</th>
-      <th>Confirmed</th>
-      <th>Edit</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
+<table id="datatable_cm_users" class="display" data-source="<%= manage_users_url(format: "json") %>">
+  <%= render partial: 'datatables/users' %>
 </table>
