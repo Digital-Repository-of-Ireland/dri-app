@@ -58,7 +58,12 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
       collection.save
       @collections << collection
     end
-    @collections << create_subcollection_for(@example_user) if subcollection
+    if subcollection
+      subcollection_parent = create_subcollection_for(@example_user)
+      subcollection_parent.licence = @licence.name
+      subcollection_parent.save
+      @collections << subcollection_parent
+    end
     sign_out_all # just to make sure requests aren't using session
   end
   after(:all) do
