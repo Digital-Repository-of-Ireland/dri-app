@@ -15,8 +15,8 @@ class CatalogController < ApplicationController
     config.search_builder_class = ::CatalogSearchBuilder
 
     config.show.route = { controller: 'catalog' }
-    config.per_page = [9, 18, 36]
-    config.default_per_page = 9
+    config.per_page = [12, 24, 36, 48, 72, 96]
+    config.default_per_page = 12
     config.metadata_lang = ['all', 'gle', 'enl']
     config.default_metadata_lang = 'all'
 
