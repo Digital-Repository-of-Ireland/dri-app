@@ -1,11 +1,13 @@
+<h2 style="width:100%"><%= t('dri.headerlinks.manage_users') %></h2>
+<br/>
 <%= form_tag(manage_users_path, method: :post) do %>
   <%= label_tag(:user, t('dri.views.manager_users.email') ) %>
   <%= text_field_tag(:user) %>
   <%= submit_tag( t('dri.views.manager_users.buttons.submit') ) %>
-
-  <% if current_user.is_admin? %>
-    </br>
-    <%= label_tag :type, "#{t('dri.application.user_profile.organisational_manager')}?" %>
-    <%= check_box_tag :type, 'om' %>
-  <% end %>
 <% end %>
+
+<h2 style="width:100%"> <%= t('dri.datatables.users.collection_managers') %></h2>
+</br>
+<table id="datatable_cm_users" class="display" data-source="<%= manage_users_url(format: "json") %>">
+  <%= render partial: 'datatables/users' %>
+</table>

@@ -105,17 +105,27 @@ en:
         verified: "Verified"
         submit: "Submit New"
       stats:
-       collection_id: "Collection"
-       total_objects: "Total Objects"
-       size: "Size"
-       files:
-         file_type: Type
-         mime_type: Mime Type
-         count: Count
-       summary:
-         total_objects: Total Objects
-         total_assets: Total Assets
-         total_size: Total Asset Size
+        collection_id: "Collection"
+        total_objects: "Total Objects"
+        size: "Size"
+        files:
+          file_type: Type
+          mime_type: Mime Type
+          count: Count
+        summary:
+          total_objects: Total Objects
+          total_assets: Total Assets
+          total_size: Total Asset Size
+      users:
+        collection_managers: "Collection Managers"
+        surname: "Surname"
+        first_name: "First Name"
+        email: "Email"
+        created_at: "Created At"
+        last_signed_in: "Last Signed In"
+        last_ip: "Last IP"
+        confirmed: "Confirmed"
+        edit: "Edit" 
     flash:
       alert:
         create_permission: You do not have permission to create this document.
@@ -219,7 +229,7 @@ en:
       licensing_statement: Licensing Statement
       manage: Manage
       manage_users: Assign Collection Manager
-      manage_om_users: Assign Organisational Manager
+      manage_om_users: Assign Manager
       membership: Membership
       member_benefits: Member Benefits
       membership_fees: Membership Fees

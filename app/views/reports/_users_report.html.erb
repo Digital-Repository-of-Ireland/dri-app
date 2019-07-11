@@ -1,0 +1,22 @@
+<%= link_to (t :'user_groups.views.shared.add_user'), user_group.new_user_path %>
+<h2 style="width:100%"> <%= (t :'user_groups.views.users.index.all_users') %></h2>
+<br/>
+
+<label for="datatable_users_filter">Show only: </label>
+<select id="datatable_users_filter" name="datatable_users_filter">
+  <option value="" selected></option>
+  <option value="confirmed">Confirmed</option>
+  <option value="unconfirmed">Unconfirmed</option>
+  <option value="om">Organisational Managers</option>
+  <option value="cm">Collection Managers</option>
+  <option value="admin">Administrators</option>
+</select>
+
+<span id="approvers_select" style='display:none'>
+  <label for="datatable_users_approvers">Approved by: </label>
+  <%= select_tag "datatable_users_approvers", options_for_select(@approvers), include_blank: 'All' %>
+</span>
+
+<table id="datatable_users" class="display" data-source="<%= reports_url(report: "users", format: "json") %>">
+  <%= render partial: 'datatables/users' %>
+</table>

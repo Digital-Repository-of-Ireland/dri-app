@@ -1,6 +1,4 @@
 <div class="dri_report_container">
-
-
   <h3><%= t('dri.reports.headings.user') %></h3>
   <table>
     <tr><th>ID</th><th>Type</th><th>Item id</th><th>Event</th><th>Who</th><th>Date</th><th>Object</th></tr>
@@ -9,9 +7,9 @@
       <tr>
         <td> <%= line.id %> </td>
         <td> <%= line.item_type %> </td>
-        <td> <% if line.item_type.eql?('UserGroup::User') %>
+        <td> <% if line.item_type == 'UserGroup::User' %>
                <%= line.item_id %>
-             <% elsif line.item_type.eql?('UserGroup::Membership') %>
+             <% elsif line.item_type == 'UserGroup::Membership' %>
                <%= line.object %>
              <% end %>
         </td>
@@ -22,6 +20,4 @@
       </tr>
     <% end %>
   </table>
-
-
 </div>
