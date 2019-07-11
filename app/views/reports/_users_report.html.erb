@@ -12,6 +12,11 @@
   <option value="admin">Administrators</option>
 </select>
 
+<span id="approvers_select" style='display:none'>
+  <label for="datatable_users_approvers">Approved by: </label>
+  <%= select_tag "datatable_users_approvers", options_for_select(@approvers), include_blank: 'All' %>
+</span>
+
 <table id="datatable_users" class="display" data-source="<%= reports_url(report: "users", format: "json") %>">
   <%= render partial: 'datatables/users' %>
 </table>

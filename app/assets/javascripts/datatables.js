@@ -88,6 +88,7 @@ $(document).ready(function() {
           "url": $('#datatable_users').data('source'),
           "data": function(d) {
             d.filter = $('#datatable_users_filter').val();
+            d.approver = $('#datatable_users_approvers').val();
           }
         },
         columnDefs: [
@@ -111,10 +112,18 @@ $(document).ready(function() {
           { targets: '_all', orderable: false }
         ]
     } );
-    // Event listener to the two range filtering inputs to redraw on input
     $('#datatable_users_filter').change( function() {
+        if ($(this).val() != 'cm') {
+            $('#approvers_select').hide();
+        } else {
+            $('#approvers_select').show();
+        }
         datatableUsers.draw();
     } );
+    $('#datatable_users_approvers').change( function() {
+        datatableUsers.draw();
+    } );
+
 
     $('#datatable_cm_users').DataTable( {
         "processing": true,

@@ -5,6 +5,7 @@ class ReportsController < ApplicationController
 
   def index
     retrieve_stats if params[:report].presence == 'stats'
+    @approvers = approvers if params[:report].presence == 'users'
 
     respond_to do |format|
       format.html
@@ -26,6 +27,13 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def approvers
+    UserGroup::User.find(
+      UserGroup::Membership.joins(:group)
+      .where("user_group_groups.name = 'cm'")
+      .select(:approved_by).distinct.pluck(:approved_by)).collect{ |a| [a.email, a.id] }
+  end
 
   def user_count
     UserGroup::User.count

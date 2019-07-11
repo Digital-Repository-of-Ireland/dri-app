@@ -2,9 +2,10 @@ class UsersDatatable
   delegate :params, :link_to, :current_user, :t, to: :@view
   delegate :edit_user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
-  def initialize(total_users, view)
+  def initialize(total_users, view, approvers = nil)
     @total_users = total_users
     @view = view
+    @approvers = approvers
   end
 
   def as_json(options = {})
@@ -15,7 +16,7 @@ class UsersDatatable
     }
   end
 
-private
+  private
 
   def data
     display_on_page.map do |entry|
@@ -60,10 +61,20 @@ private
       users.where('confirmed_at is not null')
     when 'unconfirmed'
       users.where('confirmed_at is null')
-    when 'om', 'cm', 'admin'
+    when 'om', 'admin'
       users.joins(:groups).where("user_group_groups.name = '#{params[:filter]}'")
+    when 'cm'
+      approver_filter(users)
     else
       users
+    end
+  end
+
+  def approver_filter(users)
+    if params[:approver].present? && params[:approver] != 'All'
+      users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = #{params[:approver]}")
+    else
+      users.joins(:groups).where("user_group_groups.name = 'cm'")
     end
   end
 
