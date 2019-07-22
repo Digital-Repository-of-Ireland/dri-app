@@ -9,25 +9,17 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
 
   def run
     Rails.logger.info "Retrieving linked data for #{object.id}"
+    return unless AuthoritiesConfig
 
-    uris = object.geographical_coverage.select { |g| g.start_with?('http') }
-    uris = data_dri_uris if uris.blank?
-
+    uris = object.geographical_coverage.select { |g| g.start_with?('http') } | data_dri_uris
     uris.each do |uri|
       begin
         host = URI(URI.encode(uri.strip)).host
 
-        if AuthoritiesConfig && AuthoritiesConfig[host].present?
+        if AuthoritiesConfig[host].present?
           provider = "DRI::Sparql::Provider::#{AuthoritiesConfig[host]['provider']}".constantize.new
           provider.endpoint=(AuthoritiesConfig[host]['endpoint'])
-          linked_data_id = provider.retrieve_data(uri)
-
-          # if linked_data_id
-          #   recon_result = ReconciliationResult.new
-          #   recon_result.object_id = object.id
-          #   recon_result.linked_data_id = linked_data_id
-          #   recon_result.save
-          # end
+          provider.retrieve_data(uri)
 
           object.update_index
         end
@@ -38,17 +30,24 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
   end
 
   def data_dri_uris
-    select = "select ?logainm
+    return [] unless AuthoritiesConfig['data.dri.ie'].present?
+
+    select = "select ?recon
               where {
               <https://repository.dri.ie/catalog/#{object.id}#id> dcterms:spatial ?resource .
-              ?resource rdfs:seeAlso ?logainm .
-              FILTER(regex(str(?logainm), \"logainm\"))
+              ?resource rdfs:seeAlso ?recon .
+              FILTER(regex(str(?recon), \"logainm\"))
              }"
     client = DRI::Sparql::Client.new AuthoritiesConfig['data.dri.ie']['endpoint']
     results = client.query select
 
     uris = []
-    results.each_solution { |s| uris << s[:logainm].to_s } if results
+    results.each_solution do |s|
+      uri = s[:recon].to_s
+      uris << uri
+      DRI::ReconciliationResult.create(object_id: object.id, uri: uri)
+    end
+    puts uris
     uris
   end
 end
