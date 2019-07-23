@@ -21,7 +21,7 @@ module DRI::Sparql::Provider
       results = client.query select
 
       points = []
-      unless results.nil?
+      if results
         results.each_solution do |s|
           name = "#{s[:nameGA].value}/#{s[:nameEN]}"
           north = s[:lat].value
@@ -29,7 +29,6 @@ module DRI::Sparql::Provider
           points << DRI::Metadata::Transformations::SpatialTransformations.coords_to_geojson_string(name, "#{east} #{north}")
         end
       end
-
       return unless points.present?
 
       linked = DRI::LinkedData.new
@@ -37,19 +36,19 @@ module DRI::Sparql::Provider
       linked.resource_type = ['Dataset']
       linked.spatial = points
       linked.save
+
+      linked.reload
+      linked.id
     end
 
     def transform_uri(uri)
       host = URI(uri).host
+      return uri unless host == 'www.logainm.ie'
 
-      if host == 'www.logainm.ie'
-        name = uri[%r{[^/]+\z}]
-        place_id = File.basename(name,File.extname(name))
+      name = uri[%r{[^/]+\z}]
+      place_id = File.basename(name,File.extname(name))
 
-        "http://data.logainm.ie/place/#{place_id}"
-      else
-        uri
-      end
+      "http://data.logainm.ie/place/#{place_id}"
     end
   end
 end

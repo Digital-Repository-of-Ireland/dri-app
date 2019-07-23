@@ -8,7 +8,8 @@ describe LinkedDataJob do
         { 'provider' => 'Logainm',
           'endpoint' => 'http://data.logainm.ie/sparql'
         }
-      }))
+      }
+    ))
 
     @collection = FactoryBot.create(:collection)
 
