@@ -60,10 +60,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 9299afcda9b3a00bbc2a7261831ce8849c6c7134
-  branch: semantic
+  revision: 3afc4c2479b7066221ffb89a27e0332023bcd070
+  branch: develop
   specs:
-    dri_data_models (3.0.1)
+    dri_data_models (3.1.1)
       active-fedora (>= 10, < 11)
       active_fedora-noid
       google-api-client
