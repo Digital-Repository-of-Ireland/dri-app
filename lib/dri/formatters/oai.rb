@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
   def initialize
     @prefix = "oai_dri"
@@ -36,6 +37,7 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       isPartOf: "collection_id_tesim",
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
+      spatial: "geographical_coverage_tesim",
       temporal_eng: "temporal_coverage_eng_tesim",
       temporal_gle: "temporal_coverage_gle_tesim",
       license: lambda do |record|
@@ -104,18 +106,21 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
                 lang = nil
               end
 
-
-              # if its a langable field and if value is a literal not uri?
-              if lang.nil? || lang.empty? || lang.length == 0
+              if k.match(/^spatial$/)
+                # check for dcmi
+                dcmi_components = dcmi_parse(value)
+                if dcmi_components.empty?
+                  xml.tag! "#{pref}:#{kl}", value unless value.nil?
+                else 
+                  puts "______________ #{dcmi_components.to_s}"
+                  xml.tag! "#{pref}:#{kl}", {"rdf:about" => dcmi_components['name']}
+                end
+              elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
               else 
                 xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value unless value.nil?
               end
 
-              # turn dcmi:dcsv fields into contextual classes
-              if k.match(/^(coverage)_(eng|gle)$/) || k.match(/^(spatial)_(eng|gle)$/)
-                dcmi = create_edm_place(xml, $1, $2, value)
-              end
             end
           end
         end
@@ -155,6 +160,7 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
         imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
       end
 
+      # Create the ore:Aggregation element
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
@@ -171,6 +177,11 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
 
     end
 
+    # Create the edm:place elements
+    #xml.tag!("edm:Place", {"rdf:about" => "##{dcmi_components['name']}"}) do
+    #  xml.tag!("skos:prefLabel", {"xml:lang" => lang}, dcmi_components['name'])
+    #end
+
 
     xml.target!
   end
@@ -181,20 +192,18 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     end.flatten.compact
   end
 
-  def create_edm_place(xml, field, lang, value = nil)
+  def dcmi_parse(value = nil)
+    puts "+++++++++++++++++++++++++++ #{value}"
     dcmi_components = {}
 
     value.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
-      puts "++++++++++++++ k is #{k} and v is #{v}"
       if v.present?
         dcmi_components[k.downcase] = v.strip
       end
     end
 
-    xml.tag!("edm:Place", {"rdf:about" => "##{dcmi_components['name']}"}) do
-      xml.tag!("skos:prefLabel", {"xml:lang" => lang}, dcmi_components['name'])
-    end
+    dcmi_components
   end
 
 end
