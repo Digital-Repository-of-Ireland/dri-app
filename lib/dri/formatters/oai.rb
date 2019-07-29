@@ -35,11 +35,12 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     },
     dcterms: {
       isPartOf: "collection_id_tesim",
-      spatial_eng: "geographical_coverage_eng_tesim",
-      spatial_gle: "geographical_coverage_gle_tesim",
+      #spatial_eng: "geographical_coverage_eng_tesim",
+      #spatial_gle: "geographical_coverage_gle_tesim",
       spatial: "geographical_coverage_tesim",
-      temporal_eng: "temporal_coverage_eng_tesim",
-      temporal_gle: "temporal_coverage_gle_tesim",
+      #temporal_eng: "temporal_coverage_eng_tesim",
+      #temporal_gle: "temporal_coverage_gle_tesim",
+      temporal: "temporal_coverage_tesim",
       license: lambda do |record|
         licence = record.licence
         licence.present? ? [ licence.url || licence.name ] : [nil]
@@ -85,6 +86,8 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
         return ""
     end
 
+    contextual_classes = []
+
     xml = Builder::XmlMarkup.new
 
     xml.tag!("rdf:RDF", header_specification) do
@@ -106,14 +109,14 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
                 lang = nil
               end
 
-              if k.match(/^spatial$/)
+              if k.match(/^temporal$/) || k.match(/^spatial$/)
                 # check for dcmi
                 dcmi_components = dcmi_parse(value)
-                if dcmi_components.empty?
+                if dcmi_components.empty? || dcmi_components['name'].nil? || dcmi_components.size < 2
                   xml.tag! "#{pref}:#{kl}", value unless value.nil?
-                else 
-                  puts "______________ #{dcmi_components.to_s}"
-                  xml.tag! "#{pref}:#{kl}", {"rdf:about" => dcmi_components['name']}
+                else
+                  contextual_classes.push(dcmi_components)
+                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
                 end
               elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
@@ -127,9 +130,27 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       end
 
       # If geojson field exists, make it into a contextual class
-      record['geojson_ssim'].each do |geojson|
-        place = JSON.parse(geojson)
-        if place['geometry']['type'] == "Point"
+      # Maybe not as linked data urls don't appear in the geojson
+      #record['geojson_ssim'].each do |geojson|
+      #  place = JSON.parse(geojson)
+      #  if place['geometry']['type'] == "Point"
+      #  end
+      #end
+
+      # Create contextual classes
+      contextual_classes.each do |cclass|
+        if cclass.keys.include?("north") && cclass.keys.include?("east")
+          xml.tag! "edm:Place", {"rdf:about" => "##{cclass['name']}"} do
+            xml.tag! "skos:preflabel", cclass['name']
+            xml.tag! "wgs84_pos:lat", cclass['north']
+            xml.tag! "wgs84_pos:long", cclass['east']
+          end
+        elsif cclass.keys.include?("start") && cclass.keys.include?("end")
+          xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name']}"} do
+            xml.tag! "skos:preflabel", cclass['name']
+            xml.tag! "edm:begin", cclass['start']
+            xml.tag! "edm:end", cclass['end']
+          end
         end
       end
 
@@ -143,6 +164,9 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
         licence = record.licence.url
       end
 
+      xml.tag! "cc:Licence", {"rdf:about" => licence} do
+        xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
+      end
 
       # TODO: should check if image, and get image for edm:object if available
       assets = record.assets(with_preservation: false, ordered: true)
@@ -193,7 +217,6 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
   end
 
   def dcmi_parse(value = nil)
-    puts "+++++++++++++++++++++++++++ #{value}"
     dcmi_components = {}
 
     value.split(/\s*;\s*/).each do |component|
