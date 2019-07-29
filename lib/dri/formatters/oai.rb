@@ -5,38 +5,49 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     @prefix = "oai_dri"
     @schema = "https://repository.dri.ie/oai_dri/oai_dri.xsd"
     @namespace = "https://repository.dri.ie/oai_dri/"
-    @element_namespace = "dri"
+    @element_namespace = "edm"
   end
 
-  PREFIXES = {
+  # TODO: names are split by lang in names_ fields, how to handle this?
+  # TODO: should we assume other fields not split are therefore English?
+  ProvidedCHOPREFIXES = {
     dc: {
-      title: 'title_tesim',
-      description: 'description_tesim',
+      title_eng: 'title_eng_tesim',
+      title_gle: 'title_gle_tesim',
+      description_eng: 'description_eng_tesim',
+      description_gle: 'description_gle_tesim',
       creator: 'creator_tesim',
       publisher: 'publisher_tesim',
-      subject: 'subject_tesim',
+      subject_eng: 'subject_eng_tesim',
+      subject_gle: 'subject_gle_tesim',
       type: 'type_tesim',
       language: 'language_tesim',
       format: 'file_type_tesim',
-      rights: 'rights_tesim',
+      rights_eng: 'rights_eng_tesim',
+      rights_gle: 'rights_gle_tesim',
+      source_eng: 'source_eng_tesim',
+      source_gle: 'source_gle_tesim',
+      coverage_eng: 'coverage_eng_tesim',
+      coverage_gle: 'coverage_gle_tesim',
+      date: 'date_tesim',
+      created: 'creation_date_tesim'
     },
     dcterms: {
       isPartOf: "collection_id_tesim",
-      spatial: "geographical_coverage_tesim",
-      temporal: "temporal_coverage_tesim",
+      spatial_eng: "geographical_coverage_eng_tesim",
+      spatial_gle: "geographical_coverage_gle_tesim",
+      temporal_eng: "temporal_coverage_eng_tesim",
+      temporal_gle: "temporal_coverage_gle_tesim",
       license: lambda do |record|
         licence = record.licence
         licence.present? ? [ licence.url || licence.name ] : [nil]
       end
     },
     edm: {
-      provider: lambda { |record| ["Digital Repository of Ireland"] },
-      dataProvider: lambda { |record| [record.depositing_institute.try(:name)] },
-      isShownAt: lambda do |record|
-        [Rails.application.routes.url_helpers.catalog_url(record.id)]
-      end,
+      type: "type_tesim"
     },
   }.freeze
+
 
   def header_specification
     {
@@ -46,6 +57,14 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       "xmlns:oai_dc" => "http://www.openarchives.org/OAI/2.0/oai_dc/",
       "xmlns:oai_dri" =>  "https://repository.dri.ie/oai_dri/",
       "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
+      "xmlns:ore" => "http://www.openarchives.org/ore/terms/",
+      "xmlns:skos" => "http://www.w3.org/2004/02/skos/core#",
+      "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "xmlns:owl" => "http://www.w3.org/2002/07/owl#",
+      "xmlns:oai" => "http://www.openarchives.org/OAI/2.0/",
+      "xmlns:rdaGr2" => "http://rdvocab.info/ElementsGr2/",
+      "xmlns:foaf" => "http://xmlns.com/foaf/0.1/",
+      "xmlns:wgs84_pos" => "http://www.w3.org/2003/01/geo/wgs84_pos#",
       "xsi:schemaLocation" => %(
         https://repository.dri.ie/oai_dri/
         https://repository.dri.ie/oai_dri/oai_dri.xsd
@@ -54,23 +73,104 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
   end
 
   def encode(_model, record)
+
+    # We are not going to aggregate items with no assets
+    if record.assets.size < 1
+      return ""
+    end
+    # We are not going to aggregate restricted assets to Europeana
+    if not record.public_read?
+        return ""
+    end
+
     xml = Builder::XmlMarkup.new
 
-    xml.tag!("#{prefix}:#{element_namespace}", header_specification) do
-      PREFIXES.each do |pref, fields|
-        fields.each do |k, v|
-          values = if v.class == Proc
-                     v.call(record)
-                   else
-                     value_for(v, record.to_h, {})
-                   end
+    xml.tag!("rdf:RDF", header_specification) do
+      xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
+        ProvidedCHOPREFIXES.each do |pref, fields|
+          fields.each do |k, v|
+            values = if v.class == Proc
+                       v.call(record)
+                     else
+                       value_for(v, record.to_h, {})
+                     end
 
-          values.each do |value|
-            xml.tag! "#{pref}:#{k}", value unless value.nil?
+            values.each do |value|
+              if k.match(/(^.*)_(eng|gle)$/)
+                lang = $2
+                kl = $1
+              else
+                kl = k
+                lang = nil
+              end
+
+
+              # if its a langable field and if value is a literal not uri?
+              if lang.nil? || lang.empty? || lang.length == 0
+                xml.tag! "#{pref}:#{kl}", value unless value.nil?
+              else 
+                xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value unless value.nil?
+              end
+
+              # turn dcmi:dcsv fields into contextual classes
+              if k.match(/^(coverage)_(eng|gle)$/) || k.match(/^(spatial)_(eng|gle)$/)
+                dcmi = create_edm_place(xml, $1, $2, value)
+              end
+            end
           end
         end
       end
+
+      # If geojson field exists, make it into a contextual class
+      record['geojson_ssim'].each do |geojson|
+        place = JSON.parse(geojson)
+        if place['geometry']['type'] == "Point"
+        end
+      end
+
+      if (record.licence.name == "All Rights Reserved")
+        licence = "http://www.europeana.eu/rights/rr-f/"
+      elsif (record.licence.name == "Orphan Work")
+        licence = "http://www.europeana.eu/rights/unknown/"
+      elsif (record.licence.name == "Public Domain")
+        licence = "http://creativecommons.org/publicdomain/mark/1.0/"
+      else
+        licence = record.licence.url
+      end
+
+
+      # TODO: should check if image, and get image for edm:object if available
+      assets = record.assets(with_preservation: false, ordered: true)
+
+      assets.each do |file|
+        url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
+        xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+          xml.tag!("edm:rights", {"rdf:resource" => licence})
+        end
+      end
+
+
+      mainfile = assets.shift
+      if mainfile.present?
+        imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
+      end
+
+      xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
+        xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
+        xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
+        xml.tag!("edm:provider", "Digital Repository of Ireland")
+        xml.tag!("edm:rights", {"rdf:resource" => licence})
+        xml.tag!("edm:isShownBy", {"rdf:resource" => imageUrl})
+        xml.tag!("edm:isShownAt", {"rdf:resource" => Rails.application.routes.url_helpers.catalog_url(record.id)})
+        assets.each do |file|
+          url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
+          xml.tag!("edm:hasView", {"rdf:resource" => url})
+        end
+        xml.tag!("edm:object", {"rdf:resource" => imageUrl})
+      end
+
     end
+
 
     xml.target!
   end
@@ -80,4 +180,21 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       record[f] || []
     end.flatten.compact
   end
+
+  def create_edm_place(xml, field, lang, value = nil)
+    dcmi_components = {}
+
+    value.split(/\s*;\s*/).each do |component|
+      (k, v) = component.split(/\s*=\s*/)
+      puts "++++++++++++++ k is #{k} and v is #{v}"
+      if v.present?
+        dcmi_components[k.downcase] = v.strip
+      end
+    end
+
+    xml.tag!("edm:Place", {"rdf:about" => "##{dcmi_components['name']}"}) do
+      xml.tag!("skos:prefLabel", {"xml:lang" => lang}, dcmi_components['name'])
+    end
+  end
+
 end
