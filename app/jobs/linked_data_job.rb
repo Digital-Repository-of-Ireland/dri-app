@@ -34,10 +34,8 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
 
     select = "select ?recon
               where {
-              <https://repository.dri.ie/catalog/#{object.id}#id> dcterms:spatial ?resource .
-              ?resource rdfs:seeAlso ?recon .
-              FILTER(regex(str(?recon), \"logainm\"))
-             }"
+              <https://repository.dri.ie/catalog/#{object.id}#id> ?p ?resource .
+              ?resource rdfs:seeAlso ?recon }"
     client = DRI::Sparql::Client.new AuthoritiesConfig['data.dri.ie']['endpoint']
     results = client.query select
 
@@ -47,7 +45,6 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
       uris << uri
       DRI::ReconciliationResult.create(object_id: object.id, uri: uri)
     end
-    puts uris
     uris
   end
 end
