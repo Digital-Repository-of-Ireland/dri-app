@@ -1,8 +1,6 @@
 class MapsController < ApplicationController
   def show
-    object = retrieve_object!(params[:id])
-
-    @document = SolrDocument.new(object.to_solr)
+    @document = SolrDocument.find(params[:id])
     @request_controller = params[:request_controller]
   end
 end

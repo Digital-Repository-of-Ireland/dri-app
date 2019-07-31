@@ -86,6 +86,7 @@ module FieldRenderHelper
 
     value ||= args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     value = [value] unless value.is_a?(Array)
+    value = value.reject { |v| uri?(v.gsub('name=', '')) }
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     indexed_value = args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
@@ -94,7 +95,7 @@ module FieldRenderHelper
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
 
-    if args[:field] && (args[:field][0, 5] == "role_" || facet?(field))
+    if args[:field] && (role_field?(args[:field]) || facet?(field))
       value = render_facet_link(args, field, value, indexed_value)
     else
       value = render_list(field, value, indexed_value) if value.length > 1
@@ -146,7 +147,7 @@ module FieldRenderHelper
     facet = args[:facet]
     search_arg = "f[" << facet << "][]"
 
-    if (role_field?(facet)) || (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) || (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable))
+    if person_facet?(facet)
       search_arg = "f[" << ActiveFedora.index_field_mapper.solr_name('person', :facetable) << "][]"
     end
 
@@ -195,6 +196,14 @@ module FieldRenderHelper
     blacklight_config.facet_fields.key?(ActiveFedora.index_field_mapper.solr_name(field, :facetable))
   end
 
+  def person_facet?(facet)
+    (
+      role_field?(facet)) ||
+      (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) ||
+      (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable)
+    )
+  end
+
   def role_field?(field)
     field[0, 5] == "role_"
   end
@@ -218,29 +227,29 @@ module FieldRenderHelper
 
       # for orcids include a repository search on name and the orcid link
       if authority.present? && authority.casecmp("ORCID") && uri?(identifier)
-        render_orcid(facet_name, standardised_value, identifier)
+        render_orcid(facet_arg, facet_name, standardised_value, identifier)
       else
-        render_link(facet_name, indexed_value[i], standardised_value)
+        render_link(facet_arg, facet_name, indexed_value[i], standardised_value)
       end
     end
   end
 
-  def render_link(facet_name, indexed_value, standardised_value)
+  def render_link(facet_arg, facet_name, indexed_value, standardised_value)
     "<a href=\"" << url_for(
                             {
                               action: 'index',
                               controller: controller_name,
-                              facet_arg: standardise_facet(facet: facet_name, value: indexed_value)
+                              facet_arg => standardise_facet(facet: facet_name, value: indexed_value)
                             }
                       ) << "\">" << standardised_value << "</a>"
   end
 
-  def render_orcid(facet_name, standardised_value, identifier)
+  def render_orcid(facet_arg, facet_name, standardised_value, identifier)
     "<span class=\"orcid\"><a href=\"" << url_for(
                             {
                               action: 'index',
                               controller: controller_name,
-                              facet_arg: standardise_facet(facet: facet_name, value: standardised_value)
+                              facet_arg => standardise_facet(facet: facet_name, value: standardised_value)
                             }
                       ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>"
   end
