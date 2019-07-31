@@ -6,6 +6,7 @@ en:
         cancel: Cancel
         change_password: Change Password
         confirm_new_password: Confirm New Password
+        confirm_user: Confirm User
         current_password: Current Password
         edit_account: Edit Account
         first_name: First Name

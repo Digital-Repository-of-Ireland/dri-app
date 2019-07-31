@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe ObjectsController do
   include Devise::Test::ControllerHelpers
+  include Warden::Test::Helpers
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -480,5 +481,42 @@ describe ObjectsController do
       expect(list.first['files'].first).to include('masterfile')
       expect(list.first['files'].first).to include('mp3')
     end
+
+    it 'should return draft objects if I have permissions' do
+      sign_out @login_user
+      user = FactoryBot.create(:user)
+      sign_in user
+
+      @object.status = 'draft'
+      @object.edit_users_string = user.email
+      @object.save
+      @object.reload
+
+      request.env["HTTP_ACCEPT"] = 'application/json'
+
+      post :index, objects: [{ 'pid' => @object.id }]
+      expect(response.status).to eq(200)
+
+      user.destroy
+    end
+
+    it 'should not return draft objects if I do not have permissions' do
+      @object.status = 'draft'
+      @object.edit_users_string = @login_user.email
+      @object.save
+      @object.reload
+
+      sign_out @login_user
+      user = FactoryBot.create(:user)
+      sign_in user
+
+      request.env["HTTP_ACCEPT"] = 'application/json'
+
+      post :index, objects: [{ 'pid' => @object.id }]
+      expect(response.status).to eq(404)
+
+      user.destroy
+    end
+
   end
 end

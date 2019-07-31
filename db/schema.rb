@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190417125610) do
+ActiveRecord::Schema.define(version: 20190722154607) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer  "user_id",       null: false
@@ -108,6 +108,13 @@ ActiveRecord::Schema.define(version: 20190417125610) do
   end
 
   add_index "dri_batch_ingest_user_ingests", ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
+
+  create_table "dri_reconciliation_results", force: :cascade do |t|
+    t.string   "object_id"
+    t.string   "uri"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "fixity_checks", force: :cascade do |t|
     t.string   "collection_id"
