@@ -10,6 +10,11 @@
     DRI::Formatters::OAI.instance.encode(nil, self)
   end
 
+  def to_oai_edm
+    DRI::Formatters::EDM.instance.encode(nil, self)
+  end
+
+  alias_method :export_as_oai_edm_xml, :to_oai_edm
   alias_method :export_as_oai_dri_xml, :to_oai_dri
 
 end

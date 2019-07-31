@@ -1,6 +1,7 @@
 class OaiPmhController < CatalogController
   include BlacklightOaiProvider::Controller
  
+  BlacklightOaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::EDM.instance)
   BlacklightOaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::OAI.instance)
 
   protected
