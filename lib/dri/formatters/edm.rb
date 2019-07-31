@@ -109,14 +109,14 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 lang = nil
               end
 
-              if k.match(/^temporal$/) || k.match(/^spatial$/)
+              if k.match(/^(temporal|spatial|created|date|coverage)$/) 
                 # check for dcmi
                 dcmi_components = dcmi_parse(value)
-                if dcmi_components.empty? || dcmi_components['name'].nil? || dcmi_components.size < 2
-                  xml.tag! "#{pref}:#{kl}", value unless value.nil?
-                else
+                if is_valid_dcmi?($1, dcmi_components)
                   contextual_classes.push(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
+                else
+                  xml.tag! "#{pref}:#{kl}", value unless value.nil?
                 end
               elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
@@ -227,6 +227,18 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     end
 
     dcmi_components
+  end
+
+  def is_valid_dcmi?(field, dcmi)
+    return false unless dcmi['name'].present?
+
+    case field
+    when "spatial" || "coverage"
+      return true if dcmi['east'].present? && dcmi['north'].present?
+    else
+      return true if dcmi['start'].present? && dcmi['end'].present?
+    end
+    return false
   end
 
 end
