@@ -93,6 +93,9 @@ DriApp::Application.routes.draw do
     get 'iiif/:id/sequence', to: 'iiif#sequence', as: :iiif_collection_sequence
     get 'iiif/:id', to: 'iiif#show'
 
+    get 'activity/:id', to: 'activity#show', as: :activity
+    get 'activity/:collection_id/page/:id', to: 'activity#page', as: :activity_page
+
     resources :organisations, controller: :institutes
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo
 

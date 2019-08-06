@@ -11,7 +11,7 @@ module Solr
     end
 
     def query
-      query_args = @args.merge({:raw => true, :rows => @chunk, :sort => 'id asc', :cursorMark => @cursor_mark})
+      query_args = @args.merge({raw: true, rows: @chunk, sort: 'id asc', cursorMark: @cursor_mark})
 
       result = ActiveFedora::SolrService.get(@query, query_args)
       result_docs = result['response']['docs']
