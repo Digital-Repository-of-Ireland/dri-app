@@ -17,6 +17,7 @@ gem 'hydra-head', '~> 10.6'
 
 gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
+gem 'iiif-discovery', git: 'https://github.com/Digital-Repository-of-Ireland/iiif-discovery.git'
 gem 'openseadragon'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'

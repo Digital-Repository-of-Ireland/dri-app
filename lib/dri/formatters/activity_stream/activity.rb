@@ -7,31 +7,30 @@ class DRI::Formatters::ActivityStream::Activity
   end
 
   def to_activity
-    activity = {id: activity_url(@object_doc.id, format: :json)}
     created_time = @object_doc['system_create_dtsi']
     modified_time = @object_doc['system_modified_dtsi']
-
     type = created_time == modified_time ? 'Create' : 'Update'
-    activity[:type] = type
-    activity[:endTime] = modified_time
 
-    object = {}
+    activity = IIIF::Discovery::Activity.new
+    activity.id = activity_url(@object_doc.id, format: :json)
+    activity.end_time = modified_time
+    activity.type = type
+
+    object = IIIF::Discovery::Object.new
     if @object_doc.collection?
-      object[:id] = iiif_manifest_url(@object_doc.id)
-      object[:type] = 'Collection'
+      object.type = 'Collection'
+      object.id = iiif_collection_manifest_url(@object_doc.id)
     else
-      object[:id] = iiif_collection_manifest_url(@object_doc.id)
-      object[:type] = 'Manifest'
+      object.type = 'Manifest'
+      object.id = iiif_manifest_url(@object_doc.id)
     end
 
-    object[:seeAlso] = [
-      {
-        id: catalog_url(@object_doc.id, format: :json),
-        type: "Dataset",
-        format: "application/json"
-      }
-    ]
-    activity[:object] = object
+    object.see_also << {
+      id: catalog_url(@object_doc.id, format: :json),
+      type: "Dataset",
+      format: "application/json"
+    }
+    activity.object = object
 
     activity
   end

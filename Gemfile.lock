@@ -21,6 +21,15 @@ GIT
       underscore-rails
 
 GIT
+  remote: https://github.com/Digital-Repository-of-Ireland/iiif-discovery.git
+  revision: a395a3ad93d25c516d694a2e7cd52040d6bce414
+  specs:
+    iiif-discovery (0.1.0)
+      activesupport (>= 3.2.18)
+      faraday (>= 0.9)
+      json
+
+GIT
   remote: https://github.com/IIIF/osullivan.git
   revision: 1113f6b17a0c7bde22eca60fbf1231ed5d8b4daa
   specs:
@@ -1025,6 +1034,7 @@ DEPENDENCIES
   i18n-js
   i18n-tasks
   i18n_sync
+  iiif-discovery!
   iiif-presentation!
   is_it_working-cbeer
   it

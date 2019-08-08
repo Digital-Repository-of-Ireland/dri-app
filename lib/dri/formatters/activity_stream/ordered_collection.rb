@@ -11,13 +11,10 @@ class DRI::Formatters::ActivityStream::OrderedCollection
   end
 
   def format(options = {})
-    ordered_collection = {
-      "@context": CONTEXT,
-      id: activity_url(@object_doc.id, format: :json)
-    }
-    ordered_collection[:type] = "OrderedCollection"
-    ordered_collection[:totalItems] = @child_count
-    ordered_collection[:seeAlso] = [
+    ordered_collection = IIIF::Discovery::OrderedCollection.new
+    ordered_collection.id = activity_url(@object_doc.id, format: :json)
+    ordered_collection.total_items = @child_count
+    ordered_collection.see_also << [
       {
         id: catalog_url(@object_doc.id, format: :json),
         type: "Dataset",
@@ -25,18 +22,18 @@ class DRI::Formatters::ActivityStream::OrderedCollection
       }
     ]
     if @object_doc.collection_id
-      ordered_collection[:partOf] = [
+      ordered_collection.part_of << [
         {
           id: activity_url(@object_doc.collection_id, format: :json),
           type: "OrderedCollection"
         }
       ]
     end
-    ordered_collection[:first] = {
+    ordered_collection.first = {
       id: activity_page_url(@object_doc.id, 0, format: :json),
       type: "OrderedCollectionPage"
     }
-    ordered_collection[:last] = {
+    ordered_collection.last = {
       id: activity_page_url(@object_doc.id, @page_count, format: :json),
       type: "OrderedCollectionPage"
     }
