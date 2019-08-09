@@ -91,6 +91,7 @@ module FieldRenderHelper
 
     indexed_value = args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
+    indexed_value = value.reject { |v| uri?(v.gsub('name=', '')) }
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
@@ -217,7 +218,7 @@ module FieldRenderHelper
 
     value.each_with_index.map do |v, i|
       # don't show simple URLs in the UI
-      next if uri?(indexed_value[i].gsub('name=', ''))
+      next if uri?(v.gsub('name=', ''))
 
       standardised_value = standardise_value(facet_name: facet_name, value: v)
       next unless standardised_value
