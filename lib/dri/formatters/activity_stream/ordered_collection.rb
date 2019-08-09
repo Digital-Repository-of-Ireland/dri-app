@@ -14,29 +14,21 @@ class DRI::Formatters::ActivityStream::OrderedCollection
     ordered_collection = IIIF::Discovery::OrderedCollection.new
     ordered_collection.id = activity_url(@object_doc.id, format: :json)
     ordered_collection.total_items = @child_count
-    ordered_collection.see_also << [
-      {
-        id: catalog_url(@object_doc.id, format: :json),
-        type: "Dataset",
-        format: "application/json"
-      }
-    ]
+    ordered_collection.see_also << IIIF::Discovery::SeeAlso.new(
+                                    'id' => catalog_url(@object_doc.id, format: :json),
+                                    'format' => "application/json"
+                                  )
     if @object_doc.collection_id
-      ordered_collection.part_of << [
-        {
-          id: activity_url(@object_doc.collection_id, format: :json),
-          type: "OrderedCollection"
-        }
-      ]
+      ordered_collection.part_of << IIIF::Discovery::PartOf.new(
+                                      'id' => activity_url(@object_doc.collection_id, format: :json)
+                                    )
     end
-    ordered_collection.first = {
-      id: activity_page_url(@object_doc.id, 0, format: :json),
-      type: "OrderedCollectionPage"
-    }
-    ordered_collection.last = {
-      id: activity_page_url(@object_doc.id, @page_count, format: :json),
-      type: "OrderedCollectionPage"
-    }
+    ordered_collection.first = IIIF::Discovery::Page.new(
+                                 'id' => activity_page_url(@object_doc.id, 0, format: :json),
+                               )
+    ordered_collection.last = IIIF::Discovery::Page.new(
+                                'id' => activity_page_url(@object_doc.id, @page_count, format: :json),
+                              )
     ordered_collection.to_json
   end
 end

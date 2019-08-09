@@ -22,7 +22,7 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/iiif-discovery.git
-  revision: a395a3ad93d25c516d694a2e7cd52040d6bce414
+  revision: 79c5806769794889a45ad4f19969f7894893aa51
   specs:
     iiif-discovery (0.1.0)
       activesupport (>= 3.2.18)

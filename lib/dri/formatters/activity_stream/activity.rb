@@ -25,11 +25,10 @@ class DRI::Formatters::ActivityStream::Activity
       object.id = iiif_manifest_url(@object_doc.id)
     end
 
-    object.see_also << {
-      id: catalog_url(@object_doc.id, format: :json),
-      type: "Dataset",
-      format: "application/json"
-    }
+    object.see_also << IIIF::Discovery::SeeAlso.new(
+                         'id' => catalog_url(@object_doc.id, format: :json),
+                         'format' => "application/json"
+                       )
     activity.object = object
 
     activity

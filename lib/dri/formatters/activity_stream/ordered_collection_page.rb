@@ -14,23 +14,20 @@ class DRI::Formatters::ActivityStream::OrderedCollectionPage
   def format(options = {})
     page = IIIF::Discovery::OrderedCollectionPage.new
     page.id = activity_page_url(@object_doc.id, @page_id, format: :json)
-    page.part_of = {
-      id: activity_url(@object_doc.id, format: :json),
-      type: 'OrderedCollection'
-    }
+    page.part_of = IIIF::Discovery::PartOf.new(
+                     'id' => activity_url(@object_doc.id, format: :json),
+                   )
 
     if @page_id > 0
-      page.prev << {
-        id: activity_page_url(@object_doc.id, page_id - 1, format: :json),
-        type: 'OrderedCollectionPage'
-      }
+      page.prev << IIIF::Discovery::Page.new(
+                     'id' => activity_page_url(@object_doc.id, page_id - 1, format: :json),
+                   )
     end
 
     if @page_id < @total_pages - 1
-      page.next << {
-        id: activity_page_url(@object_doc.id, page_id + 1, format: :json),
-        type: 'OrderedCollectionPage'
-      }
+      page.next << IIIF::Discovery::Page.new(
+                     'id' => activity_page_url(@object_doc.id, page_id + 1, format: :json),
+                   )
     end
 
     page.ordered_items = @ordered_items.map do |item|
