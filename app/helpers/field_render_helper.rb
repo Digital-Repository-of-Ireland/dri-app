@@ -91,7 +91,7 @@ module FieldRenderHelper
 
     indexed_value = args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
-    indexed_value = value.reject { |v| uri?(v.gsub('name=', '')) }
+    indexed_value = indexed_value.reject { |v| uri?(v.gsub('name=', '')) }
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
