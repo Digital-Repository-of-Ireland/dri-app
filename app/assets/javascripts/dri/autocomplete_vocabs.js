@@ -130,7 +130,7 @@ function vocabIdToUri(vocab, id) {
     "Getty Art and Architecture": function(v) {return v;},
     "OCLC FAST": oclcFastIdToUri,
     "Unesco": function(v) {return v;}, // unseco id is already url
-    "Logainm": logainmIdToUri,
+    "Logainm": function(v) {return v;},
     // will be dereferencable after fct (facet browser) virtuoso add-on
     "Nuts3": function(v) {return v;},
     "Hasset": function(v) {return v;}
@@ -153,5 +153,5 @@ function locIdToUri(id) {
 }
 
 function logainmIdToUri(id) {
-  return 'http://data.logainm.ie/describe/?url=' + id;
+  return id
 }
