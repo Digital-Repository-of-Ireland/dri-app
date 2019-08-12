@@ -3,6 +3,7 @@ require 'rails_helper'
 describe ObjectsController do
   include Devise::Test::ControllerHelpers
   include Warden::Test::Helpers
+  include Preservation::PreservationHelpers
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -91,6 +92,35 @@ describe ObjectsController do
 
       @collection.reload
       @collection.delete
+    end
+
+    it 'should delete an incomplete object' do
+      collection = FactoryBot.create(:collection)
+      collection.depositor = User.find_by_email(@login_user.email).to_s
+      collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      collection.discover_groups_string="public"
+      collection.read_groups_string="registered"
+      collection.creator = [@login_user.email]
+
+      object = FactoryBot.create(:sound)
+      object[:status] = "draft"
+      object.depositor=User.find_by_email(@login_user.email).to_s
+      object.manager_users_string=User.find_by_email(@login_user.email).to_s
+      object.creator = [@login_user.email]
+
+      object.save
+
+      collection.governed_items << object
+
+      FileUtils.rm_rf aip_dir(object.id)
+      allow_any_instance_of(ObjectsController).to receive(:retrieve_object).and_raise(Ldp::HttpError)
+
+      delete :destroy, :id => object.id
+
+      expect(ActiveFedora::SolrService.count("id:#{object.id}")).to be 0
+
+      collection.reload
+      collection.delete
     end
 
   end

@@ -1,6 +1,6 @@
 module FacetsHelper
   include Blacklight::FacetsHelperBehavior
-  
+
   DCMI_KEYS = %w(elevation northlimit eastlimit southlimit westlimit uplimit downlimit units zunits projection north east)
 
   # Used by CatalogController's language facet_field, show_field and index_field
@@ -36,7 +36,7 @@ module FacetsHelper
     else
       results = transform_orcid(args)
     end
-    
+
     results
   end
 
@@ -129,7 +129,7 @@ module FacetsHelper
   def transform_orcid(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
+    value.strip.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k == 'name'
         return v unless v.nil? || v.empty?
@@ -142,7 +142,7 @@ module FacetsHelper
   def transform_era(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
+    value.strip.split(/\s*;\s*/).each do |component|
       (k,v) = component.split(/\s*=\s*/)
       if k == 'name'
         return v unless v.nil? || v.empty?
@@ -155,7 +155,7 @@ module FacetsHelper
   def transform_location(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
+    value.strip.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
       dcmi = true if DCMI_KEYS.include?(k)
 
@@ -225,10 +225,10 @@ module FacetsHelper
   # @return [String]
   def render_facet_value(facet_solr_field, item, options = {})
     return if uri?(item.value)
-    
+
     display_value = facet_display_value(facet_solr_field, item)
     return if display_value == 'nil'
-    
+
     path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
@@ -248,7 +248,7 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     # Updated class for Bootstrap Blacklight.
     link_to(
-      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'), 
+      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'),
       remove_facet_params(facet_solr_field, item, params),
       class: 'selected'
     )
