@@ -26,9 +26,10 @@ module DRI::Sparql::Provider
           name = "#{s[:nameGA].value}/#{s[:nameEN]}"
           north = s[:lat].value
           east = s[:long].value
-          points << DRI::Metadata::Transformations::SpatialTransformations.coords_to_geojson_string(name, "#{east} #{north}")
+          points << DRI::Metadata::Transformations::SpatialTransformations.coords_to_geojson_string(name, "#{east} #{north}", nil, transform_uri(uri))
         end
       end
+
       return unless points.present?
 
       linked = DRI::LinkedData.new

@@ -3,9 +3,9 @@
 
 class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   def initialize
-    @prefix = "oai_edm"
-    @schema = "https://repository.dri.ie/oai_edm/oai_edm.xsd"
-    @namespace = "https://repository.dri.ie/oai_edm/"
+    @prefix = "edm"
+    @schema = "https://repository.dri.ie/edm/edm.xsd"
+    @namespace = "https://repository.dri.ie/edm/"
     @element_namespace = "edm"
   end
 
@@ -58,7 +58,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       "xmlns:dcterms" => "http://purl.org/dc/terms/",
       "xmlns:edm" => "http://www.europeana.eu/schemas/edm/",
       "xmlns:oai_dc" => "http://www.openarchives.org/OAI/2.0/oai_dc/",
-      "xmlns:oai_edm" =>  "https://repository.dri.ie/oai_edm/",
+      "xmlns:edm" =>  "https://repository.dri.ie/edm/",
       "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
       "xmlns:ore" => "http://www.openarchives.org/ore/terms/",
       "xmlns:skos" => "http://www.w3.org/2004/02/skos/core#",
@@ -68,9 +68,14 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       "xmlns:rdaGr2" => "http://rdvocab.info/ElementsGr2/",
       "xmlns:foaf" => "http://xmlns.com/foaf/0.1/",
       "xmlns:wgs84_pos" => "http://www.w3.org/2003/01/geo/wgs84_pos#",
+      "xmlns:ebucore" => "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#", 
+      "xmlns:doap" => "http://usefulinc.com/ns/doap#",
+      "xmlns:odrl" => "http://www.w3.org/ns/odrl/2/",
+      "xmlns:cc" => "http://creativecommons.org/ns#",
+      "xmlns:svcs" => "http://rdfs.org/sioc/services#",
       "xsi:schemaLocation" => %(
-        https://repository.dri.ie/oai_edm/
-        https://repository.dri.ie/oai_edm/oai_edm.xsd
+        https://repository.dri.ie/edm/
+        https://repository.dri.ie/edm/edm.xsd
       ).gsub(/\s+/, " "),
     }
   end
@@ -109,10 +114,29 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 lang = nil
               end
 
-              if k.match(/^(temporal|spatial|created|date|coverage)$/) 
-                # check for dcmi
+              if kl.match(/^(spatial|coverage)$/)
+                # if dcmi point or linked data uri from our AuthoritiesConfig
+                # we assume it is spatial and reference a contextual class here
+                # the contextual class will be created from the geojson data
+                # TODO: If we start to dereference other of URIs aside from
+                # logainm ones then this could break
                 dcmi_components = dcmi_parse(value)
-                if is_valid_dcmi?($1, dcmi_components)
+                if is_valid_point?(dcmi_components)
+                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
+                elsif valid_url?(value)
+                  host = URI(URI.encode(value.strip)).host
+                  if AuthoritiesConfig[host].present?
+                    xml.tag! "#{pref}:#{kl}", {"rdf:resource" => value}
+                  else
+                    xml.tag! "#{pref}:#{kl}", value
+                  end
+                else
+                    xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value
+                end
+              elsif kl.match(/^(temporal|created|date|coverage)$/) 
+                # If it's a dcmi period field then we can parse it
+                dcmi_components = dcmi_parse(value)
+                if is_valid_period?(dcmi_components) && dcmi_components['start']
                   contextual_classes.push(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
                 else
@@ -130,22 +154,27 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # If geojson field exists, make it into a contextual class
-      # Maybe not as linked data urls don't appear in the geojson
-      #record['geojson_ssim'].each do |geojson|
-      #  place = JSON.parse(geojson)
-      #  if place['geometry']['type'] == "Point"
-      #  end
-      #end
-
-      # Create contextual classes
-      contextual_classes.each do |cclass|
-        if cclass.keys.include?("north") && cclass.keys.include?("east")
-          xml.tag! "edm:Place", {"rdf:about" => "##{cclass['name']}"} do
-            xml.tag! "skos:preflabel", cclass['name']
-            xml.tag! "wgs84_pos:lat", cclass['north']
-            xml.tag! "wgs84_pos:long", cclass['east']
+      record['geojson_ssim'].each do |geojson|
+        place = JSON.parse(geojson)
+        if place['geometry']['type'] == "Point"
+          ga = place['properties']['nameGA']
+          en = place['properties']['nameEN'] || place['properties']['placename']
+          about = place['properties']['uri'] || place['properties']['placename']
+          east,north = place['geometry']['coordinates']
+          if north.present? && east.present?
+            xml.tag! "edm:Place", {"rdf:about" => about} do
+              xml.tag! "skos:preflabel", {"xml:lang" => "ga"}, ga unless ga.blank?
+              xml.tag! "skos:preflabel", {"xml:lang" => "en"}, en unless en.blank?
+              xml.tag! "wgs84_pos:lat", north
+              xml.tag! "wgs84_pos:long", east
+            end
           end
-        elsif cclass.keys.include?("start") && cclass.keys.include?("end")
+        end
+      end
+
+      # Create other contextual classes
+      contextual_classes.each do |cclass|
+        if cclass.keys.include?("start") && cclass.keys.include?("end")
           xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name']}"} do
             xml.tag! "skos:preflabel", cclass['name']
             xml.tag! "edm:begin", cclass['start']
@@ -229,16 +258,21 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     dcmi_components
   end
 
-  def is_valid_dcmi?(field, dcmi)
-    return false unless dcmi['name'].present?
-
-    case field
-    when "spatial" || "coverage"
-      return true if dcmi['east'].present? && dcmi['north'].present?
-    else
-      return true if dcmi['start'].present? && dcmi['end'].present?
-    end
+  def is_valid_period?(dcmi)
+    return true if dcmi['name'].present? && dcmi['start'].present? && dcmi['end'].present?
     return false
+  end
+
+  def is_valid_point?(dcmi)
+    return true if dcmi['name'].present? && dcmi['north'].present? && dcmi['east'].present?
+    return false
+  end
+
+  def valid_url?(url)
+    uri = URI.parse(url)
+    (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)) && !uri.host.nil?
+  rescue URI::InvalidURIError
+    false
   end
 
 end
