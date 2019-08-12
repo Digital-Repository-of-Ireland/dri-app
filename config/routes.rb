@@ -90,7 +90,7 @@ DriApp::Application.routes.draw do
 
     get 'iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
     get 'iiif/collection/:id', to: 'iiif#manifest', as: :iiif_collection_manifest
-    get 'iiif/sequence/:id', to: 'iiif#sequence', as: :iiif_collection_sequence
+    get 'iiif/:id/sequence', to: 'iiif#sequence', as: :iiif_collection_sequence
     get 'iiif/:id', to: 'iiif#show'
 
     resources :organisations, controller: :institutes
