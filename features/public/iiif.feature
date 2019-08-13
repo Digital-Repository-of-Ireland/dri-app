@@ -19,7 +19,7 @@ Scenario Outline: Published collections and objects with images should have a ii
 
   Examples:
     | id      | link                       |
-    | col1    | iiif/sequence/col1.json    |
+    | col1    | iiif/col1/sequence.json    |
     | object1 | iiif/object1/manifest.json |
 
 Scenario Outline: Unpublished collections and objects with images should not have a iiif link

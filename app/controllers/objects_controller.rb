@@ -5,6 +5,7 @@ require 'solr/query'
 class ObjectsController < BaseObjectsController
   include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
+  include Preservation::PreservationHelpers
 
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
@@ -197,7 +198,18 @@ class ObjectsController < BaseObjectsController
   def destroy
     enforce_permissions!('edit', params[:id])
 
-    @object = retrieve_object!(params[:id])
+    id = params[:id]
+    begin
+      @object = retrieve_object(id)
+    rescue Ldp::HttpError
+      doc = SolrDocument.find(id)
+      delete_if_incomplete(id)
+
+      respond_to do |format|
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: doc.collection_id }
+      end
+      return
+    end
 
     if @object.status == 'published' && !current_user.is_admin?
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
@@ -415,6 +427,16 @@ class ObjectsController < BaseObjectsController
       )
       group.reader_group = true
       group.save
+    end
+
+    def delete_if_incomplete(id)
+      if File.exist?(aip_dir(id))
+        flash[:alert] = t('dri.flash.alert.delete_error')
+        return
+      end
+
+      ActiveFedora::SolrService.delete(id)
+      flash[:notice] = t('dri.flash.notice.object_deleted')
     end
 
     def find_assets_and_surrogates(doc)

@@ -1,4 +1,4 @@
-@javascript @stub_requests
+@javascript @stub_qa
 Feature: Autocomplete
   In order to manage my Digital Objects
   As an authorized user
@@ -30,21 +30,17 @@ Scenario: Choosing an autocomplete result
   And I click the first autocomplete result
   Then the text in "batch_temporal_coverage][" should have link styling
 
-@wip
 Scenario: Choosing an autocomplete result should save the label text and hidden URL of the subject
   When I press the edit collection button with text "Add Subject"
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
   Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
 
-@wip
 Scenario: Choosing an autocomplete result, then changing your mind
   When I press the edit collection button with text "Add Subject"
   And I fill in "batch_subject][" with "Dublin"
   And I click the first autocomplete result
   Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
-  # # Tested without puffing billy stubbing
-  # Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/id.loc.gov\/authorities\/subjects\/sh2004010472"
   And the text in "batch_subject][" should have link styling
   When I fill in "batch_subject][" with "asdf"
   Then I should not see a hidden "input#batch_subject][" within "fieldset#subject"
