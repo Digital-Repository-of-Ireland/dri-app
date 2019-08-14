@@ -4,10 +4,29 @@ class ActivityController < ApplicationController
 
   PER_PAGE = 50
 
+   ROOT = Class.new do
+            def id
+              'root'
+            end
+
+            def collection_id
+              nil
+            end
+
+            def collection?
+              true
+            end
+          end
+
   def show
     id = params[:id]
 
-    @document = SolrDocument.find(id)
+    @document = if id == "root"
+                  ROOT.new
+                else
+                  SolrDocument.find(id)
+                end
+
     unless access_permitted?
       head :unauthorized, content_type: "text/html"
       return
@@ -32,7 +51,11 @@ class ActivityController < ApplicationController
     collection_id = params[:collection_id]
     page_id = params[:id].to_i
 
-    @document = SolrDocument.find(collection_id)
+     @document = if collection_id == "root"
+                  ROOT.new
+                else
+                  SolrDocument.find(collection_id)
+                end
     unless access_permitted?
       head :unauthorized, content_type: "text/html"
       return
@@ -63,6 +86,8 @@ class ActivityController < ApplicationController
   end
 
   def ordered_items_query
+    return root_collection_query if @document.id == 'root'
+
     q_str = child_objects_query
 
     # with sub-collections
@@ -75,6 +100,17 @@ class ActivityController < ApplicationController
     q_str
   end
 
+  def root_collection_query
+    # query for objects within this collection
+    q_str = "-#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"[* TO *]\""
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+
+    unless current_user && current_user.is_admin?
+      q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
+    end
+
+    q_str
+  end
 
   def ordered_items(page_id)
     query_args = { raw: true,

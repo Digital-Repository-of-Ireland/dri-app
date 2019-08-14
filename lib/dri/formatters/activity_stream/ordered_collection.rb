@@ -14,10 +14,14 @@ class DRI::Formatters::ActivityStream::OrderedCollection
     ordered_collection = IIIF::Discovery::OrderedCollection.new
     ordered_collection.id = activity_url(@object_doc.id, format: :json)
     ordered_collection.total_items = @child_count
-    ordered_collection.see_also << IIIF::Discovery::SeeAlso.new(
-                                    'id' => catalog_url(@object_doc.id, format: :json),
-                                    'format' => "application/json"
-                                   )
+
+    unless @object_doc.id == 'root'
+      ordered_collection.see_also << IIIF::Discovery::SeeAlso.new(
+                                      'id' => catalog_url(@object_doc.id, format: :json),
+                                      'format' => "application/json"
+                                     )
+    end
+
     if @object_doc.collection_id
       ordered_collection.part_of = [
                                      IIIF::Discovery::PartOf.new(
