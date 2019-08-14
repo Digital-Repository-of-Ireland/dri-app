@@ -154,19 +154,21 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # If geojson field exists, make it into a contextual class
-      record['geojson_ssim'].each do |geojson|
-        place = JSON.parse(geojson)
-        if place['geometry']['type'] == "Point"
-          ga = place['properties']['nameGA']
-          en = place['properties']['nameEN'] || place['properties']['placename']
-          about = place['properties']['uri'] || place['properties']['placename']
-          east,north = place['geometry']['coordinates']
-          if north.present? && east.present?
-            xml.tag! "edm:Place", {"rdf:about" => about} do
-              xml.tag! "skos:preflabel", {"xml:lang" => "ga"}, ga unless ga.blank?
-              xml.tag! "skos:preflabel", {"xml:lang" => "en"}, en unless en.blank?
-              xml.tag! "wgs84_pos:lat", north
-              xml.tag! "wgs84_pos:long", east
+      if record['geojson_ssim'].present?
+        record['geojson_ssim'].each do |geojson|
+          place = JSON.parse(geojson)
+          if place['geometry']['type'] == "Point"
+            ga = place['properties']['nameGA']
+            en = place['properties']['nameEN'] || place['properties']['placename']
+            about = place['properties']['uri'] || place['properties']['placename']
+            east,north = place['geometry']['coordinates']
+            if north.present? && east.present?
+              xml.tag! "edm:Place", {"rdf:about" => about} do
+                xml.tag! "skos:preflabel", {"xml:lang" => "ga"}, ga unless ga.blank?
+                xml.tag! "skos:preflabel", {"xml:lang" => "en"}, en unless en.blank?
+                xml.tag! "wgs84_pos:lat", north
+                xml.tag! "wgs84_pos:long", east
+              end
             end
           end
         end
