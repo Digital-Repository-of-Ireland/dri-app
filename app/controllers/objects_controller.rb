@@ -471,7 +471,7 @@ class ObjectsController < BaseObjectsController
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
-          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
+          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end
