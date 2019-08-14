@@ -189,10 +189,17 @@ module DRI::IIIFViewable
   end
 
   def child_objects
+    q_str = child_objects_query
+
+    # only want objects with at least one file
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
+    # and the file(s) are images
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
+
     # exclude sub-collections
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
-    query = Solr::Query.new(child_objects_query, 100, fq: f_query)
+    query = Solr::Query.new(q_str, 100, fq: f_query)
     query.to_a
   end
 
@@ -203,8 +210,6 @@ module DRI::IIIFViewable
     unless current_user && current_user.is_admin?
       q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
     end
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
 
     q_str
   end

@@ -17,11 +17,13 @@ class DRI::Formatters::ActivityStream::OrderedCollection
     ordered_collection.see_also << IIIF::Discovery::SeeAlso.new(
                                     'id' => catalog_url(@object_doc.id, format: :json),
                                     'format' => "application/json"
-                                  )
+                                   )
     if @object_doc.collection_id
-      ordered_collection.part_of << IIIF::Discovery::PartOf.new(
-                                      'id' => activity_url(@object_doc.collection_id, format: :json)
-                                    )
+      ordered_collection.part_of = [
+                                     IIIF::Discovery::PartOf.new(
+                                       'id' => activity_url(@object_doc.collection_id, format: :json)
+                                     )
+                                   ]
     end
     ordered_collection.first = IIIF::Discovery::Page.new(
                                  'id' => activity_page_url(@object_doc.id, 0, format: :json),
