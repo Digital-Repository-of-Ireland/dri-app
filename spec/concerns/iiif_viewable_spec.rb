@@ -55,6 +55,10 @@ describe DRI::IIIFViewable do
     def initialize(object)
       @document = object
     end
+
+    def current_user
+      nil
+    end
   end
   }
 

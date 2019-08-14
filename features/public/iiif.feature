@@ -42,7 +42,6 @@ Scenario: Collections with no images should not have a iiif link
   When I am on the show Digital Object page for id col2
   Then I should not see the image "Iiif logo"
 
-@test
 Scenario: Objects with no image should not have a iiif link
   Given a collection with pid "col2" created by "admin"
   And a Digital Object with pid "object1" in collection "col2"
