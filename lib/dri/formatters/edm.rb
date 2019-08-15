@@ -31,15 +31,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       coverage_eng: 'coverage_eng_tesim',
       coverage_gle: 'coverage_gle_tesim',
       date: 'date_tesim',
-      created: 'creation_date_tesim'
+      created: 'creation_date_tesim',
+      contributor: 'person_tesim'
     },
     dcterms: {
       isPartOf: "collection_id_tesim",
-      #spatial_eng: "geographical_coverage_eng_tesim",
-      #spatial_gle: "geographical_coverage_gle_tesim",
-      spatial: "geographical_coverage_tesim",
-      #temporal_eng: "temporal_coverage_eng_tesim",
-      #temporal_gle: "temporal_coverage_gle_tesim",
+      spatial_eng: "geographical_coverage_eng_tesim",
+      spatial_gle: "geographical_coverage_gle_tesim",
       temporal: "temporal_coverage_tesim",
       license: lambda do |record|
         licence = record.licence
@@ -47,7 +45,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
     },
     edm: {
-      type: "type_tesim"
+      type: "object_type_ssm"
     },
   }.freeze
 
@@ -105,6 +103,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                        value_for(v, record.to_h, {})
                      end
 
+            if pref.match(/^edm$/) && k.match(/^type$/)
+              xml.tag! "edm:type", get_edm_type(values)
+              next
+            end
+ 
             values.each do |value|
               if k.match(/(^.*)_(eng|gle)$/)
                 lang = $2
@@ -114,12 +117,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 lang = nil
               end
 
-              if kl.match(/^(spatial|coverage)$/)
-                # if dcmi point or linked data uri from our AuthoritiesConfig
-                # we assume it is spatial and reference a contextual class here
-                # the contextual class will be created from the geojson data
-                # TODO: If we start to dereference other of URIs aside from
-                # logainm ones then this could break
+              if kl.match(/^(spatial|coverage).*$/)
                 dcmi_components = dcmi_parse(value)
                 if is_valid_point?(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
@@ -130,13 +128,15 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                   else
                     xml.tag! "#{pref}:#{kl}", value
                   end
+                elsif lang.present?
+                  xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value
                 else
-                    xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value
+                  xml.tag! "#{pref}:#{kl}", value
                 end
-              elsif kl.match(/^(temporal|created|date|coverage)$/) 
+              elsif kl.match(/^(temporal|created|date|coverage).*$/) 
                 # If it's a dcmi period field then we can parse it
                 dcmi_components = dcmi_parse(value)
-                if is_valid_period?(dcmi_components) && dcmi_components['start']
+                if is_valid_period?(dcmi_components)
                   contextual_classes.push(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
                 else
@@ -275,6 +275,14 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)) && !uri.host.nil?
   rescue URI::InvalidURIError
     false
+  end
+
+  def get_edm_type(types)
+    types = types.map(&:upcase)
+    accepted_types = ["3D","VIDEO","SOUND","TEXT","IMAGE"]
+    accepted_types.each do |type|
+      return type if types.include?(type)
+    end
   end
 
 end
