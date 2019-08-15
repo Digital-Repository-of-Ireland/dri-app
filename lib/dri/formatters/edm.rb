@@ -209,6 +209,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
+      landing_page = record.doi || Rails.application.routes.url_helpers.catalog_url(record.id)
 
       mainfile = assets.shift
       if mainfile.present?
@@ -222,7 +223,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag!("edm:provider", "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence})
         xml.tag!("edm:isShownBy", {"rdf:resource" => imageUrl})
-        xml.tag!("edm:isShownAt", {"rdf:resource" => Rails.application.routes.url_helpers.catalog_url(record.id)})
+        xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
         assets.each do |file|
           url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
           xml.tag!("edm:hasView", {"rdf:resource" => url})
