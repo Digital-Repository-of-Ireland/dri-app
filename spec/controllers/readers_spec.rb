@@ -3,12 +3,12 @@ require 'rails_helper'
 describe ReadersController do
   include Devise::Test::ControllerHelpers
 
-  let(:manager_user) { FactoryBot.create(:collection_manager) }
-  let(:login_user) { FactoryBot.create(:user) }
+  before(:all) do
+    @manager_user = FactoryBot.create(:collection_manager)
+    @login_user = FactoryBot.create(:user)
 
-  before(:each) do
     @collection = FactoryBot.create(:collection)
-    @collection.manager_users_string = manager_user.email
+    @collection.manager_users_string = @manager_user.email
     @collection.save
     @collection.reload
 
@@ -25,9 +25,9 @@ describe ReadersController do
     @collection.save
   end
 
-  after(:each) do
-    login_user.delete
-    manager_user.delete
+  after(:all) do
+    @login_user.delete
+    @manager_user.delete
 
     @collection.delete
     @group.delete
@@ -35,29 +35,29 @@ describe ReadersController do
 
   describe 'POST read request' do
     it "creates a new pending membership" do
-      sign_in login_user
+      sign_in @login_user
 
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
 
       group = UserGroup::Group.find_by(name: @collection.id)
-      expect(login_user.member?(group.id)).to be_falsey
-      expect(login_user.pending_member?(group.id)).not_to be true
+      expect(@login_user.member?(group.id)).to be_falsey
+      expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
         post :create, { :id => @collection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
-      login_user.reload
-      expect(login_user.pending_member?(group.id)).to be true
+      @login_user.reload
+      expect(@login_user.pending_member?(group.id)).to be true
     end
   end
 
    describe 'POST read request for subcollection' do
 
     before(:each) do
-      sign_in login_user
+      sign_in @login_user
 
       @subcollection = FactoryBot.create(:collection)
-      @subcollection.manager_users_string = manager_user.email
+      @subcollection.manager_users_string = @manager_user.email
       @subcollection.save
 
       @subobject = FactoryBot.create(:sound)
@@ -75,14 +75,14 @@ describe ReadersController do
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
 
       group = UserGroup::Group.find_by(name: @collection.id)
-      expect(login_user.member?(group.id)).to be_falsey
-      expect(login_user.pending_member?(group.id)).not_to be true
+      expect(@login_user.member?(group.id)).to be_falsey
+      expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
         post :create, { :id => @subcollection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
-      login_user.reload
-      expect(login_user.pending_member?(group.id)).to be true
+      @login_user.reload
+      expect(@login_user.pending_member?(group.id)).to be true
     end
 
     it "creates a new pending membership in the subcollection read group" do
@@ -96,27 +96,28 @@ describe ReadersController do
 
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
 
-      expect(login_user.member?(subgroup.id)).to be_falsey
-      expect(login_user.pending_member?(subgroup.id)).not_to be true
+      expect(@login_user.member?(subgroup.id)).to be_falsey
+      expect(@login_user.pending_member?(subgroup.id)).not_to be true
 
       expect {
         post :create, { id: @subcollection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
-      login_user.reload
-      expect(login_user.pending_member?(subgroup.id)).to be true
-      expect(login_user.pending_member?(@group.id)).to be_falsey
+      @login_user.reload
+      expect(@login_user.pending_member?(subgroup.id)).to be true
+      expect(@login_user.pending_member?(@group.id)).to be_falsey
     end
   end
 
   describe 'UPDATE read request' do
     it "approves a pending membership" do
-      sign_in manager_user
+      sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      group = UserGroup::Group.find_by(name: @collection.id)
 
-      membership = login_user.join_group(@group.id)
 
-      post :update, { id: @collection.id, user_id: login_user.id }
+      membership = @login_user.join_group(group.id)
+      post :update, { id: @collection.id, user_id: @login_user.id }
 
       membership.reload
       expect(membership.approved?).to be true
@@ -125,18 +126,19 @@ describe ReadersController do
 
   describe 'DELETE read request' do
     it "approves a pending membership" do
-      sign_in manager_user
+      sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.id}"
+      group = UserGroup::Group.find_by(name: @collection.id)
 
-      membership = login_user.join_group(@group.id)
-      membership.approve_membership(manager_user.id)
+      membership = @login_user.join_group(group.id)
+      membership.approve_membership(@manager_user.id)
       membership.save
 
       expect {
-        delete :destroy, { id: @collection.id, user_id: login_user.id }
+        delete :destroy, { id: @collection.id, user_id: @login_user.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
-      expect(UserGroup::Membership.find_by(group_id: @group.id, user_id: login_user.id)).to be nil
+      expect(UserGroup::Membership.find_by(group_id: group.id, user_id: @login_user.id)).to be nil
     end
   end
 
