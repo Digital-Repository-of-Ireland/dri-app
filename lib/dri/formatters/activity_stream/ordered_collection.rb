@@ -16,10 +16,12 @@ class DRI::Formatters::ActivityStream::OrderedCollection
     ordered_collection.total_items = @child_count
 
     unless @object_doc.id == 'root'
-      ordered_collection.see_also << IIIF::Discovery::SeeAlso.new(
-                                      'id' => catalog_url(@object_doc.id, format: :json),
-                                      'format' => "application/json"
-                                     )
+      ordered_collection.see_also = [
+                                      IIIF::Discovery::SeeAlso.new(
+                                        'id' => catalog_url(@object_doc.id, format: :json),
+                                        'format' => "application/json"
+                                      )
+                                    ]
     end
 
     if @object_doc.collection_id
