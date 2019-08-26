@@ -18,7 +18,7 @@ describe AnalyticsController do
       sign_in login_user
 
       get :index
-      
+
       expect(flash[:error]).to be_present
     end
 
@@ -27,7 +27,7 @@ describe AnalyticsController do
       sign_in login_user
 
       get :index
-      
+
       expect(flash[:error]).to_not be_present
       expect(response.status).to eq 200
     end
@@ -41,8 +41,8 @@ describe AnalyticsController do
       sign_in login_user
 
       user = FactoryBot.create(:user)
-      get :show, id: 'test'
-      
+      get :show, params: { id: 'test' }
+
       expect(flash[:error]).to be_present
     end
 
@@ -50,8 +50,8 @@ describe AnalyticsController do
       login_user = FactoryBot.create(:collection_manager)
       sign_in login_user
 
-      get :show, id: 'test'
-      
+      get :show, params: { id: 'test' }
+
       expect(response.status).to eq 400
     end
 
@@ -60,8 +60,8 @@ describe AnalyticsController do
       sign_in login_user
 
       collection  = FactoryBot.create(:collection)
-      get :show, id: collection.id
-      
+      get :show, params: { id: collection.id }
+
       expect(flash[:error]).to_not be_present
       expect(response.status).to eq 200
     end

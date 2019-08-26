@@ -12,9 +12,9 @@ class FixityController < ApplicationController
 
     object = SolrDocument.new(result_doc.first)
     fixity(object)
-  
+
     respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_back(fallback_location: root_path) }
       format.json { render json: {}, status: :accepted }
     end
   end

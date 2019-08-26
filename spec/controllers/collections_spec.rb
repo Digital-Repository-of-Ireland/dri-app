@@ -29,7 +29,7 @@ describe CollectionsController do
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
-      
+
       @object = DRI::Batch.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
@@ -51,7 +51,7 @@ describe CollectionsController do
       expect(@collection.governed_items.size).to be == 1
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
-      delete :destroy, :id => @collection.id
+      delete :destroy, params: { :id => @collection.id }
     end
 
   end
@@ -89,10 +89,10 @@ describe CollectionsController do
       @object.save
 
       @collection.governed_items << @object
- 
+
       expect(PublishCollectionJob).to receive(:create)
-      post :publish, id: @collection.id
-    end    
+      post :publish, params: { id: @collection.id }
+    end
 
   end
 
@@ -110,30 +110,30 @@ describe CollectionsController do
     end
 
     it 'should return not-found for no cover image' do
-      get :cover, { id: @collection.id }
+      get :cover, params: { id: @collection.id }
       expect(response.status).to eq(404)
     end
 
     it 'should return not found if cover image cannot be found for storage interface' do
-      get :cover, { id: @collection.id }
+      get :cover, params: { id: @collection.id }
       expect(response.status).to eq(404)
     end
 
     it 'accepts a valid image' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.id, batch: { cover_image: @uploaded } }
       expect(flash[:notice]).to be_present
     end
 
     it 'rejects unsupported image format' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.tiff"), "image/tiff")
-      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.id, batch: { cover_image: @uploaded } }
       expect(flash[:error]).to be_present
     end
 
     it 'creates new AIP' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, { id: @collection.id, batch: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.id, batch: { cover_image: @uploaded } }
 
       expect(Dir.entries(aip_dir(@collection.id)).size - 2).to eq(2)
       expect(aip_valid?(@collection.id, 2)).to be true
@@ -142,7 +142,7 @@ describe CollectionsController do
   end
 
   describe 'update' do
-    
+
     it 'should allow a subcollection to be updated' do
       @collection = DRI::Batch.with_standard :qdc
       @collection[:title] = ["A collection"]
@@ -177,11 +177,11 @@ describe CollectionsController do
       @collection.governed_items << @subcollection
       @collection.reload
       @subcollection.reload
- 
+
       params = {}
       params[:batch] = {}
       params[:batch][:title] = ["A modified sub collection title"]
-      put :update, :id => @subcollection.id, :batch => params[:batch]
+      put :update, params: { id: @subcollection.id, :batch => params[:batch] }
       @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
 
@@ -224,7 +224,7 @@ describe CollectionsController do
       params[:batch][:title] = ["A modified title"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      put :update, params: { id: @collection.id, :batch => params[:batch] }
 
       DataciteDoi.where(object_id: @collection.id).first.delete
       Settings.doi.enable = false
@@ -266,7 +266,7 @@ describe CollectionsController do
       params[:batch][:title] = ["A collection"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      put :update, params: { id: @collection.id, :batch => params[:batch] }
 
       DataciteDoi.where(object_id: @collection.id).first.delete
       Settings.doi.enable = false
@@ -287,8 +287,8 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :create, :metadata_file => @file
-      expect(response).to be_success    
+      post :create, params: { metadata_file: @file }
+      expect(response).to be_successful
     end
 
   end
@@ -305,7 +305,7 @@ describe CollectionsController do
       @login_user = FactoryBot.create(:admin)
       sign_in @login_user
       @collection = FactoryBot.create(:collection)
-      
+
       request.env["HTTP_REFERER"] = search_catalog_path
     end
 
@@ -329,7 +329,7 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :create, metadata_file: @file
+      post :create, params: { metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 
@@ -339,7 +339,7 @@ describe CollectionsController do
       params[:batch][:title] = ["A collection"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      put :update, params: { id: @collection.id, :batch => params[:batch] }
 
       expect(flash[:error]).to be_present
     end
@@ -357,12 +357,12 @@ describe CollectionsController do
       sign_in @login_user
       @collection = FactoryBot.create(:collection)
       CollectionLock.create(collection_id: @collection.id)
-      
+
       request.env["HTTP_REFERER"] = search_catalog_path
     end
 
     after(:each) do
-      CollectionLock.delete_all(collection_id: @collection.id)
+      CollectionLock.where(collection_id: @collection.id).delete_all
       @collection.delete if ActiveFedora::Base.exists?(@collection.id)
       @login_user.delete
 
@@ -375,7 +375,7 @@ describe CollectionsController do
       params[:batch][:title] = ["A collection"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @collection.id, :batch => params[:batch]
+      put :update, params: { id: @collection.id, :batch => params[:batch] }
 
       expect(flash[:error]).to be_present
     end

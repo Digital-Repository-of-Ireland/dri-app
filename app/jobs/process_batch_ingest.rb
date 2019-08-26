@@ -75,7 +75,6 @@ class ProcessBatchIngest
 
   def self.ingest_metadata(collection_id, user, metadata)
     download_path = metadata[:path]
-
     # the metadata file could not be retrieved
     if download_path.start_with?('error:')
        update_master_file(metadata[:master_file_id], { status_code: 'FAILED', file_location: download_path })

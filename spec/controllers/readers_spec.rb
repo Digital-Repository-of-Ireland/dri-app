@@ -44,7 +44,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @collection.id }
+        post :create, params: { :id => @collection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
@@ -79,7 +79,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @subcollection.id }
+        post :create, params: { :id => @subcollection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
@@ -100,7 +100,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(subgroup.id)).not_to be true
 
       expect {
-        post :create, { id: @subcollection.id }
+        post :create, params: { id: @subcollection.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       @login_user.reload
@@ -117,7 +117,7 @@ describe ReadersController do
 
 
       membership = @login_user.join_group(group.id)
-      post :update, { id: @collection.id, user_id: @login_user.id }
+      post :update, params: { id: @collection.id, user_id: @login_user.id }
 
       membership.reload
       expect(membership.approved?).to be true
@@ -135,7 +135,7 @@ describe ReadersController do
       membership.save
 
       expect {
-        delete :destroy, { id: @collection.id, user_id: @login_user.id }
+        delete :destroy, params: { id: @collection.id, user_id: @login_user.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       expect(UserGroup::Membership.find_by(group_id: group.id, user_id: @login_user.id)).to be nil

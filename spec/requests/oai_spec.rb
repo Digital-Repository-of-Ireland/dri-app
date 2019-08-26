@@ -25,7 +25,7 @@ RSpec.describe "Oai requests", type: :request do
 
   it "renders the basic OAI response" do
     get "/oai?verb=Identify"
-    expect(response).to be_success
+    expect(response).to be_successful
     expect(response.body).to match(%r{https:\/\/repository.dri.ie\/oai})
   end
 
@@ -47,12 +47,12 @@ RSpec.describe "Oai requests", type: :request do
   end
 
   it "has a setSpec" do
-    get "/oai", { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
+    get "/oai", params: { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
     expect(response.body).to match(%r{<setSpec>collection:#{collection.id}<\/setSpec>})
   end
 
   it "has a record in the repo" do
-    get "/oai", { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
+    get "/oai", params: { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
     expect(response.body).to match(%r{<identifier>oai:dri:.*<\/identifier>})
   end
 

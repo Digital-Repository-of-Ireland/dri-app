@@ -3,28 +3,25 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '>= 4', '< 5'
-# fix rails dependency problem
-#gem 'sinatra'#, '1.4.8'
-#gem 'xmlrpc' # removed in ruby 2.4.0
+gem 'rails', '5.2.3'
 
 gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
-gem 'tzinfo-data'
 
-gem 'hydra-head', '~> 10.6'
+gem 'hydra-head', '10.6.2'
+gem 'active-fedora', '12.1.1'
 
 gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'rails52'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'rails52'
 gem 'paper_trail', '~> 4'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.2'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', branch: 'master'
 gem 'browse-everything', '1.0.0'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo', '2.6.0'
@@ -62,7 +59,7 @@ gem 'sparql-client', '~> 1.99'
 gem 'httparty'
 
 # static pages
-gem 'high_voltage', '~> 2.1.0'
+gem 'high_voltage', '~> 3.1'
 
 # monitoring
 # is it working fork
@@ -86,6 +83,7 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'rspec-rails'
+  gem 'rails-controller-testing'
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
   gem 'webdrivers'
@@ -102,6 +100,7 @@ group :development, :test do
   gem 'parallel_tests', '~> 2.23'
   #gem 'i18n-debug', '~> 1.2'
   gem 'yard'
+  gem 'listen'
 end
 
 group :test do
@@ -137,7 +136,7 @@ gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-glyphicons'
-gem 'sass-rails', '~> 4.0.4'
+gem 'sassc-rails'
 
 group :translations do
   gem 'i18n_sync'
@@ -175,7 +174,7 @@ gem 'rswag-ui', '~> 2.0'
 
 # authorities
 gem 'qa', '~> 1.2'
-gem 'rdf', '~> 1.99'
-gem 'rdf-vocab', '~> 0.8.8'
+#gem 'rdf', '~> 1.99'
+#gem 'rdf-vocab', '~> 0.8.8'
 
 gem "seedbank", "~> 0.5.0"

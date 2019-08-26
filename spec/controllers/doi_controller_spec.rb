@@ -39,7 +39,7 @@ describe DoiController do
     it "assigns @history" do
       doi = DataciteDoi.create(object_id: @object.id)
 
-      get :show, object_id: @object.id, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
+      get :show, params: { object_id: @object.id, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(assigns(:history)).to eq([doi])
     end
 
@@ -47,7 +47,7 @@ describe DoiController do
       initial_doi = DataciteDoi.create(object_id: @object.id)
       updated_doi = DataciteDoi.create(object_id: @object.id, modified: 'test update')
 
-      get :show, object_id: @object.id, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
+      get :show, params: { object_id: @object.id, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(flash[:notice]).to be_present
     end
 
@@ -55,7 +55,7 @@ describe DoiController do
       initial_doi = DataciteDoi.create(object_id: @object.id)
       updated_doi = DataciteDoi.create(object_id: @object.id, modified: 'test update')
 
-      get :show, object_id: @object.id, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
+      get :show, params: { object_id: @object.id, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(response).to redirect_to(solr_document_path(@object.id))
     end
 
@@ -74,7 +74,7 @@ describe DoiController do
       DataciteDoi.create(object_id: @collection.id)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, object_id: @collection.id, modified: 'objects added'
+      put :update, params: { object_id: @collection.id, modified: 'objects added' }
 
       DataciteDoi.where(object_id: @collection.id).first.delete
       @collection.delete
@@ -83,7 +83,7 @@ describe DoiController do
     it "returns 404 for unknown DOI" do
       doi = DataciteDoi.create(object_id: @object.id)
 
-      get :show, object_id: @object.id, id: 'aaa-9'
+      get :show, params: { object_id: @object.id, id: 'aaa-9' }
       expect(response.status).to eq(404)
     end
 

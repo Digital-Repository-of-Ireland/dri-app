@@ -15,7 +15,7 @@ feature 'Deleting a single object' do
   end
 
   after(:each) do
-    @login_user.delete
+    @login_user.destroy
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
@@ -28,18 +28,18 @@ feature 'Deleting a single object' do
     collection.creator = [@login_user.email]
     collection.save
 
-    object = FactoryBot.create(:sound) 
+    object = FactoryBot.create(:sound)
     object[:status] = "published"
     object.depositor=User.find_by_email(@login_user.email).to_s
     object.manager_users_string=User.find_by_email(@login_user.email).to_s
-    object.creator = [@login_user.email]  
-  
+    object.creator = [@login_user.email]
+
     object.save
 
     collection.governed_items << object
-  
+
     visit(my_collections_path(object.id))
-    
+
     expect(page).not_to have_link(I18n.t('dri.views.objects.buttons.delete_object'))
 
     collection.delete
@@ -63,7 +63,7 @@ feature 'Deleting a single object' do
     object.save
 
     collection.governed_items << object
-  
+
     visit(my_collections_path(object.id))
     click_button "submit_delete"
 
@@ -89,7 +89,7 @@ feature 'Deleting a single object' do
     end
 
     after(:each) do
-      @login_user.delete
+      @login_user.destroy
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
 
@@ -102,18 +102,18 @@ feature 'Deleting a single object' do
       collection.creator = [@login_user.email]
       collection.save
 
-      object = FactoryBot.create(:sound) 
+      object = FactoryBot.create(:sound)
       object[:status] = "published"
       object.depositor=User.find_by_email(@login_user.email).to_s
       object.manager_users_string=User.find_by_email(@login_user.email).to_s
-      object.creator = [@login_user.email]  
-  
+      object.creator = [@login_user.email]
+
       object.save
 
       collection.governed_items << object
-  
+
       visit(my_collections_path(object.id))
-    
+
       expect(page).to have_link(I18n.t('dri.views.objects.buttons.delete_object'))
 
       collection.delete
@@ -121,4 +121,4 @@ feature 'Deleting a single object' do
   end
 
 end
-    
+

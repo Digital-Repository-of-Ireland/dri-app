@@ -76,7 +76,6 @@ class SurrogatesController < ApplicationController
   def update
     raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!('edit', params[:id])
-
     result_docs = ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
     raise DRI::Exceptions::NotFound if result_docs.empty?
 
@@ -94,7 +93,7 @@ class SurrogatesController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_back(fallback_location: root_path) }
       format.json {}
     end
   end
@@ -135,7 +134,7 @@ class SurrogatesController < ApplicationController
       query.each do |file_doc|
         begin
           # only characterize if necessary
-          if file_doc[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].present?
+          if file_doc.characterized?
             # don't create surrogates of preservation only assets
             DRI.queue.push(CreateBucketJob.new(file_doc.id)) unless file_doc.preservation_only?
           else

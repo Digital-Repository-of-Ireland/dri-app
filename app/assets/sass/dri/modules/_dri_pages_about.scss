@@ -130,7 +130,8 @@ li {
         .dri_about_col01_02 {
             min-height: inherit;
             border-right: 0px;
-            @extend .dri_about_column;
+            border-right: 1px solid $dri_thingrey;
+            margin-top: $dri_column_margin_content_top;      
             @include zen-grid-item(2, 1);
         }
         .dri_about_col03 {
@@ -277,7 +278,8 @@ li {
                     display: block;
                     //min-height: 344px;
                     padding: 20px 0 0 0;
-                    @extend %thin_border;
+                    //@extend %thin_border;
+		    border: 1px solid $dri_thingrey;
                     .dri_about_lifecycle_infographic {
                         @include zen-grid-item(1, 1);
                         img {
@@ -335,7 +337,8 @@ li {
                     display: block;
                     padding: 0;
                     border: 0;
-                    @extend %thin_border;
+                    //@extend %thin_border;
+		    border: 1px solid $dri_thingrey;
                     .dri_about_lifecycle_infographic {
                         @include zen-grid-item(1, 1);
                         img {

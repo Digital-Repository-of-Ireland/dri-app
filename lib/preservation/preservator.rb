@@ -38,7 +38,7 @@ module Preservation
     # - name (datastream and file name)
     # - datastream (the value for that key from the datastreams hash
     def moabify_datastream(name, datastream)
-      data = datastream.content
+      data = datastream.to_xml
       return if data.nil?
 
       begin
@@ -100,7 +100,7 @@ module Preservation
         return false unless created
       else
         # metadata files cannot be added or deleted after object creation
-        updated = update_manifests({:modified => {'metadata' => dslist}})
+        updated = update_manifests({ modified: { 'metadata' => dslist } })
         return false unless updated
       end
 
