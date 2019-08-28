@@ -23,6 +23,8 @@ class ApplicationController < ActionController::Base
   include UserGroup::PermissionsCheck
   include UserGroup::Helpers
 
+  skip_after_action :discard_flash_if_xhr
+
   layout 'application'
 
   protect_from_forgery
