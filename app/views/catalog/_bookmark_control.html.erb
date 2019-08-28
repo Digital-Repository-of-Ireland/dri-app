@@ -5,9 +5,9 @@
 # the data-doc-id attribute is used by our JS that converts to a checkbox/label.
 -%>
 <li class="dri_bookmark_tool">
-	<label class="dri_bookmark"> 
+	<label class="dri_bookmark">
         <span class="dri_bookmark_object_label dri_float_left toggle_bookmark">
-        <% if local_assigns[:document][Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first == 'Collection' %>
+        <% if local_assigns[:document][ActiveFedora.index_field_mapper.solr_name('object_type', :displayable, type: :string).to_sym].first == 'Collection' %>
         <%= t('dri.views.catalog.forms.bookmark_collection') %>
         <% else %>
         <%= t('dri.views.catalog.forms.bookmark_object') %>

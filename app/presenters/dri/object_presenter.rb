@@ -63,10 +63,10 @@ module DRI
     end
 
     def display_child(child_doc)
-      link_text = child_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+      link_text = child_doc[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)].first
       # FIXME: For now, the EAD type is indexed last in the type solr index, review in the future
-      type = child_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
-      cover = child_doc[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].presence
+      type = child_doc[ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)].last
+      cover = child_doc[ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string).to_sym].presence
 
       child = Child.new
       child.id = child_doc['id']

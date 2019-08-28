@@ -229,7 +229,7 @@ module FacetsHelper
     display_value = facet_display_value(facet_solr_field, item)
     return if display_value == 'nil'
 
-    path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
+    path = search_action_path(search_state.add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
       display_value + " (#{item.hits})",
