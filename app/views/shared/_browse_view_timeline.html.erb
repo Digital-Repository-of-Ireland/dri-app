@@ -3,8 +3,7 @@
   <b><%= t('dri.views.catalog.legends.timeline_display_field') %>:&nbsp;</b>
   <select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title') %>" data-trigger="hover" data-placement="auto right">
 
-    <% current_params = params.clone %>
-    <% current_params.delete(:tl_field) %>
+    <% current_params = params.except(:tl_field).clone.permit! %>
 
     <% @timeline_data[:available_fields].each do |field,text| %>
       <% current_params[:tl_field] = field %>
