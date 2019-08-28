@@ -16,14 +16,11 @@
       <% end %>
       <%
         search_fields_for_advanced_search.keys.each { |k| copyParams.delete(k.to_sym)}
-        copyParams.delete(:f_inclusive)
-        copyParams.delete(:f)
-        copyParams.delete(:q)
-        copyParams = copyParams.except(*[:c_date, :p_date, :s_date, :year_from, :year_to])
+        copyParams = copyParams.except(*[:f_inclusive, :f, :q, :c_date, :p_date, :s_date, :year_from, :year_to])
       %>
 
       <span class="dri_clear_all">
-        <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), main_app.search_catalog_path(copyParams), :id => 'browse_clear_all' %>
+        <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), url_for(copyParams.permit!), id: 'browse_clear_all' %>
       </span>
     </ul>
   </div>
