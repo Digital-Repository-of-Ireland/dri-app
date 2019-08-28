@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '5.2.3'
+gem 'rails', '~> 5.2.0'
 
 gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
@@ -11,6 +11,7 @@ gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ir
 
 gem 'hydra-head', '10.6.2'
 gem 'active-fedora', '12.1.1'
+gem 'solrizer'
 
 gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
@@ -136,7 +137,9 @@ gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-glyphicons'
-gem 'sassc-rails'
+gem 'sassc-rails', '>= 2.1.0'
+gem 'sass-rails', '5.1.0' 
+gem 'sass'
 
 group :translations do
   gem 'i18n_sync'
