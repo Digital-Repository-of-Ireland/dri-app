@@ -1,5 +1,5 @@
 # This migration comes from user_group (originally 20140526160017)
-class CreateAuthentications < ActiveRecord::Migration
+class CreateAuthentications < ActiveRecord::Migration[4.2]
   def up
     create_table :user_group_authentications do |t|
       t.integer :user_id

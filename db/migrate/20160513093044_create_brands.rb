@@ -1,4 +1,4 @@
-class CreateBrands < ActiveRecord::Migration
+class CreateBrands < ActiveRecord::Migration[4.2]
   def up
     create_table :brands do |t|
       t.string :filename
