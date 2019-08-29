@@ -19,7 +19,10 @@ gem 'openseadragon'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'rails52'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'rails52'
+gem 'devise', '~> 4.6.2'
 gem 'paper_trail', '~> 4'
+
+gem 'linkeddata'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', branch: 'master'
@@ -137,7 +140,7 @@ gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '3.4.1'
 gem 'bootstrap-glyphicons'
-gem 'sassc-rails', '>= 2.1.0'
+#gem 'sassc-rails', '>= 2.1.0'
 gem 'sass-rails', '5.1.0' 
 gem 'sass'
 
