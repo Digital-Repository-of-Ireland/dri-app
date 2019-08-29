@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   layout 'application'
 
-  protect_from_forgery
+  protect_from_forgery prepend: true
 
   rescue_from Hydra::AccessDenied, with: :render_access_denied
   rescue_from DRI::Exceptions::InternalError, with: :render_internal_error
