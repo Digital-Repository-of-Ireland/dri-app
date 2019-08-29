@@ -40,15 +40,15 @@ module PathTranslator
         user_group.profile_path
 
       when /^sign in$/
-        new_user_session_path
+        user_group.new_user_session_path
 
       # This should not be used as we cannot send a delete
       # Instead we should follow the sign out link
       when /^sign out$/
-        destroy_user_session_path
+        user_group.destroy_user_session_path
 
       when /^(the )?User Signin page$/
-        new_user_session_path
+        user_group.new_user_session_path
 
       when /^(the )?User Sign up page$/
         user_group.new_user_path

@@ -73,7 +73,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    main_app.new_user_session_url
+    user_group.new_user_session_url
   end
 
   # Retrieves a Fedora Digital Object by ID

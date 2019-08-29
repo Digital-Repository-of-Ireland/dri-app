@@ -1,6 +1,6 @@
 require 'resque/server'
 
-DriApp::Application.routes.draw do
+Rails.application.routes.draw do
   mount Qa::Engine => '/qa'
 
   mount Rswag::Ui::Engine => '/api-docs', as: 'rswag'
@@ -45,12 +45,6 @@ DriApp::Application.routes.draw do
     end
 
     devise_for :users, :skip => [:sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
-
-    devise_scope :user do
-      get '/users/sign_in', :to => 'sessions#new', :as => :new_user_session
-      post '/users/sign_in', :to => 'sessions#create', :as => :user_session
-      delete '/users/sign_out', :to => 'sessions#destroy', :as => :destroy_user_session
-    end
 
     get 'objects/:object_id/files/:id', to: 'surrogates#show', constraints: { query_string: /surrogate=([^&]*)/ }
     resources :objects, :only => ['new', 'edit', 'update', 'create', 'show', 'destroy'] do
