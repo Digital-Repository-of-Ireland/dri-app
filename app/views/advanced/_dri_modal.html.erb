@@ -12,7 +12,7 @@
 
       <div class="modal-body">
         <%= form_tag main_app.search_catalog_path, :class => 'advanced form-horizontal', :method => :get do  %>
-          <%= render_hash_as_hidden_fields(params_for_search(advanced_search_context, {})) %>
+          <%= render_hash_as_hidden_fields(search_state.params_for_search(advanced_search_context)) %>
           <%= render 'advanced/dri_search_fields' %>
           <hr>
           <%= render 'advanced/dri_submit_buttons' %>
