@@ -47,7 +47,7 @@ gem 'mimemagic'
 # Language and translation related gems
 gem 'http_accept_language'
 gem 'it'
-gem 'i18n-tasks' #, '~> 0.9.15'
+gem 'i18n-tasks'
 gem 'i18n-js'
 
 # logging
@@ -138,11 +138,10 @@ end
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
-gem 'bootstrap-sass', '3.4.1'
+gem 'bootstrap-sass', '~> 3.4.1'
 gem 'bootstrap-glyphicons'
-#gem 'sassc-rails', '>= 2.1.0'
-gem 'sass-rails', '5.1.0' 
-gem 'sass'
+gem 'sassc-rails', '>= 2.1.0'
+gem 'sass-rails', '5.1.0'
 
 group :translations do
   gem 'i18n_sync'
@@ -180,7 +179,5 @@ gem 'rswag-ui', '~> 2.0'
 
 # authorities
 gem 'qa', '~> 1.2'
-#gem 'rdf', '~> 1.99'
-#gem 'rdf-vocab', '~> 0.8.8'
 
 gem "seedbank", "~> 0.5.0"

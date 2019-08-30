@@ -1,5 +1,5 @@
 
-@import 'bootstrap/glyphicons';
+//@import 'bootstrap/glyphicons';
 @import "bootstrap-sprockets";
 @import "bootstrap";
 /* for bootstrap3 */
@@ -15,9 +15,10 @@
 @import "datatables";
 @import "timelineJS3";
 @import "dri_batch_ingest";
-/*Import the Zen Grids files*/
 
+/*Import the Zen Grids files*/
 @import "_dri_init";
+
 @import "vendor/zen/_grids";
 @import "vendor/zen/_base";
 @import "vendor/zen/_background";
@@ -26,8 +27,8 @@
 @import "vendor/bootstrap-duallistbox";
 
 /* modules */
+@import "_modules";
 
-@import "_modules.scss";
 .dri_wrapper {
     $zen-column-count: 4;
     width: 1024px;
