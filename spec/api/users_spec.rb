@@ -1,7 +1,7 @@
 require 'swagger_helper'
 
 describe 'Users API' do
-  path '/users/sign_out' do
+  path '/user_groups/users/sign_out' do
     include_context 'collection_manager_user'
     delete 'Signs the current user out' do
       tags 'users'
@@ -13,7 +13,7 @@ describe 'Users API' do
       end
     end
   end
-  path '/users/sign_in' do
+  path '/user_groups/users/sign_in' do
     post 'Signs the user in' do
       tags 'users'
       consumes 'multipart/form-data'
