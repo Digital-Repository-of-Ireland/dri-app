@@ -8,7 +8,7 @@ feature 'Deleting a single object' do
 
     @login_user = FactoryBot.create(:collection_manager)
 
-    visit new_user_session_path
+    visit user_group.new_user_session_path
     fill_in "user_email", with: @login_user.email
     fill_in "user_password", with: @login_user.password
     click_button "Login"
@@ -82,7 +82,7 @@ feature 'Deleting a single object' do
 
       @login_user = FactoryBot.create(:admin)
 
-      visit new_user_session_path
+      visit user_group.new_user_session_path
       fill_in "user_email", with: @login_user.email
       fill_in "user_password", with: @login_user.password
       click_button "Login"

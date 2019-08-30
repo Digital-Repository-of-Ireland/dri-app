@@ -28,7 +28,7 @@ Given /^I am logged in as "([^\"]*)" and accept cookies$/ do |login|
   email = "#{login}@#{login}.com"
   @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm
-  delete destroy_user_session_path(@user)
+  delete user_group.destroy_user_session_path(@user)
   visit path_to("sign in")
   step 'I accept cookies terms'
   fill_in("user_email", :with => email)
