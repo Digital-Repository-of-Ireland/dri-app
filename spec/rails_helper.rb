@@ -8,8 +8,8 @@ end
 
 if !zeus_running? && ENV["RUN_COVERAGE"]
     require 'simplecov'
-    require 'simplecov-rcov'
-    SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+    require 'coveralls'
+    SimpleCov.formatter = Coveralls::SimpleCov::Formatter
     SimpleCov.start do 
         add_filter "/spec/"
         add_filter "/config/"
