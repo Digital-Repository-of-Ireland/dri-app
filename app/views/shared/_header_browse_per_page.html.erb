@@ -3,7 +3,7 @@
 
 	<select id="dri_page_options_id" class="dri_select" name="per_page" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
 		<%- blacklight_config.per_page.each do |count| %>
-			<% current_params = params.clone.permit! %>
+			<% current_params = search_state.params_for_search %>
 			<% current_params[:per_page] = count %>
 			<% unless current_params[:page].blank? %>
 			  <% current_params.delete(:page) %>

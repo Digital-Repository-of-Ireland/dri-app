@@ -6,13 +6,12 @@
 
       <%= render_workspace_constraints_query(params) + render_constraints_filters(params) %>
 
-      <% copyParams = params.clone %>
+      <% copyParams = search_state.to_h.clone %>
       <% if copyParams[:mode].nil? %>
         <% copyParams[:mode] = "objects" %>
         <% copyParams[:search_field] = "all_fields" %>
       <% end %>
       <% options = copyParams.except(*[:f, :q_ws, :c_date, :p_date, :s_date, :year_from, :year_to]) %>
-      <% options.permit! %>
 
       <span class="dri_clear_all">
         <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), url_for(options), id: 'browse_clear_all' %>

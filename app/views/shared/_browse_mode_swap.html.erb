@@ -17,7 +17,7 @@
 					{
 						mode: mode.include?('collections') ? 'collections' : 'objects',
 						show_subs: mode == 'subcollections' ? 'true' : 'false',
-					}.merge(params.except(*[:mode, :show_subs]).permit!)
+					}.merge(search_state.params_for_search.except(*[:mode, :show_subs]))
 				end
 
 				collections_params, subcollections_params, objects_params = param_modes

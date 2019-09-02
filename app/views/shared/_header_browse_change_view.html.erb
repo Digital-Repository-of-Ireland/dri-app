@@ -1,6 +1,6 @@
 <% if has_browse_params? && controller_name != 'advanced' %>
 <nav id="dri_display_grid_table_id" class="dri_sort_nav">
-	<% changeViewParams = params.clone.permit! %>
+	<% changeViewParams = search_state.to_h.clone %>
 
 	<div class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
 
