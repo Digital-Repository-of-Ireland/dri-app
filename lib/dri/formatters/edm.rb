@@ -56,8 +56,6 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       "xmlns:dcterms" => "http://purl.org/dc/terms/",
       "xmlns:edm" => "http://www.europeana.eu/schemas/edm/",
       "xmlns:oai_dc" => "http://www.openarchives.org/OAI/2.0/oai_dc/",
-      "xmlns:edm" =>  "https://repository.dri.ie/edm/",
-      "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
       "xmlns:ore" => "http://www.openarchives.org/ore/terms/",
       "xmlns:skos" => "http://www.w3.org/2004/02/skos/core#",
       "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
@@ -71,10 +69,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       "xmlns:odrl" => "http://www.w3.org/ns/odrl/2/",
       "xmlns:cc" => "http://creativecommons.org/ns#",
       "xmlns:svcs" => "http://rdfs.org/sioc/services#",
-      "xsi:schemaLocation" => %(
-        https://repository.dri.ie/edm/
-        https://repository.dri.ie/edm/edm.xsd
-      ).gsub(/\s+/, " "),
+      "xmlns:sch" => "http://purl.oclc.org/dsdl/schematron"
     }
   end
 
