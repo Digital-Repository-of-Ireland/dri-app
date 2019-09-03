@@ -107,6 +107,8 @@ class MetadataController < ApplicationController
         version_and_record_committer(@object, current_user)
         update_or_mint_doi
 
+        retrieve_linked_data
+
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve(false, false, ['descMetadata', 'properties'])
 
@@ -157,5 +159,15 @@ class MetadataController < ApplicationController
       end
       doi.update_metadata(doi_metadata_fields)
       update_doi(@object, doi, 'metadata update') if doi.changed?
+    end
+
+    def retrieve_linked_data
+      if AuthoritiesConfig
+        begin
+          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
+        rescue Exception => e
+          Rails.logger.error "Unable to submit linked data job: #{e.message}"
+        end
+      end
     end
 end
