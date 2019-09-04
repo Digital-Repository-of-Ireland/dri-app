@@ -1,11 +1,11 @@
 require 'simplecov'
-require 'coveralls'
+require 'simplecov-rcov'
 require 'active_fedora/cleaner'
 
 class SimpleCov::Formatter::MergedFormatter
   def format(result)
     SimpleCov::Formatter::HTMLFormatter.new.format(result)
-    Coveralls::SimpleCov::Formatter.new.format(result)
+    SimpleCov::Formatter::RcovFormatter.new.format(result)
   end
 end
 SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter

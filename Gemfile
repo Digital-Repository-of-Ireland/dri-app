@@ -92,7 +92,7 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'webdrivers'
   gem 'simplecov'
-  gem 'coveralls'
+  gem 'simplecov-rcov'
   gem 'railroady'
   gem 'show_me_the_cookies'
   gem 'better_errors'
