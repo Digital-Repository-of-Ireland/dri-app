@@ -10,7 +10,7 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-ruby_version=2.4.6
+ruby_version=2.5.6
 
 rvm use ruby-$ruby_version || exit 100
 
@@ -58,7 +58,8 @@ __EOF__
     bundle exec rake db:seed
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
-    
+    bundle exec rake db:environment:set RAILS_ENV=test
+
     bundle exec rake server:start
     bundle exec rake server:config
     

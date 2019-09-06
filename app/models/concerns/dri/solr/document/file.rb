@@ -17,6 +17,11 @@ module DRI::Solr::Document::File
     ordered ? sort_assets(assets) : assets
   end
 
+  def characterized?
+    # not characterized if all empty
+    !self[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+  end
+
   def sort_assets(assets)
     assets.sort do |a,b|
       DRI::Sorters.trailing_digits_sort(

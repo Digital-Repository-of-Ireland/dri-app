@@ -36,13 +36,13 @@ describe SurrogatesController do
     it 'should update a collections surrogates' do
       request.env["HTTP_REFERER"] = "/"
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
-      put :update, id: @collection.id
+      put :update, params: { id: @collection.id }
     end
 
     it 'should update an objects surrogates' do
       request.env["HTTP_REFERER"] = "/"
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
-      put :update, id: @object.id
+      put :update, params: { id: @object.id }
     end
 
     it 'should update multiple files' do
@@ -53,7 +53,7 @@ describe SurrogatesController do
 
       request.env["HTTP_REFERER"] = "/"
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).twice
-      put :update, id: @object.id
+      put :update, params: { id: @object.id }
 
       @gf2.delete
     end
@@ -63,12 +63,12 @@ describe SurrogatesController do
   describe 'show' do
 
     it 'should return 404 for a surrogate that does not exist' do
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
       generic_file.batch = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.save
 
-      get :show, { object_id: @object.id, id: generic_file.id, surrogate: 'thumbnail' }
+      get :show, params: { object_id: @object.id, id: generic_file.id, surrogate: 'thumbnail' }
       expect(response.status).to eq(404)
     end
 
@@ -85,7 +85,7 @@ describe SurrogatesController do
       @object.save
       @object.reload
 
-      generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
       generic_file.batch = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.mime_type = "audio/mp3"
@@ -105,7 +105,7 @@ describe SurrogatesController do
       storage.create_bucket(@object.id)
       storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.id}_mp3.mp3")
 
-      get :download, id: file_id, object_id: @object.id, type: 'surrogate'
+      get :download, params: { id: file_id, object_id: @object.id, type: 'surrogate' }
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('audio/mpeg')
     end

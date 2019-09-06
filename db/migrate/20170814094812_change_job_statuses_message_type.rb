@@ -1,4 +1,4 @@
-class ChangeJobStatusesMessageType < ActiveRecord::Migration
+class ChangeJobStatusesMessageType < ActiveRecord::Migration[4.2]
   def self.up
     change_table :job_statuses do |t|
       t.change :message, :text

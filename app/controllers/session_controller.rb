@@ -1,5 +1,4 @@
 class SessionController < ApplicationController
-  rescue_from ActionController::RedirectBackError, with: :redirect_to_default
 
   def create
     cookies.delete :lang unless cookies[:lang].nil?
@@ -13,11 +12,6 @@ class SessionController < ApplicationController
     end
     params.delete(:id)
     params.delete(:metadata_language)
-    #TODO: change to redirect_back when we upgrade to Rails 5
-    redirect_to(:back)
-  end
-
-  def redirect_to_default
-    redirect_to main_app.root_path
+    redirect_back(fallback_location: root_path)
   end
 end

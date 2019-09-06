@@ -13,6 +13,7 @@ if !zeus_running? && ENV["RUN_COVERAGE"]
     SimpleCov.start do 
         add_filter "/spec/"
         add_filter "/config/"
+	add_filter "/features/"
     end
 end
 

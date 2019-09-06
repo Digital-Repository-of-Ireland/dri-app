@@ -1,7 +1,7 @@
 ﻿<!-- HTML for static distribution bundle build -->
 <% 
-  def main_app
-    Rails.application.class.routes.url_helpers
+  def user_group_url
+    Rails.application.class.routes.url_helpers.user_group_url
   end
 %>
 
@@ -128,7 +128,7 @@
           generate_token_button.style.height = "36px";
           generate_token_button.id = "login";
           generate_token_button.onclick = function() {
-            window.location.href = "<%= main_app.new_user_session_url %>";
+            window.location.href = "<%= "#{user_group_url}/users/sign_in" %>";
           }
           var parent = document.querySelector("section.schemes");
           var auth_button = document.querySelector("section.schemes > .auth-wrapper");

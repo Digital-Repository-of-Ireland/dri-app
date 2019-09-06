@@ -27,9 +27,7 @@ module DRI::Solr::Document
     end
 
     def identifier
-      profile = JSON.parse(self['object_profile_ssm'].first)
-
-      id = profile['identifier'].presence
+      metadata('qdc_id')
     end
 
     def published_date

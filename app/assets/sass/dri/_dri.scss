@@ -195,7 +195,7 @@ input[type="color"],
 }
 .field_with_errors input {
     background-color: $dri_white;
-    color: darkenn($dri_red, 20%);
+    color: darken($dri_red, 20%);
     margin: 0 0 4px 0;
     padding: 6px 13px 6px 15px;
     @include border_radius (3px);
@@ -1616,7 +1616,7 @@ p.dri_rss_link a {
     }
     .dri_collection_image {
         padding: 0;
-        #margin: 0 14px 0 14px;
+        //margin: 0 14px 0 14px;
         height: 128px;
         overflow: hidden;
     }

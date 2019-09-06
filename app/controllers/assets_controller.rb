@@ -75,25 +75,24 @@ class AssetsController < ApplicationController
   def destroy
     enforce_permissions!('edit', params[:object_id])
 
-    @object = retrieve_object!(params[:object_id])
-    @generic_file = retrieve_object!(params[:id])
+    object = retrieve_object!(params[:object_id])
+    generic_file = retrieve_object!(params[:id])
 
-    if @object.status == 'published' && !current_user.is_admin?
+    if object.status == 'published' && !current_user.is_admin?
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
-    @object.object_version ||= '1'
-    @object.increment_version
-    @object.save
+    object.object_version ||= '1'
+    object.increment_version
+    object.save
 
-    @generic_file.delete
-    delete_surrogates(params[:object_id], @generic_file.id)
+    delfiles = ["#{generic_file.id}_#{generic_file.label}"]
+    delete_surrogates(params[:object_id], generic_file.id)
+    generic_file.delete
 
     # Do the preservation actions
-    addfiles = []
-    delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
-    preservation = Preservation::Preservator.new(@object)
-    preservation.preserve_assets(addfiles, delfiles)
+    preservation = Preservation::Preservator.new(object)
+    preservation.preserve_assets([], delfiles)
 
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
@@ -235,8 +234,7 @@ class AssetsController < ApplicationController
         controller: 'assets',
         action: 'download',
         object_id: @object.id,
-        id: @generic_file.id,
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+        id: @generic_file.id
       )
     end
 

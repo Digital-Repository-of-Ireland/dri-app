@@ -78,10 +78,10 @@ class ObjectsController < BaseObjectsController
           Resque.enqueue(CreateArchiveJob, params[:id], current_user.email)
 
           flash[:notice] = t('dri.flash.notice.archiving')
-          redirect_to :back
+          redirect_back(fallback_location: root_path)
         else
           flash[:alert] = t('dri.flash.alert.archiving_login')
-          redirect_to :back
+          redirect_back(fallback_location: root_path)
         end
       end
     end
@@ -111,7 +111,7 @@ class ObjectsController < BaseObjectsController
       return
     end
 
-    doi.update_metadata(params[:batch].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
+    doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) }) if doi
 
     # purge params from update action
     purge_params
@@ -493,7 +493,7 @@ class ObjectsController < BaseObjectsController
     def retrieve_linked_data
       if AuthoritiesConfig
         begin
-          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present?
+          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
         rescue Exception => e
           Rails.logger.error "Unable to submit linked data job: #{e.message}"
         end

@@ -35,7 +35,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, params: { id: @object.id, metadata_file: @file }
 
       @object.reload
       expect(@object.title).to eq(['SAMPLE AUDIO TITLE'])
@@ -52,7 +52,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, params: { id: @object.id, metadata_file: @file }
 
       @object.reload
       expect(@object.title).to eq(['An Audio Title'])
@@ -86,7 +86,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, params: { id: @object.id, metadata_file: @file }
 
       DataciteDoi.where(object_id: @object.id).first.delete
       Settings.doi.enable = false
@@ -121,7 +121,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, params: { id: @object.id, metadata_file: @file }
 
       DataciteDoi.where(object_id: @object.id).first.delete
       Settings.doi.enable = false
@@ -167,7 +167,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, id: @object.id, metadata_file: @file
+      put :update, params: { id: @object.id, metadata_file: @file }
       expect(response.status).to eq(503)
     end
 

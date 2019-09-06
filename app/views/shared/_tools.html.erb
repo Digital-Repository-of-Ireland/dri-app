@@ -74,15 +74,15 @@
 					    end
 			@iiif_full_path = iiif_path ? "#{Rails.application.config.mirador_url}?manifest=#{iiif_path}" : nil
   		%>
-    	<% if @iiif_full_path && @available %>
-  			<%=
+  		    <% if @iiif_full_path && @available %>
+  			  <%=
     			link_to(
-	    			image_tag('iiif_logo.png', title: t('dri.help.dri_view_iiif')),
-	    			@iiif_full_path,
-	    			target: :_blank
+	    			image_tag('iiif_logo.png', title: t('dri.help.dri_view_iiif'), alt: 'Iiif logo'),
+				    @iiif_full_path,
+	    		    target: :_blank
     			)
-  			%>
-    	<% end %>
+  			  %>
+  			<% end %>
 		<% end %>
 
     <% if @available %>

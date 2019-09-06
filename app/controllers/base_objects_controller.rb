@@ -14,7 +14,7 @@ class BaseObjectsController < CatalogController
     end
 
     def update_params
-      params.require(:batch).except!(
+      params.require(:batch).except(
         :read_groups_string,
         :read_users_string,
         :master_file_access,

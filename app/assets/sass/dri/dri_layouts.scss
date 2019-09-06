@@ -1,7 +1,7 @@
 
-@import 'bootstrap/glyphicons';
+//@import 'bootstrap/glyphicons';
 @import "bootstrap-sprockets";
-@import "bootstrap.scss";
+@import "bootstrap";
 /* for bootstrap3 */
 
 @import "jquery-ui";
@@ -15,19 +15,20 @@
 @import "datatables";
 @import "timelineJS3";
 @import "dri_batch_ingest";
-/*Import the Zen Grids files*/
 
-@import "_dri_init.scss";
-@import "vendor/zen/_grids.scss";
-@import "vendor/zen/_base.scss";
-@import "vendor/zen/_background.scss";
-@import "_dri.scss";
-@import "vendor/social-share-button.scss";
-@import "vendor/bootstrap-duallistbox.scss";
+/*Import the Zen Grids files*/
+@import "_dri_init";
+
+@import "vendor/zen/_grids";
+@import "vendor/zen/_base";
+@import "vendor/zen/_background";
+@import "_dri";
+@import "vendor/social-share-button";
+@import "vendor/bootstrap-duallistbox";
 
 /* modules */
+@import "_modules";
 
-@import "_modules.scss";
 .dri_wrapper {
     $zen-column-count: 4;
     width: 1024px;

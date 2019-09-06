@@ -21,7 +21,7 @@ describe ManageUsersController do
 
       user = FactoryBot.create(:user)
 
-      post :create, user: user.email
+      post :create, params: { user: user.email }
 
       expect(user.groups.pluck(:name)).to include('cm')
     end
@@ -32,7 +32,7 @@ describe ManageUsersController do
 
       user = FactoryBot.create(:user)
 
-      post :create, user: user.email, type: 'om'
+      post :create, params: { user: user.email, type: 'om' }
 
       expect(user.groups.pluck(:name)).to include('cm')
       expect(user.groups.pluck(:name)).to include('om')
@@ -42,7 +42,7 @@ describe ManageUsersController do
       login_user = FactoryBot.create(:admin)
       sign_in login_user
 
-      post :create, user: 'test'
+      post :create, params: { user: 'test' }
 
       expect(flash[:error]).to be_present
     end
@@ -52,7 +52,7 @@ describe ManageUsersController do
       sign_in login_user
 
       user = FactoryBot.create(:user)
-      post :create, user: user.email
+      post :create, params: { user: user.email }
 
       expect(flash[:error]).to be_present
     end

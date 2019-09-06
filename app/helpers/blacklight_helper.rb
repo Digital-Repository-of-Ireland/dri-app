@@ -106,11 +106,13 @@ module BlacklightHelper
     scope = localized_params.delete(:route_set) || self
     return "".html_safe if localized_params[:q_ws].blank?
 
+    options = localized_params.merge(q_ws: nil, action: 'index')
+    options.permit!
     render_constraint_element(
 	  constraint_query_label(localized_params),
           localized_params[:q_ws],
           classes: ["query"],
-          remove: scope.url_for(localized_params.merge(q_ws: nil, action: 'index'))
+          remove: scope.url_for(options)
     )
   end
 
@@ -135,7 +137,7 @@ module BlacklightHelper
   # @return [Hash<string, config>]
   # has side effect of adding translated_label to search_fields_for_advanced_search reference
   # TODO look into making search_fields_for_advanced_search immutable, or removing this side effect
-  def translated_search_fields_for_andvanced_search(fields = search_fields_for_advanced_search)
+  def translated_search_fields_for_advanced_search(fields = search_fields_for_advanced_search)
     fields.map do |key, field_def|
       trans_key = "blacklight.search.fields.label.#{field_def.field.pluralize}"
       translated_label = t(trans_key, default: field_def.label)

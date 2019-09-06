@@ -44,7 +44,7 @@ describe ObjectsController do
       collection.governed_items << object
 
       expect {
-        delete :destroy, :id => object.id
+        delete :destroy, params: { id: object.id }
       }.to change { ActiveFedora::Base.exists?(object.id) }.from(true).to(false)
 
       collection.reload
@@ -65,7 +65,7 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, :id => @object.id
+      delete :destroy, params: { id: @object.id }
 
       expect(ActiveFedora::Base.exists?(@object.id)).to be true
 
@@ -86,7 +86,7 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, :id => @object.id
+      delete :destroy,  params: { id: @object.id }
 
       expect(ActiveFedora::Base.exists?(@object.id)).to be false
 
@@ -115,7 +115,7 @@ describe ObjectsController do
       FileUtils.rm_rf aip_dir(object.id)
       allow_any_instance_of(ObjectsController).to receive(:retrieve_object).and_raise(Ldp::HttpError)
 
-      delete :destroy, :id => object.id
+      delete :destroy, params: { id: object.id }
 
       expect(ActiveFedora::SolrService.count("id:#{object.id}")).to be 0
 
@@ -149,7 +149,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -165,7 +165,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -240,13 +240,13 @@ describe ObjectsController do
     end
 
     it 'should set an object status' do
-      post :status, id: @object.id, status: "reviewed"
+      post :status, params: { id: @object.id, status: "reviewed" }
 
       @object.reload
 
       expect(@object.status).to eql("reviewed")
 
-      post :status, id: @object.id, status: "draft"
+      post :status, params: { id: @object.id, status: "draft" }
 
       @object.reload
 
@@ -254,7 +254,7 @@ describe ObjectsController do
     end
 
     it 'should set a parent subcollection to reviewed' do
-      post :status, id: @object4.id, status: "reviewed"
+      post :status, params: { id: @object4.id, status: "reviewed" }
 
       @object4.reload
       expect(@object4.status).to eql("reviewed")
@@ -276,7 +276,7 @@ describe ObjectsController do
       @object.status = "published"
       @object.save
 
-      post :status, id: @object.id, status: "draft"
+      post :status, params: { id: @object.id, status: "draft" }
 
       @object.reload
 
@@ -306,7 +306,7 @@ describe ObjectsController do
       params[:batch][:title] = ["A modified title"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @object.id, :batch => params[:batch]
+      put :update, params: { id: @object.id, batch: params[:batch] }
 
       DataciteDoi.where(object_id: @object.id).first.delete
       Settings.doi.enable = false
@@ -335,7 +335,7 @@ describe ObjectsController do
       params[:batch][:title] = ["An Audio Title"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @object.id, :batch => params[:batch]
+      put :update, params: { id: @object.id, batch: params[:batch] }
 
       DataciteDoi.where(object_id: @object.id).first.delete
       Settings.doi.enable = false
@@ -380,7 +380,7 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+        post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
         expect(flash[:error]).to be_present
       end
 
@@ -390,7 +390,7 @@ describe ObjectsController do
         params[:batch][:title] = ["An Audio Title"]
         params[:batch][:read_users_string] = "public"
         params[:batch][:edit_users_string] = @login_user.email
-        put :update, :id => @object.id, :batch => params[:batch]
+        put :update, params: { id: @object.id, batch: params[:batch] }
 
         expect(flash[:error]).to be_present
       end
@@ -410,7 +410,7 @@ describe ObjectsController do
       end
 
       after(:each) do
-        CollectionLock.delete_all(collection_id: @collection.id)
+        CollectionLock.where(collection_id: @collection.id).delete_all
         @collection.delete if ActiveFedora::Base.exists?(@collection.id)
         @login_user.delete
       end
@@ -425,7 +425,7 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+        post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
         expect(flash[:error]).to be_present
       end
 
@@ -438,7 +438,7 @@ describe ObjectsController do
         params[:batch][:title] = ["An Audio Title"]
         params[:batch][:read_users_string] = "public"
         params[:batch][:edit_users_string] = @login_user.email
-        put :update, :id => @object.id, :batch => params[:batch]
+        put :update, params: { id: @object.id, batch: params[:batch] }
 
         expect(flash[:error]).to be_present
       end
@@ -464,7 +464,7 @@ describe ObjectsController do
     it 'should assign valid JSON to @list' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, params: { objects: [{ 'pid' => @object.id }] }
       list = controller.instance_variable_get(:@list)
       expect { JSON.parse(list.to_json) }.not_to raise_error
     end
@@ -472,7 +472,7 @@ describe ObjectsController do
     it 'should contain the metadata fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, params: { objects: [{ 'pid' => @object.id }] }
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
 
@@ -484,7 +484,7 @@ describe ObjectsController do
     it 'should only return the requested fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }], metadata: ['title', 'description']
+      post :index, params: { objects: [{ 'pid' => @object.id }], metadata: ['title', 'description'] }
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
 
@@ -504,7 +504,7 @@ describe ObjectsController do
       storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
 
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, params: { objects: [{ 'pid' => @object.id }] }
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')
@@ -524,7 +524,7 @@ describe ObjectsController do
 
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, params: { objects: [{ 'pid' => @object.id }] }
       expect(response.status).to eq(200)
 
       user.destroy
@@ -542,7 +542,7 @@ describe ObjectsController do
 
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :index, objects: [{ 'pid' => @object.id }]
+      post :index, params: { objects: [{ 'pid' => @object.id }] }
       expect(response.status).to eq(404)
 
       user.destroy

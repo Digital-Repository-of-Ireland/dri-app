@@ -7,7 +7,7 @@
   <div class="dri_account_block_info_buttons dri_float_right">
 
     <% if current_user.id == @user.id %> <!-- viewing own profile page -->
-       <%= link_to main_app.destroy_user_session_path, :method => :delete, :id => 'logout' do %>
+       <%= link_to user_group.destroy_user_session_path, :method => :delete, :id => 'logout' do %>
          <button class="dri_button_green dri_w230">
            <%= t('blacklight.header_links.logout') %>
          </button>

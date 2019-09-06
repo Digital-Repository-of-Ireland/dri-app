@@ -30,7 +30,7 @@ describe CreateArchiveJob do
     @object.save
     @object.reload
 
-    @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
     @generic_file.batch = @object
     @generic_file.apply_depositor_metadata(@login_user.email)
     @generic_file.label = "sample_image.jpeg"
@@ -76,7 +76,7 @@ describe CreateArchiveJob do
   end
 
   it 'should create an archive for object containing non image surrogates' do
-    @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
     @generic_file.batch = @object
     @generic_file.apply_depositor_metadata(@login_user.email)
     @generic_file.label = "sample_audio.mp3"

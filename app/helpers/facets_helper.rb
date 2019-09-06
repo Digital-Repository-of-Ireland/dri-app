@@ -111,7 +111,7 @@ module FacetsHelper
     return value if pid.blank?
 
     solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
-    docs = ActiveFedora::SolrService.query(solr_query)
+    docs = ActiveFedora::SolrService.query(solr_query, rows: 1)
 
     return 'nil' if docs.empty?
 
@@ -229,7 +229,7 @@ module FacetsHelper
     display_value = facet_display_value(facet_solr_field, item)
     return if display_value == 'nil'
 
-    path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
+    path = search_action_path(search_state.add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
       display_value + " (#{item.hits})",

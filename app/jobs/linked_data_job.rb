@@ -11,7 +11,8 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
     Rails.logger.info "Retrieving linked data for #{object.id}"
     return unless AuthoritiesConfig
 
-    uris = object.geographical_coverage.select { |g| g.start_with?('http') } | data_dri_uris
+    loc_array = object.geographical_coverage + object.coverage
+    uris = loc_array.select { |g| g.start_with?('http') } | data_dri_uris
     uris.each do |uri|
       begin
         host = URI(URI.encode(uri.strip)).host

@@ -9,7 +9,6 @@ class SimpleCov::Formatter::MergedFormatter
   end
 end
 SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
-
 SimpleCov.start 'rails'
 
 require 'rubygems'
@@ -20,7 +19,6 @@ require 'cucumber/rspec/doubles'
 require 'cucumber/api_steps'
 require 'rake'
 require 'rspec'
-require 'billy/capybara/cucumber'
 require 'shoulda/matchers'
 require 'cucumber/rails'
 require 'factory_bot'
@@ -34,7 +32,6 @@ Capybara.register_driver :selenium do |app|
               args: [
                 *headless,
                 "no-sandbox",
-                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}",
                 "window-size=1200,800"
               ]
             )

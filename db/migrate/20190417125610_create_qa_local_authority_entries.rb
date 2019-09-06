@@ -1,4 +1,4 @@
-class CreateQaLocalAuthorityEntries < ActiveRecord::Migration
+class CreateQaLocalAuthorityEntries < ActiveRecord::Migration[4.2]
   def change
     create_table :qa_local_authority_entries do |t|
       t.references :local_authority, index: true

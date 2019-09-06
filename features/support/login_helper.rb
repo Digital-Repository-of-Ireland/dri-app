@@ -33,7 +33,7 @@ module LoginHelper
                           image_link: image_path)
     @user.confirm
     @user.save
-    delete destroy_user_session_path(@user)
+    delete user_group.destroy_user_session_path(@user)
     visit path_to("sign in")
     yield(@user) if block_given?
     fill_in("user_email", :with => email)

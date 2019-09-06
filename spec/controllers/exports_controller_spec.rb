@@ -13,7 +13,7 @@ describe ExportsController do
   end
 
   describe 'create' do
-    
+
     before(:each) do
       @login_user = FactoryBot.create(:admin)
       sign_in @login_user
@@ -26,9 +26,9 @@ describe ExportsController do
     it 'should start an export' do
       @collection = FactoryBot.create(:collection)
       @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
-            
+
       expect(Resque).to receive(:enqueue).once
-      post :create, id: @collection.id
+      post :create, params: { id: @collection.id }
     end
   end
 end

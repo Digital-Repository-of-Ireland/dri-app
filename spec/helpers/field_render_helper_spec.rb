@@ -10,21 +10,18 @@ describe FieldRenderHelper, testing: true do
 
     describe "render_description" do
         it "has no metadata toggle if all no language set" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             expect(helper.render_description({:field => 'description_tesim',
                                        :document => {'description_tesim' => ['Sample Description']}})).to_not include('Hide Irish', 'Hide English')
         end
 
         it "adds a default link to hide GA for irish metadata" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             expect(helper.render_description({:field => 'description_gle_tesim',
                                               :document => {'description_gle_tesim' => ['Sample Description']}})).to include('Hide Irish')
         end
 
         it "adds a default link to hide EN for English metadata" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             expect(helper.render_description({:field => 'description_eng_tesim',
                                               :document => {'description_eng_tesim' => ['Sample Description'],
@@ -32,7 +29,6 @@ describe FieldRenderHelper, testing: true do
         end
 
         it "when metadata language is ga there is a link to hide irish metadata" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             helper.request.cookies[:metadata_language] = "ga"
             expect(helper.render_description({:field => 'description_gle_tesim',
@@ -41,7 +37,6 @@ describe FieldRenderHelper, testing: true do
         end
 
         it "when metadata language is ga there is a link to show English metadata" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             helper.request.cookies[:metadata_language] = "ga"
             expect(helper.render_description({:field => 'description_eng_tesim',
@@ -51,7 +46,6 @@ describe FieldRenderHelper, testing: true do
         end
 
         it "when metadata language is en there is a link to hide irish metadata" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             helper.request.cookies[:metadata_language] = "en"
             expect(helper.render_description({:field => 'description_gle_tesim',
@@ -59,7 +53,6 @@ describe FieldRenderHelper, testing: true do
         end
 
         it "when metadata language is en there is a link to show English metadata" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :en
             helper.request.cookies[:metadata_language] = "en"
             expect(helper.render_description({:field => 'description_eng_tesim',
@@ -68,7 +61,6 @@ describe FieldRenderHelper, testing: true do
         end
 
         it "should work whether Irish or English display language is set" do
-            controller.request = ActionController::TestRequest.new(:fullpath => '/my_collections/6q182k12h')
             I18n.locale = :ga
             helper.request.cookies[:metadata_language] = "en"
             expect(helper.render_description({:field => 'description_eng_tesim',

@@ -7,10 +7,10 @@ module DRI::Noid
         when 'ndlib'
           @service = DRI::Noid::Ndlib.new
         when 'af'
-          @service = ActiveFedora::Noid::Service.new
+          @service = Noid::Rails::Service.new
         end
       else
-        @service = ActiveFedora::Noid::Service.new
+        @service = Noid::Rails::Service.new
       end
     end
 

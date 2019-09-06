@@ -4,12 +4,12 @@ describe LicencesController do
   include Devise::Test::ControllerHelpers
 
   describe "permissions" do
-  
+
     it 'should allow an administrator to create a licence' do
        @admin_user = FactoryBot.create(:admin)
        sign_in @admin_user
- 
-       get :new            
+
+       get :new
        expect(response).to render_template('new')
     end
 
@@ -27,9 +27,9 @@ describe LicencesController do
     it "should create a new licence" do
       @admin_user = FactoryBot.create(:admin)
       sign_in @admin_user
-     
+
       expect {
-        post :create, licence: { name: 'A Test Licence', description: 'This is a test licence' }
+        post :create, params: { licence: { name: 'A Test Licence', description: 'This is a test licence' } }
       }.to change(Licence, :count).by(1)
     end
   end
@@ -39,9 +39,9 @@ describe LicencesController do
     it "should update a licence" do
       @admin_user = FactoryBot.create(:admin)
       sign_in @admin_user
-     
+
       licence = Licence.create(name: 'Test Update Licence', description: 'Test description')
-      put :update, id: licence.id, licence: { name: 'A Test Licence', description: 'Modified description' }
+      put :update, params: { id: licence.id, licence: { name: 'A Test Licence', description: 'Modified description' } }
 
       licence.reload
       expect(licence.description).to eq('Modified description')
@@ -50,9 +50,9 @@ describe LicencesController do
     it "should ignore non-uri logo and url" do
       @admin_user = FactoryBot.create(:admin)
       sign_in @admin_user
-     
+
       licence = Licence.create(name: 'Test Update Licence', description: 'Test description')
-      put :update, id: licence.id, licence: { name: 'A Test Licence', description: 'Modified description', url: 'test url', logo: 'test logo' }
+      put :update, params: { id: licence.id, licence: { name: 'A Test Licence', description: 'Modified description', url: 'test url', logo: 'test logo' } }
 
       licence.reload
       expect(licence.description).to eq('Modified description')
@@ -63,9 +63,9 @@ describe LicencesController do
     it "should accept valid uri logo and url" do
       @admin_user = FactoryBot.create(:admin)
       sign_in @admin_user
-     
+
       licence = Licence.create(name: 'Test Update Licence', description: 'Test description')
-      put :update, id: licence.id, licence: { name: 'A Test Licence', description: 'Modified description', url: 'http://test.licence', logo: 'http://test.licence/logo' }
+      put :update, params: { id: licence.id, licence: { name: 'A Test Licence', description: 'Modified description', url: 'http://test.licence', logo: 'http://test.licence/logo' } }
 
       licence.reload
       expect(licence.description).to eq('Modified description')

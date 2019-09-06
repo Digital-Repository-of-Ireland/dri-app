@@ -1,6 +1,7 @@
 <% if has_browse_params? && controller_name != 'advanced' %>
 <nav id="dri_display_grid_table_id" class="dri_sort_nav">
-	<% changeViewParams = params.clone %>
+	<% changeViewParams = search_state.to_h.clone %>
+
 	<div class="dri_change_sort_view" id="dri_change_sort_view_id" data-content="<%= t('dri.help.dri_change_sort_view') %>"  data-original-title="<%= t('dri.help.dri_change_sort_view_title')%>" data-trigger="hover" data-placement="top">
 
 		<% if params[:view] == "grid" %>
@@ -17,7 +18,7 @@
 
 		<% elsif params[:view] == "list" %>
 		  <% changeViewParams[:view] = "grid" %>
-		  <%= link_to changeViewParams , id: 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
+		  <%= link_to changeViewParams, id: 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
 		  <% changeViewParams[:view] = "list" %>
 		  <i class="fa fa-list fa-lg dri_icon_border"></i>
 		  <% if ['catalog','my_collections'].include?(params[:controller]) %>
@@ -34,7 +35,7 @@
 		  <% changeViewParams.delete(:tl_field) %>
 
 		  <% changeViewParams[:view] = "grid" %>
-		  <%= link_to changeViewParams , id: 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
+		  <%= link_to changeViewParams, id: 'grid_view' do %><i class="fa fa-th fa-lg dri_icon_border"></i><% end %>
 		  <% changeViewParams[:view] = "list" %>
 		  <%= link_to changeViewParams, id: 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
 		  <% if ['catalog','my_collections'].include?(params[:controller]) %>
