@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 8187d62156c2d467b518af1e13d0059ba32a32ba
+  revision: 5ac2e76e9652dac4311f682ea6cdf6ae89d51720
   branch: develop
   specs:
     dri_data_models (3.2.0)
@@ -377,7 +377,7 @@ GEM
       faraday
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.1.5)
+    fastimage (2.1.7)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.12.0)
@@ -584,9 +584,9 @@ GEM
     memoist (0.16.0)
     metaclass (0.0.4)
     method_source (0.9.2)
-    mime-types (3.2.2)
+    mime-types (3.3)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2019.0331)
+    mime-types-data (3.2019.0904)
     mimemagic (0.3.3)
     mini_magick (4.9.5)
     mini_mime (1.0.2)
