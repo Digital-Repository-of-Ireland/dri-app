@@ -60,7 +60,7 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       format.html { redirect_to(catalog_url(@object.id)) }
-      format.endnote { render text: @object.export_as_endnote, layout: false }
+      format.endnote { render plain: @object.export_as_endnote, layout: false }
       format.json do
         json = @object.as_json
         # solr_doc = SolrDocument.new(@object.to_solr)

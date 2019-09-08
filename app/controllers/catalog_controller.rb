@@ -267,13 +267,13 @@ class CatalogController < ApplicationController
         options = {}
         options[:with_assets] = true if can?(:read, @document)
         formatter = DRI::Formatters::Rdf.new(@document, options)
-        render text: formatter.format({format: :ttl})
+        render plain: formatter.format({format: :ttl})
       end
       format.rdf do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
         formatter = DRI::Formatters::Rdf.new(@document, options)
-        render text: formatter.format({format: :xml})
+        render plain: formatter.format({format: :xml})
       end
       format.js { render layout: false }
 

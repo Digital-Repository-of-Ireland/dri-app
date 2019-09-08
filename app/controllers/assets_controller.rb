@@ -69,7 +69,7 @@ class AssetsController < ApplicationController
       end
     end
 
-    render text: 'Unable to find file', status: 404
+    render plain: 'Unable to find file', status: 404
   end
 
   def destroy
