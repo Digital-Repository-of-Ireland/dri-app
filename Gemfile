@@ -18,7 +18,7 @@ gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.0'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.4.0'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.4.1'
 gem 'devise', '~> 4.6.2'
 gem 'paper_trail', '~> 4'
 
@@ -59,7 +59,7 @@ gem 'js_cookie_rails'
 
 # clients
 gem 'rest-client', '~> 2.0'
-gem 'sparql-client', '~> 1.99'
+gem 'sparql-client'
 gem 'httparty'
 
 # static pages

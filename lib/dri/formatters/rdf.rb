@@ -1,45 +1,44 @@
 require 'rdf'
-include RDF
-
 module DRI::Formatters
   class Rdf
+    include RDF
 
     METADATA_FIELDS_MAP = {
-     'identifier' => RDF::DC.identifier,
-     'title' => RDF::DC.title,
-     'subject' => RDF::DC.subject,
-     'creation_date' => RDF::DC.created,
-     'published_date' => RDF::DC.issued,
-     'type' => RDF::DC.type,
-     'rights' => RDF::DC.rights,
-     'language' => RDF::DC.language,
-     'description' => RDF::DC.description,
-     'creator' => RDF::DC.creator,
-     'contributor' => RDF::DC.contributor,
-     'publisher' => RDF::DC.publisher,
-     'date' => RDF::DC.date,
-     'format' => RDF::DC.format,
-     'source' => RDF::DC.source,
-     'isGovernedBy' => RDF::DC.isPartOf,
+     'identifier' => RDF::Vocab::DC.identifier,
+     'title' => RDF::Vocab::DC.title,
+     'subject' => RDF::Vocab::DC.subject,
+     'creation_date' => RDF::Vocab::DC.created,
+     'published_date' => RDF::Vocab::DC.issued,
+     'type' => RDF::Vocab::DC.type,
+     'rights' => RDF::Vocab::DC.rights,
+     'language' => RDF::Vocab::DC.language,
+     'description' => RDF::Vocab::DC.description,
+     'creator' => RDF::Vocab::DC.creator,
+     'contributor' => RDF::Vocab::DC.contributor,
+     'publisher' => RDF::Vocab::DC.publisher,
+     'date' => RDF::Vocab::DC.date,
+     'format' => RDF::Vocab::DC.format,
+     'source' => RDF::Vocab::DC.source,
+     'isGovernedBy' => RDF::Vocab::DC.isPartOf,
      'role_dnr' => RDF::Vocab::MARCRelators.dnr,
-     'geographical_coverage' => RDF::DC.spatial,
-     'temporal_coverage' => RDF::DC.temporal,
+     'geographical_coverage' => RDF::Vocab::DC.spatial,
+     'temporal_coverage' => RDF::Vocab::DC.temporal,
      'institute' => RDF::Vocab::EDM.provider
     }
 
     RELATIONSHIP_FIELDS_MAP = {
-      'References' => RDF::DC.references,
-      'Is Referenced By' => RDF::DC.isReferencedBy,
-      'Is Related To' => RDF::DC.relation,
-      'Is Part Of' => RDF::DC.isPartOf,
-      'Has Part' => RDF::DC.hasPart,
-      'Is Version Of' => RDF::DC.isVersionOf,
-      'Has Version' => RDF::DC.hasVersion,
-      'Is Format Of' => RDF::DC.isFormatOf,
-      'Has Format' => RDF::DC.hasFormat,
-      'Source' => RDF::DC.source,
-      'Has Documentation' => RDF::DC.requires,
-      'Is Documentation For' => RDF::DC.isRequiredBy
+      'References' => RDF::Vocab::DC.references,
+      'Is Referenced By' => RDF::Vocab::DC.isReferencedBy,
+      'Is Related To' => RDF::Vocab::DC.relation,
+      'Is Part Of' => RDF::Vocab::DC.isPartOf,
+      'Has Part' => RDF::Vocab::DC.hasPart,
+      'Is Version Of' => RDF::Vocab::DC.isVersionOf,
+      'Has Version' => RDF::Vocab::DC.hasVersion,
+      'Is Format Of' => RDF::Vocab::DC.isFormatOf,
+      'Has Format' => RDF::Vocab::DC.hasFormat,
+      'Source' => RDF::Vocab::DC.source,
+      'Has Documentation' => RDF::Vocab::DC.requires,
+      'Is Documentation For' => RDF::Vocab::DC.isRequiredBy
     }
 
     def initialize(object_doc, options = {})
@@ -68,12 +67,12 @@ module DRI::Formatters
     end
 
     def build_graph
-      graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.ttl")]
-      graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.html")]
-      graph << [uri, RDF.type, RDF::FOAF.Document]
-      graph << [uri, RDF::DC.title, RDF::Literal.new(
+      graph << [uri, RDF::Vocab::DC.hasFormat, RDF::URI("#{uri}.ttl")]
+      graph << [uri, RDF::Vocab::DC.hasFormat, RDF::URI("#{uri}.html")]
+      graph << [uri, RDF.type, RDF::Vocab::FOAF.Document]
+      graph << [uri, RDF::Vocab::DC.title, RDF::Literal.new(
         "Description of '#{@object_hash['metadata']['title'].first}'", language: :en)]
-      graph << [uri, FOAF.primaryTopic, RDF::URI("#{uri}#id")]
+      graph << [uri, RDF::Vocab::FOAF.primaryTopic, RDF::URI("#{uri}#id")]
 
       add_licence
       add_formats
@@ -92,13 +91,13 @@ module DRI::Formatters
 
       assets.each do |a|
         id = "#{base_uri}#{object_file_path(a['id'])}#id"
-        graph << [RDF::URI("#{uri}#id"), RDF::DC.hasPart, RDF::URI.new(id)]
+        graph << [RDF::URI("#{uri}#id"), RDF::Vocab::DC.hasPart, RDF::URI.new(id)]
 
         graph << [RDF::URI.new(id), RDF.type, file_type(a)]
-        graph << [RDF::URI.new(id), FOAF.topic, RDF::URI("#{uri}#id")]
+        graph << [RDF::URI.new(id), RDF::Vocab::FOAF.topic, RDF::URI("#{uri}#id")]
         graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
         graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'].first)]
-        graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{uri}#id")]
+        graph << [RDF::URI.new(id), RDF::Vocab::DC.isPartOf, RDF::URI("#{uri}#id")]
       end
     end
 
@@ -115,13 +114,13 @@ module DRI::Formatters
 
       graph << [ttl_uri, RDF.type, RDF::Vocab::DCMIType.Text]
       graph << [ttl_uri, RDF.type, format_vocab.Turtle]
-      graph << [ttl_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/turtle")]
-      graph << [ttl_uri, RDF::DC.title, RDF::Literal.new(
+      graph << [ttl_uri, RDF::Vocab::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/turtle")]
+      graph << [ttl_uri, RDF::Vocab::DC.title, RDF::Literal.new(
         "Description of '#{@object_hash['metadata']['title'].first}' as Turtle (RDF)", language: :en)]
 
       graph << [html_uri, RDF.type, RDF::Vocab::DCMIType.Text]
-      graph << [html_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/html")]
-      graph << [html_uri, RDF::DC.title, RDF::Literal.new(
+      graph << [html_uri, RDF::Vocab::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/html")]
+      graph << [html_uri, RDF::Vocab::DC.title, RDF::Literal.new(
         "Description of '#{@object_hash['metadata']['title'].first}' as a web page", language: :en)]
     end
 
@@ -129,7 +128,7 @@ module DRI::Formatters
       licence = @object_doc.licence
       if licence
         value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-        graph << [uri, RDF::DC.license, value]
+        graph << [uri, RDF::Vocab::DC.license, value]
       end
     end
 
@@ -161,9 +160,9 @@ module DRI::Formatters
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI(subject)]
                        else
                         typed_value = if DRI::Metadata::Transformations.dcmi_box?(value)
-                                        RDF::Literal.new(value, datatype: RDF::DC.Box)
+                                        RDF::Literal.new(value, datatype: RDF::Vocab::DC.Box)
                                       elsif DRI::Metadata::Transformations.dcmi_point?(value)
-                                        RDF::Literal.new(value, datatype: RDF::DC.Point)
+                                        RDF::Literal.new(value, datatype: RDF::Vocab::DC.Point)
                                       else
                                         value
                                       end
@@ -173,7 +172,7 @@ module DRI::Formatters
 
             when 'temporal_coverage'
               graph << if DRI::Metadata::Transformations.dcmi_period?(value)
-                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Period)]
+                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::Vocab::DC.Period)]
                        else
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value]
                        end
@@ -225,7 +224,7 @@ module DRI::Formatters
       elsif file.video?
         RDF::Vocab::DCMIType.MovingImage
       else
-        RDF::FOAF.Document
+        RDF::Vocab::FOAF.Document
       end
     end
 
