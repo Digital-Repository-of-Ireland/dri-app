@@ -59,7 +59,7 @@ gem 'js_cookie_rails'
 
 # clients
 gem 'rest-client', '~> 2.0'
-gem 'sparql-client', '~> 1.99'
+gem 'sparql-client'
 gem 'httparty'
 
 # static pages
