@@ -95,6 +95,9 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  # google analytics
+  # GA.tracker =
+
   Devise.setup do |config|
     config.omniauth_path_prefix = '/users/auth'
   end
