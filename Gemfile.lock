@@ -78,8 +78,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 27291d92182f934d95e0f70a32c3206c5ba7b039
-  tag: v1.4.0
+  revision: 701d85a91264eea6764f481f8e68c4a12305c16a
+  tag: v1.4.1
   specs:
     user_group (1.4.1)
       devise
