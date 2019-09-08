@@ -4,6 +4,8 @@ module DRI
     attr_reader :document
     delegate :asset_path, :can?, :cover_image_path, :object_file_path, to: :@view
 
+    FORMATS = %w(audio collection movingimage sound text video).freeze
+
     def initialize(document, view_context)
       @view = view_context
       @document = document
@@ -47,9 +49,7 @@ module DRI
       return asset_path("no_image.png") if file_types.blank?
 
       format = file_types.first
-
-      path = "dri/formats/#{format}.png"
-      path = "no_image.png" if Rails.application.assets.find_asset(path).nil?
+      path = FORMATS.include?(format) ? "dri/formats/#{format}.png" : "no_image.png"
 
       asset_path(path)
     end

@@ -66,7 +66,7 @@ class MetadataController < ApplicationController
       end
     end
 
-    render text: 'Unable to load metadata'
+    render plain: 'Unable to load metadata'
   end
 
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
@@ -132,7 +132,7 @@ class MetadataController < ApplicationController
                      t('dri.flash.notice.metadata_updated')
                    end
 
-        render text: response
+        render plain: response
       end
     end
   end
