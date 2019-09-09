@@ -287,6 +287,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     accepted_types.each do |type|
       return typemap[type] if types.include?(type)
     end
+    return "INVALID"
   end
 
   def doi_url(doi)
