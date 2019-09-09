@@ -194,22 +194,46 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
       end
 
-      # TODO: should check if image, and get image for edm:object if available
       assets = record.assets(with_preservation: false, ordered: true)
+      file_urls = {}
 
+      # for each asset: if it is an image we will use the IIIF url
+      # TODO: for video and sound types this is more complicated
+      # should set image as thumb, and video or sound as url 
+      # then create edm:webResource for url and thumb
+      # if iiif we also need an svcs:has_service and svcs:Service
       assets.each do |file|
-        url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
-        xml.tag!("edm:WebResource", {"rdf:about" => url}) do
-          xml.tag!("edm:rights", {"rdf:resource" => licence})
+        if file.image?
+          file_urls[file.id] = {"url": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: 'full'),
+              "thumb": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,'), "iiif": true}
+
+          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:url]}) do
+            xml.tag!("edm:rights", {"rdf:resource" => licence})
+            xml.tag!("svcs:has_service", {"rdf:resource" => ""}) # TODO what is the url?
+          end
+          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:thumb]}) do
+            xml.tag!("edm:rights", {"rdf:resource" => licence})
+          end
+          
+        elsif false # this is where we will do other file types
+
+        else
+          file_urls[file.id] = {"url": Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate'), 
+            "thumb": Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate'), "iiif": false}
+          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:url]}) do
+            xml.tag!("edm:rights", {"rdf:resource" => licence})
+          end
+          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:thumb]}) do
+            xml.tag!("edm:rights", {"rdf:resource" => licence})
+          end
         end
+
+
       end
 
       landing_page = record.doi || Rails.application.routes.url_helpers.catalog_url(record.id)
 
       mainfile = assets.shift
-      if mainfile.present?
-        imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
-      end
 
       # Create the ore:Aggregation element
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
@@ -217,13 +241,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
         xml.tag!("edm:provider", "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence})
-        xml.tag!("edm:isShownBy", {"rdf:resource" => imageUrl})
+        xml.tag!("edm:isShownBy", {"rdf:resource" => file_urls[mainfile.id][:url]})
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
         assets.each do |file|
-          url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
-          xml.tag!("edm:hasView", {"rdf:resource" => url})
+          xml.tag!("edm:hasView", {"rdf:resource" => file_urls[file.id][:url]})
         end
-        xml.tag!("edm:object", {"rdf:resource" => imageUrl})
+        xml.tag!("edm:object", {"rdf:resource" => file_urls[mainfile.id][:thumb]})
       end
 
     end

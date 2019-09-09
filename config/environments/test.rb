@@ -15,6 +15,7 @@ DriApp::Application.configure do
 
   # use localhost so js redirects work
   Rails.application.routes.default_url_options[:host] = 'localhost'
+  Riiif::Engine.routes.default_url_options[:host] = Rails.application.routes.default_url_options[:host]
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true

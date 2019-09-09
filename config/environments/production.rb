@@ -15,6 +15,7 @@ DriApp::Application.configure do
   config.action_controller.perform_caching = true
 
   Rails.application.routes.default_url_options[:host] = 'repository.dri.ie'
+  Riiif::Engine.routes.default_url_options[:host] = Rails.application.routes.default_url_options[:host]
 
   config.exceptions_app = self.routes
 

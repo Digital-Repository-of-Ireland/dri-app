@@ -18,6 +18,7 @@ DriApp::Application.configure do
   config.action_controller.perform_caching = false
 
   Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+  Riiif::Engine.routes.default_url_options[:host] = Rails.application.routes.default_url_options[:host]
 
   config.exceptions_app = self.routes
 
