@@ -204,7 +204,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
-      landing_page = record.doi || Rails.application.routes.url_helpers.catalog_url(record.id)
+      landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
 
       mainfile = assets.shift
       if mainfile.present?
@@ -279,6 +279,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     accepted_types.each do |type|
       return type if types.include?(type)
     end
+  end
+
+  def doi_url(doi)
+    return nil if doi.blank?
+    doi = doi.first if doi.is_a? Array
+    "https://doi.org/#{doi}"
   end
 
 end
