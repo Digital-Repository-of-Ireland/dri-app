@@ -181,9 +181,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       if (record.licence.name == "All Rights Reserved")
-        licence = "http://www.europeana.eu/rights/rr-f/"
+        licence = "http://rightsstatements.org/vocab/InC/1.0/"
       elsif (record.licence.name == "Orphan Work")
-        licence = "http://www.europeana.eu/rights/unknown/"
+        licence = "http://rightsstatements.org/vocab/InC-OW-EU/1.0/"
       elsif (record.licence.name == "Public Domain")
         licence = "http://creativecommons.org/publicdomain/mark/1.0/"
       else
