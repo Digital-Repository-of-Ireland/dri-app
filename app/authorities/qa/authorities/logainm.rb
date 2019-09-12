@@ -16,8 +16,8 @@ module Qa::Authorities
         SELECT ?place_name (SAMPLE(?tmp_links) AS ?link)
         WHERE {
           ?tmp_links foaf:name ?place_name .
-          FILTER(CONTAINS(LCASE(?place_name), '#{_q}'))
-          BIND(STRSTARTS(LCASE(?place_name), '#{_q}') as ?match)
+          FILTER(CONTAINS(LCASE(?place_name), \"#{_q}\"))
+          BIND(STRSTARTS(LCASE(?place_name), \"#{_q}\") as ?match)
         }
         ORDER BY DESC(?match) ASC(?place_name)
         LIMIT 50
