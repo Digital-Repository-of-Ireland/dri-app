@@ -171,11 +171,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Create other contextual classes
       contextual_classes.each do |cclass|
-        if cclass.keys.include?("start") && cclass.keys.include?("end")
+        if cclass.keys.include?("start")
           xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name']}"} do
             xml.tag! "skos:preflabel", cclass['name']
             xml.tag! "edm:begin", cclass['start']
-            xml.tag! "edm:end", cclass['end']
+            xml.tag! "edm:end", cclass['end'] || cclass['start']
           end
         end
       end
@@ -257,7 +257,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   def is_valid_period?(dcmi)
-    return true if dcmi['name'].present? && dcmi['start'].present? && dcmi['end'].present?
+    return true if dcmi['name'].present? && dcmi['start'].present?
     return false
   end
 
