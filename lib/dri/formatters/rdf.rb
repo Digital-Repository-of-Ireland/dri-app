@@ -216,7 +216,7 @@ module DRI::Formatters
 
     def file_type(file)
       if file.text?
-        RDF::FOAF.Document
+        RDF::Vocab::FOAF.Document
       elsif file.image?
         RDF::Vocab::DCMIType.StillImage
       elsif file.audio?
