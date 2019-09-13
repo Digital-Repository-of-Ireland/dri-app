@@ -171,11 +171,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Create other contextual classes
       contextual_classes.each do |cclass|
-        if cclass.keys.include?("start") && cclass.keys.include?("end")
+        if cclass.keys.include?("start")
           xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name']}"} do
             xml.tag! "skos:preflabel", cclass['name']
             xml.tag! "edm:begin", cclass['start']
-            xml.tag! "edm:end", cclass['end']
+            xml.tag! "edm:end", cclass['end'] || cclass['start']
           end
         end
       end
@@ -257,7 +257,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   def is_valid_period?(dcmi)
-    return true if dcmi['name'].present? && dcmi['start'].present? && dcmi['end'].present?
+    return true if dcmi['name'].present? && dcmi['start'].present?
     return false
   end
 
@@ -274,19 +274,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   def get_edm_type(types)
-    # TODO: This is a kludge. Should probably do the mapping at index time
-    # accepted_types is an ordered list of values for type at least one
-    # of which is required. They are mainly based on dcmi:type
-    # typmap maps these to the EDM valid types for edm:type field
-    # the array is required because keys of a hash aren't guaranteed
-    # to maintain order and 3D must take precedence over VIDEO, VIDEO over
-    # SOUND and so on...
     types = types.map(&:upcase)
-    typemap = {"3D" => "3D", "IMAGE" => "IMAGE", "STILLIMAGE" => "IMAGE", "TEXT" => "TEXT", "SOUND" => "SOUND", "MOVINGIMAGE" => "VIDEO", "MOVING IMAGE" => "VIDEO", "STILL IMAGE" => "IMAGE"}
-    accepted_types = ["3D","MOVINGIMAGE", "MOVING IMAGE", "SOUND","TEXT","IMAGE", "STILLIMAGE", "STILL IMAGE"]
-    accepted_types.each do |type|
-      return typemap[type] if types.include?(type)
-    end
+    return "3D" if types.include?("3D")
+    return "VIDEO" if types.to_set.intersect?(["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"].to_set)
+    return "SOUND" if types.to_set.intersect?(["SOUND","AUDIO"].to_set)
+    return "TEXT" if types.include?("TEXT")
+    return "IMAGE" if types.to_set.intersect?(["IMAGE", "STILLIMAGE", "STILL IMAGE"].to_set)
     return "INVALID"
   end
 
