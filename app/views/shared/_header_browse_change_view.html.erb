@@ -10,8 +10,9 @@
 		  <%= link_to changeViewParams, id: 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
 		  <% if ['catalog','my_collections'].include?(params[:controller]) %>
 		    <% changeViewParams[:view] = "timeline" %>
-		    <% changeViewParams[:tl_field] = @available_timelines.first if @available_timelines %>
-		    <%= link_to changeViewParams, id: 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
+		    <% timelineParams = changeViewParams.clone %>
+		    <% timelineParams[:tl_field] = @available_timelines.first if @available_timelines %>
+		    <%= link_to timelineParams, id: 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
 		    <% changeViewParams[:view] = "maps" %>
 		    <%= link_to changeViewParams, id: 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
 		  <% end %>
@@ -23,8 +24,9 @@
 		  <i class="fa fa-list fa-lg dri_icon_border"></i>
 		  <% if ['catalog','my_collections'].include?(params[:controller]) %>
 		    <% changeViewParams[:view] = "timeline" %>
-		    <% changeViewParams[:tl_field] = @available_timelines.first if @available_timelines %>
-		    <%= link_to changeViewParams, id: 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
+		    <% timelineParams = changeViewParams.clone %>
+		    <% timelineParams[:tl_field] = @available_timelines.first if @available_timelines %>
+		    <%= link_to timelineParams, id: 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %>
 		    <% changeViewParams[:view] = "maps" %>
 		    <%= link_to changeViewParams, id: 'maps_view' do %><i class="fa fa-map-marker fa-lg dri_icon_border"></i><% end %>
 		  <% end %>
@@ -51,8 +53,9 @@
 		  <%= link_to changeViewParams, id: 'table_view' do %><i class="fa fa-list fa-lg dri_icon_border"></i><% end %>
 		  <% if ['catalog','my_collections'].include?(params[:controller]) %>
 		    <% changeViewParams[:view] = "timeline" %>
-		    <% changeViewParams[:tl_field] = @available_timelines.first if @available_timelines %>
-		    <%= link_to changeViewParams, id: 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %> <i class="fa fa-map-marker fa-lg dri_icon_border"></i>
+		    <% timelineParams = changeViewParams.clone %>
+		    <% timelineParams[:tl_field] = @available_timelines.first if @available_timelines %>
+		    <%= link_to timelineParams, id: 'timeline_view' do %><i class="fa fa-clock-o fa-lg dri_icon_border"></i><% end %> <i class="fa fa-map-marker fa-lg dri_icon_border"></i>
 		  <% end %>
 		<% end %>
 	</div>
