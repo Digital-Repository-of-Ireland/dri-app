@@ -26,10 +26,10 @@ gem 'paper_trail', '~> 4'
 gem 'linkeddata'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.4'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.5'
 gem 'browse-everything', '1.0.0'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'roo', '2.6.0'
+gem 'roo'
 
 gem 'config'
 gem 'sqlite3','~> 1.3', '< 1.4'

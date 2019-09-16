@@ -9,15 +9,18 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: 9735b302cb75bdf34d9d7a5fa8595480d1712081
-  tag: v1.0.4
+  revision: 0842c7dd6f8feefd2c64142cd7cb6f70da2285b0
+  tag: v1.0.5
   specs:
-    dri_batch_ingest (1.0.4)
+    dri_batch_ingest (1.0.5)
       filesize
       fuelux-rails-sass
       iconv
       kaminari
       rails
+      resque
+      rest-client
+      roo
       underscore-rails
 
 GIT
@@ -799,9 +802,9 @@ GEM
     retriable (3.1.2)
     riiif (1.2.0)
       railties (>= 4.2, < 6)
-    roo (2.6.0)
+    roo (2.8.2)
       nokogiri (~> 1)
-      rubyzip (~> 1.1, < 2.0.0)
+      rubyzip (>= 1.2.1, < 2.0.0)
     rsolr (2.2.1)
       builder (>= 2.1.2)
       faraday (>= 0.9.0)
@@ -853,7 +856,7 @@ GEM
       oauth2
     ruby-progressbar (1.10.1)
     ruby_dep (1.5.0)
-    rubyzip (1.2.3)
+    rubyzip (1.2.4)
     rvm (1.11.3.9)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
@@ -1070,7 +1073,7 @@ DEPENDENCIES
   resque-status
   rest-client (~> 2.0)
   riiif (= 1.2.0)
-  roo (= 2.6.0)
+  roo
   rspec-rails
   rspec_junit_formatter
   rswag-api (~> 2.0)
