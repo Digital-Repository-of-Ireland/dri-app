@@ -5,14 +5,14 @@ Blacklight::BlacklightMapsHelperBehavior.module_eval do
     coords_for_search = bbox_coordinates.map { |v| v.to_s }
     link_to(t('blacklight.maps.interactions.bbox_search'),
             url_for(controller: request_controller, action: 'index', only_path: true, spatial_search_type: "bbox",
-                               coordinates: "[#{coords_for_search[1]},#{coords_for_search[0]} TO #{coords_for_search[3]},#{coords_for_search[2]}]",
-                               view: default_document_index_view_type))
+                    coordinates: "[#{coords_for_search[1]},#{coords_for_search[0]} TO #{coords_for_search[3]},#{coords_for_search[2]}]",
+                    view: default_document_index_view_type))
   end
 
   # create a link to a location name facet value
   def link_to_placename_field field_value, field, displayvalue = nil
     if params[:f] && params[:f][field] && params[:f][field].include?(field_value)
-      new_params = params
+      new_params = params.permit!
     else
       new_params = add_facet_params(field, field_value)
     end
@@ -37,5 +37,4 @@ Blacklight::BlacklightMapsHelperBehavior.module_eval do
   def request_controller
     params[:request_controller].presence || controller_name
   end
-
 end
