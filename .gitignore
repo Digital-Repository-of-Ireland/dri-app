@@ -41,6 +41,7 @@ config/redis.yml
 config/doi.yml
 config/blacklight.yml
 config/authorities.yml
+config/browse_everything_providers.yml
 
 spec/reports/*
 .sass-cache/
