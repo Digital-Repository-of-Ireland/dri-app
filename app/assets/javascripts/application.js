@@ -39,7 +39,7 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //
-//= require colorbox-rails
+//= require jquery.colorbox
 //= require social-share-button
 //= require jquery-xmleditor
 //= require openseadragon

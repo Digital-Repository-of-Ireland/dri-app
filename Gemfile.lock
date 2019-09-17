@@ -266,9 +266,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    colorbox-rails (0.1.2)
-      jquery-rails
-      rails (>= 3.1.1)
     concurrent-ruby (1.1.5)
     config (2.0.0)
       activesupport (>= 4.2)
@@ -505,6 +502,8 @@ GEM
       rdoc
       semver
     jmespath (1.4.0)
+    jquery-colorbox-rails (1.7.3)
+      railties (>= 3.1)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -1012,7 +1011,6 @@ DEPENDENCIES
   ci_reporter_rspec
   clamav
   clipboard-rails
-  colorbox-rails
   config
   cucumber (~> 3.1)
   cucumber-api-steps
@@ -1040,6 +1038,7 @@ DEPENDENCIES
   iiif-presentation!
   is_it_working-cbeer
   it
+  jquery-colorbox-rails
   jquery-datatables!
   jquery-rails
   jquery-slick-rails

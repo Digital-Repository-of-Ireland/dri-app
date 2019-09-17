@@ -157,7 +157,7 @@ gem 'google-oauth2-installed'
 gem 'rvm'
 
 # UI widgets
-gem 'colorbox-rails'
+gem 'jquery-colorbox-rails'
 gem 'bootstrap-switch-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
