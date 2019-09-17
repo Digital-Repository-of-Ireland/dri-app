@@ -135,7 +135,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                   contextual_classes.push(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
                 else
-                  xml.tag! "#{pref}:#{kl}", value unless value.nil?
+                  v = dcmi_components["name"] || value
+                  xml.tag! "#{pref}:#{kl}", v unless v.nil?
                 end
               elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
