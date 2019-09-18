@@ -73,7 +73,8 @@ $(document).ready(function () {
 $('#dri_pdf_viewer_modal_id .modal-content').resizable({
       alsoResize: ".modal-body",
       minHeight: 300,
-      minWidth: 300
+      minWidth: 300,
+      handles: 'se'
     });
     $('#dri_pdf_viewer_modal_id .modal-content').draggable({handle: "#dri_pdf_header"});
 

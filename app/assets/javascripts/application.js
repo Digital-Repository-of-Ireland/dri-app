@@ -14,7 +14,12 @@
 
 //= require jquery_ujs
 //= require datatables
-//= require jquery-ui
+//= require jquery.ui.widget
+//= require jquery.ui.mouse
+//= require jquery.ui.draggable
+//= require jquery.ui.resizable
+//= require jquery.ui.autocomplete
+//= require jquery.ui.menu
 //= require jquery.slick
 //= require clipboard
 //= require i18n
