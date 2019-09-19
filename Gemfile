@@ -55,7 +55,7 @@ gem 'i18n-js'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-sass-rails'
 gem 'js_cookie_rails'
 
 # clients

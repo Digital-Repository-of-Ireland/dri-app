@@ -4,7 +4,13 @@
 @import "bootstrap";
 /* for bootstrap3 */
 
-@import "jquery-ui";
+//@import "jquery-ui";
+@import "themes/jquery.ui.smoothness";
+@import "jquery.ui.core";
+@import "jquery.ui.theme";
+@import "jquery.ui.resizable";
+@import "jquery.ui.autocomplete";
+@import "jquery.ui.menu";
 @import "slick";
 @import 'slick-theme';
 @import "jquery.colorbox-example1";

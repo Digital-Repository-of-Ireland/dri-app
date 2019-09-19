@@ -2706,6 +2706,7 @@ ul.dri_collection_institutes_list {
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
     border: none;
+    resize: none;
 }
 
 .ui-autocomplete-loading {
