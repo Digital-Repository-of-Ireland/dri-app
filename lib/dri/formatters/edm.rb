@@ -35,9 +35,14 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       contributor: 'person_tesim'
     },
     dcterms: {
-      isPartOf: "collection_id_tesim",
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
+      spatial: lambda do |record|
+        spatials = record['geographical_coverage_tesim'] || []
+        spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
+        spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
+        spatials || []
+      end,
       temporal: "temporal_coverage_tesim",
       license: lambda do |record|
         licence = record.licence
@@ -107,6 +112,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               if k.match(/(^.*)_(eng|gle)$/)
                 lang = $2
                 kl = $1
+              elsif k.match(/^(type|format|medium)$/)
+                kl = k
+                lang = "eng"
               else
                 kl = k
                 lang = nil
@@ -143,7 +151,6 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               else 
                 xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value unless value.nil?
               end
-
             end
           end
         end
@@ -216,7 +223,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
-        xml.tag!("edm:provider", "Digital Repository of Ireland")
+        xml.tag!("edm:provider", {"xml:lang" => "eng"}, "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence})
         xml.tag!("edm:isShownBy", {"rdf:resource" => imageUrl})
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
