@@ -255,9 +255,9 @@ class ObjectsController < BaseObjectsController
     results.each do |solr_doc|
       next unless solr_doc.published? || (current_user.is_admin? || can?(:edit, solr_doc))
 
-      #item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
-      item = solr_doc.extract_metadata(params[:metadata])
-      #end
+      item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['system_modified_dtsi']}") do
+               solr_doc.extract_metadata(params[:metadata])
+             end
 
       item['metadata']['licence'] = DRI::Formatters::Json.licence(solr_doc)
       item['metadata']['doi'] = DRI::Formatters::Json.dois(solr_doc)
