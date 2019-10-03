@@ -1,4 +1,4 @@
-# Controller for Digital Objects
+# Controller for API
 #
 require 'solr/query'
 
