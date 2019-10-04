@@ -142,4 +142,8 @@ class ApiController < CatalogController
 
     asset_list
   end
+
+  def numeric?(number)
+    Integer(number) rescue false
+  end
 end
