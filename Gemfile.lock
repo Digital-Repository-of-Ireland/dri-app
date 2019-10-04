@@ -63,10 +63,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 94ec33e136fe96bb85c3297d7ed2583885694f5b
+  revision: 548b9955f84d441763dfd994a7ea6fb6464dba1d
   branch: develop
   specs:
-    dri_data_models (3.2.1)
+    dri_data_models (3.2.2)
       active-fedora
       active_fedora-datastreams
       hydra-derivatives
@@ -466,7 +466,7 @@ GEM
       hydra-access-controls (= 10.6.2)
       hydra-core (= 10.6.2)
       rails (>= 3.2.6)
-    i18n (1.6.0)
+    i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     i18n-js (3.3.0)
       i18n (>= 0.6.6)
@@ -761,7 +761,7 @@ GEM
     rdf-turtle (3.0.6)
       ebnf (~> 1.1)
       rdf (~> 3.0)
-    rdf-vocab (3.0.10)
+    rdf-vocab (3.0.11)
       rdf (~> 3.0, >= 3.0.11)
     rdf-xsd (3.0.1)
       rdf (~> 3.0)
