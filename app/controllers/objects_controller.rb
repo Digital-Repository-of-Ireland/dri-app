@@ -367,10 +367,6 @@ class ObjectsController < BaseObjectsController
       standard == 'documentation' ? 'qualifieddublincore' : standard
     end
 
-    def numeric?(number)
-      Integer(number) rescue false
-    end
-
     def post_save(create)
       warn_if_has_duplicates(@object)
       retrieve_linked_data
