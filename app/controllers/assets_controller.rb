@@ -1,11 +1,10 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-  before_action :authenticate_user_from_token!, only: [:index, :list_assets, :download]
-  before_action :authenticate_user!, only: [:index, :list_assets]
-  before_action :add_cors_to_json, only: :list_assets
-  before_action :read_only, except: [:index, :show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:index, :show, :download, :list_assets]
+  before_action :authenticate_user_from_token!, only: [:index, :download]
+  before_action :authenticate_user!, only: [:index]
+  before_action :read_only, except: [:index, :show, :download]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:index, :show, :download]
 
   require 'validators'
 
@@ -175,35 +174,7 @@ class AssetsController < ApplicationController
     end
   end
 
-  # API call: takes one or more object ids and returns a list of asset urls
-  def list_assets
-    @list = []
-
-    raise DRI::Exceptions::BadRequest unless params[:objects].present?
-
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
-      params[:objects].map { |o| o.values.first }
-    )
-    result_docs = Solr::Query.new(solr_query)
-    result_docs.each do |doc|
-      item = list_files_with_surrogates(doc)
-      @list << item unless item.empty?
-    end
-
-    raise DRI::Exceptions::NotFound if @list.empty?
-
-    respond_to do |format|
-      format.json
-    end
-  end
-
   private
-
-    def add_cors_to_json
-      if request.format == "application/json"
-        response.headers["Access-Control-Allow-Origin"] = "*"
-      end
-    end
 
     def build_generic_file(object:, user:, preservation: false)
       generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
@@ -236,32 +207,6 @@ class AssetsController < ApplicationController
         object_id: @object.id,
         id: @generic_file.id
       )
-    end
-
-    def list_files_with_surrogates(doc)
-      item = {}
-      item['pid'] = doc.id
-      item['files'] = []
-
-      files = doc.assets
-
-      files.each do |file_doc|
-        file_list = {}
-
-        if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-          url = url_for(file_download_url(doc.id, file_doc.id))
-          file_list['masterfile'] = url
-        end
-
-        if can?(:read, doc)
-          surrogates = doc.surrogates(file_doc.id)
-          surrogates.each { |file, loc| file_list[file] = loc }
-        end
-
-        item['files'].push(file_list)
-      end
-
-      item
     end
 
     def local_file_ingest(name)

@@ -17,7 +17,7 @@ gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.1'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.2'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.4.1'
 gem "devise", ">= 4.7.1"
 
@@ -79,7 +79,7 @@ gem 'execjs'
 gem 'uglifier', '>= 1.0.3'
 
 group :production do
-  gem 'clamav'
+  gem 'clamby'
   gem 'mysql2', '< 0.5'
   gem 'honeybadger', '~> 2.0'
 end

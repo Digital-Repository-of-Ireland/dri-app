@@ -154,9 +154,9 @@ Rails.application.routes.draw do
     match 'objects/:id' => 'objects#show', via: :get
 
     #API paths
-    match 'get_objects' => 'objects#index', via: :post
-    match 'related' => 'objects#related', via: :get
-    match 'get_assets' => 'assets#list_assets', via: :post, as: :list_assets
+    match 'get_objects' => 'api#objects', via: :post
+    match 'related' => 'api#related', via: :get
+    match 'get_assets' => 'api#assets', via: :post, as: :list_assets
     match '*get_assets', via: [:options], to:  lambda {|_| [204, {'Access-Control-Allow-Headers' => "Origin, Content-Type, Accept, Authorization, Token", 'Access-Control-Allow-Origin' => "*", 'Content-Type' => 'text/plain'}, []]}
 
     resque_web_constraint = lambda do |request|
