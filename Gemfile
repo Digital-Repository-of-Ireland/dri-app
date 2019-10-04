@@ -79,7 +79,7 @@ gem 'execjs'
 gem 'uglifier', '>= 1.0.3'
 
 group :production do
-  gem 'clamav'
+  gem 'clamby'
   gem 'mysql2', '< 0.5'
   gem 'honeybadger', '~> 2.0'
 end

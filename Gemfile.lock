@@ -256,7 +256,7 @@ GEM
     ci_reporter_rspec (1.0.0)
       ci_reporter (~> 2.0)
       rspec (>= 2.14, < 4)
-    clamav (0.4.1)
+    clamby (1.6.2)
     clipboard-rails (1.7.1)
     coderay (1.1.2)
     coffee-rails (5.0.0)
@@ -1014,7 +1014,7 @@ DEPENDENCIES
   byebug (~> 10.0)
   capybara (~> 3.14)
   ci_reporter_rspec
-  clamav
+  clamby
   clipboard-rails
   config
   cucumber (~> 3.1)
