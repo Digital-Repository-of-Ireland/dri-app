@@ -146,7 +146,7 @@ en:
         invalid_xml: 'Invalid XML: %{error}'
         read_permission: You do not have permission to read this document.
         unknown_permission: 'Unsupported Permission Level: %{action}'
-        virus_detected: 'Virus detected in uploaded file: %{virus}'
+        virus_detected: 'Virus detected in uploaded file'
       error:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.

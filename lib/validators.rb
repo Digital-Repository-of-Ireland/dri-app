@@ -89,10 +89,10 @@ module Validators
   # Throws an exception if a virus is detected
   #
   def self.virus_scan(file)
-    if defined? ClamAV
+    if defined? Clamby
       Rails.logger.info 'Performing virus scan.'
-      result = ClamAV.instance.scanfile( file.respond_to?(:path) ? file.path : file )
-      raise DRI::Exceptions::VirusDetected.new(result) unless result == 0
+      result = Clamby.safe?(file.respond_to?(:path) ? file.path : file)
+      raise DRI::Exceptions::VirusDetected.new unless result
     else
       Rails.logger.warn 'Virus scanning is disabled.'
     end

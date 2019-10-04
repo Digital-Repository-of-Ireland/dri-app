@@ -8,7 +8,7 @@
     <% end %>
 
     <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
-        <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+        <h1><%= document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
             <%= image_tag images.image_for_search, width: "200" %>
@@ -17,11 +17,9 @@
     <% end %>
 
     <p class="dri_subject">
-      <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
-          <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-            <% unless uri?(subject) %> <%= subject %> <% end %>
-            <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject || uri?(subject) %> | <% end %>
-          <% end %>
+      <% present(document, DRI::ObjectPresenter) do |presenter| %>
+        <% subjects = presenter.subjects %>
+        <%= subjects if subjects %>
       <% end %>
     </p>
 
