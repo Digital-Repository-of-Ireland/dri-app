@@ -9,8 +9,8 @@ class ObjectsController < BaseObjectsController
 
   before_action :authenticate_user_from_token!, except: [:show, :citation]
   before_action :authenticate_user!, except: [:show, :citation]
-  before_action :read_only, except: [:show, :citation, :related, :retrieve]
-  before_action ->(id=params[:id]) { locked(id) }, except: [:show, :citation, :related, :new, :create, :retrieve]
+  before_action :read_only, except: [:show, :citation, :retrieve]
+  before_action ->(id=params[:id]) { locked(id) }, except: [:show, :citation, :new, :create, :retrieve]
 
   # Displays the New Object form
   #
