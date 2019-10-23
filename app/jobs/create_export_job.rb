@@ -1,14 +1,15 @@
 class CreateExportJob
   require 'csv'
+  require 'mail'
 
   @queue = :create_archive
 
   def self.perform(object_id, fields, email)
     @first_pass = Tempfile.new("#{object_id}_export_first")
-    
+
     assets = fields.delete('assets')
     options = { fields: fields.keys }
-    
+
     @max_headers = {}
 
     titles = ['Id'].concat(fields.values)
@@ -21,7 +22,7 @@ class CreateExportJob
 
     first_pass(object_id, titles, options)
     output = second_pass(object_id, titles)
-    
+
     key = store_export(object_id, email, output.path)
     @first_pass.unlink
     output.unlink
@@ -67,7 +68,7 @@ class CreateExportJob
 
       CSV.foreach(@first_pass.path, headers: true) do |row|
         output_row = []
-      
+
         row.each do |header,value|
           if value.present?
             split_col = value.split('|')
@@ -87,9 +88,9 @@ class CreateExportJob
   def self.headers(titles)
     headers = []
     titles.each do |title|
-      (@max_headers[title]).times do |i| 
+      (@max_headers[title]).times do |i|
         header = i == 0 ? "#{title}" : "#{title}_#{i}"
-        headers << header 
+        headers << header
       end
     end
 
@@ -98,11 +99,11 @@ class CreateExportJob
 
   def self.store_export(object_id, email, csv)
     storage = StorageService.new
-    bucket_name = "users.#{Mail::Address.new(email).local}"
+    bucket_name = "users.#{::Mail::Address.new(email).local}"
     storage.create_bucket(bucket_name) unless storage.bucket_exists?(bucket_name)
     key = "#{object_id}_#{Time.now.strftime('%Y-%m-%d_%H-%M-%S')}.csv"
     storage.store_file(bucket_name, csv, key)
-    
+
     key
   end
 
