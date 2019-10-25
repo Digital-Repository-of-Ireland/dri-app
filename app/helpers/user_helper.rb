@@ -9,10 +9,11 @@ module UserHelper
     Kaminari.paginate_array(user_collections.collections_data).page(params[:page]).per(5)
   end
 
-  def get_inherited_read_groups(obj)
+  def inherited_collection_read_groups(obj)
     return if obj == nil
+
     if obj.read_groups.empty?
-      get_inherited_read_groups(obj.governing_collection)
+      inherited_collection_read_groups(obj.governing_collection)
     elsif obj.read_groups.first == 'registered'
       return "logged-in"
     elsif obj.read_groups.first == 'public'

@@ -254,7 +254,7 @@
 	    <div>
                 <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled => inherit_disabled %>
                 <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
-                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: get_inherited_read_groups(@object)) %>)
+                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: inherited_collection_read_groups(@object.governing_collection)) %>)
                 </label>
             </div>
         <% end %>
