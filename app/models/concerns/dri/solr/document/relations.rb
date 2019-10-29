@@ -34,8 +34,8 @@ module DRI::Solr::Document::Relations
           relationships_hash['Is Documentation For'] = [[link_text, documentation]]
         end
       else
-        relationships_hash.merge!(get_relationships) unless active_fedora_model == 'DRI::EncodedArchivalDescription'
-        relationships_hash.merge!(get_documentation)
+        relationships_hash.merge!(relationships_for_display) unless active_fedora_model == 'DRI::EncodedArchivalDescription'
+        relationships_hash.merge!(documentation_for_display)
       end
 
     rescue ActiveFedora::ObjectNotFoundError
@@ -43,7 +43,7 @@ module DRI::Solr::Document::Relations
     end
 
     relationships_hash
-  end # get_object_relationships
+  end # object_relationships
 
   # Format object relationships for json api
   # @return [Array] of Hashes
@@ -68,7 +68,7 @@ module DRI::Solr::Document::Relations
 
   private
 
-    def get_documentation
+    def documentation_for_display
       docs = {}
       doc_array = []
 
@@ -91,14 +91,14 @@ module DRI::Solr::Document::Relations
       docs
     end
 
-    def get_relationships
+    def relationships_for_display
       rels = {}
 
-      relationships_records.each do |rel, value|
+      relationships_with_documents.each do |rel, docs|
         display_label = active_fedora_model.constantize.relationships[rel][:label]
         item_array = []
 
-        value.each do |rel_obj_doc|
+        docs.each do |rel_obj_doc|
           link_text = rel_obj_doc[
                         ActiveFedora.index_field_mapper.solr_name(
                           'title',
@@ -115,7 +115,7 @@ module DRI::Solr::Document::Relations
       rels
     end
 
-    def relationships_records
+    def relationships_with_documents
       records = {}
 
       object_class = active_fedora_model.constantize
@@ -123,7 +123,7 @@ module DRI::Solr::Document::Relations
 
       relationships.each do |key, value|
         relations_array = self["#{value[:field]}_tesim"]
-        records[key] = retrieve_relation_records(
+        records[key] = relation_solr_documents(
                          relations_array,
                          object_class.solr_relationships_field
                        ) unless relations_array.blank?
@@ -132,8 +132,8 @@ module DRI::Solr::Document::Relations
       records
     end
 
-    def retrieve_relation_records(relations_array, solr_id_field)
-      records = []
+    def relation_solr_documents(relations_array, solr_id_field)
+      solr_documents = []
 
       # Get Root collection of current object.
       root = root_collection
@@ -144,7 +144,7 @@ module DRI::Solr::Document::Relations
       end
 
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
-      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)}:\"#{root.id}\""
+      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable)}:\"#{root.id}\""
 
       solr_results = ActiveFedora::SolrService.query(
                        solr_query,
@@ -153,12 +153,12 @@ module DRI::Solr::Document::Relations
                      )
 
       if solr_results.present?
-        solr_results.each { |item| records << SolrDocument.new(item) }
+        solr_results.each { |item| solr_documents << SolrDocument.new(item) }
       else
         Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
       end
 
-      records
+      solr_documents
     end
 
     def solr_fields_for_standard
