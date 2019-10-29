@@ -63,8 +63,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 548b9955f84d441763dfd994a7ea6fb6464dba1d
-  branch: develop
+  revision: c82d643d2651cb0e869963b4835b4cefb8f360bb
+  tag: v3.2.2
   specs:
     dri_data_models (3.2.2)
       active-fedora
@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 9e5e66bb093105c1cf7398d54f75c0c1a7a70171
-  branch: develop
+  revision: 701d85a91264eea6764f481f8e68c4a12305c16a
+  tag: v1.4.1
   specs:
     user_group (1.4.1)
       devise
@@ -761,7 +761,7 @@ GEM
     rdf-turtle (3.0.6)
       ebnf (~> 1.1)
       rdf (~> 3.0)
-    rdf-vocab (3.0.12)
+    rdf-vocab (3.0.13)
       rdf (~> 3.0, >= 3.0.11)
     rdf-xsd (3.0.1)
       rdf (~> 3.0)
