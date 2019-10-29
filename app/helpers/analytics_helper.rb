@@ -1,6 +1,6 @@
 module AnalyticsHelper
 
-  def get_custom_vars()
+  def custom_vars
     if @document.present? && @document.published?
       custom_vars = [GA::Events::SetCustomDimension.new(1, @document.root_collection_id)]
       custom_vars.push(GA::Events::SetCustomDimension.new(3, @document.id))
