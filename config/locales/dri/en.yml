@@ -27,7 +27,7 @@ en:
         deposit_agreement: I agree to the terms of Deposit Agreement
         deposit_header: The Digital Repository of Ireland Terms and Conditions of Deposit.
         header: The Digital Repository of Ireland End User Agreement.
-        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
+        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='https://dri.ie/dri-privacy-statement'>Privacy Policy</a>."
         reject: I disagree
       timeline:
         description:
