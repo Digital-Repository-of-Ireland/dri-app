@@ -2,6 +2,14 @@ module ApplicationHelper
   require 'storage/s3_interface'
   require 'uri'
 
+  def display_end_user_agreement?
+    return false if Rails.env.test? && ENV['enforce_cookies'] != 'true'
+    return false if %w(/pages/terms /pages/about_faq).include?(request.path)
+    return false if cookies[:accept_cookies]
+
+    true
+  end
+
   def present(model, presenter_class=nil)
     klass = presenter_class || "#{model.class}Presenter".constantize
     presenter = klass.new(model, self)
