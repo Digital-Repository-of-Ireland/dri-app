@@ -31,10 +31,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       coverage_eng: 'coverage_eng_tesim',
       coverage_gle: 'coverage_gle_tesim',
       date: 'date_tesim',
-      created: 'creation_date_tesim',
       contributor: 'person_tesim'
     },
     dcterms: {
+      created: 'creation_date_tesim',
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
       spatial: lambda do |record|
@@ -43,11 +43,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
         spatials || []
       end,
-      temporal: "temporal_coverage_tesim",
-      license: lambda do |record|
-        licence = record.licence
-        licence.present? ? [ licence.url || licence.name ] : [nil]
-      end
+      temporal: "temporal_coverage_tesim"
     },
     edm: {
       type: "object_type_ssm"
@@ -123,7 +119,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               if kl.match(/^(spatial|coverage).*$/)
                 dcmi_components = dcmi_parse(value)
                 if is_valid_point?(dcmi_components)
-                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
+                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 elsif valid_url?(value)
                   host = URI(URI.encode(value.strip)).host
                   if AuthoritiesConfig[host].present?
@@ -141,7 +137,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 dcmi_components = dcmi_parse(value)
                 if is_valid_period?(dcmi_components)
                   contextual_classes.push(dcmi_components)
-                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
+                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 else
                   v = dcmi_components["name"] || value
                   xml.tag! "#{pref}:#{kl}", v unless v.nil?
@@ -163,12 +159,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           if place['geometry']['type'] == "Point"
             ga = place['properties']['nameGA']
             en = place['properties']['nameEN'] || place['properties']['placename']
-            about = place['properties']['uri'] || place['properties']['placename']
+            about = place['properties']['uri'] || "##{place['properties']['placename'].tr(" ", "_")}"
             east,north = place['geometry']['coordinates']
             if north.present? && east.present?
               xml.tag! "edm:Place", {"rdf:about" => about} do
-                xml.tag! "skos:preflabel", {"xml:lang" => "ga"}, ga unless ga.blank?
-                xml.tag! "skos:preflabel", {"xml:lang" => "en"}, en unless en.blank?
+                xml.tag! "skos:prefLabel", {"xml:lang" => "ga"}, ga unless ga.blank?
+                xml.tag! "skos:prefLabel", {"xml:lang" => "en"}, en unless en.blank?
                 xml.tag! "wgs84_pos:lat", north
                 xml.tag! "wgs84_pos:long", east
               end
@@ -180,8 +176,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       # Create other contextual classes
       contextual_classes.each do |cclass|
         if cclass.keys.include?("start")
-          xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name']}"} do
-            xml.tag! "skos:preflabel", cclass['name']
+          xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name'].tr(" ", "_")}"} do
+            xml.tag! "skos:prefLabel", cclass['name']
             xml.tag! "edm:begin", cclass['start']
             xml.tag! "edm:end", cclass['end'] || cclass['start']
           end
@@ -235,12 +231,6 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
     end
-
-    # Create the edm:place elements
-    #xml.tag!("edm:Place", {"rdf:about" => "##{dcmi_components['name']}"}) do
-    #  xml.tag!("skos:prefLabel", {"xml:lang" => lang}, dcmi_components['name'])
-    #end
-
 
     xml.target!
   end
