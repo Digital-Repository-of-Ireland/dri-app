@@ -50,17 +50,23 @@ class ReviewJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object['id'], { cast: true })
-        if o.status == 'draft'
-          o.status = 'reviewed'
-          o.object_version ||= '1'
-          o.increment_version
+        begin
+          o = ActiveFedora::Base.find(object['id'], { cast: true })
+          if o.status == 'draft'
+            o.status = 'reviewed'
+            o.object_version ||= '1'
+            o.increment_version
 
-          o.save ? (completed += 1) : (failed += 1)
+            o.save ? (completed += 1) : (failed += 1)
 
-          # Do the preservation actions
-          preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, false, ['properties'])
+            # Do the preservation actions
+            preservation = Preservation::Preservator.new(o)
+            preservation.preserve(false, false, ['properties'])
+          end
+        rescue Ldp::HttpError
+          failed += 1
+        rescue Ldp::BadRequest
+          failed += 1
         end
       end
 
