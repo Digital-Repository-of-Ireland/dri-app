@@ -63,8 +63,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 548b9955f84d441763dfd994a7ea6fb6464dba1d
-  branch: develop
+  revision: c82d643d2651cb0e869963b4835b4cefb8f360bb
+  tag: v3.2.2
   specs:
     dri_data_models (3.2.2)
       active-fedora
@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 9e5e66bb093105c1cf7398d54f75c0c1a7a70171
-  branch: develop
+  revision: 701d85a91264eea6764f481f8e68c4a12305c16a
+  tag: v1.4.1
   specs:
     user_group (1.4.1)
       devise
@@ -170,7 +170,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     ast (2.4.0)
-    autoprefixer-rails (9.7.0)
+    autoprefixer-rails (9.7.1)
       execjs
     aws-eventstream (1.0.3)
     aws-partitions (1.207.0)
@@ -196,7 +196,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    blacklight (6.20.0)
+    blacklight (6.21.0)
       bootstrap-sass (~> 3.2)
       deprecation
       globalid
@@ -380,7 +380,7 @@ GEM
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.12.0)
-    ffi (1.11.1)
+    ffi (1.11.2)
     filesize (0.2.0)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
@@ -701,7 +701,7 @@ GEM
     rb-gravatar (1.0.5)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    rdf (3.0.12)
+    rdf (3.0.13)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (2.2.1)
@@ -737,7 +737,7 @@ GEM
     rdf-turtle (3.0.6)
       ebnf (~> 1.1)
       rdf (~> 3.0)
-    rdf-vocab (3.0.12)
+    rdf-vocab (3.0.14)
       rdf (~> 3.0, >= 3.0.11)
     rdf-xsd (3.0.1)
       rdf (~> 3.0)
