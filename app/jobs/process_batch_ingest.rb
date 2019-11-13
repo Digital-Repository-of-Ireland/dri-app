@@ -25,13 +25,22 @@ class ProcessBatchIngest
 
     if rc == 0 && object
       assets = retrieve_files(download_path, ingest_batch['files'])
-      ingest_assets(user, object, assets)
+
+      unless assets.empty?
+        object.increment_version
+        object.save
+
+        ingest_assets(user, object, assets)
+      end
+
+      version_and_record_committer(object, user)
     end
   end
 
   def self.ingest_assets(user, object, assets)
-    assets.each do |asset|
+    filenames = []
 
+    assets.each do |asset|
       # the asset file was not found
       if asset[:path].start_with?('error:')
         update_master_file(asset[:master_file_id], { status_code: 'FAILED', file_location: asset[:path] })
@@ -43,8 +52,8 @@ class ProcessBatchIngest
 
       original_file_name = File.basename(asset[:path])
 
-      version = ingest_file(asset[:path], object, 'content', original_file_name)
-      saved = if version < 1
+      moab_filename = ingest_file(asset[:path], object, 'content', original_file_name)
+      saved = if moab_filename.nil?
                 false
               else
                 url = Rails.application.routes.url_helpers.url_for(
@@ -52,13 +61,15 @@ class ProcessBatchIngest
                         action: 'download',
                         object_id: object.id,
                         id: @generic_file.id,
-                        version: version
+                        version: object.object_version
                       )
                 file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
                 file_content.external_content(
                   url,
                   original_file_name
                 )
+
+                filenames << moab_filename
                 true
               end
 
@@ -71,6 +82,9 @@ class ProcessBatchIngest
 
       update_master_file(asset[:master_file_id], update)
     end
+
+    preservation = Preservation::Preservator.new(object)
+    preservation.preserve_assets(filenames,[])
   end
 
   def self.ingest_metadata(collection_id, user, metadata)
@@ -107,8 +121,6 @@ class ProcessBatchIngest
       update = if object.save
                  create_reader_group if object.collection?
 
-                 version_and_record_committer(object, user)
-
                  preservation = Preservation::Preservator.new(object)
                  preservation.preserve(true, true, ['descMetadata','properties'])
 
@@ -137,17 +149,6 @@ class ProcessBatchIngest
     filedata.path = file_path
     mime_type = Validators.file_type(file_path)
 
-    object.object_version ||= '1'
-    object.increment_version
-
-    # Update object version
-    begin
-      object.save
-    rescue ActiveRecord::ActiveRecordError => e
-      Rails.logger.error "Could not update object version number for #{object.id} to version #{object_version}"
-      return -1
-    end
-
     begin
       LocalFile.build_local_file(
         object: object,
@@ -158,15 +159,11 @@ class ProcessBatchIngest
       )
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
-      return -1
+      return nil
     end
 
-    preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets([filename],[])
-
     FileUtils.rm_f(file_path)
-
-    object.object_version.to_i
+    filename
   end
 
   def self.build_generic_file(object:, user:, preservation: false)
