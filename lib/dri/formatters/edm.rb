@@ -85,6 +85,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         return ""
     end
 
+    # Identify the type
+    edmtype = get_edm_type(record["type_tesim"]);
+
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
@@ -100,7 +103,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                      end
 
             if pref.match(/^edm$/) && k.match(/^type$/)
-              xml.tag! "edm:type", get_edm_type(values)
+              xml.tag! "edm:type", edmtype
               next
             end
  
@@ -198,9 +201,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
       end
 
-      # TODO: should check if image, and get image for edm:object if available
+      # Get the asset files
       assets = record.assets(with_preservation: false, ordered: true)
 
+      # Get urls for each asset file and create a webResource element
       assets.each do |file|
         url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
         xml.tag!("edm:WebResource", {"rdf:about" => url}) do
@@ -208,11 +212,31 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
+      # get the catalog page for the isShownAt
       landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
 
       mainfile = assets.shift
       if mainfile.present?
         imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
+      end
+
+
+      # TODO change this
+      # TODO: should check if image, and get image for edm:object if available
+      # TODO: Change this so that for video it uses a still image captured
+      # from the video
+      # for sound it uses an image file uploaded with sound if it exists,
+      # otherwise it uses cover image (or a new europeana image mayb
+      if edmtype == "VIDEO"
+        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
+        xml.tag!("edm:WebResource", {"rdf:about" => edmObject}) do
+          xml.tag!("edm:rights", {"rdf:resource" => licence})
+        end
+      elsif edmtype == "SOUND"
+        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
+        xml.tag!("edm:WebResource", {"rdf:about" => edmObject}) do
+          xml.tag!("edm:rights", {"rdf:resource" => licence})
+        end
       end
 
       # Create the ore:Aggregation element
@@ -227,7 +251,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
           xml.tag!("edm:hasView", {"rdf:resource" => url})
         end
-        xml.tag!("edm:object", {"rdf:resource" => imageUrl})
+        xml.tag!("edm:object", {"rdf:resource" => edmObject || imageUrl})
       end
 
     end
