@@ -370,7 +370,7 @@ class ObjectsController < BaseObjectsController
     def post_save(create)
       warn_if_has_duplicates(@object)
       retrieve_linked_data
-      version_and_record_committer(@object, current_user)
+      record_version_committer(@object, current_user)
 
       yield
 

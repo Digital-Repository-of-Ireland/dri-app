@@ -104,7 +104,7 @@ class MetadataController < ApplicationController
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
-        version_and_record_committer(@object, current_user)
+        record_version_committer(@object, current_user)
         update_or_mint_doi
 
         retrieve_linked_data

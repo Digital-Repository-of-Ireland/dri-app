@@ -33,7 +33,7 @@ class ProcessBatchIngest
         ingest_assets(user, object, assets)
       end
 
-      version_and_record_committer(object, user)
+      record_committer(object, user)
     end
   end
 
@@ -245,16 +245,12 @@ class ProcessBatchIngest
     master_file.save
   end
 
-  def self.version_and_record_committer(object, user)
-    object.create_version
-
+  def self.record_committer(object, user)
     VersionCommitter.create(version_id: version_id(object), obj_id: object.id, committer_login: user.to_s)
   end
 
   def self.version_id(object)
-    return object.versions.last.uri if object.has_versions?
-
-    object.uri.to_s
+    'v%04d' % object.object_version
   end
 
   def self.checksum_metadata(object)
