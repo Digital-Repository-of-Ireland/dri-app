@@ -30,7 +30,7 @@ DRI::ModelSupport::Files.module_eval do
 
     begin
       self.save!
-    rescue ActiveRecord::ActiveRecordError
+    rescue ActiveFedora::RecordInvalid
       logger.error "Could not update object version number for #{self.id} to version #{object_version}"
       raise Exceptions::InternalError
     end
