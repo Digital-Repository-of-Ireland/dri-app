@@ -3,12 +3,16 @@ class GenericFileContent
 
   attr_accessor :object, :generic_file, :user
 
-  def add_content(file_upload, filename, mime_type, download_url, path='content')
-    set_content(false, file_upload, filename, mime_type, download_url, path)
+  def add_content(file_upload, download_url, path='content')
+    preserved_file = preserve_file(file_upload, path, false)
+
+    external_content(content_url(download_url, preserved_file.version), file_upload[:filename])
   end
 
-  def update_content(file_upload, filename, mime_type, download_url, path='content')
-    set_content(true, file_upload, filename, mime_type, download_url, path)
+  def update_content(file_upload, download_url, path='content')
+    preserved_file = preserve_file(file_upload, path, true)
+
+    external_content(content_url(download_url, preserved_file.version), file_upload[:filename])
   end
 
   def checksum
@@ -20,7 +24,7 @@ class GenericFileContent
     generic_file.label = filename
     generic_file.title = [filename]
 
-    save_characterize_and_record_committer
+    save_and_characterize
   end
 
   def local_file(version = nil, datastream = 'content')
@@ -41,15 +45,12 @@ class GenericFileContent
 
   private
 
-  def set_content(update, file_upload, filename, mime_type, download_url, path='content')
-    preserved_file = preserve_file(file_upload, filename, mime_type, path, update)
-    url = "#{URI.escape(download_url)}?version=#{preserved_file.version}"
-
-    external_content(url, filename)
+  def content_url(download_url, version)
+    "#{URI.escape(download_url)}?version=#{version}"
   end
 
-  def preserve_file(filedata, filename, mime_type, datastream, update=false)
-    filename = "#{generic_file.id}_#{filename}"
+  def preserve_file(filedata, datastream, update=false)
+    filename = "#{generic_file.id}_#{filedata[:filename]}"
 
     # Update object version
     object.object_version ||= '1'
@@ -57,7 +58,7 @@ class GenericFileContent
 
     begin
       object.save!
-    rescue ActiveRecord::ActiveRecordError => e
+    rescue ActiveFedora::RecordInvalid
       logger.error "Could not update object version number for #{object.id} to version #{object.object_version}"
       raise Exceptions::InternalError
     end
@@ -65,9 +66,9 @@ class GenericFileContent
     @file = LocalFile.build_local_file(
       object: object,
       generic_file: generic_file,
-      data: filedata,
+      data: filedata[:file_upload],
       datastream: datastream,
-      opts: { filename: filename, mime_type: mime_type, checksum: 'md5' }
+      opts: { filename: filename, mime_type: filedata[:mime_type], checksum: 'md5' }
     )
 
     # Do the preservation actions
@@ -82,20 +83,20 @@ class GenericFileContent
   end
 
   # Takes an optional block and executes the block if the save was successful.
-  def save_characterize_and_record_committer
-    save_and_record_committer { push_characterize_job }.tap do |val|
+  def save_and_characterize
+    save_with_retry { push_characterize_job }.tap do |val|
       yield if block_given? && val
     end
   end
 
   # Takes an optional block and executes the block if the save was successful.
   # returns false if the save was unsuccessful
-  def save_and_record_committer
+  def save_with_retry
     save_tries = 0
     begin
       return false unless generic_file.save
     rescue RSolr::Error::Http => error
-      ActiveFedora::Base.logger.warn "save_and_record_committer Caught RSOLR error #{error.inspect}"
+      ActiveFedora::Base.logger.warn "save_with_retry Caught RSOLR error #{error.inspect}"
       save_tries += 1
       # fail for good if the tries is greater than 3
       raise error if save_tries >= 3
@@ -104,7 +105,6 @@ class GenericFileContent
     end
     yield if block_given?
 
-    generic_file.record_version_committer(user)
     true
   end
 

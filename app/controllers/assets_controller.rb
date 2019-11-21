@@ -9,6 +9,7 @@ class AssetsController < ApplicationController
   require 'validators'
 
   include DRI::Citable
+  include DRI::Versionable
 
   def index
     enforce_permissions!('edit', params[:object_id])
@@ -84,6 +85,7 @@ class AssetsController < ApplicationController
     object.object_version ||= '1'
     object.increment_version
     object.save
+    record_version_committer(object, current_user)
 
     delfiles = ["#{generic_file.id}_#{generic_file.label}"]
     delete_surrogates(params[:object_id], generic_file.id)
@@ -103,16 +105,16 @@ class AssetsController < ApplicationController
   def update
     enforce_permissions!('edit', params[:object_id])
 
-    file_upload, mime_type = upload_from_params
+    file_upload = upload_from_params
 
     @object = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
-    filename = params[:file_name].presence || file_upload.original_filename
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    if file_content.update_content(file_upload, filename, mime_type, download_url)
+    if file_content.update_content(file_upload, download_url)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
+      record_version_committer(@object, current_user)
 
       mint_doi(@object, 'asset modified') if @object.status == 'published'
     else
@@ -124,7 +126,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to object_file_url(@object.id, @generic_file.id) }
       format.json do
-        response = { checksum: preserved_file.checksum }
+        response = { checksum: file_content.checksum }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :ok
@@ -138,7 +140,7 @@ class AssetsController < ApplicationController
   def create
     enforce_permissions!('edit', params[:object_id])
 
-    file_upload, mime_type = upload_from_params
+    file_upload = upload_from_params
 
     @object = retrieve_object! params[:object_id]
     if @object.nil?
@@ -149,12 +151,12 @@ class AssetsController < ApplicationController
     preservation = params[:preservation].presence == 'true' ? true : false
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
-    filename = params[:file_name].presence || file_upload.original_filename
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    if file_content.add_content(file_upload, filename, mime_type, download_url)
+    if file_content.add_content(file_upload, download_url)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
+      record_version_committer(@object, current_user)
       mint_doi(@object, 'asset added') if @object.status == 'published'
     else
       message = @generic_file.errors.full_messages.join(', ')
@@ -264,15 +266,20 @@ class AssetsController < ApplicationController
         return
       end
 
-      file_upload = if params[:local_file].present?
-                      local_file_ingest(params[:local_file])
-                    else
-                      params[:Filedata].presence || params[:Presfiledata].presence
-                    end
+      upload = if params[:local_file].present?
+                 local_file_ingest(params[:local_file])
+               else
+                 params[:Filedata].presence || params[:Presfiledata].presence
+               end
 
-      mime_type = validate_upload(file_upload)
+      mime_type = validate_upload(upload)
 
-      return file_upload, mime_type
+      file_upload = { file_upload: upload,
+                      mime_type: mime_type,
+                      filename: params[:file_name].presence || upload.original_filename
+                    }
+
+      return file_upload
     end
 
     def validate_upload(file_upload)
