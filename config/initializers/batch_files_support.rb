@@ -24,13 +24,13 @@ DRI::ModelSupport::Files.module_eval do
     ingest_user = UserGroup::User.find_by_email(self.depositor)
     generic_file.apply_depositor_metadata(self.depositor)
 
+    # Update object version
     self.object_version ||= '1'
     self.increment_version
 
-    # Update object version
     begin
       self.save!
-    rescue ActiveRecord::ActiveRecordError => e
+    rescue ActiveFedora::RecordInvalid
       logger.error "Could not update object version number for #{self.id} to version #{object_version}"
       raise Exceptions::InternalError
     end
@@ -42,6 +42,8 @@ DRI::ModelSupport::Files.module_eval do
       datastream: dsid,
       opts: { filename: filename, mime_type: mime_type, checksum: 'md5' }
     )
+
+    VersionCommitter.create(version_id: 'v%04d' % object.object_version, obj_id: object.id, committer_login: user.to_s)
 
     preservation = Preservation::Preservator.new(self)
     preservation.preserve_assets([filename],[])

@@ -69,11 +69,11 @@
         <th><%= t('dri.reports.headings.committer') %></th>
         <th><%= t('dri.reports.headings.label') %></th>
     </tr>
-    <% @versions.keys.each do |label| %>
+    <% @versions.each do |version| %>
        <tr>
-        <td><%= @versions[label][:created] %></td>
-        <td><%= @versions[label][:committer] %></td>
-        <td><a href="<%= @versions[label][:uri] %>"><%= label %></a></td>
+        <td><%= version[:created] %></td>
+        <td><%= version[:committer] %></td>
+        <td><%= version[:version_id] %></td>
       </tr>
     <% end %>
     </table>
