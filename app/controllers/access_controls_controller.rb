@@ -2,6 +2,8 @@ class AccessControlsController < ApplicationController
   before_action :read_only, except: :edit
   before_action ->(id=params[:id]) { locked(id) }, except: :edit
 
+  include DRI::Versionable
+
   def edit
     enforce_permissions!('edit', params[:id])
     @object = retrieve_object!(params[:id])
@@ -18,7 +20,7 @@ class AccessControlsController < ApplicationController
     params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
     params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
     params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase if params[:batch][:manager_users_string].present?
-    
+
     version = @object.object_version || '1'
     params[:batch][:object_version] = version.next
 
@@ -27,6 +29,8 @@ class AccessControlsController < ApplicationController
 
     if updated
       flash[:notice] = t('dri.flash.notice.access_controls_updated')
+
+      record_version_committer(@object, current_user)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
