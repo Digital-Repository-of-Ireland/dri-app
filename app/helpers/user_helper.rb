@@ -10,7 +10,7 @@ module UserHelper
   end
 
   def inherited_collection_read_groups(obj)
-    return if obj == nil
+    return 'restricted' if obj == nil
 
     if obj.read_groups.empty?
       inherited_collection_read_groups(obj.governing_collection)
