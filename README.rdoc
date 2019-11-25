@@ -9,7 +9,7 @@ in the output and you should update from https://java.com/en/download/
 
 For testing and development you will need to bootstrap the project
 
-  $ git clone git@tracker.dri.ie:drirepo/dri-app.git
+  $ git clone ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git
   $ cd dri-app
   $ bundle install --without production
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
