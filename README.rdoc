@@ -123,18 +123,18 @@ asynchronous processing of background jobs. This introduces the following depend
   * fits (for extracting metadata from a file)
   * ffmpeg (video file processing tool)
   * imagemagick (image processing)
-  * Clamav (malware scanning)
+  * Clamav (malware scanning) (production only)
 
 For testing, the file processing tools should be installed locally with the hydra-head.
 See the Dependencies section of this document for more information on installing
 these and other dependencies.
 
-By default fits should be installed in the directory /opt/local/fits/ (this can
-be changed by modifying the config.fits_path setting in the file
-config/initializers/sufia.rb).
+By default fits should be installed in the directory /opt/local/fits/. The path to the install 
+can be set in the Settings.plugins.fits_path setting in the file
+config/settings.yml or config/settings.local.yml.
 
 By default ffmpeg should be installed in the directory /opt/local/bin (this can
-be changed by modifying the ffmpeg_path setting in the file config/settings.yml).
+be set by modifying the ffmpeg_path setting in the file config/settings.yml).
 
 For testing purposes Redis can be installed locally and started with the command
 
@@ -152,6 +152,8 @@ host running in order to run the tests.
 
 == ClamAV
 
+ClamAV is only required to be installed in production, but can be installed locally for testing purposes.
+
 To enable virus scanning ClamAV needs to be installed.
 
   $ sudo port install clamav
@@ -166,13 +168,9 @@ Update the virus database
 
   $ sudo freshclam
 
-Install the clamav Ruby gem
-
-  $ gem install clamav -- --with-cflags=`clamav-config --cflags` --with-ldflags=`clamav-config --libs`
-
 Add the gem to the GemFile
 
-  gem 'clamav'
+  gem 'clamby'
 
 Run bundler. Virus scanning should now take place when an asset is uploaded.
 
