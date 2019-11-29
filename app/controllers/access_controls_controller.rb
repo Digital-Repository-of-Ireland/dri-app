@@ -48,7 +48,7 @@ class AccessControlsController < ApplicationController
   end
 
   def show
-    enforce_permissions!('manage_collection', params[:id])
+    enforce_permissions!('edit', params[:id])
     @collection = SolrDocument.find(params[:id])
     @title = @collection['title_tesim'].first
 
@@ -64,7 +64,7 @@ class AccessControlsController < ApplicationController
         id = document.id
         permissions = read_permissions(document)
 
-        title = "#{document['title_tesim'].first}, #{permissions[:read_access]} #{permissions[:assets]}"
+        title = "#{document['title_tesim'].first}: #{permissions[:read_label]} #{permissions[:assets_label]}"
         parents = document['ancestor_id_tesim']
         inherit_objects = count_objects_with_inherited_permissions(document)
 
@@ -96,7 +96,7 @@ class AccessControlsController < ApplicationController
           entries << {
                        id: "#{object.id}",
                        type: 'item',
-                       name: "#{object['title_tesim'].first}, #{object_permissions[:read_access]} #{object_permissions[:assets]}",
+                       name: "#{object['title_tesim'].first}: #{object_permissions[:read_label]} #{object_permissions[:assets_label]}",
                        dataAttributes: {
                                       'data-read' => object_permissions[:read_access],
                                       'data-assets' => object_permissions[:assets]
@@ -142,19 +142,25 @@ class AccessControlsController < ApplicationController
     def read_permissions(object)
       permissions = {}
       read_groups = object.ancestor_field('read_access_group_ssim')
-      permissions[:read_access] = if read_groups == ['registered']
-                                    'Logged-in'
-                                  elsif read_groups == ['public']
-                                    'Public'
-                                  else
-                                    'Restricted'
-                                  end
+      if read_groups == ['registered']
+        permissions[:read_access] = 'logged-in'
+        permissions[:read_label] = t("dri.views.objects.access_controls.report.logged_in")
+      elsif read_groups == ['public']
+        permissions[:read_access] = 'public'
+        permissions[:read_label] = t("dri.views.objects.access_controls.report.public")
+      else
+        permissions[:read_access] = 'restricted'
+        permissions[:read_label] = t("dri.views.objects.access_controls.report.restricted")
+      end
 
-      permissions[:assets] = if object.read_master?
-                               t("dri.views.objects.access_controls.inherit_strings.public")
-                             else
-                               t("dri.views.objects.access_controls.inherit_strings.private")
-                             end
+      if object.read_master?
+        permissions[:assets] = 'public'
+        permissions[:assets_label] = t("dri.views.objects.access_controls.inherit_strings.public")
+      else
+        permissions[:assets] = 'private'
+        permissions[:assets_label] = t("dri.views.objects.access_controls.inherit_strings.private")
+      end
+
       permissions
     end
 

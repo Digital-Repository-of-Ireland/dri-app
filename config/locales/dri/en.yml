@@ -652,6 +652,10 @@ en:
           public: Allow public access (anyone on the web can access)
           read: Who can access your assets?
           registered: Limit access to logged-in users
+          report:
+            public: Public access to
+            restricted: Approved users have access to
+            logged-in: Logged-in users have access to
           restricted: Restrict access to users who I approve
         buttons:
           cancel: Cancel
