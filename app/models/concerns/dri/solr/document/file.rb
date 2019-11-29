@@ -109,6 +109,7 @@ module DRI::Solr::Document::File
   def read_master?
     master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
     return true if self[master_file_key] == ['public']
+    return false if self[master_file_key] == ['private']
 
     result = false
 
