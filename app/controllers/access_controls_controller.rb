@@ -49,11 +49,11 @@ class AccessControlsController < ApplicationController
 
   def show
     enforce_permissions!('edit', params[:id])
-    collection = SolrDocument.find(params[:id])
-    @collection_id = collection.id
-    @title = collection['title_tesim'].first
+    @collection = SolrDocument.find(params[:id])
+    @collection_id = @collection.id
+    @title = @collection['title_tesim'].first
 
-    collections = [collection].concat(collection.descendants)
+    collections = [@collection].concat(@collection.descendants)
     @access_controls = nested_hash(build_access_controls_tree_entries(collections))
   end
 
