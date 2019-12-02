@@ -29,9 +29,9 @@ $dri_about_logos_min_height: 100px;
         padding-bottom: 5px;
         color: $dri_grey;
         border-bottom: 3px solid $dri_darkgrey;
-        color: $dri_grey;  
+        color: $dri_grey;
         font-weight: bold;
-      
+
     }
 }
 %pages_h6 {
@@ -42,29 +42,32 @@ $dri_about_logos_min_height: 100px;
         padding:10px 0 0 0;
     }
 }
+%pages_ul {
+ul {
+       padding: 0;
+       margin: 0 0 0 15px;
+    li {
+      font-size: 1.1em;
+      text-decoration: none;
+      padding:0;
+      margin:0;
+    }
+  }
+}
 %thin_border {
     border: 1px solid $dri_thingrey;
 }
 .padded_top {
   padding-top: 10px;
 }
-ul { 
-       padding: 0;
-       margin: 0 0 0 15px;
-li {
-      font-size: 1.1em;
-      text-decoration: none;
-      padding:0;
-      margin:0;
-}
-}
+
 //* FAQ /pages/faq.html.erb
 .dri_faq {
     @extend %pages_h5;
     @extend %pages_h6;
     @extend %pages_p;
     @extend %pages_a;
-    
+    @extend %pages_ul;
 }
 //* Lifecycle /pages/lifecycle.html.erb
 .dri_about_lifecycle {
@@ -75,6 +78,7 @@ li {
     @extend %pages_h6;
     @extend %pages_p;
     @extend %pages_a;
+    @extend %pages_ul;
     li {
       padding-bottom:5px;
     }
@@ -131,7 +135,7 @@ li {
             min-height: inherit;
             border-right: 0px;
             border-right: 1px solid $dri_thingrey;
-            margin-top: $dri_column_margin_content_top;      
+            margin-top: $dri_column_margin_content_top;
             @include zen-grid-item(2, 1);
         }
         .dri_about_col03 {
@@ -181,6 +185,7 @@ li {
     @extend %pages_h6;
     @extend %pages_p;
     @extend %pages_a;
+    @extend %pages_ul;
     img {
       margin-top:30px;
         max-width: 100%;
