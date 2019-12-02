@@ -49,16 +49,17 @@ class AccessControlsController < ApplicationController
 
   def show
     enforce_permissions!('edit', params[:id])
-    @collection = SolrDocument.find(params[:id])
-    @title = @collection['title_tesim'].first
+    collection = SolrDocument.find(params[:id])
+    @collection_id = collection.id
+    @title = collection['title_tesim'].first
 
-    collections = [@collection].concat(@collection.descendants)
-    @access_controls = nested_hash(build_collection_entries(collections))
+    collections = [collection].concat(collection.descendants)
+    @access_controls = nested_hash(build_access_controls_tree_entries(collections))
   end
 
   private
 
-    def build_collection_entries(collections)
+    def build_access_controls_tree_entries(collections)
       entries = []
       collections.each do |document|
         id = document.id
@@ -66,7 +67,7 @@ class AccessControlsController < ApplicationController
 
         title = "#{document['title_tesim'].first}: #{permissions[:read_label]} #{permissions[:assets_label]}"
         parents = document['ancestor_id_tesim']
-        inherit_objects = count_objects_with_inherited_permissions(document)
+        inherit_objects = objects_with_inherited_permissions(document)
 
         entries << {
                      id: id,
@@ -80,13 +81,27 @@ class AccessControlsController < ApplicationController
                    }
 
         # objects that inherit the permissions
-        if inherit_objects > 0
+        if inherit_objects.size > 0
           entries << {
                        id: "#{id}-inherit",
-                       type: 'item',
-                       name: t('dri.views.objects.access_controls.inherit_objects', count: inherit_objects),
+                       type: 'folder',
+                       name: "#{t('dri.views.objects.access_controls.inherit_objects', count: inherit_objects.size)}: #{permissions[:read_label]} #{permissions[:assets_label]}",
                        parent_id: document.id
                      }
+
+          inherit_objects.each do |object|
+          object_permissions = read_permissions(object)
+          entries << {
+                       id: "#{object.id}",
+                       type: 'item',
+                       name: "#{object['title_tesim'].first}",
+                       dataAttributes: {
+                                      'data-read' => object_permissions[:read_access],
+                                      'data-assets' => object_permissions[:assets]
+                                    },
+                       parent_id: "#{id}-inherit"
+                     }
+          end
         end
 
         # add list of objects that have custom settings
@@ -118,14 +133,16 @@ class AccessControlsController < ApplicationController
       nested_hash.select { |_id, item| item[:parent_id].nil? }.values
     end
 
-    def count_objects_with_inherited_permissions(collection)
-      ActiveFedora::SolrService.count("collection_id_sim:#{collection['id']}",
-                                      fq: ['is_collection_sim:false',
-                                           '-read_access_group_ssim:[* TO *]',
-                                           '-(-master_file_access_sim:inherit master_file_access_sim:*)'
-                                          ]
-
-                                     )
+    def objects_with_inherited_permissions(collection)
+      query = ::Solr::Query.new(
+                                 "collection_id_sim:#{collection['id']}",
+                                 100,
+                                 fq: ['is_collection_sim:false',
+                                     '-read_access_group_ssim:[* TO *]',
+                                     '-(-master_file_access_sim:inherit master_file_access_sim:*)'
+                                 ]
+                               )
+      query.to_a
     end
 
     def objects_with_permissions(collection)
@@ -142,10 +159,11 @@ class AccessControlsController < ApplicationController
     def read_permissions(object)
       permissions = {}
       read_groups = object.ancestor_field('read_access_group_ssim')
-      if read_groups == ['registered']
+      case read_groups
+      when ['registered']
         permissions[:read_access] = 'logged-in'
         permissions[:read_label] = t("dri.views.objects.access_controls.report.logged_in")
-      elsif read_groups == ['public']
+      when ['public']
         permissions[:read_access] = 'public'
         permissions[:read_label] = t("dri.views.objects.access_controls.report.public")
       else
@@ -153,13 +171,10 @@ class AccessControlsController < ApplicationController
         permissions[:read_label] = t("dri.views.objects.access_controls.report.restricted")
       end
 
-      if object.read_master?
-        permissions[:assets] = 'public'
-        permissions[:assets_label] = t("dri.views.objects.access_controls.inherit_strings.public")
-      else
-        permissions[:assets] = 'private'
-        permissions[:assets_label] = t("dri.views.objects.access_controls.inherit_strings.private")
-      end
+      read_master = object.read_master? ? 'public' : 'private'
+      permissions[:assets] = read_master
+      permissions[:assets_label] = t("dri.views.objects.access_controls.inherit_strings.#{read_master}")
+
 
       permissions
     end
