@@ -54,7 +54,12 @@ class AccessControlsController < ApplicationController
     @title = @collection['title_tesim'].first
 
     collections = [@collection].concat(@collection.descendants)
-    @access_controls = nested_hash(build_access_controls_tree_entries(collections))
+
+    respond_to do |format|
+      format.html { @access_controls = nested_hash(build_access_controls_tree_entries(collections))
+}
+      format.csv { send_data to_csv(collections), filename: "#{@title.parameterize}-access-controls-#{Date.today}.csv" }
+    end
   end
 
   private
@@ -67,7 +72,7 @@ class AccessControlsController < ApplicationController
 
         title = "#{document['title_tesim'].first}: #{permissions[:read_label]} #{permissions[:assets_label]}"
         parents = document['ancestor_id_tesim']
-        inherit_objects = objects_with_inherited_permissions(document)
+        inherit_objects = count_objects_with_inherited_permissions(document)
 
         entries << {
                      id: id,
@@ -81,42 +86,46 @@ class AccessControlsController < ApplicationController
                    }
 
         # objects that inherit the permissions
-        if inherit_objects.size > 0
+        if inherit_objects > 0
           entries << {
                        id: "#{id}-inherit",
-                       type: 'folder',
-                       name: "#{t('dri.views.objects.access_controls.inherit_objects', count: inherit_objects.size)}: #{permissions[:read_label]} #{permissions[:assets_label]}",
+                       type: 'item',
+                       name: t('dri.views.objects.access_controls.inherit_objects', count: inherit_objects),
+                       attr: {
+                        "data-icon": "glyphicon glyphicon-info-sign"
+                       },
                        parent_id: document.id
                      }
-
-          inherit_objects.each do |object|
-          object_permissions = read_permissions(object)
-          entries << {
-                       id: "#{object.id}",
-                       type: 'item',
-                       name: "#{object['title_tesim'].first}",
-                       dataAttributes: {
-                                      'data-read' => object_permissions[:read_access],
-                                      'data-assets' => object_permissions[:assets]
-                                    },
-                       parent_id: "#{id}-inherit"
-                     }
-          end
         end
 
         # add list of objects that have custom settings
         objects = objects_with_permissions(document)
+        if objects.size > 0
+          entries << {
+                       id: "#{id}-custom",
+                       type: 'folder',
+                       name: t('dri.views.objects.access_controls.custom_objects', count: objects.size),
+                       attr: {
+                        "data-icon": "glyphicon glyphicon-info-sign"
+                       },
+                       parent_id: id
+                     }
+        end
+
         objects.each do |object|
           object_permissions = read_permissions(object)
           entries << {
                        id: "#{object.id}",
                        type: 'item',
                        name: "#{object['title_tesim'].first}: #{object_permissions[:read_label]} #{object_permissions[:assets_label]}",
+                       attr: {
+                        "data-icon": "glyphicon glyphicon-file"
+                       },
                        dataAttributes: {
                                       'data-read' => object_permissions[:read_access],
                                       'data-assets' => object_permissions[:assets]
                                     },
-                       parent_id: document.id
+                       parent_id: "#{id}-custom"
                      }
         end
       end
@@ -131,6 +140,16 @@ class AccessControlsController < ApplicationController
         parent[:children] << item if parent
       end
       nested_hash.select { |_id, item| item[:parent_id].nil? }.values
+    end
+
+    def count_objects_with_inherited_permissions(collection)
+      ActiveFedora::SolrService.count(
+                                 "collection_id_sim:#{collection['id']}",
+                                 fq: ['is_collection_sim:false',
+                                     '-read_access_group_ssim:[* TO *]',
+                                     '-(-master_file_access_sim:inherit master_file_access_sim:*)'
+                                 ]
+                               )
     end
 
     def objects_with_inherited_permissions(collection)
@@ -159,6 +178,7 @@ class AccessControlsController < ApplicationController
     def read_permissions(object)
       permissions = {}
       read_groups = object.ancestor_field('read_access_group_ssim')
+
       case read_groups
       when ['registered']
         permissions[:read_access] = 'logged-in'
@@ -167,7 +187,7 @@ class AccessControlsController < ApplicationController
         permissions[:read_access] = 'public'
         permissions[:read_label] = t("dri.views.objects.access_controls.report.public")
       else
-        permissions[:read_access] = 'restricted'
+        permissions[:read_access] = 'approved'
         permissions[:read_label] = t("dri.views.objects.access_controls.report.restricted")
       end
 
@@ -175,8 +195,28 @@ class AccessControlsController < ApplicationController
       permissions[:assets] = read_master
       permissions[:assets_label] = t("dri.views.objects.access_controls.inherit_strings.#{read_master}")
 
-
       permissions
+    end
+
+    def to_csv(collections)
+      headers = ['collection', 'title', 'users', 'asset file access']
+      CSV.generate(headers: true) do |csv|
+        csv << headers
+
+        collections.each do |collection|
+          inherit_objects = objects_with_inherited_permissions(collection)
+          objects = objects_with_permissions(collection)
+          inherit_objects.concat(objects).each do |object|
+            permissions = read_permissions(object)
+            csv << [
+                     collection['title_tesim'].first,
+                     object['title_tesim'].first,
+                     permissions[:read_access],
+                     permissions[:assets_label]
+                   ]
+          end
+        end
+      end
     end
 
     def purge_params

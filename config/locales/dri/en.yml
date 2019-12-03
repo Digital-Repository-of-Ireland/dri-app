@@ -639,6 +639,9 @@ en:
           inherit_objects:
             one: 1 object inherits these access controls
             other: '%{count} objects inherit these access controls'
+          custom_objects:
+            one: 1 object has custom access controls
+            other: '%{count} objects have custom access controls'
           inherit_strings:
             private: "surrogates only"
             public: "surrogates and uploaded originals"
