@@ -101,12 +101,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                      else
                        value_for(v, record.to_h, {})
                      end
-
             if pref.match(/^edm$/) && k.match(/^type$/)
               xml.tag! "edm:type", edmtype
               next
             end
- 
+            
             values.each do |value|
               if k.match(/(^.*)_(eng|gle)$/)
                 lang = $2
@@ -118,13 +117,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 kl = k
                 lang = nil
               end
-
+                     
               if kl.match(/^(spatial|coverage).*$/)
                 dcmi_components = dcmi_parse(value)
-                if is_valid_point?(dcmi_components)
+                  if is_valid_point?(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 elsif valid_url?(value)
-                  host = URI(URI.encode(value.strip)).host
+                  host = URI(URI.encode(value.strip)).host 
                   if AuthoritiesConfig[host].present?
                     xml.tag! "#{pref}:#{kl}", {"rdf:resource" => value}
                   else
@@ -145,6 +144,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                   v = dcmi_components["name"] || value
                   xml.tag! "#{pref}:#{kl}", v unless v.nil?
                 end
+              elsif kl.match(/^(subject).*$/) && valid_url?(value)               
+                  xml.tag! "#{pref}:#{kl}",{"rdf:resource"=> value}    
               elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
               else 
@@ -177,6 +178,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Create other contextual classes
+    
       contextual_classes.each do |cclass|
         if cclass.keys.include?("start")
           xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name'].tr(" ", "_")}"} do
@@ -203,7 +205,6 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Get the asset files
       assets = record.assets(with_preservation: false, ordered: true)
-
       # Get urls for each asset file and create a webResource element
       assets.each do |file|
         url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
@@ -214,8 +215,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # get the catalog page for the isShownAt
       landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
-
-      mainfile = assets.shift
+     
+       mainfile = assets.shift
       if mainfile.present?
         imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
       end
