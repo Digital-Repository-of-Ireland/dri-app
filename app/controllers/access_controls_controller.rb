@@ -56,8 +56,7 @@ class AccessControlsController < ApplicationController
     collections = [@collection].concat(@collection.descendants)
 
     respond_to do |format|
-      format.html { @access_controls = nested_hash(build_access_controls_tree_entries(collections))
-}
+      format.html { @access_controls = nested_hash(build_access_controls_tree_entries(collections)) }
       format.csv { send_data to_csv(collections), filename: "#{@title.parameterize}-access-controls-#{Date.today}.csv" }
     end
   end
@@ -168,9 +167,8 @@ class AccessControlsController < ApplicationController
       query = ::Solr::Query.new("collection_id_sim:#{collection['id']}",
                                 100,
                                 fq: ['is_collection_sim:false',
-                                     'read_access_group_ssim:[* TO *]',
-                                     '-master_file_access_sim:inherit',
-                                     'master_file_access_sim:[* TO *]']
+                                     'read_access_group_ssim:[* TO *] OR (-master_file_access_sim:inherit master_file_access_sim:[* TO *])'
+                                    ]
                                 )
       query.to_a
     end
