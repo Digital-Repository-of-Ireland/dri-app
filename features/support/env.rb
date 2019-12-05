@@ -1,5 +1,4 @@
 require 'simplecov'
-require 'simplecov-rcov'
 require 'active_fedora/cleaner'
 
 class SimpleCov::Formatter::MergedFormatter
