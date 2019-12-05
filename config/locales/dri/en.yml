@@ -472,6 +472,8 @@ en:
           create_collection: Create Collection
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
+        access_controls_review: Review Access Controls
+        access_controls_csv: as csv
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
         confirm_delete: This will delete the collection and all objects within the collection/sub-collection. Continue?
         confirm_fixity: 'Perform fixity check on all objects in this collection?'
