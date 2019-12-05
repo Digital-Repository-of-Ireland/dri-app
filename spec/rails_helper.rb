@@ -7,14 +7,13 @@ def zeus_running?
 end
 
 if !zeus_running? && ENV["RUN_COVERAGE"]
-    require 'simplecov'
-    require 'simplecov-rcov'
-    SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-    SimpleCov.start do 
-        add_filter "/spec/"
-        add_filter "/config/"
-	add_filter "/features/"
-    end
+  require 'simplecov'
+
+  SimpleCov.start 'rails' do
+    add_filter "/spec/"
+    add_filter "/config/"
+    add_filter "/features/"
+  end
 end
 
 Capybara.register_driver :chrome do |app|
