@@ -2,19 +2,14 @@ require 'rubygems'
 require 'capybara/rspec'
 require 'selenium-webdriver'
 
-def zeus_running?
-  File.exists? '.zeus.sock'
-end
+if ENV["RUN_COVERAGE"]
+  require 'simplecov'
 
-if !zeus_running? && ENV["RUN_COVERAGE"]
-    require 'simplecov'
-    require 'simplecov-rcov'
-    SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-    SimpleCov.start do 
-        add_filter "/spec/"
-        add_filter "/config/"
-	add_filter "/features/"
-    end
+  SimpleCov.start 'rails' do
+    add_filter "/spec/"
+    add_filter "/config/"
+    add_filter "/features/"
+  end
 end
 
 Capybara.register_driver :chrome do |app|

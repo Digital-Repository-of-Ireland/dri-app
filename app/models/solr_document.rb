@@ -56,7 +56,7 @@ class SolrDocument
     if ids.present?
       docs = {}
       query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-      results = ActiveFedora::SolrService.query(query)
+      results = ActiveFedora::SolrService.query(query, rows: ids.length)
       results.each { |r| docs[r['id']] = SolrDocument.new(r) }
     end
 

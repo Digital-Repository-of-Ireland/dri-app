@@ -472,6 +472,8 @@ en:
           create_collection: Create Collection
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
+        access_controls_review: Review Access Controls
+        access_controls_csv: as csv
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
         confirm_delete: This will delete the collection and all objects within the collection/sub-collection. Continue?
         confirm_fixity: 'Perform fixity check on all objects in this collection?'
@@ -636,6 +638,12 @@ en:
           edit_desc: Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts.
           edit_object: Who can edit this object
           inherit: Inherit this setting from the parent collection
+          inherit_objects:
+            one: 1 object inherits these access controls
+            other: '%{count} objects inherit these access controls'
+          custom_objects:
+            one: 1 object has custom access controls
+            other: '%{count} objects have custom access controls'
           inherit_strings:
             private: "surrogates only"
             public: "surrogates and uploaded originals"
@@ -649,6 +657,10 @@ en:
           public: Allow public access (anyone on the web can access)
           read: Who can access your assets?
           registered: Limit access to logged-in users
+          report:
+            public: Public access to
+            restricted: Approved users have access to
+            logged-in: Logged-in users have access to
           restricted: Restrict access to users who I approve
         buttons:
           cancel: Cancel
@@ -722,6 +734,7 @@ en:
         cancel: Cancel
     reports:
       headings:
+        access_controls: Access Controls Report
         fixity: Fixity Check
         fixity_status: Result
         fixity_failures: Failures

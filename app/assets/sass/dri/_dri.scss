@@ -1900,8 +1900,16 @@ p.dri_rss_link a {
 .dri_object_second_block {
     padding: 0;
     margin: 0;
-    li {
-        width: 250px;
+    ul{
+       padding: 0;
+       margin: 0 0 0 15px;
+      li {
+           font-size: 1.1em;
+           text-decoration: none;
+           padding:0;
+           margin:0;
+           width: 250px;
+      }
     }
 }
 .dri_back_search a {

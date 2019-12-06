@@ -21,7 +21,7 @@
           <%= t('dri.application.user_profile.edit') %>
         </button>
       <% end %>
-    <% end %> 
+    <% end %>
   </div>
 </div> <!-- end the dri_account_bottons block -->
 
@@ -37,7 +37,7 @@
 		<p>
 			<%= @user.first_name %>&nbsp;<%= @user.second_name %>
 		</p>
- 
+
     <% if !(@user.groups.pluck(:name) & [SETTING_GROUP_CM, SETTING_GROUP_OM]).empty? || @user.is_admin? %>
       <h5><%= t('dri.application.user_profile.user_type') %></h5>
       <% if @user.is_admin? %>
@@ -54,7 +54,7 @@
         <% end %>
       <% end %>
     <% end %>
-                  
+
     <% if @user.authentication_token.present? %>
       <% example_params_hash = {user_email: @user.email, user_token: @user.authentication_token} %>
       <h5><%=  (t :'user_groups.views.shared.token')  %></h5>
@@ -109,7 +109,12 @@
     			<h5><%= t('dri.application.user_profile.permissions') %></h5>
     			<p>
     				<%= collection[:permission] %>
-    			</p>
+			</p>
+      <h5><%= t('dri.views.objects.legends.access_control') %></h5>
+			<p>
+			  <%= link_to t('dri.views.collection.access_controls_review'), access_controls_review_path(collection[:id]) %>
+			  <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(collection[:id], format: 'csv') %>
+			</p>
     		</div>
   		<% end %>
       <%= paginate collection_data, theme: 'blacklight' %>

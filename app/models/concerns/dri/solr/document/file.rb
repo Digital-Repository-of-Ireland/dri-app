@@ -109,12 +109,13 @@ module DRI::Solr::Document::File
   def read_master?
     master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
     return true if self[master_file_key] == ['public']
+    return false if self[master_file_key] == ['private']
 
     result = false
 
     ancestor_ids.each do |id|
       ancestor = ancestor_docs[id]
-      next if ancestor[master_file_key].nil? || ancestor[master_file_key] == 'inherit'
+      next if ancestor[master_file_key].nil? || ancestor[master_file_key].include?('inherit')
 
       result = ancestor[master_file_key] == ['public'] ? true : false
       break

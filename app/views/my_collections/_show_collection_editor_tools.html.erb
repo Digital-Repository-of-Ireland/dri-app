@@ -70,5 +70,12 @@
         <li ><%= t('dri.views.catalog.links.add_object_xml') %></li>
       <% end %>
     <% end %> <!-- if end (non-EAD collections) -->
+
+     <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
+        <li>
+          <%= t('dri.views.collection.access_controls_review') %>
+          <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
+        </li>
+      <% end %>
   </ul>
 </div>

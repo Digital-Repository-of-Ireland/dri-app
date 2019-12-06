@@ -67,7 +67,7 @@ __EOF__
     echo $! > localstack.pid
     ;;
 rspec)
-    bundle exec rake rspec
+    bundle exec rake rspec RUN_COVERAGE=on
     ;;
 cucumber)
     bundle exec rake cucumber_ci
