@@ -119,7 +119,7 @@ class ProcessBatchIngest
 
     begin
       update = if object.save
-                 create_reader_group if object.collection?
+                 create_reader_group(object) if object.collection?
 
                  preservation = Preservation::Preservator.new(object)
                  preservation.preserve(true, true, ['descMetadata','properties'])
