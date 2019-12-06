@@ -1,14 +1,16 @@
-require 'simplecov'
-require 'active_fedora/cleaner'
+if ENV['RUN_COVERAGE']
+  require 'simplecov'
 
-class SimpleCov::Formatter::MergedFormatter
-  def format(result)
-    SimpleCov::Formatter::HTMLFormatter.new.format(result)
+  class SimpleCov::Formatter::MergedFormatter
+    def format(result)
+      SimpleCov::Formatter::HTMLFormatter.new.format(result)
+    end
   end
+  SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
+  SimpleCov.start 'rails'
 end
-SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
-SimpleCov.start 'rails'
 
+require 'active_fedora/cleaner'
 require 'rubygems'
 require 'i18n'
 require 'capybara/cucumber'

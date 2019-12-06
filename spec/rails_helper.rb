@@ -2,11 +2,7 @@ require 'rubygems'
 require 'capybara/rspec'
 require 'selenium-webdriver'
 
-def zeus_running?
-  File.exists? '.zeus.sock'
-end
-
-if !zeus_running? && ENV["RUN_COVERAGE"]
+if ENV["RUN_COVERAGE"]
   require 'simplecov'
 
   SimpleCov.start 'rails' do
