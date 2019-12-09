@@ -40,7 +40,7 @@
   <div id="dri_crumbtrail_nav_container_id">
     <ol class="breadcrumb">
       <li class="active">
-        <% if controller_name == 'objects' %>
+        <% if %w(objects my_collections access_controls).include? controller_name %>
           <%= link_to( t('dri.views.objects.legends.view_collection'),
               my_collections_path(@collection), id: 'view_collection' ) %>
         <% else %>

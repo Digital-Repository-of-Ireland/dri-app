@@ -1,15 +1,16 @@
-require 'simplecov'
-require 'simplecov-rcov'
-require 'active_fedora/cleaner'
+if ENV['RUN_COVERAGE']
+  require 'simplecov'
 
-class SimpleCov::Formatter::MergedFormatter
-  def format(result)
-    SimpleCov::Formatter::HTMLFormatter.new.format(result)
+  class SimpleCov::Formatter::MergedFormatter
+    def format(result)
+      SimpleCov::Formatter::HTMLFormatter.new.format(result)
+    end
   end
+  SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
+  SimpleCov.start 'rails'
 end
-SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
-SimpleCov.start 'rails'
 
+require 'active_fedora/cleaner'
 require 'rubygems'
 require 'i18n'
 require 'capybara/cucumber'
@@ -117,7 +118,7 @@ end
 
 Before do
   allow(DRI.queue).to receive(:push)
-  allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
+  allow_any_instance_of(DRI::Versionable).to receive(:record_version_committer)
 
   clean_repo
 

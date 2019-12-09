@@ -60,5 +60,15 @@ pipeline {
             cucumber fileIncludePattern: 'features/reports/*.json'
             chuckNorris()
         }
+        success {
+          publishHTML target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'coverage',
+              reportFiles: 'index.html',
+              reportName: 'RCov Report'
+            ]
+        }
     }
 }
