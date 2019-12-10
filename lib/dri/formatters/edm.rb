@@ -299,7 +299,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
          audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>audio})
          elsif filetype.include? "image"       
-         image   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'image')
+         image   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'full_size_web_format')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
          elsif filetype.include? "text"      
          text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
