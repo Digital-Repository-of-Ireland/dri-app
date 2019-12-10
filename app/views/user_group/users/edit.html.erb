@@ -46,7 +46,7 @@
     </div>
 
     <% if allowed_edit %>
-      <% collection_data = collection_permission(@user) %>
+      <% collection_count = collections_with_permission_count(@user) %>
 
       <div class="dri_account_block dri_clearfix">
         <div class="dri_account_block_info_buttons dri_float_right">
@@ -64,7 +64,7 @@
 
        <div class="dri_account_block dri_clearfix">
         <div class="dri_account_block_info_buttons dri_float_right">
-          <% disabled = "disabled" unless collection_data.blank? %>
+          <% disabled = "disabled" unless collection_count == 0 %>
           <div><%= t ('dri.application.edit_user_profile.delete_help') %></div>
 
           <%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), id: "cancel_account") do %>

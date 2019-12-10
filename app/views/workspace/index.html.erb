@@ -8,9 +8,15 @@
         <% end %>
       </p>
 
-      <p>
-        <%= link_to t('dri.headerlinks.my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'my_collections' %>
-      </p>
+      <% if @collection_count > 0 %>
+        <p>
+          <%= link_to t('dri.headerlinks.search_my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'search_my_collections' %>
+        </p>
+
+        <p>
+          <%= link_to t('dri.headerlinks.my_collections'), workspace_collections_path, id: 'my_collections' %>
+        </p>
+      <% end %>
 
       <p>
         <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>

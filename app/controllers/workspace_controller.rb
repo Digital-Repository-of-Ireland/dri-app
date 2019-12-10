@@ -8,6 +8,11 @@ class WorkspaceController < ApplicationController
     @collection_count = manage_or_edit_collections_count
   end
 
+  def collections
+    collections = UserCollections.new(user: current_user)
+    @collection_data = Kaminari.paginate_array(collections.collections_data).page(params[:page]).per(5)
+  end
+
   private
 
     def manage_or_edit_collections_count

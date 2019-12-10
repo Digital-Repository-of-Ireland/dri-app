@@ -136,6 +136,7 @@ Rails.application.routes.draw do
 
     get '/privacy' => 'static_pages#privacy'
     get '/workspace' => 'workspace#index'
+    get '/workspace/collections' => 'workspace#collections', as: :workspace_collections
     get '/admin_tasks' => 'static_pages#admin_tasks'
 
     get '/my_collections' => 'my_collections#index', as: :my_collections_index
