@@ -246,9 +246,15 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')              
         edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
         thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'thumbnail')
-          xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+         if edmtype == "VIDEO"
+          xml.tag!("edm:WebResource", {"rdf:about" => thumb_nail}) do
            xml.tag!("edm:rights", {"rdf:resource" => licence})
          end
+         else
+          xml.tag!("edm:WebResource", {"rdf:about" => url}) do    
+           xml.tag!("edm:rights", {"rdf:resource" => licence})
+         end
+       end 
       end
 
       # get the catalog page for the isShownAt
@@ -265,9 +271,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       # from the video
       # for sound it uses an image file uploaded with sound if it exists,
       # otherwise it uses cover image (or a new europeana image mayb
+      
+      thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'thumbnail')
       if edmtype == "VIDEO"
         edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id) 
-        thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'thumbnail')
         xml.tag!("edm:WebResource", {"rdf:about" =>thumb_nail}) do
           xml.tag!("edm:rights", {"rdf:resource" => licence})
         end
@@ -287,7 +294,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         video   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
         record['file_type_tesim'].each do |filetype| 
          if filetype.include? "video"
-          xml.tag!("edm:isShownBy", {"rdf:resource" => video})
+          xml.tag!("edm:isShownBy", {"rdf:resource" => video}) 
          elsif filetype.include? "audio"||"sound"  
          audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>audio})
@@ -298,15 +305,24 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
          text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
          end
-       end
+        end
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
         assets.each do |file|
           url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
           xml.tag!("edm:hasView", {"rdf:resource" => url})
         end
-        xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail || imageUrl })
+        record['file_type_tesim'].each do |filetype|
+         if filetype.include? "video"
+          xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail })
+         elsif filetype.include? "audio"||"sound" 
+          xml.tag!("edm:object", {"rdf:resource" =>  edmObject })
+         elsif filetype.include? "text"  
+          xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail})
+         elsif filetype.include?"image" 
+          xml.tag!("edm:object", {"rdf:resource" => imageUrl})
+        end
+       end 
       end
-
     end
 
     xml.target!
