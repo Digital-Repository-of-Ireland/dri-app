@@ -8,7 +8,6 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     @namespace = "https://repository.dri.ie/edm/"
     @element_namespace = "edm"
   end
-
   # TODO: names are split by lang in names_ fields, how to handle this?
   # TODO: should we assume other fields not split are therefore English?
   ProvidedCHOPREFIXES = {
@@ -74,18 +73,17 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
       spatial: lambda do |record|
-        spatials = record['geographical_coverage_tesim'] || []
-        spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
-        spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
-        spatials || []
-      end,
+         spatials = record['geographical_coverage_tesim'] || []
+         spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
+         spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
+         spatials || []
+       end,
       temporal: "temporal_coverage_tesim"
     },
     edm: {
       type: "object_type_ssm"
     },
   }.freeze
-
 
   def header_specification
     {
@@ -127,14 +125,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
-
-    xml.tag!("rdf:RDF", header_specification) do
-      xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
+     xml.tag!("rdf:RDF", header_specification) do
+       xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
         ProvidedCHOPREFIXES.each do |pref, fields|
           fields.each do |k, v|
             values = if v.class == Proc
                        v.call(record)
-                     else
+                     else       
                        value_for(v, record.to_h, {})
                      end
             if pref.match(/^edm$/) && k.match(/^type$/)
