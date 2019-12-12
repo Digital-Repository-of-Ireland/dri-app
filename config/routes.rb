@@ -135,8 +135,11 @@ Rails.application.routes.draw do
     get 'collections/:id/cover' => 'collections#cover', as: :cover_image
 
     get '/privacy' => 'static_pages#privacy'
+    
     get '/workspace' => 'workspace#index'
     get '/workspace/collections' => 'workspace#collections', as: :workspace_collections
+    get '/workspace/readers' => 'workspace#readers', as: :manage_access_requests
+
     get '/admin_tasks' => 'static_pages#admin_tasks'
 
     get '/my_collections' => 'my_collections#index', as: :my_collections_index
