@@ -238,25 +238,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Get the asset files
       assets = record.assets(with_preservation: false, ordered: true)
-      # Get urls for each asset file and create a webResource element
-      assets.each do |file|
-        url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')              
-        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
-        thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'thumbnail')
-         if edmtype == "VIDEO"
-          xml.tag!("edm:WebResource", {"rdf:about" => thumb_nail}) do
-           xml.tag!("edm:rights", {"rdf:resource" => licence})
-         end
-         else
-          xml.tag!("edm:WebResource", {"rdf:about" => url}) do    
-           xml.tag!("edm:rights", {"rdf:resource" => licence})
-         end
-       end 
-      end
 
       # get the catalog page for the isShownAt
       landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
-       mainfile = assets.shift
+      mainfile = assets.shift
       if mainfile.present?
         imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
       end
@@ -269,6 +254,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       # for sound it uses an image file uploaded with sound if it exists,
       # otherwise it uses cover image (or a new europeana image mayb
       
+      edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
       thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'thumbnail')
       if edmtype == "VIDEO"
         edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id) 
@@ -282,6 +268,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
+      webResourceURLs = []
       # Create the ore:Aggregation element
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
@@ -292,34 +279,51 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         record['file_type_tesim'].each do |filetype| 
          if filetype.include? "video"
           xml.tag!("edm:isShownBy", {"rdf:resource" => video}) 
+          webResourceURLs << video
          elsif filetype.include? "audio"||"sound"  
          audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>audio})
+         webResourceURLs << audio
          elsif filetype.include? "image"       
          image   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'full_size_web_format')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
+         webResourceURLs << image
          elsif filetype.include? "text"      
          text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
          xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
+         webResourceURLs << text
          end
         end
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
         assets.each do |file|
           url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
           xml.tag!("edm:hasView", {"rdf:resource" => url})
+          webResourceURLs << url
         end
         record['file_type_tesim'].each do |filetype|
          if filetype.include? "video"
           xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail })
+          webResourceURLs << thumb_nail
          elsif filetype.include? "audio"||"sound" 
           xml.tag!("edm:object", {"rdf:resource" =>  edmObject })
+          webResourceURLs << edmObject
          elsif filetype.include? "text"  
           xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail})
+          webResourceURLs << thumb_nail
          elsif filetype.include?"image" 
           xml.tag!("edm:object", {"rdf:resource" => imageUrl})
+          webResourceURLs << imageUrl
         end
        end 
       end
+
+      # Get urls for each asset file and create a webResource element
+      webResourceURLs.each do |url|
+        xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+           xml.tag!("edm:rights", {"rdf:resource" => licence})
+        end
+      end
+
     end
 
     xml.target!
