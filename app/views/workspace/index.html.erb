@@ -8,9 +8,15 @@
         <% end %>
       </p>
 
-      <p>
-        <%= link_to t('dri.headerlinks.my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'my_collections' %>
-      </p>
+      <% if @collection_count > 0 %>
+        <p>
+          <%= link_to t('dri.headerlinks.search_my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'search_my_collections' %>
+        </p>
+
+        <p>
+          <%= link_to t('dri.headerlinks.my_collections'), workspace_collections_path, id: 'my_collections' %>
+        </p>
+      <% end %>
 
       <p>
         <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>
@@ -39,7 +45,7 @@
   </div>
 <% end %>
 
-<% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
+<% if @manage_collections_count > 0 || (current_user.is_cm? || current_user.is_om? || current_user.is_admin?) %>
   <div class="dri_workspace_menu_block dri_clearfix">
     <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.manage') %></h4>
     <div class="dri_workspace_menu_block_info">
@@ -54,8 +60,14 @@
       </p>
     <% end %>
 
+    <% if @manage_collections_count > 0 %>
+      <p>
+        <%= link_to t('dri.views.collection.manage_read_requests'), manage_access_requests_path, id: 'manage_readers' %>
+      </p>
+    <% end %>
+
     <p>
-      <%= link_to t('dri.datatables.analytics.header') , analytics_path %>
+      <%= link_to t('dri.datatables.analytics.header'), analytics_path %>
     </p>
 
      <% if @tasks_count > 0 %>

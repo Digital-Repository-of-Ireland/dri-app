@@ -1,12 +1,12 @@
 module UserHelper
 
-  # Return all collection permissions
+  # Return count of all collections with permissions
   # if no user passed in use @current_user
-  def collection_permission(user = nil)
+  def collections_with_permission_count(user = nil)
     profile_user = user ? user : @current_user
     user_collections = UserCollections.new(user: profile_user)
 
-    Kaminari.paginate_array(user_collections.collections_data).page(params[:page]).per(5)
+    user_collections.collections_count
   end
 
   def inherited_collection_read_groups(obj)
