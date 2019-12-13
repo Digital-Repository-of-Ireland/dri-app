@@ -1,0 +1,18 @@
+
+<h3><%= t('dri.views.collection.manage_read_requests') %></h3>
+
+<% @read_group_memberships.each do |memberships| %>
+  <div class="dri_section_block">
+    <div class="dri_section_title">
+      <%= (t :'user_groups.views.shared.manage_read_group', collection_name: memberships[:collection].title.first) %>
+    </div>
+    <h4 class="no_bottom_margin"><%= (t :'dri.views.readers.headers.pending') %></h4>
+    <%= render partial: 'readers/pending_read', locals: { collection: memberships[:collection], pending_memberships: memberships[:pending] } %>
+
+    <h4 class="no_bottom_margin"><%= (t :'dri.views.readers.headers.remove') %></h4>
+    <%= render partial: 'readers/remove_read', locals: { collection: memberships[:collection], memberships: memberships[:approved]} %>
+  </div>
+<% end %>
+
+<div class="dri_section_block"><%= paginate @read_group_memberships %></div>
+
