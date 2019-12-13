@@ -8,28 +8,63 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     @namespace = "https://repository.dri.ie/edm/"
     @element_namespace = "edm"
   end
-
   # TODO: names are split by lang in names_ fields, how to handle this?
   # TODO: should we assume other fields not split are therefore English?
   ProvidedCHOPREFIXES = {
     dc: {
       title_eng: 'title_eng_tesim',
       title_gle: 'title_gle_tesim',
+      title: lambda do |record|
+        titles = record['title_tesim']||[]
+        titles = titles -(record['title_eng_tesim'] || [])
+        titles = titles - (record['title_gle_teim'] || [])
+        titles || []
+      end,  
       description_eng: 'description_eng_tesim',
       description_gle: 'description_gle_tesim',
+      description: lambda do |record|
+         descriptions = record['description_tesim'] || []
+         descriptions = descriptions - (record['description_eng_tesim'] || [])
+         descriptions = descriptions - (record['description_gle_tesim'] || [])
+         descriptions || []
+      end,        
       creator: 'creator_tesim',
       publisher: 'publisher_tesim',
       subject_eng: 'subject_eng_tesim',
       subject_gle: 'subject_gle_tesim',
+      subject: lambda do |record|
+        subjects = record['subject_tesim'] || []
+        subjects = subjects - (record['subject_eng_tesim'] || [])
+        subjects = subjects - (record['subject_gle_tesim'] || [])
+        subjects || []
+      end,
       type: 'type_tesim',
       language: 'language_tesim',
       format: 'file_type_tesim',
       rights_eng: 'rights_eng_tesim',
       rights_gle: 'rights_gle_tesim',
+      rights: lambda do |record|
+       rights = record['rights_tesim'] || []
+       rights = rights - (record['rights_eng_tesim'] || [])
+       rights = rights - (record['rights_gle_tesim'] || [])
+       rights || []
+      end,   
       source_eng: 'source_eng_tesim',
       source_gle: 'source_gle_tesim',
+      source: lambda do |record|
+       sources = record['source_tesim'] || []
+       sources = sources - (record['source_eng_tesim'] || [])
+       sources = sources - (record['source_gle_tesim'] || []) 
+       sources || []
+       end,  
       coverage_eng: 'coverage_eng_tesim',
       coverage_gle: 'coverage_gle_tesim',
+      coverage: lambda do |record|
+         coverages = record['coverage_tesim'] || []
+         coverages = coverages - (record['coverage_eng_tesim'] || [])
+         coverages = coverages - (record['coverage_gle_tesim'] || [])
+         coverages || []
+      end, 
       date: 'date_tesim',
       contributor: 'person_tesim'
     },
@@ -38,18 +73,17 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
       spatial: lambda do |record|
-        spatials = record['geographical_coverage_tesim'] || []
-        spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
-        spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
-        spatials || []
-      end,
+         spatials = record['geographical_coverage_tesim'] || []
+         spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
+         spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
+         spatials || []
+       end,
       temporal: "temporal_coverage_tesim"
     },
     edm: {
       type: "object_type_ssm"
     },
   }.freeze
-
 
   def header_specification
     {
@@ -87,26 +121,24 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
     # Identify the type
     edmtype = get_edm_type(record["type_tesim"]);
-
+    #p edmtype
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
-
-    xml.tag!("rdf:RDF", header_specification) do
-      xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
+     xml.tag!("rdf:RDF", header_specification) do
+       xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
         ProvidedCHOPREFIXES.each do |pref, fields|
           fields.each do |k, v|
             values = if v.class == Proc
                        v.call(record)
-                     else
+                     else       
                        value_for(v, record.to_h, {})
                      end
-
             if pref.match(/^edm$/) && k.match(/^type$/)
               xml.tag! "edm:type", edmtype
               next
             end
- 
+            
             values.each do |value|
               if k.match(/(^.*)_(eng|gle)$/)
                 lang = $2
@@ -118,13 +150,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 kl = k
                 lang = nil
               end
-
+                     
               if kl.match(/^(spatial|coverage).*$/)
                 dcmi_components = dcmi_parse(value)
-                if is_valid_point?(dcmi_components)
+                  if is_valid_point?(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 elsif valid_url?(value)
-                  host = URI(URI.encode(value.strip)).host
+                  host = URI(URI.encode(value.strip)).host 
                   if AuthoritiesConfig[host].present?
                     xml.tag! "#{pref}:#{kl}", {"rdf:resource" => value}
                   else
@@ -145,6 +177,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                   v = dcmi_components["name"] || value
                   xml.tag! "#{pref}:#{kl}", v unless v.nil?
                 end
+              elsif kl.match(/^(subject).*$/) && valid_url?(value)               
+                  xml.tag! "#{pref}:#{kl}",{"rdf:resource"=> value}    
               elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
               else 
@@ -177,6 +211,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Create other contextual classes
+    
       contextual_classes.each do |cclass|
         if cclass.keys.include?("start")
           xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name'].tr(" ", "_")}"} do
@@ -204,17 +239,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       # Get the asset files
       assets = record.assets(with_preservation: false, ordered: true)
 
-      # Get urls for each asset file and create a webResource element
-      assets.each do |file|
-        url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
-        xml.tag!("edm:WebResource", {"rdf:about" => url}) do
-          xml.tag!("edm:rights", {"rdf:resource" => licence})
-        end
-      end
-
       # get the catalog page for the isShownAt
       landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
-
       mainfile = assets.shift
       if mainfile.present?
         imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
@@ -227,9 +253,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       # from the video
       # for sound it uses an image file uploaded with sound if it exists,
       # otherwise it uses cover image (or a new europeana image mayb
+      
+      edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
+      thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'thumbnail')
       if edmtype == "VIDEO"
-        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
-        xml.tag!("edm:WebResource", {"rdf:about" => edmObject}) do
+        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id) 
+        xml.tag!("edm:WebResource", {"rdf:about" =>thumb_nail}) do
           xml.tag!("edm:rights", {"rdf:resource" => licence})
         end
       elsif edmtype == "SOUND"
@@ -239,19 +268,60 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
+      webResourceURLs = []
       # Create the ore:Aggregation element
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
         xml.tag!("edm:provider", {"xml:lang" => "eng"}, "Digital Repository of Ireland")
-        xml.tag!("edm:rights", {"rdf:resource" => licence})
-        xml.tag!("edm:isShownBy", {"rdf:resource" => imageUrl})
+        xml.tag!("edm:rights", {"rdf:resource" => licence}) 
+        video   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
+        record['file_type_tesim'].each do |filetype| 
+         if filetype.include? "video"
+          xml.tag!("edm:isShownBy", {"rdf:resource" => video}) 
+          webResourceURLs << video
+         elsif filetype.include? "audio"||"sound"  
+         audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
+         xml.tag!("edm:isShownBy",{"rdf:resource"=>audio})
+         webResourceURLs << audio
+         elsif filetype.include? "image"       
+         image   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'full_size_web_format')
+         xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
+         webResourceURLs << image
+         elsif filetype.include? "text"      
+         text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
+         xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
+         webResourceURLs << text
+         end
+        end
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
         assets.each do |file|
           url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
           xml.tag!("edm:hasView", {"rdf:resource" => url})
+          webResourceURLs << url
         end
-        xml.tag!("edm:object", {"rdf:resource" => edmObject || imageUrl})
+        record['file_type_tesim'].each do |filetype|
+         if filetype.include? "video"
+          xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail })
+          webResourceURLs << thumb_nail
+         elsif filetype.include? "audio"||"sound" 
+          xml.tag!("edm:object", {"rdf:resource" =>  edmObject })
+          webResourceURLs << edmObject
+         elsif filetype.include? "text"  
+          xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail})
+          webResourceURLs << thumb_nail
+         elsif filetype.include?"image" 
+          xml.tag!("edm:object", {"rdf:resource" => imageUrl})
+          webResourceURLs << imageUrl
+        end
+       end 
+      end
+
+      # Get urls for each asset file and create a webResource element
+      webResourceURLs.each do |url|
+        xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+           xml.tag!("edm:rights", {"rdf:resource" => licence})
+        end
       end
 
     end

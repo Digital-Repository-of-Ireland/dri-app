@@ -1,7 +1,7 @@
 <h3><%= (t :'user_groups.views.shared.manage_read_group', collection_name: @collection.title.first) %></h3>
 <h4 class="no_bottom_margin"><%= (t :'dri.views.readers.headers.pending') %></h4>
-<%= render partial: 'pending_read', locals: {object: @group} %>
+<%= render partial: 'pending_read', locals: {object: @group, collection: @collection, pending_memberships: @pending_memberships } %>
 
 <h4 class="no_bottom_margin"><%= (t :'dri.views.readers.headers.remove') %></h4>
-<%= render partial: 'remove_read', locals: {object: @group} %>
+<%= render partial: 'remove_read', locals: {object: @group, collection: @collection, memberships: @memberships} %>
 

@@ -2,42 +2,62 @@ class UserCollections
   include ActiveModel::Model
 
   attr_accessor :user
- 
+
   def collections_data
     user.is_admin? ? admin_collections_data : user_collections_data
-  end 
+  end
+
+  def collections_count
+    user.is_admin? ? count(:admin) : count(:user)
+  end
 
   private
 
+    def count(user_type)
+      query = if user_type == :admin
+                admin_query
+              else
+                user_query
+              end
+
+      ActiveFedora::SolrService.count(query, fq: root_collection_filter)
+    end
+
     def admin_collections_data
       query = Solr::Query.new(
-        "#{ActiveFedora.index_field_mapper.solr_name('depositor', :searchable, type: :symbol)}:#{user.email}",
+        admin_query,
         100,
-        { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-              "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"] }
+        { fq: root_collection_filter }
       )
 
       collections = collections(query)
       collections.map { |item| item[:permission] = 'Depositor' }
-      
+
       collections
     end
-    
+
+    def admin_query
+      "#{ActiveFedora.index_field_mapper.solr_name('depositor', :searchable, type: :symbol)}:#{user.email}"
+    end
+
     def user_collections_data
+      solr_query = Solr::Query.new(
+        user_query,
+        100,
+        { fq: root_collection_filter }
+      )
+
+      collections(solr_query)
+    end
+
+    def user_query
       query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
         "#{ActiveFedora.index_field_mapper.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email}"
 
       read_query = read_group_query(user)
       query <<   " OR (" + read_query + ")" unless read_query.nil?
 
-      solr_query = Solr::Query.new(
-        query,
-        100,
-        { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-              "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
-      )
-
-      collections(solr_query)
+      query
     end
 
     def collections(query)
@@ -57,7 +77,7 @@ class UserCollections
           type = permission_type(user, object, permission, label)
           permissions << type if type
         end
-        
+
         permissions << 'read' if user.groups.pluck(:name).include?(object['id'])
 
         collection[:permission] = permissions.join(', ') if permissions
@@ -74,6 +94,13 @@ class UserCollections
       end
       return nil if group_query_fragments.compact.blank?
       group_query_fragments.compact.join(" OR ")
+    end
+
+    def root_collection_filter
+      [
+        "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
+        "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+      ]
     end
 
     def permission_type(user, object, role, label)
