@@ -71,10 +71,12 @@ begin
   task cucumber_ci: ['ci_clean'] do
     rm_rf 'tmp/cucumber-rerun.txt'
     begin
-      Rake::Task['cucumber:first_try'].invoke
+       ENV['RUN_COVERAGE'] = 'on'
+       Rake::Task['cucumber:first_try'].invoke
     rescue Exception => e
     end
 
+    ENV['RUN_COVERAGE'] = nil
     Rake::Task['cucumber:second_try'].invoke
   end
 rescue LoadError
