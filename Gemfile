@@ -17,7 +17,7 @@ gem 'riiif', '1.2.0'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.3'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.4'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.4.1'
 gem "devise", ">= 4.7.1"
 
@@ -92,7 +92,7 @@ group :development, :test do
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
   gem 'webdrivers'
-  gem 'simplecov'
+  gem 'simplecov', require: false
   gem 'railroady'
   gem 'show_me_the_cookies'
   gem 'better_errors'

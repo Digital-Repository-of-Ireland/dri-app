@@ -39,9 +39,6 @@ class AccessControlsController < ApplicationController
       flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
     end
 
-    #purge params from update action
-    purge_params
-
     respond_to do |format|
       format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
     end
@@ -215,14 +212,6 @@ class AccessControlsController < ApplicationController
           end
         end
       end
-    end
-
-    def purge_params
-      params.delete(:batch)
-      params.delete(:_method)
-      params.delete(:authenticity_token)
-      params.delete(:commit)
-      params.delete(:action)
     end
 
     def update_params
