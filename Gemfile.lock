@@ -63,10 +63,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b28aaa6aa14a6de917e76eb941cd29ff774eb4b1
+  revision: 01946a5c338e4024709723ec7e3708b45657a957
   branch: develop
   specs:
-    dri_data_models (3.2.3)
+    dri_data_models (3.2.4)
       active-fedora
       active_fedora-datastreams
       hydra-derivatives
