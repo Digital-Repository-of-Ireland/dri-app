@@ -145,9 +145,6 @@ class CollectionsController < BaseObjectsController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
     end
 
-    # purge params from update action
-    purge_params
-
     respond_to do |format|
       if updated
         record_version_committer(@object, current_user)
@@ -188,9 +185,6 @@ class CollectionsController < BaseObjectsController
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['properties'])
     end
-
-    # purge params from update action
-    purge_params
 
     respond_to do |format|
       if saved

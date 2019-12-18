@@ -8,7 +8,7 @@
         <% end %>
       </p>
 
-      <% if @collection_count > 0 %>
+      <% if @collection_count > 0 || current_user.is_admin? %>
         <p>
           <%= link_to t('dri.headerlinks.search_my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'search_my_collections' %>
         </p>

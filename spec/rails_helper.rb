@@ -2,8 +2,12 @@ require 'rubygems'
 require 'capybara/rspec'
 require 'selenium-webdriver'
 
-if ENV["RUN_COVERAGE"]
+if ENV['RUN_COVERAGE']
   require 'simplecov'
+
+  SimpleCov.command_name('RSpec')
+  SimpleCov.use_merging(true)
+  SimpleCov.merge_timeout(54400)
 
   SimpleCov.start 'rails' do
     add_filter "/spec/"
