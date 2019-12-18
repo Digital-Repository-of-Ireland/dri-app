@@ -103,16 +103,12 @@ class ObjectsController < BaseObjectsController
     @object.increment_version
 
     unless @object.update_attributes(update_params)
-      purge_params
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       format.html { render action: 'edit' }
       return
     end
 
     doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) }) if doi
-
-    # purge params from update action
-    purge_params
 
     respond_to do |format|
       checksum_metadata(@object)
