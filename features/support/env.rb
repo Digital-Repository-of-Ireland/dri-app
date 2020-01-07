@@ -1,12 +1,10 @@
 if ENV['RUN_COVERAGE']
   require 'simplecov'
 
-  class SimpleCov::Formatter::MergedFormatter
-    def format(result)
-      SimpleCov::Formatter::HTMLFormatter.new.format(result)
-    end
-  end
-  SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
+  SimpleCov.command_name('Cucumber')
+  SimpleCov.use_merging(true)
+  SimpleCov.merge_timeout(54400)
+
   SimpleCov.start 'rails'
 end
 

@@ -92,7 +92,7 @@ group :development, :test do
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
   gem 'webdrivers'
-  gem 'simplecov'
+  gem 'simplecov', require: false
   gem 'railroady'
   gem 'show_me_the_cookies'
   gem 'better_errors'

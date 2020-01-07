@@ -1,14 +1,19 @@
-<%= paginate @memberships %>
+<%= paginate memberships if memberships.respond_to?(:total_pages) %>
 
 <table>
-<% for membership in @memberships %>
+<% for membership in memberships %>
   <% user = UserGroup::User.find_by_id(membership.user_id) %>
   <tr>
   <td><%= user.full_name + " (" + user.email + ")" unless user.nil? %></td>
   <td><%= membership.updated_at %></td>
   <td>
-  <%= link_to (t :'dri.views.readers.links.approved.remove'), 
-      collection_remove_read_path(@collection.id, membership.user_id), method: :delete %>
+    <% unless membership.request_form.blank? %>
+      <%= link_to (t :'dri.views.readers.links.pending.view'),
+                   collection_view_read_request_path(collection.id, membership.user_id, format: 'js'),
+                   id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
+    <% end %>
+    <%= link_to (t :'dri.views.readers.links.approved.remove'),
+      collection_remove_read_path(collection.id, membership.user_id), method: :delete %>
   </td>
   </tr>
 <% end %>
