@@ -14,7 +14,7 @@ describe RiiifAuthorizationService do
   end
 
   it 'should return true for show of published object with public read' do
-  	@object[:status] = "published"
+    @object[:status] = "published"
     @object.read_groups = [SETTING_GROUP_PUBLIC]
     @object.save
 
@@ -26,7 +26,7 @@ describe RiiifAuthorizationService do
   end
 
   it 'should return true for info of published object' do
-  	@object[:status] = "published"
+    @object[:status] = "published"
     @object.save
 
     Struct.new("Object", :id)
@@ -35,5 +35,5 @@ describe RiiifAuthorizationService do
     auth = RiiifAuthorizationService.new(nil)
     expect(auth.can?(:info, o)).to be true
   end
-
 end
+

@@ -7,11 +7,10 @@ class RiiifAuthorizationService
   def can?(action, object)
     id = object.id.split(':')[1]
 
-    resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
-    file_doc = resp.first
-    resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}", 
-      defType: 'edismax', rows: '1')
-    object_doc = SolrDocument.new(resp.first)
+    file_doc = SolrDocument.find(id)
+    return false unless file_doc && file_doc['isPartOf_ssim'].present?
+
+    object_doc = SolrDocument.find(file_doc['isPartOf_ssim'].first)
 
     if action == :show
       object_doc.published? && object_doc.public_read?
@@ -19,5 +18,4 @@ class RiiifAuthorizationService
       object_doc.published?
     end
   end
-
-  end
+end
