@@ -194,16 +194,15 @@ module DRI::Formatters
       id = "#{uri}#id"
 
       relationships = @object_doc.object_relationships
-      if relationships.present?
-        relationships.keys.each do |key|
-          relationships[key].each do |relationship|
-            relationship_predicate = RELATIONSHIP_FIELDS_MAP[key]
-            if relationship_predicate
-              graph << [RDF::URI.new(id), relationship_predicate, RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
-            end
+      return unless relationships.present?
+
+      relationships.keys.each do |key|
+        relationships[key].each do |relationship|
+          relationship_predicate = RELATIONSHIP_FIELDS_MAP[key]
+          if relationship_predicate
+            graph << [RDF::URI.new(id), relationship_predicate, RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
           end
         end
-
       end
     end
 
@@ -252,7 +251,8 @@ module DRI::Formatters
         provider = DRI::Sparql::Provider::Sparql.new
         provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
 
-        triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{value}\"@en"])
+        escaped_value = RDF::NTriples::Writer.escape(value)
+        triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{escaped_value}\"@en"])
 
         triples.present? ? triples.first[0] : nil
       end
