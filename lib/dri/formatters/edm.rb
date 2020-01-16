@@ -74,7 +74,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   def encode(_model, record)
-
+   
     # We are not going to aggregate items with no assets
     if record.assets.size < 1
       return ""
@@ -204,13 +204,26 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       # if iiif we also need an svcs:has_service and svcs:Service
       assets.each do |file|
         if file.image?
-          file_urls[file.id] = {"url": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: 'full'),
-              "thumb": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,'), "iiif": true}
-
+          file_urls[file.id]= {"url": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full'),
+                 "thumb": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,'), "iiif": true}
+           
+          # file_urls[:base_url] = {"info": Riiif::Engine.routes.url_helpers.info_url("#{record.id}:#{file.id}"),
+           #                            host: Riiif::Engine.routes.url_helpers.base_url("#{record.id}:#{file.id}"), "iiif":true}      
+          file_urls[:manifest] ={"url": Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}"),"iiif":true}
+           
+          file_urls[:base_url] ={"info": Rails.application.routes.url_helpers.iiif_info_url("#{record.id}:#{file.id}"),"iiif":true}
+      
           xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:url]}) do
             xml.tag!("edm:rights", {"rdf:resource" => licence})
-            xml.tag!("svcs:has_service", {"rdf:resource" => ""}) # TODO what is the url?
+            xml.tag!("svcs:has_service", {"rdf:resource" => file_urls[:base_url][:info]}) # TODO what is the url?
+            xml.tag!("dcterms:isReferencedBy",{"rdf:resource"=>file_urls[:manifest][:url]+".json"})
           end
+             xml.tag!("svcs:services",{"rdf:about"=> file_urls[:base_url][:info]}) do
+              xml.tag!("dcterms:conformsTo",{"rdf:resource"=> 'http://iiif.io/api/image/2.0'})
+              xml.tag!("doap:implements",{"rdf:resource"=> 'http://iiif.io/api/image/2/level2.json'})
+           end
+             
+   
           xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:thumb]}) do
             xml.tag!("edm:rights", {"rdf:resource" => licence})
           end
@@ -227,7 +240,6 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             xml.tag!("edm:rights", {"rdf:resource" => licence})
           end
         end
-
 
       end
 
@@ -303,5 +315,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       return type if types.include?(type)
     end
   end
+
+
 
 end
