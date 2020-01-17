@@ -213,8 +213,8 @@ module DRI::IIIFViewable
     canvas = IIIF::Presentation::Canvas.new()
     canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
     
-    canvas.width = file[HEIGHT_SOLR_FIELD]
-    canvas.height = file[WIDTH_SOLR_FIELD]
+    canvas.width = file[WIDTH_SOLR_FIELD]
+    canvas.height = file[HEIGHT_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
     base_uri = Settings.iiif.server + '/' + solr_id + ':' + file.id
@@ -223,9 +223,9 @@ module DRI::IIIFViewable
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
     {
       resource_id: image_url,
-      service_id: base_uri,
+      service_id: iiif_info_url,
       width: file[WIDTH_SOLR_FIELD], height: file[HEIGHT_SOLR_FIELD],
-      profile: 'http://iiif.io/api/image/2/profiles/level2.json'
+      profile: 'http://iiif.io/api/image/2/level2.json'
     })
     image['@type'] = 'dctypes:Image'
 

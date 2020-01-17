@@ -20,7 +20,13 @@ class IiifController < ApplicationController
       ) { iiif_manifest.as_json }
     end
   end
-
+  def info
+   service = IIIF::Presentation::Resource.new('@id' => Riiif::Engine.routes.url_helpers.base_url(params[:id])) 
+      service['protocol'] = "http://iiif.io/api/image/2.0"  
+      service['profile'] = "http://iiif.io/api/image/2/level2.json" 
+      service.format = "image/jpeg"
+      render json: service.to_json(pretty: true)            
+  end
   def sequence
     iiif_respond do
       Rails.cache.fetch(
