@@ -223,7 +223,7 @@ module DRI::IIIFViewable
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
     {
       resource_id: image_url,
-      service_id: iiif_info_url,
+      service_id: base_uri,
       width: file[WIDTH_SOLR_FIELD], height: file[HEIGHT_SOLR_FIELD],
       profile: 'http://iiif.io/api/image/2/level2.json'
     })
