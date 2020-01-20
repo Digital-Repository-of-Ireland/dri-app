@@ -23,10 +23,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       description_eng: 'description_eng_tesim',
       description_gle: 'description_gle_tesim',
       description: lambda do |record|
-         descriptions = record['description_tesim'] || []
-         descriptions = descriptions - (record['description_eng_tesim'] || [])
-         descriptions = descriptions - (record['description_gle_tesim'] || [])
-         descriptions || []
+        descriptions = record['description_tesim'] || []
+        descriptions = descriptions - (record['description_eng_tesim'] || [])
+        descriptions = descriptions - (record['description_gle_tesim'] || [])
+        descriptions || []
       end,        
       creator: 'creator_tesim',
       publisher: 'publisher_tesim',
@@ -44,26 +44,26 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       rights_eng: 'rights_eng_tesim',
       rights_gle: 'rights_gle_tesim',
       rights: lambda do |record|
-       rights = record['rights_tesim'] || []
-       rights = rights - (record['rights_eng_tesim'] || [])
-       rights = rights - (record['rights_gle_tesim'] || [])
-       rights || []
+        rights = record['rights_tesim'] || []
+        rights = rights - (record['rights_eng_tesim'] || [])
+        rights = rights - (record['rights_gle_tesim'] || [])
+        rights || []
       end,   
       source_eng: 'source_eng_tesim',
       source_gle: 'source_gle_tesim',
       source: lambda do |record|
-       sources = record['source_tesim'] || []
-       sources = sources - (record['source_eng_tesim'] || [])
-       sources = sources - (record['source_gle_tesim'] || []) 
-       sources || []
+        sources = record['source_tesim'] || []
+        sources = sources - (record['source_eng_tesim'] || [])
+        sources = sources - (record['source_gle_tesim'] || []) 
+        sources || []
        end,  
       coverage_eng: 'coverage_eng_tesim',
       coverage_gle: 'coverage_gle_tesim',
       coverage: lambda do |record|
-         coverages = record['coverage_tesim'] || []
-         coverages = coverages - (record['coverage_eng_tesim'] || [])
-         coverages = coverages - (record['coverage_gle_tesim'] || [])
-         coverages || []
+        coverages = record['coverage_tesim'] || []
+        coverages = coverages - (record['coverage_eng_tesim'] || [])
+        coverages = coverages - (record['coverage_gle_tesim'] || [])
+        coverages || []
       end, 
       date: 'date_tesim',
       contributor: 'person_tesim'
@@ -73,10 +73,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
       spatial: lambda do |record|
-         spatials = record['geographical_coverage_tesim'] || []
-         spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
-         spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
-         spatials || []
+        spatials = record['geographical_coverage_tesim'] || []
+        spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
+        spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
+        spatials || []
        end,
       temporal: "temporal_coverage_tesim"
     },
@@ -116,19 +116,18 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     end
     # We are not going to aggregate restricted assets to Europeana
     if not record.public_read?
-        return ""
+      return ""
     end
 
     # Identify the type
     edmtype = get_edm_type(record["type_tesim"]);
-    #p edmtype
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
-     xml.tag!("rdf:RDF", header_specification) do
-       xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
-        ProvidedCHOPREFIXES.each do |pref, fields|
-          fields.each do |k, v|
+      xml.tag!("rdf:RDF", header_specification) do
+        xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
+          ProvidedCHOPREFIXES.each do |pref, fields|
+            fields.each do |k, v|
             values = if v.class == Proc
                        v.call(record)
                      else       
@@ -237,93 +236,81 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Get the asset files
-      assets = record.assets(with_preservation: false, ordered: true)
-
-      # get the catalog page for the isShownAt
+      assets = record.assets(with_preservation: true, ordered: false) 
       landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
-      mainfile = assets.shift
+
+      # identify which is the main file (based on metadata type)
+      # and get correct Urls
+      mainfile = get_file(edmtype, assets)
+      imagefile = get_file("IMAGE", assets)
       if mainfile.present?
-        imageUrl = Rails.application.routes.url_helpers.file_download_url(record.id, mainfile.id, type: 'surrogate')
-      end
-
-
-      # TODO change this
-      # TODO: should check if image, and get image for edm:object if available
-      # TODO: Change this so that for video it uses a still image captured
-      # from the video
-      # for sound it uses an image file uploaded with sound if it exists,
-      # otherwise it uses cover image (or a new europeana image mayb
-      
-      edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
-      thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'thumbnail')
-      if edmtype == "VIDEO"
-        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id) 
-        xml.tag!("edm:WebResource", {"rdf:about" =>thumb_nail}) do
-          xml.tag!("edm:rights", {"rdf:resource" => licence})
-        end
-      elsif edmtype == "SOUND"
-        edmObject = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
-        xml.tag!("edm:WebResource", {"rdf:about" => edmObject}) do
-          xml.tag!("edm:rights", {"rdf:resource" => licence})
-        end
-      end
-
-      webResourceURLs = []
+        thumbnail = get_thumbnail(record, edmtype, mainfile, imagefile)
+        thumb_nail = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'thumbnail')
+      else
+        return ""
+      end 
+       
       # Create the ore:Aggregation element
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
         xml.tag!("edm:provider", {"xml:lang" => "eng"}, "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence}) 
-        video   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
-        record['file_type_tesim'].each do |filetype| 
-         if filetype.include? "video"
+        video   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4') 
+        if mainfile['file_type_tesim'].include? "video"
           xml.tag!("edm:isShownBy", {"rdf:resource" => video}) 
-          webResourceURLs << video
-         elsif filetype.include? "audio"||"sound"  
-         audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
-         xml.tag!("edm:isShownBy",{"rdf:resource"=>audio})
-         webResourceURLs << audio
-         elsif filetype.include? "image"       
-         image   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'full_size_web_format')
-         xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
-         webResourceURLs << image
-         elsif filetype.include? "text"      
-         text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
-         xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
-         webResourceURLs << text
-         end
+        elsif mainfile['file_type_tesim'].include? "audio" 
+          audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
+          xml.tag!("edm:isShownBy",{"rdf:resource" => audio})
+        elsif mainfile['file_type_tesim'].include? "image"       
+          image   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'full_size_web_format')
+          xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
+        elsif mainfile['file_type_tesim'].include? "text"      
+          text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
+          xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
         end
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
-        assets.each do |file|
-          url = Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate')
-          xml.tag!("edm:hasView", {"rdf:resource" => url})
-          webResourceURLs << url
+        
+        assets.each do |file|        
+          if file.id!= mainfile.id
+            if file["file_type_tesim"].include? "video"   
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp4')
+            elsif file["file_type_tesim"].include? "audio"||"sound"
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
+            elsif file["file_type_tesim"].include? "text"
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'pdf') 
+            elsif file["file_type_tesim"].include? "image"
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'full_size_web_format') 
+            end
+            xml.tag!("edm:hasView", {"rdf:resource" => url})
+          end
         end
-        record['file_type_tesim'].each do |filetype|
-         if filetype.include? "video"
-          xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail })
-          webResourceURLs << thumb_nail
-         elsif filetype.include? "audio"||"sound" 
-          xml.tag!("edm:object", {"rdf:resource" =>  edmObject })
-          webResourceURLs << edmObject
-         elsif filetype.include? "text"  
-          xml.tag!("edm:object", {"rdf:resource" =>  thumb_nail})
-          webResourceURLs << thumb_nail
-         elsif filetype.include?"image" 
-          xml.tag!("edm:object", {"rdf:resource" => imageUrl})
-          webResourceURLs << imageUrl
-        end
-       end 
+
+        # Create the edm:object element
+        xml.tag!("edm:object", {"rdf:resource" =>  thumbnail })
       end
 
       # Get urls for each asset file and create a webResource element
-      webResourceURLs.each do |url|
+      assets.each do |file|
+        if file['file_type_tesim'].include? "video"
+          url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp4')
+        elsif file['file_type_tesim'].include? "audio"||"sound"
+          url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
+        elsif file['file_type_tesim'].include? "image"
+          url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate:'full_size_web_format')
+        elsif file['file_type_tesim'].include? "text"           
+          url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate:'pdf')
+        end
         xml.tag!("edm:WebResource", {"rdf:about" => url}) do
-           xml.tag!("edm:rights", {"rdf:resource" => licence})
+          xml.tag!("edm:rights", {"rdf:resource" => licence})
         end
       end
 
+      # Add a WebResource element for the thumbnail url
+      xml.tag!("edm:WebResource", {"rdf:about" => thumbnail}) do
+        xml.tag!("edm:rights", {"rdf:resource" => licence})
+      end
+   
     end
 
     xml.target!
@@ -381,4 +368,47 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     "https://doi.org/#{doi}"
   end
 
+  # Get the main file where there is more than one file
+  def get_file(edmtype, assets)
+    case edmtype
+    when "VIDEO"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
+      return file
+    when "SOUND"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "audio" || "sound" }
+      return file
+    when "TEXT"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "text" } ||
+            assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+      return file
+    when "IMAGE"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+      return file
+    else
+      nil
+    end
+  end
+
+  def get_thumbnail(record, edmtype, file, image=nil)
+    if file['file_type_tesim'].include? "video"
+      url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'thumbnail')
+      return url
+    elsif file['file_type_tesim'].include? "audio"||"sound"
+      if image.present?
+        url = Rails.application.routes.url_helpers.object_file_url(record.id, image.id, surrogate: 'lightbox_format')
+      else
+        url = Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
+      end
+      return url
+    elsif file['file_type_tesim'].include? "text"
+      url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'lightbox_format')
+      return url
+    elsif file['file_type_tesim'].include? "image"
+      url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'lightbox_format')
+      return url
+    else
+      nil
+    end
+  end
+    
 end
