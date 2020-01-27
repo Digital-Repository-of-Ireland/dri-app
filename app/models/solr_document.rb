@@ -39,7 +39,7 @@ class SolrDocument
   )
 
   def self.find(id)
-    result = ActiveFedora::SolrService.query("id:#{id}")
+    result = ActiveFedora::SolrService.query("id:#{id}", rows: 1)
     SolrDocument.new(result.first) if result.present?
   end
 
