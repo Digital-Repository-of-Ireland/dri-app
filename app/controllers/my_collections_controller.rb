@@ -26,7 +26,6 @@ class MyCollectionsController < ApplicationController
       qt: 'search',
       rows: 9
     }
-    config.show.partials << :show_maplet
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name('title', :stored_searchable, type: :string)
