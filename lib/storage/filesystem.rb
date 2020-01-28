@@ -96,15 +96,15 @@ module Storage
     surrogate_url(bucket, key)
   end
 
-  def store_surrogate(bucket, surrogate_file, surrogate_key)
+  def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype=nil)
     file_path = File.join(hash_dir(bucket), surrogate_key)
     FileUtils.copy(surrogate_file, file_path)
     
     File.exists?(file_path)
   end
     
-  def store_file(bucket, file, file_key)
-    store_surrogate(bucket, file, file_key)
+  def store_file(bucket, file, file_key, mimetype=nil)
+    store_surrogate(bucket, file, file_key, mimetype)
   end
 
   private

@@ -4,23 +4,24 @@ module DRI::Derivatives::Services
       bucket_id = directives[:object]
       file_id = directives[:file]
 
-      filename = "#{file_id}_#{directives[:label]}.#{directives[:format]}"
+      filename = "#{file_id}_#{directives[:label]}.#{directives.fetch(:format)}"
+      mimetype = new_mime_type(directives.fetch(:format))
 
       storage = StorageService.new
 
       unless content.is_a?(StringIO) || content.is_a?(String)
-        storage.store_surrogate(bucket_id, content.path, filename)
+        storage.store_surrogate(bucket_id, content.path, filename, mimetype)
         return
       end
 
       file = Hydra::Derivatives::IoDecorator.new(
         content,
-        new_mime_type(directives.fetch(:format)),
+        mimetype,
         file_id
       )
       temp_file = DRI::Derivatives::Services::TempfileService.new(file)
       temp_file.tempfile do |f|
-        storage.store_surrogate(bucket_id, f.path, filename)
+        storage.store_surrogate(bucket_id, f.path, filename, mimetype)
       end
     end
 
