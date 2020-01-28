@@ -42,11 +42,11 @@ class StorageService
     @driver.surrogate_url(bucket, key, expire)
   end
 
-  def store_surrogate(bucket, surrogate_file, surrogate_key)
-    @driver.store_surrogate(bucket, surrogate_file, surrogate_key)
+  def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype=nil)
+    @driver.store_surrogate(bucket, surrogate_file, surrogate_key, mimetype)
   end
 
-  def store_file(bucket, file, file_key)
-    @driver.store_file(bucket, file, file_key)
+  def store_file(bucket, file, file_key, mimetype=nil)
+    @driver.store_file(bucket, file, file_key, mimetype)
   end      
 end
