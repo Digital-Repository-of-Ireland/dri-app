@@ -86,12 +86,10 @@ module FieldRenderHelper
 
     value ||= args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     value = [value] unless value.is_a?(Array)
-    value = value.reject { |v| uri?(v.gsub('name=', '')) }
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     indexed_value = args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
-    indexed_value = indexed_value.reject { |v| uri?(v.gsub('name=', '')) }
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
@@ -108,9 +106,7 @@ module FieldRenderHelper
   def render_list(field, value, indexed_value)
     unless field.include?("date")
       value.each_with_index.map do |v, i|
-        unless uri?(indexed_value[i])
-          '<dd>' << indexed_value[i] << '</dd>'
-        end
+        '<dd>' << indexed_value[i] << '</dd>'
       end
     else
       value.each.map do |v|
