@@ -107,7 +107,7 @@ class MetadataController < ApplicationController
         record_version_committer(@object, current_user)
         update_or_mint_doi
 
-        retrieve_linked_data
+        retrieve_linked_data if AuthoritiesConfig
 
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve(false, false, ['descMetadata', 'properties'])
@@ -162,12 +162,8 @@ class MetadataController < ApplicationController
     end
 
     def retrieve_linked_data
-      if AuthoritiesConfig
-        begin
-          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
-        rescue Exception => e
-          Rails.logger.error "Unable to submit linked data job: #{e.message}"
-        end
-      end
+      DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
+    rescue Exception => e
+      Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end
 end

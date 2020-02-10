@@ -101,8 +101,9 @@ class ObjectsController < BaseObjectsController
 
     @object.object_version ||= '1'
     @object.increment_version
+    @object.assign_attributes(update_params)
 
-    unless @object.update_attributes(update_params)
+    unless @object.valid?
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       format.html { render action: 'edit' }
       return
@@ -112,7 +113,12 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       checksum_metadata(@object)
-      @object.save
+
+      unless @object.save
+        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+        format.html { render action: 'edit' }
+        return
+      end
 
       post_save(false) do
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
@@ -320,7 +326,7 @@ class ObjectsController < BaseObjectsController
 
       @object = DRI::Batch.with_standard(xml_ds.metadata_standard)
       @object.depositor = current_user.to_s
-      @object.update_attributes create_params
+      @object.assign_attributes create_params
 
       @object.update_metadata xml
     end
@@ -335,7 +341,7 @@ class ObjectsController < BaseObjectsController
                   DRI::Batch.with_standard(:qdc)
                 end
       @object.depositor = current_user.to_s
-      @object.update_attributes create_params
+      @object.assign_attributes create_params
     end
 
     def create_reader_group
@@ -365,7 +371,7 @@ class ObjectsController < BaseObjectsController
 
     def post_save(create)
       warn_if_has_duplicates(@object)
-      retrieve_linked_data
+      retrieve_linked_data if AuthoritiesConfig
       record_version_committer(@object, current_user)
 
       yield
@@ -376,13 +382,9 @@ class ObjectsController < BaseObjectsController
     end
 
     def retrieve_linked_data
-      if AuthoritiesConfig
-        begin
-          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
-        rescue Exception => e
-          Rails.logger.error "Unable to submit linked data job: #{e.message}"
-        end
-      end
+      DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
+    rescue Exception => e
+      Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end
 
     def set_ancestors_reviewed
