@@ -220,6 +220,19 @@ class SolrDocument
     root
   end
 
+  def relatives
+    relatives_key = ActiveFedora.index_field_mapper.solr_name('isMemberOf', :symbol).to_sym
+    return [] unless self[relatives_key].present?
+
+    relatives_ids = self[relatives_key]
+
+    relatives = ActiveFedora::SolrService.query(
+                "id:(#{relatives_ids.join(' OR ')})",
+                rows: relatives_ids.length
+              )
+    relatives.map { |r| r['hasMember_ssim'] }.flatten
+  end
+
   def governing_collection
     governing_id = collection_id
     return nil unless governing_id
