@@ -173,6 +173,20 @@ describe SolrDocument do
       expect(doc.published_objects_count).to eq 3
     end
 
+    it 'should return relation objects' do
+      collection_b = FactoryBot.create(:collection)
+
+      relation = DRI::Related.new
+      relation.related = [@collection, collection_b]
+      relation.save
+
+      @collection.relations = [relation]
+      @collection.save
+
+      doc = SolrDocument.find(@collection.id)
+      expect(doc.relatives).to match_array([@collection.id, collection_b.id])
+    end
+
     # ensure responses grouped into pages of 10 still return the correct count
     context 'when a document has over 10 objects' do
       before do

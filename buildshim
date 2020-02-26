@@ -54,16 +54,18 @@ doi:
 __EOF__
 
     bundle install --without production
+    
+    bundle exec rake server:start
+    bundle exec rake server:config
+
     bundle exec rake db:migrate
     bundle exec rake db:seed
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake db:environment:set RAILS_ENV=test
-
-    bundle exec rake server:start
-    bundle exec rake server:config
     
-    SERVICES=s3:8081 /home/jenkins/.local/bin/localstack start &>/dev/null &
+    source /home/jenkins/localstack/bin/activate
+    SERVICES=s3:8081 localstack start --host &>/dev/null &
     echo $! > localstack.pid
     ;;
 rspec)

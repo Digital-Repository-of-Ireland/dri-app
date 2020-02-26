@@ -5,7 +5,7 @@ module DRI::Solr::Document::Relations
   def external_relationships
     url_array = []
 
-    solr_fields_array = solr_fields_for_standard if active_fedora_model
+    solr_fields_array = external_relationships_solr_fields if active_fedora_model
 
     if solr_fields_array
       solr_fields_array.each do |elem|
@@ -137,6 +137,7 @@ module DRI::Solr::Document::Relations
 
       # Get Root collection of current object.
       root = root_collection
+      relatives_ids = [root.relatives << root.id].uniq
 
       unless root
         Rails.logger.error("Root collection ID for object with PID #{id} not found in Solr")
@@ -144,7 +145,7 @@ module DRI::Solr::Document::Relations
       end
 
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
-      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable)}:\"#{root.id}\""
+      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable)}:(\"#{relatives_ids}\")"
 
       solr_results = ActiveFedora::SolrService.query(
                        solr_query,
@@ -153,7 +154,7 @@ module DRI::Solr::Document::Relations
                      )
 
       if solr_results.present?
-        solr_results.each { |item| solr_documents << SolrDocument.new(item) }
+        solr_documents = solr_results.map { |item| SolrDocument.new(item) }
       else
         Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
       end
@@ -161,7 +162,7 @@ module DRI::Solr::Document::Relations
       solr_documents
     end
 
-    def solr_fields_for_standard
+    def external_relationships_solr_fields
       case active_fedora_model
       when 'DRI::Mods'
         solr_field_array = *(DRI::Vocabulary.mods_relationship_types.map { |s| s.prepend('ext_related_items_ids_').to_sym })
