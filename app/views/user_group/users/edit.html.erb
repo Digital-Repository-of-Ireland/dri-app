@@ -28,12 +28,6 @@
     <div  class="dri_account_block dri_clearfix">
       <h4 class="dri_account_block_heading"><%= t('dri.application.edit_user_profile.change_password') %></h4>
       <div class="dri_account_block_info">
-        <% if current_user.id == @user.id or !current_user.is_admin? %>
-            <h5><%= f.label :current_password, (t :'dri.application.edit_user_profile.current_password') %></h5>
-            <p>
-              <%= f.password_field :current_password, disabled: @user.password_required? ? false : true %>
-            </p>
-        <% end %>
         <h5><%= f.label :password, (t :'dri.application.edit_user_profile.new_password') %></h5>
         <p>
           <%= f.password_field :password, disabled: @user.password_required? ? false : true %>
@@ -44,6 +38,17 @@
         </p>
       </div>
     </div>
+
+      <div  class="dri_account_block dri_clearfix">
+        <div class="dri_account_block_info">
+       <% if current_user.id == @user.id or !current_user.is_admin? %>
+            <h5><%= f.label :current_password, (t :'dri.application.edit_user_profile.current_password') %></h5>
+            <p>
+              <%= f.password_field :current_password, disabled: @user.password_required? ? false : true, required: @user.password_required? ? false : true%>
+            </p>
+        <% end %>
+      </div>
+      </div>
 
     <% if allowed_edit %>
       <% collection_count = collections_with_permission_count(@user) %>

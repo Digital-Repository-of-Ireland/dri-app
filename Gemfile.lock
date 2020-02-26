@@ -81,10 +81,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 9e5e66bb093105c1cf7398d54f75c0c1a7a70171
+  revision: 5d242d1dd6b0242042dcad77d8f63865c06e371f
   branch: develop
   specs:
-    user_group (1.4.1)
+    user_group (1.4.2)
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -759,7 +759,7 @@ GEM
       declarative (< 0.1.0)
       declarative-option (< 0.2.0)
       uber (< 0.2.0)
-    request_store (1.4.1)
+    request_store (1.5.0)
       rack (>= 1.4)
     responders (3.0.0)
       actionpack (>= 5.0)
