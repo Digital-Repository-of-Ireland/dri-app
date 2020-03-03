@@ -70,6 +70,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     },
     dcterms: {
       created: 'creation_date_tesim',
+      issued: 'published_date_tesim',
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
       spatial: lambda do |record|
@@ -166,7 +167,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 else
                   xml.tag! "#{pref}:#{kl}", value
                 end
-              elsif kl.match(/^(temporal|created|date|coverage).*$/) 
+              elsif kl.match(/^(temporal|created|issued|date|coverage).*$/) 
                 # If it's a dcmi period field then we can parse it
                 dcmi_components = dcmi_parse(value)
                 if is_valid_period?(dcmi_components)
