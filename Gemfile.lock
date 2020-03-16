@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 9e01b9ce9ef4be2efcb88df13e2db339d3ddcd17
+  revision: 2489febc7218e128fa2b8bd7af51c1993fb5d994
   branch: develop
   specs:
     dri_data_models (3.2.5)
@@ -197,7 +197,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    blacklight (6.22.0)
+    blacklight (6.23.0)
       bootstrap-sass (~> 3.2)
       deprecation
       globalid
@@ -476,7 +476,7 @@ GEM
       ya2yaml
     iconv (1.0.8)
     is_it_working-cbeer (1.0.16)
-    iso-639 (0.2.8)
+    iso-639 (0.3.3)
     iso8601 (0.12.1)
     it (1.0.0)
       actionpack (>= 3.0.0)
@@ -609,7 +609,7 @@ GEM
     noid-rails (3.0.1)
       actionpack (>= 5.0.0, < 6)
       noid (~> 0.9)
-    nokogiri (1.10.8)
+    nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
