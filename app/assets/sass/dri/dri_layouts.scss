@@ -199,6 +199,7 @@
         .dri_object_second_block {
             //@include zen-clear();
             @include zen-grid-item(1, 3, $gutter-width: 0px);
+            width: 250px;
         }
         .dri_object_first_block {
             //@include zen-clear();
@@ -278,7 +279,7 @@
         .dri_object_second_block {
             @include zen-clear();
             @include zen-grid-item(2, 1, $gutter-width: 0px);
-            width: 100%;
+            width: 250px;
         }
         .dri_object_first_block {
             @include zen-clear();
