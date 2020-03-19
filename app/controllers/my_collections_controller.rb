@@ -79,7 +79,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field solr_name('name_coverage', :facetable), label: 'Subject (Name)', limit: 20
     config.add_facet_field solr_name('creator', :facetable), label: 'creators', show: false
     config.add_facet_field solr_name('contributor', :facetable), label: 'contributors', show: false
-    config.add_facet_field solr_name('person', :facetable), limit: 20
+    config.add_facet_field solr_name('person', :facetable), limit: 20, helper_method: :parse_orcid
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field solr_name('creation_date', :dateable), label: 'Creation Date', date: true
     config.add_facet_field solr_name('published_date', :dateable), label: 'Published/Broadcast Date', date: true

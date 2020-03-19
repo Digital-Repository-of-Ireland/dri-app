@@ -63,10 +63,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 8cda56f331e51c7935d346a74ee30e1e5260bcc4
-  tag: v3.2.5
+  revision: 1e9f311786963e145997ea00b564bc933f1f786e
+  tag: v3.2.6
   specs:
-    dri_data_models (3.2.5)
+    dri_data_models (3.2.6)
       active-fedora
       active_fedora-datastreams
       hydra-derivatives
@@ -197,7 +197,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    blacklight (6.22.0)
+    blacklight (6.23.0)
       bootstrap-sass (~> 3.2)
       deprecation
       globalid
@@ -476,7 +476,7 @@ GEM
       ya2yaml
     iconv (1.0.8)
     is_it_working-cbeer (1.0.16)
-    iso-639 (0.2.8)
+    iso-639 (0.3.5)
     iso8601 (0.12.1)
     it (1.0.0)
       actionpack (>= 3.0.0)
@@ -503,7 +503,7 @@ GEM
       railties (>= 3.1)
     json (2.2.0)
     json-canonicalization (0.2.0)
-    json-ld (3.1.1)
+    json-ld (3.1.2)
       htmlentities (~> 4.3)
       json-canonicalization (~> 0.2)
       link_header (~> 0.0, >= 0.0.8)
@@ -575,7 +575,7 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     memoist (0.16.0)
-    method_source (0.9.2)
+    method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.1009)
@@ -609,7 +609,7 @@ GEM
     noid-rails (3.0.1)
       actionpack (>= 5.0.0, < 6)
       noid (~> 0.9)
-    nokogiri (1.10.8)
+    nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
@@ -633,8 +633,8 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (1.9.0)
-      hashie (>= 3.4.6, < 3.7.0)
+    omniauth (1.9.1)
+      hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
     omniauth-shibboleth (1.3.0)
       omniauth (>= 1.0.0)
