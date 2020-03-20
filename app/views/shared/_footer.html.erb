@@ -1,12 +1,11 @@
 <footer id="dri_main_footer_id" class="dri_main_footer">
-  
+
   <div id="dri_footer_address_id" class="dri_footer_address">
     <%= t('dri.footer.ria_address.project') %><br/>
     <%= t('dri.footer.ria_address.name') %><br/>
     <%= t('dri.footer.ria_address.street') %><br/>
     <%= t('dri.footer.ria_address.zip') %><br/>
     <% phoneNum = '+353 1 609 0674' %>
-    <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
     <% emailAddress = 'dri@ria.ie' %>
     <%= t('dri.footer.contacts.email') + ' ' %>
     <%= link_to emailAddress, "mailto:#{emailAddress}", id: 'contact_email' %><br/><br/>
