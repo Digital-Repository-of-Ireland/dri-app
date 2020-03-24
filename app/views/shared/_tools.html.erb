@@ -1,4 +1,3 @@
-<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
 <div class="dri_sidenav">
 	<h5><i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %> </h5>
 	<!-- close vc_title -->
@@ -23,14 +22,6 @@
 
 		<li>
 			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
-		</li>
-
-		<li>
-			<%= link_to t('dri.views.catalog.forms.print_metadata'),
-				object_metadata_path(@document.id),
-				id: "print_metadata",
-				:onclick => 'window.print();return false;'
-			%>
 		</li>
 
 		<li>
