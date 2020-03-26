@@ -290,7 +290,7 @@ en:
       dri_publish_unavailable_title: Publish not available
       dri_review_unavailable: There are no objects to review. You must add a new object first.
       dri_review_unavailable_title: Review not available
-      dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
+      dri_sort_options: "Select from this list to sort your results by date, title, relevance or sequence. Relevance is the system's best guess as to which collections or objects are most relevant to your search"
       dri_sort_options_title: Search Sort Options
       dri_tlfield_options: Select the date field to display on the timeline
       dri_tlfield_options_title: Display Date Options
