@@ -126,12 +126,7 @@ class CatalogController < ApplicationController
       end
     end
 
-    #config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', label: 'relevance'
-    #config.add_sort_field 'system_create_dtsi desc', label: 'newest'
-    #config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', label: 'title'
-    #config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', label: 'order/sequence'
-
-     # "sort results by" options
+    # "sort results by" options
     config.add_sort_field "score desc, system_modified_dtsi desc", label: "relevance \u25BC"
     config.add_sort_field "title_sorted_ssi asc", label: "title (A-Z)"
     config.add_sort_field "title_sorted_ssi desc", label: "title (Z-A)"
@@ -139,7 +134,7 @@ class CatalogController < ApplicationController
     config.add_sort_field "system_create_dtsi asc", label: "date created \u25B2"
     config.add_sort_field "system_modified_dtsi desc", label: "date modified \u25BC"
     config.add_sort_field "system_modified_dtsi asc", label: "date modified \u25B2"
-    config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', label: 'order/sequence'
+    config.add_sort_field "id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -163,7 +158,6 @@ class CatalogController < ApplicationController
         repository_url: 'https://repository.dri.ie/oai',
         record_prefix: 'oai:dri',
         admin_email: 'tech@dri.ie',
-        #sample_id: '109660'
       },
       document: {
         limit: 100,            # number of records returned with each request, default: 15
