@@ -340,6 +340,7 @@ en:
         types: Types
         types_text: The nature or genre of the resource.
       no_results_found: No search results found
+      no_results_message: or refine your search terms. e.g. try removing a search term or using OR to broaden your search
       q: Type a search term and press Enter. Use AND and OR to narrow or broaden your search
       q_title: Search the repository
       q_ws_title: Search your collections
