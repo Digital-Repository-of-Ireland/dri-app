@@ -11,9 +11,8 @@
 			</button>
 			<span class="dri_navbar_search hidden-sm hidden-md hidden-lg"> <%= render 'shared/header_main_search_form' %></span>
 			<%= link_to main_app.root_path do %>
-			<div class="dri_ident_tiny hidden-sm hidden-md hidden-lg"></div>
+			  <div class="dri_ident_tiny hidden-sm hidden-md hidden-lg"></div>
 			<% end %>
-
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -29,7 +28,7 @@
 		      <% end %>
 		      <li class="hidden-sm hidden-md hidden-lg">
 		        <% if current_user %>
-		            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, :method => :delete %>
+		            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, method: :delete %>
 		        <% else %>
 		            <%= link_to t('blacklight.header_links.login'), user_group.new_user_session_path%>
 		        <% end %>

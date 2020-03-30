@@ -1,45 +1,57 @@
-// @import "modules/_dri_object.scss";
 @media print {
-  div:not([dri_object_metadata_readview]) {
+
+  .dri_wrapper {
+    width: 100%;
+  }
+
+  .dri_main_footer {
+    width: 100%;
+  }
+
+  .dri_funder_institutes {
+    width: 100%;
+  }
+
+  .dri_object_second_block {
     visibility: hidden;
   }
 
-  .dri_object_metadata_readview {
-    visibility: visible !important;
-    position: fixed;
-    top: 0px;
-    left: 0px; 
+  #dri_main_nav_id {
+    display: none !important;
+  }
+
+  .dri_header_container {
+    display: none !important;
+  }
+
+  #dri_crumbtrail_nav_container_id {
+    padding-top: 135px;
+  }
+
+  .dri_main_footer_navigation_links {
+    visibility: hidden;
+  }
+
+
+  .carousel-caption {
+    display: none !important;
+  }
+
+  .carousel-caption {
+    display: none !important;
+  }
+
+  .carousel-control {
+    display: none !important;
+  }
+
+  .dri_ident_print {
+    display: block !important;
+    float: left;
     width: 100%;
-    z-index: 9999;
-    background-color: #ffffff;
-    
-    dt {
-        margin: 10px 0 0 0;
-        padding: 0px;
-        font-weight: bold;
-    }
-    dd {
-        margin: 0;
-        padding: 0;
-        text-align: left;
-        a {
-            margin: 0 0 0 15px;
-            padding: 0;
-            display: list-item;
-            list-style-type: square;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .dri_manage_org_link {
-          list-style-type: none;
-          text-decoration: none;
-          margin: 0;
-          padding: 0;
-        }
-        .dri_manage_org_link:hover {
-          text-decoration: none;
-        }
-    }
+  }
+
+  a[href]:after {
+    content: none !important;
   }
 }
