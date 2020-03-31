@@ -110,8 +110,8 @@ class MyCollectionsController < ApplicationController
     config.add_show_field solr_name('title', :stored_searchable, type: :string), label: 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
     config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
-    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
     config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
+    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
     config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
     DRI::Vocabulary.marc_relators.each do |role|
       config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
