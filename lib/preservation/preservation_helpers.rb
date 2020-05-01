@@ -9,19 +9,6 @@ module Preservation
       File.join(local_storage_dir, build_hash_dir(object_id))
     end
 
-<<<<<<< HEAD
-   def base_path(batch)
-     File.join(local_storage_dir, build_hash_dir(batch))
-   end
-
-   def version_path(batch, version)
-      File.join(local_storage_dir, build_hash_dir(batch), version_string(version))
-    end
-
-    # data path
-    def data_path(batch, version)
-      File.join(version_path(batch, version), "data")
-=======
     def version_path(object_id, version)
       File.join(local_storage_dir, build_hash_dir(object_id), version_string(version))
     end
@@ -29,7 +16,6 @@ module Preservation
     # data path
     def data_path(object_id, version)
       File.join(version_path(object_id, version), "data")
->>>>>>> develop
     end
 
     # output: partial path string e.g. "1c/18/df/87/1c18df87m/v0001"
@@ -61,7 +47,7 @@ module Preservation
     end
 
     # Return the hash part of the file path
-    # input (optional): object_id String (fedora object id) 
+    # input (optional): object_id String (fedora object id)
     # output: partial path String e.g. "1c/18/df/87/1c18df87m"
     def build_hash_dir(object_id)
       dir = ""
