@@ -5,6 +5,19 @@ module DRI::IIIFViewable
   HEIGHT_SOLR_FIELD = 'height_isi'
   WIDTH_SOLR_FIELD = 'width_isi'
 
+  # patch issue with as_json wrapping keys in data and changing key order
+  # may be resolved by iiif-prezi/osullivan/issues/72
+  [
+    IIIF::Presentation::Collection,
+    IIIF::Presentation::Manifest,
+  ].each do |iiif_class|
+    iiif_class.class_eval do
+      define_method(:as_json) do
+        JSON.parse(self.to_json)
+      end
+    end
+  end
+
   def iiif_manifest
     object_url = ''
 
@@ -15,50 +28,93 @@ module DRI::IIIFViewable
     end
   end
 
-  def iiif_base_url
-    iiif_base_url = url_for controller: 'iiif', action: 'show', id: @document.id,
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+  def iiif_sequence
+    if @document.collection?
+      create_collection_sequence
+    else
+      # TODO, get parent collection id
+      # use create_collection_sequence to generate manifest, but target image from current object
+      # so that full collection is opened in mirador, but with the current object selected
+      create_object_manifest
+    end
+  end
+
+  def iiif_base_url(solr_id = nil)
+    solr_id ||= @document.id
+    url_for(controller: 'iiif', action: 'show', id: solr_id)
   end
 
   def create_object_manifest
-    seed_id = url_for controller: 'iiif', action: 'manifest', id: @document.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    seed_id = url_for controller: 'iiif', action: 'manifest', id: @document.id, format: 'json'
 
     seed = {
       '@id' => seed_id,
       'label' => @document.title.join(','),
       'description' => @document.description.join(' ')
     }
-    
+
     manifest = IIIF::Presentation::Manifest.new(seed)
     base_manifest(manifest)
-    
+
     if @document.collection_id
       manifest.within = create_within
     end
 
     sequence = IIIF::Presentation::Sequence.new(
-        {'@id' => "#{iiif_base_url}/sequence/normal", 
+        {'@id' => "#{iiif_base_url}/sequence/normal",
         'viewing_hint' => 'individuals'})
 
     files = attached_images
-    files.each { |f| sequence.canvases << create_canvas(f, iiif_base_url) }  
-    
+    files.each { |f| sequence.canvases << create_canvas(f, iiif_base_url) }
+
+    manifest.sequences << sequence
+    manifest
+  end
+
+  def create_collection_sequence
+    manifest = IIIF::Presentation::Manifest.new(collection_manifest_seed)
+    base_manifest(manifest)
+
+    sequence = IIIF::Presentation::Sequence.new(
+      '@id' => "#{iiif_base_url}/sequence/normal",
+      'viewing_hint' => 'individuals'
+    )
+
+    # TODO: check why child_objects is empty in dev env
+    # issue with object_type in solr?
+    # Add collapsible subcollections to structures like
+    # https://iiif.lib.harvard.edu/manifests/drs:48309543
+    # objects = child_objects
+
+    # assumes images always have a title
+    objects = @document.published_images.sort_by(&:title)
+
+    # exit early if @document doesn't have published images
+    return manifest if objects.empty?
+
+    objects.each_with_index do |image_object, obj_idx|
+      # TODO: simplify this block
+      # will we ever want to display  more than one image per object?
+      attached_images(image_object.id).each_with_index do |image_file, file_idx|
+        canvas = create_canvas(image_file, iiif_base_url(image_object.id), image_object.id)
+        canvas.see_also = see_also(image_object.id)
+        sequence.canvases << canvas
+        manifest.structures << {
+          # canvas id is entire url, not just object.id
+          'canvases' => [canvas["@id"]],
+          '@id' => "#{iiif_base_url}/range/range-#{obj_idx + 1}-#{file_idx + 1}.json",
+          '@type' => "sc:Range",
+          'label' => "#{obj_idx + 1}. #{image_object.title.first.truncate(100)}"
+        }
+      end
+    end
+
     manifest.sequences << sequence
     manifest
   end
 
   def create_collection_manifest
-    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-
-    seed = {
-      '@id' => seed_id,
-      'label' => @document.title.join(','),
-      'description' => @document.description.join(' ')
-    }
-
-    manifest = IIIF::Presentation::Collection.new(seed)
+    manifest = IIIF::Presentation::Collection.new(collection_manifest_seed)
     base_manifest(manifest)
 
     if @document.collection_id.nil?
@@ -72,25 +128,41 @@ module DRI::IIIFViewable
       sub_collections.each { |c| manifest.collections << create_subcollection(c) }
     end
 
+    sequence = IIIF::Presentation::Sequence.new(
+        {'@id' => "#{iiif_base_url}/sequence/normal",
+        'viewing_hint' => 'individuals'})
+
     objects = child_objects
+
     unless objects.empty?
-      objects.each { |o| manifest.manifests << create_manifest(o) }
+      objects.each do |o|
+        manifest.manifests << create_manifest(o)
+      end
     end
 
     manifest
   end
 
-  def attached_images
+  def collection_manifest_seed
+    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json'
+
+    seed = {
+      '@id' => seed_id,
+      'label' => @document.title.join(','),
+      'description' => @document.description.join(' ')
+    }
+  end
+
+  def attached_images(solr_id = nil)
+    solr_id ||= @document.id
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{@document.id}"
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{solr_id}"
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
-    
+
     files = []
-    
+
     query = Solr::Query.new(files_query)
-    query.each_solr_document do |file_doc| 
-      files << file_doc unless file_doc.preservation_only? 
-    end
+    files = query.reject { |file_doc| file_doc.preservation_only? }
 
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
@@ -110,7 +182,7 @@ module DRI::IIIFViewable
 
     licence = solr_doc.licence
     if licence && licence.url
-      manifest.license = licence.url 
+      manifest.license = licence.url
     end
 
     manifest.attribution = attributions.join(', ')
@@ -121,27 +193,26 @@ module DRI::IIIFViewable
     q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
     q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('object_type', :facetable, type: :string)}:\"Image\""
+    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
     # excluding sub-collections
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
     objects = []
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
-    query.each_solr_document { |object_doc| objects << object_doc }
-
-    objects
+    query.to_a
   end
 
-  def create_canvas(file, iiif_base_url)
+  def create_canvas(file, iiif_base_url, solr_id = nil)
+    solr_id ||= @document.id
     canvas = IIIF::Presentation::Canvas.new()
     canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
-    
+
     canvas.width = file[HEIGHT_SOLR_FIELD]
     canvas.height = file[WIDTH_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
 
-    base_uri = Settings.iiif.server + '/' + @document.id + ':' + file.id
+    base_uri = Settings.iiif.server + '/' + solr_id + ':' + file.id
     image_url =  base_uri + '/full/full/0/default.jpg'
 
     image = IIIF::Presentation::ImageResource.create_image_api_image_resource(
@@ -163,7 +234,7 @@ module DRI::IIIFViewable
   end
 
   def create_manifest(object)
-    { 
+    {
         '@id' => url_for(controller: 'iiif', action: 'manifest', id: object.id, format: 'json',
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
         '@type' => 'sc:Manifest',
@@ -184,9 +255,8 @@ module DRI::IIIFViewable
   end
 
   def create_subcollection(collection)
-    { 
-        '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+    {
+        '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json'),
         '@type' => 'sc:Collection',
         'label' => collection[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
     }
@@ -195,9 +265,8 @@ module DRI::IIIFViewable
   def create_within
     governing_collection = @document.governing_collection
 
-    { 
-        '@id' => (iiif_collection_manifest_url id: governing_collection.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+    {
+        '@id' => (iiif_collection_manifest_url id: governing_collection.id, format: 'json'),
         '@type' => 'sc:Collection',
         'label' => governing_collection.title.join(', ')
     }
@@ -211,19 +280,17 @@ module DRI::IIIFViewable
 
     if org
       depositing_org = org
-      logo = logo_url(id: org.id, 
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol])
+      logo = logo_url(id: org.id)
     end
 
     return depositing_org, logo
   end
 
-  def see_also
+  def see_also(solr_id = nil)
+    solr_id ||= @document.id
     {
-      "@id" => object_metadata_url(id: @document.id, 
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+      "@id" => object_metadata_url(id: solr_id),
       'format' => 'text/xml'
     }
   end
-
 end

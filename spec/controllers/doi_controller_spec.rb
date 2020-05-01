@@ -26,28 +26,28 @@ describe DoiController do
   end
 
   before(:each) do
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object.status = 'published'
     @object.save
   end
 
   describe "GET show" do
-  
+
     it "assigns @history" do
       doi = DataciteDoi.create(object_id: @object.noid)
 
-      get :show, object_id: @object, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
-      expect(assigns(:history)).to eq([doi])      
+      get :show, params: { object_id: @object.noid, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
+      expect(assigns(:history)).to eq([doi])
     end
 
     it "alerts if doi is not the latest" do
       initial_doi = DataciteDoi.create(object_id: @object.noid)
       updated_doi = DataciteDoi.create(object_id: @object.noid, modified: 'test update')
 
-      get :show, object_id: @object, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
+      get :show, params: { object_id: @object.noid, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(flash[:notice]).to be_present
     end
 
@@ -55,8 +55,8 @@ describe DoiController do
       initial_doi = DataciteDoi.create(object_id: @object.noid)
       updated_doi = DataciteDoi.create(object_id: @object.noid, modified: 'test update')
 
-      get :show, object_id: @object.noid, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1]
-      expect(response).to redirect_to(catalog_path(@object))
+      get :show, params: { object_id: @object.noid, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
+      expect(response).to redirect_to(solr_document_path(@object.id))
     end
 
     it "updates doi" do
@@ -74,7 +74,7 @@ describe DoiController do
       DataciteDoi.create(object_id: @collection.noid)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, object_id: @collection.noid, modified: 'objects added'
+      put :update, params: { object_id: @collection.noid, modified: 'objects added' }
 
       DataciteDoi.where(object_id: @collection.noid).first.delete
       @collection.delete
@@ -83,7 +83,7 @@ describe DoiController do
     it "returns 404 for unknown DOI" do
       doi = DataciteDoi.create(object_id: @object.noid)
 
-      get :show, object_id: @object, id: 'aaa-9'
+      get :show, params: { object_id: @object.noid, id: 'aaa-9' }
       expect(response.status).to eq(404)
     end
 

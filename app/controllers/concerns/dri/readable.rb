@@ -3,8 +3,7 @@ module DRI::Readable
 
   # If the restricted read is inherited find the correct reader group to use
   def governing_reader_group(collection_id)
-    result = ActiveFedora::SolrService.query("id:#{collection_id}")
-    doc = SolrDocument.new(result.pop)
+    doc = SolrDocument.find(collection_id)
     read_groups = doc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
 
     if read_groups && read_groups.include?(collection_id)
@@ -20,13 +19,13 @@ module DRI::Readable
     read_group = nil
 
     return read_group unless doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].present?
+    ancestor_docs = doc.ancestor_docs
 
-    doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor|
-      result = ActiveFedora::SolrService.query("id:#{ancestor}")
-      ancestordoc = SolrDocument.new(result.pop) if result.size > 0
+    doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor_id|
+      ancestordoc = ancestor_docs[ancestor_id]
       read_groups = ancestordoc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
-      if read_groups.present? && read_groups.include?(ancestor)
-        read_group = UserGroup::Group.find_by(name: ancestor)
+      if read_groups.present? && read_groups.include?(ancestor_id)
+        read_group = UserGroup::Group.find_by(name: ancestor_id)
         break
       end
     end

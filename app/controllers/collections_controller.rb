@@ -4,11 +4,12 @@ require 'storage/cover_images'
 require 'validators'
 
 class CollectionsController < BaseObjectsController
-  include Hydra::AccessControlsEnforcement
-  include DRI::MetadataBehaviour
+  include Blacklight::AccessControls::Catalog
+  include DRI::Duplicable
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
+  before_action :authorize_cm!, only: [:new, :create]
   before_action :check_for_cancel, only: [:create, :update, :add_cover_image]
   before_action :read_only, except: [:index, :cover]
   before_action ->(id=params[:id]) { locked(id) }, except: %i|index cover lock new create|
@@ -29,23 +30,22 @@ class CollectionsController < BaseObjectsController
     query += " OR manager_access_person_ssim:#{current_user.email}"
 
     fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
-    
+
     if params[:governing].present?
       fq << "+#{ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)}:#{params[:governing]}"
     end
-    
+
     solr_query = Solr::Query.new(query, 100, { fq: fq })
     collections = results_to_hash(solr_query)
 
     respond_to do |format|
-      format.json { render(json: collections.to_json) }
+      format.json { render(json: collections) }
     end
   end
 
   # Creates a new model.
   #
   def new
-    enforce_permissions!('create', DRI::DigitalObject)
     @object = DRI::DigitalObject.with_standard :qdc
 
     # configure default permissions
@@ -59,7 +59,6 @@ class CollectionsController < BaseObjectsController
     @object.description = ['']
     @object.creator = ['']
     @object.creation_date = ['']
-    @object.publisher = ['']
     @object.rights = ['']
     @object.type = ['Collection']
 
@@ -79,10 +78,14 @@ class CollectionsController < BaseObjectsController
     @institutes = Institute.all
     @inst = Institute.new
 
-    @collection_institutes = Institute.find_collection_institutes(@object.institute)
+    @collection_institutes = Institute.where(name: @object.institute.flatten).to_a
     @depositing_institute = @object.depositing_institute.present? ? Institute.find_by(name: @object.depositing_institute) : nil
 
     supported_licences
+
+    if @object.published? && @object.doi.present?
+      flash[:alert] = "#{t('dri.flash.alert.doi_published_warning')}".html_safe
+    end
 
     respond_to do |format|
       format.html
@@ -106,7 +109,7 @@ class CollectionsController < BaseObjectsController
       format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
     end
   end
-  
+
   # Updates the attributes of an existing model.
   #
   def update
@@ -123,7 +126,7 @@ class CollectionsController < BaseObjectsController
     supported_licences
 
     doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
-    
+
     @object.increment_version
     updated = @object.update_attributes(update_params)
 
@@ -140,12 +143,9 @@ class CollectionsController < BaseObjectsController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
     end
 
-    # purge params from update action
-    purge_params
-
     respond_to do |format|
       if updated
-        actor.version_and_record_committer
+        record_version_committer(@object, current_user)
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
@@ -176,15 +176,12 @@ class CollectionsController < BaseObjectsController
     end
 
     if saved
-      actor.version_and_record_committer
+      record_version_committer(@object, current_user)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, ['properties'])
     end
-
-    # purge params from update action
-    purge_params
 
     respond_to do |format|
       if saved
@@ -208,7 +205,12 @@ class CollectionsController < BaseObjectsController
     cover_url = object.cover_image
     raise DRI::Exceptions::NotFound if cover_url.blank?
 
-    return if redirect_url(cover_url)
+    if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
+      cover_uri = URI.parse(cover_url)
+      #cover_uri.scheme = 'https'
+      redirect_to cover_uri.to_s
+      return
+    end
 
     uri = URI.parse(cover_url)
     cover_name = File.basename(uri.path)
@@ -234,12 +236,13 @@ class CollectionsController < BaseObjectsController
   #
   def create
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
-    
+
     if created && (@object.valid? && @object.save)
       # We have to create a default reader group
       create_reader_group
-      actor.version_and_record_committer
-      
+
+      record_version_committer(@object, current_user)
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(true, ['descMetadata','properties'])
@@ -288,18 +291,20 @@ class CollectionsController < BaseObjectsController
       begin
         delete_collection
         flash[:notice] = t('dri.flash.notice.collection_deleted')
-      rescue Exception => e
-        flash[:alert] = t('dri.flash.alert.error_deleting_collection', error: e.message)
+      rescue DRI::Exceptions::ResqueError => e
+        flash[:error] = t('dri.flash.alert.error_deleting_collection', error: e.message)
+        redirect_to :back
+        return
       end
     else
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'index' }
+      format.html { redirect_to controller: 'workspace', action: 'index' }
     end
   end
-  
+
   def review
     enforce_permissions!('manage_collection', params[:id])
     @object = retrieve_object!(params[:id])
@@ -353,8 +358,6 @@ class CollectionsController < BaseObjectsController
     # Create a collection with the web form
     #
     def create_from_form
-      enforce_permissions!('create', DRI::DigitalObject)
-
       unless valid_root_permissions?
         flash[:alert] = t('dri.flash.error.not_created')
         return false
@@ -390,16 +393,15 @@ class CollectionsController < BaseObjectsController
     # Create a collection from an uploaded XML file.
     #
     def create_from_xml
-      enforce_permissions!('create', DRI::DigitalObject)
-
       unless params[:metadata_file].present?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
         return false
       end
 
+      xml_ds = XmlDatastream.new
       begin
-        xml = load_xml(params[:metadata_file])
+        xml_ds.load_xml(params[:metadata_file])
       rescue DRI::Exceptions::InvalidXML
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
@@ -410,18 +412,16 @@ class CollectionsController < BaseObjectsController
         return false
       end
 
-      standard = metadata_standard_from_xml(xml)
-
-      if standard.nil?
+      if xml_ds.metadata_standard.nil?
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
         @error = t('dri.flash.notice.specify_valid_file')
         return false
       end
 
-      @object = DRI::DigitalObject.with_standard standard
+      @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
       set_metadata_datastream(@object, xml)
       checksum_metadata(@object)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
 
       if @object.descMetadata.is_a?(DRI::Metadata::EncodedArchivalDescriptionComponent)
         flash[:notice] = t('dri.flash.notice.specify_valid_file')
@@ -466,7 +466,7 @@ class CollectionsController < BaseObjectsController
         redirect_to cover_uri.to_s
         return true
       end
-      
+
       false
     end
 
@@ -493,7 +493,7 @@ class CollectionsController < BaseObjectsController
            governing = object[
             ActiveFedora.index_field_mapper.solr_name(
             'isGovernedBy', :stored_searchable, type: :symbol
-            )] 
+            )]
             collection[:governing_collection] = governing.present? ? governing.first : 'root'
 
           collections.push(collection)
@@ -524,7 +524,7 @@ class CollectionsController < BaseObjectsController
       DRI.queue.push(DeleteCollectionJob.new(@object.noid))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
-      raise DRI::Exceptions::ResqueError
+      raise DRI::Exceptions::ResqueError, e.message
     end
 
     def publish_collection

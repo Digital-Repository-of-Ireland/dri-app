@@ -1,0 +1,12 @@
+<table id="datatable_fixity" class="display" data-source="<%= reports_url(report: "fixity", format: "json", protocol: Rails.application.config.action_mailer.default_url_options[:protocol]) %>">
+  <thead>
+    <tr>
+      <th><%= t('dri.datatables.fixity.collection_id') %></th>
+      <th><%= t('dri.datatables.fixity.timestamp') %></th>
+      <th><%= t('dri.datatables.fixity.verified') %></th>
+      <th><%= t('dri.datatables.fixity.submit') %></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>

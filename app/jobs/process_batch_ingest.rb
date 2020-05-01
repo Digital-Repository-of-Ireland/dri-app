@@ -1,109 +1,188 @@
 require 'ostruct'
+require 'validators'
 
 class ProcessBatchIngest
-  extend DRI::MetadataBehaviour
-  
   @queue = :process_batch_ingest
-
-  def self.auth_url(user, url)
-    "#{url}?user_email=#{user.email}&user_token=#{user.authentication_token}"
-  end
 
   def self.perform(user_id, collection_id, ingest_json)
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
-    collection = DRI::Identifier.retrieve_object!(object_id)
-    
+
     download_path = File.join(Settings.downloads.directory, collection_id)
     FileUtils.mkdir_p(download_path)
 
-    ingest_metadata = ingest_batch['metadata']
+    # retrieve information about metadata file to be ingested
+    metadata_info = ingest_batch['metadata']
 
-    if ingest_metadata['object_id'].present?
-      # metadata ingest was successful so only ingest missing assets
-      object = DRI::Identifier.retrieve_object!(ingest_metadata['object_id'])
-      object = ident.identifiable
-    else
-      metadata = retrieve_files(download_path, [ingest_metadata])[0]
-      object = ingest_metadata(collection, user, metadata)
+    rc, object = if metadata_info['object_id'].present?
+                   # metadata ingest was successful so only ingest missing assets
+                   [0, DRI::DigitalObject.find_by_noid(metadata_info['object_id'], cast: true)]
+                 else
+                   metadata = retrieve_files(download_path, [metadata_info])[0]
+                   ingest_metadata(collection_id, user, metadata)
+                 end
+
+    if rc == 0 && object
+      assets = retrieve_files(download_path, ingest_batch['files'])
+
+      unless assets.empty?
+        object.increment_version
+        object.save
+
+        ingest_assets(user, object, assets)
+      end
+
+      record_committer(object, user)
     end
-
-    ingest_files = ingest_batch['files']
-    assets = retrieve_files(download_path, ingest_files)
-
-    ingest_assets(user, object, assets)
   end
 
   def self.ingest_assets(user, object, assets)
+    filenames = []
+
     assets.each do |asset|
-      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
-      generic_file.digital_object = object
-      generic_file.apply_depositor_metadata(user)
-      generic_file.preservation_only = 'true' if asset[:label] == 'preservation'
+      # the asset file was not found
+      if asset[:path].start_with?('error:')
+        update_master_file(asset[:master_file_id], { status_code: 'FAILED', file_location: asset[:path] })
+        next
+      end
 
-      filename = File.basename(asset[:path])
-      
-      version = ingest_file(asset[:path], object, generic_file, filename)
-      message = if version > 1
-                  { status_code: 'COMPLETED',
-                    file_location: Rails.application.routes.url_helpers.object_file_path(object, generic_file) }
-                else
-                  { status_code: 'FAILED' }
-                end
+      preservation = asset[:label] == 'preservation'
+      build_generic_file(object: object, user: user, preservation: preservation)
 
-      send_message(auth_url(user, asset[:callback_url]), message)
+      original_file_name = File.basename(asset[:path])
+
+      moab_filename = ingest_file(asset[:path], object, 'content', original_file_name)
+      saved = if moab_filename.nil?
+                false
+              else
+                url = Rails.application.routes.url_helpers.url_for(
+                        controller: 'assets',
+                        action: 'download',
+                        object_id: object.id,
+                        id: @generic_file.id,
+                        version: object.object_version
+                      )
+                file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
+                file_content.external_content(
+                  url,
+                  original_file_name
+                )
+
+                filenames << moab_filename
+                true
+              end
+
+      update = if saved
+                 { status_code: 'COMPLETED',
+                   file_location: Rails.application.routes.url_helpers.object_file_path(object.noid, @generic_file.noid) }
+               else
+                 { status_code: 'FAILED' }
+               end
+
+      update_master_file(asset[:master_file_id], update)
     end
-  end
-
-  def self.ingest_metadata(collection, user, metadata)
-    xml = load_xml(file_data(metadata[:path]))
-    object = create_object(collection, user, xml)
-
-    if object.valid? && object.save
-      create_reader_group if object.collection?
-
-      DRI::Object::Actor.new(object, user).version_and_record_committer
-
-      preservation = Preservation::Preservator.new(object)
-      preservation.preserve(true, true, ['descMetadata','properties'])
-
-      message = { status_code: 'COMPLETED',
-                  file_location: Rails.application.routes.url_helpers.catalog_path(object) }
-    else
-      message = { status_code: 'FAILED', file_location: "error:#{object.errors.full_messages.inspect}" }
-    end
-
-    send_message(auth_url(user, metadata[:callback_url]), message)
-    object
-  end
-
-  def self.ingest_file(file_path, object, generic_file, filename)
-    filedata = OpenStruct.new
-    filedata.path = file_path
-   
-    DRI::Asset::Actor.new(generic_file, user).create_external_content(
-                  filedata,
-                  filename,
-                  Validators.file_type(filedata)
-    )
 
     preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets([filename],[])
-
-    object.object_version.to_i
+    preservation.preserve_assets(filenames,[])
   end
 
-  def self.create_object(collection, user, xml)
-    standard = metadata_standard_from_xml(xml)
+  def self.ingest_metadata(collection_id, user, metadata)
+    download_path = metadata[:path]
+    # the metadata file could not be retrieved
+    if download_path.start_with?('error:')
+       update_master_file(metadata[:master_file_id], { status_code: 'FAILED', file_location: download_path })
+       return -1, nil
+    end
 
-    object = DRI::DigitalObject.with_standard(standard)
-    object.governing_collection = collection
+    xml_ds = XmlDatastream.new
+
+    begin
+      xml_ds.load_xml(file_data(download_path))
+    rescue DRI::Exceptions::InvalidXML, DRI::Exceptions::ValidationErrors => e
+      update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{e.message}" }
+      update_master_file(metadata[:master_file_id], update)
+      FileUtils.rm_f(metadata[:path])
+
+      return -1, nil
+    end
+
+    object = create_object(collection_id, user, xml_ds)
+
+    if !object.valid?
+      update = { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
+      update_master_file(metadata[:master_file_id], update)
+      FileUtils.rm_f(metadata[:path])
+
+      return -1, object
+    end
+
+    begin
+      update = if object.save
+                 create_reader_group(object) if object.collection?
+
+                 preservation = Preservation::Preservator.new(object)
+                 preservation.preserve(true, true, ['descMetadata','properties'])
+
+                 rc = 0
+                 { status_code: 'COMPLETED',
+                   file_location: Rails.application.routes.url_helpers.my_collections_path(object.noid) }
+               else
+                 rc = -1
+                 { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
+               end
+    rescue Ldp::HttpError => e
+      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. service may be overloaded." }
+      rc = -1
+    end
+
+    update_master_file(metadata[:master_file_id], update)
+    FileUtils.rm_f(metadata[:path])
+
+    return rc, object
+  end
+
+  def self.ingest_file(file_path, object, datastream, filename)
+    filename = "#{@generic_file.noid}_#{filename}"
+
+    filedata = OpenStruct.new
+    filedata.path = file_path
+    mime_type = Validators.file_type(file_path)
+
+    begin
+      LocalFile.build_local_file(
+        object: object,
+        generic_file: @generic_file,
+        data:filedata,
+        datastream: datastream,
+        opts: { filename: filename, mime_type: mime_type, checksum: 'md5'}
+      )
+    rescue StandardError => e
+      Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
+      return nil
+    end
+
+    FileUtils.rm_f(file_path)
+    filename
+  end
+
+  def self.build_generic_file(object:, user:, preservation: false)
+    @generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+    @generic_file.digital_object = object
+    @generic_file.apply_depositor_metadata(user)
+    @generic_file.preservation_only = 'true' if preservation
+  end
+
+  def self.create_object(collection_id, user, xml_ds)
+    standard = xml_ds.metadata_standard
+
+    object = DRI::DigitalObject.with_standard standard
+    object.governing_collection_id = collection_id
     object.depositor = user.to_s
     object.status = 'draft'
-    object.object_version = '1'
+    object.object_version = 1
 
-    set_metadata_datastream(object, xml)
+    object.update_metadata(xml_ds.xml)
     checksum_metadata(object)
 
     object
@@ -139,24 +218,45 @@ class ProcessBatchIngest
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
       downloaded = 0
-      File.open download_location, 'wb' do |dest|
-        # Retrieve the file, yielding each chunk to a block
-        retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
-          dest.write chunk
-          downloaded = retrieved
+
+      begin
+        File.open download_location, 'wb' do |dest|
+          # Retrieve the file, yielding each chunk to a block
+          retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
+            dest.write chunk
+            downloaded = retrieved
+          end
         end
+      rescue Errno::ENOENT => e
+        download_location = "error: #{e.message}"
       end
 
-      download = { label: file['label'], path: download_location, callback_url: file['callback_url'] }
+      download = { label: file['label'], path: download_location, master_file_id: file['id'] }
       downloaded_files << download
     end
 
     downloaded_files
   end
 
-  def self.send_message(url, message)
-    RestClient.put url, { 'master_file' => message }, content_type: :json, accept: :json
-  rescue RestClient::Exception => e
-    Rails.logger.error "Error sending callback: #{e}"
+  def self.update_master_file(id, update)
+    master_file = DriBatchIngest::MasterFile.find(id)
+    master_file.status_code = update[:status_code]
+    master_file.file_location = update[:file_location]
+    master_file.save
+  end
+
+  def self.record_committer(object, user)
+    VersionCommitter.create(version_id: version_id(object), obj_id: object.noid, committer_login: user.to_s)
+  end
+
+  def self.version_id(object)
+    'v%04d' % object.object_version
+  end
+
+  def self.checksum_metadata(object)
+    if object.attached_files.key?(:descMetadata)
+      xml = object.attached_files[:descMetadata].content
+      object.metadata_md5 = Checksum.md5_string(xml)
+    end
   end
 end

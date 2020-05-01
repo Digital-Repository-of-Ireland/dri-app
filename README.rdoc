@@ -1,20 +1,19 @@
-== Welcome to the DRI Hydra Head
+== DRI Repository Application
 
-This repository contains the Digital Repository of Ireland's Hydra application.
+This repository contains the Digital Repository of Ireland's Samvera based application.
 
-There are a number of other depedencies (see below) but at this point you
+There are a number of other dependencies (see below) but at this point you
 will need to have a functional Rails stack and at least Java version 7. You
 can check your Java version by running 'java -version' anything below 1.7x
 in the output and you should update from https://java.com/en/download/
 
 For testing and development you will need to bootstrap the project
 
-  $ git clone git@tracker.dri.ie:drirepo/dri-app.git
+  $ git clone ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git
   $ cd dri-app
-  $ bundle
+  $ bundle install --without production
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
   $ cp config/fedora.yml.sample config/fedora.yml (and edit as appropriate)
-  $ cp config/jetty.yml.sample config/jetty.yml (and edit as appropriate)
   $ cp config/redis.yml.sample config/redis.yml (and edit as appropriate)
   $ cp config/solr.yml.sample config/solr.yml (and edit as appropriate)
   $ bundle exec rake db:migrate
@@ -24,18 +23,17 @@ Dont forget to prepare the test database with
 
   $ bundle exec rake db:test:prepare
 
+You may also want to create test organisations (institutions) with
+
+  $ bundle exec rake db:seed:add_organisations
+
 You may also need to edit config/settings.yml and/or create config/settings.local.yml
 
 To start the application for demo purposes
 
-Note: Ensure that a mysql (or mysql replacement) is
-running.  (E.G. MariaDB start alias: alias mariadbstart='cd
-"/opt/local" ;sudo /opt/local/lib/mariadb/bin/mysqld_safe
---datadir="/opt/local/var/db/mariadb"')
-
   $ cd dri-app
-  $ rake jetty:start
-  $ rake jetty:config
+  $ rake server:start
+  $ rake server:config
   $ bundle exec rails server
 
 The db:seed step above will create 4 initial accounts:
@@ -50,63 +48,47 @@ setting in the settings.yml file. Typically this will be set to "CHANGEME" and
 it should be updated as soon as possible after installation. To change the password log into the
 application as each of the default users, navigate to their profile page by
 clicking on the username at the top of the screen, and clicking on the 'Edit' button.
- 
-To run the unit tests
 
-  $ cd dri-app
-  $ rake jetty:start
-  $ rake jetty:config
-  $ rake rspec
+To generate the app docs:
 
-To run the functional tests
+  $ bundle exec rake rdoc
 
-  $ cd dri-app
-  $ rake jetty:start
-  $ rake jetty:config
-  $ rake cucumber or bundle exec cucumber
+There is an exclude filter for api specs in .rspec
+since api:docs:generate runs those specs anyway.
+To run api specs:
+
+  $ bundle exec rspec spec/api --exclude-pattern ''
+
+To generate the api docs:
+
+  $ bundle exec rake api:docs:generate
 
 == Dependencies
 
 If you are using homebrew on OSX
 
-  $ brew install ansible coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml mariadb redis clamav sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
+  $ brew install coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml redis sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
 
 In order to properly ingest videos, please reinstall ffmpeg with all the the supported codecs and encoders available:
 
- $ brew reinstall ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-frei0r --with-libass --with-libvo-aacenc --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools
+  $ brew reinstall ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-frei0r --with-libass --with-libvo-aacenc --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools
 
-== Testing
+If you are using Ubuntu or another debian linux distribution
 
-The unit tests are written using rspec and the functional tests are
-written with cucumber.
+  $ sudo apt-get install coreutils libtool libksba8 libxml2 libxslt1.1 automake autoconf openssl curl libreadline6 gettext pkg-config libyaml-dev redis sqlite ffmpeg gource phantomjs libgtk2.0-dev imagemagick ghostscript nodejs
 
-This project is set up to use guard to automatically run tests as they
-are changed.
+There are a few installation options for fits:
 
-  $ cd dri-app
-  $ bundle exec guard
+1. Download fits from the harvard website https://projects.iq.harvard.edu/fits/downloads
+2. Use ant to build from source github https://github.com/harvard-lts/fits/
+3. Install http://linuxbrew.sh/ and brew install fits
+4. Use the ppa
+    $ sudo add-apt-repository ppa:conorsheehan1/fits-ppa
+    $ sudo apt-get update
+    $ sudo apt install fits
 
-The poltergeist gem is required for testing, as a result phantomjs binary
-to run poltergeist.
-
-* https://github.com/jonleighton/poltergeist
-* https://github.com/ariya/phantomjs
-
-== Translations
-
-When translations are added to the english locale files in config/locales
-you should run the rake task localefiles with the parameter file which should
-be set to the path to the ENGLISH yml file. For example:
-
-  $ rake locales:mergefile file=config/locales/dri/en.yml
-
-This will merge any new keys from the English file into any other locale files
-(with the same naming convention) in that directory. The default value for each
-key will be the English text.
-
-To merge all files use
-
-  $ rake locales:mergeall
+You may need to comment out `<tool class="edu.harvard.hul.ois.fits.tools.mediainfo.MediaInfo"` in fits/xml/fits.xml
+as per https://github.com/harvard-lts/fits/issues/160
 
 == Settings.yml
 
@@ -141,18 +123,18 @@ asynchronous processing of background jobs. This introduces the following depend
   * fits (for extracting metadata from a file)
   * ffmpeg (video file processing tool)
   * imagemagick (image processing)
-  * Clamav (malware scanning)
+  * Clamav (malware scanning) (production only)
 
 For testing, the file processing tools should be installed locally with the hydra-head.
 See the Dependencies section of this document for more information on installing
 these and other dependencies.
 
-By default fits should be installed in the directory /opt/local/fits/ (this can
-be changed by modifying the config.fits_path setting in the file
-config/initializers/sufia.rb).
+By default fits should be installed in the directory /opt/local/fits/. The path to the install 
+can be set in the Settings.plugins.fits_path setting in the file
+config/settings.yml or config/settings.local.yml.
 
 By default ffmpeg should be installed in the directory /opt/local/bin (this can
-be changed by modifying the ffmpeg_path setting in the file config/settings.yml).
+be set by modifying the ffmpeg_path setting in the file config/settings.yml).
 
 For testing purposes Redis can be installed locally and started with the command
 
@@ -170,6 +152,8 @@ host running in order to run the tests.
 
 == ClamAV
 
+ClamAV is only required to be installed in production, but can be installed locally for testing purposes.
+
 To enable virus scanning ClamAV needs to be installed.
 
   $ sudo port install clamav
@@ -184,54 +168,37 @@ Update the virus database
 
   $ sudo freshclam
 
-Install the clamav Ruby gem
-
-  $ gem install clamav -- --with-cflags=`clamav-config --cflags` --with-ldflags=`clamav-config --libs`
-
 Add the gem to the GemFile
 
-  gem 'clamav'
+  gem 'clamby'
 
 Run bundler. Virus scanning should now take place when an asset is uploaded.
 
 == Storage
 
 Surrogate files are stored using the S3 interface. To create surrogates
-you will need access to an S3 server. A Ceph VM with S3 Rados Gateway is available
-in the drirepo repository. To start up Ceph run
+you will need access to an S3 server. LocalStack can be used for testing purposes. 
+This can be installed using pip:
 
-  $ vagrant up ceph
+ $ pip install --user localstack
 
-When the VM is running, log in with
+You may need to add the local bin dir to your path, if not previously done:
 
-  $ vagrant ssh ceph
+ $ export PATH=/home/$USER/.local/bin:$PATH
 
-Then create a user with no max bucket limit as follows:
+For tests, where you don't want files to persist, start the server using:
 
-  $ sudo radosgw-admin user create --uid=johndoe --display-name="John Doe" --email=john@example.com --max-buckets=0
+ $ SERVICES=s3:8081 localstack start
 
-This will return an access_key and secret_key which must be added
-to the hydra head's config/settings.yml or config/settings.local.yml file as follows:
+In development, if you would like the files to persist LocalStack restarts, create a directory for the server
+to use to store files, and then start the server with:
 
-  S3:
-    server: 10.0.1.201
-    access_key_id: 4WP751XIFXBH9G97DD91
-    secret_access_key: v6tX8bZSeN9IRJAcelHLnQFrsYV8ojxgWa7rn0uz
-
-Note that the keys should be pasted in as they appear in the output of the radosgw-admin command,
-but all '\' characters should be stripped.
-
-An alternative, if the Ceph VM is not working for you, is to use the FakeS3 gem. This is included
-in the development gem group, so should have been installed by bundler.
-
-Create a directory for the server to use to store files, and then start the server with:
-
- $  bundle exec fakes3 -r /path/to/fakes3_root -p 8081 -H localhost
+ $ SERVICES=s3:8081 DATA_DIR=/path/to/localstack_files localstack start
 
 The settings should then be modified to the following:
 
   S3:
-    server: localhost:8081
+    server: 127.0.0.1:8081
     use_ssl: false
     access_key_id: anything
     secret_access_key: anything
@@ -369,6 +336,30 @@ Other settings should be as follows
   audience: 'https://accounts.google.com/o/oauth2/token'
   scope: 'https://www.googleapis.com/auth/analytics.readonly'
 
+== Testing
 
+The unit tests are written using rspec and the functional tests are
+written with cucumber.
 
+To run the unit tests:
+
+  $ cd dri-app
+  $ rake server:start
+  $ rake server:config
+  $ rake rspec
+
+To run the functional tests:
+
+  $ cd dri-app
+  $ rake server:start
+  $ rake server:config
+  $ rake cucumber or bundle exec cucumber
+
+To run tests in parallel:
+
+Ensure config/database.yml uses database: db/test<%= ENV['TEST_ENV_NUMBER'] %>.sqlite3
+
+  $ bundle exec rake parallel:create
+  $ bundle exec rake parallel:prepare
+  $ bundle exec parallel_rspec spec
 

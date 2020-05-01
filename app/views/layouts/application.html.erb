@@ -15,10 +15,11 @@
 		<meta http-equiv="cleartype" content="on">
 		<title><%= h(@page_title || application_name) %></title>
 
-		<link href="<%= opensearch_catalog_url(:format => 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
+		<link href="<%= main_app.opensearch_catalog_url(:format => 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-		<%= stylesheet_link_tag "dri/dri_layouts" %>
+		<%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
+		<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
 		<%= content_for(:head) %>
@@ -29,16 +30,19 @@
 		<![endif]-->
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-                <% custom_vars = get_custom_vars %>
-                <%= analytics_init(:custom_vars => custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
+        <%= analytics_init(custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
+        <script type="text/javascript">
+            I18n.locale = "<%= I18n.locale %>";
+        </script>
 	</head>
 
 	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
 
 	<body>
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
-			<%= render :partial => 'shared/cookies_modal' unless cookies[:accept_cookies]%>
-			<%= render :partial => 'shared/header_navbar' %>
+			<%= render partial: 'shared/cookies_modal' if display_end_user_agreement? %>
+			<%= render partial: 'advanced/dri_modal' %>
+			<%= render partial: 'shared/header_navbar' %>
 			<div id="ajax-modal" class="modal fade" tabindex="-1">
 				<div class="modal-dialog modal-lg">
 					<div class="modal-content">
@@ -48,22 +52,17 @@
 			</div>
 			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
 			<%# - check below is to see if a facet or text query exists %>
-			<% if query_has_constraints? && (!params[:f].nil?) || (!params[:q].nil?) || (!params[:q_ws].nil?) %>
+			<% if query_has_constraints? && has_constraint_params? %>
 			  <%= render 'constraints' %>
 			<% end %>
 
 			<% if flash  %>
-			  <%= render :partial=>'/flash_msg' %>
+			  <%= render partial: '/flash_msg' %>
 			<% end %>
 			<!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
-			<% if (
-				      (
-					      (
-						      controller_name == 'catalog' || controller_name == 'bookmarks' ||
-			            controller_name == 'my_collections'
-			          ) && action_name == 'index'
-			        ) && has_browse_params?
+			<%# if (((%w(catalog bookmarks my_collections).include?(controller_name)) && action_name == 'index') && has_browse_params?
 			      ) || (controller_name == 'saved_searches' && action_name == 'index') %>
+			<% if should_render_browse_mode_swap? %>
 			  <%= render 'shared/browse_mode_swap' %>
 			<% end %>
 
@@ -71,11 +70,11 @@
 				<%= yield %>
 			</div>
 			<div class="dri_search_features_nav_container dri_clearfix">
-				<%= render :partial => 'shared/results_paginator' %>
+				<%= render partial: 'shared/results_paginator' %>
 			</div>
 			<!-- close dri_main_content_container -->
 
-			<%= render :partial => 'shared/footer' %>
+			<%= render partial: 'shared/footer' %>
 
 		</div><!-- close dri_wrapper -->
 

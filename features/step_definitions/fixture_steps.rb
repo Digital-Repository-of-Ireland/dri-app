@@ -32,3 +32,10 @@ Given /^an object with pid "([^\"]*)" exists$/ do |pid|
 
   object = DRI::Identifier.retrieve_object(pid)
 end
+
+Given /^a swagger fixture$/ do
+  # TODO: find a better way to ensure swagger.json exists so api-docs feature passes
+  swagger_file_path = File.join(Rails.root, 'swagger', 'v1', 'swagger.json')
+  swagger_fixture_path = File.join(cc_fixture_path, 'swagger.json')
+  system("cp #{swagger_fixture_path} #{swagger_file_path}") unless File.exist? swagger_file_path
+end

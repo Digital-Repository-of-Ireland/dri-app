@@ -16,26 +16,26 @@ describe "ReviewCollectionJob" do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @login_user = FactoryGirl.create(:collection_manager)
+    @login_user = FactoryBot.create(:collection_manager)
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @collection[:status] = "draft"
     @collection.save
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object[:status] = "draft"
     @object.save
 
     @collection.governed_items << @object
     @collection.save
 
-    @subcollection = FactoryGirl.create(:collection)
+    @subcollection = FactoryBot.create(:collection)
     @subcollection[:status] = "draft"
     @subcollection.governing_collection = @collection
     @subcollection.save
 
-    @subcollection2 = FactoryGirl.create(:collection)
-    @subcollection2[:status] = "draft"
+    @subcollection2 = FactoryBot.create(:collection)
+    @subcollection2[:status] = "reviewed"
     @subcollection2.governing_collection = @collection
     @subcollection2.save
   end
@@ -46,13 +46,13 @@ describe "ReviewCollectionJob" do
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
-  
+
   describe "run" do
     it "should trigger jobs for subcollections" do
       expect(ReviewJob).to receive(:create).exactly(3).times
       job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
-    end  
+    end
   end
 
 end

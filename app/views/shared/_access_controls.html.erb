@@ -254,7 +254,7 @@
 	    <div>
                 <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled => inherit_disabled %>
                 <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
-                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: get_inherited_read_groups(@object)) %>)
+                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: inherited_collection_read_groups(@object.governing_collection)) %>)
                 </label>
             </div>
         <% end %>
@@ -262,7 +262,7 @@
                 <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
                 <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.public') %></label>
             </div>
-            <div> 
+            <div>
                 <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_field_toggle();" %>
                 <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.registered') %></label>
             </div>
@@ -287,21 +287,21 @@
                 <div>
 	            <%= f.radio_button :master_file_access, "inherit", :checked=>(record.master_file_access.blank? || record.master_file_access=="inherit"), :disabled=> inherit_disabled %>
                     <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
-                    <% legend = t("dri.views.objects.access_controls.inherit_strings."+get_inherited_masterfile_access(@object)) %>
+                    <% legend = t("dri.views.objects.access_controls.inherit_strings."+inherited_masterfile_access(@object)) %>
                     (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: legend) %>)
                     </label>
-	        </div>
+	            </div>
                 <% end %>
-                <div>		
+                <div>
 		    <%= f.radio_button :master_file_access, "private", :checked=>record.master_file_access=="private" %>
 		    <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.private_master_file') %></label>
                 </div>
                 <div>
                     <%= f.radio_button :master_file_access, "public", :checked=>record.master_file_access=="public" %>
                     <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.accessible_master_file') %></label>
-                </div> 
-	    </div> 
-            
+                </div>
+	    </div>
+
 
 	    <div class="field">
                 <% if @object.collection? %>

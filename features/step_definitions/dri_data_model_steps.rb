@@ -4,7 +4,7 @@ end
 
 When /^we test the "(.*?)" Model$/ do |model_name|
   model = model_name.split(":").last.downcase
-  @test_model = FactoryGirl.build(model.to_sym)
+  @test_model = FactoryBot.build(model.to_sym)
   @test_model.should be_valid
 end
 
@@ -13,7 +13,7 @@ Then /^it should have attribute "(.*?)"$/ do |attribute_name|
 end
 
 Then /^it should validate presence of attribute "(.*?)"$/ do |attribute_name|
-  @test_model.should validate_presence_of(attribute_name)
+  expect(@test_model).to validate_presence_of(attribute_name)
 end
 
 When /^we test an empty "(.*?)" Model$/ do |model_name|
@@ -38,4 +38,11 @@ Given /^an object in collection "(.*?)" with metadata from file "(.*?)"$/ do |co
   obj.discover_groups_string = 'public'
   obj.master_file_access = 'private'
   obj.save
+end
+
+When /^the (object|collection) has a doi$/ do |type|
+  pid = type == "object" ? @pid : @collection_pid
+  obj = DRI::Batch.find(pid)
+  obj.doi = "10.5072/DRI-#{pid}"
+  obj.save 
 end

@@ -1,0 +1,23 @@
+<div class="modal fade" id="dri_advanced_search_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          &times;
+        </button>
+        <h4 class="modal-title">
+          <%= t('dri.views.objects.buttons.advanced_search') %>
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <%= form_tag main_app.search_catalog_path, class: 'advanced form-horizontal', method: :get do  %>
+          <%= render_hash_as_hidden_fields(controller.search_state_class.new(advanced_search_context, blacklight_config).params_for_search({})) %>
+          <%= render 'advanced/dri_search_fields' %>
+          <hr>
+          <%= render 'advanced/dri_submit_buttons' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

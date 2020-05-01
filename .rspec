@@ -1,3 +1,10 @@
 --color
 --format progress
 --profile 20
+
+# api specs are quite slow and are run by rake api:docs:generate anyway
+# so exclude them from regular spec call
+--exclude-pattern "spec/api/**"
+
+--require "support/shared_contexts.rb"
+

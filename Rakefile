@@ -37,38 +37,26 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.main = "README.rdoc"
   rdoc.rdoc_files.include('*.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
-  rdoc.rdoc_files.include('lib/*.rb')
   rdoc.rdoc_files.include('app/**/*.rb')
-  rdoc.rdoc_files.include('app/*.rb')
 end
 
 RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 
-Cucumber::Rake::Task.new(:first_try) do |t|
-  t.cucumber_opts = "--profile first_try"
-end
-
-Cucumber::Rake::Task.new(:second_try) do |t|
-  t.cucumber_opts = "--profile second_try"
-end
-
 desc "Run Continuous Integration"
 task :ci => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
-  
+
   with_solr_test_server do
     begin
-      Rake::Task['first_try'].invoke
+      Rake::Task['cucumber:first_try'].invoke
     rescue Exception => e
     end
 
-    Rake::Task['second_try'].invoke
+    Rake::Task['cucumber:second_try'].invoke
   end
-
-  Rake::Task["rdoc"].invoke
 end
 
 desc "Run Continuous Integration-spec"
@@ -76,20 +64,19 @@ task :ci_spec => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
 
-  with_test_server do 
+  with_test_server do
     Rake::Task['spec'].invoke
+    Rake::Task['api:docs:generate'].invoke
   end
-
-  Rake::Task["rdoc"].invoke
 end
 
 desc "Clean CI environment"
 task :ci_clean do
   rm_rf 'features/reports'
+  mkdir_p 'features/reports'
 end
 
 namespace :rvm do
-
   desc 'Trust rvmrc file'
   task :trust_rvmrc do
     system(". ~/.rvm/scripts/rvm && rvm rvmrc trust .rvmrc && rvm rvmrc load")
@@ -116,7 +103,28 @@ namespace :solr do
   end
 end
 
-task 'db:test:prepare' => 'dri:fixtures:generate'
-task 'cucumber' => 'dri:fixtures:generate'
-task 'rspec' => 'dri:fixtures:generate'
+desc 'similar to rswag:spec:swaggerize except it does not use --dry-run so output is included in swagger docs where applicable'
+namespace :api do
+  namespace :docs do
+    desc 'Generate Swagger JSON files from integration specs'
+    RSpec::Core::RakeTask.new('generate', :pattern) do |t|
+      if ARGV[1] and ARGV[1].start_with?('spec/api/')
+        puts '[WARNING] running a subset of the test suite will remove output for tests that do not run. Continue? y/n'
+        input = STDIN.gets.chomp
+        abort unless input.downcase == 'y'
+        t.pattern = ARGV[1]
+      else
+        t.pattern = 'spec/api/**/*_spec.rb'
+      end
 
+      t.rspec_opts = [
+        '--format progress',
+        '--format RspecJunitFormatter',
+        '--out spec/reports/api.xml',
+        '--format Rswag::Specs::SwaggerFormatter',
+        '--order defined',
+        '--exclude-pattern ""'
+      ]
+    end
+  end
+end

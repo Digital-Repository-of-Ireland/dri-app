@@ -14,7 +14,7 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
       filename = generic_file.path
 
       bucket_id = object.digital_object.nil? ? object.noid : generic_file.noid
-    
+
       ext = Rack::Mime::MIME_TYPES.invert[generic_file.mime_type]
       ext = ext[1..-1] if ext[0] == '.'
       ext = 'doc' if ext == 'dot'
@@ -23,7 +23,7 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
       out_file = File.open(filename, "rb")
 
       storage = StorageService.new
-      saved = storage.store_surrogate(bucket_id, out_file, surrogate_filename)
+      saved = storage.store_surrogate(bucket_id, out_file, surrogate_filename, MIME::Types.type_for(ext).first.to_s)
 
       raise "Unable to save text surrogate for #{generic_file_id}" unless saved
     end

@@ -1,10 +1,12 @@
+require 'aws-sdk-s3'
+
 module Storage
   class S3Interface
     def initialize(options = {})
       endpoint = Settings.S3.server
       credentials = Aws::Credentials.new(Settings.S3.access_key_id, Settings.S3.secret_access_key)
 
-      params = options.merge({ region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true })
+      params = options.merge({ region: 'us-east-1', endpoint: endpoint, credentials: credentials, ssl_verify_peer: false, force_path_style: true, signature_version: 's3' })
       @client = Aws::S3::Client.new(params)
     end
 
@@ -25,21 +27,19 @@ module Storage
       Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
       false
     end
-   
+
     # Delete bucket
     def delete_bucket(bucket_name)
       return false unless bucket_exists?(bucket_name)
 
-      begin
-        objects = list_files(bucket_name)
-        objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket_name), key: obj) }
-          
-        @client.delete_bucket(bucket: with_prefix(bucket_name))
-        true
-      rescue Exception => e
-        Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e}"
-        false
-      end
+      objects = list_files(bucket_name)
+      objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket_name), key: obj) }
+
+      @client.delete_bucket(bucket: with_prefix(bucket_name))
+      true
+    rescue Exception => e
+      Rails.logger.error "Could not delete Storage Bucket #{bucket_name}: #{e}"
+      false
     end
 
     def delete_surrogates(bucket, key)
@@ -59,39 +59,36 @@ module Storage
       bucket = object.respond_to?(:id) ? object.id : object
       generic_file_id = file.respond_to?(:id) ? file.id : file
 
-      surrogate_file_names = list_files(bucket)
+      surrogate_file_names = list_files(bucket, generic_file_id)
+      surrogates_hash = {}
 
-      @surrogates_hash = {}
-      
       surrogate_file_names.each do |filename|
         begin
-          if match = filename_match?(filename, generic_file_id)
-            url = create_url(bucket, filename, expire)
-            @surrogates_hash[match] = url
-          end
+          url = create_url(bucket, filename, expire)
+          surrogates_hash[key_from_filename(generic_file_id, filename)] = url
         rescue Exception => e
-          Rails.logger.debug "Problem getting url for file #{file} : #{e.to_s}"
+          Rails.logger.debug "Problem getting url for file #{generic_file_id} : #{e.to_s}"
         end
       end
-      
-      @surrogates_hash
+
+      surrogates_hash
     end
 
      # Get url for a specific surrogate
     def surrogate_exists?(bucket, key)
-      files = list_files(bucket)
-      surrogate = files.find { |e| /#{key}/ =~ e }
+      return nil unless bucket_exists?(bucket)
 
-      return nil unless surrogate.present?
-      
+      resource = Aws::S3::Resource.new(client: @client)
+      return nil unless resource.bucket(with_prefix(bucket)).objects(prefix: key).collect(&:key).present?
+
       true
     end
-    
+
     # Get information about surrogates for a generic_file
     def surrogate_info(bucket, key)
       surrogates_hash = {}
       begin
-        response = @client.list_objects(bucket: with_prefix(bucket))
+        response = @client.list_objects(bucket: with_prefix(bucket), prefix: key)
 
         if response.successful?
           response.contents.each do |fileobj|
@@ -111,20 +108,19 @@ module Storage
     def surrogate_url(bucket, key, expire=nil)
       expire = Settings.S3.expiry unless expire.present? && numeric?(expire)
 
-      files = list_files(bucket)
-      surrogate = files.find { |e| /#{key}/ =~ e }
+      surrogate = list_files(bucket, key)
 
       if surrogate.present?
         begin
-          url = create_url(bucket, surrogate, expire)
+          url = create_url(bucket, surrogate.first, expire)
         rescue Exception => e
-          Rails.logger.debug "Problem getting url for file #{surrogate}: #{e}"
+          Rails.logger.debug "Problem getting url for file #{surrogate.first}: #{e}"
         end
       end
- 
+
       url
     end
-    
+
     def file_url(bucket, key)
       create_url(bucket, key, nil, false)
     rescue Exception => e
@@ -132,24 +128,26 @@ module Storage
     end
 
     # Save Surrogate File
-    def store_surrogate(bucket, surrogate_file, surrogate_key)
+    def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype=nil)
       @client.put_object(
         bucket: with_prefix(bucket),
         body: File.open(Pathname.new(surrogate_file)),
-        key: surrogate_key)
+        key: surrogate_key,
+        content_type: mimetype)
 
       true
     rescue Exception  => e
       Rails.logger.error "Problem saving Surrogate file #{surrogate_key}: #{e}"
       false
     end
-        
+
     # Save arbitrary file
-    def store_file(bucket, file, file_key)
+    def store_file(bucket, file, file_key, mimetype=nil)
       @client.put_object(
         bucket: with_prefix(bucket),
         body: File.open(Pathname.new(file)),
-        key: file_key)
+        key: file_key,
+        content_type: mimetype)
       @client.put_object_acl(
         acl: "public-read",
         bucket: with_prefix(bucket),
@@ -165,8 +163,12 @@ module Storage
 
     def bucket_prefix
       Settings.S3.bucket_prefix ? "#{Settings.S3.bucket_prefix}.#{Rails.env}" : nil
-    end 
-        
+    end
+
+    def key_from_filename(generic_file_id, filename)
+      File.basename(filename, '.*').split("#{generic_file_id}_")[1]
+    end
+
     def expiration_timestamp(input)
       input = input.to_int if input.respond_to?(:to_int)
       case input
@@ -211,9 +213,9 @@ module Storage
     def create_url(bucket, object, expire=nil, authenticated=true)
       return signed_url(with_prefix(bucket), object, expiration_timestamp(expire)) if authenticated
 
-      s3 = Aws::S3::Resource.new(client: @client) 
-        
-      s3.bucket(with_prefix(bucket)).objects.each do |o|        
+      s3 = Aws::S3::Resource.new(client: @client)
+
+      s3.bucket(with_prefix(bucket)).objects.each do |o|
         return o.object.public_url if o.key.eql?(object)
       end
     end
@@ -222,11 +224,11 @@ module Storage
       can_string = "GET\n\n\n#{expire_date}\n/#{bucket}/#{path}"
 
       signature = URI.encode_www_form_component(Base64.encode64(hmac(Settings.S3.secret_access_key, can_string)).strip)
-   
+
       querystring = "AWSAccessKeyId=#{Settings.S3.access_key_id}&Expires=#{expire_date}&Signature=#{signature}"
-      
+
       endpoint = URI.parse(Settings.S3.server)
-      uri_class = endpoint.scheme.eql?("https") ? URI::HTTPS : URI::HTTP
+      uri_class = (endpoint.scheme == "https") ? URI::HTTPS : URI::HTTP
       uri_class.build(host: endpoint.host,
                       port: endpoint.port,
                       path: "/#{bucket}/#{path}",
@@ -240,6 +242,6 @@ module Storage
     # @return [String]
     def hmac(key, value, digest = 'sha1')
       OpenSSL::HMAC.digest(OpenSSL::Digest.new(digest), key, value)
-    end 
+    end
   end
 end

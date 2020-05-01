@@ -1,0 +1,57 @@
+@media print {
+
+  .dri_wrapper {
+    width: 100%;
+  }
+
+  .dri_main_footer {
+    width: 100%;
+  }
+
+  .dri_funder_institutes {
+    width: 100%;
+  }
+
+  .dri_object_second_block {
+    visibility: hidden;
+  }
+
+  #dri_main_nav_id {
+    display: none !important;
+  }
+
+  .dri_header_container {
+    display: none !important;
+  }
+
+  #dri_crumbtrail_nav_container_id {
+    padding-top: 135px;
+  }
+
+  .dri_main_footer_navigation_links {
+    visibility: hidden;
+  }
+
+
+  .carousel-caption {
+    display: none !important;
+  }
+
+  .carousel-caption {
+    display: none !important;
+  }
+
+  .carousel-control {
+    display: none !important;
+  }
+
+  .dri_ident_print {
+    display: block !important;
+    float: left;
+    width: 100%;
+  }
+
+  a[href]:after {
+    content: none !important;
+  }
+}

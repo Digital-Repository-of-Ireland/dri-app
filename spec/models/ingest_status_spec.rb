@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe IngestStatus do
 
@@ -39,7 +39,7 @@ describe IngestStatus do
     @ingest_status.completed?(job_status)
 
     expect(@ingest_status.status).to eq 'processing'
-  end 
+  end
 
   it 'should complete with error if characterize fails' do
     @ingest_status.asset_type = 'image'
@@ -64,6 +64,18 @@ describe IngestStatus do
     expect(@ingest_status.status).to eq 'success'
   end
 
+  it 'should be completed with success if earlier failures' do
+    @ingest_status.asset_type = 'image'
+    @ingest_status.job_status << JobStatus.create(job: 'characterize', status: 'failed')
+    @ingest_status.job_status << JobStatus.create(job: 'characterize', status: 'success')
+    @ingest_status.job_status << JobStatus.create(job: 'create_bucket', status: 'success')
+    job_status = JobStatus.create(job: 'thumbnail', status: 'success')
+    @ingest_status.job_status << job_status
+    @ingest_status.save
+
+    expect(@ingest_status.completed_status).to eq 'success'
+  end
+
   it 'should be completed with error if failures' do
     @ingest_status.asset_type = 'image'
     @ingest_status.job_status << JobStatus.create(job: 'characterize', status: 'success')
@@ -74,5 +86,17 @@ describe IngestStatus do
 
     @ingest_status.completed?(job_status)
     expect(@ingest_status.status).to eq 'error'
+  end
+
+  it 'should be completed with error if laterfailure' do
+    @ingest_status.asset_type = 'image'
+    @ingest_status.job_status << JobStatus.create(job: 'characterize', status: 'success')
+    @ingest_status.job_status << JobStatus.create(job: 'characterize', status: 'failed')
+    @ingest_status.job_status << JobStatus.create(job: 'create_bucket', status: 'success')
+    job_status = JobStatus.create(job: 'thumbnail', status: 'failed')
+    @ingest_status.job_status << job_status
+    @ingest_status.save
+
+    expect(@ingest_status.completed_status).to eq 'error'
   end
 end

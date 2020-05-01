@@ -48,11 +48,14 @@ class ObjectHistory
   end
 
   def audit_trail
-    versions = {}
+    versions = []
 
-    if has_versions?
-      audit_trail = object_versions
-      audit_trail.each { |version| versions[version.version_name] = version_info(version.version_id) }
+    committed_versions = VersionCommitter.where(obj_id: object.noid).order('created_at asc')
+    committed_versions.each do |version|
+      versions << { version_id: version.version_id,
+                    created: version.created_at,
+                    committer: version.committer_login
+                  }
     end
 
     versions
@@ -69,13 +72,41 @@ class ObjectHistory
     asset_info
   end
 
-  def version_info(version)
-    vc = VersionCommitter.where(version_id: version, obj_id: object.noid).take
-    { created: vc.created_at, committer: vc.committer_login }
+  def fixity
+    object.collection? ? fixity_check_collection : fixity_check_object
   end
 
-  def has_versions?
-    object_versions.count > 0
+  def fixity_check_collection
+    fixity_check = {}
+    fixity_check[:time] = Time.now.to_s
+    fixity_check[:verified] = 'unknown'
+    fixity_check[:result] = []
+
+    return fixity_check unless FixityCheck.exists?(collection_id: object.noid)
+
+    fixity_check[:time] = FixityCheck.where(collection_id: object.noid).latest.first.created_at
+    failures = FixityCheck.where(collection_id: object.noid).failed.to_a
+    if failures.any?
+      fixity_check[:verified] = 'failed'
+      fixity_check[:result].push(*failures.to_a.map(&:object_id))
+    else
+      fixity_check[:verified] = 'passed' if fixity_check[:verified] == 'unknown'
+    end
+
+    fixity_check
+  end
+
+  def fixity_check_object
+    fixity_check = {}
+
+    return fixity_check unless FixityCheck.exists?(object_id: object.noid)
+
+    check = FixityCheck.where(object_id: object.noid).last
+    fixity_check[:time] = check.created_at
+    fixity_check[:verified] = check.verified == true ? 'passed' : 'failed'
+    fixity_check[:result] = check.result
+
+    fixity_check
   end
 
   def object_versions
@@ -99,7 +130,7 @@ class ObjectHistory
 
   def surrogate_info(file_id)
     storage = StorageService.new
-    surrogates = storage.surrogate_info(@object.noid, file_id)
+    surrogates = storage.surrogate_info(object.noid, file_id)
 
     surrogates
   end

@@ -3,13 +3,13 @@
 
 <div style="width: 73%">
   <br />
-    <%= render :partial => 'by_letter' %>
+    <%= render partial: 'by_letter' %>
   <br />
-  
+
   <%= paginate @users, theme: 'blacklight' %>
   <%= form_tag(user_group.users_path, method: "get", id: "search-form") do %>
-    <%= text_field_tag :search, params[:search], :class => "dri_search_box" %>
-    <%= button_tag "Search", :class => 'dri_no_display' %>
+    <%= text_field_tag :search, params[:search], class: "dri_search_box" %>
+    <%= button_tag "Search", class: 'dri_no_display' %>
   <% end %>
   <br />
   <% for user in @users %>
@@ -22,7 +22,7 @@
       <div>
         <p> <%= user.email %></p>
         <% if user.is_admin? %>
-        <p style="color:green"><%= (t :'user_groups.views.shared.admin') %></p>
+          <p style="color:green"><%= (t :'user_groups.views.shared.admin') %></p>
         <% end %>
         <%= link_to (t :'user_groups.views.shared.delete'), user, method: :delete, confirm: (t :'user_groups.views.shared.confirm') %>
       </div>

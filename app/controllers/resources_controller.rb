@@ -10,8 +10,8 @@ class ResourcesController < ApplicationController
     @triples = provider.retrieve_data(["https://repository.dri.ie/resource/#{params[:object]}", nil, nil])
 
     respond_to do |format|
-      format.ttl { render text: ttl }
-      format.rdf { render text: rdf }
+      format.ttl { render plain: ttl }
+      format.rdf { render plain: rdf }
     end
 
   end

@@ -5,39 +5,37 @@ describe "validators" do
   describe "virus_scan" do
 
     before do
-      unless defined? ClamAV
-        class ClamAV
-          def self.instance
-            new
+      unless defined? Clamby
+        class Clamby
+          def self.safe?(file)
           end
 
-          def scanfile(file)
+	        def self.virus?(file)
           end
         end
-        @stubbed_clamav = true
+        @stubbed_clamby = true
       end
     end
 
     after do
-      Object.send(:remove_const, :ClamAV) if @stubbed_clamav
+      Object.send(:remove_const, :Clamby) if @stubbed_clamby
     end
 
     it "should return 0 for a clean file" do
-      if @stubbed_clamav
-        expect_any_instance_of(ClamAV).to receive(:scanfile).and_return(0)
+      if @stubbed_clamby
+        expect(Clamby).to receive(:safe?).and_return(true)
       end
       input_file = File.join(fixture_path, "SAMPLEA.mp3")
-      expect { Validators.virus_scan(input_file) }.to_not raise_error()      
+      expect { Validators.virus_scan(input_file) }.to_not raise_error()
     end
 
     it "should raise an exception if a virus is found" do
-      if @stubbed_clamav
-        expect_any_instance_of(ClamAV).to receive(:scanfile).and_return(1)
+      if @stubbed_clamby
+        expect(Clamby).to receive(:safe?).and_return(false)
       end
       input_file = File.join(fixture_path, "sample_virus.mp3")
       expect { Validators.virus_scan(input_file) }.to raise_error(DRI::Exceptions::VirusDetected)
     end
 
   end
-  
-end  
+end

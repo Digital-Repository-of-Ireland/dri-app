@@ -88,6 +88,7 @@
      <lst name="defaults">
        <str name="echoParams">explicit</str>
        <str name="q.alt">*:*</str>
+       <str name="q.op">AND</str>
        <!-- <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str> -->
        <int name="qs">1</int>
        <int name="ps">2</int>
@@ -133,6 +134,54 @@
        <str name="subject_pf">
          subject_unstem_search^1250
          subject_tesim^1000
+       </str>
+       <str name="person_qf">
+         person_unstem_search^125
+         person_tesim^50
+       </str>
+       <str name="person_pf">
+         person_unstem_search^1250
+         person_tesim^1000
+       </str>
+       <str name="place_qf">
+         place_unstem_search^125
+         placename_field_tesim^50
+       </str>
+       <str name="place_pf">
+         place_unstem_search^1250
+         placename_field_tesim^1000
+       </str>
+       <str name="creator_qf">
+         creator_unstem_search^125
+         creator_tesim^50
+       </str>
+       <str name="creator_pf">
+         creator_unstem_search^1250
+         creator_tesim^1000
+       </str>
+       <str name="contributor_qf">
+         contributor_unstem_search^125
+         contributor_tesim^50
+       </str>
+       <str name="contributor_pf">
+         contributor_unstem_search^1250
+         contributor_tesim^1000
+       </str>
+       <str name="description_qf">
+         description_unstem_search^125
+         description_tesim^50
+       </str>
+       <str name="description_pf">
+         description_unstem_search^1250
+         description_tesim^1000
+       </str>
+       <str name="publisher_qf">
+         publisher_unstem_search^125
+         publisher_tesim^50
+       </str>
+       <str name="publisher_pf">
+         publisher_unstem_search^1250
+         publisher_tesim^1000
        </str>
        <str name="fl">
          *,

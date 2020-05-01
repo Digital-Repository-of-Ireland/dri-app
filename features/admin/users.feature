@@ -73,6 +73,7 @@ Scenario: Logging out
 
 Scenario: A user should be able to edit their details
   Given I am logged in as "user1" with password "password1"
+  And I am on the home page
   Then I should see a link to view my account
   And I follow the link to view my account
   Then I should see a link to edit my account
@@ -101,7 +102,7 @@ Scenario: A user should be able to recover their password
 
 @javascript 
 Scenario: an admin user creates a new user account
-  Given I am logged in as "adminuser" in the group "admin" and accept cookies
+  Given I am logged in as "adminuser" in the group "admin"
   And I am on the User Sign up page
   When I submit a valid email, password and password confirmation
   Then I should be logged in as "adminuser"

@@ -1,4 +1,5 @@
 class SessionController < ApplicationController
+
   def create
     cookies.delete :lang unless cookies[:lang].nil?
 
@@ -11,6 +12,6 @@ class SessionController < ApplicationController
     end
     params.delete(:id)
     params.delete(:metadata_language)
-    redirect_to params[:path]
+    redirect_back(fallback_location: root_path)
   end
 end

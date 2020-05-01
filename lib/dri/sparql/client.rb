@@ -7,15 +7,11 @@ module DRI
       end
 
       def query(select)
-        results = nil
-        begin
-          results = @sparql.query(select)
-        rescue Exception => e
-          Rails.logger.error "Unable to query sparql endpoint: #{e.message}"
-        end
-        results
+        @sparql.query(select)
+      rescue Exception => e
+        Rails.logger.error "Unable to query sparql endpoint: #{e.message}"
+        nil #rails logger call returns True
       end
-
     end
   end
 end

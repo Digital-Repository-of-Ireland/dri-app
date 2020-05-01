@@ -6,6 +6,7 @@ en:
         cancel: Cancel
         change_password: Change Password
         confirm_new_password: Confirm New Password
+        confirm_user: Confirm User
         current_password: Current Password
         edit_account: Edit Account
         first_name: First Name
@@ -17,17 +18,7 @@ en:
         request_to_leave: Request To Leave
         requested_to_leave: You have requested to leave this group
         settings: Settings
-      home:
-        featured: Featured
-        featured_collections: Featured Collections (Decade of Centenaries)
-        featured_objects: Featured Objects
-        introtext: "The Digital Repository of Ireland is a national digital repository for Ireland’s humanities, social sciences, and cultural heritage data. You can browse and search across multiple collections from some of the finest Irish institutions. These collections are safely preserved in the DRI. Please explore and enjoy."
-        links:
-          visit_dri: Visit the DRI Project Website
-        rss_feed:
-          read_more: Read More
-          title: News
-        welcome_to_dri: Welcome to the DRI
+        delete_help: Note that you cannot delete your account if you currently have read, edit or manager permissions on any collection. Please modify your permissions first.
       lang:
         en: English
         ga: Irish
@@ -36,7 +27,7 @@ en:
         deposit_agreement: I agree to the terms of Deposit Agreement
         deposit_header: The Digital Repository of Ireland Terms and Conditions of Deposit.
         header: The Digital Repository of Ireland End User Agreement.
-        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
+        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='https://dri.ie/dri-privacy-statement'>Privacy Policy</a>."
         reject: I disagree
       timeline:
         description:
@@ -50,9 +41,12 @@ en:
         collection_title: Collection Title
         edit: Edit
         email: Email
+        for_example: For example
         my_account: My Account
         name: Name
         organisational_manager: Organisational Manager
+        permissions: Permissions
+        token_params: Add the following parameters to authenticate a request
         user_type: User Type
         your_collection_details: Your Collection Details
     data:
@@ -73,6 +67,13 @@ en:
         status: Status
         type: Type
         updated_at: Updated At
+      assets:
+        preview: Preview
+        filename: Filename
+        status: Status
+        details: Details
+        download: Download
+        delete: Delete
       user_activity:
         event: Event
         item: Item
@@ -88,37 +89,74 @@ en:
         objects: "Objects in this Collection"
         columns:
           collection_title: "Collection"
-          visits: "Unique Visits"
+          visits: "Users"
           downloads: "Downloads"
           object_title: "Object Title"
           hits: "Total Hits"
+        help:
+          visits: "Unique Users"
+          visits_desc: "Users indicates the number of unique visitors. This figure is taken directly from Google Analytics GA:Users metric and may be calculated differently to how Hits and Downloads are counted."
+          hits: "Total Hits"
+          hits_desc: "The total number of times the page for this object has been loaded."
+          downloads: "Asset Downloads"
+          downloads_desc: "The total number of times the asset associated with this object (or objects within this collection) has been downloaded to the user's computer for offline viewing."
+      fixity:
+        collection_id: "Collection"
+        timestamp: "Timestamp"
+        verified: "Verified"
+        submit: "Submit New"
+      stats:
+        collection_id: "Collection"
+        total_objects: "Total Objects"
+        size: "Size"
+        files:
+          file_type: Type
+          mime_type: Mime Type
+          count: Count
+        summary:
+          total_objects: Total Objects
+          total_assets: Total Assets
+          total_size: Total Asset Size
+      users:
+        collection_managers: "Collection Managers"
+        surname: "Surname"
+        first_name: "First Name"
+        email: "Email"
+        created_at: "Created At"
+        last_signed_in: "Last Signed In"
+        last_ip: "Last IP"
+        confirmed: "Confirmed"
+        edit: "Edit" 
     flash:
       alert:
         create_permission: You do not have permission to create this document.
         delete_permission: You do not have permission to delete this document.
+        delete_error: A problem retrieving this object has prevented deletion.
         doi_not_configured: DOI configuration settings not found.
+        doi_published_warning: "Please note that you are editing a published object. Changes that you make will be visible immediately after being saved. Changes to certain fields may result in the creation of a new version of the DOI name associated with this object. Refer to the <a href='https://guides.dri.ie/depositor-guide/04-review-and-publish.html#digital-object-identifier' target='_blank'>depositor guide</a> for more information."
         edit_permission: You do not have permission to edit this document.
-        error_deleting_collection: 'Unable to submit delete collection background task: %{error}'
+        error_deleting_collection: "Unable to submit 'delete collection' background task: %{error}"
         error_generating_surrogates: 'Error generating surrogates: %{error}'
         error_publishing_collection: 'Error publishing collection: %{error}'
         error_review_job: 'Unable to submit background task, all objects will not be updated: %{error}'
         error_saving_file: 'Error saving file: %{error}'
+        error_fixity_collection: 'Unable to start fixity check: %{error}'
         invalid_file_type: 'Warning: The file does not appear to be a valid type'
         invalid_object: 'Invalid Object: %{error}.'
         invalid_xml: 'Invalid XML: %{error}'
         read_permission: You do not have permission to read this document.
         unknown_permission: 'Unsupported Permission Level: %{action}'
-        virus_detected: 'Virus detected in uploaded file: %{virus}'
+        virus_detected: 'Virus detected in uploaded file'
       error:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.
-        exporting: Error submitting export background job.
+        exporting: "Error submitting 'export' background job."
         locked: This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information.
         manager_user_invalid: 'User %{email} does not exist, please have the user create an account first.'
-        manager_user_permission: You do not have permission to create a manager user
+        manager_user_permission: You do not have permission to create a Collection Manager
         no_read_group: No read group has been set for the collection
-        not_created: Unable to create. Check set permissions. You must have at least one manager or edit user.
-        not_updated: "%{item} was not updated. Check set permissions. You must have at least one manager or edit user."
+        not_created: Unable to create. Check set permissions. You must have at least one collection manager or edit user.
+        not_updated: "%{item} was not updated. Check set permissions. You must have at least one collection manager or edit user."
         organisation_cannot_be_deleted: The organisation cannot be deleted as it is still associated with collections
         read_access: Unable to grant read access
         read_only: Repository is currently undergoing maintenance. Updates are temporarily disabled.
@@ -140,10 +178,12 @@ en:
         duplicate_object_ingested: 'Possible duplicate objects found: %{duplicates}'
         exporting: An export of this collection is being created. You will receive an email when it is available.
         file_uploaded: Asset has been successfully uploaded.
+        fixity_check_running: Fixity check is running.
+        fixity_check_completed: Fixity check completed.
         generating_surrogates: Surrogates are being generated.
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
-        manager_user_created: 'User %{email} successfully granted manager permissions.'
+        manager_user_created: 'User %{email} successfully granted collection manager permissions.'
         metadata_updated: Metadata has been successfully updated.
         object_deleted: Object has been deleted.
         organisation_added: Organisation successfully added to collection.
@@ -171,8 +211,11 @@ en:
         zip: Dublin 2
     headerlinks:
       about: About
+      about_dri: About DRI
+      about_api: About the API
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
+      batch_ingest: Batch Ingest
       blog: Blog
       browse: Discover
       collection: Collection
@@ -182,16 +225,24 @@ en:
       events: Events
       help: FAQ
       home: Home
+      ingest: Ingest
       institutions: Organisations
       language: Language
+      licensing_statement: Licensing Statement
       manage: Manage
-      manage_users: Add Manager User
+      manage_users: Assign Collection Manager
+      manage_om_users: Assign Manager
+      membership: Membership
+      member_benefits: Member Benefits
+      membership_fees: Membership Fees
       my_collections: My Collections
+      search_my_collections: Search My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
       new_organisation: New Organisation
       object: Object
       objects: Objects
+      our_members: Our Members
       people: People
       privacy: 'Privacy & Cookies policy'
       privacy_statement: Privacy Statement
@@ -204,10 +255,22 @@ en:
       team: Team
       usergroups: 'Users & Groups'
       vacancies: Vacancies
+      why_join_dri: 'Why Join DRI?'
       workspace: Workspace
+      find_us: 'Find Us'
+      research_data: Research Data and DRI
     help:
-      add_documentation_help_text: These objects appear in the Related Materials section of the Collection show page.
+      add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
+      advanced_search:
+        start_over: Clear the current search settings
+        start_over_title: Start Over
+        search: Start a search with the current settings
+        search_title: Search
+      autocomplete:
+        title: Autocompelete source
+        content: This dropdown sets the autocomplete source for the inputs below. Start typing in an input to get suggestions, or select disable to turn this feature off.
+      dri_browse_collection_restricted: This collection may contain some objects with restricted assets
       dri_browse_sort_tabs_collections: Use this tab to search for Collections
       dri_browse_sort_tabs_collections_title: Collections Search
       dri_browse_sort_tabs_objects: Use this tab to search for Objects
@@ -216,15 +279,18 @@ en:
       dri_browse_sort_tabs_sub_collection_title: Sub-Collections Search
       dri_change_sort_view: 'Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result'
       dri_change_sort_view_title: Search Result Layout
-      dri_facet_restrictions_links: These are the Facets which are narrowing your search. You can disable them individually or Clear All
+      dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or 'Clear All'"
       dri_facet_restrictions_links_title: Selected Facets
       dri_page_options: Select from this list to choose the number of items shown on each page
       dri_page_options_title: Items per Page
       dri_pagination_nav_links: Use these links to move through your search results. You can change the number of pages selecting more or fewer items per page
       dri_pagination_nav_links_title: Result Pagination
-      dri_publish_unavailable: "You need to set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
+      dri_publish_no_org: "You must set this Collection's Depositing Organisation before publishing. Use the \"Manage Organisations\" link"
+      dri_publish_no_reviewed: "You must add and review at least one object or subcollection before publishing"
       dri_publish_unavailable_title: Publish not available
-      dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
+      dri_review_unavailable: There are no objects to review. You must add a new object first.
+      dri_review_unavailable_title: Review not available
+      dri_sort_options: "Select from this list to sort your results by date, title, relevance or sequence. Relevance is the system's best guess as to which collections or objects are most relevant to your search"
       dri_sort_options_title: Search Sort Options
       dri_tlfield_options: Select the date field to display on the timeline
       dri_tlfield_options_title: Display Date Options
@@ -235,44 +301,46 @@ en:
       fields:
         collection_title: Collection Title
         collection_title_text: A name given to the collection.
-        coverages: Coverage
+        coverages: Coverages
         coverages_text: The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.
         creation_date: Creation Date
         creation_date_text: 'Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date'
-        creator: Creator
+        creator: Creators
         creator_text: An entity primarily responsible for making the content of the resource.
         date: Date
         date_text: A point or period of time associated with an event in the lifecycle of the resource.
         description: Description
         description_text: An account of the resource.
-        formats: Format
-        formats_text: The Format of the resource
-        geographical_coverages: Subject (Place)
+        formats: Formats
+        formats_text: The format of the resource
+        geographical_coverages: Subjects (Places)
         geographical_coverages_text: Spatial characteristics of the resource.
-        identifiers: Identifier
+        identifiers: Identifiers
         identifiers_text: Identifier for the resource.
-        languages: Language
+        languages: Languages
         licence: Licence
         licence_text: The reuse licence for this resource.
-        published_date: Published Date / Issued
+        published_date: Published Date
         published_date_text: Date of formal issuance (e.g., publication) of the resource.
-        relations: Relation
+        relations: Relations
         relations_text: A related resource.
-        rights: Rights statement
+        related: Related Materials
+        rights: Rights
         rights_text: Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works Database, and the associated file number must be included here.
-        roles: Contributor
+        roles: Contributors
         roles_text: An entity responsible for making contributions to the resource.
-        sources: Source
+        sources: Sources
         sources_text: A related resource from which the described resource is derived.
         subjects: Subjects
         subjects_text: The topic of the resource.
-        temporal_coverage: Subject (Temporal)
+        temporal_coverage: Subjects (Temporal)
         temporal_coverage_text: Temporal characteristics of the resource.
         title: Title
         title_text: A name given to the resource.
         types: Types
         types_text: The nature or genre of the resource.
       no_results_found: No search results found
+      no_results_message: or refine your search terms. e.g. try removing a search term or using OR to broaden your search
       q: Type a search term and press Enter. Use AND and OR to narrow or broaden your search
       q_title: Search the repository
       q_ws_title: Search your collections
@@ -324,6 +392,7 @@ en:
             one: Download entire object including the asset
             other: 'Download entire object including all %{count} assets'
           download_archive_explanation: "This may take some time. You will receive an email when your download is ready."
+          download_tsandcs_msg: "Downloaded assets must be used in accordance with the <a href='%{url}'>DRI End User Terms and Conditions</a>"
           download_originals: Download the original uploaded version of this individual asset
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
@@ -334,6 +403,9 @@ en:
           objects_in_collection: Objects
           restricted_asset: Restricted Asset
           restricted_data_request: Restricted data access request form
+          copy_to_clipboard: Copy to Clipboard 
+          copy_success: Copied to Clipboard
+          copy_failure: Not copied
         headers:
           files: Asset Tools
           related_materials: Related Materials
@@ -364,6 +436,8 @@ en:
           add_object: Add an Object
           add_object_xml: Upload Object XML
           add_sub_collection: Add Sub-Collection
+          advanced_options: More options
+          advanced_search: Advanced Search
           characterization: Characterization
           details: Asset Details
           download: Download asset
@@ -372,6 +446,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
+          fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
           history: History
           iiif_viewer: Viewer
@@ -389,6 +464,7 @@ en:
           reviewed: Reviewed
           upload_file: Upload Asset
           upload_preservation_file: Upload Preservation-only Asset
+          view_assets: View Assets
         titles:
           editor_tools: Editor Tools
           object_tools: Object Tools
@@ -398,8 +474,11 @@ en:
           create_collection: Create Collection
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
+        access_controls_review: Review Access Controls
+        access_controls_csv: as csv
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
-        confirm_delete: This will delete the collection and all objects within the collection. Continue?
+        confirm_delete: This will delete the collection and all objects within the collection/sub-collection. Continue?
+        confirm_fixity: 'Perform fixity check on all objects in this collection?'
         confirm_publish: This will make all reviewed objects accessible. This can not be undone! Continue?
         confirm_review_collection: This collection record will be marked as reviewed.
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
@@ -411,7 +490,6 @@ en:
         institute:
           add: Add Additional Organisations
           are_you_sure: Are you sure you need a new Organisation?
-          associate: Add Organisation
           associate_depositing: Select Depositing Organisation
           associating_text: "Once an organisation has been added, it can be associated with collections using the 'Manage Organisations' button on individual collections' pages."
           available: Available
@@ -485,16 +563,16 @@ en:
         description: Description
         description_eng: Description (English)
         description_gle: Description (Irish)
-        format: Format
+        format: Formats
         formats: Formats
-        geographical_coverage: Subject (Place)
-        geographical_coverage_eng: Subject (Place) in English
-        geographical_coverage_gle: Subject (Place) in Irish
+        geographical_coverage: Subjects (Places)
+        geographical_coverage_eng: Subjects (Places) in English
+        geographical_coverage_gle: Subjects (Places) in Irish
         geographical_coverages: Subjects (Places)
         governing_collection: Governing Collection
         hide_description_eng: Hide English
         hide_description_gle: Hide Irish
-        identifier: Identifier
+        identifier: Identifiers
         identifiers: Identifiers
         language: Language
         languages: Languages
@@ -507,25 +585,26 @@ en:
         publishers: Publishers
         relation: Relation
         relations: Relations
+        related: Related Materials
         rights: Rights
-        roles: Contributor
+        roles: Contributors
         show_description_eng: Show English
         show_description_gle: Show Irish
-        source: Source
+        source: Sources
         sources: Sources
         status: Status
         subject: Subject
         subjects: Subjects
         subjects_eng: Subjects in English
         subjects_gle: Subjects in Irish
-        temporal_coverage: Subject (Temporal)
-        temporal_coverage_eng: Subject (Temporal) in English
-        temporal_coverage_gle: Subject (Temporal) in Irish
+        temporal_coverage: Subjects (Temporal)
+        temporal_coverage_eng: Subjects (Temporal) in English
+        temporal_coverage_gle: Subjects (Temporal) in Irish
         temporal_coverages: Subjects (Temporal)
         title: Title
         toggle: Toggle All
         total_assets: Total number of assets
-        type: Type
+        type: Types
         types: Types
       ingest:
         buttons:
@@ -534,6 +613,8 @@ en:
           title: Add a new digital object
         steps:
           upload: Upload Metadata file
+      institutes:
+        orgs_legend: "Organisations listed on this page are associated in various ways with deposited collections. They include depositing organisations, contributing partners, collaborating institutions, and funding agencies. For a list of DRI Members, see the <a href='%{url}'>Membership page</a>."
       licences:
         all_rights_reserved: Please see rights statement
         buttons:
@@ -559,12 +640,18 @@ en:
           edit_desc: Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts.
           edit_object: Who can edit this object
           inherit: Inherit this setting from the parent collection
+          inherit_objects:
+            one: 1 object inherits these access controls
+            other: '%{count} objects inherit these access controls'
+          custom_objects:
+            one: 1 object has custom access controls
+            other: '%{count} objects have custom access controls'
           inherit_strings:
             private: "surrogates only"
             public: "surrogates and uploaded originals"
           inherited_setting: 'Currently set to %{inherited_setting}'
           manage: Who can manage this collection?
-          manager_desc: Enter the email addresses of Manager Users below. A Manager User is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts.
+          manager_desc: Enter the email addresses of Collection Managers below. A Collection Manager is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts.
           master_file: Which asset files can they access?
           metadata: 'Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. '
           private: Private
@@ -572,25 +659,47 @@ en:
           public: Allow public access (anyone on the web can access)
           read: Who can access your assets?
           registered: Limit access to logged-in users
+          report:
+            public: Public access to
+            restricted: Approved users have access to
+            logged-in: Logged-in users have access to
           restricted: Restrict access to users who I approve
         buttons:
           cancel: Cancel
           delete_object: Delete Object
           replace_master: Replace Master Asset
           replace_metadata: Upload Metadata
+          reset_search: Reset Search
           save: Save Changes
           save_current_search: Save Current Search
+          upload: Upload
           upload_master: Upload Master Asset
         confirm:
           delete: This will delete the object and all assets attached to it. Continue?
           surrogates: This will (re)generate surrogates for all assets. Continue?
+          doi_published: "Please note that you are editing a published object. Changes that you make will be visible immediately after being saved. Changes to certain fields may result in the creation of a new version of the DOI name associated with this object. Refer to the depositor guide for more information."
         edit:
           title: Edit Object
           title_collection: Edit Collection
         forms:
+          add_coverage: Add Coverage
+          add_creation_date: Add Creation Date
+          add_creator: Add Creator
+          add_date: Add Date
+          add_description: Add Description
+          add_format: Add Format
+          add_identifier: Add Identifier
+          add_language: Add Language
           add_place: Add Place
+          add_published_date: Add Published Date
+          add_relation: Add Relation
+          add_rights: Add Rights
+          add_role: Add Role
           add_source: Add Source
           add_subject: Add Subject
+          add_temporal_coverage: Add Temporal Coverage
+          add_title: Add Title
+          add_type: Add Type
           delete: Remove
         legends:
           access_control: Access Controls
@@ -598,10 +707,12 @@ en:
           replace_caption: Replace metadata using XML file.
           replace_metadata: Replace Metadata
           upload_file: Upload Asset
-          upload_file_caption: No files have been uploaded. Please upload a master asset.
+          upload_file_caption: No asset files have been uploaded. Please upload a master asset.
           view_collection: View Collection
         links:
           cancel: Cancel
+      pagination:
+          label: Browse
       readers:
         headers:
           pending: Pending Request
@@ -620,7 +731,22 @@ en:
         links:
           delete_all_tasks: Clear all completed tasks
     window:
-      alert:
-        coming_soon: Coming Soon
       modal:
         close: Close
+        cancel: Cancel
+    reports:
+      headings:
+        access_controls: Access Controls Report
+        fixity: Fixity Check
+        fixity_status: Result
+        fixity_failures: Failures
+        fixity_result: Output
+        stats_collection_sizes: Collection Sizes
+        stats_collection_total: Total
+        stats_file_types: Asset Types
+        stats_summary: Summary
+      links:
+         activity_report: Repository Activity
+         fixity_report: Collection Fixity
+         stats: Repository Usage
+         user_activity_report: User Activity

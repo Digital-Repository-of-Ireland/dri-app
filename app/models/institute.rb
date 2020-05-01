@@ -23,10 +23,14 @@ class Institute < ActiveRecord::Base
     save
   end
 
-  def self.find_collection_institutes(institute_list)
-    return nil if institute_list.blank?
-    institutes = where(name: institute_list.to_a)
-    institutes.blank? ? nil : institutes
+  # Return all collections for this institute
+  def collections
+    query = Solr::Query.new(
+      collections_query,
+      100,
+      fq: "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+    )
+    query.to_a
   end
 
   def local_storage_dir
@@ -57,4 +61,11 @@ class Institute < ActiveRecord::Base
 
     self.brand = b
   end
+
+  private
+
+    def collections_query
+      "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + name.mb_chars.downcase +
+      "\" AND " + "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
+    end
 end

@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,45 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914181732) do
+ActiveRecord::Schema.define(version: 2019_07_22_154607) do
 
   create_table "bookmarks", force: :cascade do |t|
-    t.integer  "user_id",       null: false
-    t.string   "document_id"
-    t.string   "title"
+    t.integer "user_id", null: false
+    t.string "document_id"
+    t.string "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_type"
-    t.string   "document_type"
+    t.string "user_type"
+    t.string "document_type"
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
-
-  add_index "bookmarks", ["user_id"], name: "index_bookmarks_on_user_id"
 
   create_table "brands", force: :cascade do |t|
-    t.string   "filename"
-    t.string   "content_type"
-    t.binary   "file_contents"
-    t.integer  "institute_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string "filename"
+    t.string "content_type"
+    t.binary "file_contents", limit: 1048576
+    t.integer "institute_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["institute_id"], name: "index_brands_on_institute_id"
   end
 
-  add_index "brands", ["institute_id"], name: "index_brands_on_institute_id"
-
   create_table "collection_locks", force: :cascade do |t|
-    t.string   "collection_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.string "collection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "datacite_dois", force: :cascade do |t|
-    t.string   "object_id"
-    t.string   "modified"
-    t.string   "mod_version"
+    t.string "object_id"
+    t.string "modified"
+    t.string "mod_version"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "update_type"
-    t.integer  "version"
+    t.string "update_type"
+    t.integer "version"
   end
 
   create_table "digital_objects", force: :cascade do |t|
@@ -80,19 +77,29 @@ ActiveRecord::Schema.define(version: 20170914181732) do
   add_index "digital_objects", ["previous_sibling_type", "previous_sibling_id"], name: "sibling_index"
 
   create_table "doi_metadata", force: :cascade do |t|
-    t.integer  "datacite_doi_id"
-    t.text     "title"
-    t.text     "creator"
-    t.text     "subject"
-    t.text     "description"
-    t.text     "rights"
-    t.text     "creation_date"
-    t.text     "published_date"
+    t.integer "datacite_doi_id"
+    t.text "title"
+    t.text "creator"
+    t.text "subject"
+    t.text "description"
+    t.text "rights"
+    t.text "creation_date"
+    t.text "published_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
+  end
+
+  create_table "dri_batch_ingest_ingest_batches", force: :cascade do |t|
+    t.string "email"
+    t.string "collection_id"
+    t.integer "user_ingest_id"
+    t.text "media_object_ids"
+    t.boolean "finished", default: false
+    t.boolean "email_sent", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "doi_metadata", ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
 
   create_table "generic_files", force: :cascade do |t|
     t.text     "title"
@@ -132,28 +139,72 @@ ActiveRecord::Schema.define(version: 20170914181732) do
   add_index "identifiers", ["alternate_id"], name: "index_identifiers_on_alternate_id", unique: true
   add_index "identifiers", ["identifiable_type", "identifiable_id"], name: "index_identifiers_on_identifiable_type_and_identifiable_id"
 
-  create_table "ingest_statuses", force: :cascade do |t|
-    t.string   "batch_id"
-    t.string   "asset_id"
-    t.string   "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "asset_type"
+  create_table "dri_batch_ingest_master_files", force: :cascade do |t|
+    t.integer "media_object_id"
+    t.string "status_code"
+    t.string "file_size"
+    t.string "file_location"
+    t.boolean "preservation"
+    t.text "download_spec"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "metadata"
+    t.index ["media_object_id"], name: "index_dri_batch_ingest_master_files_on_media_object_id"
   end
 
-  add_index "ingest_statuses", ["asset_id"], name: "index_ingest_statuses_on_asset_id"
-  add_index "ingest_statuses", ["batch_id"], name: "index_ingest_statuses_on_batch_id"
+  create_table "dri_batch_ingest_media_objects", force: :cascade do |t|
+    t.integer "ingest_batch_id"
+    t.string "collection"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ingest_batch_id"], name: "ingest_batch_idx"
+  end
+
+  create_table "dri_batch_ingest_user_ingests", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
+  end
+
+  create_table "dri_reconciliation_results", force: :cascade do |t|
+    t.string "object_id"
+    t.string "uri"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fixity_checks", force: :cascade do |t|
+    t.string "collection_id"
+    t.string "object_id"
+    t.boolean "verified"
+    t.text "result"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["collection_id"], name: "index_fixity_checks_on_collection_id"
+    t.index ["object_id"], name: "index_fixity_checks_on_object_id"
+  end
+
+  create_table "ingest_statuses", force: :cascade do |t|
+    t.string "batch_id"
+    t.string "asset_id"
+    t.string "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "asset_type"
+    t.index ["asset_id"], name: "index_ingest_statuses_on_asset_id"
+    t.index ["batch_id"], name: "index_ingest_statuses_on_batch_id"
+  end
 
   create_table "institutes", force: :cascade do |t|
-    t.string   "name"
-    t.string   "url"
+    t.string "name"
+    t.string "url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "logo"
-    t.boolean  "depositing"
+    t.string "logo"
+    t.boolean "depositing"
+    t.index ["name"], name: "index_institutes_on_name"
   end
-
-  add_index "institutes", ["name"], name: "index_institutes_on_name"
 
   create_table "job_statuses", force: :cascade do |t|
     t.integer  "ingest_status_id"
@@ -162,15 +213,14 @@ ActiveRecord::Schema.define(version: 20170914181732) do
     t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["ingest_status_id"], name: "index_job_statuses_on_ingest_status_id"
   end
 
-  add_index "job_statuses", ["ingest_status_id"], name: "index_job_statuses_on_ingest_status_id"
-
   create_table "licences", force: :cascade do |t|
-    t.string   "name"
-    t.string   "url"
-    t.string   "logo"
-    t.string   "description"
+    t.string "name"
+    t.string "url"
+    t.string "logo"
+    t.string "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -184,104 +234,116 @@ ActiveRecord::Schema.define(version: 20170914181732) do
     t.datetime "updated_at"
   end
 
+  create_table "qa_local_authorities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_qa_local_authorities_on_name", unique: true
+  end
+
+  create_table "qa_local_authority_entries", force: :cascade do |t|
+    t.integer "local_authority_id"
+    t.string "label"
+    t.string "uri"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["local_authority_id"], name: "index_qa_local_authority_entries_on_local_authority_id"
+    t.index ["uri"], name: "index_qa_local_authority_entries_on_uri", unique: true
+  end
+
   add_index "om_datastreams", ["describable_type", "describable_id"], name: "om_index"
 
   create_table "searches", force: :cascade do |t|
-    t.text     "query_params"
-    t.integer  "user_id"
+    t.text "query_params"
+    t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "user_type"
+    t.string "user_type"
+    t.index ["user_id"], name: "index_searches_on_user_id"
   end
-
-  add_index "searches", ["user_id"], name: "index_searches_on_user_id"
 
   create_table "user_background_tasks", force: :cascade do |t|
     t.integer "user_id"
-    t.string  "job"
-    t.string  "name"
-    t.string  "message"
-    t.string  "status"
+    t.string "job"
+    t.string "name"
+    t.string "message"
+    t.string "status"
   end
 
   create_table "user_group_authentications", force: :cascade do |t|
     t.integer "user_id"
-    t.string  "provider"
-    t.string  "uid"
+    t.string "provider"
+    t.string "uid"
   end
 
   create_table "user_group_groups", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
+    t.string "name"
+    t.string "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_locked",    default: false
-    t.boolean  "reader_group", default: false
+    t.boolean "is_locked", default: false
+    t.boolean "reader_group", default: false
+    t.index ["name"], name: "index_user_group_groups_on_name", unique: true
   end
-
-  add_index "user_group_groups", ["name"], name: "index_user_group_groups_on_name", unique: true
 
   create_table "user_group_memberships", force: :cascade do |t|
-    t.integer  "group_id"
-    t.integer  "user_id"
+    t.integer "group_id"
+    t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "approved_by"
-    t.text     "request_form"
+    t.integer "approved_by"
+    t.text "request_form"
+    t.index ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true
   end
-
-  add_index "user_group_memberships", ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true
 
   create_table "user_group_users", force: :cascade do |t|
-    t.string   "email",                  default: "",    null: false
-    t.string   "encrypted_password",     default: "",    null: false
-    t.string   "reset_password_token"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0
+    t.integer "sign_in_count", default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.string   "authentication_token"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "authentication_token"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "first_name"
-    t.string   "second_name"
-    t.string   "locale"
-    t.boolean  "guest",                  default: false
-    t.integer  "view_level",             default: 0
-    t.string   "about_me",               default: ""
+    t.string "first_name"
+    t.string "second_name"
+    t.string "locale"
+    t.boolean "guest", default: false
+    t.integer "view_level", default: 0
+    t.string "about_me", default: ""
     t.datetime "token_creation_date"
-    t.string   "image_link"
-    t.string   "confirmation_token"
+    t.string "image_link"
+    t.string "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
+    t.index ["authentication_token"], name: "index_user_group_users_on_authentication_token", unique: true
+    t.index ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_user_group_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
   end
 
-  add_index "user_group_users", ["authentication_token"], name: "index_user_group_users_on_authentication_token", unique: true
-  add_index "user_group_users", ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
-  add_index "user_group_users", ["email"], name: "index_user_group_users_on_email", unique: true
-  add_index "user_group_users", ["reset_password_token"], name: "index_user_group_users_on_reset_password_token", unique: true
-
   create_table "version_committers", force: :cascade do |t|
-    t.string   "obj_id"
-    t.string   "datastream_id"
-    t.string   "version_id"
-    t.string   "committer_login"
+    t.string "obj_id"
+    t.string "datastream_id"
+    t.string "version_id"
+    t.string "committer_login"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "versions", force: :cascade do |t|
-    t.string   "item_type",  null: false
-    t.integer  "item_id",    null: false
-    t.string   "event",      null: false
-    t.string   "whodunnit"
-    t.text     "object"
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
     t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
-
-  add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
 
 end

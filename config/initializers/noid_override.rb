@@ -1,8 +1,8 @@
-require 'active_fedora/noid.rb'
+require 'noid-rails'
 
 # Need to override this as otherwise it returns
 # incorrect paths for short IDs
-ActiveFedora::Noid.class_eval do
+Noid::Rails.class_eval do
 
   def self.treeify(identifier)
     id = identifier.split('/').first

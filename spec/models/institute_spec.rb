@@ -6,7 +6,7 @@ describe Institute do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
     @institute = Institute.new
     @institute.name = "Test Institute"
     @institute.url = "http://www.test.ie"
@@ -20,14 +20,19 @@ describe Institute do
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
-  it "should return the institutes for a collection" do
+  it "should allow for a logo to be added" do
+    uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_logo.png"), "image/png")
+    expect(Institute.new.add_logo(uploaded, { name: 'Test logo', url: @institute.url })).to be true
+  end
+
+  it "should return the collections it is associated with" do
     @collection.institute = [@institute.name]
     @collection.save
       
-    expect(Institute.find_collection_institutes(@collection.institute)).to include(@institute)
+    expect(@institute.collections.first[:id]).to eq @collection.id
   end
 
-  it "should return nil if no institutes set" do
-    expect(Institute.find_collection_institutes(@collection.institute)).to be nil
+  it "should return empty array if not associated" do
+    expect(@institute.collections).to eq([])
   end
 end

@@ -11,7 +11,7 @@
 			<a>English</a>
 		</li>
 		<li>
-			<%= link_to 'Gaeilge', lang_path(lang_params), id: :ga %>
+			<%= link_to 'Gaeilge', main_app.lang_path(lang_params), id: :ga %>
 		</li>
 		<% else %>
 		<% lang_params[:id] = 'en' %>
@@ -19,7 +19,7 @@
 			<a>Gaeilge</a>
 		</li>
 		<li>
-			<%= link_to 'English', lang_path(lang_params), id: :en %>
+			<%= link_to 'English', main_app.lang_path(lang_params), id: :en %>
 		</li>
 		<% end %>
 	</ul>

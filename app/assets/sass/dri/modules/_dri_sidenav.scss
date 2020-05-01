@@ -3,7 +3,7 @@
 .dri_sidenav_top {
     border-bottom: 3px solid $dri_grey;
     padding-bottom:3px;
-    a { 
+    a {
       color: $dri_darkgrey;
       font-weight: bold;
       font-size: 100%;
@@ -13,7 +13,7 @@
     margin-top: 20px;
     color: $dri_midgrey;
     font-size: 100%;
-    
+
 
     a {
         color: $dri_midgrey;
@@ -32,7 +32,7 @@
         font-weight: bold;
         color: $dri_grey;
         border-bottom: 1px solid $dri_thingrey;
-      
+
     }
     ul {
         margin:0;
@@ -40,22 +40,19 @@
             padding:5px 0 5px 0;
             border-bottom: 1px solid $dri_thingrey;
             list-style-type: none;
-              font-size: 100%;
+            font-size: 100%;
           }
         li.dri_share {
           margin-top: 15px;
           margin-bottom: 15px;
-          float: right;
           border:none;
         }
         li.dri_formats {
           padding:5px 0 5px 0;
-          float: right;
           border:none;
         }
         li.dri_formats_spacing {
           margin-bottom: 15px;
-          float: right;
           border:none;
         }
         li.dri_disabled {
@@ -64,7 +61,7 @@
         li.dri_warning {
           color: $dri_red;
         }
-         
+
     }
     span.dri_stat_num {
       float: right;
@@ -85,7 +82,6 @@
      float:right;
 
             a {
-               
                 color: $dri_darkgrey;
             }
             a.previous:before {
@@ -123,14 +119,14 @@
 }
 .dri_subnav_edit_list {
     li {
-       text-indent: 0.5em;
+       text-indent: 0.3em;
      }
     li:before {
       content: "\f044"; /* FontAwesome Unicode */
       font-family: FontAwesome;
       display: inline-block;
       float: left;
-      margin-left: 0.5em;
+      margin-left: 0.2em;
     }
 }
 .dri_subnav_edit_list .dri_subnav_edit_list_last {
@@ -139,14 +135,14 @@
 
 .dri_subnav_review_list {
     li {
-       text-indent: 0.5em;
+       text-indent: 0.3em;
      }
     li:before {
       content: "\f06e"; /* FontAwesome Unicode */
       font-family: FontAwesome;
       display: inline-block;
       float: left;
-      margin-left: 0.5em;
+      margin-left: 0.2em;
     }
 }
 .dri_subnav_review_list .dri_subnav_review_list_last {

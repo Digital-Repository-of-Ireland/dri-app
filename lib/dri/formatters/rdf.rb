@@ -1,49 +1,51 @@
 require 'rdf'
-include RDF
-
 module DRI::Formatters
   class Rdf
-   
+    include RDF
+
     METADATA_FIELDS_MAP = {
-     'identifier' => RDF::DC.identifier,
-     'title' => RDF::DC.title,
-     'subject' => RDF::DC.subject,
-     'creation_date' => RDF::DC.created,
-     'published_date' => RDF::DC.issued,
-     'type' => RDF::DC.type,
-     'rights' => RDF::DC.rights,
-     'language' => RDF::DC.language,
-     'description' => RDF::DC.description,
-     'creator' => RDF::DC.creator,
-     'contributor' => RDF::DC.contributor,
-     'publisher' => RDF::DC.publisher,
-     'date' => RDF::DC.date,
-     'format' => RDF::DC.format,
-     'source' => RDF::DC.source,
+     'identifier' => RDF::Vocab::DC.identifier,
+     'title' => RDF::Vocab::DC.title,
+     'subject' => RDF::Vocab::DC.subject,
+     'creation_date' => RDF::Vocab::DC.created,
+     'published_date' => RDF::Vocab::DC.issued,
+     'type' => RDF::Vocab::DC.type,
+     'rights' => RDF::Vocab::DC.rights,
+     'language' => RDF::Vocab::DC.language,
+     'description' => RDF::Vocab::DC.description,
+     'creator' => RDF::Vocab::DC.creator,
+     'contributor' => RDF::Vocab::DC.contributor,
+     'publisher' => RDF::Vocab::DC.publisher,
+     'date' => RDF::Vocab::DC.date,
+     'format' => RDF::Vocab::DC.format,
+     'source' => RDF::Vocab::DC.source,
+     'isGovernedBy' => RDF::Vocab::DC.isPartOf,
      'role_dnr' => RDF::Vocab::MARCRelators.dnr,
-     'geographical_coverage' => RDF::DC.spatial,
-     'temporal_coverage' => RDF::DC.temporal,
+     'geographical_coverage' => RDF::Vocab::DC.spatial,
+     'temporal_coverage' => RDF::Vocab::DC.temporal,
      'institute' => RDF::Vocab::EDM.provider
     }
-      
+
     RELATIONSHIP_FIELDS_MAP = {
-      'References' => RDF::DC.references,
-      'Is Referenced By' => RDF::DC.isReferencedBy,
-      'Is Related To' => RDF::DC.relation,
-      'Is Part Of' => RDF::DC.isPartOf,
-      'Has Part' => RDF::DC.hasPart,
-      'Is Version Of' => RDF::DC.isVersionOf,
-      'Has Version' => RDF::DC.hasVersion,
-      'Is Format Of' => RDF::DC.isFormatOf,
-      'Has Format' => RDF::DC.hasFormat,
-      'Source' => RDF::DC.source
+      'References' => RDF::Vocab::DC.references,
+      'Is Referenced By' => RDF::Vocab::DC.isReferencedBy,
+      'Is Related To' => RDF::Vocab::DC.relation,
+      'Is Part Of' => RDF::Vocab::DC.isPartOf,
+      'Has Part' => RDF::Vocab::DC.hasPart,
+      'Is Version Of' => RDF::Vocab::DC.isVersionOf,
+      'Has Version' => RDF::Vocab::DC.hasVersion,
+      'Is Format Of' => RDF::Vocab::DC.isFormatOf,
+      'Has Format' => RDF::Vocab::DC.hasFormat,
+      'Source' => RDF::Vocab::DC.source,
+      'Has Documentation' => RDF::Vocab::DC.requires,
+      'Is Documentation For' => RDF::Vocab::DC.isRequiredBy
     }
 
     def initialize(object_doc, options = {})
-      @fields = options[:fields].presence
+      fields = options[:fields].presence
       @object_doc = object_doc
+      @object_hash = object_doc.extract_metadata(fields)
       @with_assets = options[:with_assets].presence
-      @with_metadata = options[:with_metadata].presence
       build_graph
     end
 
@@ -53,7 +55,7 @@ module DRI::Formatters
     end
 
     def uri
-      @uri ||= RDF::URI.new("#{base_uri}/catalog/#{object_hash['pid']}")
+      @uri ||= RDF::URI.new("#{base_uri}/catalog/#{@object_hash['pid']}")
     end
 
     def ttl_uri
@@ -63,51 +65,39 @@ module DRI::Formatters
     def html_uri
       @html_uri ||= RDF::URI.new("#{uri}.html")
     end
-    
-    def object_hash
-      @object_hash ||= @object_doc.extract_metadata(@fields)
-    end
 
     def build_graph
-      graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.ttl")]
-      graph << [uri, RDF::DC.hasFormat, RDF::URI("#{uri}.html")]
-      graph << [uri, RDF.type, RDF::FOAF.Document]
-      graph << [uri, RDF::DC.title, RDF::Literal.new(
-        "Description of '#{object_hash['metadata']['title'].first}'", language: :en)]
-      graph << [uri, FOAF.primaryTopic, RDF::URI("#{uri}#id")]
-       
-      add_licence
-      
-      if @with_metadata
-        add_formats
-        add_metadata
-      end
+      graph << [uri, RDF::Vocab::DC.hasFormat, RDF::URI("#{uri}.ttl")]
+      graph << [uri, RDF::Vocab::DC.hasFormat, RDF::URI("#{uri}.html")]
+      graph << [uri, RDF.type, RDF::Vocab::FOAF.Document]
+      graph << [uri, RDF::Vocab::DC.title, RDF::Literal.new(
+        "Description of '#{@object_hash['metadata']['title'].first}'", language: :en)]
+      graph << [uri, RDF::Vocab::FOAF.primaryTopic, RDF::URI("#{uri}#id")]
 
-      add_hierarchy
+      add_licence
+      add_formats
+
+      add_metadata
       add_relationships
       add_assets if @with_assets
-     
+
       graph
     end
 
-    def mrss_vocab
-      @mrss_vocab ||= RDF::Vocabulary.new("http://search.yahoo.com/mrss/")
-    end
+    def add_assets
+      mrss_vocab = RDF::Vocabulary.new("http://search.yahoo.com/mrss/")
 
-    def add_assets      
       assets = @object_doc.assets
-      
-      assets.each do |a| 
+
+      assets.each do |a|
         id = "#{base_uri}#{object_file_path(a['id'])}#id"
-        graph << [RDF::URI("#{uri}#id"), RDF::DC.hasPart, RDF::URI.new(id)]
+        graph << [RDF::URI("#{uri}#id"), RDF::Vocab::DC.hasPart, RDF::URI.new(id)]
 
-        type = file_type(a)
-        graph << [RDF::URI.new(id), RDF.type, type] unless type.nil?
-
-        graph << [RDF::URI.new(id), FOAF.topic, RDF::URI("#{uri}#id")]
+        graph << [RDF::URI.new(id), RDF.type, file_type(a)]
+        graph << [RDF::URI.new(id), RDF::Vocab::FOAF.topic, RDF::URI("#{uri}#id")]
         graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
         graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'].first)]
-        graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{uri}#id")]
+        graph << [RDF::URI.new(id), RDF::Vocab::DC.isPartOf, RDF::URI("#{uri}#id")]
       end
     end
 
@@ -121,32 +111,32 @@ module DRI::Formatters
 
     def add_formats
       format_vocab = RDF::Vocabulary.new("http://www.w3.org/ns/formats/")
-      
+
       graph << [ttl_uri, RDF.type, RDF::Vocab::DCMIType.Text]
       graph << [ttl_uri, RDF.type, format_vocab.Turtle]
-      graph << [ttl_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/turtle")]
-      graph << [ttl_uri, RDF::DC.title, RDF::Literal.new(
-        "Description of '#{object_hash['metadata']['title'].first}' as Turtle (RDF)", language: :en)]
+      graph << [ttl_uri, RDF::Vocab::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/turtle")]
+      graph << [ttl_uri, RDF::Vocab::DC.title, RDF::Literal.new(
+        "Description of '#{@object_hash['metadata']['title'].first}' as Turtle (RDF)", language: :en)]
 
       graph << [html_uri, RDF.type, RDF::Vocab::DCMIType.Text]
-      graph << [html_uri, RDF::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/html")]
-      graph << [html_uri, RDF::DC.title, RDF::Literal.new(
-        "Description of '#{object_hash['metadata']['title'].first}' as a web page", language: :en)]
+      graph << [html_uri, RDF::Vocab::DC.format, RDF::URI("http://purl.org/NET/mediatypes/text/html")]
+      graph << [html_uri, RDF::Vocab::DC.title, RDF::Literal.new(
+        "Description of '#{@object_hash['metadata']['title'].first}' as a web page", language: :en)]
     end
 
     def add_licence
       licence = @object_doc.licence
       if licence
         value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-        graph << [uri, RDF::DC.license, value]     
+        graph << [uri, RDF::Vocab::DC.license, value]
       end
     end
 
     def add_metadata
       id = "#{uri}#id"
 
-      metadata = object_hash['metadata']
-      
+      metadata = @object_hash['metadata']
+
       graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection] if @object_doc.collection?
 
       METADATA_FIELDS_MAP.keys.each do |field|
@@ -160,6 +150,8 @@ module DRI::Formatters
                        else
                           [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value]
                        end
+            when 'isGovernedBy'
+              graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI("#{base_uri}/catalog/#{value}#id")]
             when 'geographical_coverage'
               name = extract_name(value)
               subject = sparql_subject(name)
@@ -168,19 +160,19 @@ module DRI::Formatters
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI(subject)]
                        else
                         typed_value = if DRI::Metadata::Transformations.dcmi_box?(value)
-                                        RDF::Literal.new(value, datatype: RDF::DC.Box)
+                                        RDF::Literal.new(value, datatype: RDF::Vocab::DC.Box)
                                       elsif DRI::Metadata::Transformations.dcmi_point?(value)
-                                        RDF::Literal.new(value, datatype: RDF::DC.Point)
+                                        RDF::Literal.new(value, datatype: RDF::Vocab::DC.Point)
                                       else
                                         value
                                       end
 
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], typed_value]
                        end
-              
+
             when 'temporal_coverage'
               graph << if DRI::Metadata::Transformations.dcmi_period?(value)
-                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::DC.Period)]
+                         [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::Vocab::DC.Period)]
                        else
                          [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value]
                        end
@@ -198,28 +190,19 @@ module DRI::Formatters
       end
     end
 
-    def add_hierarchy
-      id = "#{uri}#id"
-      metadata = object_hash['metadata']
-      if metadata['isGovernedBy'].present?
-        metadata['isGovernedBy'].each do |value| 
-          graph << [RDF::URI.new(id), RDF::DC.isPartOf, RDF::URI("#{base_uri}/catalog/#{value}#id")]
-        end
-      end
-    end 
-
     def add_relationships
       id = "#{uri}#id"
 
       relationships = @object_doc.object_relationships
+      return unless relationships.present?
 
-      if relationships.present?
-        relationships.keys.each do |key|
-          relationships[key].each do |relationship|
-            graph << [RDF::URI.new(id), RELATIONSHIP_FIELDS_MAP[key], RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
+      relationships.keys.each do |key|
+        relationships[key].each do |relationship|
+          relationship_predicate = RELATIONSHIP_FIELDS_MAP[key]
+          if relationship_predicate
+            graph << [RDF::URI.new(id), relationship_predicate, RDF::URI("#{base_uri}/catalog/#{relationship[1]['id']}#id")]
           end
         end
-
       end
     end
 
@@ -232,13 +215,15 @@ module DRI::Formatters
 
     def file_type(file)
       if file.text?
-        RDF::FOAF.Document
+        RDF::Vocab::FOAF.Document
       elsif file.image?
         RDF::Vocab::DCMIType.StillImage
       elsif file.audio?
         RDF::Vocab::DCMIType.Sound
       elsif file.video?
         RDF::Vocab::DCMIType.MovingImage
+      else
+        RDF::Vocab::FOAF.Document
       end
     end
 
@@ -262,10 +247,12 @@ module DRI::Formatters
 
     def sparql_subject(value)
       Rails.cache.fetch(value, expires_in: 48.hours) do
+        return nil unless AuthoritiesConfig
         provider = DRI::Sparql::Provider::Sparql.new
         provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
 
-        triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{value}\"@en"])
+        escaped_value = RDF::NTriples::Writer.escape(value)
+        triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{escaped_value}\"@en"])
 
         triples.present? ? triples.first[0] : nil
       end

@@ -1,5 +1,6 @@
 module Solr
   class Query
+    include Enumerable
 
     def initialize(query, chunk=100, args = {})
       @query = query
@@ -7,13 +8,14 @@ module Solr
       @args = args
       @cursor_mark = "*"
       @has_more = true
+      @sort = "id asc"
     end
 
     def query
-      query_args = @args.merge({:raw => true, :rows => @chunk, :sort => 'id asc', :cursorMark => @cursor_mark})
+      sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
+      query_args = @args.merge({:raw => true, :rows => @chunk, :sort => sort, :cursorMark => @cursor_mark})
 
-      result = ActiveFedora::SolrService.query(@query, query_args)
-
+      result = ActiveFedora::SolrService.get(@query, query_args)
       result_docs = result['response']['docs']
 
       nextCursorMark = result['nextCursorMark']
@@ -34,7 +36,7 @@ module Solr
       self.query
     end
 
-    def each_solr_document
+    def each(&block)
       while has_more?
         objects = pop
 

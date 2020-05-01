@@ -23,6 +23,23 @@ module FacetsHelper
     results
   end
 
+  def parse_orcid(args)
+    results = nil
+
+    if args.is_a?(Hash)
+      results = []
+      value_list = args[:document][args[:field]]
+
+      value_list.each do |value|
+        results.push(transform_orcid(value))
+      end
+    else
+      results = transform_orcid(args)
+    end
+
+    results
+  end
+
   def parse_era(args)
     results = nil
 
@@ -47,9 +64,9 @@ module FacetsHelper
       results = []
       value_list = args[:document][args[:field]]
 
-      value_list.each { |value| results.push(transform_loc(value)) }
+      value_list.each { |value| results.push(transform_location(value)) }
     else
-      results = transform_loc(args)
+      results = transform_location(args)
     end
 
     results
@@ -94,7 +111,7 @@ module FacetsHelper
     return value if pid.blank?
 
     solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
-    docs = ActiveFedora::SolrService.query(solr_query)
+    docs = ActiveFedora::SolrService.query(solr_query, rows: 1)
 
     return 'nil' if docs.empty?
 
@@ -108,28 +125,29 @@ module FacetsHelper
     value == 'false' ? t('dri.views.facets.values.no_collections') : t('dri.views.facets.values.collections')
   end
 
+  # parses encoded orcid identifiers
+  def transform_orcid(value)
+    return 'nil' if value.nil?
+
+    name_from_dcsv(value) || value
+  end
+
   # parses encoded era values
   def transform_era(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
-      if k.eql?('name')
-        return v unless v.nil? || v.empty?
-      end
-    end
-    value
+    name_from_dcsv(value) || value
   end
 
   # parses encoded location values
-  def transform_loc(value)
+  def transform_location(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
+    value.strip.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
       dcmi = true if DCMI_KEYS.include?(k)
 
-      if k.eql?('name')
+      if k == 'name'
         return v unless v.nil? || v.empty?
       end
 
@@ -195,11 +213,11 @@ module FacetsHelper
   # @return [String]
   def render_facet_value(facet_solr_field, item, options = {})
     return if uri?(item.value)
-    
+
     display_value = facet_display_value(facet_solr_field, item)
     return if display_value == 'nil'
 
-    path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
+    path = search_action_path(search_state.add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
       display_value + " (#{item.hits})",
@@ -218,7 +236,7 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     # Updated class for Bootstrap Blacklight.
     link_to(
-      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'), 
+      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'),
       remove_facet_params(facet_solr_field, item, params),
       class: 'selected'
     )
@@ -231,5 +249,15 @@ module FacetsHelper
     value = value.html_safe if (value.include? ":")
 
     value
+  end
+
+  def name_from_dcsv(value)
+     value.strip.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k == 'name'
+        return v unless v.nil? || v.empty?
+      end
+    end
+    nil
   end
 end

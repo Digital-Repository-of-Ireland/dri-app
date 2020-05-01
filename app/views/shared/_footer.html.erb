@@ -1,7 +1,4 @@
-
 <footer id="dri_main_footer_id" class="dri_main_footer">
-
-
 
   <div id="dri_footer_address_id" class="dri_footer_address">
     <%= t('dri.footer.ria_address.project') %><br/>
@@ -9,45 +6,42 @@
     <%= t('dri.footer.ria_address.street') %><br/>
     <%= t('dri.footer.ria_address.zip') %><br/>
     <% phoneNum = '+353 1 609 0674' %>
-    <%= t('dri.footer.contacts.phone') + ' ' + phoneNum %><br/>
     <% emailAddress = 'dri@ria.ie' %>
     <%= t('dri.footer.contacts.email') + ' ' %>
-    <%= link_to emailAddress, "mailto:#{emailAddress}", :id => 'contact_email' %><br/><br/>
+    <%= link_to emailAddress, "mailto:#{emailAddress}", id: 'contact_email' %><br/><br/>
     <% if current_user && current_user.is_admin? %>
       <%= render partial: "shared/version" %>
     <% end %>
   </div>
-
-
-
-  <div id="dri_footer_dsa_logo_id" class="dri_footer_dsa_logo">
-    <%= link_to 'https://www.datasealofapproval.org/en/', :id => "dsa_link", :target => "_blank" do %>
-      <%= image_tag("dri/home/logo_DSA_regulier_120x120_01.png", :alt=>"Data Seal of Approval" ) %>
-    <% end %>
-  </div>
-
 
   <nav id="dri_main_footer_navigation_id"
        class="dri_main_footer_navigation">
     <ul id="dri_main_footer_navigation_links_id"
         class="dri_main_footer_navigation_links">
       <li class="">
-        <span> <%= link_to t('dri.headerlinks.end_user_agreement'), main_app.page_path('terms'), :id => "end_user_agreement", :class => "muted" %> </span>
+        <span> <%= link_to t('dri.headerlinks.end_user_agreement'), main_app.page_path('terms'), id: "end_user_agreement", class: "muted" %> </span>
       </li>
       <li class="">
-        <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/privacy-statement', :id => "privacy_statement", :class => "muted", :target => '_blank' %> </span>
+        <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/dri-privacy-statement', id: "privacy_statement", class: "muted", target: '_blank' %> </span>
       </li>
-
+      <li class="">
+        <span> <%= link_to t('dri.headerlinks.licensing_statement'), 'http://www.dri.ie/licensing-statement', id: "licensing_statement", class: "muted", target: '_blank' %> </span>
+      </li>
       <li>
-        <%= link_to t('dri.headerlinks.help'), main_app.page_path('about_faq'), :id => "dri_footer_help" %>
+        <%= link_to t('dri.headerlinks.help'), main_app.page_path('about_faq'), id: "dri_footer_help" %>
       </li>
       <li>
-        <%= link_to t('dri.headerlinks.about'), main_app.page_path('about_us'), :id => "about_us_footer", :class => "muted" %>
-      </li>
-      <li class=" no_border_right">
-      <span><%= link_to t('dri.headerlinks.about_dri_lifecycle'), main_app.page_path('about_lifecycle'), :id => 'about_lifecycle_footer', :class => "muted" %></span>
+        <%= link_to t('dri.headerlinks.find_us'), 'http://dri.ie/contact', id: "find_us_footer", class: "muted" %>
       </li>
     </ul>
+
+    <div class="dri_funder_institutes" id="dri_funder_institutes_id">
+
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+        <%= image_tag("dri/home/FunderLogos.png", alt: "Funded by " ) %>
+    </div>
+
   </nav>
 
 

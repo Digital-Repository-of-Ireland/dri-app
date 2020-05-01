@@ -1,17 +1,26 @@
+  <%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form' do %>
+    <% translated_fields = translated_search_fields(display_search_fields) %>
+    <%= select_tag(:search_field,
+                   options_for_select(translated_fields, h(params[:search_field])),
+                   title: t('blacklight.search.form.search_field.title'),
+                   id: "search_field",
+                   class: "dri_select")
+    %>
 
-  <%= form_tag catalog_index_path, :method => :get, :id => 'searchform', :class => 'dri_search_term_input_form' do %>
+    <% if params[:mode].blank? %>
+        <%= hidden_field_tag 'mode', 'objects' %>
+    <% end %>
 
-      <%= hidden_field_tag 'search_field', 'all_fields' %>
-      <% if (params[:mode].blank?) %>
-          <%= hidden_field_tag 'mode', 'objects' %>
-      <% end %>
+    <%= render_hash_as_hidden_fields(search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
+    <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
+    <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.q'), id: "q", class: "dri_search_term_text_input dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
+    <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
+      <%=t('blacklight.search.form.submit')%>
+    </button>
+  <% end %><!-- end form -->
+<!-- close dri_search_term_input_form -->
 
-      <%= render_hash_as_hidden_fields(params_for_search().except(:q, :search_field, :qt, :page, :utf8)) %>
-      <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
-      <%= text_field_tag :q, params[:q], :placeholder => t('blacklight.search.form.q'), :id => "q", :class => "dri_search_term_text_input dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
-      <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
-        <%=t('blacklight.search.form.submit')%>
-      </button>
-
-      <% end %><!-- end form -->
-  <!-- close dri_search_term_input_form -->
+  <%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',
+      :'data-target' => '#dri_advanced_search_modal_id',
+      :'data-toggle' => 'modal',
+      id: 'advanced_search_button' %>

@@ -1,23 +1,23 @@
-require 'faker'
+require 'ffaker'
 
-FactoryGirl.define do
+FactoryBot.define do
   sequence :email do
-    Faker::Internet.email
+    FFaker::Internet.email
   end
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :user, :class => UserGroup::User do |u|
-    u.email { FactoryGirl.generate(:email) }
-    u.password 'password'
-    u.password_confirmation 'password'
-    u.first_name Faker::Name.first_name
-    u.second_name Faker::Name.last_name
-    u.confirmed_at Time.now
+    u.email { FactoryBot.generate(:email) }
+    u.password { 'password' }
+    u.password_confirmation { 'password' }
+    u.first_name { FFaker::Name.first_name }
+    u.second_name { FFaker::Name.last_name }
+    u.confirmed_at { Time.now }
   end
 
   factory :invalid_user, parent: :user do |u|
-    u.email nil
+    u.email { nil }
   end
 
   factory :admin,  parent: :user do |u|
@@ -37,5 +37,4 @@ FactoryGirl.define do
       @membership.save
     end
   end
-
 end

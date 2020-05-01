@@ -12,21 +12,21 @@ class ExportsController < ApplicationController
 
     begin
       Resque.enqueue(CreateExportJob, params[:id], params[:fields], current_user.email)
-    rescue Exception => e
+    rescue Exception
       flash[:alert] = t('dri.flash.error.exporting')
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
       return
     end
 
     flash[:notice] = t('dri.flash.notice.exporting')
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   def show
     enforce_permissions!('manage_collection', params[:id])
-    
+
     storage = StorageService.new
-    
+
     bucket = "users.#{Mail::Address.new(current_user.email).local}"
     file = storage.file_url(bucket, "#{params[:export_key]}.csv")
     raise DRI::Exceptions::NotFound unless file

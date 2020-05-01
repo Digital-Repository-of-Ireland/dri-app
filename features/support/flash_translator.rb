@@ -27,7 +27,7 @@ module FlashTranslator
         I18n.t('dri.flash.alert.invalid_file_type', :locale => @user.locale)
 
       when /^virus detected$/
-        I18n.t('dri.flash.alert.virus_detected', :virus => 'Eicar-Test-Signature', :locale => @user.locale)
+        I18n.t('dri.flash.alert.virus_detected', :locale => @user.locale)
 
       when /^invalid email or password$/
         # User is not yet logged in and has no @user, will default to locale 'en'
@@ -79,6 +79,9 @@ module FlashTranslator
 
       when /^membership approved$/
         I18n.t('user_groups.memberships.approve', :locale => @user.locale)
+
+      when /^editing a published object$/
+        I18n.t('dri.flash.alert.doi_published_warning', locale: @user.locale)
 
       else "Unknown"
 

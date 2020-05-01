@@ -29,7 +29,7 @@ class ReadersController < ApplicationController
     action = current_user.join_group(@reader_group.id)
     if action.errors.size > 0
       flash[:alert] = t('dri.flash.error.submitting_read_request', error: action.errors.full_messages.inspect)
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
       return
     end
 
@@ -37,7 +37,7 @@ class ReadersController < ApplicationController
     notify_managers(@reader_group)
 
     flash[:success] = t('dri.flash.notice.request_form_submitted')
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   # Display the read request form
@@ -70,7 +70,7 @@ class ReadersController < ApplicationController
       flash[:error] = t("dri.flash.error.read_access_approved")
     end
 
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   # Remove read access, approved or pending
@@ -96,7 +96,7 @@ class ReadersController < ApplicationController
       end
     end
 
-    redirect_to :back
+    redirect_back(fallback_location: root_path)
   end
 
   private

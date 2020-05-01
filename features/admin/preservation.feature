@@ -6,7 +6,7 @@ Feature: Preservation
   The AIP will reflect the changes
 
   Background:
-    Given I am logged in as "user1" in the group "cm" and accept cookies
+    Given I am logged in as "user1" in the group "cm"
 
   Scenario: Create a collection
     When I create a collection and save the pid
@@ -18,7 +18,7 @@ Feature: Preservation
     When I create a collection and save the pid 
     When I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to edit a collection
-    And I enter valid metadata with title "Test Edit"
+    And I enter valid metadata for a collection with title Test Edit
     And I press the button to "save collection changes"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
@@ -60,6 +60,7 @@ Feature: Preservation
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
 
+  @noexec
   Scenario: Add a licence for a collection
     Given I have created a licence "Test"
     When I create a collection and save the pid
@@ -90,7 +91,6 @@ Feature: Preservation
     And I go to the "my collections" "show" page for "the saved pid"
     And I follow the link to manage organisations
     And I press the button to "associate an institute"
-    And I should wait for "5" seconds
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid

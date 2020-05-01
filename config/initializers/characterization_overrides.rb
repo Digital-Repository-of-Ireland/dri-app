@@ -1,9 +1,8 @@
-require "hydra/derivatives/extract_metadata"
+require "dri/derivatives/extract_metadata"
 
-Hydra::Derivatives::ExtractMetadata.module_eval do
+DRI::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
-  
-  def extract_metadata
+ def extract_metadata
     # Bit of a hack here to force mp2 files to be characterized in FITS
     # We have to pretend it's an mp3 by creating a tempfile with an mp3 extension
     if (File.extname(path) == ".mp2")
@@ -19,22 +18,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
       Hydra::FileCharacterization.characterize(File.open(path), filename_for_characterization.join(""), :fits) do |config|
         config[:fits] = Settings.plugins.fits_path
       end
-    end
-  end
-
-  def to_tempfile(&block)
-    source = File.open(path, 'r')
-    
-    Tempfile.open(filename_for_characterization) do |f|
-        f.binmode
-        if source.respond_to? :read
-          f.write(source.read)
-        else
-          f.write(source)
-        end
-        source.rewind if source.respond_to? :rewind
-        f.rewind
-        yield(f)
+      return
     end
   end
 
@@ -42,7 +26,7 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
 
     def filename_for_characterization
       extension = File.extname(path)
-     
+
       if (extension == '.mp2')
         extension = '.mp3'
       end
@@ -50,5 +34,4 @@ Hydra::Derivatives::ExtractMetadata.module_eval do
 
       ["#{noid}-#{version_id}", "#{extension}"]
     end
-
 end

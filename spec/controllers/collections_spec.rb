@@ -4,7 +4,7 @@ describe CollectionsController do
   include Devise::Test::ControllerHelpers
 
   before(:each) do
-    @login_user = FactoryGirl.create(:admin)
+    @login_user = FactoryBot.create(:admin)
     sign_in @login_user
 
     @tmp_assets_dir = Dir.mktmpdir
@@ -29,7 +29,7 @@ describe CollectionsController do
       @collection[:creation_date] = ["1916-01-01"]
       @collection[:published_date] = ["1916-04-01"]
       @collection.save
-      
+
       @object = DRI::DigitalObject.with_standard :qdc
       @object[:title] = ["An Audio Title"]
       @object[:rights] = ["This is a statement about the rights associated with this object"]
@@ -51,7 +51,8 @@ describe CollectionsController do
       expect(@collection.governed_items.size).to be == 1
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
-      delete :destroy, :id => @collection.noid
+
+      delete :destroy, params: { :id => @collection.noid }
     end
 
   end
@@ -89,17 +90,17 @@ describe CollectionsController do
       @object.save
 
       @collection.governed_items << @object
- 
-      expect(PublishCollectionJob).to receive(:create)
-      post :publish, id: @collection.noid
-    end    
 
+      expect(PublishCollectionJob).to receive(:create)
+
+      post :publish, params: { id: @collection.noid }
+    end
   end
 
   describe 'cover' do
 
     before(:each) do
-      @collection = FactoryGirl.create(:collection)
+      @collection = FactoryBot.create(:collection)
       @collection[:creator] = [@login_user.email]
       @collection[:status] = "draft"
       @collection.save
@@ -110,30 +111,30 @@ describe CollectionsController do
     end
 
     it 'should return not-found for no cover image' do
-      get :cover, { id: @collection.noid }
+      get :cover, params: { id: @collection.noid }
       expect(response.status).to eq(404)
     end
 
     it 'should return not found if cover image cannot be found for storage interface' do
-      get :cover, { id: @collection.noid }
+      get :cover, params: { id: @collection.noid }
       expect(response.status).to eq(404)
     end
 
     it 'accepts a valid image' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, { id: @collection.noid, digital_object: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.noid, batch: { cover_image: @uploaded } }
       expect(flash[:notice]).to be_present
     end
 
     it 'rejects unsupported image format' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.tiff"), "image/tiff")
-      put :add_cover_image, { id: @collection.noid, digital_object: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.noid, batch: { cover_image: @uploaded } }
       expect(flash[:error]).to be_present
     end
 
     it 'creates new AIP' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, { id: @collection.noid, digital_object: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.noid, batch: { cover_image: @uploaded } }
 
       expect(Dir.entries(aip_dir(@collection.noid)).size - 2).to eq(2)
       expect(aip_valid?(@collection.noid, 2)).to be true
@@ -142,7 +143,7 @@ describe CollectionsController do
   end
 
   describe 'update' do
-    
+
     it 'should allow a subcollection to be updated' do
       @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
@@ -177,11 +178,12 @@ describe CollectionsController do
       @collection.governed_items << @subcollection
       @collection.reload
       @subcollection.reload
- 
+
       params = {}
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A modified sub collection title"]
-      put :update, id: @subcollection.noid, digital_object: params[:digital_object]
+
+      put :update, params: { id: @subcollection.noid, digital_object: params[:digital_object] }
       @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
 
@@ -220,11 +222,12 @@ describe CollectionsController do
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
+
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A modified title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, id: @collection.noid, digital_object: params[:digital_object]
+      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
 
       DataciteDoi.where(object_id: @collection.noid).first.delete
       Settings.doi.enable = false
@@ -266,7 +269,7 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, id: @collection.noid, digital_object: params[:digital_object]
+      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
 
       DataciteDoi.where(object_id: @collection.noid).first.delete
       Settings.doi.enable = false
@@ -287,10 +290,9 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :create, metadata_file: @file
-      expect(response).to be_success    
+      post :create, params: { metadata_file: @file }
+      expect(response).to be_successful
     end
-
   end
 
   describe "read only is set" do
@@ -302,11 +304,11 @@ describe CollectionsController do
       @tmp_assets_dir = Dir.mktmpdir
       Settings.dri.files = @tmp_assets_dir
 
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
       sign_in @login_user
-      @collection = FactoryGirl.create(:collection)
-      
-      request.env["HTTP_REFERER"] = catalog_index_path
+      @collection = FactoryBot.create(:collection)
+
+      request.env["HTTP_REFERER"] = search_catalog_path
     end
 
     after(:each) do
@@ -329,7 +331,7 @@ describe CollectionsController do
         attr_reader :tempfile
       end
 
-      post :create, metadata_file: @file
+      post :create, params: { metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 
@@ -339,7 +341,7 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, id: @collection.noid, digital_object: params[:digital_object]
+      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end
@@ -353,17 +355,19 @@ describe CollectionsController do
       @tmp_assets_dir = Dir.mktmpdir
       Settings.dri.files = @tmp_assets_dir
 
-      @login_user = FactoryGirl.create(:admin)
+      @login_user = FactoryBot.create(:admin)
       sign_in @login_user
-      @collection = FactoryGirl.create(:collection)
-      CollectionLock.create(collection_id: @collection.noid)
-      
-      request.env["HTTP_REFERER"] = catalog_index_path
+
+      @collection = FactoryBot.create(:collection)
+      CollectionLock.create(collection_id: @collection.id)
+
+      request.env["HTTP_REFERER"] = search_catalog_path
     end
 
     after(:each) do
-      CollectionLock.delete_all(collection_id: @collection.noid)
+      CollectionLock.where(collection_id: @collection.noid).delete_all
       @collection.delete if DRI::DigitalObject.exists?(@collection.noid)
+
       @login_user.delete
 
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -375,7 +379,7 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, id: @collection.noid, digital_object: params[:digital_object]
+      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end

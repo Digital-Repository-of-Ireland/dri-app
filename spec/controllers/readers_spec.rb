@@ -2,51 +2,31 @@ require 'rails_helper'
 
 describe ReadersController do
   include Devise::Test::ControllerHelpers
-  
-  before(:each) do
-    @manager_user = FactoryGirl.create(:collection_manager)
-    @login_user = FactoryGirl.create(:user)
-    
-    @collection = DRI::DigitalObject.with_standard :qdc
-    @collection[:title] = ["A collection"]
-    @collection[:description] = ["This is a Collection"]
-    @collection[:rights] = ["This is a statement about the rights associated with this object"]
-    @collection[:publisher] = ["RnaG"]
-    @collection[:creator] = ["Creator"]
-    @collection[:resource_type] = ["Collection"]
-    @collection[:creation_date] = ["1916-01-01"]
-    @collection[:published_date] = ["1916-04-01"]
+
+  before(:all) do
+    @manager_user = FactoryBot.create(:collection_manager)
+    @login_user = FactoryBot.create(:user)
+
+    @collection = FactoryBot.create(:collection)
     @collection.manager_users_string = @manager_user.email
     @collection.save
+    @collection.reload
 
-    @group = UserGroup::Group.new(name: @collection.noid, 
+    @group = UserGroup::Group.new(name: @collection.noid,
       description: "Default Reader group for collection #{@collection.noid}")
     @group.reader_group = true
     @group.save
-    
+
     @collection.read_groups_string = "#{@collection.noid}"
     @collection.save
 
-    @object = DRI::DigitalObject.with_standard :qdc
-    @object[:title] = ["An Audio Title"]
-    @object[:rights] = ["This is a statement about the rights associated with this object"]
-    @object[:role_hst] = ["Collins, Michael"]
-    @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
-    @object[:language] = ["ga"]
-    @object[:description] = ["This is an Audio file"]
-    @object[:published_date] = ["1916-04-01"]
-    @object[:creation_date] = ["1916-01-01"]
-    @object[:source] = ["CD nnn nuig"]
-    @object[:geographical_coverage] = ["Dublin"]
-    @object[:temporal_coverage] = ["1900s"]
-    @object[:subject] = ["Ireland","something else"]
-    @object[:resource_type] = ["Sound"]
-    @object.save
+    @object = FactoryBot.create(:sound)
 
     @collection.governed_items << @object
+    @collection.save
   end
 
-  after(:each) do
+  after(:all) do
     @login_user.delete
     @manager_user.delete
 
@@ -65,7 +45,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @collection.noid }
+        post :create, params: { id: @collection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
@@ -76,34 +56,12 @@ describe ReadersController do
 
     before(:each) do
       sign_in @login_user
-     
-      @subcollection = DRI::DigitalObject.with_standard :qdc
-      @subcollection[:title] = ["A collection"]
-      @subcollection[:description] = ["This is a Collection"]
-      @subcollection[:rights] = ["This is a statement about the rights associated with this object"]
-      @subcollection[:publisher] = ["RnaG"]
-      @subcollection[:creator] = ["Creator"]
-      @subcollection[:resource_type] = ["Collection"]
-      @subcollection[:creation_date] = ["1916-01-01"]
-      @subcollection[:published_date] = ["1916-04-01"]
+
+      @subcollection = FactoryBot.create(:collection)
       @subcollection.manager_users_string = @manager_user.email
       @subcollection.save
-            
-      @subobject = DRI::DigitalObject.with_standard :qdc
-      @subobject[:title] = ["An Audio Title in the Sub Collection"]
-      @subobject[:rights] = ["This is a statement about the rights associated with this object"]
-      @subobject[:role_hst] = ["Collins, Michael"]
-      @subobject[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
-      @subobject[:language] = ["ga"]
-      @subobject[:description] = ["This is an Audio file"]
-      @subobject[:published_date] = ["1916-04-01"]
-      @subobject[:creation_date] = ["1916-01-01"]
-      @subobject[:source] = ["CD nnn nuig"]
-      @subobject[:geographical_coverage] = ["Dublin"]
-      @subobject[:temporal_coverage] = ["1900s"]
-      @subobject[:subject] = ["Ireland","something else"]
-      @subobject[:resource_type] = ["Sound"]
-      @subobject.save
+
+      @subobject = FactoryBot.create(:sound)
 
       @subcollection.governed_items << @subobject
       @subcollection.governing_collection = @collection
@@ -112,7 +70,7 @@ describe ReadersController do
 
     after(:each) do
       @subcollection.destroy
-    end  
+    end
 
     it "creates a new pending membership in the governing read group" do
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
@@ -122,14 +80,14 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @subcollection.noid }
+        post :create, params: { id: => @subcollection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
     end
 
     it "creates a new pending membership in the subcollection read group" do
-      subgroup = UserGroup::Group.new(name: @subcollection.noid, 
+      subgroup = UserGroup::Group.new(name: @subcollection.noid,
       description: "Default Reader group for collection #{@subcollection.noid}")
       subgroup.reader_group = true
       subgroup.save
@@ -157,10 +115,10 @@ describe ReadersController do
     it "approves a pending membership" do
       sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
+      group = UserGroup::Group.find_by(name: @collection.id)
 
-      membership = @login_user.join_group(@group.id)
-
-      post :update, { id: @collection.noid, user_id: @login_user.id }
+      membership = @login_user.join_group(group.id)
+      post :update, params: { id: @collection.noid, user_id: @login_user.id }
 
       membership.reload
       expect(membership.approved?).to be true
@@ -171,16 +129,17 @@ describe ReadersController do
     it "approves a pending membership" do
       sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
+      group = UserGroup::Group.find_by(name: @collection.id)
 
-      membership = @login_user.join_group(@group.id)
+      membership = @login_user.join_group(group.id)
       membership.approve_membership(@manager_user.id)
       membership.save
 
       expect {
-        delete :destroy, { id: @collection.noid, user_id: @login_user.id }
+        delete :destroy, params: { id: @collection.noid, user_id: @login_user.id }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
-      expect(UserGroup::Membership.find_by(group_id: @group.id, user_id: @login_user.id)).to be nil
+      expect(UserGroup::Membership.find_by(group_id: group.id, user_id: @login_user.id)).to be nil
     end
   end
 

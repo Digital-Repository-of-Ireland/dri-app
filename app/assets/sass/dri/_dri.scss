@@ -1,12 +1,4 @@
 /*----------------- set up and overrides scss file for this block of styling -----------------------*/
-/* Video-JS Overrides */
-
-.vjs-default-skin .vjs-big-play-button {
-    left: 35%;
-    top: 13%;
-    width: 30%;
-    //height: 30%;
-}
 /* Colorbox Overrides */
 
 #cboxPrevious,
@@ -203,7 +195,7 @@ input[type="color"],
 }
 .field_with_errors input {
     background-color: $dri_white;
-    color: darkenn($dri_red, 20%);
+    color: darken($dri_red, 20%);
     margin: 0 0 4px 0;
     padding: 6px 13px 6px 15px;
     @include border_radius (3px);
@@ -321,7 +313,7 @@ a {
 
 .dri_cookie_acceptance_text {
     /*height: 150px;*/
-    
+
     overflow: scrolling;
 }
 /*-------------- Signin Model--------------*/
@@ -446,7 +438,7 @@ a {
     margin: 6px 0 14px 0;
     padding: 6px 15px 6px 15px;
     border: 1px solid $dri_grey_border;
-} 
+}
 
 /*-------------- Social Media Sharing ------------*/
 
@@ -541,12 +533,24 @@ a .dri_signin_edugate {
     .navbar-nav > li.active > a {
     border-top: 3px solid $dri_green;
     background-color: $dri_extralightgrey;
-  
+
+    }
+
+    #advanced_search_button_mobile {
+	padding-left: 10px;
+        display: inline-flex;
+        max-width: 150px;
+        min-width: 150px;
+        text-overflow: ellipsis;
+        color: $dri_midgrey;
+        &:hover {
+            color: $dri_darkgrey;
+        }
     }
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
-             background-color: $dri_extralightgrey;
+            background-color: $dri_extralightgrey;
             color: $dri_darkgrey;
             a {
                 padding-top: 12px;
@@ -560,19 +564,19 @@ a .dri_signin_edugate {
         font-weight: normal;
         text-transform: none;
         margin-top: 0;
-        padding-top: 0; 
+        padding-top: 0;
         li {
             border-top: 1px solid $dri_thingrey;
-         
+
             a {
                 padding-top: 12px;
                 padding-bottom: 8px;
             }
         }
-        
+
         li.active {
             a {
-              
+
                 padding-top: 12px;
                 padding-bottom: 8px;
                 color: $dri_green;
@@ -585,11 +589,11 @@ a .dri_signin_edugate {
         }
         li:focus {
             a {
-                 background-color: $dri_white; 
+                 background-color: $dri_white;
             }
         }
     }
- 
+
 }
   .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
      color: $dri_green;
@@ -611,7 +615,7 @@ a .dri_signin_edugate {
   margin: 0;
   list-style: none;
   border: 1px solid $dri_thingrey;
-  @include border_radius (3px);  
+  @include border_radius (3px);
   *border-right-width: 2px;
   *border-bottom-width: 2px;
   -webkit-border-radius: 6px;
@@ -668,7 +672,7 @@ a .dri_signin_edugate {
         }
     }
 }
-.dri_language_links {
+.dri_language_links, #search_field {
     float: left;
     display: inline;
     border: 1px solid $dri_thingrey;
@@ -684,6 +688,18 @@ a .dri_signin_edugate {
         color: $dri_midgrey;
     }
 }
+
+// fit elements to smaller my-collections layout
+#my_collections_searchform {
+    #search_field, #q_ws {
+        margin-top: 10px;
+    }
+    #q_ws {
+        min-width: 175px;
+        max-width: 65%;
+    }
+}
+
 ul.dropdown a {
     color: $dri_midgrey;
     &:hover {
@@ -708,7 +724,7 @@ ul.dropdown a {
         }
     }
 }
-/*-------------- Main Navigation 
+/*-------------- Main Navigation
 .dri_main_nav {
   margin: 0px;
   padding: 0px;
@@ -740,7 +756,7 @@ ul.dropdown a {
       border-top: 3px solid #fff;
     &:hover {
       border-top: 3px solid #6D6E71;
-    } 
+    }
     }
      &.selected a {
     border-top: 3px solid $dri_green;
@@ -765,8 +781,8 @@ ul.dropdown a {
           margin: 0;
           padding: 8px 0 8px 20px;
           border-top: none;
-          text-transform: none;  
-          
+          text-transform: none;
+
           &:hover {
           background-color: white;
           color: $dri_green;
@@ -776,7 +792,7 @@ ul.dropdown a {
         color: $dri_green;
       }
       }
-     
+
     }
   }
 }
@@ -799,7 +815,7 @@ ol.breadcrumb {
             color: $dri_lightgrey;
              &:hover {
             color: $dri_midgrey;
-       
+
         }
         }
     }
@@ -815,6 +831,17 @@ ol.breadcrumb {
 }
 /*-------------- Sort by --------------*/
 
+%dri_sort_select {
+    margin: 0;
+    padding: 4px;
+    padding-right: 10px;
+    border: 1px solid $dri_thingrey;
+    @include border_radius;
+    color: $dri_midgrey;
+    font-size: 100%;
+    height: 25px;
+}
+
 .dri_sort_nav {
     float: left;
     margin: 0;
@@ -822,20 +849,32 @@ ol.breadcrumb {
     color: $dri_lightgrey;
     height: 36px;
     select {
-        margin: 0;
-        padding: 4px;
-        padding-right: 10px;
-        border: 1px solid $dri_thingrey;
-        @include border_radius;
-        color: $dri_midgrey;
-        font-size: 100%;
-        height: 25px;
+        @extend %dri_sort_select;
+    }
+}
+.dri_select {
+    cursor: pointer;
+}
+.sort-submit-buttons {
+    select {
+        @extend %dri_sort_select;
+    }
+    .sort-buttons, .page-buttons {
+        padding-left: 25px;
     }
 }
 /*-------------- Search --------------*/
 
-.dri_search_term_text_input {
+.dri_search_term_text_input{
     margin: 24px 0 0 0;
+}
+
+#search_field {
+    margin: 54px 0 0 0;
+    padding: 5px 0 3px 0;
+}
+
+.dri_search_term_text_input{
     width: 226px;
     padding: 4px 0 4px 30px;
     color: $dri_midgrey;
@@ -849,6 +888,14 @@ ol.breadcrumb {
     color: $dri_midgrey;
     background: image-url("dri/search_icon.png") no-repeat left;
 }
+
+#advanced_search_button {
+    color: $dri_midgrey;
+    &:hover {
+      color: $dri_darkgrey;
+    }
+}
+
 /*-------------- Grid / table display--------------*/
 
 .dri_change_sort_view {
@@ -1167,6 +1214,8 @@ h4.suggest {
 /* ----------- Facet Filter block ---------- */
 
 .dri_facet_filters_block {
+    width: 100%;
+    min-width: $dri_facet_min_width;
     margin: 25px 0 0 0;
     padding: 0px;
     float: left;
@@ -1175,6 +1224,15 @@ h4.suggest {
     border: 1px solid $dri_thingrey;
     //box-shadow: 1px 2px 6px  #E3E3E3;
     @include border_radius (3px);
+}
+#advanced-help {
+    clear: left;
+}
+#dri_advanced_search_modal_id {
+    text-align: left;
+}
+.advanced-submit-buttons {
+    margin-right: 15px;
 }
 .dri_date_range_block {
     height: 150px;
@@ -1193,16 +1251,21 @@ h4.suggest {
         padding-right: 10px;
     }
 }
+
+.dri_head_title {
+    color: $dri_darkgrey;
+    font-weight: bold;
+    a {
+        color: $dri_darkgrey;
+    }
+}
+
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        *color: $dri_darkgrey;
-        font-weight: bold;
         padding: 15px 0 15px 20px;
-        min-width: 238px;
-        a {
-            color: $dri_darkgrey;
-        }
+        // leave some space for the border
+        min-width: $dri_facet_min_width - 2;
     }
     .dri_search_num {
         float: right;
@@ -1214,7 +1277,7 @@ h4.suggest {
         border: none;
     }
     .panel-group {
-        width: 238px;
+        min-width: $dri_facet_min_width - 2;
         margin-bottom: 2px;
         .panel-default {
             margin: 0px;
@@ -1338,6 +1401,21 @@ h4.suggest {
         }
     }
 }
+
+/*-------------- Workspace page --------------*/
+
+.dri_workspace_menu_block {
+    @extend .dri_account_block;
+    .dri_workspace_menu_block_heading {
+        @extend .dri_account_block_heading;
+    }
+    .dri_workspace_menu_block_info {
+        .dri_workspace_menu_block_info_item {
+          @extend .dri_account_block_info_item;
+          }
+    }
+}
+
 /* -----------Main Content Container ---------- */
 
 .dri_main_content_container > h2 {
@@ -1538,7 +1616,7 @@ p.dri_rss_link a {
     }
     .dri_collection_image {
         padding: 0;
-        #margin: 0 14px 0 14px;
+        //margin: 0 14px 0 14px;
         height: 128px;
         overflow: hidden;
     }
@@ -1779,7 +1857,7 @@ p.dri_rss_link a {
     top: 100%;
     right: -14%;
     /* dropdown left or right */
-    
+
     z-index: 1000;
     display: none;
     list-style: none;
@@ -1804,13 +1882,33 @@ p.dri_rss_link a {
         }
     }
 }
+
+/*-------------- Organisations modal -----------------*/
+
+#dri_organisations_modal_id {
+  /* Important part */
+  .modal-dialog{
+    overflow-y: initial !important
+  }
+  .modal-body{
+    height: 60vh;
+    overflow-y: auto;
+  }
+}
 /*-------------- Collection status and Features  --------------*/
 
 .dri_object_second_block {
     padding: 0;
     margin: 0;
-    li {
-        width: 250px;
+    ul{
+       padding: 0;
+       margin: 0 0 0 15px;
+      li {
+           font-size: 1.1em;
+           text-decoration: none;
+           padding:0;
+           margin:0;
+      }
     }
 }
 .dri_back_search a {
@@ -1884,7 +1982,7 @@ ul.dri_view_collection {
         border-bottom: 1px solid $dri_thingrey;
         color: $dri_darkgrey;
         a {
-            list-style: none;  
+            list-style: none;
             color: $dri_midgrey;
             display: block;
         }
@@ -1947,12 +2045,12 @@ ul.dri_view_collection {
                 margin-left: 10px;
             }
             /*** custom checkboxes ***/
-            
+
             input[type=checkbox] {
                 display: none;
             }
             /* to hide the checkbox itself */
-            
+
             input[type=checkbox] + span:after {
                 font-family: FontAwesome;
                 display: inline-block;
@@ -1963,19 +2061,19 @@ ul.dri_view_collection {
                 font-size: 110%;
             }
             /* unchecked icon */
-            
+
             input[type=checkbox] + span:after {
                 letter-spacing: 10px;
             }
             /* space between checkbox and label */
-            
+
             input[type=checkbox]:checked + span:after {
                 content: "\f02e";
                 color: $dri_red;
                 font-size: 110%;
             }
             /* checked icon */
-            
+
             input[type=checkbox]:checked + span:after {
                 letter-spacing: 5px;
             }
@@ -2034,6 +2132,16 @@ ul.dri_view_collection {
     clear: both;
     .dri_collection_institutes_pages_img {
         border-right: 1px solid $dri_thingrey;
+        padding-top: -30px;
+        padding-bottom: -30px;
+        margin-top: 40px;
+        margin-bottom: 40px;
+        img {
+            max-height: 75px;
+            max-width: 90%;
+        }
+    }
+    .dri_collection_institutes_modal_img {
         padding-top: -30px;
         padding-bottom: -30px;
         margin-top: 40px;
@@ -2182,15 +2290,7 @@ ul.dri_collection_institutes_list {
 .dri_funder_institutes {
     padding-top: 10px;
     margin: auto;
-    ul {
-        list-style: none;
-        li {
-            display: block;
-            float: left;
-            padding: 10px;
-            height: 80px;
-        }
-    }
+    margin-left: 2.5cm;
     img {
         vertical-align: middle;
     }
@@ -2266,7 +2366,7 @@ ul.dri_collection_institutes_list {
     color: $dri_midgrey;
 }
 /*-- Popover Text *--/
- * 
+ *
  */
 
 .popover {
@@ -2377,7 +2477,7 @@ ul.dri_collection_institutes_list {
                 -webkit-border-radius: none;
                 -moz-border-radius: 0px;
                 vertical-align: top;
-                padding-bottom: 12px;
+                // padding-bottom: 12px;
                 width: 150px;
                 overflow-wrap: initial;
             }
@@ -2393,6 +2493,9 @@ ul.dri_collection_institutes_list {
             }
             a.destructive {
                 color: $dri_midgrey;
+                cursor: pointer;
+                // keep icon and text on same line
+                white-space: nowrap;
             }
         }
     }
@@ -2590,8 +2693,34 @@ ul.dri_collection_institutes_list {
     filter: alpha(opacity=0);
 }
 .dri_dsa_ident {
-  display: inline; 
-  float: right; 
-  width: 100px; 
+  display: inline;
+  float: right;
+  width: 100px;
   height: 100px;
+}
+.dri_clipboard_text {
+    height: 100%;
+    width: 100%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+    border: none;
+    resize: none;
+}
+
+.ui-autocomplete-loading {
+    background:url('colorbox/loading.gif') no-repeat right center;
+}
+
+.choose-vocab-container {
+    .vocab-dropdown {
+        margin-bottom: 5px;
+        width: auto !important;
+    }
+    display: none;
+}
+
+.dri_help_popover {
+    padding-left: 5px;
+    cursor: help;
 }

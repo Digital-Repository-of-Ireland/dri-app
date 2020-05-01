@@ -4,9 +4,9 @@ class CreateArchiveJob
 
   @queue = :create_archive
 
-  def self.perform(object_id, email) 
+  def self.perform(object_id, email)
     object = DRI::Identifier.retrieve_object(object_id)
-    
+
     # Get metadata
     # Get assets if masterfile
     # Get surrogates if read
@@ -37,36 +37,25 @@ class CreateArchiveJob
     # End User Agreement
     zipfile.add("#{object.noid}/End_User_Agreement.txt", "app/assets/text/End_User_Agreement.txt")
 
-    storage = StorageService.new
-
     checksums = []
 
     object.generic_files.each do |gf|
       # exclude presevation files
       next if gf.preservation_only == 'true'
-      
+
       if get_inherited_masterfile_access(object) == "public"
         zipfile.add("#{object.noid}/originals/#{gf.noid}_#{gf.label}", gf.path)
         checksums << "#{gf.original_checksum.first} originals/#{gf.noid}_#{gf.label}"
       end
 
       # Get surrogates
-      surrogate = Tempfile.new('surrogate')
-      storage_url = storage.surrogate_url(object.noid,"#{gf.noid}_full_size_web_format")
+      surrogate = file_surrogate(object, gf)
+      if surrogate
+        zipfile.add("#{object.noid}/optimised/#{gf.noid}_optimised_#{gf.label}", surrogate)
 
-      # handle case of using file storage as well as S3
-      if storage_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
-        surrogate.binmode
-        surrogate.write HTTParty.get(storage_url).parsed_response
-        surrogate.close
-      else
-        FileUtils.cp(storage_url, surrogate.path)
+        hash = Digest::MD5.hexdigest(File.read(surrogate))
+        checksums << "#{hash} optimised/#{gf.noid}_optimised_#{gf.label}"
       end
-
-      zipfile.add("#{object.noid}/optimised/#{gf.noid}_optimised_#{gf.label}", surrogate)
-
-      hash = Digest::MD5.hexdigest(File.read(surrogate))
-      checksums << "#{hash} optimised/#{gf.noid}_optimised_#{gf.label}"
     end
 
     md5file = Tempfile.open('checksums')
@@ -99,4 +88,25 @@ class CreateArchiveJob
     get_inherited_masterfile_access(obj.governing_collection)
   end
 
+  def self.file_surrogate(object, generic_file)
+    storage = StorageService.new
+
+    surrogate = Tempfile.new('surrogate')
+    storage_url = storage.surrogate_url(object.noid,"#{generic_file.noid}_full_size_web_format") ||
+                  storage.surrogate_url(object.noid,"#{generic_file.noid}_webm") ||
+                  storage.surrogate_url(object.noid,"#{generic_file.noid}_mp3")
+
+    return nil unless storage_url
+
+    # handle case of using file storage as well as S3
+    if storage_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
+      surrogate.binmode
+      surrogate.write HTTParty.get(storage_url).parsed_response
+      surrogate.close
+    else
+      FileUtils.cp(storage_url, surrogate.path)
+    end
+
+    surrogate
+  end
 end

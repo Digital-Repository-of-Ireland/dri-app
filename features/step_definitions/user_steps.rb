@@ -1,43 +1,40 @@
 Given /^I am logged in as "([^\"]*)"$/ do |login|
-  email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
-  @user.confirm
-  delete destroy_user_session_path(@user)
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
-  click_button("Login")
-  step 'I should be logged in'
+  with_login(login)
+end
+
+Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
+  with_login(login) do |user|
+    group = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true)
+    membership = @user.join_group(group.id)
+    membership.approved_by = @user.id
+    membership.save
+  end
+end
+
+Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, password|
+  with_login(login, password: password)
+end
+
+Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
+  # going through web form means site will be configured to users locale
+  with_web_login(login, locale: lang)
+end
+
+Given /^I am logged in as "([^\"]*)" with no language$/ do |login|
+  with_login(login, locale: nil)
 end
 
 Given /^I am logged in as "([^\"]*)" and accept cookies$/ do |login|
   email = "#{login}@#{login}.com"
   @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm
-  delete destroy_user_session_path(@user)
+  delete user_group.destroy_user_session_path(@user)
   visit path_to("sign in")
+  step 'I accept cookies terms'
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
   step 'I accept cookies terms'
   click_button("Login")
-  step 'I should be logged in'
-end
-
-Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)"$/ do |login, group|
-  email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png')) if User.find_by_email(email).nil?
-  @user.confirm
-  @user.save
-  group_id = UserGroup::Group.find_or_create_by(name: group, description: "Test group", is_locked: true).id
-  membership = @user.join_group(group_id)
-  membership.approved_by = @user.id
-  membership.save
-  delete destroy_user_session_path(@user)
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
-  click_button("Login")
-  step 'I should be logged in'
 end
 
 Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$/ do |login, group|
@@ -56,21 +53,9 @@ Given /^I am logged in as "([^\"]*)" in the group "([^\"]*)" and accept cookies$
   membership.save
   delete destroy_user_session_path(@user)
   visit path_to("sign in")
+  step 'I accept cookies terms'
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => "password")
-  step 'I accept cookies terms'
-  click_button("Login")
-  step 'I should be logged in'
-end
-
-Given /^I am logged in as "([^\"]*)" with password "([^\"]*)"$/ do |login, password|
-  email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => password, :password_confirmation => password, :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
-  @user.confirm
-  delete destroy_user_session_path(@user)
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => password)
   click_button("Login")
   step 'I should be logged in'
 end
@@ -79,35 +64,11 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" and accept cookies
   email = "#{login}@#{login}.com"
   @user = User.create(:email => email, :password => password, :password_confirmation => password, :locale => "en", :first_name => "fname", :second_name => "sname", :image_link => File.join(cc_fixture_path, 'sample_image.png'))
   @user.confirm
-  delete destroy_user_session_path(@user)  
+  delete destroy_user_session_path(@user)
   visit path_to("sign in")
   fill_in("user_email", :with => email)
   fill_in("user_password", :with => password)
   step 'I accept cookies terms'
-  click_button("Login")
-  step 'I should be logged in'
-end
-
-Given /^I am logged in as "([^\"]*)" with language "([^\"]*)"$/ do |login, lang|
-  email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :locale => lang, :first_name => "fname", :second_name => "sname")
-  @user.confirm
-  delete destroy_user_session_path(@user)
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
-  click_button("Login")
-  step 'I should be logged in'
-end
-
-Given /^I am logged in as "([^\"]*)" with no language$/ do |login|
-  email = "#{login}@#{login}.com"
-  @user = User.create(:email => email, :password => "password", :password_confirmation => "password", :first_name => "fname", :second_name => "sname")
-  @user.confirm
-  delete destroy_user_session_path(@user)  
-  visit path_to("sign in")
-  fill_in("user_email", :with => email)
-  fill_in("user_password", :with => "password")
   click_button("Login")
   step 'I should be logged in'
 end
@@ -117,12 +78,14 @@ Then /^I should see an edit link for "([^\"]*)"$/ do |login|
   page.should have_link(email, href: "/user_groups/users/edit")
 end
 
+# slow
 Given /^I am not logged in$/ do
-  step 'I am on the home page'
-  Capybara.reset_sessions!
-  if Capybara.current_driver.to_s == "rack_test"
-    page.driver.submit :delete, "/user_groups/users/sign_out", {}
-  end
+  logout
+  # step 'I am on the home page'
+  # Capybara.reset_sessions!
+  # if Capybara.current_driver.to_s == "rack_test"
+  #   page.driver.submit :delete, "/user_groups/users/sign_out", {}
+  # end
 end
 
 Given /^an account for "([^\"]*)" already exists$/ do |login|
@@ -183,8 +146,8 @@ end
 
 Then /^I should be logged in$/ do
   step 'I should have a cookie _dri-app_session'
-  step 'I am on the user profile page'
-  step 'I should see a link to sign out'
+  #step 'I am on the user profile page'
+  #step 'I should see a link to sign out'
 end
 
 Then /^I should be logged out$/ do
@@ -194,7 +157,7 @@ end
 
 Then /^I should be logged in as "(.*?)"$/ do |login|
   step 'I should be logged in'
-  find('#view_account').trigger('click')
+  step 'I am on the user profile page'
   page.should have_content(login)
 end
 
@@ -209,6 +172,10 @@ end
 
 When /^I submit the Edit User form$/ do
   click_button 'Update'
+end
+
+When /^I click the "([^\"]*)" button$/ do |button_text|
+  click_button(button_text)
 end
 
 Then /^my authentication details should be updated from "([^\"]*)", "([^\"]*)" to "([^\"]*)", "([^\"]*)"$/ do |oldlogin, oldpassword, newlogin, newpassword|

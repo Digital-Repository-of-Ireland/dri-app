@@ -1,5 +1,5 @@
 class ActivityDatatable
-  delegate :params, :h, :link_to, :catalog_path, :object_file_path, to: :@view
+  delegate :params, :h, :link_to, :solr_document_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
@@ -19,17 +19,17 @@ private
     display_on_page.map do |version|
       update = update_info(version)
 
-      if update[:type] == "object"
-        link = catalog_path(update[:updated_id])
-      else
-        link = update[:batch_id].present? ? object_file_path(update[:batch_id], update[:updated_id]) : ''
-      end
+      link = if update[:type] == "object"
+               solr_document_path(update[:updated_id])
+             else
+               update[:batch_id].present? ? object_file_path(update[:batch_id], update[:updated_id]) : ''
+             end
 
       [
         update[:updated_at],
         link_to(update[:updated_id], link),
         update[:type],
-        link_to(update[:collection_title], catalog_path(update[:collection_id])),
+        link_to(update[:collection_title], solr_document_path(update[:collection_id])),
         update[:committer],
         update[:status]
       ]
@@ -48,9 +48,9 @@ private
     versions
   end
 
-  def display_on_page 
-    fetch_versions.page(page).per(per_page) 
-  end 
+  def display_on_page
+    fetch_versions.page(page).per(per_page)
+  end
 
   def page
     params[:start].to_i/per_page + 1
@@ -73,14 +73,14 @@ private
     info = {}
     info[:committer] = version.committer_login
     info[:updated_at] = version.created_at
-    
+
     updated_obj = version.obj_id
     updated_version = version.version_id
 
     if updated_obj
       info[:updated_id] = updated_obj
       info[:type] = 'Object'
-      
+
       # get object solr info
       doc = solr_doc_for_id(updated_obj)
       if doc
@@ -111,7 +111,7 @@ private
         info[:collection_id] = ''
         info[:collection_title] = ''
         info[:status] = "Not found"
-      end    
+      end
     end
 
     info

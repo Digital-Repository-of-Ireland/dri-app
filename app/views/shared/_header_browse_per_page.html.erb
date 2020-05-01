@@ -1,20 +1,26 @@
-<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index')%> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
+<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index') %> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 <nav id="dri_pager_nav_id" class="dri_sort_nav">
 
-	<select id="dri_page_options_id" class="dri_sort_options" name="sort_options" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
+	<select id="dri_page_options_id" class="dri_select" name="per_page" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
 		<%- blacklight_config.per_page.each do |count| %>
-			<% current_params = params.clone %>
+			<% current_params = search_state.params_for_search %>
 			<% current_params[:per_page] = count %>
 			<% unless current_params[:page].blank? %>
 			  <% current_params.delete(:page) %>
 			<% end %>
-			
-			<% if current_per_page == count %>
-			  <option value="<%= url_for(current_params) %>" selected> 
+
+			<% if params[:controller] == 'saved_searches' %>
+			  <% url = blacklight.url_for(current_params) %>
 			<% else %>
-			  <option value="<%= url_for(current_params) %>"> 
+			  <% url = url_for(current_params) %>
 			<% end %>
-			  <%= t(:'blacklight.search.per_page.label', :count => count).html_safe %> 
+
+			<% if current_per_page == count %>
+			  <option value="<%= url %>" selected>
+			<% else %>
+			  <option value="<%= url %>">
+			<% end %>
+			  <%= t(:'blacklight.search.per_page.label', count: count).html_safe %>
 			  </option>
 		<%- end -%>
 	</select>

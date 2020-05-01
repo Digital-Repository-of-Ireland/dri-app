@@ -5,6 +5,7 @@ class SolrDocument
   include Blacklight::Document
   include Blacklight::Document::ActiveModelShim
   include Blacklight::AccessControls::PermissionsQuery
+  include BlacklightOaiProvider::SolrDocument
 
   include UserGroup::PermissionsSolrDocOverride
   include UserGroup::InheritanceMethods
@@ -14,6 +15,7 @@ class SolrDocument
   include DRI::Solr::Document::Documentation
   include DRI::Solr::Document::Collection
   include DRI::Solr::Document::Metadata
+  include DRI::Solr::Document::Oai
 
   # DublinCore uses the semantic field mappings below to assemble
   # an OAI-compliant Dublin Core document
@@ -23,12 +25,23 @@ class SolrDocument
   # and Blacklight::Solr::Document#to_semantic_values
   # Recommendation: Use field names from Dublin Core
   use_extension(Blacklight::Document::DublinCore)
+
   field_semantics.merge!(
-    title: 'title_display',
-    author: 'author_display',
-    language: 'language_facet',
-    format: 'format'
+    title: 'title_tesim',
+    description: 'description_tesim',
+    creator: 'creator_tesim',
+    publisher: 'publisher_tesim',
+    subject: 'subject_tesim',
+    type: 'type_tesim',
+    language: 'language_tesim',
+    format: 'file_type_tesim',
+    rights: 'rights_tesim',
   )
+
+  def self.find(id)
+    result = ActiveFedora::SolrService.query("id:#{id}", rows: 1)
+    SolrDocument.new(result.first) if result.present?
+  end
 
   def active_fedora_model
     self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
@@ -43,16 +56,30 @@ class SolrDocument
     if ids.present?
       docs = {}
       query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-      results = ActiveFedora::SolrService.query(query)
+      results = ActiveFedora::SolrService.query(query, rows: ids.length)
       results.each { |r| docs[r['id']] = SolrDocument.new(r) }
     end
 
     docs
   end
-  
+
+  # Get the earliest ancestor for any inherited attribute
+  def ancestor_field(field)
+    return self[field] if self[field].present?
+
+    return nil unless ancestor_docs.present?
+
+    ancestor_ids.each do |ancestor_id|
+      ancestor = ancestor_docs[ancestor_id]
+      return ancestor[field] if ancestor && ancestor[field].present?
+    end
+
+    nil
+  end
+
   def ancestor_ids
     ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
-    return [] unless self[ancestors_key].present?    
+    return [] unless self[ancestors_key].present?
 
     self[ancestors_key]
   end
@@ -60,7 +87,7 @@ class SolrDocument
   def ancestors_published?
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
-      return false unless doc.status == 'published'
+      return false unless doc&.status == 'published'
     end
 
     true
@@ -76,7 +103,7 @@ class SolrDocument
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{id}"
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
-    
+
     ActiveFedora::SolrService.count(files_query) > 0
   end
 
@@ -97,49 +124,57 @@ class SolrDocument
   def editable?
     active_fedora_model && active_fedora_model == 'DRI::EncodedArchivalDescription' ? false : true
   end
-  
-  # Get the earliest ancestor for any inherited attribute
-  def ancestor_field(field)
-    return self[field] if self[field].present? && self[field].any?(&:present?)
-
-    return nil unless ancestor_docs.present?
-
-    ancestor_ids.each do |ancestor_id|
-      ancestor = ancestor_docs[ancestor_id]
-      return ancestor[field] if ancestor[field].present?
-    end
-
-    nil
-  end
 
   def has_doi?
     doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
 
-    self[doi_key].present? ? true : false
+    self[doi_key].present?
   end
 
   def has_geocode?
     geojson_key = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
-    self[geojson_key].present? ? true : false
+    self[geojson_key].present?
   end
-  
+
+  # @param [String] field_name
+  # @return [Boolean]
+  def truthy_index_field?(field_name)
+    key = ActiveFedora.index_field_mapper.solr_name(field_name)
+
+    return false unless self[key].present?
+    value = if self[key].is_a?(Array)
+              self[key].first
+            else
+              self[key]
+            end
+    value == 'true' || value == true
+  end
+
+  # legacy from sufia, all objects / collections have model DRI::Batch
+  # Generic files are DRI::GenericFile
+  # @return [Boolean]
+  def digital_object?
+    self['has_model_ssim'].include?("DRI::DigitalObject")
+  end
+
+  # @return [Boolean]
+  def generic_file?
+    self['has_model_ssim'].include?("DRI::GenericFile")
+  end
+
+  # @return [Boolean]
+  def object?
+    !collection? && digital_object?
+  end
+
   def collection?
-    is_collection_key = ActiveFedora.index_field_mapper.solr_name('is_collection')
-
-    return false unless self[is_collection_key].present?
-
-    is_collection = if self[is_collection_key].is_a?(Array)
-                      self[is_collection_key].first
-                    else
-                      self[is_collection_key]
-                    end
-
-    is_collection == 'true' || is_collection == true ? true : false
+    truthy_index_field?('is_collection')
   end
 
   def root_collection?
-    collection_id ? false : true
+    # a collection without any governing / parent collection
+    collection? && (collection_id ? false : true)
   end
 
   def sub_collection?
@@ -147,14 +182,14 @@ class SolrDocument
   end
 
   def institutes
-    institute_names = ancestor_field(ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string))
+    institute_names = ancestor_field(Solrizer.solr_name('institute', :stored_searchable, type: :string))
     institutes = Institute.where(name: institute_names)
 
-    institutes.to_a 
+    institutes.to_a
   end
 
   def licence
-    licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
+    licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
 
     licence = if self[licence_key].present?
       Licence.where(name: self[licence_key]).first || self[licence_key]
@@ -166,13 +201,13 @@ class SolrDocument
   end
 
   def object_profile
-    key = ActiveFedora.index_field_mapper.solr_name('object_profile', :displayable)
+    key = Solrizer.solr_name('object_profile', :displayable)
 
     self[key].present? ? JSON.parse(self[key].first) : {}
   end
 
   def root_collection_id
-    root_key = ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+    root_key = Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
 
     self[root_key].present? ? self[root_key].first : nil
   end
@@ -185,6 +220,19 @@ class SolrDocument
     root
   end
 
+  def relatives
+    relatives_key = Solrizer.solr_name('isMemberOf', :symbol).to_sym
+    return [] unless self[relatives_key].present?
+
+    relatives_ids = self[relatives_key]
+
+    relatives = ActiveFedora::SolrService.query(
+                "id:(#{relatives_ids.join(' OR ')})",
+                rows: relatives_ids.length
+              )
+    relatives.map { |r| r['hasMember_ssim'] }.flatten
+  end
+
   def governing_collection
     governing_id = collection_id
     return nil unless governing_id
@@ -193,10 +241,10 @@ class SolrDocument
   end
 
   def retrieve_ancestor_licence
-    ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    ancestors_key = Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return nil unless ancestor_docs.present?
 
-    licence_key = ActiveFedora.index_field_mapper.solr_name('licence', :stored_searchable, type: :string).to_sym
+    licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
 
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
@@ -207,9 +255,13 @@ class SolrDocument
   end
 
   def status
-    status_key = ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :string).to_sym
+    status_key = Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym
 
     self[status_key].first
+  end
+
+  def draft?
+    status == 'draft'
   end
 
   def published?
@@ -217,7 +269,7 @@ class SolrDocument
   end
 
   def public_read?
-    read_access_groups_key = ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)
+    read_access_groups_key = Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)
     groups = get_permission_key(self.id, read_access_groups_key)
     return false if groups.nil? #groups could be nil if read access set to restricted
 
@@ -226,9 +278,5 @@ class SolrDocument
 
   def permissions_doc(id)
     get_permissions_solr_response_for_doc_id(id)
-  end
-
-  def draft?
-    status == 'draft'
   end
 end

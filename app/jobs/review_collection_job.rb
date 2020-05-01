@@ -24,8 +24,8 @@ class ReviewCollectionJob < StatusJob
   end
 
   def sub_collection_review_jobs(collection_id, user_id)
+    # need to include published and reviewed sub-collections in case new draft objects have been added
     q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:draft"
     f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     job_ids = []
@@ -45,5 +45,6 @@ class ReviewCollectionJob < StatusJob
   def update(identifier, total, completed)
     at(completed, total,
        "Reviewing #{identifier}: #{completed} of #{total} sub-collections marked as reviewed")
+    UserBackgroundTask.find_by(job: uuid).try(:update)
   end
 end

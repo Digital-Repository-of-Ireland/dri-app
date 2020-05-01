@@ -10,10 +10,14 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-rvm use ruby-2.2.4 || exit 100
-rvm use ruby-2.2.4@build --create || exit 100
+ruby_version=2.6.5
 
-branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
+rvm use ruby-$ruby_version || exit 100
+
+branch=$(echo $GIT_BRANCH | cut -d / -f 2)
+rvm use ruby-$ruby_version@$branch --create || exit 100
+
+#branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
 case $1 in
 patch)
@@ -22,13 +26,16 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-2.2.4@build || exit 100
+rvm --force gemset empty ruby-$ruby_version@$branch || exit 100
+gem install bundler
+
+rm -rf dri_files/*
 
 cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
 cp config/database.yml.sample config/database.yml
 cp config/redis.yml.sample config/redis.yml
-#cp config/doi.yml.sample config/doi.yml
+cp config/blacklight.yml.sample config/blacklight.yml
 
 cat > config/settings.local.yml << __EOF__
 interface:
@@ -38,7 +45,7 @@ dri:
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
-  server: http://localhost:8081
+  server: http://127.0.0.1:8081
   access_key_id: anykey
   secret_access_key: anykey
   bucket_prefix: buildbot
@@ -46,71 +53,63 @@ doi:
   enable: false
 __EOF__
 
-    bundle install --quiet
+    bundle install --without production
+    
+    bundle exec rake server:start
+    bundle exec rake server:config
+
     bundle exec rake db:migrate
     bundle exec rake db:seed
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
-    bundle exec rake dri:fixtures:generate
-    bundle exec fakes3 -r fakes3_root -p 8081 -H localhost &>/dev/null &
-    echo $! > fakes3.pid
+    bundle exec rake db:environment:set RAILS_ENV=test
+    
+    source /home/jenkins/localstack/bin/activate
+    SERVICES=s3:8081 localstack start --host &>/dev/null &
+    echo $! > localstack.pid
     ;;
+rspec)
+    bundle exec rake rspec RUN_COVERAGE=on
+    ;;
+cucumber)
+    bundle exec rake cucumber_ci
+    ;;
+api)
+   bundle exec rake api:docs:generate
+   ;; 
 compile)
-    ;;
-check)
-    bundle exec rake ci_spec || exit 100
-    bundle exec rake db:migrate
-    bundle exec rake db:seed
-    bundle exec rake dri:fixtures:generate
-    bundle exec rake db:test:prepare
-    bundle exec rake ci || exit 100
-    bundle exec rake rdoc
     bundle exec rake assets:precompile
     ;;
-package)
-    ;;
-upload)
-
-    cd ~/dri-app.git
+push)
+    rm -rf dri-app-mirror
+    git clone --mirror ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git dri-app-mirror
+    cd dri-app-mirror
+    git remote set-url --push origin git@github.com:Digital-Repository-of-Ireland/dri-app.git
     git fetch -p origin
     git push --mirror
-    cd -
-
-    #only deploy to test instance on develop branch
-    #if [[ "$branch" == "develop" ]]; then
-
-      #setup ssh agent for key forwarding to work
-      #eval ssh-agent $SHELL
-      #eval "$(ssh-agent)"
-      #ssh-add ~/.ssh/id_rsa
-
-      #Now deploy update app repo codebase
-      #export PYTHONPATH=/usr/local/ansible-1.9.6/lib
-      #/usr/local/ansible-1.9.6/bin/ansible-playbook -i ../../ansible-dri-infrastructure-trusty64-master/build/inventory/hosts.buildbot ../../ansible-dri-infrastructure-trusty64-master/build/site.yml --vault-password-file ~/.vault-pass.txt -e "deploy_branch=develop" --tags=getfacts,dri_app,dri_app_worker
-    #fi
-
+    cd ..
     ;;
 compile_extra)
 
     #only check test instance on develop branch
-    #if [[ "$branch" == "develop" ]]; then
+    if [[ "$branch" == "false" ]]; then
 
       #check application
-      #OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
-      #sleep 60
-      #OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
+      OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
+      sleep 60
+      OUTPUT=`curl -s -o /dev/null -I -w "%{http_code}" http://test.dri.ie/is_it_working`
 
-      #if [[ $OUTPUT -ne 200 ]] ; then
-        #printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
-        #exit 1
-      #else
-        #printf "Test Application Stack OK. [HTTP: $OUTPUT]\n"
-      #fi
+      if [[ $OUTPUT -ne 200 ]] ; then
+        printf "Test Application Stack FAULT! [HTTP: $OUTPUT]\n"
+        exit 1
+      else
+        printf "Test Application Stack OK. [HTTP: $OUTPUT]\n"
+      fi
 
-    #fi
+    fi
 
     ;;
 uninstall_deps)
-    kill -TERM $(cat fakes3.pid) || true
+    kill -TERM $(cat localstack.pid) || true
     ;;
 esac

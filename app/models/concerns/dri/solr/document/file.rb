@@ -8,19 +8,29 @@ module DRI::Solr::Document::File
     'mixed_types' => 'MixedType'
   }
 
-  def assets(with_preservation = false)
+  def assets(with_preservation: false, ordered: false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
-    query = ::Solr::Query.new(files_query)
-    
-    assets = []
-    query.each_solr_document do |sd|
-      assets << sd unless (with_preservation == false && sd.preservation_only?)
-    end
 
-    assets
+    query = ::Solr::Query.new(files_query)
+    assets = query.reject { |sd| with_preservation == false && sd.preservation_only? }
+    ordered ? sort_assets(assets) : assets
   end
-  
+
+  def characterized?
+    # not characterized if all empty
+    !self[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+  end
+
+  def sort_assets(assets)
+    assets.sort do |a,b|
+      DRI::Sorters.trailing_digits_sort(
+        File.basename(a.label, File.extname(a.label)),
+        File.basename(b.label, File.extname(b.label))
+      )
+    end
+  end
+
   def preservation_only?
     key = 'preservation_only_tesim'
 
@@ -29,7 +39,7 @@ module DRI::Solr::Document::File
 
   def label
     self['label_tesim'].present? ? self['label_tesim'].first : ''
-  end 
+  end
 
   def mime_type
     mime_key = 'mime_type_tesim'
@@ -62,14 +72,14 @@ module DRI::Solr::Document::File
     end
 
     labels = labels.uniq
-    label = labels.length > 1 ? FILE_TYPE_LABELS['mixed_types'] : labels.first 
-    
+    label = labels.length > 1 ? FILE_TYPE_LABELS['mixed_types'] : labels.first
+
     I18n.t("dri.data.types.#{label}")
   end
 
   def icon_path
     types = file_types
-    
+
     icons = []
     types.each do |type|
       format = type.to_s.downcase
@@ -99,11 +109,12 @@ module DRI::Solr::Document::File
   def read_master?
     master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
     return true if self[master_file_key] == ['public']
-    
+    return false if self[master_file_key] == ['private']
+
     result = false
     ancestor_ids.each do |id|
       ancestor = ancestor_docs[id]
-      next if ancestor[master_file_key].nil? || ancestor[master_file_key] == 'inherit'
+      next if ancestor[master_file_key].nil? || ancestor[master_file_key].include?('inherit')
 
       result = ancestor[master_file_key] == ['public'] ? true : false
       break
@@ -113,8 +124,11 @@ module DRI::Solr::Document::File
   end
 
   def surrogates(file_id, timeout = nil)
-    storage = StorageService.new
-    storage.get_surrogates(self, file_id, timeout)
+    storage_service.get_surrogates(self, file_id, timeout)
+  end
+
+  def storage_service
+    @storage_service ||= StorageService.new
   end
 
   def text?

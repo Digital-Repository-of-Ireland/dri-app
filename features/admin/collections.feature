@@ -1,4 +1,4 @@
-@collections @req-17 @done @req-61 @req-63 @javascript
+@collections @javascript
 Feature: Collections
   In order to manage my Digital Objects
   As an authorized user
@@ -6,7 +6,7 @@ Feature: Collections
   And to retrieve my Digital Objects by collection
 
 Background:
-  Given I am logged in as "user1" in the group "cm" and accept cookies
+  Given I am logged in as "user1" in the group "cm"
 
 @wip
 Scenario: Navigating to the collections page
@@ -43,6 +43,23 @@ Scenario: Constructing a collection with invalid permissions
   And I press the button to "create a collection"
   Then I should see a failure message for invalid collection
 
+Scenario: Constructing a collection (form focus)
+  Given I am on the home page
+  When I go to "create new collection"
+  Then the element with id "batch_title][" should be focused
+
+Scenario: Updating a collection (description form focus)
+  Given a collection with pid "collperm" created by "user1"
+  When I go to the "collection" "edit" page for "collperm"
+  And I press the edit collection button with text "Add Description"
+  Then the element with id "batch_description][" should be focused
+
+Scenario: Updating a collection (creators form focus)
+  Given a collection with pid "collperm" created by "user1"
+  When I go to the "collection" "edit" page for "collperm"
+  And I press the edit collection button with text "Add Creator"
+  Then the element with id "batch_creator][" should be focused
+
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"
   When I go to the "collection" "edit" page for "collperm"
@@ -70,12 +87,14 @@ Scenario: Creating Digital Object in a governing collection using the web forms
 
 Scenario: Deleting a collection as an admin
   Given I am not logged in
-  Given I am logged in as "admin" in the group "admin" and accept cookies
+  Given I am logged in as "admin" in the group "admin"
   Given a collection with pid "coll6" created by "user1@user1.com"
   And the collection with pid "coll6" has status published
   When I go to the "my collections" "show" page for "coll6"
   Then I should see a button to delete collection with id coll6
-  When I press the modal button to "delete collection with id coll6" in "dri_delete_modal_id"
+  When I follow the link to delete a collection
+  And I press the button to "delete collection with id coll6"
+  And I accept the alert
   Then I should see a success message for deleting a collection
 
 Scenario: Non-admin should not be given option to delete
@@ -84,49 +103,6 @@ Scenario: Non-admin should not be given option to delete
   When I go to the "my collections" "show" page for "collec7"
   And I click the link to edit a collection
   Then I should not see a link to delete a collection
-
-Scenario: Committing a Digital Object which is a duplicate of an existing Digital Object in the same collection
-#  Given a Digital Object with pid "dri:obj6" and title "Object 6"
-#  And a collection with pid "dri:coll6"
-#  And the collection "dri:coll6" already contains the Digital Object "dri:obj6"
-#  When I commit the Digital Object
-#  Then I should get a duplicate object warning
-#  And I should be given a choice of using the existing object or creating a new one
-
-@wip
-Scenario: Using the new design to create a collection
-  Given I am on the home page
-  Then I should see a link to collections
-  When I hover over the link to collections
-  Then I should see the collection sub-menu
-  When I follow the link to add a new collection
-  Then I should see the select collection type form
-  When I enter a collection title
-  And I select a metadta type
-  And I press the button to Continue
-  Then I should see the add your collection details form
-  When I upload a cover image
-  And I enter a description
-  And I enter a creation date
-  And I select the default copyright holder
-  And I press select the desired licence
-  And I press the button to download the Deposit Agreement
-  And I sign the Deposit Agreement
-  And I upload the signed Deposit Agreement
-  And I tick the box to agree to the terms and conditions of the Deposit Agreement
-  And I select the default language
-  And I add read access group public
-  And I select an Institutional Entity from the dropdown list
-  And I press the button to add the existing Institutional Entity
-  And I upload a logo for a new Institutional Entity
-  And I enter a name for the new Institutional Entity
-  And I enter a url for the new Institutional Entity
-  And I press the button to add the new institutional Entity
-  And I select read only access for public users
-  And I give public users search access
-  And I give public users export access
-  And I press the button to save draft
-  Then my collection should be created
 
 @wip @noexec
 Scenario: user requests access to readers group for restricted asset

@@ -12,13 +12,13 @@ module PathTranslator
 
       when /^(the )?show Digital Object page for id (.+)$/
         pid = ($2 == "@random")? "dri:o" + @random_pid : $2
-        catalog_path(pid)
+        solr_document_path(pid)
 
       when /^(the )?edit Digital Object page for id (.+)$/
         edit_object_path($2)
 
       when /^(the )?show page for the collection "(.+)"$/
-        catalog_path($2)
+        solr_document_path($2)
 
       when /^(the )?edit collection page for id (.+)$/
         edit_collection_path($2)
@@ -26,22 +26,29 @@ module PathTranslator
       when /^(the )?home page$/
         root_path
 
+      when /^(the )?catalog page$?/
+        search_catalog_path
+
       when /^(the )?my collections page$/
         my_collections_index_path
 
+      when /^(the )?my collections page for id (.+)$/
+        pid = ($2 == "@random")? "dri:o" + @random_pid : $2
+        my_collections_path(pid)
+
       when /^(the )?user profile page$/
-        user_group.profile_path      
+        user_group.profile_path
 
       when /^sign in$/
-        new_user_session_path
+        user_group.new_user_session_path
 
       # This should not be used as we cannot send a delete
       # Instead we should follow the sign out link
       when /^sign out$/
-        destroy_user_session_path
+        user_group.destroy_user_session_path
 
       when /^(the )?User Signin page$/
-        new_user_session_path
+        user_group.new_user_session_path
 
       when /^(the )?User Sign up page$/
         user_group.new_user_path
@@ -56,10 +63,10 @@ module PathTranslator
         collections_path
 
       when /^(the )?my saved search page$/
-        saved_searches_path
+	blacklight.saved_searches_path
 
       when /^(the )?show page for the collection$/
-        catalog_path(@collection.id)
+        solr_document_path(@collection.id)
 
       when /^(the )?licence index page$/
         licences_path
@@ -74,7 +81,19 @@ module PathTranslator
         new_organisation_path
 
       when /^(the )?organisations page$/
-        '/organisations'
+        organisations_path
+
+      when /^(the )?api docs page$/
+        rswag_path
+
+      when /^(the )?workspace page$/
+        workspace_path
+
+      when /^(the )?advanced search page$/
+        advanced_search_path
+
+      when /^(the )?advanced search page with (\w+) = (.+)$/
+        advanced_search_path("#{$2}": $3.strip)
 
       else
         raise('You specified an invalid path')
@@ -88,16 +107,16 @@ module PathTranslator
     case type
 
       when /object/
-        
+
         case page
           when /show/
-            catalog_path(pid)
+            solr_document_path(pid)
           when /edit/
             id = (pid == "created") ? @obj_pid : pid
             edit_object_path(id)
           when /modify/
             id = (pid == "created") ? @obj_pid : pid
-            my_collections_path(id)  
+            my_collections_path(id)
         else
             raise('Unknown route')
         end
@@ -114,10 +133,10 @@ module PathTranslator
             raise('Unknown route')
         end
 
-       when /collection/
+      when /collection/
         case page
           when /show/
-            catalog_path(pid)
+            solr_document_path(pid)
           when /edit/
             edit_collection_path(pid)
           when /new object/

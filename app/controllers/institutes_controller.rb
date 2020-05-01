@@ -15,11 +15,15 @@ class InstitutesController < ApplicationController
     @institutes = Institute.all.order('name asc')
     @collections = {}
     @institutes.each do |institute|
-      @collections[institute.id] = institute_collections(institute[:name])
+      @collections[institute.id] = institute.collections.select { |c| c.published? }
     end
+
+    @depositing_institutes = @institutes.select { |i| i.depositing == true }
+    @other_institutes = @institutes.select { |i| i.depositing.blank? }
   end
 
   def new
+    @institutes = Institute.all.order('name asc')
     @inst = Institute.new
   end
 
@@ -93,12 +97,16 @@ class InstitutesController < ApplicationController
 
   # Associate institute
   def associate
-    add_or_remove_association
+    manage_association do
+      add_association
+    end
   end
 
   # Dis-associate institute
   def disassociate
-    add_or_remove_association(true)
+    manage_association do
+      delete_association
+    end
   end
 
   def set
@@ -128,7 +136,7 @@ class InstitutesController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.noid }
     end
   end
 
@@ -149,15 +157,16 @@ class InstitutesController < ApplicationController
       end
     end
 
-    def add_or_remove_association(delete = false)
+    def manage_association
       # save the institute name to the properties datastream
       @collection = retrieve_object(params[:object])
       raise DRI::Exceptions::NotFound unless @collection
 
       @collection.increment_version
-      delete ? delete_association : add_association
 
-      @collection_institutes = Institute.find_collection_institutes(@collection.institute)
+      yield
+
+      @collection_institutes = Institute.where(name: @collection.institute.flatten).to_a
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
 
       VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
@@ -167,7 +176,7 @@ class InstitutesController < ApplicationController
       preservation.preserve(false, ['properties'])
 
       respond_to do |format|
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @collection.noid }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.noid }
       end
     end
 
@@ -189,11 +198,7 @@ class InstitutesController < ApplicationController
 
     def delete_association
       institute_name = params[:institute_name]
-
-      institutes = @collection.institute.clone
-      institutes.delete(institute_name)
-      @collection.institute = institutes
-
+      @collection.institute = @collection.institute - [institute_name]
       raise DRI::Exceptions::InternalError unless @collection.save
 
       flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_removed')}"
@@ -201,28 +206,6 @@ class InstitutesController < ApplicationController
 
     def admin?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
-    end
-
-    def institute_collections(institute)
-      solr_query = institute_collections_query(institute)
-
-      ActiveFedora::SolrService.query(
-        solr_query,
-        defType: 'edismax',
-        fq: "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
-      )
-    end
-
-    def institute_collections_query(institute)
-      solr_query = ""
-      if !signed_in? || (!current_user.is_admin? && !current_user.is_cm?)
-        solr_query = "#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published AND "
-      end
-      solr_query = solr_query + 
-                 "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + institute.mb_chars.downcase + 
-                 "\" AND " + "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
-
-      solr_query
     end
 
     def update_params

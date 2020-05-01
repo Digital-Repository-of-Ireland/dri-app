@@ -1,0 +1,8 @@
+<% action = action.map(&:downcase) %>
+<% input_type ||= "input" %>
+<p class="add-text-field">
+  <i class="fa fa-plus">&nbsp;</i>
+  <a model-name="digital_object" data-input-type="<%= input_type %>" title="<%=action.map(&:capitalize).join(' ')%>">
+    <%= t("dri.views.objects.forms." + action.join('_')) %>
+  </a>
+</p>

@@ -3,7 +3,7 @@
 	<!-- close vc_title -->
 
 	<ul>
-		<% if current_or_guest_user && controller_name != 'my_collections' %>
+      <% if current_or_guest_user && controller_name != 'my_collections' %>
       <%= render_show_doc_actions %>
 		  <li>
 			  <% if @document.collection? %>
@@ -13,51 +13,76 @@
 			  <% end %>
 		  </li>
 		<% end %>
-		
+
 		<% if @document.has_geocode? %>
 		  <li>
-			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id, request_controller: controller_name), id: "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %> 
+			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id, request_controller: controller_name), id: "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %>
 		  </li>
 		<% end %>
-		
+
 		<li>
 			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
 		</li>
-		
+
 		<li>
 			<%= link_to t('blacklight.tools.endnote'), object_path(@document, format: 'endnote') %>
 		</li>
-		    
+
 		<li>
 			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), id: 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
 		</li>
-		
+
 		<% if (can? :edit, @document) %>
 		  <li>
 			  <%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), id: 'show_object_history_report' %>
 		  </li>
 		<% end %>
-		
+
 		<% if @document.published? && @document.public_read? %>
 		  <% @available = true %>
 		  <% @li_class = "dri_formats" %>
 		<% else %>
       <% @li_class = "dri_formats_spacing" %>
     <% end %>
-    
+
     <%= content_tag(:li, nil, class: @li_class) do %>
-    	<%= link_to(image_tag("rdf_icon.png", { title: t('dri.help.dri_view_rdf')}), url_for_document(@document.id, format: :ttl), target: :_blank) %>
-    	<% if !@document.collection? && @document.contains_images? && @available %>
-        <%= link_to(image_tag("iiif_logo.png", { title: t('dri.help.dri_view_iiif')}), "https://repository.dri.ie/mirador?manifest=https://repository.dri.ie#{iiif_manifest_path(@document.id, format: :json)}", target: :_blank) %>
-      <% end %>
+    	<%=
+	    	link_to(
+		    	image_tag("rdf_icon.png", title: t('dri.help.dri_view_rdf')),
+		    	url_for_document(@document.id, format: :ttl),
+		    	target: :_blank
+		    )
+		  %>
+  		<%
+	  		# if it's an object with images, show the manifest
+	  		# if it's a collection containing images, show the images as a sequence
+  			iiif_path = if !@document.collection? && @document.contains_images?
+					    	iiif_manifest_url(@document.id, format: :json)
+					    elsif @document.collection? && !@document.published_images.empty?
+					    	iiif_collection_sequence_url(@document.id, format: :json)
+					    else
+					    	nil
+					    end
+			@iiif_full_path = iiif_path ? "#{Rails.application.config.mirador_url}?manifest=#{iiif_path}" : nil
+  		%>
+  		    <% if @iiif_full_path && @available %>
+  			  <%=
+    			link_to(
+	    			image_tag('iiif_logo.png', title: t('dri.help.dri_view_iiif'), alt: 'Iiif logo'),
+				    @iiif_full_path,
+	    		    target: :_blank
+    			)
+  			  %>
+  			<% end %>
 		<% end %>
-    
-		<% if @available %>
-			<% image_for_search @document %>
-			<li class="dri_share">
-			  <%= social_share_button_tag(document_show_html_title, image: @search_image, popup: 'true') %>
-			</li>
-		<% end %>
+
+    <% if @available %>
+      <li class="dri_share">
+      	<% present(@document, DRI::ImagePresenter) do |images| %>
+          <%= social_share_button_tag(document_show_html_title, image: images.image_for_search, popup: 'true') %>
+        <% end %>
+      </li>
+    <% end %>
   </ul>
 </div>
 
@@ -94,8 +119,8 @@
 			<div class="modal-body">
 			</div>
 			<div class="modal-footer">
-				<%= link_to t('dri.views.catalog.buttons.download_metadata_xml'), 
-				    object_metadata_path(@document.id, format: :xml), {id: "download_metadata", class: "btn btn-default"} 
+				<%= link_to t('dri.views.catalog.buttons.download_metadata_xml'),
+				    object_metadata_path(@document.id, format: :xml), {id: "download_metadata", class: "btn btn-default"}
 				%>
 				<button type="button" class="btn btn-default" data-dismiss="modal">
 					<%= t('dri.window.modal.close') %>

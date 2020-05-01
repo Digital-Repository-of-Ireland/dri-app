@@ -30,7 +30,11 @@ module DRI::Formatters
       @object_hash = object_doc.extract_metadata(request_fields)
     end
 
-    def format(options = {})
+    # @param options [Hash]
+    # @param func [Symbol]     default :to_json, allows for :as_json as needed
+    # @return [String(json) | Hash] (Could be any type depending on :func)
+    #     String | Hash are the expected outputs
+    def format(options = {}, func: :to_json)
       metadata_hash = @object_hash['metadata']
       translated_hash = metadata_hash.map do |k, v|
         case k
@@ -46,16 +50,31 @@ module DRI::Formatters
 
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
-      @formatted_hash['Licence'] = licence
+      @formatted_hash['Licence'] = self.class::licence(@object_doc)
+      @formatted_hash['Doi'] = self.class::dois(@object_doc)
+      @formatted_hash['RelatedObjects'] = @object_doc.object_relationships_as_json
       @formatted_hash['Assets'] = assets if @with_assets
-      @formatted_hash.to_json
+      @formatted_hash.send(func)
+    end
+
+    # @param [SolrDocument] solr_doc
+    # @return [Hash] licence || nil
+    def self.licence(solr_doc)
+      solr_doc.licence.show if !solr_doc.collection? && solr_doc.licence
+    end
+
+    # @param [SolrDocument] solr_doc
+    # @return [Array] array of hashes for each doi || nil
+    def self.dois(solr_doc)
+      dois = DataciteDoi.where(object_id: solr_doc.id)
+      return dois.map(&:show) unless dois.empty?
     end
 
     def assets
       assets = @object_doc.assets
       assets_json = []
-      assets.each do |a| 
-        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_path(a['id']) }
+      assets.each do |a|
+        assets_json << { 'id' => a['id'], 'title' => a['label_tesim'], 'path' => file_url(a['id']) }
       end
       assets_json
     end
@@ -64,14 +83,8 @@ module DRI::Formatters
       Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
 
-    def licence
-      licence = @object_doc.licence
-      if licence
-        value = (licence.name == 'All Rights Reserved') ? licence.name : licence.url
-      end
-
-      value
+    def file_url(file_id)
+      Rails.application.routes.url_helpers.file_download_url(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
-
   end
 end

@@ -16,15 +16,5 @@ restrict:
     video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
 storage:
   driver: s3_interface
-S3:
-  server: http://localhost:8081
-  use_ssl: false
-  access_key_id: anything
-  secret_access_key: anything
-  expiry: 604800
-data:
-  cover_image_bucket: coverimages
-  logos_bucket: institutelogos
-  types: [Sound, MovingImage, Image, Text]
 doi:
   enable: "false"

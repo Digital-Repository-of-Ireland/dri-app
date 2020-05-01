@@ -1,23 +1,28 @@
 <article class="block5" id="<%= document.id.to_s %>">
   <div class="dri_content_block_collection">
       <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-        <%= link_to bookmark_path(document.id), method: :delete, :id => 'remove_bookmark' do %>
+        <%= link_to bookmark_path(document.id), method: :delete, id: 'remove_bookmark' do %>
           <span class="dri_remove_bookmark">x</span>
           <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
         <% end %>
       <% end %>
-      <%= link_to(url_for_document(document), document_link_params(document, {:counter => document_counter_with_offset(document_counter)} )) do %>
-        <div>
+      <%= link_to(
+            url_for_document(document),
+            document_link_params(document, { counter: document_counter_with_offset(document_counter) })
+          ) do %>
+      <div>
           <div class="dri_collection_image">
-            <% image = cover_image ( document ) %>
-            <% if image %>
-                <%= image_tag image, :width=>"228" %>
-            <% else %>
-                <%= image_tag "no_image.png", :width=>"228" %>
+            <% present(document, DRI::ImagePresenter) do |images| %>
+              <% image = images.cover_image %>
+              <% if image %>
+                <%= image_tag image, width: "228" %>
+              <% else %>
+                  <%= image_tag "no_image.png", width: "228" %>
+              <% end %>
             <% end %>
           </div>
           <!-- close image -->
-          <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+          <h1><%= document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
           <p class="dri_publishing_institute">
             <% @depositing_institute = document.depositing_institute %>
             <% if @depositing_institute.present? %>
@@ -28,17 +33,22 @@
           </p>
         </div>
     <% end %>
+
     <%# If ROOT COLLECTION %>
-    <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
-      <% collection_objects_params = { :f => {Solrizer.solr_name('root_collection_id', :facetable).to_sym => [document[Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}} %>
+    <% if document[ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
+      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable).to_sym => [document[ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}} %>
     <% else %>
       <%# If SUB-COLLECTION %>
-      <% collection_objects_params = { :f => {Solrizer.solr_name('ancestor_id', :facetable).to_sym => [document.id]}} %>
+      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable).to_sym => [document.id]}} %>
     <% end %>
+
     <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
     <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
         <div class="dri_num_objects">
-          <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + count_items_in_collection(document[:id]).to_s + ")" %></span>
+          <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (#{object_count})" %></span>
+          <% unless document.public_read? %>
+            <span class="dri_object_text_num pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+          <% end %>
         </div>
     <% end %> <!-- close dri_num_objects -->
   </div>

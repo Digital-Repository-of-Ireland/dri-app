@@ -7,16 +7,17 @@ dri:
   downloads: dri_files/downloads
 plugins:
   fits_path: /opt/local/fits/fits.sh
-  libreoffice_path: '/Applications/LibreOffice.app/Contents/MacOS/soffice'
 restrict:
   mime_types:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']
-    text: ['application/pdf', 'application/x-pdf', 'application/rtf', 'text/plain', 'text/xml', 'application/msword']
+    text: ['application/pdf', 'application/x-pdf', 'application/rtf', 'text/plain', 'text/xml', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
     pdf: ['application/pdf', 'application/x-pdf']
-    audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg']
-    video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf']
+    audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg', 'audio/x-aiff']
+    video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
 storage:
   driver: s3_interface
+downloads:
+  directory: /tmp
 S3:
   server: http://localhost:8081
   use_ssl: false
@@ -26,6 +27,6 @@ S3:
 doi:
   enable: "false"
 iiif:
-  server: http://localhost:3000/iiif
+  server: http://localhost:3000/images
 analytics:
   disable: true

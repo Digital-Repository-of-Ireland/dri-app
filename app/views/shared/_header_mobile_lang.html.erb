@@ -8,7 +8,7 @@
       <% end %>
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <%= link_to 'Gaeilge', lang_path(lang_params) %>
+        <%= link_to 'Gaeilge', main_app.lang_path(lang_params) %>
       </ul>
     </ul>
 <% else %>
@@ -18,7 +18,7 @@
       Gaeilge <i class="fa fa-sml fa-caret-down"></i>
       <% end %>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-        <%= link_to 'English', lang_path(lang_params) %>
+        <%= link_to 'English', main_app.lang_path(lang_params) %>
       </ul>
     </ul>
 <% end %>

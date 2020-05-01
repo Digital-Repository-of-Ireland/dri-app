@@ -27,21 +27,7 @@ class LicencesController < ApplicationController
   # management interface for licences
   def create
     @licence = Licence.new
-    @licence.name = params[:licence][:name]
-
-    if params[:licence][:logo].present? && params[:licence][:logo] =~ URI.regexp
-      @licence.logo = params[:licence][:logo]
-    end
-
-    if params[:licence][:url].present? && params[:licence][:url] =~ URI.regexp
-      @licence.url = params[:licence][:url]
-    end
-
-    if params[:licence][:description].present?
-      @licence.description = params[:licence][:description]
-    end
-
-    @licence.save
+    create_or_modify_licence
 
     respond_to do |format|
       format.html do
@@ -55,21 +41,7 @@ class LicencesController < ApplicationController
   # Update existing licence
   def update
     @licence = Licence.find(params[:id])
-    @licence.name = params[:licence][:name]
-
-    if params[:licence][:logo].present? && params[:licence][:logo] =~ URI.regexp
-      @licence.logo = params[:licence][:logo]
-    end
-
-    if params[:licence][:url].present? && params[:licence][:url] =~ URI.regexp
-      @licence.url = params[:licence][:url]
-    end
-
-    if params[:licence][:description].present?
-      @licence.description = params[:licence][:description]
-    end
-
-    @licence.save
+    create_or_modify_licence
 
     respond_to do |format|
       format.html do
@@ -84,5 +56,23 @@ class LicencesController < ApplicationController
 
     def admin?
       raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+    end
+
+    def create_or_modify_licence
+      @licence.name = params[:licence][:name]
+
+      if params[:licence][:logo].present? && params[:licence][:logo] =~ URI.regexp
+        @licence.logo = params[:licence][:logo]
+      end
+
+      if params[:licence][:url].present? && params[:licence][:url] =~ URI.regexp
+        @licence.url = params[:licence][:url]
+      end
+
+      if params[:licence][:description].present?
+        @licence.description = params[:licence][:description]
+      end
+
+      @licence.save
     end
 end

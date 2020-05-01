@@ -1,9 +1,6 @@
 class BaseObjectsController < CatalogController
-  include DRI::Doi
-
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
+  include DRI::Citable
+  include DRI::Versionable
 
   def doi
     @doi ||= DataciteDoi.where(object_id: @object.noid)
@@ -26,14 +23,6 @@ class BaseObjectsController < CatalogController
       ).permit!
     end
 
-    def purge_params
-      params.delete(:digital_object)
-      params.delete(:_method)
-      params.delete(:authenticity_token)
-      params.delete(:commit)
-      params.delete(:action)
-    end
-
     # Updates the licence.
     #
     def set_licence
@@ -49,19 +38,19 @@ class BaseObjectsController < CatalogController
 
       if updated
         actor.version_and_record_committer
-        
+
         # Do the preservation actions
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve(false, ['properties'])
       end
 
       respond_to do |format|
-        if updated 
+        if updated
           flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')
         end
-        format.html { redirect_to controller: 'catalog', action: 'show', id: @object.noid }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
       end
     end
 end

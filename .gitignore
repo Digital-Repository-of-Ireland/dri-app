@@ -7,8 +7,15 @@
 # Ignore bundler config
 /.bundle
 
+# Ignore local rspec config
+.rspec-local
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
+/db/*.sqlite3-journal
+
+# ignore schema
+/db/schema.rb
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
@@ -21,7 +28,7 @@
 /doc
 .DS_Store
 .yardoc
-.idea/*
+.idea
 
 config/settings.local.yml
 config/settings/*.local.yml
@@ -32,6 +39,9 @@ config/solr.yml
 config/jetty.yml
 config/redis.yml
 config/doi.yml
+config/blacklight.yml
+config/authorities.yml
+config/browse_everything_providers.yml
 
 spec/reports/*
 .sass-cache/
@@ -50,3 +60,12 @@ fakes3
 dump.rdb
 .project
 fcrepo4-test-data/
+dri_files
+
+swagger/
+
+.byebug*
+*.pid
+*.sublime*
+
+fits.log

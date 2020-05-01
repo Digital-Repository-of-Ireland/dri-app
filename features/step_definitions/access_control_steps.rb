@@ -27,8 +27,8 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   file.add_file(uploaded, { :directory => Dir.tmpdir })
   file.save
 
-  actor = DRI::Asset::Actor.new(gf, current_user)  
-  actor.create_content(uploaded, uploaded.original_filename, "content", uploaded.content_type)
+  file_content = GenericFileContent.new(generic_file: gf, user: current_user)  
+  file_content.create_content(uploaded, uploaded.original_filename, "content", uploaded.content_type)
   gf.save
 
   object.master_file_access = mapping[permission].to_s

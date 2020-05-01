@@ -1,42 +1,54 @@
 require 'dri/sparql'
 
-module DRI::Sparql
-  module Provider
-    class Logainm
+module DRI::Sparql::Provider
+  class Logainm
 
-      def endpoint=(endpoint)
-        @endpoint = endpoint
-      end
+    attr_accessor :endpoint
 
-      def retrieve_data(uri)
-        return unless DRI::LinkedData.where(source: uri).empty?
+    def endpoint=(endpoint)
+      @endpoint = endpoint
+    end
 
-        select = "select ?nameEN, ?nameGA, ?lat, ?long
-                  where { <#{uri}> <http://xmlns.com/foaf/0.1/name> ?nameGA, ?nameEN;
-                  <http://geovocab.org/geometry#geometry> ?g . ?g geo:lat ?lat; geo:long ?long .
-                  filter(lang(?nameEN)=\"en\" && lang(?nameGA)=\"ga\") . }"
+    def retrieve_data(uri)
+      return unless DRI::LinkedData.where(source: uri).empty?
 
-        client = DRI::Sparql::Client.new @endpoint
-        results = client.query select
-        
-        points = []
-        unless results.nil?
-          results.each_solution do |s|
-            name = "#{s[:nameGA].value}/#{s[:nameEN]}"
-            north = s[:lat].value
-            east = s[:long].value
-            points << DRI::Metadata::Transformations.geojson_string_from_coords(name, "#{east} #{north}")
-          end
+      select = "select ?nameEN, ?nameGA, ?lat, ?long
+                where { <#{transform_uri(uri)}> <http://xmlns.com/foaf/0.1/name> ?nameGA, ?nameEN;
+                <http://geovocab.org/geometry#geometry> ?g . ?g geo:lat ?lat; geo:long ?long .
+                filter(lang(?nameEN)=\"en\" && lang(?nameGA)=\"ga\") . }"
+
+      client = DRI::Sparql::Client.new @endpoint
+      results = client.query select
+
+      points = []
+      if results
+        results.each_solution do |s|
+          north = s[:lat].value
+          east = s[:long].value
+          points << DRI::Metadata::Transformations::SpatialTransformations.coords_to_geojson_string([s[:nameEN].value,s[:nameGA].value], "#{east} #{north}", nil, transform_uri(uri))
         end
-
-        return unless points.present?
-
-        linked = DRI::LinkedData.new
-        linked.source = [uri]
-        linked.resource_type = ['Dataset']
-        linked.spatial = points
-        linked.save
       end
+
+      return unless points.present?
+
+      linked = DRI::LinkedData.new
+      linked.source = [uri]
+      linked.resource_type = ['Dataset']
+      linked.spatial = points
+      linked.save
+
+      linked.reload
+      linked.id
+    end
+
+    def transform_uri(uri)
+      host = URI(uri).host
+      return uri unless host == 'www.logainm.ie'
+
+      name = uri[%r{[^/]+\z}]
+      place_id = File.basename(name,File.extname(name))
+
+      "http://data.logainm.ie/place/#{place_id}"
     end
   end
 end

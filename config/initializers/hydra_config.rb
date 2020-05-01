@@ -12,8 +12,8 @@ Hydra.configure do |config|
   # config.permissions.read.individual      = ActiveFedora::SolrQueryBuilder.solr_name("read_access_person", :symbol)
   # config.permissions.edit.group           = ActiveFedora::SolrQueryBuilder.solr_name("edit_access_group", :symbol)
   # config.permissions.edit.individual      = ActiveFedora::SolrQueryBuilder.solr_name("edit_access_person", :symbol)
-  config.permissions.manager.group          = ActiveFedora::SolrQueryBuilder.solr_name("manager_access_group", :symbol)
-  config.permissions.manager.individual     = ActiveFedora::SolrQueryBuilder.solr_name("manager_access_person", :symbol)
+  config.permissions.manager.group          = ActiveFedora.index_field_mapper.solr_name("manager_access_group", :symbol)
+  config.permissions.manager.individual     = ActiveFedora.index_field_mapper.solr_name("manager_access_person", :symbol)
 
   # config.permissions.embargo.release_date  = ActiveFedora::SolrQueryBuilder.solr_name("embargo_release_date", :stored_sortable, type: :date)
   # config.permissions.lease.expiration_date = ActiveFedora::SolrQueryBuilder.solr_name("lease_expiration_date", :stored_sortable, type: :date)

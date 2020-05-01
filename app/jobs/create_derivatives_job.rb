@@ -7,7 +7,7 @@ class CreateDerivativesJob < ActiveFedoraIdBasedJob
 
   def run
     with_status_update('create_derivatives') do
-      generic_file.create_derivatives
+      generic_file.create_derivatives(generic_file.label)
     end
   end
 end

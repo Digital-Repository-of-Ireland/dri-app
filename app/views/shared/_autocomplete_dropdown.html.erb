@@ -1,0 +1,22 @@
+<div class='choose-vocab-container'>
+  <%
+    vocabs = DRI::AuthorityPresenter.viewable_vocabs
+    # if no default is set, use the first label
+    default ||= vocabs[0][:name]
+  %>
+  <select class='vocab-dropdown'>
+    <% vocabs.each do |vocab_hash| %>
+      <option <%= selected='selected' if vocab_hash[:name] == default %>
+              value="<%=vocab_hash[:endpoint]%>">
+        <%=vocab_hash[:name]%>
+      </option>
+    <% end %>
+  </select>
+
+  <i class="dri_help_popover fa fa-info-circle fa-1"
+     data-original-title="<%=t('dri.help.autocomplete.title')%>"
+     data-content="<%=t('dri.help.autocomplete.content')%>"
+     data-trigger="hover"
+     data-placement="right">
+  </i>
+</div>

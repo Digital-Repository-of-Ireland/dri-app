@@ -10,6 +10,20 @@ en:
     models: 
       feedback: Feedback
   blacklight: 
+    advanced_search: 
+      form: 
+        paginate_label: Results per page
+        query_criteria_heading_html: "Find items that match %{select_menu} of"
+        sort_label: Sort by
+        tips_title: Search tips
+      tips:
+        boolean: Use "OR", "AND", and "NOT" to create complex boolean logic. You can use parentheses in your complex expressions.
+        keywords: Combine keywords and attributes to find specific items.
+        match_any: Select "match any" to find at least one field.
+        match_all: Select  "match all" to require all fields.
+        minus: Use "-" before a word or phrase to exclude.
+        plus: Use "+" before a term to make it required. (Otherwise results matching only some of your terms may be included).
+        quotes: Use quotation marks to get exact matches only.        
     and: and
     application_name: "Digital Repository of Ireland"
     back_to_bookmarks: " ⬅ Back to Bookmarks"
@@ -119,17 +133,29 @@ en:
           count: "Numerical Sort"
           index: "A-Z Sort"
         title: "Refine your search"
-      fields: 
+      fields:
         default: Keyword
         facet: 
           file_type_display_sim: Mediatype
           geographical_coverage_sim: Places
           institute_sim: Organisation
           language_sim: Language
+          licence_sim: Licence
           person_sim: Names
+          placename_field_sim: Places
           root_collection_id_sim: Collection
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
+        label:
+          all_fields: All Fields
+          contributors: Contributors
+          creators: Creators
+          descriptions: Descriptions
+          people: Names
+          places: Places
+          publishers: Publishers
+          titles: Titles
+          subjects: Subjects
       filters: 
         label: "%{label}:"
         remove: 
@@ -138,10 +164,12 @@ en:
         title: "You searched for:"
       form: 
         q: Search...
+        search: Search
         search_field: 
           label: "Search in"
           post_label: for
           title: "Targeted search options"
+        start_over: "Start Over"
         submit: Ok
       librarian_view: 
         leader: "LEADER %{leader}"
@@ -166,6 +194,10 @@ en:
         title: "%{document_title} - %{application_name}"
       sort: 
         label: "Sort by %{field}"
+        newest: Newest
+        order/sequence: Order/sequence
+        relevance: Relevance
+        title: Title
         submit: "sort results"
       start_over: "Start Over"
       title: "%{application_name} Search Results"
@@ -211,9 +243,9 @@ en:
     pagination: 
       first: "&laquo; First"
       last: "Last &raquo;"
-      next: "Next &raquo;"
-      previous: "&laquo; Previous"
+      next: ""
+      previous: ""
       truncate: …
     pagination_compact: 
-      next: "Next &raquo;"
-      previous: "&laquo; Previous"
+      next: ""
+      previous: ""

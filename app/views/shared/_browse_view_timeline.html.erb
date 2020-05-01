@@ -1,29 +1,35 @@
+<div>
+  <% if @available_timelines.size > 1 %>
+  <b><%= t('dri.views.catalog.legends.timeline_display_field') %>:&nbsp;</b>
+  <select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title') %>" data-trigger="hover" data-placement="auto right">
 
-<div><b><%= t('dri.views.catalog.legends.timeline_display_field') %>:&nbsp;</b><select id="dri_tlfield_options_id" class="dri_tlfield_options" name="tlfield_options" data-content="<%= t('dri.help.dri_tlfield_options') %>"  data-original-title="<%= t('dri.help.dri_tlfield_options_title')%>" data-trigger="hover" data-placement="auto right"></div>
-    <% current_params = params.clone %>
-    <% current_params.delete(:tl_field) %>
-          
-    <% ({ 'sdate' => 'Subject (Temporal)', 'cdate' => 'Creation Date', 'pdate' => 'Publication Date' }).each do |field,text| %>
+    <% current_params = search_state.params_for_search.except(:tl_field).clone %>
+
+    <% @timeline_data[:available_fields].each do |field,text| %>
       <% current_params[:tl_field] = field %>
       <% if params[:tl_field].presence == field %>
-        <option value="<%= url_for(current_params) %>" selected> 
+        <option value="<%= url_for(current_params) %>" selected>
       <% else %>
-        <option value="<%= url_for(current_params) %>"> 
+        <option value="<%= url_for(current_params) %>">
       <% end %>
-        <%= text %> 
+          <%= text %>
         </option>
-  <%- end -%>
-</select>
+      <%- end -%>
+  </select>
+  <% end %>
+</div>
 
-<% if @timeline_data %>
-  <%= content_tag "div", id: "dri_timeline_id", style: "height:550px", data: { total_count: @response.total_count, total_pages: @response.total_pages, current_page: @response.current_page, timeline_data: @timeline_data }  do %>
+<% unless @timeline_data[:events].empty? %>
+  <%= content_tag "div", id: "dri_timeline_id", style: "height:550px", data: { total_count: @response.total_count, total_pages: @response.total_pages, current_page: @response.current_page, timeline_data: @timeline_data.to_json }  do %>
     <%= tag(:div, id: "time_line") %>
   <% end %>
 <% else %>
   <h4>
     <%= t('dri.application.timeline.no_results_found') %>
   </h4>
-  <p>
-    <%= t('dri.application.timeline.description.no_results') %>
-  </p>
+  <% if @available_timelines.size > 1 %>
+    <p>
+      <%= t('dri.application.timeline.description.no_results') %>
+    </p>
+  <% end %>
 <% end %>

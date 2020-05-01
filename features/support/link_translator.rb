@@ -139,6 +139,9 @@ module LinkTranslator
       when /^manage bookmark$/
         "manage_bookmark"
 
+      when /^manage licence$/
+        "manage_licence"
+
       when /^remove bookmark$/
         "remove_bookmark"
 
@@ -160,6 +163,9 @@ module LinkTranslator
       when /^add a cover image$/
         "add_cover_image"
 
+      when /^view assets$/
+	"object_assets"
+
       when /^view asset details$/
         "asset_details"
 
@@ -168,6 +174,15 @@ module LinkTranslator
 
       when /^associate a licence$/
         "manage_licence"
+
+      when /^the workspace page$/
+        "workspace"
+
+      when /^add a new collection$/
+        "new_collection"
+
+      when /^view the timeline$/
+	"timeline_view"
 
       else "Unknown"
 

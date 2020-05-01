@@ -5,21 +5,29 @@ class ApplicationController < ActionController::Base
 
   include HttpAcceptLanguage
 
+  # handles pretty formatting for any json response
+  include DRI::Renderers::Json
+
+  ActionController::Renderers.add :json do |json, options|
+    format_json(json, options)
+  end
+
   # Adds a few additional behaviors into the application controller
   include Blacklight::Controller
 
   # Adds Hydra behaviors into the application controller
   include Hydra::Controller::ControllerBehavior
 
-  include DRI::Exceptions  
+  include DRI::Exceptions
 
   include UserGroup::PermissionsCheck
-  include Hydra::AccessControlsEnforcement
   include UserGroup::Helpers
+
+  skip_after_action :discard_flash_if_xhr
 
   layout 'application'
 
-  protect_from_forgery
+  protect_from_forgery prepend: true
 
   rescue_from Hydra::AccessDenied, with: :render_access_denied
   rescue_from DRI::Exceptions::InternalError, with: :render_internal_error
@@ -34,6 +42,7 @@ class ApplicationController < ActionController::Base
     render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
   rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
+  rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
 
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)
@@ -64,10 +73,10 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    main_app.new_user_session_url
+    user_group.new_user_session_url
   end
 
-  # Retrieves a Fedora Digital Object by ID
+  # Retrieves a Digital Object by ID
   def retrieve_object(id)
     ident = DRI::Identifier.find_by(alternate_id: id)
     return nil unless ident
@@ -78,18 +87,6 @@ class ApplicationController < ActionController::Base
     ident = DRI::Identifier.find_by(alternate_id: id)
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if ident.nil?
     ident.identifiable
-  end
-  
-  def warn_if_duplicates
-    duplicates = actor.find_duplicates
-    return if duplicates.blank?
-
-    warning = t(
-      'dri.flash.notice.duplicate_object_ingested',
-      duplicates: duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe
-    )
-    flash[:alert] = warning
-    @warnings = warning
   end
 
   # Return a list of all supported licences (for populating select dropdowns)
@@ -109,19 +106,34 @@ class ApplicationController < ActionController::Base
     def authenticate_user_from_token!
       user_email = params[:user_email].presence
       user       = user_email && User.find_by_email(user_email)
-
       # Notice how we use Devise.secure_compare to compare the token
       # in the database with the token given in the params, mitigating
       # timing attacks.
       if user && Devise.secure_compare(user.authentication_token, params[:user_token])
-        sign_in user, store: true
+        begin
+          sign_in user, store: false
+        # handles issue where Devise::Mapping.find_scope! fails #1829
+        rescue StandardError
+          sign_in :user, user, store: false
+        end
       end
     end
 
     def authenticate_admin!
       unless current_user && current_user.is_admin?
         flash[:error] = t('dri.views.exceptions.access_denied')
-        redirect_to :back
+        redirect_back(fallback_location: root_path)
+      end
+    end
+
+    def authorize_cm!
+      unless current_user && (current_user.is_admin? || current_user.is_cm?)
+        flash[:error] = t('dri.views.exceptions.access_denied')
+        if request.env["HTTP_REFERER"].present?
+          redirect_back(fallback_location: root_path)
+        else
+          raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'))
+        end
       end
     end
 
@@ -129,10 +141,10 @@ class ApplicationController < ActionController::Base
       return unless Settings.read_only == true
 
       respond_to do |format|
-        format.json { head status: 503 }
+        format.json { head :service_unavailable }
         format.html do
           flash[:error] = t('dri.flash.error.read_only')
-          redirect_to :back
+          redirect_back(fallback_location: root_path)
         end
       end
     end
@@ -140,14 +152,14 @@ class ApplicationController < ActionController::Base
     def locked(id)
       docs = ActiveFedora::SolrService.query("id:#{id}")
       obj = SolrDocument.new(docs.first)
-      
+
       return unless CollectionLock.exists?(collection_id: obj.root_collection.id)
 
       respond_to do |format|
-        format.json { head status: 403 }
+        format.json { head :forbidden }
         format.html do
           flash[:error] = t('dri.flash.error.locked')
-          redirect_to :back
+          redirect_back(fallback_location: root_path)
         end
       end
     end

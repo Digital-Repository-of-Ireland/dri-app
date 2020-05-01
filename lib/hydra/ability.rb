@@ -1,17 +1,17 @@
 # Code for [CANCAN] access to Hydra models
-require 'cancan'
 module Hydra
   module Ability
     extend ActiveSupport::Concern
+
+     include Blacklight::AccessControls::Ability
 
     # once you include Hydra::Ability you can add custom permission methods by appending to ability_logic like so:
     #
     # self.ability_logic +=[:setup_my_permissions]
 
     included do
-      include CanCan::Ability
       include Hydra::PermissionsQuery
-      include Blacklight::SolrHelper
+      include Blacklight::SearchHelper
       include UserGroup::InheritanceMethods
       include UserGroup::SharedAbility
 
@@ -23,6 +23,15 @@ module Hydra
 
     def self.user_class
       Hydra.config[:user_model] ?  Hydra.config[:user_model].constantize : ::User
+    end
+
+    def initialize(user, options = {})
+      @current_user = user || Hydra::Ability.user_class.new # guest user (not logged in)
+      @user = @current_user # just in case someone was using this in an override. Just don't.
+      @options = options
+      @cache = Blacklight::AccessControls::PermissionsCache.new
+      alias_action :edit, :update, :destroy, to: :manage_collection
+      hydra_default_permissions()
     end
 
     def create_permissions

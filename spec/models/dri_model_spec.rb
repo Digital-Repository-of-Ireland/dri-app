@@ -84,7 +84,27 @@ describe DRI::DigitalObject do
     solr_doc = @t.to_solr
     expect(solr_doc[Solrizer.solr_name('creator', :stored_searchable)]).to_not include("NuLl")
   end
-  
+
+  it "should index the correct number of files" do
+    @t = DRI::Batch.with_standard :qdc
+    @t.title = ["A fake record"]
+    @t.rights = ["Rights"]
+    @t.creator = ["A Creator"]
+    @t.date = ["2014-10-17"]
+    @t.description = ["A fake object"]
+    @t.type = ["Image"]
+    @t.save
+
+    11.times do
+      generic_file = FactoryBot.create(:generic_png_file)
+      generic_file.batch = @t
+      generic_file.save
+    end
+
+    solr_doc = @t.to_solr
+    expect(solr_doc[Solrizer.solr_name('file_count', :stored_sortable, type: :integer)]).to eq [11]
+  end
+
   after(:each) do
     unless @t.new_record?
       @t.destroy

@@ -19,7 +19,9 @@ When /^I add (.*?) metadata$/ do |type|
 
   @tmp_xml = Nokogiri::XML(File.new(File.join(cc_fixture_path, filename)).read)
 
-  @digital_object.descMetadata.ng_xml = @tmp_xml
+  if @digital_object.attached_files.has_key?(:descMetadata)
+    @digital_object.attached_files[:descMetadata].ng_xml = @tmp_xml
+  end
 end
 
 Then /^I should get an invalid Digital Object$/ do

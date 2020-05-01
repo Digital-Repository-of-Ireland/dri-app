@@ -10,18 +10,30 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require video
 //= require jquery
+
 //= require jquery_ujs
 //= require datatables
-//= require jquery-ui
+//= require jquery.ui.widget
+//= require jquery.ui.mouse
+//= require jquery.ui.draggable
+//= require jquery.ui.resizable
+//= require jquery.ui.autocomplete
+//= require jquery.ui.menu
 //= require jquery.slick
+//= require clipboard
+//= require i18n
+//= require i18n/translations
 
 //
 // Required by Blacklight-Maps
-//= require blacklight-maps
+//= require blacklight/core
+//= require leaflet
+//= require leaflet.markercluster
+//= require blacklight-maps/blacklight-maps-browse.js
+//= require leaflet.extend
 //= require jquery.remotipart
-//= require jquery.cookie
+//= require js.cookie
 //= require jquery.validate
 //= require additional-methods
 //= require bootstrap/affix
@@ -34,13 +46,17 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //
-//= require colorbox-rails
+//= require jquery.colorbox
 //= require social-share-button
 //= require jquery-xmleditor
 //= require openseadragon
 //= require spin
 //= require timelineJS3
+//= require dri_batch_ingest
 //= slick-scroller
-//= require dri-timeline
-//= require dri/
-
+//= require dri/timeline
+//= require dri/forms
+//= require dri/spinner
+//= require dri
+//
+//= require dri/autocomplete_vocabs

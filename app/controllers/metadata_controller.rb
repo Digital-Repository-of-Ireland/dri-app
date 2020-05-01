@@ -10,66 +10,75 @@ TITLES = {
 #
 # Creates, updates, or retrieves, the descMetadata datastream for an object
 #
-class MetadataController < CatalogController
-  include DRI::MetadataBehaviour
+class MetadataController < ApplicationController
+  include DRI::Citable
+  include DRI::Duplicable
+  include DRI::Versionable
 
   before_action :authenticate_user_from_token!, except: :show
   before_action :authenticate_user!, except: :show
   before_action :read_only, except: :show
-  before_action ->(id=params[:id]) { locked(id) }, except: :show
-
-  def actor
-    @actor ||= DRI::Object::Actor.new(@object, current_user)
-  end
+  before_action ->(id = params[:id]) { locked(id) }, except: :show
 
   # Renders the metadata XML stored in the descMetadata datastream.
-  #
   #
   def show
     enforce_permissions!('show_digital_object', params[:id])
     begin
       @object = retrieve_object! params[:id]
+    rescue DRI::Exceptions::InternalError
+      @title = status_to_message(:internal_server_error)
     rescue ActiveFedora::ObjectNotFoundError
       render xml: { error: 'Not found' }, status: 404
       return
     end
 
-    if @object && @object.attached_files.key?(:descMetadata)
+    unless object_with_metadata
       respond_to do |format|
-        format.xml do
-          data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
-                   @object.attached_files[:fullMetadata].content
-                 else
-                   @object.attached_files[:descMetadata].content
-                 end
-          send_data(data, filename: "#{@object.noid}.xml")
-        end
         format.js do
-          xml_data = @object.attached_files[:descMetadata].content
-          xml = Nokogiri::XML(xml_data)
-          xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
-          xslt = Nokogiri::XSLT(xslt_data)
-          styled_xml = xslt.transform(xml)
-
-          @title = TITLES[xml.root.name]
-          @display_xml = styled_xml.to_html
+          @display_xml = t('dri.views.exceptions.internal_error')
+        end
+        format.xml do
+          render xml: { error: t('dri.views.exceptions.internal_error') }, status: 500
         end
       end
 
       return
     end
 
-    render text: 'Unable to load metadata'
+    respond_to do |format|
+      format.xml do
+        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
+                 @object.attached_files[:fullMetadata].content
+               else
+                 @object.attached_files[:descMetadata].content
+               end
+        send_data(data, filename: "#{@object.id}.xml")
+        return
+      end
+      format.js do
+        xml_data = @object.attached_files[:descMetadata].content
+        xml = Nokogiri::XML(xml_data)
+
+        @title = TITLES[xml.root.name]
+        @display_xml = styled_xml(xml).to_html
+        return
+      end
+    end
+
+    render plain: 'Unable to load metadata'
   end
 
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
+  #
   def update
     enforce_permissions!('update', params[:id])
 
     param = params[:xml].presence || params[:metadata_file].presence
 
     if param
-      xml = load_xml(param)
+      xml_ds = XmlDatastream.new
+      xml_ds.load_xml(param)
     else
       flash[:notice] = t('dri.flash.notice.specify_valid_file')
       redirect_to controller: 'catalog', action: 'show', id: params[:id]
@@ -83,22 +92,24 @@ class MetadataController < CatalogController
       raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
-    @object.update_metadata(xml)
+    @object.update_metadata(xml_ds.xml)
 
     if @object.valid?
       checksum_metadata(@object)
-      warn_if_duplicates
+      warn_if_has_duplicates(@object)
 
       @object.increment_version
 
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
-        actor.version_and_record_committer
-        
-        # Do the preservation actions
+        record_version_committer(@object, current_user)
+        update_or_mint_doi
+
+        retrieve_linked_data if AuthoritiesConfig
+
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, ['descMetadata','properties'])
+        preservation.preserve(false, false, ['descMetadata', 'properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
@@ -109,7 +120,7 @@ class MetadataController < CatalogController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
     end
-    
+
     respond_to do |format|
       format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:id] }
       format.json { render json: @object }
@@ -120,8 +131,38 @@ class MetadataController < CatalogController
                      t('dri.flash.notice.metadata_updated')
                    end
 
-        render text: response
+        render plain: response
       end
     end
   end
+
+  private
+
+    def object_with_metadata
+      @object && @object.attached_files.key?(:descMetadata)
+    end
+
+    def styled_xml(xml)
+      xslt_data = File.read("app/assets/stylesheets/#{xml.root.name}.xsl")
+      xslt = Nokogiri::XSLT(xslt_data)
+      xslt.transform(xml)
+    end
+
+    def update_or_mint_doi
+      doi = DataciteDoi.find_by(object_id: @object.noid)
+      return unless doi
+
+      doi_metadata_fields = {}
+      doi.metadata_fields.each do |field|
+        doi_metadata_fields[field] = @object.send(field.to_sym)
+      end
+      doi.update_metadata(doi_metadata_fields)
+      update_doi(@object, doi, 'metadata update') if doi.changed?
+    end
+
+    def retrieve_linked_data
+      DRI.queue.push(LinkedDataJob.new(@object.noid)) if @object.geographical_coverage.present? || @object.coverage.present?
+    rescue Exception => e
+      Rails.logger.error "Unable to submit linked data job: #{e.message}"
+    end
 end

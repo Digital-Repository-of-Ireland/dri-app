@@ -25,9 +25,11 @@ class ReviewJob
     collection = DRI::Identifier.retrieve_object(collection_id)
 
     # Need to set sub-collection to reviewed
-    if subcollection?(collection)
+    if subcollection?(collection) && collection.status == 'draft'
       collection.status = 'reviewed'
+      collection.object_version ||= 1
       collection.increment_version
+
       failed += 1 unless collection.save
 
       DRI::Object::Actor.new(collection, user).version_and_record_committer
@@ -58,11 +60,9 @@ class ReviewJob
           o.increment_version
           o.save ? (completed += 1) : (failed += 1)
 
-          DRI::Object::Actor.new(o, user).version_and_record_committer
-
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, ['properties'])
+          preservation.preserve(false, false, ['properties'])
         end
       end
 

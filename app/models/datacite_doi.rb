@@ -15,10 +15,9 @@ class DataciteDoi < ActiveRecord::Base
   end
 
   def update_metadata(params)
-    params.delete_if { |key, _value| !doi_metadata.metadata_fields.include?(key.to_s) }
-
-    parameters = ActionController::Parameters.new(params)
-    doi_metadata.assign_attributes(parameters.permit!)
+    params = params.select { |key, _value| doi_metadata.metadata_fields.include?(key.to_s) }
+    params = ActionController::Parameters.new(params) unless params.kind_of?(ActionController::Parameters)
+    doi_metadata.assign_attributes(params.permit!)
 
     set_update_type
   end
@@ -44,6 +43,20 @@ class DataciteDoi < ActiveRecord::Base
     doi = "DRI.#{object_id}"
     doi = "#{doi}-#{version}" if version && version > 0
     File.join(DoiConfig.prefix.to_s, doi)
+  end
+
+  # @return [String] url
+  def doi_url
+    "https://doi.org/#{doi}"
+  end
+
+  # representation of doi used in json api
+  #
+  # @return [Hash] json
+  def show
+    json = self.as_json(only: [:created_at, :version])
+    json['url'] = doi_url
+    json
   end
 
   def set_update_type
@@ -103,10 +116,10 @@ class DataciteDoi < ActiveRecord::Base
 
     def set_metadata
       metadata = DoiMetadata.new
-      metadata.title = object.title
-      metadata.creator = find_creator
-      metadata.description = object.description if object.description.present?
-      metadata.subject = object.subject if object.subject.present?
+      metadata.title = object.title if object.title.present?
+      metadata.creator = find_creator.reject(&:blank?)
+      metadata.description = object.description.reject(&:blank?) if object.description.present?
+      metadata.subject = object.subject.reject(&:blank?) if object.subject.present?
       metadata.creation_date = object.creation_date if object.creation_date.present?
       metadata.published_date = object.published_date if object.published_date.present?
       metadata.rights = object.rights if object.rights

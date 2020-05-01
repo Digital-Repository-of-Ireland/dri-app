@@ -1,61 +1,63 @@
 class Timeline
   include ApplicationHelper
 
+  TITLE_KEY = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
+  DESCRIPTION_KEY = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
+
   delegate :can?, :asset_url, :asset_path, :link_to, :url_for_document, :cover_image_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
   end
-  
+
   def data(response, tl_field)
-    timeline_data = {}
-    timeline_data[:events] = []
-        
-    if response.blank?
-      timeline_data[:title] = {}
-      timeline_data[:title][:text] = {}
-      timeline_data[:title][:text][:headline] = I18n.t('dri.application.timeline.headline.no_results')
-      timeline_data[:title][:text][:text] = I18n.t('dri.application.timeline.description.no_results')
-    else
-      timeline_data[:events] = []
-      response.each_with_index do |document, index|
-        document = document.symbolize_keys
+    timeline_data = []
 
-        title_key = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
-        description_key = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
+    response.each_with_index do |document, index|
+      document = document.symbolize_keys
 
-        dates = document_date(document, tl_field)
-        if dates.present?
-          start = dates[0]
-          end_date = dates[1]
-          event = {}
-          event[:text] = {}
-          event[:start_date] = { year: start.year, month: start.month, day: start.day }
-          event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
-          event[:text][:headline] = link_to(document[title_key].first, url_for_document(document[:id]))
-          event[:text][:text] = document[description_key].first.truncate(60, separator: ' ')
-          event[:media] = {}
-          event[:media][:url] = image(document)
-          event[:media][:thumbnail] = image(document)
+      dates = document_date(document, tl_field)
+      next unless dates.present?
 
-          timeline_data[:events] << event
-        end
-      end # for-each
+      event = create_event(document, dates)
+      timeline_data << event
     end
 
-    timeline_data[:events].empty? ? nil : timeline_data.to_json
+    timeline_data
   end
 
+  def create_event(document, dates)
+    start = dates[0]
+    end_date = dates[1]
+
+    event = {}
+    event[:text] = {}
+    event[:start_date] = { year: start.year, month: start.month, day: start.day }
+    event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
+    event[:text][:headline] = link_to(document[TITLE_KEY].first, url_for_document(document[:id]))
+    event[:text][:text] = document[DESCRIPTION_KEY].first.truncate(60, separator: ' ')
+    event[:media] = {}
+    event[:media][:url] = image(document)
+    event[:media][:thumbnail] = image(document)
+
+    event
+  end
+
+
   def document_date(document, tl_field)
+    # using date_range_start_isi not ddate, so need to modify to find
+    # ddateRange field
+    tl_field = 'ddate' if tl_field == 'date'
+
     if document["#{tl_field}Range".to_sym].present?
       ranges = document["#{tl_field}Range".to_sym]
-      
+
       start_and_end = min_max(ranges)
       return [] if start_and_end.empty?
-      
+
       start_date = start_and_end[0]
       end_date = start_and_end[1]
-      
+
       [ISO8601::DateTime.new(start_date), ISO8601::DateTime.new(end_date)]
     end
   end
@@ -85,25 +87,21 @@ class Timeline
   end
 
   def image(document)
-    files_query = "#{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{document[:id]}\"
-                  AND NOT #{ActiveFedora.index_field_mapper.solr_name('preservation_only', :stored_searchable)}:true"
-    files = ActiveFedora::SolrService.query(files_query)
+    solr_doc = SolrDocument.new(document)
+    files = solr_doc.assets
 
-    file_doc = nil
+    presenter = DRI::ImagePresenter.new(document, @view)
+    file_types = document[presenter.file_type_key]
+
+    return presenter.default_image(file_types) unless can?(:read, document[:id])
+
     image = nil
 
     files.each do |file|
-      file_doc = SolrDocument.new(file) unless files.empty?
-      if can?(:read, document[:id])
-        image = search_image(document, file_doc) unless file_doc.nil?
-        break if image
-      end
+      image = presenter.search_image(file)
+      break if image
     end
 
-    image || cover_image(document) || default_image(file_doc)
-  end
-
-  def surrogate_url(doc, file_doc, name)
-    object_file_path(object_id: doc, id: file_doc, surrogate: name)
+    image || presenter.cover_image || presenter.default_image(file_types)
   end
 end
