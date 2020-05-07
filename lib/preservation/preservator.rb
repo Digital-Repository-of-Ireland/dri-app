@@ -8,8 +8,8 @@ module Preservation
     attr_accessor :base_dir, :object, :version
 
     def initialize(object)
-     self.object = object
-     self.version = object.object_version
+      self.object = object
+      self.version = object.object_version
     end
 
     # create_moab_dir
@@ -95,7 +95,7 @@ module Preservation
         dslist.push(datastreams.map { |item| item << ".xml" }).flatten!
       end
 
-      if @object.object_version == 1
+      if object.object_version == 1
         created = create_manifests
         return false unless created
       else
@@ -111,8 +111,7 @@ module Preservation
     # preserve_assets
     def preserve_assets(addfiles, delfiles)
       create_moab_dirs()
-      moabify_datastream('properties', object.attached_files['properties'])
-      update_manifests({added: {'content' => addfiles}, deleted: {'content' => delfiles}, modified: {'metadata' => ['properties.xml']}})
+      update_manifests({added: {'content' => addfiles}, deleted: {'content' => delfiles}, modified: {}})
     end
 
     # create_manifests
@@ -154,7 +153,7 @@ module Preservation
     # changes: hash with keys :added, :modified and :deleted. Each is an array of filenames (excluding directory paths)
     def update_manifests(changes)
       current_manifest_path = manifest_path(object.noid, self.version)
-      previous_manifest_path = manifest_path(object.noid, self.version.to_i-1)
+      previous_manifest_path = manifest_path(object.noid, self.version-1)
 
       last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: object.noid)
       last_version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
@@ -166,7 +165,6 @@ module Preservation
       if changes.key?(:added)
         changes[:added].keys.each do |type|
           path = path_for_type(type)
-
           changes[:added][type].each { |file| moab_add_file_instance(path, file, type) }
         end
       end
@@ -196,7 +194,7 @@ module Preservation
       signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.noid)
       signature_catalog.parse(Pathname.new(File.join(previous_manifest_path, 'signatureCatalog.xml')).read)
       version_additions = signature_catalog.version_additions(@version_inventory)
-      signature_catalog.update(@version_inventory, Pathname.new( data_path(object.noid, self.version) ))
+      signature_catalog.update(@version_inventory, Pathname.new(data_path(object.noid, self.version)))
       file_inventory_difference = Moab::FileInventoryDifference.new
       file_inventory_difference.compare(last_version_inventory, @version_inventory)
 

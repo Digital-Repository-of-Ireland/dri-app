@@ -60,12 +60,12 @@ class PublishJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object['id'], { cast: true })
+        o = DRI::DigitalObject.find_by_noid(object['id'])
 
         next unless o.status == 'reviewed'
         o.status = 'published'
-        version = o.object_version || '1'
-        o.object_version = (version.to_i + 1).to_s
+        version = o.object_version || 1
+        o.object_version = (version + 1)
 
         if o.save
           completed += 1
@@ -93,15 +93,15 @@ class PublishJob
 
     if obj.descMetadata.has_versions?
       DataciteDoi.create(
-        object_id: obj.id,
+        object_id: obj.noid,
         modified: 'DOI created',
         mod_version: obj.descMetadata.versions.last.uri
       )
     else
-      DataciteDoi.create(object_id: obj.id, modified: 'DOI created')
+      DataciteDoi.create(object_id: obj.noid, modified: 'DOI created')
     end
 
-      DRI.queue.push(MintDoiJob.new(obj.id))
+      DRI.queue.push(MintDoiJob.new(obj.noid))
   rescue Exception => e
     Rails.logger.error "Unable to submit mint doi job: #{e.message}"
   end

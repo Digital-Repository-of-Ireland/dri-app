@@ -61,10 +61,8 @@ GIT
     timelineJS3-rails (1.0.3)
       jquery-rails
 
-GIT
-  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 03187ab1c31ef287ddb64a9e0195f815b0884ab2
-  branch: active-record
+PATH
+  remote: /home/skenny/Development/dri/dri-data-models
   specs:
     dri_data_models (3.2.6)
       hydra-derivatives
@@ -121,7 +119,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active-fedora (12.1.1)
+    active-fedora (12.2.1)
       active-triples (>= 0.11.0, < 2.0.0)
       activemodel (>= 4.2.10, < 5.3)
       activesupport (>= 4.2.4, < 5.3)
@@ -131,7 +129,6 @@ GEM
       ldp (>= 0.7.0, < 2)
       rsolr (>= 1.1.2, < 3)
       ruby-progressbar (~> 1.0)
-      solrizer (>= 3.4, < 5)
     active-triples (1.1.0)
       activemodel (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -292,6 +289,7 @@ GEM
       railties (>= 4.2, < 7)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
+    daemons (1.3.1)
     database_cleaner (1.8.4)
     debug_inspector (0.0.3)
     declarative (0.0.10)
@@ -589,7 +587,6 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
-    mediashelf-loggable (0.4.10)
     memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.3.1)
@@ -641,12 +638,11 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
-    om (1.8.1)
-      activemodel
+    om (3.2.0)
+      activemodel (>= 5.1, < 7)
       activesupport
-      deprecation
-      mediashelf-loggable
       nokogiri (>= 1.4.2)
+      solrizer (~> 3.3)
     omniauth (1.9.1)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
@@ -929,9 +925,11 @@ GEM
       retriable
       ruby-progressbar
       rubyzip
-    solrizer (4.1.0)
+    solrizer (3.4.1)
       activesupport
+      daemons
       nokogiri
+      stomp
       xml-simple
     sparql (3.1.0)
       builder (~> 3.2)
@@ -952,6 +950,7 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.3.13)
+    stomp (1.4.9)
     sxp (1.1.0)
       rdf (~> 3.1)
     syntax (1.2.2)
@@ -1001,7 +1000,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (= 12.1.1)
+  active-fedora (= 12.2.1)
   avalon_ingest!
   better_errors
   binding_of_caller
@@ -1063,6 +1062,7 @@ DEPENDENCIES
   mysql2 (< 0.5)
   nest
   oauth
+  om (= 3.2.0)
   omniauth-shibboleth
   openlayers-rails
   openseadragon

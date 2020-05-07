@@ -138,8 +138,12 @@ class ObjectsController < BaseObjectsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
-    params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+    if params[:digital_object][:read_users_string].present?
+      params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+    end
+    if params[:digital_object][:edit_users_string].present?
+      params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+    end
 
     if params[:digital_object][:governing_collection].present?
       params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
@@ -276,8 +280,6 @@ class ObjectsController < BaseObjectsController
       @object.status = params[:status] if params[:status].present?
       @object.increment_version
       @object.save
-
-      actor.version_and_record_committer
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)

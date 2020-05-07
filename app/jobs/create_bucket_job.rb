@@ -1,4 +1,4 @@
-class CreateBucketJob < ActiveFedoraIdBasedJob
+class CreateBucketJob < IdBasedJob
   include BackgroundTasks::Status
 
   def queue_name
@@ -12,7 +12,7 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
 
       storage = StorageService.new
       created = storage.create_bucket(bucket_id)
-      
+
       raise "Unable to create storage bucket" unless created
 
       after_create_bucket

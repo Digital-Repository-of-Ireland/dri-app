@@ -80,7 +80,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, params: { id: => @subcollection.noid }
+        post :create, params: { id: @subcollection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
       @login_user.reload
       expect(@login_user.pending_member?(group.id)).to be true
@@ -102,7 +102,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { :id => @subcollection.noid }
+        post :create, { id: @subcollection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       @login_user.reload

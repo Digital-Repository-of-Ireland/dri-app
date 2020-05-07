@@ -419,7 +419,7 @@ class CollectionsController < BaseObjectsController
       end
 
       @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
-      set_metadata_datastream(@object, xml)
+      @object.update_metadata xml_ds.xml
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
 

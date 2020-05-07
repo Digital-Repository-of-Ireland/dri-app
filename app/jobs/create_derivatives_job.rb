@@ -1,4 +1,4 @@
-class CreateDerivativesJob < ActiveFedoraIdBasedJob
+class CreateDerivativesJob < IdBasedJob
   include BackgroundTasks::Status
 
   def queue_name

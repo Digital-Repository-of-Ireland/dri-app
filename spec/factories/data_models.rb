@@ -14,7 +14,7 @@ FactoryBot.define do
     temporal_coverage      { ["1900s"] }
     subject                { ["Ireland","something else"] }
     resource_type          { ["Sound"] }
-    object_version         { '1' }
+    object_version         { 1 }
 
     after(:create) do |sound|
       preservation = Preservation::Preservator.new(sound)
@@ -36,7 +36,7 @@ FactoryBot.define do
     temporal_coverage      { ["1900s"] }
     subject                { ["Ireland","something else"] }
     resource_type          { ["Sound"] }
-    object_version         { '1' }
+    object_version         { 1 }
 
     after(:create) do |audio|
       preservation = Preservation::Preservator.new(audio)
@@ -57,6 +57,7 @@ FactoryBot.define do
     temporal_coverage      { ["1900s"] }
     subject                { ["Ireland","something else"] }
     resource_type          { ["Text"] }
+    object_version         { 1 }
   end
 
   factory(:image, class: DRI::QualifiedDublinCore) do
@@ -72,6 +73,7 @@ FactoryBot.define do
     temporal_coverage      { ["1900s"] }
     subject                { ["Ireland","something else"] }
     resource_type          { ["Image"] }
+    object_version         { 1 }
 
     after(:create) do |image|
       # TODO add attached_file
@@ -89,7 +91,7 @@ FactoryBot.define do
     resource_type          { ["Collection"] }
     creation_date          { ["1916-01-01"] }
     published_date         { ["1916-01-02"] }
-    object_version         { '1' }
+    object_version         { 1 }
 
     after(:create) do |collection|
       preservation = Preservation::Preservator.new(collection)
@@ -106,7 +108,7 @@ FactoryBot.define do
     resource_type          { ["Documentation"] }
     creation_date          { ["1916-01-01"] }
     published_date         { ["1916-01-02"] }
-    object_version         { '1' }
+    object_version         { 1 }
 
     after(:create) do |doc|
       preservation = Preservation::Preservator.new(doc)

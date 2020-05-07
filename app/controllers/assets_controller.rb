@@ -25,7 +25,7 @@ class AssetsController < ApplicationController
     can_view?
 
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
-    @generic_file = retrieve_generic_file! params[:id]
+    @generic_file = retrieve_object! params[:id]
 
     @status = status(@generic_file.noid)
 
@@ -39,7 +39,7 @@ class AssetsController < ApplicationController
   def download
     enforce_permissions!('edit', params[:object_id]) if params[:version].present?
 
-    @generic_file = retrieve_generic_file! params[:id]
+    @generic_file = retrieve_object! params[:id]
     if @generic_file
       @document = SolrDocument.find(params[:object_id])
 
@@ -55,12 +55,10 @@ class AssetsController < ApplicationController
         )
       end
 
-      local_file = GenericFileContent.new(generic_file: @generic_file).local_file(params[:version])
-
-      if local_file
-        response.headers['Content-Length'] = File.size?(local_file.path).to_s
-        send_file local_file.path,
-              type: local_file.mime_type || @generic_file.mime_type,
+      if File.file?(@generic_file.path)
+        response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
+        send_file @generic_file.path,
+              type: @generic_file.mime_type,
               stream: true,
               buffer: 4096,
               disposition: "attachment; filename=\"#{@generic_file.filename.first}\";",
@@ -76,7 +74,7 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     object = retrieve_object!(params[:object_id])
-    generic_file = retrieve_generic_file!(params[:id])
+    generic_file = retrieve_object!(params[:id])
 
     if object.status == 'published' && !current_user.is_admin?
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
@@ -107,14 +105,13 @@ class AssetsController < ApplicationController
     file_upload = upload_from_params
 
     @object = retrieve_object! params[:object_id]
-    @generic_file = retrieve_generic_file! params[:id]
+    @generic_file = retrieve_object! params[:id]
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    if file_content.update_content(file_upload, download_url)
+    if file_content.update_content(file_upload)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
       record_version_committer(@object, current_user)
-
       mint_doi(@object, 'asset modified') if @object.status == 'published'
     else
       message = @generic_file.errors.full_messages.join(', ')
@@ -145,15 +142,13 @@ class AssetsController < ApplicationController
       flash[:notice] = t('dri.flash.notice.specify_object_id')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
-
     preservation = params[:preservation].presence == 'true' ? true : false
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    if file_content.add_content(file_upload, download_url)
+    if file_content.add_content(file_upload)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
-
       record_version_committer(@object, current_user)
       mint_doi(@object, 'asset added') if @object.status == 'published'
     else
@@ -178,7 +173,7 @@ class AssetsController < ApplicationController
 
     def build_generic_file(object:, user:, preservation: false)
       generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
-      generic_file.batch = object
+      generic_file.digital_object = object
       generic_file.apply_depositor_metadata(user)
       generic_file.preservation_only = 'true' if preservation
 

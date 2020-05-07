@@ -3,7 +3,7 @@ require 'preservation/preservation_helpers'
 
 class ObjectHistory
   include ActiveModel::Model
-  include PreservationHelpers
+  include Preservation::PreservationHelpers
 
   attr_accessor :object
 

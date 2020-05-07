@@ -94,34 +94,34 @@ describe ObjectsController do
       @collection.destroy
     end
 
-    it 'should delete an incomplete object' do
-      collection = FactoryBot.create(:collection)
-      collection.depositor = User.find_by_email(@login_user.email).to_s
-      collection.manager_users_string=User.find_by_email(@login_user.email).to_s
-      collection.discover_groups_string="public"
-      collection.read_groups_string="registered"
-      collection.creator = [@login_user.email]
+    # it 'should delete an incomplete object' do
+    #   collection = FactoryBot.create(:collection)
+    #   collection.depositor = User.find_by_email(@login_user.email).to_s
+    #   collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+    #   collection.discover_groups_string="public"
+    #   collection.read_groups_string="registered"
+    #   collection.creator = [@login_user.email]
 
-      object = FactoryBot.create(:sound)
-      object[:status] = "draft"
-      object.depositor=User.find_by_email(@login_user.email).to_s
-      object.manager_users_string=User.find_by_email(@login_user.email).to_s
-      object.creator = [@login_user.email]
+    #   object = FactoryBot.create(:sound)
+    #   object[:status] = "draft"
+    #   object.depositor=User.find_by_email(@login_user.email).to_s
+    #   object.manager_users_string=User.find_by_email(@login_user.email).to_s
+    #   object.creator = [@login_user.email]
 
-      object.save
+    #   object.save
 
-      collection.governed_items << object
+    #   collection.governed_items << object
 
-      FileUtils.rm_rf aip_dir(object.noid)
-      allow_any_instance_of(ObjectsController).to receive(:retrieve_object).and_raise(Ldp::HttpError)
+    #   FileUtils.rm_rf aip_dir(object.noid)
+    #   allow_any_instance_of(ObjectsController).to receive(:retrieve_object).and_raise(Ldp::HttpError)
 
-      delete :destroy, params: { id: object.noid }
+    #   delete :destroy, params: { id: object.noid }
 
-      expect(ActiveFedora::SolrService.count("id:#{object.noid}")).to be 0
+    #   expect(ActiveFedora::SolrService.count("id:#{object.noid}")).to be 0
 
-      collection.reload
-      collection.delete
-    end
+    #   collection.reload
+    #   collection.delete
+    # end
 
   end
 
@@ -412,7 +412,7 @@ describe ObjectsController do
 
     after(:each) do
       CollectionLock.where(collection_id: @collection.noid).delete_all
-      @collection.delete if ActiveFedora::Base.exists?(@collection.noid)
+      @collection.delete if DRI::Identifier.object_exists?(@collection.noid)
       @login_user.delete
     end
 
@@ -426,7 +426,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { batch: { governing_collection: @collection.noid }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.noid }, metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 

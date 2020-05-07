@@ -3,83 +3,49 @@ class GenericFileContent
 
   attr_accessor :object, :generic_file, :user
 
-  def add_content(file_upload, download_url, path='content')
-    preserved_file = preserve_file(file_upload, path, false)
-
-    external_content(content_url(download_url, preserved_file.version), file_upload[:filename])
+  def add_content(file_upload, path='content')
+    set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
+    preserve_file(file_upload, path, false)
   end
 
-  def update_content(file_upload, download_url, path='content')
-    preserved_file = preserve_file(file_upload, path, true)
+  def update_content(file_upload, path='content')
+    @name_of_file_to_replace = generic_file.label
 
-    external_content(content_url(download_url, preserved_file.version), file_upload[:filename])
+    set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
+    preserve_file(file_upload, path, true)
   end
 
-  def checksum
-    @file.checksum
-  end
+  def set_content(file, filename, mime_type, path='content')
+    # Update object version
+    object.object_version ||= 1
+    object.increment_version
 
-  def external_content(url, filename, path='content')
-    generic_file.add_file('', path: path, original_name: filename, mime_type: external_mime_type(url))
+    begin
+      object.save!
+    rescue ActiveRecord::RecordNotSaved
+      logger.error "Could not update object version number for #{object.noid} to version #{object.object_version}"
+      raise Exceptions::InternalError
+    end
+
+    generic_file.add_file(file, { path: path, file_name: "#{generic_file.noid}_#{filename}", mime_type: mime_type })
     generic_file.label = filename
     generic_file.title = [filename]
 
     save_and_characterize
   end
 
-  def local_file(version = nil, datastream = 'content')
-    return @local_file if @local_file
-
-    search_params = { f: generic_file.id, d: datastream }
-    search_params[:v] = version unless version.nil?
-
-    query = 'fedora_id LIKE :f AND ds_id LIKE :d'
-    query << ' AND version = :v' if search_params[:v].present?
-
-    @local_file = LocalFile.where(query, search_params).order(version: :desc).first
-  rescue ActiveRecord::RecordNotFound
-    raise DRI::Exceptions::InternalError, "Unable to find requested file"
-  rescue ActiveRecord::ActiveRecordError
-    raise DRI::Exceptions::InternalError, "Error finding file"
-  end
-
   private
 
-  def content_url(download_url, version)
-    "#{URI.escape(download_url)}?version=#{version}"
-  end
-
   def preserve_file(filedata, datastream, update=false)
-    filename = "#{generic_file.id}_#{filedata[:filename]}"
-
-    # Update object version
-    object.object_version ||= '1'
-    object.increment_version
-
-    begin
-      object.save!
-    rescue ActiveFedora::RecordInvalid
-      logger.error "Could not update object version number for #{object.id} to version #{object.object_version}"
-      raise Exceptions::InternalError
-    end
-
-    @file = LocalFile.build_local_file(
-      object: object,
-      generic_file: generic_file,
-      data: filedata[:file_upload],
-      datastream: datastream,
-      opts: { filename: filename, mime_type: filedata[:mime_type], checksum: 'md5' }
-    )
+    filename = "#{generic_file.noid}_#{filedata[:filename]}"
 
     # Do the preservation actions
     addfiles = [filename]
     delfiles = []
-    delfiles = ["#{generic_file.id}_#{generic_file.label}"] if update
+    delfiles = ["#{generic_file.noid}_#{@name_of_file_to_replace}"] if update
 
     preservation = Preservation::Preservator.new(object)
     preservation.preserve_assets(addfiles, delfiles)
-
-    @file
   end
 
   # Takes an optional block and executes the block if the save was successful.
@@ -96,7 +62,7 @@ class GenericFileContent
     begin
       return false unless generic_file.save
     rescue RSolr::Error::Http => error
-      ActiveFedora::Base.logger.warn "save_with_retry Caught RSOLR error #{error.inspect}"
+      logger.warn "save_with_retry Caught RSOLR error #{error.inspect}"
       save_tries += 1
       # fail for good if the tries is greater than 3
       raise error if save_tries >= 3
@@ -109,11 +75,6 @@ class GenericFileContent
   end
 
   def push_characterize_job
-    DRI.queue.push(CharacterizeJob.new(generic_file.id))
+    DRI.queue.push(CharacterizeJob.new(generic_file.noid))
   end
-
-  def external_mime_type(url)
-    "message/external-body; access-type=URL; URL=\"#{url}\""
-  end
-
 end

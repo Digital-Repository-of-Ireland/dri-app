@@ -122,19 +122,19 @@ describe CollectionsController do
 
     it 'accepts a valid image' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, params: { id: @collection.noid, batch: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.noid, digital_object: { cover_image: @uploaded } }
       expect(flash[:notice]).to be_present
     end
 
     it 'rejects unsupported image format' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.tiff"), "image/tiff")
-      put :add_cover_image, params: { id: @collection.noid, batch: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.noid, digital_object: { cover_image: @uploaded } }
       expect(flash[:error]).to be_present
     end
 
     it 'creates new AIP' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, params: { id: @collection.noid, batch: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.noid, digital_object: { cover_image: @uploaded } }
 
       expect(Dir.entries(aip_dir(@collection.noid)).size - 2).to eq(2)
       expect(aip_valid?(@collection.noid, 2)).to be true
@@ -359,7 +359,7 @@ describe CollectionsController do
       sign_in @login_user
 
       @collection = FactoryBot.create(:collection)
-      CollectionLock.create(collection_id: @collection.id)
+      CollectionLock.create(collection_id: @collection.noid)
 
       request.env["HTTP_REFERER"] = search_catalog_path
     end

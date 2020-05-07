@@ -59,8 +59,8 @@ class ProcessBatchIngest
                 url = Rails.application.routes.url_helpers.url_for(
                         controller: 'assets',
                         action: 'download',
-                        object_id: object.id,
-                        id: @generic_file.id,
+                        object_id: object.noid,
+                        id: @generic_file.noid,
                         version: object.object_version
                       )
                 file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
@@ -150,15 +150,15 @@ class ProcessBatchIngest
     mime_type = Validators.file_type(file_path)
 
     begin
-      LocalFile.build_local_file(
-        object: object,
-        generic_file: @generic_file,
-        data:filedata,
-        datastream: datastream,
-        opts: { filename: filename, mime_type: mime_type, checksum: 'md5'}
+      @generic_file.add_file(
+        file, {
+                path: file_path,
+                file_name: filename,
+                mime_type: mime_type
+              }
       )
     rescue StandardError => e
-      Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
+      Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.noid} to #{datastream}: #{e.message}"
       return nil
     end
 
@@ -177,7 +177,7 @@ class ProcessBatchIngest
     standard = xml_ds.metadata_standard
 
     object = DRI::DigitalObject.with_standard standard
-    object.governing_collection_id = collection_id
+    object.governing_collection = DRI::DigitalObject.find_by_noid(collection_id)
     object.depositor = user.to_s
     object.status = 'draft'
     object.object_version = 1
@@ -256,7 +256,7 @@ class ProcessBatchIngest
   def self.checksum_metadata(object)
     if object.attached_files.key?(:descMetadata)
       xml = object.attached_files[:descMetadata].content
-      object.metadata_md5 = Checksum.md5_string(xml)
+      object.metadata_checksum = Checksum.md5_string(xml)
     end
   end
 end

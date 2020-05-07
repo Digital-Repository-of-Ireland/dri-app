@@ -1,4 +1,4 @@
-class DeleteCollectionJob < ActiveFedoraIdBasedJob
+class DeleteCollectionJob < IdBasedJob
 
   def queue_name
     :delete_collection

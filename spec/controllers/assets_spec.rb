@@ -16,7 +16,7 @@ describe AssetsController do
 
     sign_in login_user
 
-    object[:status] = "draft"
+    object.status = "draft"
     object.save
 
     collection.governed_items << object
@@ -33,7 +33,7 @@ describe AssetsController do
   describe 'create' do
 
     it 'should create an asset from a local file' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA.mp3"))
       options = { file_name: "SAMPLEA.mp3" }
@@ -42,28 +42,30 @@ describe AssetsController do
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
-    it 'should create a valid aip' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+     it 'should create a valid aip' do
+       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
-      FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA.mp3"))
-      options = { file_name: "SAMPLEA.mp3" }
-      post :create, params: { object_id: object.noid, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" }
+       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA.mp3"))
+       options = { file_name: "SAMPLEA.mp3" }
+       post :create, params: { object_id: object.noid, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" }
 
-      expect(aip_valid?(object.noid, 2)).to be true
-    end
+       expect(aip_valid?(object.noid, 2)).to be true
+     end
 
     it 'should create an asset from an upload' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, params: { object_id: object.noid, Filedata: uploaded }
 
-      expect(Dir.glob("#{@tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should mint a doi when an asset is added to a published object' do
       object.status = "published"
+      object.depositor = 'test'
       object.save
+      object.reload
 
       stub_const(
         'DoiConfig',
@@ -79,7 +81,7 @@ describe AssetsController do
 
       DataciteDoi.create(object_id: object.noid)
 
-      expect_any_instance_of(GenericFileContent).to receive(:external_content).and_return(true)
+      expect_any_instance_of(GenericFileContent).to receive(:push_characterize_job).and_return(true)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
@@ -88,12 +90,11 @@ describe AssetsController do
       DataciteDoi.where(object_id: object.noid).first.delete
       Settings.doi.enable = false
     end
-
    end
 
    describe 'update' do
     it 'should create a new version' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
       generic_file.digital_object = object
@@ -110,7 +111,7 @@ describe AssetsController do
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       put :update, params: { object_id: object.noid, id: file_id, Filedata: uploaded }
 
-      expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should create a valid aip' do
@@ -124,31 +125,31 @@ describe AssetsController do
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
       put :update, params: { object_id: object.noid, id: file_id, Filedata: uploaded }
 
-      expect(aip_valid?(object.id, 3)).to be true
+      expect(aip_valid?(object.noid, 3)).to be true
     end
 
     it 'should create a new version from a local file' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA.mp3"))
 
       generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
-      generic_file.batch = object
+      generic_file.digital_object = object
       generic_file.apply_depositor_metadata('test@test.com')
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      generic_file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
+      generic_file.add_file File.new(File.join(tmp_upload_dir, "SAMPLEA.mp3")), options
       generic_file.save
       file_id = generic_file.noid
 
       put :update, params: { object_id: object.noid, id: file_id, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" }
-      expect(Dir.glob("#{@tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
 
     it 'should mint a doi when an asset is modified' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content).and_return(true)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job).and_return(true)
 
       stub_const(
         'DoiConfig',
@@ -165,13 +166,13 @@ describe AssetsController do
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA.mp3"))
 
       generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
-      generic_file.digital_object = @object
+      generic_file.digital_object = object
       generic_file.apply_depositor_metadata('test@test.com')
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      generic_file.add_file File.new(File.join(@tmp_upload_dir, "SAMPLEA.mp3")), options
+      generic_file.add_file File.new(File.join(tmp_upload_dir, "SAMPLEA.mp3")), options
       generic_file.save
       file_id = generic_file.noid
 
@@ -185,13 +186,12 @@ describe AssetsController do
       DataciteDoi.where(object_id: object.noid).each { |d| d.delete }
       Settings.doi.enable = false
     end
-
   end
 
   describe 'destroy' do
 
     it 'should delete a file' do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
       generic_file.digital_object = object
@@ -199,7 +199,6 @@ describe AssetsController do
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = object.noid
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
@@ -207,7 +206,7 @@ describe AssetsController do
       file_id = generic_file.noid
 
       expect {
-        delete :destroy, object_id: object.noid, id: file_id
+        delete :destroy, params: { object_id: object.noid, id: file_id }
       }.to change { DRI::Identifier.object_exists?(file_id) }.from(true).to(false)
 
     end
@@ -216,7 +215,7 @@ describe AssetsController do
   describe 'download' do
 
     it "should be possible to download the master asset" do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       object.master_file_access = 'public'
       object.edit_users_string = login_user.email
@@ -227,11 +226,9 @@ describe AssetsController do
       generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
       generic_file.digital_object = object
       generic_file.apply_depositor_metadata(login_user.email)
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = object.noid
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
@@ -275,10 +272,10 @@ describe AssetsController do
     describe 'create' do
 
       it 'should not create an asset' do
-        allow_any_instance_of(GenericFileContent).to receive(:external_content)
+        allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
         uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-        post :create, params: { object_id: object.noid, Filedata: uploaded }
+        post :create, params: { object_id: @object.noid, Filedata: uploaded }
 
         expect(flash[:error]).to be_present
       end

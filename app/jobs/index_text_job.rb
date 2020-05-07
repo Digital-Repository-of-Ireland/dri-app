@@ -1,4 +1,4 @@
-class IndexTextJob < ActiveFedoraIdBasedJob
+class IndexTextJob < IdBasedJob
 
   def queue_name
     :index_text
@@ -28,12 +28,12 @@ class IndexTextJob < ActiveFedoraIdBasedJob
       else
         generic_file.digital_object.full_text = generic_file.batch.full_text.push(extracted_text)
       end
-      generic_file.digital_object.save    
+      generic_file.digital_object.save
     end
 
   rescue => e
-    Rails.logger.error("Error extracting content from #{self.pid}: #{e.inspect}")
-  end 
+    Rails.logger.error("Error extracting content from #{self.noid}: #{e.inspect}")
+  end
 
 end
 
