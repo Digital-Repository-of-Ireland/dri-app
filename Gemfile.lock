@@ -61,8 +61,10 @@ GIT
     timelineJS3-rails (1.0.3)
       jquery-rails
 
-PATH
-  remote: /home/skenny/Development/dri/dri-data-models
+GIT
+  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
+  revision: 98e6ce1d5b00961a77952b893317f7abb1a05731
+  branch: active-record
   specs:
     dri_data_models (3.2.6)
       hydra-derivatives
@@ -592,7 +594,7 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.0425)
-    mimemagic (0.3.4)
+    mimemagic (0.3.5)
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -664,7 +666,7 @@ GEM
     parser (2.7.1.2)
       ast (~> 2.4.0)
     parslet (2.0.0)
-    public_suffix (4.0.4)
+    public_suffix (4.0.5)
     qa (1.2.0)
       activerecord-import
       deprecation
