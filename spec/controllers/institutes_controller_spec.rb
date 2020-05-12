@@ -42,7 +42,7 @@ describe InstitutesController do
 
     it "should create a new AIP when updating the institute_name" do
       expect(Dir.entries(aip_dir(@collection.noid)).size - 2).to eq(1)
-      expect(aip_valid?(@collection.id, 1)).to be true
+      expect(aip_valid?(@collection.noid, 1)).to be true
 
       post :associate, params: { object: @collection.noid, institute_name: @institute.name }
 

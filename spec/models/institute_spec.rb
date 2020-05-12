@@ -28,8 +28,8 @@ describe Institute do
   it "should return the collections it is associated with" do
     @collection.institute = [@institute.name]
     @collection.save
-      
-    expect(@institute.collections.first[:id]).to eq @collection.id
+
+    expect(@institute.collections.first[:id]).to eq @collection.noid
   end
 
   it "should return empty array if not associated" do

@@ -1,5 +1,6 @@
 class ReviewJob
   include Resque::Plugins::Status
+  include DRI::Versionable
 
   def queue
     :review
@@ -27,12 +28,11 @@ class ReviewJob
     # Need to set sub-collection to reviewed
     if subcollection?(collection) && collection.status == 'draft'
       collection.status = 'reviewed'
-      collection.object_version ||= 1
       collection.increment_version
 
       failed += 1 unless collection.save
 
-      DRI::Object::Actor.new(collection, user).version_and_record_committer
+      record_version_committer(collection, user)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
@@ -59,6 +59,8 @@ class ReviewJob
           o.status = 'reviewed'
           o.increment_version
           o.save ? (completed += 1) : (failed += 1)
+
+          record_version_committer(o, user)
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)

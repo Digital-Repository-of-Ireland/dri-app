@@ -56,19 +56,6 @@ class ProcessBatchIngest
       saved = if moab_filename.nil?
                 false
               else
-                url = Rails.application.routes.url_helpers.url_for(
-                        controller: 'assets',
-                        action: 'download',
-                        object_id: object.noid,
-                        id: @generic_file.noid,
-                        version: object.object_version
-                      )
-                file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
-                file_content.external_content(
-                  url,
-                  original_file_name
-                )
-
                 filenames << moab_filename
                 true
               end
@@ -151,17 +138,17 @@ class ProcessBatchIngest
 
     begin
       @generic_file.add_file(
-        file, {
+        File.new(file_path), {
                 path: file_path,
                 file_name: filename,
                 mime_type: mime_type
               }
       )
+      @generic_file.save
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.noid} to #{datastream}: #{e.message}"
       return nil
     end
-
     FileUtils.rm_f(file_path)
     filename
   end
@@ -195,11 +182,6 @@ class ProcessBatchIngest
     )
     group.reader_group = true
     group.save
-  end
-
-  def self.download_url(generic_file)
-    Rails.application.routes.url_helpers.url_for controller: 'assets',
-             action: 'download', object_id: generic_file.digital_object.noid, id: generic_file.noid
   end
 
   def self.file_data(path)

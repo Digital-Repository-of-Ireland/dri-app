@@ -9,6 +9,7 @@ describe "MintDoiJob" do
 
     @collection = DRI::DigitalObject.with_standard :qdc
     @collection[:title] = ["A collection"]
+    @collection[:creator] = 'test@dri.ie'
     @collection[:description] = ["This is a Collection"]
     @collection[:rights] = ["This is a statement about the rights associated with this object"]
     @collection[:publisher] = ["RnaG"]
@@ -45,20 +46,20 @@ describe "MintDoiJob" do
 
     Settings.doi.enable = false
   end
-  
+
   describe "run" do
     it "should mint a doi for an object" do
       expect_any_instance_of(DOI::Datacite).to receive(:mint)
       expect_any_instance_of(DOI::Datacite).to receive(:metadata)
-      
+
       DataciteDoi.create(object_id: @object.noid)
-      
+
       job = MintDoiJob.new(@object.noid)
       job.run
 
       @object.reload
 
-      expect(@object.doi.first).to eql("10.5072/DRI.#{@object.noid}")     
+      expect(@object.doi).to eql("10.5072/DRI.#{@object.noid}")
     end
 
   end

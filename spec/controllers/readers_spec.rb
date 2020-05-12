@@ -102,7 +102,7 @@ describe ReadersController do
       expect(@login_user.pending_member?(group.id)).not_to be true
 
       expect {
-        post :create, { id: @subcollection.noid }
+        post :create, params: { id: @subcollection.noid }
       }.to change { ActionMailer::Base.deliveries.size }.by(1)
 
       @login_user.reload
@@ -115,7 +115,7 @@ describe ReadersController do
     it "approves a pending membership" do
       sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
-      group = UserGroup::Group.find_by(name: @collection.id)
+      group = UserGroup::Group.find_by(name: @collection.noid)
 
       membership = @login_user.join_group(group.id)
       post :update, params: { id: @collection.noid, user_id: @login_user.id }
@@ -129,7 +129,7 @@ describe ReadersController do
     it "approves a pending membership" do
       sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.noid}"
-      group = UserGroup::Group.find_by(name: @collection.id)
+      group = UserGroup::Group.find_by(name: @collection.noid)
 
       membership = @login_user.join_group(group.id)
       membership.approve_membership(@manager_user.id)

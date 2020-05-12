@@ -19,7 +19,8 @@ RSpec.describe "Oai requests", type: :request do
   end
 
   after do
-    collection.delete
+    #object.delete
+    collection.destroy
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
@@ -43,12 +44,12 @@ RSpec.describe "Oai requests", type: :request do
 
   it "has lists sets" do
     get "/oai?verb=ListSets"
-    expect(response.body).to match(/collection:#{collection.id}/)
+    expect(response.body).to match(/collection:#{collection.noid}/)
   end
 
   it "has a setSpec" do
     get "/oai", params: { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
-    expect(response.body).to match(%r{<setSpec>collection:#{collection.id}<\/setSpec>})
+    expect(response.body).to match(%r{<setSpec>collection:#{collection.noid}<\/setSpec>})
   end
 
   it "has a record in the repo" do

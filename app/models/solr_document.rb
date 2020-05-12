@@ -226,11 +226,8 @@ class SolrDocument
 
     relatives_ids = self[relatives_key]
 
-    relatives = ActiveFedora::SolrService.query(
-                "id:(#{relatives_ids.join(' OR ')})",
-                rows: relatives_ids.length
-              )
-    relatives.map { |r| r['hasMember_ssim'] }.flatten
+    related = DRI::Related.find(relatives_ids)
+    related.map { |r| r.related.map(&:noid) }.flatten.uniq
   end
 
   def governing_collection

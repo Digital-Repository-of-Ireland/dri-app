@@ -56,7 +56,7 @@ describe DoiController do
       updated_doi = DataciteDoi.create(object_id: @object.noid, modified: 'test update')
 
       get :show, params: { object_id: @object.noid, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
-      expect(response).to redirect_to(solr_document_path(@object.id))
+      expect(response).to redirect_to(solr_document_path(@object.noid))
     end
 
     it "updates doi" do

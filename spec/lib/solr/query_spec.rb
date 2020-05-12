@@ -9,13 +9,13 @@ end
 describe "Query" do
 
   before(:each) do
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
   end
 
   after(:each) do
     @collection.destroy
   end
-  
+
   describe "run" do
     @slow
     it "should return results more than chunk size", :slow => true do
@@ -28,12 +28,12 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.id}\"", 10)
-      count = 0      
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.noid}\"", 10)
+      count = 0
       while query.has_more?
         count += query.pop.count
       end
- 
+
       count.should eq(20)
     end
 
@@ -48,7 +48,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.id}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.noid}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count
@@ -68,7 +68,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.id}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.noid}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count
@@ -78,5 +78,5 @@ describe "Query" do
     end
 
   end
- 
+
 end

@@ -103,11 +103,11 @@ describe 'DRI::Solr::Document::Collection' do
 
       duplicates = doc.duplicates[1]
       titles = duplicates.map(&:title)
-      expect([@object[:title], @object2[:title], @object[:title], @object2[:title]]).to eq titles
+      expect([@object.title, @object2.title, @object.title, @object2.title]).to eq titles
 
       duplicates = doc.duplicates('title_sorted_ssi asc')[1]
       titles = duplicates.map(&:title)
-      expect([@object[:title], @object[:title], @object2[:title], @object2[:title]]).to eq titles
+      expect([@object.title, @object.title, @object2.title, @object2.title]).to eq titles
     end
   end
 end

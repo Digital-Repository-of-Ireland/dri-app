@@ -38,10 +38,10 @@ describe ObjectHistory  do
     @object[:depositor] = "edituser@dri.ie"
     @object.save
 
-    VersionCommitter.create(obj_id: @object.id, version_id: 'v0001', committer_login: "instmgr@dri.ie")
+    VersionCommitter.create(obj_id: @object.noid, version_id: 'v0001', committer_login: "instmgr@dri.ie")
 
-    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
-    @generic_file.batch = @object
+    @generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+    @generic_file.digital_object = @object
     @generic_file.apply_depositor_metadata(@user.email)
     @generic_file.save
 
@@ -82,7 +82,7 @@ describe ObjectHistory  do
 
   it 'should get asset information' do
     asset_info = @object_history.asset_info
-    expect(asset_info.keys).to include(@generic_file.id)
+    expect(asset_info.keys).to include(@generic_file.noid)
   end
 
   it 'should call fixity check info for a collection' do
@@ -97,25 +97,24 @@ describe ObjectHistory  do
   end
 
   it 'should get collection fixity information' do
-    FixityCheck.create(collection_id: @collection.id, object_id: @object.id, verified: true)
+    FixityCheck.create(collection_id: @collection.noid, object_id: @object.noid, verified: true)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('passed')
   end
 
   it 'should get collection fixity information with failures' do
-    FixityCheck.create(collection_id: @collection.id, object_id: @object.id, verified: false)
+    FixityCheck.create(collection_id: @collection.noid, object_id: @object.noid, verified: false)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('failed')
-    expect(fixity[:result]).to include(@object.id)
+    expect(fixity[:result]).to include(@object.noid)
   end
 
   it 'should get object fixity information' do
-    FixityCheck.create(collection_id: @collection.id, object_id: @object.id, verified: true, result: 'test')
+    FixityCheck.create(collection_id: @collection.noid, object_id: @object.noid, verified: true, result: 'test')
     fixity = @object_history.fixity_check_object
     expect(fixity[:verified]).to eq('passed')
     expect(fixity[:result]).to eq('test')
   end
-
 end

@@ -16,6 +16,7 @@ describe 'ProcessBatchIngest' do
   end
 
   after(:each) do
+    @collection.destroy
     @login_user.delete if @login_user
   end
 
@@ -128,7 +129,7 @@ describe 'ProcessBatchIngest' do
       master_file.reload
       id = master_file.file_location.split('/').last
 
-      expect(DRI::GenericFile.find(id).preservation?).to be true
+      expect(DRI::GenericFile.find_by_noid(id).preservation?).to be true
       expect(master_file.status_code).to eq 'COMPLETED'
     end
 

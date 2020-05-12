@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Preservation::Preservator do
   include_context 'tmp_assets'
 
@@ -13,11 +15,11 @@ describe Preservation::Preservator do
     @preservator = Preservation::Preservator.new(@object)
 
     @target_path = @preservator.manifest_path(
-      @preservator.object.id, 
+      @preservator.object.noid, 
       @preservator.version
     )    
     @err_string = "The Moab directory #{@target_path} for "\
-      "#{@preservator.object.id} version #{@preservator.version} "\
+      "#{@preservator.object.noid} version #{@preservator.version} "\
       "already exists"
   end
 

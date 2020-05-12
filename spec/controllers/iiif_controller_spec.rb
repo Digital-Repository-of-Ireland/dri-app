@@ -25,7 +25,7 @@ describe IiifController do
       object.governing_collection = collection
       object.save
 
-      get :show, params: { id: "#{object.id}:test", method: 'show' }
+      get :show, params: { id: "#{object.noid}:test", method: 'show' }
       expect(response.status).to eq(200)
     end
 
@@ -37,7 +37,7 @@ describe IiifController do
       object.governing_collection = collection
       object.save
 
-      get :show, params: { id: "#{object.id}:test", method: 'info' }
+      get :show, params: { id: "#{object.noid}:test", method: 'info' }
       expect(response.status).to eq(200)
     end
 
@@ -50,7 +50,7 @@ describe IiifController do
       object.governing_collection = collection
       object.save
 
-      get :show, params: { id: "#{object.id}:test", method: 'show' }
+      get :show, params: { id: "#{object.noid}:test", method: 'show' }
       expect(response.status).to eq(401)
     end
   end
@@ -62,12 +62,12 @@ describe IiifController do
     before(:each) { sign_in login_user }
 
     it 'should return a valid manifest for an object' do
-      get :manifest, params: { id: object.id, format: :json }
+      get :manifest, params: { id: object.noid, format: :json }
       expect { JSON.parse(response.body) }.not_to raise_error
     end
 
     it 'should return a valid collection manifest for a collection' do
-      get :manifest, params: { id: collection.id, format: :json }
+      get :manifest, params: { id: collection.noid, format: :json }
       expect { JSON.parse(response.body) }.not_to raise_error
     end
   end
@@ -81,7 +81,7 @@ describe IiifController do
     end
 
     it 'should return a valid manifest for a collection' do
-      get :sequence, params: { id: collection.id, format: :json }
+      get :sequence, params: { id: collection.noid, format: :json }
       expect { JSON.parse(response.body) }.not_to raise_error
     end
   end

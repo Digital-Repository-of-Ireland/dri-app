@@ -4,8 +4,8 @@ describe "StorageService" do
 
   before(:each) do
     @login_user = FactoryBot.create(:admin)
-    
-    @collection = FactoryGirl.create(:collection)
+
+    @collection = FactoryBot.create(:collection)
 
     @object = DRI::DigitalObject.with_standard :qdc
     @object[:title] = ["An Audio Title"]
@@ -24,9 +24,9 @@ describe "StorageService" do
     @object[:status] = "draft"
     @object.save
 
-    @collection.governed_items << @object    
+    @collection.governed_items << @object
     @collection.save
-    
+
     @gf = DRI::GenericFile.new
     @gf.apply_depositor_metadata(@login_user)
     @gf.digital_object = @object
@@ -55,7 +55,7 @@ describe "StorageService" do
     storage.store_surrogate(@object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.noid}_mp3.mp3")
 
     uri = storage.surrogate_url(@object.noid, "#{@gf.noid}_mp3")
-    
+
     expect(File.basename(URI.parse(uri).path)).to be == "#{@gf.noid}_mp3.mp3"
   end
 
@@ -79,7 +79,7 @@ describe "StorageService" do
 
     storage.delete_surrogates(@object.noid, @gf.noid)
     expect(storage.surrogate_exists?(@object.noid, "#{@gf.noid}_mp3")).to be_nil
-  end 
+  end
 
   it "should store a public file" do
     storage = StorageService.new

@@ -78,8 +78,8 @@ describe DRI::IIIFViewable do
     @sound.governing_collection = @collection
     @sound.save
 
-    allow_any_instance_of(GenericFileContent).to receive(:external_content)
-    allow_any_instance_of(GenericFileContent).to receive(:external_content)
+    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
+    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
     FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'),
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
@@ -90,10 +90,8 @@ describe DRI::IIIFViewable do
     options = {}
     options[:mime_type] = 'image/jpeg'
     options[:file_name] = 'sample_image.jpeg'
-    options[:batch_id] = @sound.noid
 
     @generic_file.add_file(File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options)
-    #file.save
 
     @generic_file.characterization.ng_xml = Nokogiri::XML(FITS_DATA)
     @generic_file.filename = ['sample_image.jpeg']

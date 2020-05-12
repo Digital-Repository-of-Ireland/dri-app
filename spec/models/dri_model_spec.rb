@@ -86,7 +86,7 @@ describe DRI::DigitalObject do
   end
 
   it "should index the correct number of files" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A fake record"]
     @t.rights = ["Rights"]
     @t.creator = ["A Creator"]
@@ -97,7 +97,7 @@ describe DRI::DigitalObject do
 
     11.times do
       generic_file = FactoryBot.create(:generic_png_file)
-      generic_file.batch = @t
+      generic_file.digital_object = @t
       generic_file.save
     end
 

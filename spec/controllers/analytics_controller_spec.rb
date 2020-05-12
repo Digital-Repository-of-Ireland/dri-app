@@ -60,7 +60,7 @@ describe AnalyticsController do
       sign_in login_user
 
       collection  = FactoryBot.create(:collection)
-      get :show, params: { id: collection.id }
+      get :show, params: { id: collection.noid }
 
       expect(flash[:error]).to_not be_present
       expect(response.status).to eq 200

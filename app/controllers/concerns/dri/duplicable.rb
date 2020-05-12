@@ -29,7 +29,7 @@ module DRI::Duplicable
         defType: 'edismax',
         rows: '10',
         fl: 'id'
-      ).delete_if { |obj| obj['id'] == object.id }
+      ).delete_if { |obj| obj['id'] == object.noid }
     end
   end
 
@@ -47,7 +47,7 @@ module DRI::Duplicable
       type: :symbol
     )
     query = "#{md5_field}:\"#{object.metadata_checksum}\""
-    query += " AND #{governed_field}:\"#{object.governing_collection.id}\""
+    query += " AND #{governed_field}:\"#{object.governing_collection.noid}\""
 
     query
   end

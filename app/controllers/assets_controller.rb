@@ -195,15 +195,6 @@ class AssetsController < ApplicationController
       storage.delete_surrogates(bucket_name, file_prefix)
     end
 
-    def download_url
-      url_for(
-        controller: 'assets',
-        action: 'download',
-        object_id: @object.noid,
-        id: @generic_file.noid,
-      )
-    end
-
     def local_file_ingest(name)
       upload_dir = Rails.root.join(Settings.dri.uploads)
       File.new(File.join(upload_dir, name))

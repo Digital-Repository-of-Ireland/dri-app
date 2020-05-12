@@ -19,6 +19,8 @@ module DRI::Solr::Document::File
 
   def characterized?
     # not characterized if all empty
+    return false unless self.key?(Solrizer.solr_name('characterization__mime_type'))
+
     !self[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].all? { |m| m.empty? }
   end
 
@@ -33,7 +35,6 @@ module DRI::Solr::Document::File
 
   def preservation_only?
     key = 'preservation_only_tesim'
-
     self[key].present? && self[key] == ['true'] ? true : false
   end
 

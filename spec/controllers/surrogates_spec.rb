@@ -61,12 +61,13 @@ describe SurrogatesController do
 
     it 'should return 404 for a surrogate that does not exist' do
       generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
-      generic_file.batch = @object
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.save
 
       get :show, params: { object_id: @object.noid, id: generic_file.noid, surrogate: 'thumbnail' }
       expect(response.status).to eq(404)
+      generic_file.destroy
     end
 
   end
@@ -74,7 +75,7 @@ describe SurrogatesController do
   describe 'download' do
 
     it "should be possible to download the surrogate" do
-      allow_any_instance_of(GenericFileContent).to receive(:external_content)
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       @object.master_file_access = 'public'
       @object.edit_users_string = @login_user.email
@@ -83,28 +84,26 @@ describe SurrogatesController do
       @object.reload
 
       generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
-      generic_file.batch = @object
+      generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.mime_type = "audio/mp3"
-      file = LocalFile.new(fedora_id: generic_file.noid, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = @object.noid
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      file.add_file uploaded, options
-      file.save
+      generic_file.add_file uploaded, options
       generic_file.save
       file_id = generic_file.noid
 
       storage = StorageService.new
       storage.create_bucket(@object.noid)
-      storage.store_surrogate(@object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.id}_mp3.mp3")
+      storage.store_surrogate(@object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.noid}_mp3.mp3")
 
       get :download, params: { id: file_id, object_id: @object.noid, type: 'surrogate' }
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('audio/mpeg')
+      generic_file.destroy
     end
   end
 end

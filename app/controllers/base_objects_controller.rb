@@ -37,7 +37,7 @@ class BaseObjectsController < CatalogController
       updated = @object.save
 
       if updated
-        actor.version_and_record_committer
+        record_version_committer(@object, current_user)
 
         # Do the preservation actions
         preservation = Preservation::Preservator.new(@object)

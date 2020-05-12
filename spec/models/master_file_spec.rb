@@ -6,9 +6,9 @@ describe "master file access" do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
 
-    @collection = FactoryGirl.create(:collection)
+    @collection = FactoryBot.create(:collection)
 
-    @object = FactoryGirl.create(:sound)
+    @object = FactoryBot.create(:sound)
     @object.governing_collection = @collection
     @object.save
 
@@ -33,14 +33,14 @@ describe "master file access" do
   it "should inherit the collection value" do
     expect(@gf.public?).to be false
     @collection.master_file_access = "public"
-    
+
     expect(@gf.public?).to be true
   end
- 
+
   it "should take the object value over the collection" do
     @collection.master_file_access = "public"
     expect(@gf.public?).to be true
-    
+
     @object.master_file_access = "private"
     expect(@gf.public?).to be false
     expect(@gf.private?).to be true
@@ -49,7 +49,7 @@ describe "master file access" do
   it "should allow object to be set to inherit" do
     @collection.master_file_access = "public"
     expect(@gf.public?).to be true
-    
+
     @object.master_file_access = "private"
     expect(@gf.public?).to be false
     expect(@gf.private?).to be true

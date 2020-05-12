@@ -138,7 +138,6 @@ class SurrogatesController < ApplicationController
             # don't create surrogates of preservation only assets
             DRI.queue.push(CreateBucketJob.new(file_doc.id)) unless file_doc.preservation_only?
           else
-            puts "Characterize #{file_doc.id}"
             DRI.queue.push(CharacterizeJob.new(file_doc.id))
           end
           flash[:notice] = t('dri.flash.notice.generating_surrogates')

@@ -139,7 +139,7 @@ describe SolrDocument do
       labels.each { |l| @object.generic_files << DRI::GenericFile.create(label: l) }
       @object.save
 
-      od = SolrDocument.find(@object.id)
+      od = SolrDocument.find(@object.noid)
       expect(od.assets(ordered: false).map(&:label)).to match_array(labels)
       expect(od.assets(ordered: true).map(&:label)).to eq ordered_labels
     end
@@ -153,7 +153,7 @@ describe SolrDocument do
       @collection.save
       @collection.reload
 
-      doc = SolrDocument.find(@collection.id)
+      doc = SolrDocument.find(@collection.noid)
       expect(doc.total_objects_count).to eq 6
     end
 
@@ -172,7 +172,7 @@ describe SolrDocument do
       @collection.save
       @collection.reload
 
-      doc = SolrDocument.find(@collection.id)
+      doc = SolrDocument.find(@collection.noid)
       expect(doc.published_objects_count).to eq 3
     end
 
@@ -186,8 +186,8 @@ describe SolrDocument do
       @collection.relations = [relation]
       @collection.save
 
-      doc = SolrDocument.find(@collection.id)
-      expect(doc.relatives).to match_array([@collection.id, collection_b.id])
+      doc = SolrDocument.find(@collection.noid)
+      expect(doc.relatives).to match_array([@collection.noid, collection_b.noid])
     end
 
     # ensure responses grouped into pages of 10 still return the correct count
@@ -199,10 +199,10 @@ describe SolrDocument do
           object = FactoryBot.create(:sound)
           object.status = 'published'
           object.save
-          @pub_obj_ids << object.id
+          @pub_obj_ids << object.noid
           @collection.governed_items << object
         end
-        @doc = SolrDocument.find(@collection.id)
+        @doc = SolrDocument.find(@collection.noid)
       end
       describe 'published_objects' do
         # previously failing due to solr response pagination
@@ -227,20 +227,20 @@ describe SolrDocument do
   context 'object type methods' do
     before(:each) do
       @to_delete = []
-      @solr_root_collection = SolrDocument.find(@collection.id)
-      @solr_subcollection = SolrDocument.find(@subcollection.id)
+      @solr_root_collection = SolrDocument.find(@collection.noid)
+      @solr_subcollection = SolrDocument.find(@subcollection.noid)
 
       @solr_objects = %i[sound audio text image documentation].map do |name|
         object = FactoryBot.create(name)
         object.save
         @to_delete << object
-        SolrDocument.find(object.id)
+        SolrDocument.find(object.noid)
       end
 
       generic_file = FactoryBot.create(:generic_png_file)
       generic_file.save
       @to_delete << generic_file
-      @solr_generic_file = SolrDocument.find(generic_file.id)
+      @solr_generic_file = SolrDocument.find(generic_file.noid)
     end
 
     after(:each) do
