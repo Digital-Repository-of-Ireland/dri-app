@@ -18,7 +18,7 @@ FactoryBot.define do
 
     after(:create) do |sound|
       preservation = Preservation::Preservator.new(sound)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 
@@ -40,7 +40,7 @@ FactoryBot.define do
 
     after(:create) do |audio|
       preservation = Preservation::Preservator.new(audio)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 
@@ -78,7 +78,7 @@ FactoryBot.define do
     after(:create) do |image|
       # TODO add attached_file
       preservation = Preservation::Preservator.new(image)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 
@@ -95,7 +95,7 @@ FactoryBot.define do
 
     after(:create) do |collection|
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 
@@ -112,7 +112,7 @@ FactoryBot.define do
 
     after(:create) do |doc|
       preservation = Preservation::Preservator.new(doc)
-      preservation.preserve(false, false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata','properties'])
     end
   end
 

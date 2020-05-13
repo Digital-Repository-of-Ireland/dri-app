@@ -49,15 +49,6 @@ module Preservation
       end
     end
 
-    # moabify_resource
-    def moabify_resource
-      File.write(File.join(metadata_path(self.object.noid, self.version), 'resource.rdf'), object.resource.dump(:ttl))
-      true
-    rescue StandardError => e
-      Rails.logger.error "unable to write resource: #{e}"
-      false
-    end
-
     # moabify_permissions
     def moabify_permissions
       File.write(File.join(metadata_path(self.object.noid, self.version), 'permissions.rdf'), object.permissions.inspect )
@@ -67,18 +58,12 @@ module Preservation
     end
 
     # preserve
-    def preserve(resource=false, permissions=false, datastreams=nil)
+    def preserve(permissions=false, datastreams=nil)
       create_moab_dirs()
       dslist = []
       added = []
       deleted = []
       modified = []
-
-      if resource
-        saved = moabify_resource
-        return false unless saved
-        dslist << 'resource.rdf'
-      end
 
       if permissions
         saved = moabify_permissions
