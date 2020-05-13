@@ -4,14 +4,18 @@ class GenericFileContent
   attr_accessor :object, :generic_file, :user
 
   def add_content(file_upload, path='content')
-    set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
+    set = set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
+    return set if set == false
+
     preserve_file(file_upload, path, false)
   end
 
   def update_content(file_upload, path='content')
     @name_of_file_to_replace = generic_file.label
 
-    set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
+    set = set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
+    return set if set == false
+
     preserve_file(file_upload, path, true)
   end
 

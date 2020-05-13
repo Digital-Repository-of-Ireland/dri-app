@@ -216,7 +216,7 @@ class ObjectsController < BaseObjectsController
     preservation.update_manifests(
       deleted: {
         'content' => assets,
-        'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']
+        'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml']
         }
     )
     collection_id = @object.governing_collection.noid
@@ -283,7 +283,7 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
 
       # if this object is in a sub-collection, we need to set that collection status
       # to reviewed so that a publish job will run on the collection
@@ -377,7 +377,7 @@ class ObjectsController < BaseObjectsController
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(governing_collection)
-          preservation.preserve(false, false, ['properties'])
+          preservation.preserve(false, ['properties'])
         end
 
         governing_collection = governing_collection.governing_collection

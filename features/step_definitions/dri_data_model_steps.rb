@@ -42,7 +42,7 @@ end
 
 When /^the (object|collection) has a doi$/ do |type|
   pid = type == "object" ? @pid : @collection_pid
-  obj = DRI::Batch.find(pid)
+  obj = DRI::Identifier.retrieve_object(pid)
   obj.doi = "10.5072/DRI-#{pid}"
   obj.save 
 end

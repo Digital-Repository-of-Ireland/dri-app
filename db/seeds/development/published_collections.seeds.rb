@@ -6,18 +6,6 @@ def add_published_collections!
   create_collection('save!')
 end
 
-def remove_published_collections
-  DRI::QualifiedDublinCore.find(title: 'test_collection').each do |collection|
-    collection.destroy
-  end
-end
-
-def remove_published_collections!
-  DRI::QualifiedDublinCore.find(title: 'test_collection').each do |collection|
-    collection.destroy!
-  end
-end
-
 # @param func [String] the function collection calls to save itself
 def create_collection(func)
   # only use email for associating object with user?
@@ -40,7 +28,7 @@ end
 def create_object(owner, title, access: 'public', type: 'Object')
   # institute = Institute.all.sample.name # random institute
   institute = Institute.find_by(depositing: true).name
-  object = DRI::Batch.with_standard :qdc
+  object = DRI::DigitalObject.with_standard :qdc
   object.title = [title]
   object.description = ['this is a test']
 

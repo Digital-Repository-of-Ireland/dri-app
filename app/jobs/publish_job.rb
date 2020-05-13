@@ -45,7 +45,7 @@ class PublishJob
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve(false, ['properties'])
     else
       failed += 1
     end
@@ -79,7 +79,7 @@ class PublishJob
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, false, ['properties'])
+          preservation.preserve(false, ['properties'])
         else
           failed += 1
         end

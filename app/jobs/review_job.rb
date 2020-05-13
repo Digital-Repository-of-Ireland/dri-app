@@ -64,7 +64,7 @@ class ReviewJob
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, false, ['properties'])
+          preservation.preserve(false, ['properties'])
         end
       end
 

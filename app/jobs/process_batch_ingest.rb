@@ -71,7 +71,7 @@ class ProcessBatchIngest
     end
 
     preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets(filenames,[])
+    preservation.preserve_assets(filenames, [])
   end
 
   def self.ingest_metadata(collection_id, user, metadata)
@@ -109,7 +109,7 @@ class ProcessBatchIngest
                  create_reader_group(object) if object.collection?
 
                  preservation = Preservation::Preservator.new(object)
-                 preservation.preserve(true, true, ['descMetadata','properties'])
+                 preservation.preserve(true, ['descMetadata','properties'])
 
                  rc = 0
                  { status_code: 'COMPLETED',

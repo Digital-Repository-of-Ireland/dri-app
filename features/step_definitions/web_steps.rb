@@ -99,8 +99,8 @@ When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, 
     pid = @digital_object.noid
   elsif (pid.eql?('the saved pid') && (type.eql?("collection") || type == 'my collections'))
     pid = @collection_pid ? @collection_pid : @pid
-  elsif (pid == 'the saved pid' && (type == "object" || type == 'asset'))
-    pid = @pid if pid == 'the saved pid'
+  elsif (pid.eql?('the saved pid') && (type == "object" || type == 'asset'))
+    pid = @pid if pid.eql?('the saved pid')
   end
   visit path_for(type, page, pid)
 end
@@ -253,7 +253,7 @@ When /^contains_images\? always returns true$/ do
 end
 
 When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
-  obj = ActiveFedora::Base.find(pid)
+  obj = DRI::DigitalObject.find_by_noid(pid)
   generic_files = if obj.collection?
                     obj.governed_items.map(&:generic_files).flatten
                   else

@@ -16,6 +16,8 @@ World(CollectionHelper)
 
 Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: created by "(.*?)")?$/ do |pid, title, user|
   pid = @random_pid if (pid.nil? || pid == "random")
+  @pid = pid
+
   @collection = DRI::QualifiedDublinCore.new(noid: pid)
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]
@@ -105,7 +107,7 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.creation_date = ["2000-01-01"]
   @digital_object.status = 'draft'
 
-  coll ||= @collection.id unless @collection.nil?
+  coll ||= @collection.noid unless @collection.nil?
 
   @digital_object.governing_collection = DRI::Identifier.retrieve_object(coll) if coll
 
@@ -113,12 +115,12 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.save!
 
   preservation = Preservation::Preservator.new(@digital_object)
-  preservation.preserve(false, false, ['descMetadata','properties'])
+  preservation.preserve(false, ['descMetadata','properties'])
 end
 
 Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|
-  subcollection = ActiveFedora::Base.find(subcolid, {:cast => true})
-  subcollection.governing_collection_id = colid
+  subcollection = DRI::DigitalObject.find_by_noid(subcolid)
+  subcollection.governing_collection = DRI::DigitalObject.find_by_noid(colid)
   subcollection.save
 end
 
@@ -139,9 +141,7 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
 end
 
 Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
-  colid = @collection.noid unless colid
-
-  collection = DRI::Identifier.retrieve_object(colid)
+  collection = get_collection(colid)
   collection.governed_items.each do |o|
     o.status = 'published'
     o.read_groups_string = 'public'

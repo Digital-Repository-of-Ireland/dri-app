@@ -137,7 +137,7 @@ class CollectionsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, ['descMetadata','properties'])
+      preservation.preserve(false, ['descMetadata'])
 
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
