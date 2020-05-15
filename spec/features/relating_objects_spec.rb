@@ -54,12 +54,10 @@ feature 'Relating objects' do
       collection_b.governed_items << object_b
       collection_b.save
 
-      related = DRI::Related.new
-      related.related = [collection_a, collection_b]
+      related = collection_b.collection_relationships.build(collection_relative_id: collection_a.id)
       related.save
-
-      collection_b.relations = [related]
-      collection_b.save
+      collection_b.reload
+      collection_b.update_index
 
       visit(my_collections_path(object_b.noid))
       expect(page).to have_link(href: my_collections_path(object_a.noid))

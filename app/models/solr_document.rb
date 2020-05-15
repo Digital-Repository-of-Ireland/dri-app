@@ -224,10 +224,7 @@ class SolrDocument
     relatives_key = Solrizer.solr_name('isMemberOf', :symbol).to_sym
     return [] unless self[relatives_key].present?
 
-    relatives_ids = self[relatives_key]
-
-    related = DRI::Related.find(relatives_ids)
-    related.map { |r| r.related.map(&:noid) }.flatten.uniq
+    self[relatives_key]
   end
 
   def governing_collection

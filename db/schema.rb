@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_28_112154) do
+ActiveRecord::Schema.define(version: 2020_05_14_154258) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -47,13 +47,6 @@ ActiveRecord::Schema.define(version: 2020_04_28_112154) do
     t.datetime "updated_at"
     t.string "update_type"
     t.integer "version"
-  end
-
-  create_table "digital_object_related", id: false, force: :cascade do |t|
-    t.integer "digital_object_id", null: false
-    t.integer "related_id", null: false
-    t.index ["digital_object_id", "related_id"], name: "do_related_idx"
-    t.index ["related_id", "digital_object_id"], name: "rel_do_idx"
   end
 
   create_table "doi_metadata", force: :cascade do |t|
@@ -107,6 +100,13 @@ ActiveRecord::Schema.define(version: 2020_04_28_112154) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
+  end
+
+  create_table "dri_collection_relationships", force: :cascade do |t|
+    t.integer "digital_object_id"
+    t.integer "collection_relative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "dri_digital_objects", force: :cascade do |t|
@@ -200,11 +200,6 @@ ActiveRecord::Schema.define(version: 2020_04_28_112154) do
     t.string "uri"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "dri_related", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "fixity_checks", force: :cascade do |t|

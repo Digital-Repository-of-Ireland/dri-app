@@ -179,15 +179,13 @@ describe SolrDocument do
     it 'should return relation objects' do
       collection_b = FactoryBot.create(:collection)
 
-      relation = DRI::Related.new
-      relation.related = [@collection, collection_b]
-      relation.save
-
-      @collection.relations = [relation]
-      @collection.save
+      related = @collection.collection_relationships.build(collection_relative_id: collection_b.id)
+      related.save
+      @collection.reload
+      @collection.update_index
 
       doc = SolrDocument.find(@collection.noid)
-      expect(doc.relatives).to match_array([@collection.noid, collection_b.noid])
+      expect(doc.relatives).to match_array([collection_b.noid])
     end
 
     # ensure responses grouped into pages of 10 still return the correct count
