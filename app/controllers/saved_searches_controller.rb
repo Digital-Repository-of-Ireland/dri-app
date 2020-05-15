@@ -38,10 +38,10 @@ class SavedSearchesController < ApplicationController
   def saved_search_solr_query(search_params)
     query_params = saved_search_query(search_params[:q])
     query_facets = saved_search_facets(search_params[:f])
-   
+
     [query_params, query_facets].reject{ |value| value.blank? }.join(" AND ")
   end
- 
+
   def saved_search_query(search_q)
     search_q.blank? ? "*:*" :  "#{search_q}"
   end
@@ -54,19 +54,19 @@ class SavedSearchesController < ApplicationController
 
   def exclude_unwanted_models(user_parameters)
     fq = []
-    fq << "-#{ActiveFedora.index_field_mapper.solr_name('has_model', :stored_searchable, type: :symbol)}:\"DRI::GenericFile\""
+    fq << "-#{Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
-      fq << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
+      fq << "+#{Solr::SchemaFields.facet('is_collection')}:true"
       unless user_parameters[:show_subs] == 'true'
-        fq << "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+        fq << "-#{Solr::SchemaFields.facet('ancestor_id')}:[* TO *]"
       end
     else
-      fq << "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:false"
+      fq << "+#{Solr::SchemaFields.facet('is_collection')}:false"
       if user_parameters[:collection].present?
-        fq << "+#{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string)}:\"#{user_parameters[:collection]}\""
+        fq << "+#{Solr::SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
       end
     end
-    fq << "+#{ActiveFedora.index_field_mapper.solr_name('status', :facetable, type: :string)}:published"
+    fq << "+#{Solr::SchemaFields.facet('status')}:published"
 
     fq
   end

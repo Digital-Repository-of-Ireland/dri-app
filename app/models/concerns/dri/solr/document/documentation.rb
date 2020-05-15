@@ -10,14 +10,14 @@ module DRI::Solr::Document::Documentation
   private
 
     def retrieve_documentation_for
-      key = ActiveFedora.index_field_mapper.solr_name('isDescriptionOf', :stored_searchable, type: :symbol)
+      key = Solr::SchemaFields.searchable_symbol('isDescriptionOf')
       return nil unless self[key].present?
 
       SolrDocument.find(key)
     end
 
     def retrieve_document_ids
-      key = ActiveFedora.index_field_mapper.solr_name('isDescriptionOf', :stored_searchable, type: :symbol)
+      key = Solr::SchemaFields.searchable_symbol('isDescriptionOf')
       ids = ActiveFedora::SolrService.query("#{key}:\"#{id}\"", fl: 'id')
       ids.map(&:values).flatten
     end

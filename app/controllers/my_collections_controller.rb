@@ -169,8 +169,8 @@ class MyCollectionsController < ApplicationController
     config.view.maps.maxzoom = 18
     config.view.maps.show_initial_zoom = 5
     config.view.maps.facet_mode = 'geojson'
-    config.view.maps.placename_field = ActiveFedora.index_field_mapper.solr_name('placename_field', :facetable, type: :string)
-    config.view.maps.geojson_field = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol)
+    config.view.maps.placename_field = Solr::SchemaFields.facet('placename_field')
+    config.view.maps.geojson_field = Solr::SchemaFields.searchable_symbol('geojson')
     config.view.maps.search_mode = 'coordinates'
     config.view.maps.spatial_query_dist = 0.5
   end
@@ -259,7 +259,7 @@ class MyCollectionsController < ApplicationController
   private
 
     def find_reader_group(document)
-      read_groups = document["#{ActiveFedora.index_field_mapper.solr_name('read_access_group', :stored_searchable, type: :symbol)}"]
+      read_groups = document["#{Solr::SchemaFields.searchable_symbol('read_access_group')}"]
 
       if read_groups.present? && read_groups.include?(document.id)
         UserGroup::Group.find_by(name: document.id)

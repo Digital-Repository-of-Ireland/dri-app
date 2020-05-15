@@ -78,7 +78,7 @@ class DataciteDoi < ActiveRecord::Base
 
       people = []
       DRI::Vocabulary.marc_relators.each do |r|
-        role = ActiveFedora.index_field_mapper.solr_name("role_#{r}", :stored_searchable, type: :string)
+        role = Solr::SchemaFields.searchable_string("role_#{r}")
         people << doc[role] if doc.key?(role)
       end
 
@@ -88,7 +88,7 @@ class DataciteDoi < ActiveRecord::Base
     def creator_solr
       doc = solr_document
 
-      key = ActiveFedora.index_field_mapper.solr_name('creator', :stored_searchable, type: :string)
+      key = Solr::SchemaFields.searchable_string('creator')
 
       doc.key?(key) ? doc[key] : nil
     end

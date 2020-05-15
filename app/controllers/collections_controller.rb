@@ -29,10 +29,10 @@ class CollectionsController < BaseObjectsController
     query = "_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\""
     query += " OR manager_access_person_ssim:#{current_user.email}"
 
-    fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
+    fq = ["+#{Solr::SchemaFields.facet('is_collection', :facetable, type: :string)}:true"]
 
     if params[:governing].present?
-      fq << "+#{ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)}:#{params[:governing]}"
+      fq << "+#{Solr::SchemaFields.searchable_symbol('isGovernedBy')}:#{params[:governing]}"
     end
 
     solr_query = Solr::Query.new(query, 100, { fq: fq })
@@ -486,14 +486,10 @@ class CollectionsController < BaseObjectsController
           collection = {}
           collection[:id] = object['id']
           collection[:collection_title] = object[
-            ActiveFedora.index_field_mapper.solr_name(
-            'title', :stored_searchable, type: :string
-            )
+            Solr::SchemaFields.searchable_string('title')
           ]
-           governing = object[
-            ActiveFedora.index_field_mapper.solr_name(
-            'isGovernedBy', :stored_searchable, type: :symbol
-            )]
+           governing = object[Solr::SchemaFields.searchable_symbol(
+            'isGovernedBy')]
             collection[:governing_collection] = governing.present? ? governing.first : 'root'
 
           collections.push(collection)

@@ -2,8 +2,8 @@ module DRI::Solr::Document::Collection
 
   def descendants(limit: 100)
     # Find all sub-collections below this collection
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string)}:\"#{self.id}\""
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    solr_query = "#{Solr::SchemaFields.searchable_string('ancestor_id')}:\"#{self.id}\""
+    f_query = "#{Solr::SchemaFields.searchable_string('is_collection')}:true"
 
     q_result = Solr::Query.new(solr_query, limit, fq: f_query)
     q_result.to_a
@@ -13,15 +13,15 @@ module DRI::Solr::Document::Collection
   # fq=is_collection_tesim:true
   def children(limit: 100)
     # Find immediate children of this collection
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{self.id}\""
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    solr_query = "#{Solr::SchemaFields.searchable_string('collection_id')}:\"#{self.id}\""
+    f_query = "#{Solr::SchemaFields.searchable_string('is_collection')}:true"
 
     q_result = Solr::Query.new(solr_query, limit, {fq: f_query, sort: "system_create_dtsi asc"})
     q_result.to_a
   end
 
   def cover_image
-    cover_field = ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string)
+    cover_field = Solr::SchemaFields.searchable_string('cover_image')
     self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
   end
 
@@ -100,11 +100,11 @@ module DRI::Solr::Document::Collection
   # @param [Boolean] published_only
   # @return [Integer]
   def type_count(type, published_only: false)
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
+    solr_query = "#{Solr::SchemaFields.facet('ancestor_id')}:\"" + self.id +
                  "\" AND " +
-                 "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
+                 "#{Solr::SchemaFields.searchable_string('file_type_display')}:"+ type
     if published_only
-      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+      solr_query += " AND #{Solr::SchemaFields.searchable_symbol('status')}:published"
     end
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
@@ -112,16 +112,16 @@ module DRI::Solr::Document::Collection
   private
 
     def metadata_field
-      ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
+      Solr::SchemaFields.searchable_string('metadata_md5')
     end
 
     # @param [String] status
     # @param [Boolean] subcoll
     # @return [String] solr query for children of self (id) with given status
     def status_query(status, subcoll = false)
-      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}"
-      query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
-      query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+      query = "#{Solr::SchemaFields.facet('ancestor_id')}:#{self.id}"
+      query += " AND #{Solr::SchemaFields.searchable_symbol('status')}:#{status}" unless status.nil?
+      query += " AND is_collection_sim:#{subcoll}"
       query
     end
 
@@ -149,7 +149,7 @@ module DRI::Solr::Document::Collection
     def duplicate_query
       query_params = {
         fq: [
-          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{id}",
+          "+Solr::SchemaFields.facet('ancestor_id'):#{id}",
           "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_sim:false"
         ],
         "facet.pivot" => "#{metadata_field},id",

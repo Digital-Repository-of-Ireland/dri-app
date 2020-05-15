@@ -37,7 +37,7 @@ class UserCollections
     end
 
     def admin_query
-      "#{ActiveFedora.index_field_mapper.solr_name('depositor', :searchable, type: :symbol)}:#{user.email}"
+      "#{Solr::SchemaFields.searchable_symbol('depositor')}:#{user.email}"
     end
 
     def user_collections_data
@@ -51,8 +51,8 @@ class UserCollections
     end
 
     def user_query
-      query = "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{user.email} OR "\
-        "#{ActiveFedora.index_field_mapper.solr_name('edit_access_person', :stored_searchable, type: :symbol)}:#{user.email}"
+      query = "#{Solr::SchemaFields.searchable_symbol('manager_access_person')}:#{user.email} OR "\
+        "#{Solr::SchemaFields.searchable_symbol('edit_access_person')}:#{user.email}"
 
       read_query = read_group_query(user)
       query <<   " OR (" + read_query + ")" unless read_query.nil?
@@ -66,11 +66,7 @@ class UserCollections
       query.each do |object|
         collection = {}
         collection[:id] = object['id']
-        collection[:collection_title] = object[
-          ActiveFedora.index_field_mapper.solr_name(
-          'title', :stored_searchable, type: :string
-          )
-        ]
+        collection[:collection_title] = object['title_tesim']
 
         permissions = []
         {'manager' => 'manage', 'edit' => 'edit'}.each do |permission, label|
@@ -89,8 +85,8 @@ class UserCollections
 
     def read_group_query(user)
       group_query_fragments = user.groups.map do |group|
-        "#{ActiveFedora.index_field_mapper.solr_name(
-          'read_access_group', :stored_searchable, type: :symbol)}:#{group.name}" unless group.name == "registered"
+        "#{Solr::SchemaFields.searchable_symbol(
+          'read_access_group')}:#{group.name}" unless group.name == "registered"
       end
       return nil if group_query_fragments.compact.blank?
       group_query_fragments.compact.join(" OR ")
@@ -98,13 +94,13 @@ class UserCollections
 
     def root_collection_filter
       [
-        "+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-        "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+        "+is_collection_sim:true",
+        "-ancestor_id_sim:[* TO *]"
       ]
     end
 
     def permission_type(user, object, role, label)
-      key = ActiveFedora.index_field_mapper.solr_name("#{role}_access_person", :stored_searchable, type: :symbol)
+      key = Solr::SchemaFields.searchable_symbol("#{role}_access_person")
       label if object[key].present? && object[key].include?(user.email)
     end
 end

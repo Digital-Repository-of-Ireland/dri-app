@@ -17,7 +17,7 @@ class WorkspaceController < ApplicationController
 
   def readers
     query = "(_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
-    fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
+    fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
     fq << '+read_access_group_ssim:[* TO *]'
     fq << '-read_access_group_ssim:public'
 
@@ -52,7 +52,7 @@ class WorkspaceController < ApplicationController
               else
                 "#{manage_query} OR #{edit_query}"
               end
-      fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
+      fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
 
       ActiveFedora::SolrService.count(query, fq: fq)
     end

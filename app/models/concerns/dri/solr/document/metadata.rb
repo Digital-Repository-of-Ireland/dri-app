@@ -7,7 +7,7 @@ module DRI::Solr::Document
                                'root_collection_id', 'isGovernedBy', 'ancestor_id', 'ancestor_title', 'role_dnr'].freeze
 
     def metadata(field)
-      self[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)]
+      self[Solr::SchemaFields.searchable_string(field)]
     end
 
     def title
@@ -53,9 +53,9 @@ module DRI::Solr::Document
 
       fields.each do |field|
         value = if field == 'isGovernedBy'
-                  self[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable, type: :symbol)]
+                  self[Solr::SchemaFields.searchable_symbol(field)]
                 else
-                  self[ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable)]
+                  self[Solr::SchemaFields.searchable_string(field)]
                 end
 
         case field

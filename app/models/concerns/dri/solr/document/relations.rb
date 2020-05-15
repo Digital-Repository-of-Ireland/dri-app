@@ -9,7 +9,7 @@ module DRI::Solr::Document::Relations
 
     if solr_fields_array
       solr_fields_array.each do |elem|
-        key = ActiveFedora.index_field_mapper.solr_name(elem, :stored_searchable, type: :string)
+        key = Solr::SchemaFields.searchable_string(elem)
 
         url_array = url_array.to_a.push(*self[key]) if self[key].present?
       end
@@ -30,7 +30,7 @@ module DRI::Solr::Document::Relations
         documentation = documentation_for
 
         if documentation
-          link_text = documentation[ActiveFedora.index_field_mapper.solr_name('title')].first
+          link_text = documentation['title_tesim'].first
           relationships_hash['Is Documentation For'] = [[link_text, documentation]]
         end
       else
@@ -77,13 +77,7 @@ module DRI::Solr::Document::Relations
         solr_doc = SolrDocument.find(id)
         next if solr_doc.nil?
 
-        link_text = solr_doc[
-                      ActiveFedora.index_field_mapper.solr_name(
-                        'title',
-                        :stored_searchable,
-                        type: :string
-                      )
-                    ].first
+        link_text = solr_doc['title_tesim'].first
         doc_array.to_a.push [link_text, solr_doc]
       end
       docs['Has Documentation'] = doc_array unless doc_array.empty?
@@ -99,13 +93,7 @@ module DRI::Solr::Document::Relations
         item_array = []
 
         docs.each do |rel_obj_doc|
-          link_text = rel_obj_doc[
-                        ActiveFedora.index_field_mapper.solr_name(
-                          'title',
-                          :stored_searchable,
-                          type: :string
-                        )
-                      ].first
+          link_text = rel_obj_doc['title_tesim'].first
           item_array.to_a.push [link_text, rel_obj_doc]
         end
 
@@ -145,7 +133,7 @@ module DRI::Solr::Document::Relations
       end
 
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
-      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable)}:(\"#{relatives_ids}\")"
+      solr_query << " AND root_collection_id_sim:(\"#{relatives_ids}\")"
 
       solr_results = ActiveFedora::SolrService.query(
                        solr_query,

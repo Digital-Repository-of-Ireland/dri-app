@@ -10,7 +10,7 @@ module DRI::Solr::Document::File
 
   def assets(with_preservation: false, ordered: false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
+    files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{id}\""
 
     query = ::Solr::Query.new(files_query)
     assets = query.reject { |sd| with_preservation == false && sd.preservation_only? }
@@ -21,7 +21,7 @@ module DRI::Solr::Document::File
     # not characterized if all empty
     return false unless self.key?(Solrizer.solr_name('characterization__mime_type'))
 
-    !self[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+    !self[Solrizer.solr_name('characterization__mime_type')].all? { |m| m.empty? }
   end
 
   def sort_assets(assets)
@@ -56,7 +56,7 @@ module DRI::Solr::Document::File
   end
 
   def file_types
-    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+    file_type_key = Solr::SchemaFields.searchable_string('file_type_display').to_sym
 
     self[file_type_key] || []
   end
@@ -108,7 +108,7 @@ module DRI::Solr::Document::File
   end
 
   def read_master?
-    master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
+    master_file_key = Solr::SchemaFields.searchable_string('master_file_access')
     return true if self[master_file_key] == ['public']
     return false if self[master_file_key] == ['private']
 

@@ -86,11 +86,11 @@ class ApiController < CatalogController
         'select',
         params: {
           q: solr_query, qt: 'standard',
-          fq: "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false
-               AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published",
+          fq: "#{Solr::SchemaFields.searchable_string('is_collection')}:false
+               AND #{Solr::SchemaFields.searchable_symbol('status')}:published",
           mlt: 'true',
-          :'mlt.fl' => "#{ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string)},
-                        #{ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string)}",
+          :'mlt.fl' => "#{Solr::SchemaFields.searchable_string('subject')},
+                        #{Solr::SchemaFields.searchable_string('subject')}",
           :'mlt.count' => count,
           fl: 'id,score',
           :'mlt.match.include' => 'false'
