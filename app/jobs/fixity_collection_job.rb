@@ -10,8 +10,8 @@ class FixityCollectionJob
   end
 
   def self.sub_collection_verify_jobs(collection_id)
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    q_str = "#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
+    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     job_ids = []
 

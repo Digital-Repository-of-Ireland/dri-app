@@ -94,13 +94,13 @@ private
     query = if current_user.is_admin?
               "*:*"
             else
-              "#{ActiveFedora.index_field_mapper.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+              "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
             end
     solr_query = Solr::Query.new(
       query,
       100,
-      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      { fq: ["+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true",
+            "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
     )
 
     while solr_query.has_more?
@@ -120,7 +120,7 @@ private
     while solr_query.has_more?
       object_docs = solr_query.pop
       object_docs.map do |o| 
-        collection_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first
+        collection_hash[o["id"]] = o["#{Solrizer.solr_name('title', :stored_searchable, type: :string)}"].first
       end
     end
     collection_hash

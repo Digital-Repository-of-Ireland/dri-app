@@ -19,8 +19,8 @@ class PublishJob
     set_status(collection_id: collection_id)
 
     # query for reviewed objects within this collection
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:reviewed"
+    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed"
 
     # excluding sub-collections
     f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"

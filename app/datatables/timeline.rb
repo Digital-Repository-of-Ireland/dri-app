@@ -1,8 +1,8 @@
 class Timeline
   include ApplicationHelper
 
-  TITLE_KEY = ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym
-  DESCRIPTION_KEY = ActiveFedora.index_field_mapper.solr_name('description', :stored_searchable, type: :string).to_sym
+  TITLE_KEY = Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym
+  DESCRIPTION_KEY = Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym
 
   delegate :can?, :asset_url, :asset_path, :link_to, :url_for_document, :cover_image_path, :object_file_path, to: :@view
 
