@@ -39,8 +39,7 @@ class SolrDocument
   )
 
   def self.find(id)
-    result = ActiveFedora::SolrService.query("id:#{id}", rows: 1)
-    SolrDocument.new(result.first) if result.present?
+    Solr::Query.find(id)
   end
 
   def active_fedora_model
@@ -55,9 +54,9 @@ class SolrDocument
     ids = ancestor_ids
     if ids.present?
       docs = {}
-      query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-      results = ActiveFedora::SolrService.query(query, rows: ids.length)
-      results.each { |r| docs[r['id']] = SolrDocument.new(r) }
+      query = Solr::Query.construct_query_for_ids(ids)
+      results = Solr::Query.new(query, 100, { rows: ids.length }).query.to_a
+      results.each { |r| docs[r['id']] = r }
     end
 
     docs
@@ -221,7 +220,7 @@ class SolrDocument
   end
 
   def relatives
-    relatives_key = Solrizer.solr_name('isMemberOf', :symbol).to_sym
+    relatives_key = Solrizer.solr_name('isMemberOf', :symbol)
     return [] unless self[relatives_key].present?
 
     self[relatives_key]
