@@ -26,10 +26,10 @@ class PublishCollectionJob < StatusJob
   def sub_collection_publish_jobs(collection_id, user_id)
     # sub-collections that are not draft (need to include published to allow for iterative publishing
     # i.e., publishing of reviewed objects added to already published collections)
-    q_str = "#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND -#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:draft"
+    q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str += " AND -#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:draft"
 
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     job_ids = []
 

@@ -116,7 +116,7 @@ module FacetsHelper
     return 'nil' if docs.empty?
 
     doc = docs.first
-    doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+    doc[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)].first
   end
 
   def transform_is_collection(value)

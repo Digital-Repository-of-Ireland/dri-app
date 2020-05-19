@@ -25,8 +25,8 @@ class ReviewCollectionJob < StatusJob
 
   def sub_collection_review_jobs(collection_id, user_id)
     # need to include published and reviewed sub-collections in case new draft objects have been added
-    q_str = "#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    q_str = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
+    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
 
     job_ids = []
     query = Solr::Query.new(q_str, 100, fq: f_query)

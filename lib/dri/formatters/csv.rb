@@ -50,7 +50,7 @@ module DRI::Formatters
           field = if key == 'identifiers'
                     @object_doc.identifier
                   else
-                    @object_doc[Solrizer.solr_name(key, :stored_searchable, type: :string)]
+                    @object_doc[ActiveFedora.index_field_mapper.solr_name(key, :stored_searchable, type: :string)]
                   end
           value = field.kind_of?(Array) ? field.join('|') : field
           row << value || ''

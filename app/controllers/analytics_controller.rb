@@ -3,13 +3,12 @@ require 'signet/oauth_2/client'
 
 class AnalyticsController < ApplicationController
   before_action :authenticate_user!
-  include Blacklight::SearchHelper
 
   def index
     if signed_in? && (current_user.is_admin? || current_user.is_om? || current_user.is_cm?)
       @startdate = params[:startdate] || Date.today.at_beginning_of_month
       @enddate = params[:enddate] || Date.today
-
+      
       respond_to do |format|
         format.html
         format.json do
@@ -26,11 +25,11 @@ class AnalyticsController < ApplicationController
       @startdate = params[:startdate] || Date.today.at_beginning_of_month
       @enddate = params[:enddate] || Date.today
 
-      begin
-        _response, @document = fetch params[:id]
-      rescue Blacklight::Exceptions::RecordNotFound
-        raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}"
-      end
+      solr_result = ActiveFedora::SolrService.query(
+          query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
+      )
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
+      @document = SolrDocument.new(solr_result.first)
 
       respond_to do |format|
         format.html
@@ -68,6 +67,6 @@ class AnalyticsController < ApplicationController
 
       token = OAuth2::AccessToken.new(oauth_client, access_token['access_token'], expires_in: access_token['expires_in'])
       user  = Legato::User.new(token)
-      Legato::Management::Profile.all(user).select {|p| p.id == Settings.analytics.profile_id}.first
+      Legato::Management::Profile.all(user).select {|p| p.id == Settings.analytics.profile_id}.first    
     end
 end

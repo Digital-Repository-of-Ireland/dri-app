@@ -47,20 +47,5 @@ module Solr
       end
     end
 
-    def self.find(id)
-      response = repository.find(id)
-      response.documents.first unless response.documents.empty?
-    end
-
-    def self.repository
-      blacklight_config.repository_class.new(blacklight_config)
-    end
-
-    def self.construct_query_for_ids(id_array)
-      ids = id_array.reject(&:blank?)
-      return "id:NEVER_USE_THIS_ID" if ids.empty?
-      "{!terms f=id}#{ids.join(',')}"
-    end
-
   end
 end

@@ -24,8 +24,8 @@ module FormatHelper
   end
 
   def format?(document)
-    if document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].present?
-      document[Solrizer.solr_name('file_type', :stored_searchable, type: :string)].first
+    if document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].present?
+      document[ActiveFedora.index_field_mapper.solr_name('file_type', :stored_searchable, type: :string)].first
     else
       'unknown'
     end

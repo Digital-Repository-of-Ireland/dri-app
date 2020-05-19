@@ -149,7 +149,7 @@ module DRI::Solr::Document::Collection
     def duplicate_query
       query_params = {
         fq: [
-          "+#{Solr::SchemaFields.facet('ancestor_id')}:#{id}",
+          "+Solr::SchemaFields.facet('ancestor_id'):#{id}",
           "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_sim:false"
         ],
         "facet.pivot" => "#{metadata_field},id",

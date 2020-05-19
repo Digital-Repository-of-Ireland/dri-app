@@ -146,7 +146,7 @@ module FieldRenderHelper
     search_arg = "f[" << facet << "][]"
 
     if person_facet?(facet)
-      search_arg = "f[" << Solrizer.solr_name('person', :facetable) << "][]"
+      search_arg = "f[" << ActiveFedora.index_field_mapper.solr_name('person', :facetable) << "][]"
     end
 
     search_arg
@@ -158,7 +158,7 @@ module FieldRenderHelper
   def standardise_facet(args)
     facet = args[:facet]
 
-    standardised = if facet == Solrizer.solr_name('language', :facetable)
+    standardised = if facet == ActiveFedora.index_field_mapper.solr_name('language', :facetable)
                      DRI::Metadata::Descriptors.standardise_language_code(args[:value]) || args[:value]
                    else
                      args[:value]
@@ -168,8 +168,8 @@ module FieldRenderHelper
   end
 
   def standardise_value(args)
-    if [Solrizer.solr_name('temporal_coverage', :facetable, type: :string),
-        Solrizer.solr_name('geographical_coverage', :facetable, type: :string)
+    if [ActiveFedora.index_field_mapper.solr_name('temporal_coverage', :facetable, type: :string),
+        ActiveFedora.index_field_mapper.solr_name('geographical_coverage', :facetable, type: :string)
        ].include?(args[:facet_name])
       value_from_solr_field(args[:value], "name")
     else
@@ -182,7 +182,7 @@ module FieldRenderHelper
     fields.each do |field, value|
       next unless facet?(field)
 
-      facet_name = Solrizer.solr_name(field, :facetable)
+      facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
       facet_arg = search_arg_from_facet(facet: facet_name)
       url_args[facet_arg] = value
     end
@@ -191,14 +191,14 @@ module FieldRenderHelper
   end
 
   def facet?(field)
-    blacklight_config.facet_fields.key?(Solrizer.solr_name(field, :facetable))
+    blacklight_config.facet_fields.key?(ActiveFedora.index_field_mapper.solr_name(field, :facetable))
   end
 
   def person_facet?(facet)
     (
       role_field?(facet)) ||
-      (facet == Solrizer.solr_name('creator', :facetable)) ||
-      (facet == Solrizer.solr_name('contributor', :facetable)
+      (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) ||
+      (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable)
     )
   end
 
@@ -207,9 +207,9 @@ module FieldRenderHelper
   end
 
   def render_facet_link(args, field, value, indexed_value)
-    facet_name = Solrizer.solr_name(field, :facetable)
+    facet_name = ActiveFedora.index_field_mapper.solr_name(field, :facetable)
     if role_field?(args[:field])
-      facet_name = Solrizer.solr_name("person", :facetable)
+      facet_name = ActiveFedora.index_field_mapper.solr_name("person", :facetable)
     end
     facet_arg = search_arg_from_facet(facet: facet_name)
 

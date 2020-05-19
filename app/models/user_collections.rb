@@ -37,7 +37,7 @@ class UserCollections
     end
 
     def admin_query
-      "depositor_sim:#{user.email}"
+      "#{Solr::SchemaFields.searchable_symbol('depositor')}:#{user.email}"
     end
 
     def user_collections_data

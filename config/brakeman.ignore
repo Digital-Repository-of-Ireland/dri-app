@@ -9,14 +9,14 @@
       "file": "app/models/concerns/dri/solr/document/collection.rb",
       "line": 89,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveFedora::SolrService.count(((\"#{Solrizer.solr_name(\"ancestor_id\", :facetable, :type => :string)}:#{id}\" + \" AND #{Solrizer.solr_name(\"status\", :stored_searchable, :type => :symbol)}:#{status}\") + \" AND #{Solrizer.solr_name(\"is_collection\", :searchable, :type => :symbol)}:#{subcoll}\"))",
+      "code": "ActiveFedora::SolrService.count(((\"#{ActiveFedora.index_field_mapper.solr_name(\"ancestor_id\", :facetable, :type => :string)}:#{id}\" + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"status\", :stored_searchable, :type => :symbol)}:#{status}\") + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"is_collection\", :searchable, :type => :symbol)}:#{subcoll}\"))",
       "render_path": null,
       "location": {
         "type": "method",
         "class": "DRI::Solr::Document::Collection",
         "method": "status_count"
       },
-      "user_input": "Solrizer.solr_name(\"is_collection\", :searchable, :type => :symbol)",
+      "user_input": "ActiveFedora.index_field_mapper.solr_name(\"is_collection\", :searchable, :type => :symbol)",
       "confidence": "Weak",
       "note": "This is fine."
     },
@@ -109,14 +109,14 @@
       "file": "app/models/solr_document.rb",
       "line": 102,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveFedora::SolrService.count(((\"active_fedora_model_ssi:\\\"DRI::GenericFile\\\"\" + \" AND #{Solrizer.solr_name(\"isPartOf\", :symbol)}:#{id}\") + \" AND #{Solrizer.solr_name(\"file_type\", :facetable)}:\\\"image\\\"\"))",
+      "code": "ActiveFedora::SolrService.count(((\"active_fedora_model_ssi:\\\"DRI::GenericFile\\\"\" + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"isPartOf\", :symbol)}:#{id}\") + \" AND #{ActiveFedora.index_field_mapper.solr_name(\"file_type\", :facetable)}:\\\"image\\\"\"))",
       "render_path": null,
       "location": {
         "type": "method",
         "class": "SolrDocument",
         "method": "contains_images?"
       },
-      "user_input": "Solrizer.solr_name(\"file_type\", :facetable)",
+      "user_input": "ActiveFedora.index_field_mapper.solr_name(\"file_type\", :facetable)",
       "confidence": "Weak",
       "note": "This is safe."
     },

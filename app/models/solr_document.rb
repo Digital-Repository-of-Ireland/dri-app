@@ -6,7 +6,6 @@ class SolrDocument
   include Blacklight::Document::ActiveModelShim
   include Blacklight::AccessControls::PermissionsQuery
   include BlacklightOaiProvider::SolrDocument
-  include Blacklight::SearchHelper
 
   include UserGroup::PermissionsSolrDocOverride
   include UserGroup::InheritanceMethods
@@ -40,11 +39,12 @@ class SolrDocument
   )
 
   def self.find(id)
-    Solr::Query.find(id)
+    result = ActiveFedora::SolrService.query("id:#{id}", rows: 1)
+    SolrDocument.new(result.first) if result.present?
   end
 
   def active_fedora_model
-    self['active_fedora_model_ssi']
+    self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
 
   def ancestor_docs
@@ -55,8 +55,8 @@ class SolrDocument
     ids = ancestor_ids
     if ids.present?
       docs = {}
-      query = Solr::Query.construct_query_for_ids(ids)
-      results = Solr::Query.new(query, 100, { rows: ids.length }).query.to_a
+      query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
+      results = ActiveFedora::SolrService.query(query, rows: ids.length)
       results.each { |r| docs[r['id']] = SolrDocument.new(r) }
     end
 
@@ -78,7 +78,7 @@ class SolrDocument
   end
 
   def ancestor_ids
-    ancestors_key = :ancestor_id_tesim
+    ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return [] unless self[ancestors_key].present?
 
     self[ancestors_key]
@@ -94,25 +94,27 @@ class SolrDocument
   end
 
   def collection_id
-    collection_key = :isGovernedBy_ssim
+    collection_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
 
     self[collection_key].present? ? self[collection_key][0] : nil
   end
 
   def contains_images?
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND isPartOf_ssim:#{id}"
-    files_query += " AND file_type_sim:\"image\""
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{id}"
+    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
 
     ActiveFedora::SolrService.count(files_query) > 0
   end
 
   def doi
-    self['doi_tesim']
+    doi_key = ActiveFedora.index_field_mapper.solr_name('doi')
+
+    self[doi_key]
   end
 
   def depositing_institute
-    institute_name = ancestor_field('depositing_institute_ssm')
+    institute_name = ancestor_field(ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string))
 
     return Institute.find_by(name: institute_name) if institute_name
 
@@ -124,17 +126,21 @@ class SolrDocument
   end
 
   def has_doi?
-    self[:doi_ssm].present?
+    doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
+
+    self[doi_key].present?
   end
 
   def has_geocode?
-    self[:geojson_ssim].present?
+    geojson_key = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
+
+    self[geojson_key].present?
   end
 
   # @param [String] field_name
   # @return [Boolean]
   def truthy_index_field?(field_name)
-    key = "#{field_name}_tesim"
+    key = ActiveFedora.index_field_mapper.solr_name(field_name)
 
     return false unless self[key].present?
     value = if self[key].is_a?(Array)
@@ -176,14 +182,14 @@ class SolrDocument
   end
 
   def institutes
-    institute_names = ancestor_field('institute_tesim')
+    institute_names = ancestor_field(Solrizer.solr_name('institute', :stored_searchable, type: :string))
     institutes = Institute.where(name: institute_names)
 
     institutes.to_a
   end
 
   def licence
-    licence_key = :licence_tesim
+    licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
 
     licence = if self[licence_key].present?
       Licence.where(name: self[licence_key]).first || self[licence_key]
@@ -195,13 +201,13 @@ class SolrDocument
   end
 
   def object_profile
-    key = 'object_profile_ssm'
+    key = Solrizer.solr_name('object_profile', :displayable)
 
     self[key].present? ? JSON.parse(self[key].first) : {}
   end
 
   def root_collection_id
-    root_key = :root_collection_id_tesim
+    root_key = Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
 
     self[root_key].present? ? self[root_key].first : nil
   end

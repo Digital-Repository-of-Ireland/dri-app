@@ -24,10 +24,40 @@ DRI::ModelSupport::Files.module_eval do
     ingest_user = UserGroup::User.find_by_email(self.depositor)
     generic_file.apply_depositor_metadata(self.depositor)
 
-    file_content = GenericFileContent.new(user: ingest_user, object: object, generic_file: generic_file)
-    if file_content.set_content(file, filename, mime_type, dsid)
-      VersionCommitter.create(version_id: 'v%04d' % object.object_version, obj_id: object.noid, committer_login: user.to_s)
+    # Update object version
+    self.object_version ||= 1
+    self.increment_version
 
+    begin
+      self.save!
+    rescue ActiveFedora::RecordInvalid
+      logger.error "Could not update object version number for #{self.noid} to version #{object_version}"
+      raise Exceptions::InternalError
+    end
+
+    LocalFile.build_local_file(
+      object: self,
+      generic_file: generic_file,
+      data: file,
+      datastream: dsid,
+      opts: { filename: filename, mime_type: mime_type, checksum: 'md5' }
+    )
+
+    VersionCommitter.create(version_id: 'v%04d' % object.object_version, obj_id: object.noid, committer_login: user.to_s)
+
+    preservation = Preservation::Preservator.new(self)
+    preservation.preserve_assets([filename],[])
+
+    url = Rails.application.routes.url_helpers.url_for(
+      controller: 'assets',
+      action: 'download',
+      object_id: self.noid,
+      id: generic_file.noid,
+      version: object_version
+    )
+
+    file_content = GenericFileContent.new(user: ingest_user, object: object, generic_file: generic_file)
+    if file_content.external_content(URI.escape(url), filename, dsid)
       true
     else
       Rails.logger.error "Error saving file: #{e.message}"
