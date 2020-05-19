@@ -44,7 +44,7 @@ class SolrDocument
   end
 
   def active_fedora_model
-    self[ActiveFedora.index_field_mapper.solr_name('active_fedora_model', :stored_sortable, type: :string)]
+    self[Solrizer.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end
 
   def ancestor_docs
@@ -78,7 +78,7 @@ class SolrDocument
   end
 
   def ancestor_ids
-    ancestors_key = ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    ancestors_key = Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
     return [] unless self[ancestors_key].present?
 
     self[ancestors_key]
@@ -94,27 +94,27 @@ class SolrDocument
   end
 
   def collection_id
-    collection_key = ActiveFedora.index_field_mapper.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+    collection_key = Solrizer.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
 
     self[collection_key].present? ? self[collection_key][0] : nil
   end
 
   def contains_images?
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{id}"
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
+    files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{id}"
+    files_query += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
 
     ActiveFedora::SolrService.count(files_query) > 0
   end
 
   def doi
-    doi_key = ActiveFedora.index_field_mapper.solr_name('doi')
+    doi_key = Solrizer.solr_name('doi')
 
     self[doi_key]
   end
 
   def depositing_institute
-    institute_name = ancestor_field(ActiveFedora.index_field_mapper.solr_name('depositing_institute', :displayable, type: :string))
+    institute_name = ancestor_field(Solrizer.solr_name('depositing_institute', :displayable, type: :string))
 
     return Institute.find_by(name: institute_name) if institute_name
 
@@ -126,13 +126,13 @@ class SolrDocument
   end
 
   def has_doi?
-    doi_key = ActiveFedora.index_field_mapper.solr_name('doi', :displayable, type: :symbol).to_sym
+    doi_key = Solrizer.solr_name('doi', :displayable, type: :symbol).to_sym
 
     self[doi_key].present?
   end
 
   def has_geocode?
-    geojson_key = ActiveFedora.index_field_mapper.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
+    geojson_key = Solrizer.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
 
     self[geojson_key].present?
   end
@@ -140,7 +140,7 @@ class SolrDocument
   # @param [String] field_name
   # @return [Boolean]
   def truthy_index_field?(field_name)
-    key = ActiveFedora.index_field_mapper.solr_name(field_name)
+    key = Solrizer.solr_name(field_name)
 
     return false unless self[key].present?
     value = if self[key].is_a?(Array)

@@ -156,15 +156,15 @@ module DRI::IIIFViewable
   def attached_images(solr_id = nil)
     solr_id ||= @document.id
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{solr_id}"
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
+    files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{solr_id}"
+    files_query += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
 
     files = []
 
     query = Solr::Query.new(files_query)
     files = query.reject { |file_doc| file_doc.preservation_only? }
 
-    files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
+    files.sort_by{ |f| f[Solrizer.solr_name('label')] }
   end
 
   def base_manifest(manifest)
@@ -190,12 +190,12 @@ module DRI::IIIFViewable
 
   def child_objects
     # query for objects within this collection
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
+    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
+    q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
+    q_str += " AND #{Solrizer.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
+    q_str += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
     # excluding sub-collections
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
     objects = []
 
@@ -210,7 +210,7 @@ module DRI::IIIFViewable
 
     canvas.width = file[HEIGHT_SOLR_FIELD]
     canvas.height = file[WIDTH_SOLR_FIELD]
-    canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
+    canvas.label = file[Solrizer.solr_name('label')].first
 
     base_uri = Settings.iiif.server + '/' + solr_id + ':' + file.id
     image_url =  base_uri + '/full/full/0/default.jpg'
@@ -238,7 +238,7 @@ module DRI::IIIFViewable
         '@id' => url_for(controller: 'iiif', action: 'manifest', id: object.id, format: 'json',
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
         '@type' => 'sc:Manifest',
-        'label' => object[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
+        'label' => object[Solrizer.solr_name('title')].join(', ')
     }
   end
 
@@ -258,7 +258,7 @@ module DRI::IIIFViewable
     {
         '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json'),
         '@type' => 'sc:Collection',
-        'label' => collection[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
+        'label' => collection[Solrizer.solr_name('title')].join(', ')
     }
   end
 

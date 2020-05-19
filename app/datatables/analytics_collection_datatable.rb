@@ -102,13 +102,13 @@ private
   end
 
   def get_object_names(collection_id)
-    query = "(id:\"" + collection_id + "\" OR #{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
-    "\" OR #{ActiveFedora.index_field_mapper.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
+    query = "(id:\"" + collection_id + "\" OR #{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
     solr_query = Solr::Query.new(query)
     object_hash = {}
     while solr_query.has_more?
       objects = solr_query.pop
-      objects.map { |o| object_hash[o["id"]] = o["#{ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)}"].first }
+      objects.map { |o| object_hash[o["id"]] = o["#{Solrizer.solr_name('title', :stored_searchable, type: :string)}"].first }
     end
     object_hash
   end

@@ -18,9 +18,9 @@ class ReviewJob
     set_status(collection_id: collection_id)
 
     # get objects within this collection, not including sub-collections
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:draft"
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:draft"
+    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
 
     completed, failed = set_as_reviewed(collection_id, user, q_str, f_query)
     collection = DRI::Identifier.retrieve_object(collection_id)
