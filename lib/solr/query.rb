@@ -11,17 +11,31 @@ module Solr
       @sort = "id asc"
     end
 
+    def count
+      args = @args.merge(rows: 0)
+      params = { q: @query }.merge(args)
+      connection.search(params)['numFound'].to_i
+    end
+
     def query
       sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
-      query_args = @args.merge({raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark})
+      query_args = if @args[:rows].present?
+                     @args.merge({sort: sort})
+                   else
+                     @args.merge({raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark})
+                   end
 
       params = { q: @query }.merge(query_args)
       response = connection.search(params)
 
-      nextCursorMark = response['nextCursorMark']
-      @has_more = false if @cursor_mark == nextCursorMark
+      if response['nextCursorMark'].present?
+        nextCursorMark = response['nextCursorMark']
+        @has_more = false if @cursor_mark == nextCursorMark
 
-      @cursor_mark = nextCursorMark
+        @cursor_mark = nextCursorMark
+      else
+        @has_more = false
+      end
 
       response.documents
     end
@@ -52,6 +66,8 @@ module Solr
       def find(id)
         response = repository.find(id)
         response.documents.first unless response.documents.empty?
+      rescue Blacklight::Exceptions::RecordNotFound
+        nil
       end
 
       def repository

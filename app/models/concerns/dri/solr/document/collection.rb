@@ -136,7 +136,7 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [Solr::Query]
     def status_objects(status, subcoll = false)
-      Solr::Query.new(status_query(status, subcoll))
+      Solr::Query.new(status_query(status, subcoll)).to_a
     end
 
     # @param [String] status

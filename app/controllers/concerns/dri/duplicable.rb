@@ -24,12 +24,9 @@ module DRI::Duplicable
 
   def find_object_duplicates(object)
     if object.governing_collection.present?
-      ActiveFedora::SolrService.query(
-        duplicate_query(object),
-        defType: 'edismax',
-        rows: '10',
-        fl: 'id'
-      ).delete_if { |obj| obj['id'] == object.noid }
+      Solr::Query.new(
+          duplicate_query(object)
+        ).to_a.delete_if { |obj| obj.id == object.noid }
     end
   end
 

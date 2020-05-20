@@ -25,14 +25,17 @@ class SavedSearchesController < ApplicationController
   def saved_search_snippet_documents(search_params)
     solr_query = saved_search_solr_query(search_params)
     fq = exclude_unwanted_models(search_params)
-    results = ActiveFedora::SolrService.query(solr_query, fq: fq, defType: "edismax", rows: "3")
-    results.map { |doc| SolrDocument.new(doc) }
+    Solr::Query.new(
+      solr_query,
+      10,
+      { fq: fq, defType: "edismax", rows: "3" }
+    ).query
   end
 
   def saved_search_count(search_params)
     solr_query = saved_search_solr_query(search_params)
     fq = exclude_unwanted_models(search_params)
-    ActiveFedora::SolrService.count(solr_query, fq: fq, defType: "edismax")
+    Solr::Query.new(solr_query, 100, { fq: fq, defType: "edismax" }).count
   end
 
   def saved_search_solr_query(search_params)

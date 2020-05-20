@@ -9,10 +9,10 @@ class SurrogatesController < ApplicationController
 
     @surrogates = {}
 
-    object_docs = solr_query(ActiveFedora.index_field_mapper.construct_query_for_ids([params[:id]]))
-    raise DRI::Exceptions::NotFound if object_docs.empty?
+    object_doc = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::NotFound if object_doc.nil?
 
-    all_surrogates(object_docs)
+    all_surrogates([object_doc])
 
     respond_to do |format|
       format.json { @surrogates.to_json }
@@ -76,20 +76,17 @@ class SurrogatesController < ApplicationController
   def update
     raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!('edit', params[:id])
-    result_docs = ActiveFedora::SolrService.query(ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]]))
-    raise DRI::Exceptions::NotFound if result_docs.empty?
 
-    result_docs.each do |r|
-      doc = SolrDocument.new(r)
+    doc = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::NotFound if doc.nil?
 
-      if doc.collection?
-        # Changed query to work with collections that have sub-collections (e.g. EAD)
-        # - ancestor_id rather than collection_id field
-        query = Solr::Query.new("#{Solr::SchemaFields.facet('ancestor_id')}:\"#{doc.id}\"")
-        query.each { |object_doc| generate_surrogates(object_doc.id) }
-      else
-        generate_surrogates(doc.id)
-      end
+    if doc.collection?
+      # Changed query to work with collections that have sub-collections (e.g. EAD)
+      # - ancestor_id rather than collection_id field
+      query = Solr::Query.new("#{Solr::SchemaFields.facet('ancestor_id')}:\"#{doc.id}\"")
+      query.each { |object_doc| generate_surrogates(object_doc.id) }
+    else
+      generate_surrogates(doc.id)
     end
 
     respond_to do |format|
@@ -101,9 +98,7 @@ class SurrogatesController < ApplicationController
   private
 
     def all_surrogates(result_docs)
-      result_docs.each do |r|
-        doc = SolrDocument.new(r)
-
+      result_docs.each do |doc|
         if doc.collection?
           query = Solr::Query.new("#{Solr::SchemaFields.facet('collection_id')}:\"#{doc.id}\"")
 

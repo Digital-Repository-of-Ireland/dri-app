@@ -196,18 +196,14 @@ class CollectionsController < BaseObjectsController
   def cover
     enforce_permissions!('show_digital_object', params[:id])
 
-    solr_result = ActiveFedora::SolrService.query(
-      ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
-    )
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
+    object = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if object.nil?
 
-    object = SolrDocument.new(solr_result.first)
     cover_url = object.cover_image
     raise DRI::Exceptions::NotFound if cover_url.blank?
 
     if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
       cover_uri = URI.parse(cover_url)
-      #cover_uri.scheme = 'https'
       redirect_to cover_uri.to_s
       return
     end

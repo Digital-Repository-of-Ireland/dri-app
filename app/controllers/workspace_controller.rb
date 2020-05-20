@@ -54,6 +54,6 @@ class WorkspaceController < ApplicationController
               end
       fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
 
-      ActiveFedora::SolrService.count(query, fq: fq)
+      Solr::Query.new(query, 100, fq: fq).count
     end
 end

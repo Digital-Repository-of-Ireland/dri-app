@@ -28,7 +28,7 @@ class MetadataController < ApplicationController
       @object = retrieve_object! params[:id]
     rescue DRI::Exceptions::InternalError
       @title = status_to_message(:internal_server_error)
-    rescue ActiveFedora::ObjectNotFoundError
+    rescue DRI::Exceptions::BadRequest
       render xml: { error: 'Not found' }, status: 404
       return
     end

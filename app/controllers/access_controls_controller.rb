@@ -140,17 +140,18 @@ class AccessControlsController < ApplicationController
     end
 
     def count_objects_with_inherited_permissions(collection)
-      ActiveFedora::SolrService.count(
-                                 "collection_id_sim:#{collection['id']}",
-                                 fq: ['is_collection_sim:false',
-                                     '-read_access_group_ssim:[* TO *]',
-                                     '-(-master_file_access_sim:inherit master_file_access_sim:*)'
-                                 ]
-                               )
+      Solr::Query.new(
+                     "collection_id_sim:#{collection['id']}",
+                     100,
+                     fq: ['is_collection_sim:false',
+                          '-read_access_group_ssim:[* TO *]',
+                          '-(-master_file_access_sim:inherit master_file_access_sim:*)'
+                         ]
+                     ).count
     end
 
     def objects_with_inherited_permissions(collection)
-      query = ::Solr::Query.new(
+      query = Solr::Query.new(
                                  "collection_id_sim:#{collection['id']}",
                                  100,
                                  fq: ['is_collection_sim:false',
@@ -162,7 +163,7 @@ class AccessControlsController < ApplicationController
     end
 
     def objects_with_permissions(collection)
-      query = ::Solr::Query.new("collection_id_sim:#{collection['id']}",
+      query = Solr::Query.new("collection_id_sim:#{collection['id']}",
                                 100,
                                 fq: ['is_collection_sim:false',
                                      'read_access_group_ssim:[* TO *] OR (-master_file_access_sim:inherit master_file_access_sim:[* TO *])'

@@ -5,44 +5,47 @@ class AnalyticsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if signed_in? && (current_user.is_admin? || current_user.is_om? || current_user.is_cm?)
-      @startdate = params[:startdate] || Date.today.at_beginning_of_month
-      @enddate = params[:enddate] || Date.today
-      
-      respond_to do |format|
-        format.html
-        format.json do
-          render json: AnalyticsCollectionsDatatable.new(profile, view_context)
-        end
-      end
-    else
+    unless signed_in? && authorized_user?
       flash[:error] = t('dri.flash.error.manager_user_permission')
+      return
+    end
+
+    @startdate = params[:startdate] || Date.today.at_beginning_of_month
+    @enddate = params[:enddate] || Date.today
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: AnalyticsCollectionsDatatable.new(profile, view_context)
+      end
     end
   end
 
   def show
-    if signed_in? && (current_user.is_admin? || current_user.is_om? || current_user.is_cm?)
-      @startdate = params[:startdate] || Date.today.at_beginning_of_month
-      @enddate = params[:enddate] || Date.today
-
-      solr_result = ActiveFedora::SolrService.query(
-          query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
-      )
-      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
-      @document = SolrDocument.new(solr_result.first)
-
-      respond_to do |format|
-        format.html
-        format.json do
-          render json: AnalyticsCollectionDatatable.new(profile, view_context)
-        end
-      end
-    else
+    unless signed_in? && authorized_user?
       flash[:error] = t('dri.flash.error.manager_user_permission')
+      return
+    end
+
+    @startdate = params[:startdate] || Date.today.at_beginning_of_month
+    @enddate = params[:enddate] || Date.today
+
+    @document = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @document.nil?
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: AnalyticsCollectionDatatable.new(profile, view_context)
+      end
     end
   end
 
   private
+
+    def authorized_user?
+      current_user.is_admin? || current_user.is_om? || current_user.is_cm?
+    end
 
     def profile
       @profile ||= create_profile
@@ -67,6 +70,6 @@ class AnalyticsController < ApplicationController
 
       token = OAuth2::AccessToken.new(oauth_client, access_token['access_token'], expires_in: access_token['expires_in'])
       user  = Legato::User.new(token)
-      Legato::Management::Profile.all(user).select {|p| p.id == Settings.analytics.profile_id}.first    
+      Legato::Management::Profile.all(user).select {|p| p.id == Settings.analytics.profile_id}.first
     end
 end

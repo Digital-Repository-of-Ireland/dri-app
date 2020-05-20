@@ -63,8 +63,7 @@ class ObjectsController < BaseObjectsController
       format.endnote { render plain: @object.export_as_endnote, layout: false }
       format.json do
         json = @object.as_json
-        solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([@object.noid])
-        solr_doc = Solr::Query.new(solr_query).first
+        solr_doc = SolrDocument.find(@object.noid)
 
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
         json['doi'] = DRI::Formatters::Json.dois(solr_doc)
@@ -231,11 +230,7 @@ class ObjectsController < BaseObjectsController
 
   def retrieve
     id = params[:id]
-    begin
-      object = retrieve_object!(id)
-    rescue ActiveFedora::ObjectNotFoundError
-      flash[:error] = t('dri.flash.error.download_no_file')
-    end
+    object = retrieve_object!(id)
 
     if object.present?
       if can?(:read, object)

@@ -19,7 +19,7 @@ class ReadersController < ApplicationController
   def create
     @collection = retrieve_object!(params[:id])
     @reader_group = governing_reader_group(@collection.noid)
-    
+
     unless @reader_group
       flash[:alert] = t('dri.flash.error.no_read_group')
       redirect_to :back
@@ -108,15 +108,13 @@ class ReadersController < ApplicationController
 
     def notify_managers(group)
       # inform managers for reader group requests
-      result = ActiveFedora::SolrService.query("id:#{@collection.noid}")
-      doc = SolrDocument.new(result.pop) if result.size > 0
+      doc = SolrDocument.find(@collection.noid)
       managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
 
       # if no manager set for this collection it could be inherited, iterate up the tree
       if managers.nil?
         doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor|
-          result = ActiveFedora::SolrService.query("id:#{ancestor}")
-          ancestordoc = SolrDocument.new(result.pop) if result.size > 0
+          ancestordoc = SolrDocument.find(ancestor)
           managers = ancestordoc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
           break if managers.present? && managers.size > 0
         end

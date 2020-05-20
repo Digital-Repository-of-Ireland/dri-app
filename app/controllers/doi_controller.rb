@@ -12,7 +12,7 @@ class DoiController < ApplicationController
       @reason = t('dri.views.catalog.legends.doi_deleted', id: @object_id) unless @available
 
       if(@available)
-        doc = SolrDocument.new(ActiveFedora::SolrService.query("id:#{@object_id}").first)
+        doc = SolrDocument.find(@object_id)
         if !doc.published?
           @reason = t('dri.views.catalog.legends.doi_not_available')
           @available = false

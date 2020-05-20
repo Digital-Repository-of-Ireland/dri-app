@@ -19,7 +19,7 @@ class ApiController < CatalogController
       raise DRI::Exceptions::BadRequest
     end
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(object_ids)
+    solr_query = Solr::Query.construct_query_for_ids(object_ids)
     results = Solr::Query.new(solr_query)
 
     results.each do |solr_doc|
@@ -52,7 +52,7 @@ class ApiController < CatalogController
 
     raise DRI::Exceptions::BadRequest unless params[:objects].present?
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
+    solr_query = Solr::Query.construct_query_for_ids(
       params[:objects].map { |o| o.values.first }
     )
     result_docs = Solr::Query.new(solr_query)
@@ -81,8 +81,8 @@ class ApiController < CatalogController
             end
 
     if params[:object].present?
-      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:object]])
-      result = ActiveFedora::SolrService.instance.conn.get(
+      solr_query = Solr::Query.construct_query_for_ids([params[:object]])
+      result = repository.connection.get(
         'select',
         params: {
           q: solr_query, qt: 'standard',
@@ -96,6 +96,7 @@ class ApiController < CatalogController
           :'mlt.match.include' => 'false'
         }
       )
+      puts result
     end
 
     # TODO: fixme!

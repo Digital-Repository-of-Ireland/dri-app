@@ -246,10 +246,9 @@ class MyCollectionsController < ApplicationController
   def duplicates
     enforce_permissions!('manage_collection', params[:id])
 
-    result = ActiveFedora::SolrService.query("id:#{params[:id]}")
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if result.blank?
+    @object = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @object.nil?
 
-    @object = SolrDocument.new(result.first)
 
     params[:per_page] ||= blacklight_config.default_per_page
     @response, document_list = @object.duplicates(params[:sort])
