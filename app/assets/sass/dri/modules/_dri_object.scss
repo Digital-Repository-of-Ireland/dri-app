@@ -274,10 +274,13 @@ dl.dri_object_metadata_readview {
         color: $dri_midgrey;
         text-align: left;
         a,span.orcid {
-            margin: 0 0 0 15px;
+            margin: 0;
             display: list-item;
-            list-style-type: square;
+            list-style-type: none;
             color: $dri_midgrey;
+        }
+        a.inline {
+            display: inline;
         }
         span.orcid a {
             display: inline-block;
