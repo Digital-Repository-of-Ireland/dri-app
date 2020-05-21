@@ -110,12 +110,9 @@ module FacetsHelper
     pid = value
     return value if pid.blank?
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
-    docs = ActiveFedora::SolrService.query(solr_query, rows: 1)
+    doc = SolrDocument.find(pid)
+    return 'nil' if doc.nil?
 
-    return 'nil' if docs.empty?
-
-    doc = docs.first
     doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
   end
 

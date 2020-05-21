@@ -12,9 +12,21 @@ module Solr
     end
 
     def count
-      args = @args.merge(rows: 0)
+      args = @args.merge(rows: 0, qt: 'standard')
       params = { q: @query }.merge(args)
-      connection.search(params)['numFound'].to_i
+      response = solr_index.connection.get('select', params: params)['response']
+      response['numFound'].to_i
+    end
+
+    def get
+      args = @args.merge(q: @query, qt: 'standard')
+      response = solr_index.connection.get('select', params: args)
+      blacklight_config.response_model.new(
+        response,
+        args,
+        document_model: blacklight_config.document_model,
+        blacklight_config: blacklight_config
+      )
     end
 
     def query
@@ -26,7 +38,7 @@ module Solr
                    end
 
       params = { q: @query }.merge(query_args)
-      response = connection.search(params)
+      response = solr_index.search(params)
 
       if response['nextCursorMark'].present?
         nextCursorMark = response['nextCursorMark']
@@ -36,12 +48,12 @@ module Solr
       else
         @has_more = false
       end
-
+      #puts response.documents.inspect
       response.documents
     end
 
-    def connection
-      @connection ||= Solr::Query.repository
+    def solr_index
+      @solr_index ||= Solr::Query.repository
     end
 
     def has_more?

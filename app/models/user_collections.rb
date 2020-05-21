@@ -20,7 +20,7 @@ class UserCollections
                 user_query
               end
 
-      ActiveFedora::SolrService.count(query, fq: root_collection_filter)
+      Solr::Query.new(query, 100, fq: root_collection_filter).count
     end
 
     def admin_collections_data

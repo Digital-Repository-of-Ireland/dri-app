@@ -33,8 +33,8 @@ class StatsReport
   end
 
   def self.summary
-    total_objects = ActiveFedora::SolrService.count('has_model_ssim:"DRI::DigitalObject" and is_collection_sim:false')
-    total_assets = ActiveFedora::SolrService.count('has_model_ssim:"DRI::GenericFile"')
+    total_objects = Solr::Query.new('has_model_ssim:"DRI::DigitalObject" and is_collection_sim:false').count
+    total_assets = Solr::Query.new('has_model_ssim:"DRI::GenericFile"').count
 
     {total_objects: total_objects, total_assets: total_assets}
   end

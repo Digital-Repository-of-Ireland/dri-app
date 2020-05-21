@@ -51,7 +51,7 @@ class CreateExportJob
   end
 
   def self.collection_objects(object_id)
-    collection = SolrDocument.new(ActiveFedora::SolrService.query("id:#{object_id}").first)
+    collection = SolrDocument.find(object_id)
     search_key = collection.root_collection? ? 'root_collection_id' : 'ancestor_id'
 
     solr_query = "#{Solrizer.solr_name(search_key, :facetable, type: :string)}:\"#{object_id}\""

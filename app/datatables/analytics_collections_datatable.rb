@@ -21,7 +21,7 @@ private
   def data
     collections = get_collections
     collection_hash = get_collection_names(collections)
- 
+
     data = display_on_page(collections)
     formatted_data = data.map do |entry|
       [
@@ -61,7 +61,7 @@ private
 
   def display_on_page(collections)
     Kaminari.paginate_array(fetch_analytics(collections)).page(page).per(per_page)
-  end 
+  end
 
   def page
     params[:start].to_i/per_page + 1
@@ -114,16 +114,16 @@ private
   end
 
   def get_collection_names(collections)
-    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(collections)
+    query = Solr::Query.construct_query_for_ids(collections)
     solr_query = Solr::Query.new(query)
     collection_hash = {}
     while solr_query.has_more?
       object_docs = solr_query.pop
-      object_docs.map do |o| 
+      object_docs.map do |o|
         collection_hash[o["id"]] = o["#{Solrizer.solr_name('title', :stored_searchable, type: :string)}"].first
       end
     end
     collection_hash
   end
-    
+
 end

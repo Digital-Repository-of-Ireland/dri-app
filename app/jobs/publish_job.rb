@@ -54,7 +54,7 @@ class PublishJob
   end
 
   def set_as_published(collection_id, user, q_str, f_query)
-    total_objects = ActiveFedora::SolrService.count(q_str, { fq: f_query })
+    total_objects = Solr::Query.new(q_str, 100, { fq: f_query }).count
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
 

@@ -55,7 +55,7 @@ class SolrDocument
     if ids.present?
       docs = {}
       query = Solr::Query.construct_query_for_ids(ids)
-      results = Solr::Query.new(query, 100, { rows: ids.length }).query.to_a
+      results = Solr::Query.new(query, 100, { rows: ids.length }).to_a
       results.each { |r| docs[r['id']] = r }
     end
 
@@ -103,7 +103,7 @@ class SolrDocument
     files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{id}"
     files_query += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
 
-    ActiveFedora::SolrService.count(files_query) > 0
+    Solr::Query.new(files_query).count > 0
   end
 
   def doi

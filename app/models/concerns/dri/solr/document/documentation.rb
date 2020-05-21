@@ -18,7 +18,6 @@ module DRI::Solr::Document::Documentation
 
     def retrieve_document_ids
       key = Solr::SchemaFields.searchable_symbol('isDescriptionOf')
-      ids = ActiveFedora::SolrService.query("#{key}:\"#{id}\"", fl: 'id')
-      ids.map(&:values).flatten
+      Solr::Query.new("#{key}:\"#{id}\"").map(&:id)
     end
 end

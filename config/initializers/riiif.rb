@@ -12,14 +12,14 @@ Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   surrogate =  'full'
 
   storage = StorageService.new
-  url = storage.surrogate_url(object_id, 
+  url = storage.surrogate_url(object_id,
            "#{generic_file_id}_#{surrogate}")
-  
-  url 
+
+  url
 end
 
 # In order to return the info.json endpoint, we have to have the full height and width of
-# each image. If you are using hydra-file_characterization, you have the height & width 
+# each image. If you are using hydra-file_characterization, you have the height & width
 # cached in Solr. The following block directs the info_service to return those values:
 HEIGHT_SOLR_FIELD = 'height_isi'
 WIDTH_SOLR_FIELD = 'width_isi'
@@ -28,11 +28,8 @@ Riiif::Image.info_service = lambda do |id, file|
   ids = id.split(':')
   id = ids[1]
 
-  resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
-  file_doc = resp.first
-  resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}", 
-    defType: 'edismax', rows: '1')
-  object_doc = resp.first
+  file_doc = SolrDocument.find(id)
+  object_doc = SolrDocument.find(file_doc['isPartOf_ssim'].first)
 
   { height: file_doc[HEIGHT_SOLR_FIELD], width: file_doc[WIDTH_SOLR_FIELD] }
 end

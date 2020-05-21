@@ -5,8 +5,7 @@ module DRI::Solr::Document::Collection
     solr_query = "#{Solr::SchemaFields.searchable_string('ancestor_id')}:\"#{self.id}\""
     f_query = "#{Solr::SchemaFields.searchable_string('is_collection')}:true"
 
-    q_result = Solr::Query.new(solr_query, limit, fq: f_query)
-    q_result.to_a
+    Solr::Query.new(solr_query, limit, fq: f_query).to_a
   end
 
   # Filter to only get those that are collections:
@@ -16,8 +15,11 @@ module DRI::Solr::Document::Collection
     solr_query = "#{Solr::SchemaFields.searchable_string('collection_id')}:\"#{self.id}\""
     f_query = "#{Solr::SchemaFields.searchable_string('is_collection')}:true"
 
-    q_result = Solr::Query.new(solr_query, limit, {fq: f_query, sort: "system_create_dtsi asc"})
-    q_result.to_a
+    Solr::Query.new(
+      solr_query,
+      limit,
+      {fq: f_query, sort: "system_create_dtsi asc"}
+    ).to_a
   end
 
   def cover_image
@@ -88,12 +90,10 @@ module DRI::Solr::Document::Collection
       pivot.each { |p| ids << p['value'] }
     end
 
-    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-    response = ActiveFedora::SolrService.get(query, sort: sort, rows: ids.size)
-    docs = response['response']['docs']
-    duplicate_docs = docs.collect { |d| SolrDocument.new(d) }
+    query = Solr::Query.construct_query_for_ids(ids)
+    response = Solr::Query.new(query, 100, { sort: sort, rows: ids.size }).get
 
-    return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicate_docs
+    return Blacklight::Solr::Response.new(response.response, response.header), response.docs
   end
 
   # @param [String] type
@@ -106,7 +106,7 @@ module DRI::Solr::Document::Collection
     if published_only
       solr_query += " AND #{Solr::SchemaFields.searchable_symbol('status')}:published"
     end
-    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
+    Solr::Query.new(solr_query).count
   end
 
   private
@@ -129,7 +129,7 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [Integer]
     def status_count(status, subcoll = false)
-      ActiveFedora::SolrService.count(status_query(status, subcoll))
+      Solr::Query.new(status_query(status, subcoll)).count
     end
 
     # @param [String] status
@@ -158,6 +158,6 @@ module DRI::Solr::Document::Collection
         "facet.field" => "#{metadata_field}"
       }
 
-      ActiveFedora::SolrService.get('*:*', query_params)
+      Solr::Query.new('*:*', 100, query_params).get
     end
 end

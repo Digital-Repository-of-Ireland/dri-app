@@ -25,21 +25,16 @@ module DRI::Solr::Document::Relations
   def object_relationships
     relationships_hash = {}
 
-    begin
-      if active_fedora_model == 'DRI::Documentation'
-        documentation = documentation_for
+    if active_fedora_model == 'DRI::Documentation'
+      documentation = documentation_for
 
-        if documentation
-          link_text = documentation['title_tesim'].first
-          relationships_hash['Is Documentation For'] = [[link_text, documentation]]
-        end
-      else
-        relationships_hash.merge!(relationships_for_display) unless active_fedora_model == 'DRI::EncodedArchivalDescription'
-        relationships_hash.merge!(documentation_for_display)
+      if documentation
+        link_text = documentation['title_tesim'].first
+        relationships_hash['Is Documentation For'] = [[link_text, documentation]]
       end
-
-    rescue ActiveFedora::ObjectNotFoundError
-      Rails.logger.error("Object not found")
+    else
+      relationships_hash.merge!(relationships_for_display) unless active_fedora_model == 'DRI::EncodedArchivalDescription'
+      relationships_hash.merge!(documentation_for_display)
     end
 
     relationships_hash
@@ -135,19 +130,17 @@ module DRI::Solr::Document::Relations
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
       solr_query << " AND root_collection_id_sim:(\"#{relatives_ids}\")"
 
-      solr_results = ActiveFedora::SolrService.query(
-                       solr_query,
-                       rows: relations_array.length,
-                       defType: 'edismax'
-                     )
+      response = Solr::Query.new(
+                  solr_query,
+                  100,
+                  { rows: relations_array.length, defType: 'edismax'}
+                ).get
 
-      if solr_results.present?
-        solr_documents = solr_results.map { |item| SolrDocument.new(item) }
-      else
+      unless response.documents.present?
         Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
       end
 
-      solr_documents
+      response.documents
     end
 
     def external_relationships_solr_fields

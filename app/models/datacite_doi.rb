@@ -106,8 +106,7 @@ class DataciteDoi < ActiveRecord::Base
     end
 
     def solr_document
-      result = ActiveFedora::SolrService.query("id:#{object_id}")
-      SolrDocument.new(result.first)
+      SolrDocument.find(object_id)
     end
 
     def set_version
