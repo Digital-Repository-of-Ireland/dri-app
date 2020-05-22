@@ -10,7 +10,6 @@ gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
 
 gem 'hydra-head', '10.6.2'
-gem 'active-fedora', '12.2.1'
 gem 'om', '3.2.0'
 gem 'solrizer'
 

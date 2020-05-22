@@ -1002,7 +1002,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active-fedora (= 12.2.1)
   avalon_ingest!
   better_errors
   binding_of_caller
