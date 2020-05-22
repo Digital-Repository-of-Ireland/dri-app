@@ -4,6 +4,7 @@ class GenericFileContent
   attr_accessor :object, :generic_file, :user
 
   def add_content(file_upload, path='content')
+    save_object
     set = set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
     return set if set == false
 
@@ -13,13 +14,14 @@ class GenericFileContent
   def update_content(file_upload, path='content')
     @name_of_file_to_replace = generic_file.label
 
+    save_object
     set = set_content(file_upload[:file_upload], file_upload[:filename], file_upload[:mime_type], path)
     return set if set == false
 
     preserve_file(file_upload, path, true)
   end
 
-  def set_content(file, filename, mime_type, path='content')
+  def save_object
     # Update object version
     object.object_version ||= 1
     object.increment_version
@@ -30,7 +32,9 @@ class GenericFileContent
       logger.error "Could not update object version number for #{object.noid} to version #{object.object_version}"
       raise Exceptions::InternalError
     end
+  end
 
+  def set_content(file, filename, mime_type, path='content')
     generic_file.add_file(file, { path: path, file_name: "#{generic_file.noid}_#{filename}", mime_type: mime_type })
     generic_file.label = filename
     generic_file.title = [filename]

@@ -52,7 +52,7 @@ class ProcessBatchIngest
 
       original_file_name = File.basename(asset[:path])
 
-      moab_filename = ingest_file(asset[:path], object, 'content', original_file_name)
+      moab_filename = ingest_file(user, asset[:path], object, 'content', original_file_name)
       saved = if moab_filename.nil?
                 false
               else
@@ -129,22 +129,17 @@ class ProcessBatchIngest
     return rc, object
   end
 
-  def self.ingest_file(file_path, object, datastream, filename)
+  def self.ingest_file(user, file_path, object, datastream, filename)
     filename = "#{@generic_file.noid}_#{filename}"
-
-    filedata = OpenStruct.new
-    filedata.path = file_path
     mime_type = Validators.file_type(file_path)
 
     begin
-      @generic_file.add_file(
-        File.new(file_path), {
-                path: file_path,
-                file_name: filename,
-                mime_type: mime_type
-              }
-      )
-      @generic_file.save
+      file_content = GenericFileContent.new(
+                       user: user,
+                       object: object,
+                       generic_file: @generic_file
+                     )
+      file_content.set_content(File.new(file_path), filename, mime_type)
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.noid} to #{datastream}: #{e.message}"
       return nil

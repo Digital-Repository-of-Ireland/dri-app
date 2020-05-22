@@ -4,10 +4,12 @@ class StatsReport
   def self.file_type_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get(
-      'has_model_ssim:"DRI::DigitalObject"',
-      facet: true,
-      'facet.field' => 'file_type_display_sim')
+    result = Solr::Query.new(
+               'has_model_ssim:"DRI::DigitalObject"',
+               100,
+               { facet: true,
+                 'facet.field' => 'file_type_display_sim' }
+             ).get
 
     facet = result['facet_counts']['facet_fields']['file_type_display_sim']
     facet.each_slice(2) do |type,count|
@@ -21,7 +23,10 @@ class StatsReport
   def self.mime_type_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get('has_model_ssim:"DRI::DigitalObject"', facet: true, 'facet.field' => 'mime_type_sim')
+    result = Solr::Query.new(
+               'has_model_ssim:"DRI::DigitalObject"',
+               100, { facet: true, 'facet.field' => 'mime_type_sim' }
+             ).get
 
     facet = result['facet_counts']['facet_fields']['mime_type_sim']
     facet.each_slice(2) do |type,count|
@@ -40,7 +45,11 @@ class StatsReport
   end
 
   def self.total_file_size
-    stats = ActiveFedora::SolrService.get('*:*', stats: true, 'stats.field' => 'file_size_isi')
+    stats = Solr::Query.new(
+              '*:*',
+              100,
+              { stats: true, 'stats.field' => 'file_size_isi' }
+            ).get
     if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_isi'].present?
       stats['stats']['stats_fields']['file_size_isi']['sum']
     else
