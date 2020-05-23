@@ -17,7 +17,7 @@ describe "International Image Interoperability Framework API" do
           include_context 'rswag_user_with_collections'
           let(:user_token) { @example_user.authentication_token }
           let(:user_email) { CGI.escape(@example_user.to_s) }
-          let(:id) { @collections.first.id }
+          let(:id) { @collections.first.noid }
           include_context 'rswag_include_json_spec_output' do
             it_behaves_like 'a pretty json response'
           end
@@ -28,7 +28,7 @@ describe "International Image Interoperability Framework API" do
           include_context 'rswag_user_with_collections', status: 'published'
           let(:user_token) { nil }
           let(:user_email) { nil }
-          let(:id) { @collections.first.id }
+          let(:id) { @collections.first.noid }
           include_context 'rswag_include_json_spec_output',
             'application/json Unauthorized access to published manifest' do
             it_behaves_like 'a pretty json response'
@@ -40,7 +40,7 @@ describe "International Image Interoperability Framework API" do
         include_context 'rswag_user_with_collections'
         let(:user_token) { nil }
         let(:user_email) { nil }
-        let(:id) { @collections.first.id }
+        let(:id) { @collections.first.noid }
         it_behaves_like 'a pretty json response'
         include_context 'rswag_include_json_spec_output' do
           it_behaves_like 'a json api 401 error'

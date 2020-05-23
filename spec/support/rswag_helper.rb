@@ -1,6 +1,6 @@
 module RswagHelper
 
-  ## 
+  ##
   # handle case where add_param is first param, use ? instead of &
   #
   # @param  [String] url
@@ -58,7 +58,6 @@ module RswagHelper
     collection = create_collection_for(user, status: status)
     subcollection = create_collection_for(user, status: status, title: 'subcollection')
     subcollection.governing_collection = collection
-
     [collection, subcollection].each do |c|
       c.governed_items << create_object_for(user, status: status)
       c.save

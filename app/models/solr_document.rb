@@ -189,14 +189,11 @@ class SolrDocument
 
   def licence
     licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
-
-    licence = if self[licence_key].present?
+    if self[licence_key].present?
       Licence.where(name: self[licence_key]).first || self[licence_key]
     else
       retrieve_ancestor_licence
     end
-
-    licence
   end
 
   def object_profile
@@ -241,7 +238,7 @@ class SolrDocument
 
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
-      return Licence.where(name: doc[licence_key]).first if doc[licence_key].present?
+      return Licence.where(name: doc[licence_key]).take if doc[licence_key].present?
     end
 
     nil

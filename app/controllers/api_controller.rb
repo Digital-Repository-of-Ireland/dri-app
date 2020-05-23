@@ -96,7 +96,6 @@ class ApiController < CatalogController
           :'mlt.match.include' => 'false'
         }
       )
-      puts result
     end
 
     # TODO: fixme!

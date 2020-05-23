@@ -29,7 +29,7 @@ class CollectionsController < BaseObjectsController
     query = "_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\""
     query += " OR manager_access_person_ssim:#{current_user.email}"
 
-    fq = ["+#{Solr::SchemaFields.facet('is_collection', :facetable, type: :string)}:true"]
+    fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
 
     if params[:governing].present?
       fq << "+#{Solr::SchemaFields.searchable_symbol('isGovernedBy')}:#{params[:governing]}"

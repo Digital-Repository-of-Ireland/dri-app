@@ -48,7 +48,6 @@ module Solr
       else
         @has_more = false
       end
-      #puts response.documents.inspect
       response.documents
     end
 
