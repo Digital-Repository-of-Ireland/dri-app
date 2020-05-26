@@ -446,6 +446,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
+          view_edm_feed: View EDM Feed
           fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
           history: History
