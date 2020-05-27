@@ -214,7 +214,7 @@ When /^I attach the licence logo file "(.*?)"$/ do |file|
 end
 
 Given /^I have created a licence "(.*?)"$/ do |name|
-  licence = Licence.create(:name=>name, :description=>'This is a description', :url=>"http://www.dri.ie/", :logo=>"http://creativecommons.org/licenses/by/4.0/deed.en_US")
+  licence = Licence.create(:name=>name, :description=>'This is a description', :url=>"http://www.dri.ie/")
 end
 
 When /^I attach the asset file "(.*?)"$/ do |file|
