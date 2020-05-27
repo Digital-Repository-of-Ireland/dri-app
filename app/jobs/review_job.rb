@@ -36,7 +36,7 @@ class ReviewJob
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, ['properties'])
+      preservation.preserve(['properties'])
     end
 
     completed(completed: completed, failed: failed)
@@ -64,7 +64,7 @@ class ReviewJob
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, ['properties'])
+          preservation.preserve(['properties'])
         end
       end
 

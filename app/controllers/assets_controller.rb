@@ -77,7 +77,7 @@ class AssetsController < ApplicationController
     generic_file = retrieve_object!(params[:id])
 
     if object.status == 'published' && !current_user.is_admin?
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     object.increment_version
@@ -182,7 +182,7 @@ class AssetsController < ApplicationController
 
     def can_view?
       if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
-        raise Hydra::AccessDenied.new(
+        raise Blacklight::AccessControls::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
           params[:object_id]

@@ -27,7 +27,7 @@ module DRI::Catalog
   end
 
   included do
-    include Hydra::Catalog
+    include Blacklight::Catalog
     include DRI::Readable
 
     # need rescue_from here to ensure that errors thrown by before_action

@@ -79,10 +79,11 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 5d242d1dd6b0242042dcad77d8f63865c06e371f
-  branch: develop
+  revision: a3c43be40ecfdabc3f8f8dba2a99aa42ab6cef5b
+  branch: active-record
   specs:
     user_group (1.4.2)
+      blacklight-access_controls
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
@@ -201,8 +202,8 @@ GEM
       rails (>= 4.2, < 6)
       rsolr (>= 1.0.6, < 3)
       twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
-    blacklight-access_controls (0.6.2)
-      blacklight (~> 6.0)
+    blacklight-access_controls (6.0.0)
+      blacklight (> 6.0, < 8)
       cancancan (~> 1.8)
       deprecation (~> 1.0)
     blacklight-maps (0.5.0)
@@ -432,16 +433,6 @@ GEM
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     httpclient (2.8.3)
-    hydra-access-controls (10.6.2)
-      active-fedora (>= 10.0.0, < 13)
-      activesupport (>= 4, < 6)
-      blacklight (>= 5.16)
-      blacklight-access_controls (~> 0.6.0)
-      cancancan (~> 1.8)
-      deprecation (~> 1.0)
-    hydra-core (10.6.2)
-      hydra-access-controls (= 10.6.2)
-      railties (>= 4.0.0, < 6)
     hydra-derivatives (3.5.0)
       active-fedora (>= 11.3.1, < 14)
       active_encode (~> 0.1)
@@ -452,10 +443,6 @@ GEM
       mini_magick (>= 3.2, < 5)
     hydra-file_characterization (1.1.0)
       activesupport (>= 3.0.0)
-    hydra-head (10.6.2)
-      hydra-access-controls (= 10.6.2)
-      hydra-core (= 10.6.2)
-      rails (>= 3.2.6)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     i18n-js (3.6.0)
@@ -1038,7 +1025,7 @@ DEPENDENCIES
   honeybadger (~> 2.0)
   http_accept_language
   httparty
-  hydra-head (= 10.6.2)
+  hydra-derivatives (= 3.5.0)
   i18n-js
   i18n-tasks
   i18n_sync

@@ -49,27 +49,13 @@ module Preservation
       end
     end
 
-    # moabify_permissions
-    def moabify_permissions
-      File.write(File.join(metadata_path(self.object.noid, self.version), 'permissions.rdf'), object.permissions.inspect )
-    rescue StandardError => e
-      Rails.logger.error "unable to write permissions: #{e}"
-      false
-    end
-
     # preserve
-    def preserve(permissions=false, datastreams=nil)
+    def preserve(datastreams=nil)
       create_moab_dirs()
       dslist = []
       added = []
       deleted = []
       modified = []
-
-      if permissions
-        saved = moabify_permissions
-        return false unless saved
-        dslist << 'permissions.rdf'
-      end
 
       if datastreams.present?
         #object.reload # we must refresh the datastreams list

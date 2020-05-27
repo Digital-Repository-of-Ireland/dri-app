@@ -118,7 +118,7 @@ class ObjectsController < BaseObjectsController
         return
       end
 
-      post_save(false) do
+      post_save do
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
       end
 
@@ -167,7 +167,7 @@ class ObjectsController < BaseObjectsController
     supported_licences
 
     if @object.valid? && @object.save
-      post_save(true) do
+      post_save do
         create_reader_group if @object.collection?
       end
 
@@ -202,7 +202,7 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     if @object.status == 'published' && !current_user.is_admin?
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     # Do the preservation actions
@@ -215,7 +215,7 @@ class ObjectsController < BaseObjectsController
     preservation.update_manifests(
       deleted: {
         'content' => assets,
-        'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml']
+        'metadata' => ['descMetadata.xml','properties.xml']
         }
     )
     collection_id = @object.governing_collection.noid
@@ -278,7 +278,7 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, ['properties'])
+      preservation.preserve(['properties'])
 
       # if this object is in a sub-collection, we need to set that collection status
       # to reviewed so that a publish job will run on the collection
@@ -330,7 +330,7 @@ class ObjectsController < BaseObjectsController
 
     def create_reader_group
       group = UserGroup::Group.new(
-        name: @object.noid.to_s,
+        name: @object.noid,
         description: "Default Reader group for collection #{@object.noid}"
       )
       group.reader_group = true
@@ -343,7 +343,7 @@ class ObjectsController < BaseObjectsController
       standard == 'documentation' ? 'qualifieddublincore' : standard
     end
 
-    def post_save(create)
+    def post_save
       warn_if_has_duplicates(@object)
       retrieve_linked_data if AuthoritiesConfig
       record_version_committer(@object, current_user)
@@ -352,7 +352,7 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(create, ['descMetadata','properties'])
+      preservation.preserve(['descMetadata','properties'])
     end
 
     def retrieve_linked_data
@@ -372,7 +372,7 @@ class ObjectsController < BaseObjectsController
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(governing_collection)
-          preservation.preserve(false, ['properties'])
+          preservation.preserve(['properties'])
         end
 
         governing_collection = governing_collection.governing_collection

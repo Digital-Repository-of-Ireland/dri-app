@@ -89,7 +89,7 @@ class MetadataController < ApplicationController
     @errors = nil
 
     unless can? :update, @object
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
     @object.update_metadata(xml_ds.xml)
@@ -109,7 +109,7 @@ class MetadataController < ApplicationController
         retrieve_linked_data if AuthoritiesConfig
 
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, ['descMetadata', 'properties'])
+        preservation.preserve(['descMetadata', 'properties'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e

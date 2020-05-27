@@ -14,7 +14,7 @@ class Timeline
     timeline_data = []
 
     response.each_with_index do |document, index|
-      document = document.symbolize_keys
+      document = document.to_h.symbolize_keys
 
       dates = document_date(document, tl_field)
       next unless dates.present?

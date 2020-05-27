@@ -35,7 +35,7 @@ class AccessControlsController < ApplicationController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, permissionchange, ['properties'])
+      preservation.preserve(['properties'])
     else
       flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
     end

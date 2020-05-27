@@ -1,3 +1,3 @@
 class Ability
-  include Hydra::Ability
+  include Blacklight::AccessControls::Ability
 end

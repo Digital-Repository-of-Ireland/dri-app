@@ -129,7 +129,7 @@ class InstitutesController < ApplicationController
       VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
 
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, ['properties'])
+      preservation.preserve(['properties'])
     else
       raise DRI::Exceptions::InternalError
     end
@@ -173,7 +173,7 @@ class InstitutesController < ApplicationController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, ['properties'])
+      preservation.preserve(['properties'])
 
       respond_to do |format|
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.noid }
@@ -205,7 +205,7 @@ class InstitutesController < ApplicationController
     end
 
     def admin?
-      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
     end
 
     def update_params

@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
   # Adds Hydra behaviors into the application controller
-  include Hydra::Controller::ControllerBehavior
+  #include Hydra::Controller::ControllerBehavior
 
   include DRI::Exceptions
 
@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery prepend: true
 
-  rescue_from Hydra::AccessDenied, with: :render_access_denied
+  rescue_from Blacklight::AccessControls::AccessDenied, with: :render_access_denied
   rescue_from DRI::Exceptions::InternalError, with: :render_internal_error
   rescue_from DRI::Exceptions::BadRequest, with: :render_bad_request
   rescue_from DRI::Exceptions::NotFound, with: :render_not_found
@@ -132,7 +132,7 @@ class ApplicationController < ActionController::Base
         if request.env["HTTP_REFERER"].present?
           redirect_back(fallback_location: root_path)
         else
-          raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'))
+          raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.create_permission'))
         end
       end
     end

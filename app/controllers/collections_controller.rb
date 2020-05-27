@@ -93,7 +93,7 @@ class CollectionsController < BaseObjectsController
   end
 
   def lock
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+    raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
 
     @object = retrieve_object!(params[:id])
     raise DRI::Exceptions::BadRequest unless @object.collection?
@@ -137,7 +137,7 @@ class CollectionsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, ['descMetadata'])
+      preservation.preserve(['descMetadata'])
 
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -180,7 +180,7 @@ class CollectionsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, ['properties'])
+      preservation.preserve(['properties'])
     end
 
     respond_to do |format|
@@ -241,7 +241,7 @@ class CollectionsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(true, ['descMetadata','properties'])
+      preservation.preserve(['descMetadata','properties'])
 
       respond_to do |format|
         format.html do
@@ -293,7 +293,7 @@ class CollectionsController < BaseObjectsController
         return
       end
     else
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     respond_to do |format|
