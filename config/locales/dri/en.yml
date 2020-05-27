@@ -446,6 +446,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
+          view_edm_feed: View EDM Feed
           fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
           history: History
@@ -617,6 +618,11 @@ en:
         orgs_legend: "Organisations listed on this page are associated in various ways with deposited collections. They include depositing organisations, contributing partners, collaborating institutions, and funding agencies. For a list of DRI Members, see the <a href='%{url}'>Membership page</a>."
       licences:
         all_rights_reserved: Please see rights statement
+        public_domain: Work is in the Public Domain
+        unlicenced: This work is in copyright but not licenced for reuse.
+        orphan_work: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."
+        educational_use: "This Item is protected by copyright and/or related rights, however, no permission is required from the rights-holder(s) for educational uses. For other uses, you need to obtain permission from the rights-holder(s)."
+        more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
         buttons:
           edit: Edit Licence
           new: Add a new licence

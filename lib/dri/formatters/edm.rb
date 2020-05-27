@@ -15,17 +15,17 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       title_eng: 'title_eng_tesim',
       title_gle: 'title_gle_tesim',
       title: lambda do |record|
-        titles = record['title_tesim']||[]
-        titles = titles -(record['title_eng_tesim'] || [])
-        titles = titles - (record['title_gle_teim'] || [])
+        titles = (record['title_tesim']||[]).map(&:strip)
+        titles = titles -(record['title_eng_tesim'] || []).map(&:strip)
+        titles = titles - (record['title_gle_teim'] || []).map(&:strip)
         titles || []
       end,  
       description_eng: 'description_eng_tesim',
       description_gle: 'description_gle_tesim',
       description: lambda do |record|
-        descriptions = record['description_tesim'] || []
-        descriptions = descriptions - (record['description_eng_tesim'] || [])
-        descriptions = descriptions - (record['description_gle_tesim'] || [])
+        descriptions = (record['description_tesim'] || []).map(&:strip)
+        descriptions = descriptions - (record['description_eng_tesim'] || []).map(&:strip)
+        descriptions = descriptions - (record['description_gle_tesim'] || []).map(&:strip)
         descriptions || []
       end,        
       creator: 'creator_tesim',
@@ -33,9 +33,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       subject_eng: 'subject_eng_tesim',
       subject_gle: 'subject_gle_tesim',
       subject: lambda do |record|
-        subjects = record['subject_tesim'] || []
-        subjects = subjects - (record['subject_eng_tesim'] || [])
-        subjects = subjects - (record['subject_gle_tesim'] || [])
+        subjects = (record['subject_tesim'] || []).map(&:strip)
+        subjects = subjects - (record['subject_eng_tesim'] || []).map(&:strip)
+        subjects = subjects - (record['subject_gle_tesim'] || []).map(&:strip)
         subjects || []
       end,
       type: 'type_tesim',
@@ -44,25 +44,25 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       rights_eng: 'rights_eng_tesim',
       rights_gle: 'rights_gle_tesim',
       rights: lambda do |record|
-        rights = record['rights_tesim'] || []
-        rights = rights - (record['rights_eng_tesim'] || [])
-        rights = rights - (record['rights_gle_tesim'] || [])
+        rights = (record['rights_tesim'] || []).map(&:strip)
+        rights = rights - (record['rights_eng_tesim'] || []).map(&:strip)
+        rights = rights - (record['rights_gle_tesim'] || []).map(&:strip)
         rights || []
       end,   
       source_eng: 'source_eng_tesim',
       source_gle: 'source_gle_tesim',
       source: lambda do |record|
-        sources = record['source_tesim'] || []
-        sources = sources - (record['source_eng_tesim'] || [])
-        sources = sources - (record['source_gle_tesim'] || []) 
+        sources = (record['source_tesim'] || []).map(&:strip)
+        sources = sources - (record['source_eng_tesim'] || []).map(&:strip)
+        sources = sources - (record['source_gle_tesim'] || []).map(&:strip)
         sources || []
        end,  
       coverage_eng: 'coverage_eng_tesim',
       coverage_gle: 'coverage_gle_tesim',
       coverage: lambda do |record|
-        coverages = record['coverage_tesim'] || []
-        coverages = coverages - (record['coverage_eng_tesim'] || [])
-        coverages = coverages - (record['coverage_gle_tesim'] || [])
+        coverages = (record['coverage_tesim'] || []).map(&:strip)
+        coverages = coverages - (record['coverage_eng_tesim'] || []).map(&:strip)
+        coverages = coverages - (record['coverage_gle_tesim'] || []).map(&:strip)
         coverages || []
       end, 
       date: 'date_tesim',
@@ -74,9 +74,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
       spatial: lambda do |record|
-        spatials = record['geographical_coverage_tesim'] || []
-        spatials = spatials - (record['geographical_coverage_eng_tesim'] || [])
-        spatials = spatials - (record['geographical_coverage_gle_tesim'] || [])
+        spatials = (record['geographical_coverage_tesim'] || []).map(&:strip)
+        spatials = spatials - (record['geographical_coverage_eng_tesim'] || []).map(&:strip)
+        spatials = spatials - (record['geographical_coverage_gle_tesim'] || []).map(&:strip)
         spatials || []
        end,
       temporal: "temporal_coverage_tesim"
