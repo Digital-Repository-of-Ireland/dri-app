@@ -146,3 +146,20 @@ $(function() {
     lazy.removeAttr("data-src");
   });
 });
+
+$(document).ready(function() {
+function togglePanel (){
+   var w = $(window).width();
+   if (w <= 766) {
+      $('#facet-panel-collapse').removeClass('in');
+   } else {
+      $('#facet-panel-collapse').addClass('in');
+   }
+}
+
+ $(window).resize(function(){
+     togglePanel();
+ });
+
+ togglePanel();
+ });
