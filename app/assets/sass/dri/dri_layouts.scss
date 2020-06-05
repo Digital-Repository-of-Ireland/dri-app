@@ -378,7 +378,10 @@
                 padding: 0px 20px 0 0;
             }
         }
-
+    }
+    .dri_facet_restrictions_container {
+        @include zen-grid-flow-item(1, 1, $alpha-gutter: 10px);
+        padding-right: 18px;
     }
 }
 
