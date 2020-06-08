@@ -1,4 +1,4 @@
-class CreateFixityChecks < ActiveRecord::Migration
+class CreateFixityChecks < ActiveRecord::Migration[4.2]
   def change
     create_table :fixity_checks do |t|
       t.string :collection_id

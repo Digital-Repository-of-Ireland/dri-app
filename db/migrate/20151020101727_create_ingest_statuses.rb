@@ -1,4 +1,4 @@
-class CreateIngestStatuses < ActiveRecord::Migration
+class CreateIngestStatuses < ActiveRecord::Migration[4.2]
   def change
     create_table :ingest_statuses do |t|
       t.string :batch_id, index: true

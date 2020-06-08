@@ -145,12 +145,9 @@ class CollectionsController < BaseObjectsController
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
     end
 
-    # purge params from update action
-    purge_params
-
     respond_to do |format|
       if updated
-        version_and_record_committer(@object, current_user)
+        record_version_committer(@object, current_user)
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
@@ -182,13 +179,12 @@ class CollectionsController < BaseObjectsController
     end
 
     if saved
+      record_version_committer(@object, current_user)
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve(false, false, ['properties'])
     end
-
-    # purge params from update action
-    purge_params
 
     respond_to do |format|
       if saved
@@ -248,7 +244,7 @@ class CollectionsController < BaseObjectsController
       # We have to create a default reader group
       create_reader_group
 
-      version_and_record_committer(@object, current_user)
+      record_version_committer(@object, current_user)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)

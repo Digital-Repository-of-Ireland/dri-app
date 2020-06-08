@@ -23,9 +23,11 @@ class ApplicationController < ActionController::Base
   include UserGroup::PermissionsCheck
   include UserGroup::Helpers
 
+  skip_after_action :discard_flash_if_xhr
+
   layout 'application'
 
-  protect_from_forgery
+  protect_from_forgery prepend: true
 
   rescue_from Hydra::AccessDenied, with: :render_access_denied
   rescue_from DRI::Exceptions::InternalError, with: :render_internal_error
@@ -71,7 +73,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    main_app.new_user_session_url
+    user_group.new_user_session_url
   end
 
   # Retrieves a Fedora Digital Object by ID
@@ -113,7 +115,7 @@ class ApplicationController < ActionController::Base
         begin
           sign_in user, store: false
         # handles issue where Devise::Mapping.find_scope! fails #1829
-        rescue StandardError => e
+        rescue StandardError
           sign_in :user, user, store: false
         end
       end
@@ -122,7 +124,7 @@ class ApplicationController < ActionController::Base
     def authenticate_admin!
       unless current_user && current_user.is_admin?
         flash[:error] = t('dri.views.exceptions.access_denied')
-        redirect_to :back
+        redirect_back(fallback_location: root_path)
       end
     end
 
@@ -130,7 +132,7 @@ class ApplicationController < ActionController::Base
       unless current_user && (current_user.is_admin? || current_user.is_cm?)
         flash[:error] = t('dri.views.exceptions.access_denied')
         if request.env["HTTP_REFERER"].present?
-          redirect_to(:back)
+          redirect_back(fallback_location: root_path)
         else
           raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'))
         end
@@ -141,10 +143,10 @@ class ApplicationController < ActionController::Base
       return unless Settings.read_only == true
 
       respond_to do |format|
-        format.json { head status: 503 }
+        format.json { head :service_unavailable }
         format.html do
           flash[:error] = t('dri.flash.error.read_only')
-          redirect_to :back
+          redirect_back(fallback_location: root_path)
         end
       end
     end
@@ -156,10 +158,10 @@ class ApplicationController < ActionController::Base
       return unless CollectionLock.exists?(collection_id: obj.root_collection_id)
 
       respond_to do |format|
-        format.json { head status: 403 }
+        format.json { head :forbidden }
         format.html do
           flash[:error] = t('dri.flash.error.locked')
-          redirect_to :back
+          redirect_back(fallback_location: root_path)
         end
       end
     end

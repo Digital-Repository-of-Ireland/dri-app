@@ -95,9 +95,6 @@ Scenario: Successful search using AND boolean search string
   And I press the button to "search" within "searchform"
   And I select the "objects" tab
   Then I should see a search result "SAMPLE AUDIO TITLE"
-  When I fill in "q" with "sample + audio"
-  And I press the button to "search" within "searchform"
-  Then I should see a search result "SAMPLE AUDIO TITLE"
 
 Scenario: Unsuccessful search using AND boolean search string
   Given I am logged in as "user1"

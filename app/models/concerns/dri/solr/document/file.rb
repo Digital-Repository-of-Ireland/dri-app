@@ -17,6 +17,11 @@ module DRI::Solr::Document::File
     ordered ? sort_assets(assets) : assets
   end
 
+  def characterized?
+    # not characterized if all empty
+    !self[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+  end
+
   def sort_assets(assets)
     assets.sort do |a,b|
       DRI::Sorters.trailing_digits_sort(
@@ -104,12 +109,13 @@ module DRI::Solr::Document::File
   def read_master?
     master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
     return true if self[master_file_key] == ['public']
+    return false if self[master_file_key] == ['private']
 
     result = false
 
     ancestor_ids.each do |id|
       ancestor = ancestor_docs[id]
-      next if ancestor[master_file_key].nil? || ancestor[master_file_key] == 'inherit'
+      next if ancestor[master_file_key].nil? || ancestor[master_file_key].include?('inherit')
 
       result = ancestor[master_file_key] == ['public'] ? true : false
       break

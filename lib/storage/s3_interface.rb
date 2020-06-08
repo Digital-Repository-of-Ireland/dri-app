@@ -128,11 +128,12 @@ module Storage
     end
 
     # Save Surrogate File
-    def store_surrogate(bucket, surrogate_file, surrogate_key)
+    def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype=nil)
       @client.put_object(
         bucket: with_prefix(bucket),
         body: File.open(Pathname.new(surrogate_file)),
-        key: surrogate_key)
+        key: surrogate_key,
+        content_type: mimetype)
 
       true
     rescue Exception  => e
@@ -141,11 +142,12 @@ module Storage
     end
 
     # Save arbitrary file
-    def store_file(bucket, file, file_key)
+    def store_file(bucket, file, file_key, mimetype=nil)
       @client.put_object(
         bucket: with_prefix(bucket),
         body: File.open(Pathname.new(file)),
-        key: file_key)
+        key: file_key,
+        content_type: mimetype)
       @client.put_object_acl(
         acl: "public-read",
         bucket: with_prefix(bucket),

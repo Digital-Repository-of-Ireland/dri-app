@@ -69,11 +69,11 @@
         <th><%= t('dri.reports.headings.committer') %></th>
         <th><%= t('dri.reports.headings.label') %></th>
     </tr>
-    <% @versions.keys.each do |label| %>
+    <% @versions.each do |version| %>
        <tr>
-        <td><%= @versions[label][:created] %></td>
-        <td><%= @versions[label][:committer] %></td>
-        <td><a href="<%= @versions[label][:uri] %>"><%= label %></a></td>
+        <td><%= version[:created] %></td>
+        <td><%= version[:committer] %></td>
+        <td><%= version[:version_id] %></td>
       </tr>
     <% end %>
     </table>
@@ -85,7 +85,7 @@
       <table class="table">
         <tr><td><%= t('dri.reports.assets.asset_id') %></td><td><%= file.id %></td></tr>
         <tr><td><%= t('dri.reports.assets.asset_type') %></td><td><%= file.format_label.join(' : ') %></td></tr>
-        <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size.join(' : ') %></td></tr>
+        <tr><td><%= t('dri.reports.assets.file_size') %></td><td><%= file.file_size %></td></tr>
         <tr><td><%= t('dri.reports.assets.last_modified') %></td><td><%= file.last_modified.join(' : ') %></td></tr>
         <tr><td><%= t('dri.reports.assets.checksum_orig') %></td><td><%= file.original_checksum.join(' : ') %></td></tr>
         <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.id, file.id), object_file_path(@object.id, file.id)) %></td></tr>

@@ -13,9 +13,9 @@ describe FixityController do
 
     @collection = FactoryBot.create(:collection)
     @object = FactoryBot.create(:sound)
-    
-    @collection.governed_items << @object    
-    @collection.save    
+
+    @collection.governed_items << @object
+    @collection.save
   end
 
   after(:each) do
@@ -29,13 +29,13 @@ describe FixityController do
 
     it 'should trigger a fixity check for an object' do
       request.env["HTTP_REFERER"] = "/"
-      expect{ put :update, id: @object.id }.to change(FixityCheck, :count).by(1)
+      expect{ put :update, params: { id: @object.id } }.to change(FixityCheck, :count).by(1)
     end
 
     it 'should trigger a fixity check for a collection' do
       request.env["HTTP_REFERER"] = "/"
       expect(Resque).to receive(:enqueue).exactly(1).times
-      put :update, id: @collection.id
+      put :update, params: { id: @collection.id }
     end
 
   end

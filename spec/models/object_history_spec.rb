@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe ObjectHistory  do
-  
+
   before do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
@@ -38,12 +38,12 @@ describe ObjectHistory  do
     @object[:depositor] = "edituser@dri.ie"
     @object.save
 
-    @generic_file = DRI::GenericFile.new(id: ActiveFedora::Noid::Service.new.mint)
+    VersionCommitter.create(obj_id: @object.id, version_id: 'v0001', committer_login: "instmgr@dri.ie")
+
+    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
     @generic_file.batch = @object
     @generic_file.apply_depositor_metadata(@user.email)
     @generic_file.save
-      
-    @object.create_version
 
     @collection.governed_items << @object
     @collection.save
@@ -77,7 +77,7 @@ describe ObjectHistory  do
 
   it 'should get versions' do
     versions = @object_history.audit_trail
-    expect(versions.keys).to include('version1')
+    expect(versions.first[:version_id]).to eq 'v0001'
   end
 
   it 'should get asset information' do

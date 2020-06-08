@@ -1,4 +1,3 @@
-<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
 <div class="dri_sidenav">
 	<h5><i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %> </h5>
 	<!-- close vc_title -->
@@ -23,14 +22,6 @@
 
 		<li>
 			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
-		</li>
-
-		<li>
-			<%= link_to t('dri.views.catalog.forms.print_metadata'),
-				object_metadata_path(@document.id),
-				id: "print_metadata",
-				:onclick => 'window.print();return false;'
-			%>
 		</li>
 
 		<li>
@@ -62,27 +53,27 @@
 		    	target: :_blank
 		    )
 		  %>
-  		<% 
+  		<%
 	  		# if it's an object with images, show the manifest
 	  		# if it's a collection containing images, show the images as a sequence
   			iiif_path = if !@document.collection? && @document.contains_images?
-					    				iiif_manifest_url(@document.id, format: :json)
-					    			elsif @document.collection? && !@document.published_images.empty?
-					    				iiif_collection_sequence_url(@document.id, format: :json)
-					    			else
-					    				nil
-					    			end
-				@iiif_full_path = iiif_path ? "#{Rails.application.config.mirador_url}?manifest=#{iiif_path}" : nil
+					    	iiif_manifest_url(@document.id, format: :json)
+					    elsif @document.collection? && !@document.published_images.empty?
+					    	iiif_collection_sequence_url(@document.id, format: :json)
+					    else
+					    	nil
+					    end
+			@iiif_full_path = iiif_path ? "#{Rails.application.config.mirador_url}?manifest=#{iiif_path}" : nil
   		%>
-    	<% if @iiif_full_path && @available %>
-  			<%= 
+  		    <% if @iiif_full_path && @available %>
+  			  <%=
     			link_to(
-	    			image_tag('iiif_logo.png', title: t('dri.help.dri_view_iiif')), 
-	    			@iiif_full_path, 
-	    			target: :_blank 
+	    			image_tag('iiif_logo.png', title: t('dri.help.dri_view_iiif'), alt: 'Iiif logo'),
+				    @iiif_full_path,
+	    		    target: :_blank
     			)
-  			%>
-    	<% end %>
+  			  %>
+  			<% end %>
 		<% end %>
 
     <% if @available %>

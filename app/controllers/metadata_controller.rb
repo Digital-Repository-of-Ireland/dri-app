@@ -66,7 +66,7 @@ class MetadataController < ApplicationController
       end
     end
 
-    render text: 'Unable to load metadata'
+    render plain: 'Unable to load metadata'
   end
 
   # Replaces the current descMetadata datastream with the contents of the uploaded XML file.
@@ -104,10 +104,10 @@ class MetadataController < ApplicationController
       begin
         raise DRI::Exceptions::InternalError unless @object.save
 
-        version_and_record_committer(@object, current_user)
+        record_version_committer(@object, current_user)
         update_or_mint_doi
 
-        retrieve_linked_data
+        retrieve_linked_data if AuthoritiesConfig
 
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve(false, false, ['descMetadata', 'properties'])
@@ -132,7 +132,7 @@ class MetadataController < ApplicationController
                      t('dri.flash.notice.metadata_updated')
                    end
 
-        render text: response
+        render plain: response
       end
     end
   end
@@ -162,12 +162,8 @@ class MetadataController < ApplicationController
     end
 
     def retrieve_linked_data
-      if AuthoritiesConfig
-        begin
-          DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
-        rescue Exception => e
-          Rails.logger.error "Unable to submit linked data job: #{e.message}"
-        end
-      end
+      DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
+    rescue Exception => e
+      Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end
 end

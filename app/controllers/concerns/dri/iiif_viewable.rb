@@ -41,36 +41,32 @@ module DRI::IIIFViewable
 
   def iiif_base_url(solr_id = nil)
     solr_id ||= @document.id
-    url_for(
-      controller: 'iiif', action: 'show', id: solr_id,
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
-    )
+    url_for(controller: 'iiif', action: 'show', id: solr_id)
   end
 
   def create_object_manifest
-    seed_id = url_for controller: 'iiif', action: 'manifest', id: @document.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    seed_id = url_for controller: 'iiif', action: 'manifest', id: @document.id, format: 'json'
 
     seed = {
       '@id' => seed_id,
       'label' => @document.title.join(','),
       'description' => @document.description.join(' ')
     }
-    
+
     manifest = IIIF::Presentation::Manifest.new(seed)
     base_manifest(manifest)
-    
+
     if @document.collection_id
       manifest.within = create_within
     end
 
     sequence = IIIF::Presentation::Sequence.new(
-        {'@id' => "#{iiif_base_url}/sequence/normal", 
+        {'@id' => "#{iiif_base_url}/sequence/normal",
         'viewing_hint' => 'individuals'})
 
     files = attached_images
-    files.each { |f| sequence.canvases << create_canvas(f, iiif_base_url) }  
-    
+    files.each { |f| sequence.canvases << create_canvas(f, iiif_base_url) }
+
     manifest.sequences << sequence
     manifest
   end
@@ -80,7 +76,7 @@ module DRI::IIIFViewable
     base_manifest(manifest)
 
     sequence = IIIF::Presentation::Sequence.new(
-      '@id' => "#{iiif_base_url}/sequence/normal", 
+      '@id' => "#{iiif_base_url}/sequence/normal",
       'viewing_hint' => 'individuals'
     )
 
@@ -117,7 +113,7 @@ module DRI::IIIFViewable
     manifest
   end
 
-  def create_collection_manifest    
+  def create_collection_manifest
     manifest = IIIF::Presentation::Collection.new(collection_manifest_seed)
     base_manifest(manifest)
 
@@ -133,13 +129,13 @@ module DRI::IIIFViewable
     end
 
     sequence = IIIF::Presentation::Sequence.new(
-        {'@id' => "#{iiif_base_url}/sequence/normal", 
+        {'@id' => "#{iiif_base_url}/sequence/normal",
         'viewing_hint' => 'individuals'})
 
     objects = child_objects
 
     unless objects.empty?
-      objects.each do |o| 
+      objects.each do |o|
         manifest.manifests << create_manifest(o)
       end
     end
@@ -148,8 +144,7 @@ module DRI::IIIFViewable
   end
 
   def collection_manifest_seed
-    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+    seed_id = iiif_collection_manifest_url id: @document.id, format: 'json'
 
     seed = {
       '@id' => seed_id,
@@ -163,11 +158,11 @@ module DRI::IIIFViewable
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :symbol)}:#{solr_id}"
     files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('file_type', :facetable)}:\"image\""
-    
+
     files = []
-    
+
     query = Solr::Query.new(files_query)
-    files = query.reject { |file_doc| file_doc.preservation_only? } 
+    files = query.reject { |file_doc| file_doc.preservation_only? }
 
     files.sort_by{ |f| f[ActiveFedora.index_field_mapper.solr_name('label')] }
   end
@@ -187,7 +182,7 @@ module DRI::IIIFViewable
 
     licence = solr_doc.licence
     if licence && licence.url
-      manifest.license = licence.url 
+      manifest.license = licence.url
     end
 
     manifest.attribution = attributions.join(', ')
@@ -212,7 +207,6 @@ module DRI::IIIFViewable
     solr_id ||= @document.id
     canvas = IIIF::Presentation::Canvas.new()
     canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
-    
     canvas.width = file[WIDTH_SOLR_FIELD]
     canvas.height = file[HEIGHT_SOLR_FIELD]
     canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
@@ -239,7 +233,7 @@ module DRI::IIIFViewable
   end
 
   def create_manifest(object)
-    { 
+    {
         '@id' => url_for(controller: 'iiif', action: 'manifest', id: object.id, format: 'json',
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
         '@type' => 'sc:Manifest',
@@ -260,9 +254,8 @@ module DRI::IIIFViewable
   end
 
   def create_subcollection(collection)
-    { 
-        '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+    {
+        '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json'),
         '@type' => 'sc:Collection',
         'label' => collection[ActiveFedora.index_field_mapper.solr_name('title')].join(', ')
     }
@@ -271,9 +264,8 @@ module DRI::IIIFViewable
   def create_within
     governing_collection = @document.governing_collection
 
-    { 
-        '@id' => (iiif_collection_manifest_url id: governing_collection.id, format: 'json',
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+    {
+        '@id' => (iiif_collection_manifest_url id: governing_collection.id, format: 'json'),
         '@type' => 'sc:Collection',
         'label' => governing_collection.title.join(', ')
     }
@@ -287,8 +279,7 @@ module DRI::IIIFViewable
 
     if org
       depositing_org = org
-      logo = logo_url(id: org.id, 
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol])
+      logo = logo_url(id: org.id)
     end
 
     return depositing_org, logo
@@ -297,8 +288,7 @@ module DRI::IIIFViewable
   def see_also(solr_id = nil)
     solr_id ||= @document.id
     {
-      "@id" => object_metadata_url(id: solr_id, 
-      protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
+      "@id" => object_metadata_url(id: solr_id),
       'format' => 'text/xml'
     }
   end

@@ -1,33 +1,40 @@
 
-@import 'bootstrap/glyphicons';
+//@import 'bootstrap/glyphicons';
 @import "bootstrap-sprockets";
-@import "bootstrap.scss";
+@import "bootstrap";
 /* for bootstrap3 */
 
-@import "jquery-ui";
+//@import "jquery-ui";
+@import "themes/jquery.ui.smoothness";
+@import "jquery.ui.core";
+@import "jquery.ui.theme";
+@import "jquery.ui.resizable";
+@import "jquery.ui.autocomplete";
+@import "jquery.ui.menu";
 @import "slick";
 @import 'slick-theme';
-@import "colorbox-rails";
+@import "jquery.colorbox-example1";
 @import "font-awesome";
 @import "jquery.xmleditor";
 @import "leaflet";
-@import "openseadragon";
+@import "openseadragon/openseadragon";
 @import "datatables";
 @import "timelineJS3";
 @import "dri_batch_ingest";
-/*Import the Zen Grids files*/
 
-@import "_dri_init.scss";
-@import "vendor/zen/_grids.scss";
-@import "vendor/zen/_base.scss";
-@import "vendor/zen/_background.scss";
-@import "_dri.scss";
-@import "vendor/social-share-button.scss";
-@import "vendor/bootstrap-duallistbox.scss";
+/*Import the Zen Grids files*/
+@import "_dri_init";
+
+@import "vendor/zen/_grids";
+@import "vendor/zen/_base";
+@import "vendor/zen/_background";
+@import "_dri";
+@import "vendor/social-share-button";
+@import "vendor/bootstrap-duallistbox";
 
 /* modules */
+@import "_modules";
 
-@import "_modules.scss";
 .dri_wrapper {
     $zen-column-count: 4;
     width: 1024px;
@@ -76,6 +83,7 @@
 .dri_main_content_container {
     @include zen-grid-item(4, 1);
     margin-left: 10px;
+    min-width: 250px;
     .dri_login_form_container {
         margin: auto;
         max-width: 450px;
@@ -102,7 +110,6 @@
     }
     .dri_object_second_block {
         @include zen-grid-item(1, 4, $gutter-width: 0px);
-        width: 250px;
     }
     .dri_section_block {
         @include zen-grid-item(4, 1, $gutter-width: 0px);
@@ -271,7 +278,6 @@
         .dri_object_second_block {
             @include zen-clear();
             @include zen-grid-item(2, 1, $gutter-width: 0px);
-            width: 100%;
         }
         .dri_object_first_block {
             @include zen-clear();
@@ -347,6 +353,35 @@
 @media only screen and (max-width: 395px) {
     .dri_wrapper {
         margin-top: 12em;
+        $zen-column-count: 1;
+    }
+    .dri_main_content_container {
+        @include zen-grid-container;
+        @include zen-grid-item(4, 1);
+        margin-left: 10px;
+        .dri_result_container {
+            @include zen-clear();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+        }
+        .dri_second_navigation_container {
+            @include zen-float();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+        }
+        .dri_object_second_block {
+            @include zen-clear();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+        }
+        .dri_object_first_block {
+            @include zen-clear();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+            dl.dri_object_metadata_readview {
+                padding: 0px 20px 0 0;
+            }
+        }
+    }
+    .dri_facet_restrictions_container {
+        @include zen-grid-flow-item(1, 1, $alpha-gutter: 10px);
+        padding-right: 18px;
     }
 }
 

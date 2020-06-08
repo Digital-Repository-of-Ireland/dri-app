@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-
-
 class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   def initialize
     @prefix = "edm"
@@ -8,47 +6,83 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     @namespace = "https://repository.dri.ie/edm/"
     @element_namespace = "edm"
   end
-
   # TODO: names are split by lang in names_ fields, how to handle this?
   # TODO: should we assume other fields not split are therefore English?
   ProvidedCHOPREFIXES = {
     dc: {
       title_eng: 'title_eng_tesim',
       title_gle: 'title_gle_tesim',
+      title: lambda do |record|
+        titles = (record['title_tesim']||[]).map(&:strip)
+        titles = titles -(record['title_eng_tesim'] || []).map(&:strip)
+        titles = titles - (record['title_gle_teim'] || []).map(&:strip)
+        titles || []
+      end,
       description_eng: 'description_eng_tesim',
       description_gle: 'description_gle_tesim',
+      description: lambda do |record|
+        descriptions = (record['description_tesim'] || []).map(&:strip)
+        descriptions = descriptions - (record['description_eng_tesim'] || []).map(&:strip)
+        descriptions = descriptions - (record['description_gle_tesim'] || []).map(&:strip)
+        descriptions || []
+      end,
       creator: 'creator_tesim',
       publisher: 'publisher_tesim',
       subject_eng: 'subject_eng_tesim',
       subject_gle: 'subject_gle_tesim',
+      subject: lambda do |record|
+        subjects = (record['subject_tesim'] || []).map(&:strip)
+        subjects = subjects - (record['subject_eng_tesim'] || []).map(&:strip)
+        subjects = subjects - (record['subject_gle_tesim'] || []).map(&:strip)
+        subjects || []
+      end,
       type: 'type_tesim',
       language: 'language_tesim',
       format: 'file_type_tesim',
       rights_eng: 'rights_eng_tesim',
       rights_gle: 'rights_gle_tesim',
+      rights: lambda do |record|
+        rights = (record['rights_tesim'] || []).map(&:strip)
+        rights = rights - (record['rights_eng_tesim'] || []).map(&:strip)
+        rights = rights - (record['rights_gle_tesim'] || []).map(&:strip)
+        rights || []
+      end,
       source_eng: 'source_eng_tesim',
       source_gle: 'source_gle_tesim',
+      source: lambda do |record|
+        sources = (record['source_tesim'] || []).map(&:strip)
+        sources = sources - (record['source_eng_tesim'] || []).map(&:strip)
+        sources = sources - (record['source_gle_tesim'] || []).map(&:strip)
+        sources || []
+       end,
       coverage_eng: 'coverage_eng_tesim',
       coverage_gle: 'coverage_gle_tesim',
+      coverage: lambda do |record|
+        coverages = (record['coverage_tesim'] || []).map(&:strip)
+        coverages = coverages - (record['coverage_eng_tesim'] || []).map(&:strip)
+        coverages = coverages - (record['coverage_gle_tesim'] || []).map(&:strip)
+        coverages || []
+      end,
       date: 'date_tesim',
-      created: 'creation_date_tesim',
       contributor: 'person_tesim'
     },
     dcterms: {
-      isPartOf: "collection_id_tesim",
+      created: 'creation_date_tesim',
+      issued: 'published_date_tesim',
       spatial_eng: "geographical_coverage_eng_tesim",
       spatial_gle: "geographical_coverage_gle_tesim",
-      temporal: "temporal_coverage_tesim",
-      license: lambda do |record|
-        licence = record.licence
-        licence.present? ? [ licence.url || licence.name ] : [nil]
-      end
+      spatial: lambda do |record|
+        spatials = (record['geographical_coverage_tesim'] || []).map(&:strip)
+        spatials = spatials - (record['geographical_coverage_eng_tesim'] || []).map(&:strip)
+        spatials = spatials - (record['geographical_coverage_gle_tesim'] || []).map(&:strip)
+        spatials || []
+       end,
+      temporal: "temporal_coverage_tesim"
     },
     edm: {
       type: "object_type_ssm"
     },
   }.freeze
-
 
   def header_specification
     {
@@ -64,7 +98,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       "xmlns:rdaGr2" => "http://rdvocab.info/ElementsGr2/",
       "xmlns:foaf" => "http://xmlns.com/foaf/0.1/",
       "xmlns:wgs84_pos" => "http://www.w3.org/2003/01/geo/wgs84_pos#",
-      "xmlns:ebucore" => "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#", 
+      "xmlns:ebucore" => "http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#",
       "xmlns:doap" => "http://usefulinc.com/ns/doap#",
       "xmlns:odrl" => "http://www.w3.org/ns/odrl/2/",
       "xmlns:cc" => "http://creativecommons.org/ns#",
@@ -74,39 +108,42 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   def encode(_model, record)
-   
+
     # We are not going to aggregate items with no assets
     if record.assets.size < 1
       return ""
     end
     # We are not going to aggregate restricted assets to Europeana
     if not record.public_read?
-        return ""
+      return ""
     end
 
+    # Identify the type
+    edmtype = get_edm_type(record["type_tesim"]);
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
-
-    xml.tag!("rdf:RDF", header_specification) do
-      xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do 
-        ProvidedCHOPREFIXES.each do |pref, fields|
-          fields.each do |k, v|
+      xml.tag!("rdf:RDF", header_specification) do
+        xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do
+          ProvidedCHOPREFIXES.each do |pref, fields|
+            fields.each do |k, v|
             values = if v.class == Proc
                        v.call(record)
                      else
                        value_for(v, record.to_h, {})
                      end
-
             if pref.match(/^edm$/) && k.match(/^type$/)
-              xml.tag! "edm:type", get_edm_type(values)
+              xml.tag! "edm:type", edmtype
               next
             end
- 
+
             values.each do |value|
               if k.match(/(^.*)_(eng|gle)$/)
                 lang = $2
                 kl = $1
+              elsif k.match(/^(type|format|medium)$/)
+                kl = k
+                lang = "eng"
               else
                 kl = k
                 lang = nil
@@ -114,8 +151,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
               if kl.match(/^(spatial|coverage).*$/)
                 dcmi_components = dcmi_parse(value)
-                if is_valid_point?(dcmi_components)
-                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
+                  if is_valid_point?(dcmi_components)
+                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 elsif valid_url?(value)
                   host = URI(URI.encode(value.strip)).host
                   if AuthoritiesConfig[host].present?
@@ -128,21 +165,23 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                 else
                   xml.tag! "#{pref}:#{kl}", value
                 end
-              elsif kl.match(/^(temporal|created|date|coverage).*$/) 
+              elsif kl.match(/^(temporal|created|issued|date|coverage).*$/)
                 # If it's a dcmi period field then we can parse it
                 dcmi_components = dcmi_parse(value)
                 if is_valid_period?(dcmi_components)
                   contextual_classes.push(dcmi_components)
-                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name']}"}
+                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 else
-                  xml.tag! "#{pref}:#{kl}", value unless value.nil?
+                  v = dcmi_components["name"] || value
+                  xml.tag! "#{pref}:#{kl}", v unless v.nil?
                 end
+              elsif kl.match(/^(subject).*$/) && valid_url?(value)
+                  xml.tag! "#{pref}:#{kl}",{"rdf:resource"=> value}
               elsif lang.nil? || lang.empty? || lang.length == 0
                 xml.tag! "#{pref}:#{kl}", value unless value.nil?
-              else 
+              else
                 xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value unless value.nil?
               end
-
             end
           end
         end
@@ -155,12 +194,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           if place['geometry']['type'] == "Point"
             ga = place['properties']['nameGA']
             en = place['properties']['nameEN'] || place['properties']['placename']
-            about = place['properties']['uri'] || place['properties']['placename']
+            tmp = place['properties']['uri'] || place['properties']['placename'] || place['geometry']['coordinates'].to_s
+            about = "##{tmp.tr(" ", "")}" unless place['properties']['uri'].present?
             east,north = place['geometry']['coordinates']
             if north.present? && east.present?
               xml.tag! "edm:Place", {"rdf:about" => about} do
-                xml.tag! "skos:preflabel", {"xml:lang" => "ga"}, ga unless ga.blank?
-                xml.tag! "skos:preflabel", {"xml:lang" => "en"}, en unless en.blank?
+                xml.tag! "skos:prefLabel", {"xml:lang" => "ga"}, ga unless ga.blank?
+                xml.tag! "skos:prefLabel", {"xml:lang" => "en"}, en unless en.blank?
                 xml.tag! "wgs84_pos:lat", north
                 xml.tag! "wgs84_pos:long", east
               end
@@ -170,20 +210,21 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Create other contextual classes
+
       contextual_classes.each do |cclass|
-        if cclass.keys.include?("start") && cclass.keys.include?("end")
-          xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name']}"} do
-            xml.tag! "skos:preflabel", cclass['name']
+        if cclass.keys.include?("start")
+          xml.tag! "edm:TimeSpan", {"rdf:about" => "##{cclass['name'].tr(" ", "_")}"} do
+            xml.tag! "skos:prefLabel", cclass['name']
             xml.tag! "edm:begin", cclass['start']
-            xml.tag! "edm:end", cclass['end']
+            xml.tag! "edm:end", cclass['end'] || cclass['start']
           end
         end
       end
 
       if (record.licence.name == "All Rights Reserved")
-        licence = "http://www.europeana.eu/rights/rr-f/"
+        licence = "http://rightsstatements.org/vocab/InC/1.0/"
       elsif (record.licence.name == "Orphan Work")
-        licence = "http://www.europeana.eu/rights/unknown/"
+        licence = "http://rightsstatements.org/vocab/InC-OW-EU/1.0/"
       elsif (record.licence.name == "Public Domain")
         licence = "http://creativecommons.org/publicdomain/mark/1.0/"
       else
@@ -194,80 +235,105 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
       end
 
-      assets = record.assets(with_preservation: false, ordered: true)
-      file_urls = {}
+      # Get the asset files
+      assets = record.assets(with_preservation: true, ordered: false)
+      landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
 
-      # for each asset: if it is an image we will use the IIIF url
-      # TODO: for video and sound types this is more complicated
-      # should set image as thumb, and video or sound as url 
-      # then create edm:webResource for url and thumb
-      # if iiif we also need an svcs:has_service and svcs:Service
-      assets.each do |file|
-        if file.image?
-          file_urls[file.id]= {"url": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full'),
-                 "thumb": Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,'), "iiif": true}
-           
-          # file_urls[:base_url] = {"info": Riiif::Engine.routes.url_helpers.info_url("#{record.id}:#{file.id}"),
-           #                            host: Riiif::Engine.routes.url_helpers.base_url("#{record.id}:#{file.id}"), "iiif":true}      
-          file_urls[:manifest] ={"url": Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}"),"iiif":true}
-           
-          file_urls[:base_url] ={"info": Rails.application.routes.url_helpers.iiif_info_url("#{record.id}:#{file.id}"),"iiif":true}
-      
-          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:url]}) do
-            xml.tag!("edm:rights", {"rdf:resource" => licence})
-            xml.tag!("svcs:has_service", {"rdf:resource" => file_urls[:base_url][:info]}) # TODO what is the url?
-            xml.tag!("dcterms:isReferencedBy",{"rdf:resource"=>file_urls[:manifest][:url]+".json"})
-          end
-             xml.tag!("svcs:services",{"rdf:about"=> file_urls[:base_url][:info]}) do
-              xml.tag!("dcterms:conformsTo",{"rdf:resource"=> 'http://iiif.io/api/image/2.0'})
-              xml.tag!("doap:implements",{"rdf:resource"=> 'http://iiif.io/api/image/2/level2.json'})
-           end
-             
-   
-          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:thumb]}) do
-            xml.tag!("edm:rights", {"rdf:resource" => licence})
-          end
-          
-        elsif false # this is where we will do other file types
-
-        else
-          file_urls[file.id] = {"url": Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate'), 
-            "thumb": Rails.application.routes.url_helpers.file_download_url(record.id, file.id, type: 'surrogate'), "iiif": false}
-          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:url]}) do
-            xml.tag!("edm:rights", {"rdf:resource" => licence})
-          end
-          xml.tag!("edm:WebResource", {"rdf:about" => file_urls[file.id][:thumb]}) do
-            xml.tag!("edm:rights", {"rdf:resource" => licence})
-          end
-        end
-
+      # identify which is the main file (based on metadata type)
+      # and get correct Urls
+      mainfile = get_file(edmtype, assets)
+      imagefile = get_file("IMAGE", assets)
+      if mainfile.present?
+        thumbnail = get_thumbnail(record, edmtype, mainfile, imagefile)
+      else
+        return ""
       end
-
-      landing_page = record.doi || Rails.application.routes.url_helpers.catalog_url(record.id)
-
-      mainfile = assets.shift
 
       # Create the ore:Aggregation element
       xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
-        xml.tag!("edm:provider", "Digital Repository of Ireland")
+        xml.tag!("edm:provider", {"xml:lang" => "eng"}, "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence})
-        xml.tag!("edm:isShownBy", {"rdf:resource" => file_urls[mainfile.id][:url]})
-        xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
-        assets.each do |file|
-          xml.tag!("edm:hasView", {"rdf:resource" => file_urls[file.id][:url]})
+
+        if mainfile['file_type_tesim'].include? "video"
+          video   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
+          xml.tag!("edm:isShownBy", {"rdf:resource" => video})
+        elsif mainfile['file_type_tesim'].include? "audio"
+          audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
+          xml.tag!("edm:isShownBy",{"rdf:resource" => audio})
+        elsif mainfile['file_type_tesim'].include? "image"
+          image   = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{mainfile.id}", size: 'full')
+          xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
+        elsif mainfile['file_type_tesim'].include? "text"
+          text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
+          xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
         end
-        xml.tag!("edm:object", {"rdf:resource" => file_urls[mainfile.id][:thumb]})
+
+        xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
+
+        assets.each do |file|
+          if file.id != mainfile.id && file.keys.include?("file_type_tesim")
+
+            if file["file_type_tesim"].include? "video"
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp4')
+            elsif file["file_type_tesim"].include? "audio"||"sound"
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
+            elsif file["file_type_tesim"].include? "text"
+              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'pdf')
+            elsif file["file_type_tesim"].include? "image"
+              url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full')
+            end
+
+            xml.tag!("edm:hasView", {"rdf:resource" => url})
+          end
+        end
+
+        # Create the edm:object element
+        xml.tag!("edm:object", {"rdf:resource" =>  thumbnail })
+      end
+
+      # Get urls for each asset file and create a webResource element
+      assets.each do |file|
+        if file.keys.include?("file_type_tesim")
+          if file['file_type_tesim'].include? "video"
+            url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp4')
+          elsif file['file_type_tesim'].include? "audio"||"sound"
+            url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
+
+          elsif file['file_type_tesim'].include? "image"
+            url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full')
+            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}"),"iiif":true}
+            base_url = Rails.application.routes.url_helpers.iiif_info_url("#{record.id}:#{file.id}"),"iiif":true}
+
+            xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+              xml.tag!("edm:rights", {"rdf:resource" => licence})
+              xml.tag!("svcs:has_service", {"rdf:resource" => base_url}) # TODO what is the url?
+              xml.tag!("dcterms:isReferencedBy",{"rdf:resource"=> manifest_url+".json"})
+            end
+            xml.tag!("svcs:services",{"rdf:about"=> base_url}) do
+              xml.tag!("dcterms:conformsTo",{"rdf:resource"=> 'http://iiif.io/api/image/2.0'})
+              xml.tag!("doap:implements",{"rdf:resource"=> 'http://iiif.io/api/image/2/level2.json'})
+            end
+
+          elsif file['file_type_tesim'].include? "text"
+            url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate:'pdf')
+          end
+
+          if !(file['file_type_tesim'].include? "image")
+            xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+              xml.tag!("edm:rights", {"rdf:resource" => licence})
+            end
+          end
+        end
+      end
+
+      # Add a WebResource element for the thumbnail url
+      xml.tag!("edm:WebResource", {"rdf:about" => thumbnail}) do
+        xml.tag!("edm:rights", {"rdf:resource" => licence})
       end
 
     end
-
-    # Create the edm:place elements
-    #xml.tag!("edm:Place", {"rdf:about" => "##{dcmi_components['name']}"}) do
-    #  xml.tag!("skos:prefLabel", {"xml:lang" => lang}, dcmi_components['name'])
-    #end
-
 
     xml.target!
   end
@@ -292,7 +358,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   def is_valid_period?(dcmi)
-    return true if dcmi['name'].present? && dcmi['start'].present? && dcmi['end'].present?
+    return true if dcmi['name'].present? && dcmi['start'].present?
     return false
   end
 
@@ -310,12 +376,57 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
   def get_edm_type(types)
     types = types.map(&:upcase)
-    accepted_types = ["3D","VIDEO","SOUND","TEXT","IMAGE"]
-    accepted_types.each do |type|
-      return type if types.include?(type)
+    return "3D" if types.include?("3D")
+    return "VIDEO" if types.to_set.intersect?(["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"].to_set)
+    return "SOUND" if types.to_set.intersect?(["SOUND","AUDIO"].to_set)
+    return "TEXT" if types.include?("TEXT")
+    return "IMAGE" if types.to_set.intersect?(["IMAGE", "STILLIMAGE", "STILL IMAGE"].to_set)
+    return "INVALID"
+  end
+
+  def doi_url(doi)
+    return nil if doi.blank?
+    doi = doi.first if doi.is_a? Array
+    "https://doi.org/#{doi}"
+  end
+
+  # Get the main file where there is more than one file
+  def get_file(edmtype, assets)
+    case edmtype
+    when "VIDEO"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
+      return file
+    when "SOUND"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "audio" || "sound" }
+      return file
+    when "TEXT"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "text" } ||
+            assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+      return file
+    when "IMAGE"
+      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+      return file
+    else
+      nil
     end
   end
 
-
+  def get_thumbnail(record, edmtype, file, image=nil)
+    if file['file_type_tesim'].include? "video"
+      Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'thumbnail')
+    elsif file['file_type_tesim'].include? "audio"||"sound"
+      if image.present?
+        Rails.application.routes.url_helpers.object_file_url(record.id, image.id, surrogate: 'lightbox_format')
+      else
+        Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
+      end
+    elsif file['file_type_tesim'].include? "text"
+      Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'lightbox_format')
+    elsif file['file_type_tesim'].include? "image"
+      Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,')
+    else
+      nil
+    end
+  end
 
 end

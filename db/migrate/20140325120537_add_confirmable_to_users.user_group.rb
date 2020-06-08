@@ -1,5 +1,5 @@
 # This migration comes from user_group (originally 20140325113058)
-class AddConfirmableToUsers < ActiveRecord::Migration
+class AddConfirmableToUsers < ActiveRecord::Migration[4.2]
 
   def self.up
     add_column :user_group_users, :confirmation_token, :string

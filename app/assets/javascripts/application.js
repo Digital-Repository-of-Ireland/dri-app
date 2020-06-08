@@ -14,7 +14,12 @@
 
 //= require jquery_ujs
 //= require datatables
-//= require jquery-ui
+//= require jquery.ui.widget
+//= require jquery.ui.mouse
+//= require jquery.ui.draggable
+//= require jquery.ui.resizable
+//= require jquery.ui.autocomplete
+//= require jquery.ui.menu
 //= require jquery.slick
 //= require clipboard
 //= require i18n
@@ -22,8 +27,10 @@
 
 //
 // Required by Blacklight-Maps
-//= require blacklight-maps
+//= require blacklight/core
+//= require leaflet
 //= require leaflet.markercluster
+//= require blacklight-maps/blacklight-maps-browse.js
 //= require leaflet.extend
 //= require jquery.remotipart
 //= require js.cookie
@@ -39,7 +46,7 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //
-//= require colorbox-rails
+//= require jquery.colorbox
 //= require social-share-button
 //= require jquery-xmleditor
 //= require openseadragon

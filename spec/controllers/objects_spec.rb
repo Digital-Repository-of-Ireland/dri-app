@@ -3,6 +3,7 @@ require 'rails_helper'
 describe ObjectsController do
   include Devise::Test::ControllerHelpers
   include Warden::Test::Helpers
+  include Preservation::PreservationHelpers
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -43,7 +44,7 @@ describe ObjectsController do
       collection.governed_items << object
 
       expect {
-        delete :destroy, :id => object.id
+        delete :destroy, params: { id: object.id }
       }.to change { ActiveFedora::Base.exists?(object.id) }.from(true).to(false)
 
       collection.reload
@@ -64,7 +65,7 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, :id => @object.id
+      delete :destroy, params: { id: @object.id }
 
       expect(ActiveFedora::Base.exists?(@object.id)).to be true
 
@@ -85,12 +86,41 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, :id => @object.id
+      delete :destroy,  params: { id: @object.id }
 
       expect(ActiveFedora::Base.exists?(@object.id)).to be false
 
       @collection.reload
       @collection.delete
+    end
+
+    it 'should delete an incomplete object' do
+      collection = FactoryBot.create(:collection)
+      collection.depositor = User.find_by_email(@login_user.email).to_s
+      collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      collection.discover_groups_string="public"
+      collection.read_groups_string="registered"
+      collection.creator = [@login_user.email]
+
+      object = FactoryBot.create(:sound)
+      object[:status] = "draft"
+      object.depositor=User.find_by_email(@login_user.email).to_s
+      object.manager_users_string=User.find_by_email(@login_user.email).to_s
+      object.creator = [@login_user.email]
+
+      object.save
+
+      collection.governed_items << object
+
+      FileUtils.rm_rf aip_dir(object.id)
+      allow_any_instance_of(ObjectsController).to receive(:retrieve_object).and_raise(Ldp::HttpError)
+
+      delete :destroy, params: { id: object.id }
+
+      expect(ActiveFedora::SolrService.count("id:#{object.id}")).to be 0
+
+      collection.reload
+      collection.delete
     end
 
   end
@@ -119,7 +149,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -135,7 +165,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -210,13 +240,13 @@ describe ObjectsController do
     end
 
     it 'should set an object status' do
-      post :status, id: @object.id, status: "reviewed"
+      post :status, params: { id: @object.id, status: "reviewed" }
 
       @object.reload
 
       expect(@object.status).to eql("reviewed")
 
-      post :status, id: @object.id, status: "draft"
+      post :status, params: { id: @object.id, status: "draft" }
 
       @object.reload
 
@@ -224,7 +254,7 @@ describe ObjectsController do
     end
 
     it 'should set a parent subcollection to reviewed' do
-      post :status, id: @object4.id, status: "reviewed"
+      post :status, params: { id: @object4.id, status: "reviewed" }
 
       @object4.reload
       expect(@object4.status).to eql("reviewed")
@@ -246,7 +276,7 @@ describe ObjectsController do
       @object.status = "published"
       @object.save
 
-      post :status, id: @object.id, status: "draft"
+      post :status, params: { id: @object.id, status: "draft" }
 
       @object.reload
 
@@ -276,7 +306,7 @@ describe ObjectsController do
       params[:batch][:title] = ["A modified title"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @object.id, :batch => params[:batch]
+      put :update, params: { id: @object.id, batch: params[:batch] }
 
       DataciteDoi.where(object_id: @object.id).first.delete
       Settings.doi.enable = false
@@ -305,7 +335,7 @@ describe ObjectsController do
       params[:batch][:title] = ["An Audio Title"]
       params[:batch][:read_users_string] = "public"
       params[:batch][:edit_users_string] = @login_user.email
-      put :update, :id => @object.id, :batch => params[:batch]
+      put :update, params: { id: @object.id, batch: params[:batch] }
 
       DataciteDoi.where(object_id: @object.id).first.delete
       Settings.doi.enable = false
@@ -350,7 +380,7 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
+        post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
         expect(flash[:error]).to be_present
       end
 
@@ -360,7 +390,7 @@ describe ObjectsController do
         params[:batch][:title] = ["An Audio Title"]
         params[:batch][:read_users_string] = "public"
         params[:batch][:edit_users_string] = @login_user.email
-        put :update, :id => @object.id, :batch => params[:batch]
+        put :update, params: { id: @object.id, batch: params[:batch] }
 
         expect(flash[:error]).to be_present
       end
@@ -368,155 +398,48 @@ describe ObjectsController do
   end
 
   describe "collection is locked" do
-
-      before(:each) do
-        @login_user = FactoryBot.create(:admin)
-        sign_in @login_user
-        @collection = FactoryBot.create(:collection)
-        @object = FactoryBot.create(:sound)
-        CollectionLock.create(collection_id: @collection.id)
-
-        request.env["HTTP_REFERER"] = my_collections_path(@collection.id)
-      end
-
-      after(:each) do
-        CollectionLock.delete_all(collection_id: @collection.id)
-        @collection.delete if ActiveFedora::Base.exists?(@collection.id)
-        @login_user.delete
-      end
-
-      it 'should not allow object creation' do
-        @request.env["CONTENT_TYPE"] = "multipart/form-data"
-
-        @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
-        class << @file
-          # The reader method is present in a real invocation,
-          # but missing from the fixture object for some reason (Rails 3.1.1)
-          attr_reader :tempfile
-        end
-
-        post :create, batch: { governing_collection: @collection.id }, metadata_file: @file
-        expect(flash[:error]).to be_present
-      end
-
-      it 'should not allow object updates' do
-        @object.governing_collection = @collection
-        @object.save
-
-        params = {}
-        params[:batch] = {}
-        params[:batch][:title] = ["An Audio Title"]
-        params[:batch][:read_users_string] = "public"
-        params[:batch][:edit_users_string] = @login_user.email
-        put :update, :id => @object.id, :batch => params[:batch]
-
-        expect(flash[:error]).to be_present
-      end
-
-  end
-
-  describe 'get_objects' do
-
     before(:each) do
       @login_user = FactoryBot.create(:admin)
       sign_in @login_user
-
+      @collection = FactoryBot.create(:collection)
       @object = FactoryBot.create(:sound)
-      @object.status = 'published'
-      @object.save
+      CollectionLock.create(collection_id: @collection.id)
+
+      request.env["HTTP_REFERER"] = my_collections_path(@collection.id)
     end
 
     after(:each) do
-      @object.delete
+      CollectionLock.where(collection_id: @collection.id).delete_all
+      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
       @login_user.delete
     end
 
-    it 'should assign valid JSON to @list' do
-      request.env["HTTP_ACCEPT"] = 'application/json'
+    it 'should not allow object creation' do
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
 
-      post :index, objects: [{ 'pid' => @object.id }]
-      list = controller.instance_variable_get(:@list)
-      expect { JSON.parse(list.to_json) }.not_to raise_error
+      @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
+      expect(flash[:error]).to be_present
     end
 
-    it 'should contain the metadata fields' do
-      request.env["HTTP_ACCEPT"] = 'application/json'
-
-      post :index, objects: [{ 'pid' => @object.id }]
-      list = controller.instance_variable_get(:@list)
-      json = JSON.parse(list.to_json)
-
-      expect(json.first['metadata']['title']).to eq(@object.title)
-      expect(json.first['metadata']['description']).to eq(@object.description)
-      expect(json.first['metadata']['contributor']).to eq(@object.contributor)
-    end
-
-    it 'should only return the requested fields' do
-      request.env["HTTP_ACCEPT"] = 'application/json'
-
-      post :index, objects: [{ 'pid' => @object.id }], metadata: ['title', 'description']
-      list = controller.instance_variable_get(:@list)
-      json = JSON.parse(list.to_json)
-
-      expect(json.first['metadata']['title']).to eq(@object.title)
-      expect(json.first['metadata']['description']).to eq(@object.description)
-      expect(json.first['metadata']['contributor']).to be nil
-    end
-
-    it 'should include assets and surrogates' do
-      @gf = DRI::GenericFile.new
-      @gf.apply_depositor_metadata(@login_user)
-      @gf.batch = @object
-      @gf.save
-
-      storage = StorageService.new
-      storage.create_bucket(@object.id)
-      storage.store_surrogate(@object.id, File.join(fixture_path, "SAMPLEA.mp3"), "#{@gf.id}_mp3.mp3")
-
-      request.env["HTTP_ACCEPT"] = 'application/json'
-      post :index, objects: [{ 'pid' => @object.id }]
-      list = controller.instance_variable_get(:@list)
-
-      expect(list.first).to include('files')
-      expect(list.first['files'].first).to include('masterfile')
-      expect(list.first['files'].first).to include('mp3')
-    end
-
-    it 'should return draft objects if I have permissions' do
-      sign_out @login_user
-      user = FactoryBot.create(:user)
-      sign_in user
-
-      @object.status = 'draft'
-      @object.edit_users_string = user.email
+    it 'should not allow object updates' do
+      @object.governing_collection = @collection
       @object.save
-      @object.reload
 
-      request.env["HTTP_ACCEPT"] = 'application/json'
+      params = {}
+      params[:batch] = {}
+      params[:batch][:title] = ["An Audio Title"]
+      params[:batch][:read_users_string] = "public"
+      params[:batch][:edit_users_string] = @login_user.email
+      put :update, params: { id: @object.id, batch: params[:batch] }
 
-      post :index, objects: [{ 'pid' => @object.id }]
-      expect(response.status).to eq(200)
-
-      user.destroy
+      expect(flash[:error]).to be_present
     end
-
-    it 'should not return draft objects if I do not have permissions' do
-      @object.status = 'draft'
-      @object.edit_users_string = @login_user.email
-      @object.save
-      @object.reload
-
-      sign_out @login_user
-      user = FactoryBot.create(:user)
-      sign_in user
-
-      request.env["HTTP_ACCEPT"] = 'application/json'
-
-      post :index, objects: [{ 'pid' => @object.id }]
-      expect(response.status).to eq(404)
-
-      user.destroy
-    end
-
   end
 end

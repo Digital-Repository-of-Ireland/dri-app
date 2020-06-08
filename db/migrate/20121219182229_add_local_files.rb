@@ -1,4 +1,4 @@
-class AddLocalFiles < ActiveRecord::Migration
+class AddLocalFiles < ActiveRecord::Migration[4.2]
   def up
     create_table :local_files do |t|
         t.string  :path

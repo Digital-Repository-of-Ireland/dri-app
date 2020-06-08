@@ -260,8 +260,8 @@ ga:
         delimiter: ""
   support: 
     array: 
-      last_word_connector: ", agus "
-      two_words_connector: " agus "
+      last_word_connector: ", "
+      two_words_connector: ", "
       words_connector: ", "
   time: 
     am: am

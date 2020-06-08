@@ -28,12 +28,6 @@
     <div  class="dri_account_block dri_clearfix">
       <h4 class="dri_account_block_heading"><%= t('dri.application.edit_user_profile.change_password') %></h4>
       <div class="dri_account_block_info">
-        <% if current_user.id == @user.id or !current_user.is_admin? %>
-            <h5><%= f.label :current_password, (t :'dri.application.edit_user_profile.current_password') %></h5>
-            <p>
-              <%= f.password_field :current_password, disabled: @user.password_required? ? false : true %>
-            </p>
-        <% end %>
         <h5><%= f.label :password, (t :'dri.application.edit_user_profile.new_password') %></h5>
         <p>
           <%= f.password_field :password, disabled: @user.password_required? ? false : true %>
@@ -45,8 +39,19 @@
       </div>
     </div>
 
+      <div  class="dri_account_block dri_clearfix">
+        <div class="dri_account_block_info">
+       <% if current_user.id == @user.id or !current_user.is_admin? %>
+            <h5><%= f.label :current_password, (t :'dri.application.edit_user_profile.current_password') %></h5>
+            <p>
+              <%= f.password_field :current_password, disabled: @user.password_required? ? false : true, required: @user.password_required? ? false : true%>
+            </p>
+        <% end %>
+      </div>
+      </div>
+
     <% if allowed_edit %>
-      <% collection_data = collection_permission(@user) %>
+      <% collection_count = collections_with_permission_count(@user) %>
 
       <div class="dri_account_block dri_clearfix">
         <div class="dri_account_block_info_buttons dri_float_right">
@@ -64,7 +69,7 @@
 
        <div class="dri_account_block dri_clearfix">
         <div class="dri_account_block_info_buttons dri_float_right">
-          <% disabled = "disabled" unless collection_data.blank? %>
+          <% disabled = "disabled" unless collection_count == 0 %>
           <div><%= t ('dri.application.edit_user_profile.delete_help') %></div>
 
           <%= link_to(@user, method: :delete, confirm: (t :'user_groups.views.shared.confirm'), id: "cancel_account") do %>

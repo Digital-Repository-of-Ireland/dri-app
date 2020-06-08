@@ -287,7 +287,7 @@
 		</p>
 	</fieldset>
 
-  <% if params[:controller] != 'collections' %>
+  <% if params[:controller] != 'collections' && params[:is_sub_collection] != 'true' %>
 		<fieldset id="format">
 		  <%= render "shared/form_fieldset_label", f:f, source:'formats' %>
 			<%= render "shared/autocomplete_dropdown" %>

@@ -1,4 +1,4 @@
-class CreateDoiMetadata < ActiveRecord::Migration
+class CreateDoiMetadata < ActiveRecord::Migration[4.2]
   def change
     create_table :doi_metadata do |t|
       t.references :datacite_doi, index: true

@@ -1,15 +1,15 @@
 # Creates, updates, or retrieves files attached to the objects masterContent datastream.
 #
 class AssetsController < ApplicationController
-  before_action :authenticate_user_from_token!, only: [:index, :list_assets, :download]
-  before_action :authenticate_user!, only: [:index, :list_assets]
-  before_action :add_cors_to_json, only: :list_assets
-  before_action :read_only, except: [:index, :show, :download, :list_assets]
-  before_action ->(id=params[:object_id]) { locked(id) }, except: [:index, :show, :download, :list_assets]
+  before_action :authenticate_user_from_token!, only: [:index, :download]
+  before_action :authenticate_user!, only: [:index]
+  before_action :read_only, except: [:index, :show, :download]
+  before_action ->(id=params[:object_id]) { locked(id) }, except: [:index, :show, :download]
 
   require 'validators'
 
   include DRI::Citable
+  include DRI::Versionable
 
   def index
     enforce_permissions!('edit', params[:object_id])
@@ -69,31 +69,31 @@ class AssetsController < ApplicationController
       end
     end
 
-    render text: 'Unable to find file', status: 404
+    render plain: 'Unable to find file', status: 404
   end
 
   def destroy
     enforce_permissions!('edit', params[:object_id])
 
-    @object = retrieve_object!(params[:object_id])
-    @generic_file = retrieve_object!(params[:id])
+    object = retrieve_object!(params[:object_id])
+    generic_file = retrieve_object!(params[:id])
 
-    if @object.status == 'published' && !current_user.is_admin?
+    if object.status == 'published' && !current_user.is_admin?
       raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
-    @object.object_version ||= '1'
-    @object.increment_version
-    @object.save
+    object.object_version ||= '1'
+    object.increment_version
+    object.save
+    record_version_committer(object, current_user)
 
-    @generic_file.delete
-    delete_surrogates(params[:object_id], @generic_file.id)
+    delfiles = ["#{generic_file.id}_#{generic_file.label}"]
+    delete_surrogates(params[:object_id], generic_file.id)
+    generic_file.delete
 
     # Do the preservation actions
-    addfiles = []
-    delfiles = ["#{@generic_file.id}_#{@generic_file.label}"]
-    preservation = Preservation::Preservator.new(@object)
-    preservation.preserve_assets(addfiles, delfiles)
+    preservation = Preservation::Preservator.new(object)
+    preservation.preserve_assets([], delfiles)
 
     flash[:notice] = t('dri.flash.notice.asset_deleted')
 
@@ -105,16 +105,16 @@ class AssetsController < ApplicationController
   def update
     enforce_permissions!('edit', params[:object_id])
 
-    file_upload, mime_type = upload_from_params
+    file_upload = upload_from_params
 
     @object = retrieve_object! params[:object_id]
     @generic_file = retrieve_object! params[:id]
 
-    filename = params[:file_name].presence || file_upload.original_filename
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    if file_content.update_content(file_upload, filename, mime_type, download_url)
+    if file_content.update_content(file_upload, download_url)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
+      record_version_committer(@object, current_user)
 
       mint_doi(@object, 'asset modified') if @object.status == 'published'
     else
@@ -126,7 +126,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to object_file_url(@object.id, @generic_file.id) }
       format.json do
-        response = { checksum: preserved_file.checksum }
+        response = { checksum: file_content.checksum }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :ok
@@ -140,7 +140,7 @@ class AssetsController < ApplicationController
   def create
     enforce_permissions!('edit', params[:object_id])
 
-    file_upload, mime_type = upload_from_params
+    file_upload = upload_from_params
 
     @object = retrieve_object! params[:object_id]
     if @object.nil?
@@ -151,12 +151,12 @@ class AssetsController < ApplicationController
     preservation = params[:preservation].presence == 'true' ? true : false
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
-    filename = params[:file_name].presence || file_upload.original_filename
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
 
-    if file_content.add_content(file_upload, filename, mime_type, download_url)
+    if file_content.add_content(file_upload, download_url)
       flash[:notice] = t('dri.flash.notice.file_uploaded')
 
+      record_version_committer(@object, current_user)
       mint_doi(@object, 'asset added') if @object.status == 'published'
     else
       message = @generic_file.errors.full_messages.join(', ')
@@ -176,35 +176,7 @@ class AssetsController < ApplicationController
     end
   end
 
-  # API call: takes one or more object ids and returns a list of asset urls
-  def list_assets
-    @list = []
-
-    raise DRI::Exceptions::BadRequest unless params[:objects].present?
-
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
-      params[:objects].map { |o| o.values.first }
-    )
-    result_docs = Solr::Query.new(solr_query)
-    result_docs.each do |doc|
-      item = list_files_with_surrogates(doc)
-      @list << item unless item.empty?
-    end
-
-    raise DRI::Exceptions::NotFound if @list.empty?
-
-    respond_to do |format|
-      format.json
-    end
-  end
-
   private
-
-    def add_cors_to_json
-      if request.format == "application/json"
-        response.headers["Access-Control-Allow-Origin"] = "*"
-      end
-    end
 
     def build_generic_file(object:, user:, preservation: false)
       generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
@@ -235,35 +207,8 @@ class AssetsController < ApplicationController
         controller: 'assets',
         action: 'download',
         object_id: @object.id,
-        id: @generic_file.id,
-        protocol: Rails.application.config.action_mailer.default_url_options[:protocol]
+        id: @generic_file.id
       )
-    end
-
-    def list_files_with_surrogates(doc)
-      item = {}
-      item['pid'] = doc.id
-      item['files'] = []
-
-      files = doc.assets
-
-      files.each do |file_doc|
-        file_list = {}
-
-        if (doc.read_master? && can?(:read, doc)) || can?(:edit, doc)
-          url = url_for(file_download_url(doc.id, file_doc.id))
-          file_list['masterfile'] = url
-        end
-
-        if can?(:read, doc)
-          surrogates = doc.surrogates(file_doc.id)
-          surrogates.each { |file, loc| file_list[file] = loc }
-        end
-
-        item['files'].push(file_list)
-      end
-
-      item
     end
 
     def local_file_ingest(name)
@@ -321,15 +266,20 @@ class AssetsController < ApplicationController
         return
       end
 
-      file_upload = if params[:local_file].present?
-                      local_file_ingest(params[:local_file])
-                    else
-                      params[:Filedata].presence || params[:Presfiledata].presence
-                    end
+      upload = if params[:local_file].present?
+                 local_file_ingest(params[:local_file])
+               else
+                 params[:Filedata].presence || params[:Presfiledata].presence
+               end
 
-      mime_type = validate_upload(file_upload)
+      mime_type = validate_upload(upload)
 
-      return file_upload, mime_type
+      file_upload = { file_upload: upload,
+                      mime_type: mime_type,
+                      filename: params[:file_name].presence || upload.original_filename
+                    }
+
+      return file_upload
     end
 
     def validate_upload(file_upload)

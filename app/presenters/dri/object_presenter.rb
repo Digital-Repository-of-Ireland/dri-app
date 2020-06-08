@@ -2,7 +2,7 @@ module DRI
   class ObjectPresenter
 
     attr_reader :document
-    delegate :solr_document_path, :params, :link_to, :image_tag, :logo_path, to: :@view
+    delegate :solr_document_path, :params, :link_to, :image_tag, :logo_path, :uri?, to: :@view
 
     def initialize(document, view_context)
       @view = view_context
@@ -29,6 +29,13 @@ module DRI
       return display_brand(organisation) if organisation.brand
 
       organisation.url.present? ? link_to(organisation.name, organisation.url, target: "_blank") : organisation.name
+    end
+
+    def subjects
+      subject_key = ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string).to_sym
+      return nil unless document.key?(subject_key)
+
+      document[subject_key].reject { |s| uri?(s) }[0..2].join(" | ")
     end
 
     def surrogate_url(file_id, name)
@@ -63,10 +70,10 @@ module DRI
     end
 
     def display_child(child_doc)
-      link_text = child_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+      link_text = child_doc[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string)].first
       # FIXME: For now, the EAD type is indexed last in the type solr index, review in the future
-      type = child_doc[Solrizer.solr_name('type', :stored_searchable, type: :string)].last
-      cover = child_doc[Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym].presence
+      type = child_doc[ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)].last
+      cover = child_doc[ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string).to_sym].presence
 
       child = Child.new
       child.id = child_doc['id']

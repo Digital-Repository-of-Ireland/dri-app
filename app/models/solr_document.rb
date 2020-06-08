@@ -39,7 +39,7 @@ class SolrDocument
   )
 
   def self.find(id)
-    result = ActiveFedora::SolrService.query("id:#{id}")
+    result = ActiveFedora::SolrService.query("id:#{id}", rows: 1)
     SolrDocument.new(result.first) if result.present?
   end
 
@@ -56,7 +56,7 @@ class SolrDocument
     if ids.present?
       docs = {}
       query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-      results = ActiveFedora::SolrService.query(query)
+      results = ActiveFedora::SolrService.query(query, rows: ids.length)
       results.each { |r| docs[r['id']] = SolrDocument.new(r) }
     end
 
@@ -218,6 +218,19 @@ class SolrDocument
 
     root = ancestor_docs[root_id] if root_id && ancestor_docs.key?(root_id)
     root
+  end
+
+  def relatives
+    relatives_key = ActiveFedora.index_field_mapper.solr_name('isMemberOf', :symbol).to_sym
+    return [] unless self[relatives_key].present?
+
+    relatives_ids = self[relatives_key]
+
+    relatives = ActiveFedora::SolrService.query(
+                "id:(#{relatives_ids.join(' OR ')})",
+                rows: relatives_ids.length
+              )
+    relatives.map { |r| r['hasMember_ssim'] }.flatten
   end
 
   def governing_collection

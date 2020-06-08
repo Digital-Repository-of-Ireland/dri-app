@@ -22,7 +22,7 @@ describe IiifController, type: :request do
         id =  arg.is_a?(String) ? "#{arg}_image1" : "image1"
         [
           OpenStruct.new(
-            "#{WIDTH_SOLR_FIELD}": 100, 
+            "#{WIDTH_SOLR_FIELD}": 100,
             "#{HEIGHT_SOLR_FIELD}": 100,
             id: id,
             "#{LABEL_SOLR_FIELD}": ['test_image']
@@ -32,9 +32,9 @@ describe IiifController, type: :request do
     end
     it 'should put all published images in the collection in a sequence' do
       # get :sequence, id: @collections.first .id, format: :json
-      get "/iiif/sequence/#{@collections.first.id}", format: :json
+      get "/iiif/#{@collections.first.id}/sequence", params: { format: :json }
       sequences = JSON.parse(response.body)['sequences']
-      image_ids = sequences.map do |seq| 
+      image_ids = sequences.map do |seq|
         seq['canvases'].map do |canvas|
           canvas['images'].map do |image|
             image_url = image['resource']['service']['@id']
@@ -46,5 +46,5 @@ describe IiifController, type: :request do
       end.flatten
       expect(image_ids.sort).to eq(@collections.first.governed_items.map(&:id).sort)
     end
-  end 
+  end
 end

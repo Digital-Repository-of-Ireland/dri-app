@@ -25,7 +25,6 @@ class CatalogController < ApplicationController
       qt: 'search',
       rows: 9
     }
-    config.show.partials << :show_maplet
 
     # solr field configuration for search results/index views
     config.index.title_field = solr_name('title', :stored_searchable, type: :string)
@@ -41,25 +40,6 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    #
-    # Setting a limit will trigger Blacklight's 'more' facet values link.
-    # * If left unset, then all facet values returned by solr will be displayed.
-    # * If set to an integer, then "f.somefield.facet.limit" will be added to
-    # solr request, with actual solr request being +1 your configured limit --
-    # you configure the number of items you actually want _displayed_ in a page.
-    # * If set to 'true', then no additional parameters will be sent to solr,
-    # but any 'sniffed' request limit parameters will be used for paging, with
-    # paging at requested limit -1. Can sniff from facet.limit or
-    # f.specific_field.facet.limit solr request params. This 'true' config
-    # can be used if you set limits in :default_solr_params, or as defaults
-    # on the solr side in the request handler itself. Request handler defaults
-    # sniffing requires solr requests to be made with "echoParams=all", for
-    # app code to actually have it echo'd back to see it.
-    #
-    # :show may be set to false if you don't want the facet to be drawn in the
-    # facet bar
-    #config.add_facet_field "sdateRange", label: 'Subject (Temporal)', date: true #partial: 'custom_date_range'
-
     config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20
     config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
 
@@ -76,7 +56,7 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
     config.add_facet_field solr_name('creator', :facetable), label: 'creators', show: false
     config.add_facet_field solr_name('contributor', :facetable), label: 'contributors', show: false
-    config.add_facet_field solr_name('person', :facetable), limit: 20
+    config.add_facet_field solr_name('person', :facetable), limit: 20, helper_method: :parse_orcid
     config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field solr_name('file_type_display', :facetable)
     config.add_facet_field solr_name('institute', :facetable), limit: 10
@@ -86,9 +66,6 @@ class CatalogController < ApplicationController
     config.add_facet_field solr_name('ancestor_id', :facetable), label: 'ancestor_id', helper_method: :collection_title, show: false
     config.add_facet_field solr_name('is_collection', :facetable), label: 'is_collection', helper_method: :is_collection, show: false
 
-    # Have BL send all facet field names to Solr, which has been the default
-    # previously. Simply remove these lines if you'd rather use Solr request
-    # handler defaults, or have no facets.
     config.add_facet_fields_to_solr_request!
 
     # Solr fields to be displayed in the index (search results) view
@@ -106,8 +83,8 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('title', :stored_searchable, type: :string), label: 'title'
     config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
     config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
-    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
     config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
+    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
     config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
     DRI::Vocabulary.marc_relators.each do |role|
       config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
@@ -128,23 +105,6 @@ class CatalogController < ApplicationController
     config.add_show_field solr_name('rights', :stored_searchable, type: :string), label: 'rights'
     config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), label: 'status'
 
-    # "fielded" search configuration. Used by pulldown among other places.
-    # For supported keys in hash, see rdoc for Blacklight::SearchFields
-    #
-    # Search fields will inherit the :qt solr request handler from
-    # config[:default_solr_parameters], OR can specify a different one
-    # with a :qt key/value. Below examples inherit, except for subject
-    # that specifies the same :qt as default for our own internal
-    # testing purposes.
-    #
-    # The :key is what will be used to identify this BL search field internally,
-    # as well as in URLs -- so changing it after deployment may break bookmarked
-    # urls.  A display label will be automatically calculated from the :key,
-    # or can be specified manually to be different.
-
-    # This one uses all the defaults set by the solr request handler. Which
-    # solr request handler? The one set in config[:default_solr_parameters][:qt],
-    # since we aren't specifying it otherwise.
     config.add_search_field 'all_fields', label: 'All Fields'
 
     # Now we see how to over-ride Solr request handler defaults, in this
@@ -159,8 +119,6 @@ class CatalogController < ApplicationController
     config.dri_all_search_fields.each do |field_name|
       config.add_search_field(field_name) do |field|
         field.solr_local_parameters = {
-          # qf: "${#{field_name}_qf}",
-          # pf: "${#{field_name}_pf}"
           qf: "$#{field_name}_qf",
           pf: "$#{field_name}_pf"
         }
@@ -168,18 +126,15 @@ class CatalogController < ApplicationController
       end
     end
 
-    # "sort results by" select (pulldown)
-    # label in pulldown is followed by the name of the SOLR field to sort by and
-    # whether the sort is ascending or descending (it must be asc or desc
-    # except in the relevancy case).
-    config.add_sort_field 'system_create_dtsi desc', label: 'newest'
-    # The year created sort throws an error as the date type is not enforced and so a string can be passed in
-    # - it is commented out for this reason.
-    # config.add_sort_field 'creation_date_dtsim, title_sorted_ssi asc', label: 'year created'
-
-    config.add_sort_field 'score desc, system_create_dtsi desc, title_sorted_ssi asc', label: 'relevance'
-    config.add_sort_field 'title_sorted_ssi asc, system_create_dtsi desc', label: 'title'
-    config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', label: 'order/sequence'
+    # "sort results by" options
+    config.add_sort_field "score desc, system_modified_dtsi desc", label: "relevance \u25BC"
+    config.add_sort_field "title_sorted_ssi asc", label: "title (A-Z)"
+    config.add_sort_field "title_sorted_ssi desc", label: "title (Z-A)"
+    config.add_sort_field "system_create_dtsi desc", label: "date created \u25BC"
+    config.add_sort_field "system_create_dtsi asc", label: "date created \u25B2"
+    config.add_sort_field "system_modified_dtsi desc", label: "date modified \u25BC"
+    config.add_sort_field "system_modified_dtsi asc", label: "date modified \u25B2"
+    config.add_sort_field "id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
@@ -203,7 +158,6 @@ class CatalogController < ApplicationController
         repository_url: 'https://repository.dri.ie/oai',
         record_prefix: 'oai:dri',
         admin_email: 'tech@dri.ie',
-        #sample_id: '109660'
       },
       document: {
         limit: 100,            # number of records returned with each request, default: 15
@@ -267,13 +221,13 @@ class CatalogController < ApplicationController
         options = {}
         options[:with_assets] = true if can?(:read, @document)
         formatter = DRI::Formatters::Rdf.new(@document, options)
-        render text: formatter.format({format: :ttl})
+        render plain: formatter.format({format: :ttl})
       end
       format.rdf do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
         formatter = DRI::Formatters::Rdf.new(@document, options)
-        render text: formatter.format({format: :xml})
+        render plain: formatter.format({format: :xml})
       end
       format.js { render layout: false }
 

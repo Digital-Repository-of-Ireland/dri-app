@@ -73,7 +73,8 @@ $(document).ready(function () {
 $('#dri_pdf_viewer_modal_id .modal-content').resizable({
       alsoResize: ".modal-body",
       minHeight: 300,
-      minWidth: 300
+      minWidth: 300,
+      handles: 'se'
     });
     $('#dri_pdf_viewer_modal_id .modal-content').draggable({handle: "#dri_pdf_header"});
 
@@ -145,3 +146,20 @@ $(function() {
     lazy.removeAttr("data-src");
   });
 });
+
+$(document).ready(function() {
+function togglePanel (){
+   var w = $(window).width();
+   if (w <= 766) {
+      $('#facet-panel-collapse').removeClass('in');
+   } else {
+      $('#facet-panel-collapse').addClass('in');
+   }
+}
+
+ $(window).resize(function(){
+     togglePanel();
+ });
+
+ togglePanel();
+ });

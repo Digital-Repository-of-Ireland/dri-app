@@ -18,7 +18,8 @@
 		<link href="<%= main_app.opensearch_catalog_url(:format => 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-		<%= stylesheet_link_tag "dri/dri_layouts" %>
+		<%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
+		<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
 		<%= content_for(:head) %>
@@ -29,8 +30,7 @@
 		<![endif]-->
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-                <% custom_vars = get_custom_vars %>
-                <%= analytics_init(custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
+        <%= analytics_init(custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
         <script type="text/javascript">
             I18n.locale = "<%= I18n.locale %>";
         </script>
@@ -40,7 +40,7 @@
 
 	<body>
 		<div id="dri_wrapper_id" class="block1 dri_wrapper">
-			<%= render partial: 'shared/cookies_modal' unless (cookies[:accept_cookies] || (Rails.env.test? && ENV['enforce_cookies'] != 'true')) %>
+			<%= render partial: 'shared/cookies_modal' if display_end_user_agreement? %>
 			<%= render partial: 'advanced/dri_modal' %>
 			<%= render partial: 'shared/header_navbar' %>
 			<div id="ajax-modal" class="modal fade" tabindex="-1">

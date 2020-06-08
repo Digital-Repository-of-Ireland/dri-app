@@ -1,9 +1,10 @@
 require 'rdf'
+require 'rdf/rdfxml'
 require 'rdf/vocab/skos'
 
 def add_hasset_authority
   # https://www.rubydoc.info/gems/qa/1.2.0#local-sub-authorities
-  hasset_graph = RDF::Graph.load(hasset_data_path, format: :rdf_xml)
+  hasset_graph = RDF::Graph.load(hasset_data_path)
 
   # skos: prefLabel, altLabel
   query = RDF::Query.new({ subject: { RDF::Vocab::SKOS.prefLabel => :label } })

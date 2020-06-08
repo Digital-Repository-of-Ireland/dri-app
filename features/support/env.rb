@@ -1,17 +1,14 @@
-require 'simplecov'
-require 'simplecov-rcov'
-require 'active_fedora/cleaner'
+if ENV['RUN_COVERAGE']
+  require 'simplecov'
 
-class SimpleCov::Formatter::MergedFormatter
-  def format(result)
-    SimpleCov::Formatter::HTMLFormatter.new.format(result)
-    SimpleCov::Formatter::RcovFormatter.new.format(result)
-  end
+  SimpleCov.command_name('Cucumber')
+  SimpleCov.use_merging(true)
+  SimpleCov.merge_timeout(54400)
+
+  SimpleCov.start 'rails'
 end
-SimpleCov.formatter = SimpleCov::Formatter::MergedFormatter
 
-SimpleCov.start 'rails'
-
+require 'active_fedora/cleaner'
 require 'rubygems'
 require 'i18n'
 require 'capybara/cucumber'
@@ -20,7 +17,6 @@ require 'cucumber/rspec/doubles'
 require 'cucumber/api_steps'
 require 'rake'
 require 'rspec'
-require 'billy/capybara/cucumber'
 require 'shoulda/matchers'
 require 'cucumber/rails'
 require 'factory_bot'
@@ -34,7 +30,6 @@ Capybara.register_driver :selenium do |app|
               args: [
                 *headless,
                 "no-sandbox",
-                "proxy-server=#{Billy.proxy.host}:#{Billy.proxy.port}",
                 "window-size=1200,800"
               ]
             )
@@ -121,7 +116,7 @@ end
 
 Before do
   allow(DRI.queue).to receive(:push)
-  allow_any_instance_of(DRI::Versionable).to receive(:version_and_record_committer)
+  allow_any_instance_of(DRI::Versionable).to receive(:record_version_committer)
 
   clean_repo
 

@@ -106,6 +106,9 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['sample_image', '.jpeg'])
       FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
       assets = [{ master_file_id: master_file.id, path: tmp_file.path }]
+      object.increment_version
+      object.save
+
       ProcessBatchIngest.ingest_assets(@login_user, object, assets)
 
       master_file.reload
@@ -116,6 +119,9 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['sample_image', '.jpeg'])
       FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
       assets = [{ label: 'preservation', master_file_id: master_file.id, path: tmp_file.path }]
+      object.increment_version
+      object.save
+
       ProcessBatchIngest.ingest_assets(@login_user, object, assets)
 
       master_file.reload

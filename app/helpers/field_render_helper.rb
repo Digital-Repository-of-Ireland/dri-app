@@ -20,26 +20,27 @@ module FieldRenderHelper
     return parse_description(description) unless args[:document]['description_gle_tesim']
     if current_ml == 'all'
       lang_code = gle_description?(solr_field) ? 'gle' : 'eng'
-      path[:metadata_language] = lang_code == 'gle' ? 'ga' : 'en'
-      return render_toggle_description(description, lang_code, path, 'hide')
+      path[:metadata_language] = lang_code == 'gle' ? 'en' : 'ga'
+      return parse_description(description) << render_toggle_link(lang_code, path, 'hide')
     else
       return parse_description(description) unless ['ga','en'].include?(current_ml)
+
 
       if current_ml == 'ga'
         if gle_description?(solr_field)
           path[:metadata_language] = 'en'
-          return render_toggle_description(description, 'gle', path, 'hide')
+          return parse_description(description) << render_toggle_link('gle', path, 'hide')
         elsif eng_description?(solr_field)
           path[:metadata_language] = 'all'
-          return render_toggle_description(description, 'eng', path, 'show')
+          return render_toggle_link('eng', path, 'show')
         end
       elsif current_ml == 'en'
         if eng_description?(solr_field)
           path[:metadata_language] = 'ga'
-          return render_toggle_description(description, 'eng', path, 'hide')
+          return parse_description(description) << render_toggle_link('eng', path, 'hide')
         elsif gle_description?(solr_field)
           path[:metadata_language] = 'all'
-          return render_toggle_description(description, 'gle', path, 'show')
+          return render_toggle_link('gle', path, 'show')
         end
       end
     end
@@ -53,11 +54,11 @@ module FieldRenderHelper
     field == 'description_eng_tesim'
   end
 
-  def render_toggle_description(description, lang, path, type)
-    parse_description(description) << link_to(
-                                        t("dri.views.fields.#{type}_description_#{lang}"),
-                                        lang_path(path), class: :dri_toggle_metadata
-                                      )
+  def render_toggle_link(lang, path, type)
+    link_to(
+      t("dri.views.fields.#{type}_description_#{lang}"),
+      lang_path(path), class: :dri_toggle_metadata
+    )
   end
 
   # Helper method to display the description field if it contains multiple paragraphs/values
@@ -94,7 +95,7 @@ module FieldRenderHelper
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
 
-    if args[:field] && (args[:field][0, 5] == "role_" || facet?(field))
+    if args[:field] && (role_field?(args[:field]) || facet?(field))
       value = render_facet_link(args, field, value, indexed_value)
     else
       value = render_list(field, value, indexed_value) if value.length > 1
@@ -106,9 +107,7 @@ module FieldRenderHelper
   def render_list(field, value, indexed_value)
     unless field.include?("date")
       value.each_with_index.map do |v, i|
-        unless uri?(indexed_value[i])
-          '<dd>' << indexed_value[i] << '</dd>'
-        end
+        '<dd>' << indexed_value[i] << '</dd>'
       end
     else
       value.each.map do |v|
@@ -146,7 +145,7 @@ module FieldRenderHelper
     facet = args[:facet]
     search_arg = "f[" << facet << "][]"
 
-    if (role_field?(facet)) || (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) || (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable))
+    if person_facet?(facet)
       search_arg = "f[" << ActiveFedora.index_field_mapper.solr_name('person', :facetable) << "][]"
     end
 
@@ -195,6 +194,14 @@ module FieldRenderHelper
     blacklight_config.facet_fields.key?(ActiveFedora.index_field_mapper.solr_name(field, :facetable))
   end
 
+  def person_facet?(facet)
+    (
+      role_field?(facet)) ||
+      (facet == ActiveFedora.index_field_mapper.solr_name('creator', :facetable)) ||
+      (facet == ActiveFedora.index_field_mapper.solr_name('contributor', :facetable)
+    )
+  end
+
   def role_field?(field)
     field[0, 5] == "role_"
   end
@@ -208,7 +215,7 @@ module FieldRenderHelper
 
     value.each_with_index.map do |v, i|
       # don't show simple URLs in the UI
-      next if uri?(indexed_value[i].gsub('name=', ''))
+      next if uri?(v.gsub('name=', ''))
 
       standardised_value = standardise_value(facet_name: facet_name, value: v)
       next unless standardised_value
@@ -218,29 +225,29 @@ module FieldRenderHelper
 
       # for orcids include a repository search on name and the orcid link
       if authority.present? && authority.casecmp("ORCID") && uri?(identifier)
-        render_orcid(facet_name, standardised_value, identifier)
+        render_orcid(facet_arg, facet_name, standardised_value, identifier)
       else
-        render_link(facet_name, indexed_value[i], standardised_value)
+        render_link(facet_arg, facet_name, indexed_value[i], standardised_value)
       end
     end
   end
 
-  def render_link(facet_name, indexed_value, standardised_value)
+  def render_link(facet_arg, facet_name, indexed_value, standardised_value)
     "<a href=\"" << url_for(
                             {
                               action: 'index',
                               controller: controller_name,
-                              facet_arg: standardise_facet(facet: facet_name, value: indexed_value)
+                              facet_arg => standardise_facet(facet: facet_name, value: indexed_value)
                             }
                       ) << "\">" << standardised_value << "</a>"
   end
 
-  def render_orcid(facet_name, standardised_value, identifier)
+  def render_orcid(facet_arg, facet_name, standardised_value, identifier)
     "<span class=\"orcid\"><a href=\"" << url_for(
                             {
                               action: 'index',
                               controller: controller_name,
-                              facet_arg: standardise_facet(facet: facet_name, value: standardised_value)
+                              facet_arg => standardise_facet(facet: facet_name, value: standardised_value)
                             }
                       ) << "\">" << standardised_value << "</a><a href=\"" << identifier << "\" class=\"orcidlink\"  target=\"_blank\">" << identifier << "</a></span>"
   end

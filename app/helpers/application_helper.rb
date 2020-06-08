@@ -2,6 +2,14 @@ module ApplicationHelper
   require 'storage/s3_interface'
   require 'uri'
 
+  def display_end_user_agreement?
+    return false if Rails.env.test? && ENV['enforce_cookies'] != 'true'
+    return false if %w(/pages/terms /pages/about_faq).include?(request.path)
+    return false if cookies[:accept_cookies]
+
+    true
+  end
+
   def present(model, presenter_class=nil)
     klass = presenter_class || "#{model.class}Presenter".constantize
     presenter = klass.new(model, self)
@@ -29,7 +37,7 @@ module ApplicationHelper
     constraint_keys = %i[f f_inclusive q q_ws] + search_fields_for_advanced_search.symbolize_keys.keys
     constraint_vals = params.select {|k, v| constraint_keys.include?(k.to_sym)}
     # show constaints if at least one constraint param is non-empty and not on advanced search
-    !constraint_vals.all?(&:empty?) && controller_name != 'advanced'
+    !constraint_vals.empty? && controller_name != 'advanced'
   end
 
   def has_selected_facet_param?(solr_field)

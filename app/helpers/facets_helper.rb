@@ -1,6 +1,6 @@
 module FacetsHelper
   include Blacklight::FacetsHelperBehavior
-  
+
   DCMI_KEYS = %w(elevation northlimit eastlimit southlimit westlimit uplimit downlimit units zunits projection north east)
 
   # Used by CatalogController's language facet_field, show_field and index_field
@@ -36,7 +36,7 @@ module FacetsHelper
     else
       results = transform_orcid(args)
     end
-    
+
     results
   end
 
@@ -111,7 +111,7 @@ module FacetsHelper
     return value if pid.blank?
 
     solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([pid])
-    docs = ActiveFedora::SolrService.query(solr_query)
+    docs = ActiveFedora::SolrService.query(solr_query, rows: 1)
 
     return 'nil' if docs.empty?
 
@@ -129,33 +129,21 @@ module FacetsHelper
   def transform_orcid(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
-      if k == 'name'
-        return v unless v.nil? || v.empty?
-      end
-    end
-    value
+    name_from_dcsv(value) || value
   end
 
   # parses encoded era values
   def transform_era(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
-      if k == 'name'
-        return v unless v.nil? || v.empty?
-      end
-    end
-    value
+    name_from_dcsv(value) || value
   end
 
   # parses encoded location values
   def transform_location(value)
     return 'nil' if value.nil?
 
-    value.split(/\s*;\s*/).each do |component|
+    value.strip.split(/\s*;\s*/).each do |component|
       (k, v) = component.split(/\s*=\s*/)
       dcmi = true if DCMI_KEYS.include?(k)
 
@@ -225,11 +213,11 @@ module FacetsHelper
   # @return [String]
   def render_facet_value(facet_solr_field, item, options = {})
     return if uri?(item.value)
-    
+
     display_value = facet_display_value(facet_solr_field, item)
     return if display_value == 'nil'
-    
-    path = search_action_path(add_facet_params_and_redirect(facet_solr_field, item))
+
+    path = search_action_path(search_state.add_facet_params_and_redirect(facet_solr_field, item))
     link_to_unless(
       options[:suppress_link],
       display_value + " (#{item.hits})",
@@ -248,7 +236,7 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     # Updated class for Bootstrap Blacklight.
     link_to(
-      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'), 
+      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'),
       remove_facet_params(facet_solr_field, item, params),
       class: 'selected'
     )
@@ -261,5 +249,15 @@ module FacetsHelper
     value = value.html_safe if (value.include? ":")
 
     value
+  end
+
+  def name_from_dcsv(value)
+     value.strip.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k == 'name'
+        return v unless v.nil? || v.empty?
+      end
+    end
+    nil
   end
 end

@@ -27,7 +27,7 @@ en:
         deposit_agreement: I agree to the terms of Deposit Agreement
         deposit_header: The Digital Repository of Ireland Terms and Conditions of Deposit.
         header: The Digital Repository of Ireland End User Agreement.
-        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='http://dri.ie/privacy-statement'>Privacy Policy</a>."
+        message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='https://dri.ie/dri-privacy-statement'>Privacy Policy</a>."
         reject: I disagree
       timeline:
         description:
@@ -131,6 +131,7 @@ en:
       alert:
         create_permission: You do not have permission to create this document.
         delete_permission: You do not have permission to delete this document.
+        delete_error: A problem retrieving this object has prevented deletion.
         doi_not_configured: DOI configuration settings not found.
         doi_published_warning: "Please note that you are editing a published object. Changes that you make will be visible immediately after being saved. Changes to certain fields may result in the creation of a new version of the DOI name associated with this object. Refer to the <a href='https://guides.dri.ie/depositor-guide/04-review-and-publish.html#digital-object-identifier' target='_blank'>depositor guide</a> for more information."
         edit_permission: You do not have permission to edit this document.
@@ -145,7 +146,7 @@ en:
         invalid_xml: 'Invalid XML: %{error}'
         read_permission: You do not have permission to read this document.
         unknown_permission: 'Unsupported Permission Level: %{action}'
-        virus_detected: 'Virus detected in uploaded file: %{virus}'
+        virus_detected: 'Virus detected in uploaded file'
       error:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.
@@ -235,6 +236,7 @@ en:
       member_benefits: Member Benefits
       membership_fees: Membership Fees
       my_collections: My Collections
+      search_my_collections: Search My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
       new_organisation: New Organisation
@@ -288,7 +290,7 @@ en:
       dri_publish_unavailable_title: Publish not available
       dri_review_unavailable: There are no objects to review. You must add a new object first.
       dri_review_unavailable_title: Review not available
-      dri_sort_options: "Select from this list to sort your results by Newest, Title, Relevance or Sequence. Relevance is the system's best guess as which Collections or Objects are most relevant to your search"
+      dri_sort_options: "Select from this list to sort your results by date, title, relevance or sequence. Relevance is the system's best guess as to which collections or objects are most relevant to your search"
       dri_sort_options_title: Search Sort Options
       dri_tlfield_options: Select the date field to display on the timeline
       dri_tlfield_options_title: Display Date Options
@@ -338,6 +340,7 @@ en:
         types: Types
         types_text: The nature or genre of the resource.
       no_results_found: No search results found
+      no_results_message: or refine your search terms. e.g. try removing a search term or using OR to broaden your search
       q: Type a search term and press Enter. Use AND and OR to narrow or broaden your search
       q_title: Search the repository
       q_ws_title: Search your collections
@@ -443,6 +446,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
+          view_edm_feed: View EDM Feed
           fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
           history: History
@@ -471,6 +475,8 @@ en:
           create_collection: Create Collection
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
+        access_controls_review: Review Access Controls
+        access_controls_csv: as csv
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
         confirm_delete: This will delete the collection and all objects within the collection/sub-collection. Continue?
         confirm_fixity: 'Perform fixity check on all objects in this collection?'
@@ -612,6 +618,11 @@ en:
         orgs_legend: "Organisations listed on this page are associated in various ways with deposited collections. They include depositing organisations, contributing partners, collaborating institutions, and funding agencies. For a list of DRI Members, see the <a href='%{url}'>Membership page</a>."
       licences:
         all_rights_reserved: Please see rights statement
+        public_domain: Work is in the Public Domain
+        unlicenced: This work is in copyright but not licenced for reuse.
+        orphan_work: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."
+        educational_use: "This Item is protected by copyright and/or related rights, however, no permission is required from the rights-holder(s) for educational uses. For other uses, you need to obtain permission from the rights-holder(s)."
+        more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
         buttons:
           edit: Edit Licence
           new: Add a new licence
@@ -635,6 +646,12 @@ en:
           edit_desc: Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts.
           edit_object: Who can edit this object
           inherit: Inherit this setting from the parent collection
+          inherit_objects:
+            one: 1 object inherits these access controls
+            other: '%{count} objects inherit these access controls'
+          custom_objects:
+            one: 1 object has custom access controls
+            other: '%{count} objects have custom access controls'
           inherit_strings:
             private: "surrogates only"
             public: "surrogates and uploaded originals"
@@ -648,6 +665,10 @@ en:
           public: Allow public access (anyone on the web can access)
           read: Who can access your assets?
           registered: Limit access to logged-in users
+          report:
+            public: Public access to
+            restricted: Approved users have access to
+            logged-in: Logged-in users have access to
           restricted: Restrict access to users who I approve
         buttons:
           cancel: Cancel
@@ -721,6 +742,7 @@ en:
         cancel: Cancel
     reports:
       headings:
+        access_controls: Access Controls Report
         fixity: Fixity Check
         fixity_status: Result
         fixity_failures: Failures

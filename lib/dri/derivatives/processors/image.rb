@@ -12,9 +12,9 @@ module DRI::Derivatives::Processors
 
     def create_image
       image = selected_layers(load_image_transformer)
+      yield(image) if block_given?
       image.format(directives.fetch(:format))
       image.combine_options do |xfrm|
-        yield(xfrm) if block_given?
         xfrm.gravity(gravity) if gravity.present?
         xfrm.crop(crop.to_s) if crop
         if trim.present?

@@ -178,6 +178,13 @@
         <% end %>
       <% end %> <!-- if end (non-EAD collections) -->
 
+      <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
+        <li>
+          <%= t('dri.views.collection.access_controls_review') %>
+          <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
+        </li>
+      <% end %>
+
       <%= link_to new_export_path(document.id), :id => "export_metadata" do %>
         <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
       <% end %>
@@ -191,6 +198,10 @@
       <% if current_user.is_admin? %>
         <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
           <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+        <% end %>
+
+        <%= link_to oai_pmh_oai_path(verb: "ListRecords", metadataPrefix: "edm", set: "collection:#{@document.id}") do %>
+          <li><%= t('dri.views.catalog.links.view_edm_feed') %></li>
         <% end %>
 
         <% if @document.root_collection? %>
@@ -233,19 +244,7 @@
   		        <li><%= t('dri.views.collection.buttons.edit_metadata') %></li>
   		      <% end %>
             <li>
-              <%= form_tag(url_for(action: "update", controller: "metadata", id: @document.id), multipart: true, method: :put, id: "metadata_uploader") do %>
-                <div class="dri_fileUpload">
-  			          <%= t('dri.views.objects.legends.replace_metadata') %>
-			            <%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_metadata_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: 'dri_metadata_upload' %>
-                  <% options = { accept: "application/xml", required: "true", class: 'upload', id: 'dri_metadata_uploader' } %>
-                  <% if @document.published? && @document.doi.present? %>
-                    <% options[:onclick] = "return warnOnReplace();" %>
-                  <% end %>
-                  <%= file_field_tag 'metadata_file', options %>
-                </div>
-  			        <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-  			        <%= hidden_field_tag 'datastream', "content" %>
-              <% end %>
+              <%= render partial: 'my_collections/tools/replace_metadata' %>
             </li>
           <% end %>
 

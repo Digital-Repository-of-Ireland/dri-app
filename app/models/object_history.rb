@@ -45,13 +45,14 @@ class ObjectHistory
   end
 
   def audit_trail
-    versions = {}
+    versions = []
 
-    if object.has_versions?
-      audit_trail = object.versions.all
-      audit_trail.each do |version|
-        versions[version.label] = { uri: version.uri, created: version.created, committer: committer(version) }
-      end
+    committed_versions = VersionCommitter.where(obj_id: object.id).order('created_at asc')
+    committed_versions.each do |version|
+      versions << { version_id: version.version_id,
+                    created: version.created_at,
+                    committer: version.committer_login
+                  }
     end
 
     versions
@@ -105,11 +106,6 @@ class ObjectHistory
     fixity_check[:result] = check.result
 
     fixity_check
-  end
-
-  def committer(version)
-    vc = VersionCommitter.where(version_id: version.uri)
-    vc.empty? ? nil : vc.first.committer_login
   end
 
   def local_files(file_id)
