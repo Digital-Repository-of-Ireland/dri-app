@@ -303,8 +303,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
           elsif file['file_type_tesim'].include? "image"
             url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full')
-            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}"),"iiif":true}
-            base_url = Rails.application.routes.url_helpers.iiif_info_url("#{record.id}:#{file.id}"),"iiif":true}
+            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}")
+            base_url = Rails.application.routes.url_helpers.iiif_info_url("#{record.id}:#{file.id}")
 
             xml.tag!("edm:WebResource", {"rdf:about" => url}) do
               xml.tag!("edm:rights", {"rdf:resource" => licence})
