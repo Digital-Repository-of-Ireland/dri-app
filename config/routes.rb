@@ -86,8 +86,6 @@ Rails.application.routes.draw do
     get 'iiif/collection/:id', to: 'iiif#manifest', as: :iiif_collection_manifest
     get 'iiif/:id/sequence', to: 'iiif#sequence', as: :iiif_collection_sequence
     get 'iiif/:id', to: 'iiif#show'
-    get  'iiif/:id/info.json', to: 'iiif#info', as: :iiif_info 
-
 
     resources :organisations, controller: :institutes
     get 'organisations/:id/logo', to: 'institutes#logo', as: :logo

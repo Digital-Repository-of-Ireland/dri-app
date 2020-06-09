@@ -119,7 +119,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     end
 
     # Identify the type
-    edmtype = get_edm_type(record["type_tesim"]);
+    edmtype = edm_type(record["type_tesim"]);
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
@@ -241,10 +241,10 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
-      mainfile = get_file(edmtype, assets)
-      imagefile = get_file("IMAGE", assets)
+      mainfile = mainfile_for_type(edmtype, assets)
+      imagefile = mainfile_for_type("IMAGE", assets)
       if mainfile.present?
-        thumbnail = get_thumbnail(record, edmtype, mainfile, imagefile)
+        thumbnail = thumbnail_url(record, edmtype, mainfile, imagefile)
       else
         return ""
       end
@@ -257,19 +257,16 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag!("edm:rights", {"rdf:resource" => licence})
 
         if mainfile['file_type_tesim'].include? "video"
-          video   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
-          xml.tag!("edm:isShownBy", {"rdf:resource" => video})
+          is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
         elsif mainfile['file_type_tesim'].include? "audio"
-          audio   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
-          xml.tag!("edm:isShownBy",{"rdf:resource" => audio})
+          is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
         elsif mainfile['file_type_tesim'].include? "image"
-          image   = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{mainfile.id}", size: 'full')
-          xml.tag!("edm:isShownBy",{"rdf:resource"=>image})
+          is_shown_by   = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{mainfile.id}", size: 'full')
         elsif mainfile['file_type_tesim'].include? "text"
-          text   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
-          xml.tag!("edm:isShownBy",{"rdf:resource"=>text})
+          is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
         end
 
+        xml.tag!("edm:isShownBy",{"rdf:resource" => is_shown_by}) if is_shown_by
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
 
         assets.each do |file|
@@ -290,7 +287,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
 
         # Create the edm:object element
-        xml.tag!("edm:object", {"rdf:resource" =>  thumbnail })
+        xml.tag!("edm:object", {"rdf:resource" => thumbnail})
       end
 
       # Get urls for each asset file and create a webResource element
@@ -302,25 +299,25 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
 
           elsif file['file_type_tesim'].include? "image"
-            url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full')
-            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}")
-            base_url = Rails.application.routes.url_helpers.iiif_info_url("#{record.id}:#{file.id}")
+            image_url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: 'full')
+            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}", format: :json)
+            base_url = Riiif::Engine.routes.url_helpers.base_url("#{record.id}:#{file.id}")
 
-            xml.tag!("edm:WebResource", {"rdf:about" => url}) do
+            xml.tag!("edm:WebResource", {"rdf:about" => image_url}) do
               xml.tag!("edm:rights", {"rdf:resource" => licence})
-              xml.tag!("svcs:has_service", {"rdf:resource" => base_url}) # TODO what is the url?
-              xml.tag!("dcterms:isReferencedBy",{"rdf:resource"=> manifest_url+".json"})
+              xml.tag!("svcs:has_service", {"rdf:resource" => base_url})
+              xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
             end
-            xml.tag!("svcs:services",{"rdf:about"=> base_url}) do
-              xml.tag!("dcterms:conformsTo",{"rdf:resource"=> 'http://iiif.io/api/image/2.0'})
-              xml.tag!("doap:implements",{"rdf:resource"=> 'http://iiif.io/api/image/2/level2.json'})
+            xml.tag!("svcs:Service",{"rdf:about" => base_url}) do
+              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image/2.0'})
+              xml.tag!("doap:implements", {"rdf:resource" => 'http://iiif.io/api/image/2/level2.json'})
             end
 
           elsif file['file_type_tesim'].include? "text"
             url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate:'pdf')
           end
 
-          if !(file['file_type_tesim'].include? "image")
+          if !(file['file_type_tesim'].include? "image") && url
             xml.tag!("edm:WebResource", {"rdf:about" => url}) do
               xml.tag!("edm:rights", {"rdf:resource" => licence})
             end
@@ -374,7 +371,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     false
   end
 
-  def get_edm_type(types)
+  def edm_type(types)
     types = types.map(&:upcase)
     return "3D" if types.include?("3D")
     return "VIDEO" if types.to_set.intersect?(["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"].to_set)
@@ -391,27 +388,23 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   # Get the main file where there is more than one file
-  def get_file(edmtype, assets)
+  def mainfile_for_type(edmtype, assets)
     case edmtype
     when "VIDEO"
-      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
-      return file
+      assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
     when "SOUND"
-      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "audio" || "sound" }
-      return file
+      assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "audio" || "sound" }
     when "TEXT"
-      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "text" } ||
-            assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
-      return file
+      assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "text" } ||
+        assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
     when "IMAGE"
-      file = assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
-      return file
+      assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
     else
       nil
     end
   end
 
-  def get_thumbnail(record, edmtype, file, image=nil)
+  def thumbnail_url(record, edmtype, file, image=nil)
     if file['file_type_tesim'].include? "video"
       Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'thumbnail')
     elsif file['file_type_tesim'].include? "audio"||"sound"
