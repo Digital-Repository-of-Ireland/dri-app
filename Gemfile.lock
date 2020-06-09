@@ -458,7 +458,7 @@ GEM
       hydra-access-controls (= 10.6.2)
       hydra-core (= 10.6.2)
       rails (>= 3.2.6)
-    i18n (1.8.2)
+    i18n (1.8.3)
       concurrent-ruby (~> 1.0)
     i18n-js (3.3.0)
       i18n (>= 0.6.6)
@@ -475,6 +475,8 @@ GEM
     i18n_sync (0.5.1)
       ya2yaml
     iconv (1.0.8)
+    iiif-image-api (0.2.0)
+      activesupport
     is_it_working-cbeer (1.0.16)
     iso-639 (0.3.5)
     iso8601 (0.12.1)
@@ -567,7 +569,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -583,7 +585,7 @@ GEM
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.14.0)
+    minitest (5.14.1)
     moab-versioning (4.2.2)
       confstruct
       druid-tools (>= 1.0.0)
@@ -778,8 +780,10 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    riiif (1.2.0)
-      railties (>= 4.2, < 6)
+    riiif (2.3.0)
+      deprecation (>= 1.0.0)
+      iiif-image-api (>= 0.1.0)
+      railties (>= 4.2, < 7)
     roo (2.8.3)
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
@@ -936,7 +940,7 @@ GEM
       railties (>= 3.1)
     typhoeus (1.3.1)
       ethon (>= 0.9.0)
-    tzinfo (1.2.6)
+    tzinfo (1.2.7)
       thread_safe (~> 0.1)
     uber (0.1.0)
     uglifier (4.1.20)
@@ -1045,7 +1049,7 @@ DEPENDENCIES
   resque
   resque-status (= 0.5.0)
   rest-client (~> 2.0)
-  riiif (= 1.2.0)
+  riiif
   roo
   rspec-rails
   rspec_junit_formatter
