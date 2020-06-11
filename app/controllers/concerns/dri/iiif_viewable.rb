@@ -219,7 +219,7 @@ module DRI::IIIFViewable
       resource_id: image_url,
       service_id: base_uri,
       width: file[WIDTH_SOLR_FIELD], height: file[HEIGHT_SOLR_FIELD],
-      profile: 'http://iiif.io/api/image/2/level2.json'
+      profile: 'https://iiif.io/api/image/2/level2.json'
     })
     image['@type'] = 'dctypes:Image'
 
