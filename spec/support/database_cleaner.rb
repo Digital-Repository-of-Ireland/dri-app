@@ -1,5 +1,3 @@
-require 'active_fedora/cleaner'
-
 RSpec.configure do |config|
 
   config.before(:suite) do
@@ -8,10 +6,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:all) do
-    ActiveFedora::Cleaner.cleanout_solr
   end
 
   config.before(:each, :js => true) do

@@ -133,7 +133,7 @@ describe 'PublishJob' do
       job.perform
 
       q = "collection_id_sim:\"#{@collection.noid}\" AND status_ssim:published"
-      expect(ActiveFedora::SolrService.count(q)).to eq(21)
+      expect(SolrQuery.new(q).count).to eq(21)
     end
   end
 end

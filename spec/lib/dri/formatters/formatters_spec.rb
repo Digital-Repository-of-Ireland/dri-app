@@ -21,8 +21,7 @@ describe "formatters" do
   context "exporting CSV" do
     it "should format an object as a CSV" do
       expected_csv = CSV.read(File.join(fixture_path, "export.csv"))
-      doc = ActiveFedora::SolrService.query("id:#{@object.noid}").first
-      formatter = DRI::Formatters::Csv.new(SolrDocument.new(doc))
+      formatter = DRI::Formatters::Csv.new(SolrDocument.find(@object.noid))
       generated_csv = CSV.parse(formatter.format)
       
       expect(generated_csv[0]).to match_array(expected_csv[0])
