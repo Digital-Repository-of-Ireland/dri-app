@@ -22,7 +22,7 @@ class ReadersController < ApplicationController
 
     unless @reader_group
       flash[:alert] = t('dri.flash.error.no_read_group')
-      redirect_to :back
+      redirect_back(fallback_location: catalog_path(id: @collection.noid))
       return
     end
 

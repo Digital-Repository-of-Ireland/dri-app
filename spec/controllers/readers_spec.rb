@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ReadersController do
   include Devise::Test::ControllerHelpers
 
-  before(:all) do
+  before(:each) do
     @manager_user = FactoryBot.create(:collection_manager)
     @login_user = FactoryBot.create(:user)
 
@@ -26,7 +26,7 @@ describe ReadersController do
     @collection.save
   end
 
-  after(:all) do
+  after(:each) do
     @login_user.delete
     @manager_user.delete
 
