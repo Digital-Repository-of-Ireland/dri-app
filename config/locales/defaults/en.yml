@@ -260,8 +260,8 @@ en:
         delimiter: ""
   support: 
     array: 
-      last_word_connector: ", and "
-      two_words_connector: " and "
+      last_word_connector: ", "
+      two_words_connector: ", "
       words_connector: ", "
   time: 
     am: am

@@ -31,7 +31,7 @@ pipeline {
                     sh "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
                         AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                         AWS_REGION=us-east-1 \
-                        ~/.local/bin/aws s3 --endpoint-url=https://objects.dri.ie cp swagger/v1/swagger.json s3://DEPLOY/swagger.json.${BRANCH_NAME}"
+                        /home/jenkins/.local/bin/aws s3 --endpoint-url=https://objects.dri.ie cp swagger/v1/swagger.json s3://DEPLOY/swagger.json.${BRANCH_NAME}"
                 }
             }
         }

@@ -20,26 +20,27 @@ module FieldRenderHelper
     return parse_description(description) unless args[:document]['description_gle_tesim']
     if current_ml == 'all'
       lang_code = gle_description?(solr_field) ? 'gle' : 'eng'
-      path[:metadata_language] = lang_code == 'gle' ? 'ga' : 'en'
-      return render_toggle_description(description, lang_code, path, 'hide')
+      path[:metadata_language] = lang_code == 'gle' ? 'en' : 'ga'
+      return parse_description(description) << render_toggle_link(lang_code, path, 'hide')
     else
       return parse_description(description) unless ['ga','en'].include?(current_ml)
+
 
       if current_ml == 'ga'
         if gle_description?(solr_field)
           path[:metadata_language] = 'en'
-          return render_toggle_description(description, 'gle', path, 'hide')
+          return parse_description(description) << render_toggle_link('gle', path, 'hide')
         elsif eng_description?(solr_field)
           path[:metadata_language] = 'all'
-          return render_toggle_description(description, 'eng', path, 'show')
+          return render_toggle_link('eng', path, 'show')
         end
       elsif current_ml == 'en'
         if eng_description?(solr_field)
           path[:metadata_language] = 'ga'
-          return render_toggle_description(description, 'eng', path, 'hide')
+          return parse_description(description) << render_toggle_link('eng', path, 'hide')
         elsif gle_description?(solr_field)
           path[:metadata_language] = 'all'
-          return render_toggle_description(description, 'gle', path, 'show')
+          return render_toggle_link('gle', path, 'show')
         end
       end
     end
@@ -53,11 +54,11 @@ module FieldRenderHelper
     field == 'description_eng_tesim'
   end
 
-  def render_toggle_description(description, lang, path, type)
-    parse_description(description) << link_to(
-                                        t("dri.views.fields.#{type}_description_#{lang}"),
-                                        lang_path(path), class: :dri_toggle_metadata
-                                      )
+  def render_toggle_link(lang, path, type)
+    link_to(
+      t("dri.views.fields.#{type}_description_#{lang}"),
+      lang_path(path), class: :dri_toggle_metadata
+    )
   end
 
   # Helper method to display the description field if it contains multiple paragraphs/values
@@ -86,12 +87,10 @@ module FieldRenderHelper
 
     value ||= args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     value = [value] unless value.is_a?(Array)
-    value = value.reject { |v| uri?(v.gsub('name=', '')) }
     value = value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     indexed_value = args[:document].fetch(args[:field], sep: nil) if args[:document] && args[:field]
     indexed_value = [indexed_value] unless indexed_value.is_a? Array
-    indexed_value = indexed_value.reject { |v| uri?(v.gsub('name=', '')) }
     indexed_value = indexed_value.collect { |x| x.respond_to?(:force_encoding) ? x.force_encoding("UTF-8") : x }
 
     field = args[:field].rpartition('_').reject(&:empty?).first if args[:field]
@@ -108,9 +107,7 @@ module FieldRenderHelper
   def render_list(field, value, indexed_value)
     unless field.include?("date")
       value.each_with_index.map do |v, i|
-        unless uri?(indexed_value[i])
-          '<dd>' << indexed_value[i] << '</dd>'
-        end
+        '<dd>' << indexed_value[i] << '</dd>'
       end
     else
       value.each.map do |v|

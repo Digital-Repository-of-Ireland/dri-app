@@ -18,7 +18,8 @@
 		<link href="<%= main_app.opensearch_catalog_url(:format => 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-		<%= stylesheet_link_tag "dri/dri_layouts" %>
+		<%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
+		<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
 		<%= content_for(:head) %>

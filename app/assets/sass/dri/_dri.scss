@@ -724,80 +724,6 @@ ul.dropdown a {
         }
     }
 }
-/*-------------- Main Navigation
-.dri_main_nav {
-  margin: 0px;
-  padding: 0px;
-  ul {
-    margin: 0px;
-    padding: 0px;
-    border-bottom: 1px solid $dri_thingrey;
-    border-top: 1px solid $dri_thingrey;
-    height: 60px;
-  }
-  li {
-    float: left;
-    position: relative;
-    margin: 0;
-    padding: 0;
-    font-size: 115%;
-    font-weight: bold;
-    list-style: none;
-    text-decoration: none;
-    border-right: 1px solid $dri_thingrey;
-    a {
-      text-transform: uppercase;
-      list-style: none;
-      text-decoration: none;
-      color: #3E3E3E;
-      margin: 0;
-      padding: 19px 20px 20px 20px;
-      display: block;
-      border-top: 3px solid #fff;
-    &:hover {
-      border-top: 3px solid #6D6E71;
-    }
-    }
-     &.selected a {
-    border-top: 3px solid $dri_green;
-    color: #3E3E3E;
-    }
-  }
-
-  .dri_main_nav_top {
-    ul.dropdown-menu {
-      background-color: white;
-      top: 61px;
-      left: -1px;
-      border: 0;
-      li {
-        min-width: 200px;
-        border-bottom: 1px solid $dri_thingrey;
-        border-left: 1px solid $dri_thingrey;
-        font-size: 100%;
-        float: left;
-        a {
-          background-color: white;
-          margin: 0;
-          padding: 8px 0 8px 20px;
-          border-top: none;
-          text-transform: none;
-
-          &:hover {
-          background-color: white;
-          color: $dri_green;
-        }
-        }
-       &.selected a {
-        color: $dri_green;
-      }
-      }
-
-    }
-  }
-}
-
---------------*/
 
 ol.breadcrumb {
     color: $dri_thingrey;
@@ -1908,7 +1834,6 @@ p.dri_rss_link a {
            text-decoration: none;
            padding:0;
            margin:0;
-           width: 250px;
       }
     }
 }
@@ -2291,15 +2216,7 @@ ul.dri_collection_institutes_list {
 .dri_funder_institutes {
     padding-top: 10px;
     margin: auto;
-    ul {
-        list-style: none;
-        li {
-            display: block;
-            float: left;
-            padding: 10px;
-            height: 80px;
-        }
-    }
+    margin-left: 2.5cm;
     img {
         vertical-align: middle;
     }
@@ -2732,4 +2649,9 @@ ul.dri_collection_institutes_list {
 .dri_help_popover {
     padding-left: 5px;
     cursor: help;
+}
+
+.dri_licence_logo {
+    height: 2em;
+    vertical-align: bottom;
 }

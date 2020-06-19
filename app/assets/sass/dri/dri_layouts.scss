@@ -83,6 +83,7 @@
 .dri_main_content_container {
     @include zen-grid-item(4, 1);
     margin-left: 10px;
+    min-width: 250px;
     .dri_login_form_container {
         margin: auto;
         max-width: 450px;
@@ -109,7 +110,6 @@
     }
     .dri_object_second_block {
         @include zen-grid-item(1, 4, $gutter-width: 0px);
-        width: 250px;
     }
     .dri_section_block {
         @include zen-grid-item(4, 1, $gutter-width: 0px);
@@ -278,7 +278,6 @@
         .dri_object_second_block {
             @include zen-clear();
             @include zen-grid-item(2, 1, $gutter-width: 0px);
-            width: 100%;
         }
         .dri_object_first_block {
             @include zen-clear();
@@ -354,6 +353,35 @@
 @media only screen and (max-width: 395px) {
     .dri_wrapper {
         margin-top: 12em;
+        $zen-column-count: 1;
+    }
+    .dri_main_content_container {
+        @include zen-grid-container;
+        @include zen-grid-item(4, 1);
+        margin-left: 10px;
+        .dri_result_container {
+            @include zen-clear();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+        }
+        .dri_second_navigation_container {
+            @include zen-float();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+        }
+        .dri_object_second_block {
+            @include zen-clear();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+        }
+        .dri_object_first_block {
+            @include zen-clear();
+            @include zen-grid-item(4, 1, $gutter-width: 0px);
+            dl.dri_object_metadata_readview {
+                padding: 0px 20px 0 0;
+            }
+        }
+    }
+    .dri_facet_restrictions_container {
+        @include zen-grid-flow-item(1, 1, $alpha-gutter: 10px);
+        padding-right: 18px;
     }
 }
 

@@ -129,26 +129,14 @@ module FacetsHelper
   def transform_orcid(value)
     return 'nil' if value.nil?
 
-    value.strip.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
-      if k == 'name'
-        return v unless v.nil? || v.empty?
-      end
-    end
-    value
+    name_from_dcsv(value) || value
   end
 
   # parses encoded era values
   def transform_era(value)
     return 'nil' if value.nil?
 
-    value.strip.split(/\s*;\s*/).each do |component|
-      (k,v) = component.split(/\s*=\s*/)
-      if k == 'name'
-        return v unless v.nil? || v.empty?
-      end
-    end
-    value
+    name_from_dcsv(value) || value
   end
 
   # parses encoded location values
@@ -261,5 +249,15 @@ module FacetsHelper
     value = value.html_safe if (value.include? ":")
 
     value
+  end
+
+  def name_from_dcsv(value)
+     value.strip.split(/\s*;\s*/).each do |component|
+      (k,v) = component.split(/\s*=\s*/)
+      if k == 'name'
+        return v unless v.nil? || v.empty?
+      end
+    end
+    nil
   end
 end

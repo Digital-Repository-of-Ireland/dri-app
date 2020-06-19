@@ -8,10 +8,12 @@ module Solr
       @args = args
       @cursor_mark = "*"
       @has_more = true
+      @sort = "id asc"
     end
 
     def query
-      query_args = @args.merge({:raw => true, :rows => @chunk, :sort => 'id asc', :cursorMark => @cursor_mark})
+      sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
+      query_args = @args.merge({:raw => true, :rows => @chunk, :sort => sort, :cursorMark => @cursor_mark})
 
       result = ActiveFedora::SolrService.get(@query, query_args)
       result_docs = result['response']['docs']

@@ -13,7 +13,7 @@ gem 'hydra-head', '10.6.2'
 gem 'active-fedora', '12.1.1'
 gem 'solrizer'
 
-gem 'riiif', '1.2.0'
+gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
@@ -26,7 +26,7 @@ gem 'paper_trail', '~> 4'
 gem 'linkeddata'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.5'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.0.6'
 gem 'browse-everything', '1.0.0'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
@@ -166,8 +166,8 @@ gem 'clipboard-rails'
 
 gem 'blacklight-maps'
 gem 'leaflet-rails', '1.0.0'
-gem 'rails-assets-leaflet', '1.1.0', source: 'https://rails-assets.org'
-gem 'rails-assets-leaflet.markercluster', '1.3.0', source: 'https://rails-assets.org'
+gem 'rails-assets-leaflet', '1.3.4', source: 'https://rails-assets.org'
+gem 'rails-assets-leaflet.markercluster', '1.4.1', source: 'https://rails-assets.org'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'
