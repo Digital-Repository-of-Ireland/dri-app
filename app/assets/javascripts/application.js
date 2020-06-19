@@ -58,3 +58,11 @@
 //= require dri
 //
 //= require dri/autocomplete_vocabs
+
+//= require Three/three
+//= require Three/OrbitControls
+//= require Three/STLLoader
+//= require Three/dat.gui.min.js
+//= require Three/GLTFLoader.js
+
+
