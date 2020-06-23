@@ -1,6 +1,6 @@
 $(document).ready(function () {
   OpenSeadragon.DEFAULT_SETTINGS.timeout = 60000;
-  
+
   var sources = $('#dri_iiif_view').data('sources');
   var viewer = OpenSeadragon({
       id:                 "dri_iiif_view",
@@ -69,7 +69,8 @@ $(document).ready(function () {
 
   $('a.dri_iiif').on('click', function() {
     if(viewer != null) {
-      viewer.goToPage($('.carousel').find('.active').index());
+      var index = $( this ).data('viewer-index');
+      viewer.goToPage(index);
     }
   });
 });

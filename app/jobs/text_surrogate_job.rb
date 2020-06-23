@@ -27,7 +27,7 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
       out_file = File.open(filename, "rb")
 
       storage = StorageService.new
-      saved = storage.store_surrogate(bucket_id, out_file, surrogate_filename)
+      saved = storage.store_surrogate(bucket_id, out_file, surrogate_filename, MIME::Types.type_for(ext).first.to_s)
 
       raise "Unable to save text surrogate for #{generic_file_id}" unless saved
     end

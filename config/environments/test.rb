@@ -21,6 +21,7 @@ Rails.application.configure do
   }
 
   routes.default_url_options[:host] = 'localhost:3000'
+  Riiif::Engine.routes.default_url_options[:host] = routes.default_url_options[:host]
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -44,13 +45,13 @@ Rails.application.configure do
 
   # Add a default host for devise mailer
   config.action_mailer.default_url_options = { host: 'localhost' }
-  
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  
+
   config.active_record.sqlite3.represent_boolean_as_integer = true
 
   config.active_record.belongs_to_required_by_default = false

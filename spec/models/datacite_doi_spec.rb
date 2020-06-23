@@ -46,13 +46,26 @@ describe "DataciteDoi" do
   it "should create datacite XML" do
     datacite = DataciteDoi.create(object_id: @object.id)
     xml = datacite.to_xml
-    
+
     doc = Nokogiri::XML(xml)
     hash = Hash.from_xml(doc.to_s)
-    hash["resource"]["titles"]["title"].should == @object.title.first
-    hash["resource"]["creators"]["creator"]["creatorName"] == @object.creator.first
-    hash["resource"]["publisher"].should == DoiConfig.publisher
-    hash["resource"]["publicationYear"].should == "#{Time.now.year}"
+    expect(hash["resource"]["titles"]["title"]).to eq @object.title.first
+    expect(hash["resource"]["creators"]["creator"]["creatorName"]).to eq @object.creator.first
+    expect(hash["resource"]["publisher"]).to eq DoiConfig.publisher
+    expect(hash["resource"]["publicationYear"]).to eq "#{Time.now.year}"
+  end
+
+  it "should create datacite XML for a documentation object" do
+    doc_obj = FactoryBot.create(:documentation)
+    datacite = DataciteDoi.create(object_id: doc_obj.id)
+    xml = datacite.to_xml
+
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["titles"]["title"]).to eq doc_obj.title.first
+    expect(hash["resource"]["creators"]["creator"]["creatorName"]).to eq doc_obj.creator.first
+    expect(hash["resource"]["publisher"]).to eq DoiConfig.publisher
+    expect(hash["resource"]["publicationYear"]).to eq "#{Time.now.year}"
   end
 
   it 'should use roles if no creator' do
@@ -97,10 +110,10 @@ describe "DataciteDoi" do
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be false
   end
- 
+
   it "should add version numbers to doi" do
     datacite = DataciteDoi.create(object_id: @object.id)
-    
+
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
 
     datacite2 = DataciteDoi.create(object_id: @object.id)
@@ -120,7 +133,7 @@ describe "DataciteDoi" do
       expect(@doi.show['version']).to be_a_kind_of(Numeric)
     end
     it 'should include the date it was created' do
-      expect(@doi.show.keys.include?('created_at')).to be true 
+      expect(@doi.show.keys.include?('created_at')).to be true
     end
   end
 

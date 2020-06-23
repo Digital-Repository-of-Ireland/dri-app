@@ -33,8 +33,10 @@
 
 //
 // Required by Blacklight-Maps
-//= require blacklight-maps
+//= require blacklight/core
+//= require leaflet
 //= require leaflet.markercluster
+//= require blacklight-maps/blacklight-maps-browse.js
 //= require leaflet.extend
 //= require jquery.remotipart
 //= require js.cookie
