@@ -22,7 +22,6 @@ Scenario: Constructing a Digital Object using the web form should set default pe
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
   And the radio button "batch_master_file_access_inherit" should be "checked"
-  And the radio button "batch_edit_users_string_radio_inherit" should be "checked"
 
 Scenario: Constructing a Digital Object using XML upload should set default permissions
   Given a collection with pid "perm2" created by "user1"
@@ -32,4 +31,3 @@ Scenario: Constructing a Digital Object using XML upload should set default perm
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
   Then the radio button "batch_master_file_access_inherit" should be "checked"
-  And the radio button "batch_edit_users_string_radio_inherit" should be "checked"

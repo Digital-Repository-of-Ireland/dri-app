@@ -1,0 +1,258 @@
+<script type="text/javascript">
+    var public_str = "public";
+    var registered_str = "registered";
+    var empty_str = "";
+
+    var model_str;
+    var read_user_textbox;
+    var read_group_textbox;
+
+    var edit_user_textbox;
+    var edit_group_textbox;
+
+    var manager_user_textbox;
+    var manager_group_textbox;
+
+    var inherit_disabled = $('#dri_access_control_fields').data('inherit-disabled');
+
+    $(document).ready(function () {
+        model_str = "batch";
+
+        read_user_textbox = new ImprovedTextBox('#batch_read_users_string');
+        read_group_textbox = new ImprovedTextBox('#batch_read_groups_string');
+        init_read_access();
+
+        edit_user_textbox = new ImprovedTextBox('#batch_edit_users_string');
+        edit_group_textbox = new ImprovedTextBox('#batch_edit_groups_string');
+        init_edit_access();
+
+        manager_user_textbox = new ImprovedTextBox('#batch_manager_users_string');
+        manager_group_textbox = new ImprovedTextBox('#batch_manager_groups_string');
+        init_manager_access();
+    });
+
+    function init_read_access(){
+        var original_value_user = read_user_textbox.value();
+        var original_value_group = read_group_textbox.value();
+
+        if(original_value_user!=empty_str){
+            //Know its restricted without checking for public/registered
+            $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
+        }else{
+            if((original_value_group==empty_str) && (!inherit_disabled)){
+                $('#'+model_str+'_read_groups_string_radio_inherit').prop('checked', true);
+            }else if(original_value_group==public_str){
+                $('#'+model_str+'_read_groups_string_radio_public').prop('checked', true);
+            }else if(original_value_group==registered_str){
+                $('#'+model_str+'_read_groups_string_radio_logged').prop('checked', true);
+            }else{
+                $('#'+model_str+'_read_groups_string_radio_restricted').prop('checked', true);
+            }
+        }
+    }
+
+    function init_edit_access(){
+        var original_value_user = edit_user_textbox.value();
+        var original_value_group = edit_group_textbox.value();
+
+        if(original_value_user!=empty_str || inherit_disabled){
+            $('#'+model_str+'_edit_users_string_radio_restricted').prop('checked', true);
+            edit_toggle_show_textboxes(true);
+        }else{
+            edit_toggle_show_textboxes(false);
+            $('#'+model_str+'_edit_users_string_radio_inherit').prop('checked', true);
+        }
+    }
+
+    function init_manager_access(){
+        var original_value_user = manager_user_textbox.value();
+        var original_value_group = manager_group_textbox.value();
+
+        if (typeof(batch_manager_users_string_radio_restricted)!='undefined'){
+            if(original_value_user!=empty_str || inherit_disabled){
+                $('#'+model_str+'_manager_users_string_radio_restricted').prop('checked', true);
+                manager_toggle_show_textboxes(true);
+            }else{
+                manager_toggle_show_textboxes(false);
+                $('#'+model_str+'_manager_users_string_radio_inherit').prop('checked', true);
+            }
+        }
+    }
+
+    function read_field_toggle(gid){
+        var val = $('input[name="'+model_str+'[read_groups_string]"]:checked').val();
+        if(val=="radio_inherit"){
+            read_group_textbox.val("");
+            read_user_textbox.val("");
+        }else if(val=="radio_logged"){
+            read_group_textbox.val(registered_str);
+            read_user_textbox.val("");
+            alert("<%= t('dri.views.objects.access_controls.alert') %>");
+        }else if(val=="radio_public"){
+            read_group_textbox.val(public_str);
+            read_user_textbox.val("");
+        }else if(val=="radio_restricted"){
+            read_group_textbox.val(gid);
+            alert("<%= t('dri.views.objects.access_controls.alert') %>");
+        }else{
+            console.log("Unknown textbox selected: read_field -"+val);
+        }
+    }
+
+    function edit_field_toggle(){
+        var val = $('input[name="'+model_str+'[edit_users_string]"]:checked').val();
+        if(val=="radio_inherit"){
+            edit_group_textbox.val("");
+            edit_user_textbox.val("");
+            edit_toggle_show_textboxes(false);
+        }else if(val=="radio_restricted"){
+            edit_group_textbox.val("");
+            edit_user_textbox.val("");
+            edit_toggle_show_textboxes(true);
+        }else{
+            console.log("Unknown textbox selected: edit_field -"+val);
+        }
+    }
+
+    function manager_field_toggle(){
+        var val = $('input[name="'+model_str+'[manager_users_string]"]:checked').val();
+        if(val=="radio_inherit"){
+            manager_group_textbox.val("");
+            manager_user_textbox.val("");
+            manager_toggle_show_textboxes(false);
+        }else if(val=="radio_restricted"){
+            manager_group_textbox.val("");
+            manager_user_textbox.val("");
+            manager_toggle_show_textboxes(true);
+        }else{
+            console.log("Unknown textbox selected: manager_field -"+val);
+        }
+    }
+
+    function edit_toggle_show_textboxes(show){
+        if(show){
+            edit_group_textbox.restore_previous_value();
+            edit_user_textbox.restore_previous_value();
+            edit_user_textbox.add_user_string('<%= current_user.user_key %>');
+            $('#edit_access_entries').show();
+        }else{
+            $('#edit_access_entries').hide();
+        }
+    }
+
+    function manager_toggle_show_textboxes(show){
+        if(show){
+            manager_group_textbox.restore_previous_value();
+            manager_user_textbox.restore_previous_value();
+            manager_user_textbox.add_user_string('<%= current_user.user_key %>');
+            $('#manager_access_entries').show();
+        }else{
+            $('#manager_access_entries').hide();
+        }
+    }
+</script>
+
+<div class="dri_access_controls" id="dri_access_control_fields" data-inherit-disabled="<%= inherit_disabled %>">
+
+    <p><%= t('dri.views.objects.access_controls.description') %></p>
+    <p><%= t('dri.views.objects.access_controls.metadata') %></p>
+    <div class="field">
+	<h5><%= t('dri.views.objects.access_controls.read') %></h5>
+        <% unless inherit_disabled %>
+	      <div>
+            <%= f.radio_button :read_groups_string, "radio_inherit", :onclick => "read_field_toggle();", :disabled => inherit_disabled %>
+            <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
+                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: inherited_collection_read_groups(@object.governing_collection)) %>)
+            </label>
+          </div>
+        <% end %>
+
+        <div>
+            <%= f.radio_button :read_groups_string, "radio_public", :onclick => "read_field_toggle();" %>
+            <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.public') %></label>
+        </div>
+        <div>
+            <%= f.radio_button :read_groups_string, "radio_logged", :onclick => "read_field_toggle();" %>
+            <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.registered') %></label>
+        </div>
+
+        <% if record.collection? %>
+            <div>
+                <%= f.radio_button :read_groups_string, "radio_restricted", :onclick => "read_field_toggle('#{@object.id}');" %>
+	            <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
+	        </div>
+        <% end %>
+
+        <fieldset id="read_access_entries">
+            <%= f.hidden_field :read_users_string, :onkeyup=>"read_user_textbox.catch_tb_value();" %>
+            <%= f.hidden_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
+        </fieldset>
+
+	    <div class="field">
+    		<h5><%= t('dri.views.objects.access_controls.master_file') %></h5>
+
+            <% if not inherit_disabled %>
+                <div>
+	              <%= f.radio_button :master_file_access, "inherit", :checked=>(record.master_file_access.blank? || record.master_file_access=="inherit"), :disabled=> inherit_disabled %>
+                  <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %>
+                    <% legend = t("dri.views.objects.access_controls.inherit_strings."+inherited_masterfile_access(@object)) %>
+                    (<%= t('dri.views.objects.access_controls.inherited_setting', inherited_setting: legend) %>)
+                  </label>
+	            </div>
+            <% end %>
+            <div>
+		      <%= f.radio_button :master_file_access, "private", :checked=>record.master_file_access=="private" %>
+		      <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.private_master_file') %></label>
+            </div>
+            <div>
+                <%= f.radio_button :master_file_access, "public", :checked=>record.master_file_access=="public" %>
+                <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.accessible_master_file') %></label>
+            </div>
+	    </div>
+
+	    <div class="field">
+            <% if @object.collection? %>
+	          <h5><%= t('dri.views.objects.access_controls.edit_collection') %></h5>
+            <% else %>
+              <h5><%= t('dri.views.objects.access_controls.edit_object') %></h5>
+            <% end %>
+            <%= t('dri.views.objects.access_controls.edit_desc') %>
+            <% unless inherit_disabled %>
+	          <div>
+	            <%= f.radio_button :edit_users_string, "radio_inherit", :onclick => "edit_field_toggle();", :disabled=> inherit_disabled  %>
+		        <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
+              </div>
+            <% end %>
+            <div>
+                <%= f.radio_button :edit_users_string, "radio_restricted", :onclick => "edit_field_toggle();" %>
+                <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
+	        </div>
+	        <fieldset id="edit_access_entries">
+	          <%= f.text_area :edit_users_string, :onkeyup=>"edit_user_textbox.catch_tb_value();", style: 'width:100%;' %>
+	        </fieldset>
+	    </div>
+    </div>
+
+	<% if record.collection? && (record.new_record? || (can? :manage_collection, record)) %>
+	   <div class="field">
+	     <h5><%= t('dri.views.objects.access_controls.manage') %></h5>
+         <%= t('dri.views.objects.access_controls.manager_desc') %>
+         <% unless inherit_disabled %>
+		   <div>
+	         <%= f.radio_button :manager_users_string, "radio_inherit", :onclick => "manager_field_toggle();", :disabled=> inherit_disabled  %>
+			  <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
+           </div>
+         <% end %>
+         <div>
+		   <%= f.radio_button :manager_users_string, "radio_restricted", :onclick => "manager_field_toggle();" %>
+		   <label class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.restricted') %></label>
+         </div>
+
+		 <fieldset id="manager_access_entries">
+		   <%= f.text_area :manager_users_string, :onkeyup=>"manager_user_textbox.catch_tb_value();", style: 'width:100%;' %>
+		 </fieldset>
+	   </div>
+    <% end %>
+</div>
+
+
