@@ -29,16 +29,16 @@
 
         if (typeof original_value_user != "undefined" && original_value_user!=""){
             //Know its restricted without checking for public/registered
-            $('#batch_read_groups_string_radio_restricted').prop('checked', true);
+            $('#batch_read_groups_string_radio_restricted').attr('checked', true);
         }else{
             if((original_value_group=="") && (!inherit_disabled)){
-                $('#batch_read_groups_string_radio_inherit').prop('checked', true);
+                $('#batch_read_groups_string_radio_inherit').attr('checked', true);
             }else if(original_value_group=="public"){
-                $('#batch_read_groups_string_radio_public').prop('checked', true);
+                $('#batch_read_groups_string_radio_public').attr('checked',true);
             }else if(original_value_group=="registered"){
-                $('#batch_read_groups_string_radio_logged').prop('checked', true);
+                $('#batch_read_groups_string_radio_logged').attr('checked', true);
             }else{
-                $('#batch_read_groups_string_radio_restricted').prop('checked', true);
+                $('#batch_read_groups_string_radio_restricted').attr('checked', true);
             }
         }
     }
@@ -49,11 +49,11 @@
         var original_value_group = edit_group_textbox.value();
 
         if(original_value_user!="" || inherit_disabled){
-            $('#batch_edit_users_string_radio_restricted').prop('checked', true);
+            $('#batch_edit_users_string_radio_restricted').attr('checked', true);
             edit_toggle_show_textboxes(true);
         }else{
             edit_toggle_show_textboxes(false);
-            $('#batch_edit_users_string_radio_inherit').prop('checked', true);
+            $('#batch_edit_users_string_radio_inherit').attr('checked', true);
         }
     }
 
@@ -64,11 +64,11 @@
 
         if (typeof(batch_manager_users_string_radio_restricted)!='undefined'){
             if(original_value_user!="" || inherit_disabled){
-                $('#batch_manager_users_string_radio_restricted').prop('checked', true);
+                $('#batch_manager_users_string_radio_restricted').attr('checked', true);
                 manager_toggle_show_textboxes(true);
             }else{
                 manager_toggle_show_textboxes(false);
-                $('#batch_manager_users_string_radio_inherit').prop('checked', true);
+                $('#batch_manager_users_string_radio_inherit').attr('checked', true);
             }
         }
     }
