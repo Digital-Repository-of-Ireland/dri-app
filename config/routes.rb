@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     root :to => redirect('/catalog?mode=collections&search_field=all_fields')
 
     mount UserGroup::Engine => "/user_groups"
-    mount Riiif::Engine => '/images'
+    mount Riiif::Engine => '/images', as: 'riiif'
     mount DriBatchIngest::Engine => '/ingest'
 
     mount Blacklight::Engine => '/'

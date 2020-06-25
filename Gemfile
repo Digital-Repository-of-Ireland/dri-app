@@ -13,7 +13,7 @@ gem 'hydra-head', '10.6.2'
 gem 'active-fedora', '12.1.1'
 gem 'solrizer'
 
-gem 'riiif', '1.2.0'
+gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
