@@ -7,12 +7,12 @@ Feature: Permissions
 
 Background:
   Given I am logged in as "user1" in the group "cm"
-
-  #Scenario: Constructing a Collection using the web form should set default permissions
-  #Given I am on the home page
-  #And I go to "create new collection"
-  #And the radio button "batch_read_groups_string_radio_public" should be "checked"
-  #And the "batch_manager_users_string" field should contain "user1@user1.com"
+  
+Scenario: Constructing a Collection using the web form should set default permissions
+  Given I am on the home page
+  And I go to "create new collection"
+  And the radio button "batch_read_groups_string_radio_public" should be "checked"
+  And the "batch_manager_users_string" field should contain "user1@user1.com"
 
 Scenario: Constructing a Digital Object using the web form should set default permissions
   Given a collection with pid "perm1" created by "user1"
