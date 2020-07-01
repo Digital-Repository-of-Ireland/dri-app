@@ -509,7 +509,7 @@ Then /^I should see a dialog with text "([^"]*)"$/ do |text|
 end
 
 Then /^the radio button "(.*?)" should (not )?be "(.*?)"$/ do |field, negate, status|
-  negate ? (find_by_id(field).should_not be_checked) : (find_by_id(field).should be_checked)
+  negate ? (expect(page.find_by_id(field)).to be_checked) : (expect(page.find_by_id(field)).to be_checked)
 end
 
 Then /^the "([^"]*)" drop-down should( not)? contain the option "([^"]*)"$/ do |id, negate, value|
