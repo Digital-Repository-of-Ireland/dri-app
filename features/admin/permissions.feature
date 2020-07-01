@@ -7,7 +7,7 @@ Feature: Permissions
 
 Background:
   Given I am logged in as "user1" in the group "cm"
-
+  
 Scenario: Constructing a Collection using the web form should set default permissions
   Given I am on the home page
   And I go to "create new collection"

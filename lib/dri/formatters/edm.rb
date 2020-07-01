@@ -261,7 +261,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         elsif mainfile['file_type_tesim'].include? "audio"
           is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
         elsif mainfile['file_type_tesim'].include? "image"
-          is_shown_by   = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{mainfile.id}", size: 'full')
+          is_shown_by   = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{mainfile.id}", size: 'full', protocol: 'https')
         elsif mainfile['file_type_tesim'].include? "text"
           is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
         end
@@ -279,7 +279,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             elsif file["file_type_tesim"].include? "text"
               url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'pdf')
             elsif file["file_type_tesim"].include? "image"
-              url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full')
+              url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full', protocol: 'https')
             end
 
             xml.tag!("edm:hasView", {"rdf:resource" => url})
@@ -299,9 +299,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
 
           elsif file['file_type_tesim'].include? "image"
-            image_url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: 'full')
-            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}", format: :json)
-            base_url = Riiif::Engine.routes.url_helpers.base_url("#{record.id}:#{file.id}")
+            image_url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: 'full', protocol: 'https')
+            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}", format: :json, protocol: 'https')
+            base_url = Riiif::Engine.routes.url_helpers.base_url("#{record.id}:#{file.id}", protocol: 'https')
 
             xml.tag!("edm:WebResource", {"rdf:about" => image_url}) do
               xml.tag!("edm:rights", {"rdf:resource" => licence})
@@ -416,7 +416,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     elsif file['file_type_tesim'].include? "text"
       Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'lightbox_format')
     elsif file['file_type_tesim'].include? "image"
-      Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,')
+      Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,', protocol: 'https')
     else
       nil
     end
