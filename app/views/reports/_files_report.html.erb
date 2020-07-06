@@ -31,13 +31,14 @@
     </tr>
   </thead>
   <tbody>
-  	<% @mime_type_counts.each do |type, count| %>
+  	<% @file_format_counts.each do |type, count| %>
   	  <tr>
         <td><%= link_to(type,
                     url_for(
                       action: 'index',
                       controller: 'my_collections',
-                      "f[mime_type_sim][]" => "#{type}"
+                      "mode" => "objects",
+                      "q_ws" => "file_format_tesim:\"#{type}\""
                     )
                 )
               %>
