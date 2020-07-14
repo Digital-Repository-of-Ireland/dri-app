@@ -221,12 +221,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
-      if (record.licence.name == "All Rights Reserved")
-        licence = "http://rightsstatements.org/vocab/InC/1.0/"
-      elsif (record.licence.name == "Orphan Work")
-        licence = "http://rightsstatements.org/vocab/InC-OW-EU/1.0/"
-      elsif (record.licence.name == "Public Domain")
-        licence = "http://creativecommons.org/publicdomain/mark/1.0/"
+      if (["ODC-ODbL", "ODC-BY", "ODC-PPDL", "Educational Use", "Open COVID Licence 1.1"].include?(record.licence.name))
+        return ""
       else
         licence = record.licence.url
       end
