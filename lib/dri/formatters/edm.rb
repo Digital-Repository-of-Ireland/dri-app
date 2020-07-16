@@ -305,8 +305,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
             end
             xml.tag!("svcs:Service",{"rdf:about" => base_url}) do
-              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'https://iiif.io/api/image/2.0'})
-              xml.tag!("doap:implements", {"rdf:resource" => 'https://iiif.io/api/image/2/level2.json'})
+              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image/2.0'})
+              xml.tag!("doap:implements", {"rdf:resource" => 'http://iiif.io/api/image/2/level2.json'})
             end
 
           elsif file['file_type_tesim'].include? "text"
