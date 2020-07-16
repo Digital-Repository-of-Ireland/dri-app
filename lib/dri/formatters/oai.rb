@@ -1,6 +1,12 @@
 # frozen_string_literal: true
-
 class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
+  include ActionController::UrlFor
+  include Rails.application.routes.url_helpers
+
+  delegate :env, :request, to: :controller
+
+  attr_reader :controller
+
   def initialize
     @prefix = "oai_dri"
     @schema = "https://repository.dri.ie/oai_dri/oai_dri.xsd"
@@ -32,9 +38,6 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     edm: {
       provider: lambda { |record| ["Digital Repository of Ireland"] },
       dataProvider: lambda { |record| [record.depositing_institute.try(:name)] },
-      isShownAt: lambda do |record|
-        [Rails.application.routes.url_helpers.catalog_url(record.id)]
-      end,
     },
   }.freeze
 
@@ -53,7 +56,9 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     }
   end
 
-  def encode(_model, record)
+  def encode(model, record)
+    @controller = model.controller
+
     xml = Builder::XmlMarkup.new
 
     xml.tag!("#{prefix}:#{element_namespace}", header_specification) do
@@ -70,6 +75,8 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
           end
         end
       end
+
+      xml.tag! "edm:isShownAt", catalog_url(record.id)
     end
 
     xml.target!

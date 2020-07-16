@@ -214,19 +214,19 @@ class CatalogController < ApplicationController
       format.json do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
-        formatter = DRI::Formatters::Json.new(@document, options)
+        formatter = DRI::Formatters::Json.new(self, @document, options)
         render json: formatter.format(func: :as_json)
       end
       format.ttl do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
-        formatter = DRI::Formatters::Rdf.new(@document, options)
+        formatter = DRI::Formatters::Rdf.new(self, @document, options)
         render plain: formatter.format({format: :ttl})
       end
       format.rdf do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
-        formatter = DRI::Formatters::Rdf.new(@document, options)
+        formatter = DRI::Formatters::Rdf.new(self, @document, options)
         render plain: formatter.format({format: :xml})
       end
       format.js { render layout: false }
