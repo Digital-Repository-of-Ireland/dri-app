@@ -7,7 +7,7 @@ gem 'rails', '~> 5.2.0'
 
 gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
-gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
+gem 'blacklight_oai_provider', '~> 6'
 
 gem 'hydra-head', '10.6.2'
 gem 'active-fedora', '12.1.1'
@@ -85,6 +85,7 @@ group :production do
 end
 
 group :development, :test do
+  gem 'thin'
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'rspec-rails'

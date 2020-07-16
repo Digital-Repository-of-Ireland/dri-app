@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
+  include ActionController::UrlFor
+  include Rails.application.routes.url_helpers
+
+  delegate :env, :request, to: :controller
+
+  attr_reader :controller
+
   def initialize
     @prefix = "edm"
     @schema = "https://repository.dri.ie/edm/edm.xsd"
@@ -107,8 +114,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     }
   end
 
-  def encode(_model, record)
-
+  def encode(model, record)
+    @controller = model.controller
     # We are not going to aggregate items with no assets
     if record.assets.size < 1
       return ""
@@ -221,12 +228,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         end
       end
 
-      if (record.licence.name == "All Rights Reserved")
-        licence = "http://rightsstatements.org/vocab/InC/1.0/"
-      elsif (record.licence.name == "Orphan Work")
-        licence = "http://rightsstatements.org/vocab/InC-OW-EU/1.0/"
-      elsif (record.licence.name == "Public Domain")
-        licence = "http://creativecommons.org/publicdomain/mark/1.0/"
+      if (["ODC-ODbL", "ODC-BY", "ODC-PPDL", "Educational Use", "Open COVID Licence 1.1"].include?(record.licence.name))
+        return ""
       else
         licence = record.licence.url
       end
@@ -237,7 +240,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Get the asset files
       assets = record.assets(with_preservation: true, ordered: false)
-      landing_page = doi_url(record.doi) || Rails.application.routes.url_helpers.catalog_url(record.id)
+      landing_page = doi_url(record.doi) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
@@ -250,20 +253,20 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Create the ore:Aggregation element
-      xml.tag!("ore:Aggregation", {"rdf:about" => Rails.application.routes.url_helpers.catalog_url(record.id)}) do
+      xml.tag!("ore:Aggregation", {"rdf:about" => catalog_url(record.id)}) do
         xml.tag!("edm:aggregatedCHO", {"rdf:resource" => "##{record.id}"})
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
         xml.tag!("edm:provider", {"xml:lang" => "eng"}, "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence})
 
         if mainfile['file_type_tesim'].include? "video"
-          is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp4')
+          is_shown_by   = object_file_url(record.id, mainfile.id, surrogate: 'mp4')
         elsif mainfile['file_type_tesim'].include? "audio"
-          is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'mp3')
+          is_shown_by   = object_file_url(record.id, mainfile.id, surrogate: 'mp3')
         elsif mainfile['file_type_tesim'].include? "image"
           is_shown_by   = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{mainfile.id}", size: 'full', protocol: 'https')
         elsif mainfile['file_type_tesim'].include? "text"
-          is_shown_by   = Rails.application.routes.url_helpers.object_file_url(record.id, mainfile.id, surrogate: 'pdf')
+          is_shown_by   = object_file_url(record.id, mainfile.id, surrogate: 'pdf')
         end
 
         xml.tag!("edm:isShownBy",{"rdf:resource" => is_shown_by}) if is_shown_by
@@ -273,11 +276,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           if file.id != mainfile.id && file.keys.include?("file_type_tesim")
 
             if file["file_type_tesim"].include? "video"
-              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp4')
+              url = object_file_url(record.id, file.id, surrogate: 'mp4')
             elsif file["file_type_tesim"].include? "audio"||"sound"
-              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
+              url = object_file_url(record.id, file.id, surrogate: 'mp3')
             elsif file["file_type_tesim"].include? "text"
-              url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'pdf')
+              url = object_file_url(record.id, file.id, surrogate: 'pdf')
             elsif file["file_type_tesim"].include? "image"
               url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}",size: 'full', protocol: 'https')
             end
@@ -294,13 +297,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       assets.each do |file|
         if file.keys.include?("file_type_tesim")
           if file['file_type_tesim'].include? "video"
-            url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp4')
+            url = object_file_url(record.id, file.id, surrogate: 'mp4')
           elsif file['file_type_tesim'].include? "audio"||"sound"
-            url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'mp3')
+            url = object_file_url(record.id, file.id, surrogate: 'mp3')
 
           elsif file['file_type_tesim'].include? "image"
             image_url = Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: 'full', protocol: 'https')
-            manifest_url = Rails.application.routes.url_helpers.iiif_manifest_url("#{record.id}", format: :json, protocol: 'https')
+            manifest_url = iiif_manifest_url("#{record.id}", format: :json, protocol: 'https')
             base_url = Riiif::Engine.routes.url_helpers.base_url("#{record.id}:#{file.id}", protocol: 'https')
 
             xml.tag!("edm:WebResource", {"rdf:about" => image_url}) do
@@ -309,12 +312,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
             end
             xml.tag!("svcs:Service",{"rdf:about" => base_url}) do
-              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'https://iiif.io/api/image/2.0'})
-              xml.tag!("doap:implements", {"rdf:resource" => 'https://iiif.io/api/image/2/level2.json'})
+              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image/2.0'})
+              xml.tag!("doap:implements", {"rdf:resource" => 'http://iiif.io/api/image/2/level2.json'})
             end
 
           elsif file['file_type_tesim'].include? "text"
-            url = Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate:'pdf')
+            url = object_file_url(record.id, file.id, surrogate:'pdf')
           end
 
           if !(file['file_type_tesim'].include? "image") && url
@@ -406,15 +409,15 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
   def thumbnail_url(record, edmtype, file, image=nil)
     if file['file_type_tesim'].include? "video"
-      Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'thumbnail')
+      object_file_url(record.id, file.id, surrogate: 'thumbnail')
     elsif file['file_type_tesim'].include? "audio"||"sound"
       if image.present?
-        Rails.application.routes.url_helpers.object_file_url(record.id, image.id, surrogate: 'lightbox_format')
+        object_file_url(record.id, image.id, surrogate: 'lightbox_format')
       else
-        Rails.application.routes.url_helpers.cover_image_url(record.collection_id)
+        cover_image_url(record.collection_id)
       end
     elsif file['file_type_tesim'].include? "text"
-      Rails.application.routes.url_helpers.object_file_url(record.id, file.id, surrogate: 'lightbox_format')
+      object_file_url(record.id, file.id, surrogate: 'lightbox_format')
     elsif file['file_type_tesim'].include? "image"
       Riiif::Engine.routes.url_helpers.image_url("#{record.id}:#{file.id}", size: '500,', protocol: 'https')
     else
