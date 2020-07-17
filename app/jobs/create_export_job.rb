@@ -4,7 +4,7 @@ class CreateExportJob
 
   @queue = :create_archive
 
-  def self.perform(object_id, fields, email)
+  def self.perform(controller, object_id, fields, email)
     @first_pass = Tempfile.new("#{object_id}_export_first")
 
     assets = fields.delete('assets')
@@ -20,7 +20,7 @@ class CreateExportJob
     end
     titles << 'Url'
 
-    first_pass(object_id, titles, options)
+    first_pass(controller, object_id, titles, options)
     output = second_pass(object_id, titles)
 
     key = store_export(object_id, email, output.path)
@@ -29,14 +29,14 @@ class CreateExportJob
     JobMailer.export_ready_mail(key, email, object_id).deliver_now
   end
 
-  def self.first_pass(object_id, titles, options)
+  def self.first_pass(controller, object_id, titles, options)
     q_result = collection_objects(object_id)
 
     CSV.open(@first_pass.path, "wb") do |csv|
       csv << titles # title row
 
       q_result.each do |doc|
-        formatter = DRI::Formatters::Csv.new(doc, options)
+        formatter = DRI::Formatters::Csv.new(controller, doc, options)
         csv_string = formatter.format
         CSV.parse(csv_string, headers: true) do |row|
           row.each do |header, value|
@@ -51,7 +51,7 @@ class CreateExportJob
   end
 
   def self.collection_objects(object_id)
-    collection = SolrDocument.new(ActiveFedora::SolrService.query("id:#{object_id}").first)
+    collection = SolrDocument.find(object_id)
     search_key = collection.root_collection? ? 'root_collection_id' : 'ancestor_id'
 
     solr_query = "#{ActiveFedora.index_field_mapper.solr_name(search_key, :facetable, type: :string)}:\"#{object_id}\""
