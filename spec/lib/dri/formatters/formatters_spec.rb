@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'csv'
 
-describe "formatters" do
+describe CatalogController, type: :controller do
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -14,17 +14,17 @@ describe "formatters" do
 
   after(:each) do
     @object.delete
-   
+
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   context "exporting CSV" do
     it "should format an object as a CSV" do
       expected_csv = CSV.read(File.join(fixture_path, "export.csv"))
-      doc = ActiveFedora::SolrService.query("id:#{@object.id}").first
-      formatter = DRI::Formatters::Csv.new(SolrDocument.new(doc))
+      doc = SolrDocument.find(@object.id)
+      formatter = DRI::Formatters::Csv.new(controller, doc)
       generated_csv = CSV.parse(formatter.format)
-      
+
       expect(generated_csv[0]).to match_array(expected_csv[0])
       generated_csv[1].pop
       expected_csv[1].pop
@@ -35,9 +35,9 @@ describe "formatters" do
       requested_fields = ['title', 'subject', 'temporal_coverage']
       expected_titles = ["Id", "Title", "Subjects", "Subjects (Temporal)", "Licence", "Url"]
       object_doc = SolrDocument.new(@object.to_solr)
-      formatter = DRI::Formatters::Csv.new(object_doc, { fields: requested_fields })
+      formatter = DRI::Formatters::Csv.new(controller, object_doc, { fields: requested_fields })
       generated_csv = CSV.parse(formatter.format)
-      
+
       expect(generated_csv[0]).to match_array(expected_titles)
       expect(generated_csv[1][0]).to eql(@object.id)
       expect(generated_csv[1][1]).to eql(@object.title.join('|'))

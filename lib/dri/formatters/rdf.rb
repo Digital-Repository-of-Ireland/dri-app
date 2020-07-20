@@ -2,6 +2,8 @@ require 'rdf'
 module DRI::Formatters
   class Rdf
     include RDF
+    include ActionController::UrlFor
+    include Rails.application.routes.url_helpers
 
     METADATA_FIELDS_MAP = {
      'identifier' => RDF::Vocab::DC.identifier,
@@ -41,17 +43,22 @@ module DRI::Formatters
       'Is Documentation For' => RDF::Vocab::DC.isRequiredBy
     }
 
-    def initialize(object_doc, options = {})
+    delegate :env, :request, to: :controller
+
+    attr_reader :controller
+
+    def initialize(controller, object_doc, options = {})
       fields = options[:fields].presence
       @object_doc = object_doc
       @object_hash = object_doc.extract_metadata(fields)
       @with_assets = options[:with_assets].presence
+      @controller = controller
       build_graph
     end
 
     def base_uri
-      protocol = Rails.application.config.action_mailer.default_url_options[:protocol] || 'http'
-      "#{protocol}://#{Rails.application.config.action_mailer.default_url_options[:host]}"
+      protocol = request.scheme || 'http'
+      "#{protocol}://#{request.host_with_port}"
     end
 
     def uri
@@ -90,23 +97,23 @@ module DRI::Formatters
       assets = @object_doc.assets
 
       assets.each do |a|
-        id = "#{base_uri}#{object_file_path(a['id'])}#id"
+        id = "#{base_uri}#{file_path(a['id'])}#id"
         graph << [RDF::URI("#{uri}#id"), RDF::Vocab::DC.hasPart, RDF::URI.new(id)]
 
         graph << [RDF::URI.new(id), RDF.type, file_type(a)]
         graph << [RDF::URI.new(id), RDF::Vocab::FOAF.topic, RDF::URI("#{uri}#id")]
-        graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{file_path(a['id'])}")]
+        graph << [RDF::URI.new(id), mrss_vocab.content, RDF::URI("#{base_uri}#{surrogate_path(a['id'])}")]
         graph << [RDF::URI.new(id), RDF::RDFS.label, RDF::Literal.new(a['label_tesim'].first)]
         graph << [RDF::URI.new(id), RDF::Vocab::DC.isPartOf, RDF::URI("#{uri}#id")]
       end
     end
 
-    def file_path(file_id)
-      Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
+    def surrogate_path(file_id)
+      file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
 
-    def object_file_path(file_id)
-      Rails.application.routes.url_helpers.object_file_path(id: file_id, object_id: @object_doc['id'])
+    def file_path(file_id)
+      object_file_path(id: file_id, object_id: @object_doc['id'])
     end
 
     def add_formats

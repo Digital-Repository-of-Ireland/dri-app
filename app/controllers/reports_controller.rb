@@ -42,7 +42,7 @@ class ReportsController < ApplicationController
   def retrieve_stats
     @summary_counts = StatsReport.summary
     @file_type_counts = StatsReport.file_type_counts
-    @mime_type_counts = StatsReport.mime_type_counts
+    @file_format_counts = StatsReport.file_format_counts
     @total_file_size = StatsReport.total_file_size
   end
 end
