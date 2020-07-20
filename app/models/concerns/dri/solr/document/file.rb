@@ -5,6 +5,7 @@ module DRI::Solr::Document::File
     'audio' => 'Sound',
     'video' => 'MovingImage',
     'text' => 'Text',
+    '3D' => '3D',
     'mixed_types' => 'MixedType'
   }
 
@@ -59,6 +60,10 @@ module DRI::Solr::Document::File
 
     self[file_type_key] || []
   end
+
+  def parent_type
+   self['type_tesim'].present? ? self['type_tesim'].first : nil
+  end 
 
   def file_type_label
     types = file_types
@@ -147,4 +152,9 @@ module DRI::Solr::Document::File
   def audio?
     Settings.restrict.mime_types.audio.include? mime_type
   end
+  
+  def _3D? 
+   Settings.restrict.mime_types._3D.include? mime_type
+  end 
+
 end

@@ -59,7 +59,7 @@ scene.background = new THREE.Color( 0x72645b );
 
 
 
-window.addEventListener( 'resize', onWindowResize, true );
+window.addEventListener( 'resize', onWindowResize, false );
 
 
 
@@ -73,9 +73,8 @@ var plane = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(150, 150),
     new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
 );
-//plane.rotation.x = -30 * degree;
-//plane.position.y = 0;
-//scene.add( plane );
+
+
 plane.rotation.x = - Math.PI / 2;
 plane.position.y = - 4;
 scene.add( plane );
@@ -88,7 +87,8 @@ var loader = new THREE.STLLoader();
 
 loader.load( url, function ( geometry ) {
 
-    var material = getMaterial('phong', 0xff5533, 0x111111, 200);
+    var material = getMaterial('standard', 0xff5533, 0x111111, 200);
+    
     var mesh = new THREE.Mesh( geometry, material );
     mesh.position.set( 0, - 0.25, 0.6 );
     mesh.rotation.set( - Math.PI / 2, 0, 0 );
@@ -96,9 +96,17 @@ loader.load( url, function ( geometry ) {
     scene.add( mesh );
     mesh.castShadow = true;
 	mesh.receiveShadow = true;
- 
-  
+    // create the bounding box arround model
+  //  var bbox = new THREE.BoundingBoxHelper( mesh ); 
+  //  bbox.update();
+   // scene.add( bbox );
+
+   
 } );
+
+
+
+
 
 
 
@@ -107,9 +115,6 @@ camera.position.z = 120;
 camera.position.y = 120;
 camera.rotation.x = -45 * degree;
 
-// Ambient light (necessary for Phong/Lambert-materials, not for Basic)
-//var ambientLight = new THREE.AmbientLight( 0x00ff00, 1);  // model color
-//scene.add(ambientLight);
 
 // Add lights
 var hemiLight = new THREE.HemisphereLight( 0x443333, 0x111122, 0.61 );
@@ -121,22 +126,8 @@ scene.add( hemiLight );
 addShadowedLight( 1, 1, 1, 0xffffff, 1.35 );
 addShadowedLight( 0.5, 1, - 1, 0xffaa00, 1 );
 
-//var dirLight = new THREE.DirectionalLight( 0x00ff00, 0.54 );
-//    dirLight.position.set( -8, 12, 8 );
-//    dirLight.castShadow = true;
-//    dirLight.shadow.mapSize = new THREE.Vector2(1024, 1024);
-// Add directional Light to scene    
-//    scene.add( dirLight );
-
-
-
 // Draw scene
 var render = function () {
-
-	//var timer = Date.now() * 0.0005;
-
-	//camera.position.x = Math.cos( timer ) * 3;
-	//camera.position.z = Math.sin( timer ) * 3;
 
 	camera.lookAt( cameraTarget );
     renderer.render(scene, camera);
