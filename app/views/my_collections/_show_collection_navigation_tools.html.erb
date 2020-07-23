@@ -29,6 +29,7 @@
     <% audio_count = document.type_count("audio") %>
     <% video_count = document.type_count("video") %>
     <% mixed_count = document.type_count("mixed_types") %>
+    <% _3d_count   = document.type_count_3d("3d", published_only: true) %>
 
       <li>
         <%= link_to main_app.my_collections_index_path(collection_objects_params), id: 'collection_s_object' do %>
@@ -73,6 +74,15 @@
           </li>
       <% end %>
 
+      <%if(_3d_count > 0) %>
+       <li>
+           <%= link_to main_app.search_catalog_path(get_collection_media_type_params(document, document[:id], "3d")) do %>
+             <%= t("dri.data.types.3D")%>
+             <span class = "dri_stat_num"><%=_3d_count%> </span>  
+           <%end%>
+      </li> 
+      <%end%>
+      
       <% if (mixed_count > 0) %>
           <li>
             <%= link_to main_app.my_collections_index_path(get_collection_media_type_params(document, document[:id], "mixed_types")) do %>
