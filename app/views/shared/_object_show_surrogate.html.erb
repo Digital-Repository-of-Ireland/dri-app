@@ -4,7 +4,7 @@
     <%@threeD_url= file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
       <%= render partial: 'shared/display_3d',locals: { url: @threeD_url} %>
       <%end%> 
-    <% elsif generic_file.audio? %>
+    <% if generic_file.audio? %>
         <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
         <% @surrogate = @surrogate_mp3 %>
         <% if @surrogate %>
@@ -69,7 +69,7 @@
         <% end %>
     <% end %>
 
-    <% if @surrogate.blank? && generic_file.mime_type != "application/octet-stream" %>
+    <% if @surrogate.blank? %>
         <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
         <p class="dri_restrict_message" id="asset_not_available">
           <% if generic_file.supported_type? %>
