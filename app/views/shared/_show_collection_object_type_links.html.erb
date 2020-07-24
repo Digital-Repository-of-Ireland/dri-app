@@ -71,7 +71,7 @@
       
       <%if(_3d_count > 0) %>
        <li>
-           <%= link_to main_app.search_catalog_path(get_collection_media_type_params(document, document[:id], "3d")) do %>
+           <%= link_to main_app.search_catalog_path(get_collection_media_type_params_3D(document, document[:id], "3d")) do %>
              <%= t("dri.data.types.3D")%>
              <span class = "dri_stat_num"><%=_3d_count%> </span>  
            <%end%>
