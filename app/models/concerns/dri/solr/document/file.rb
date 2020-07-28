@@ -5,7 +5,7 @@ module DRI::Solr::Document::File
     'audio' => 'Sound',
     'video' => 'MovingImage',
     'text' => 'Text',
-    '3D' => '3D',
+    '3d' => '3D',
     'mixed_types' => 'MixedType'
   }
 
@@ -56,7 +56,7 @@ module DRI::Solr::Document::File
   end
 
   def file_types
-    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+    file_type_key = ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string).to_sym
 
     self[file_type_key] || []
   end
@@ -67,7 +67,7 @@ module DRI::Solr::Document::File
 
   def file_type_label
     types = file_types
-
+    
     return I18n.t('dri.data.types.Unknown') if types.blank?
 
     labels = []
@@ -75,7 +75,7 @@ module DRI::Solr::Document::File
       label = FILE_TYPE_LABELS[type.to_s.downcase] || 'Unknown'
       labels << label
     end
-
+    
     labels = labels.uniq
     label = labels.length > 1 ? FILE_TYPE_LABELS['mixed_types'] : labels.first
 
@@ -89,7 +89,7 @@ module DRI::Solr::Document::File
     types.each do |type|
       format = type.to_s.downcase
 
-      icon = if %w(image audio text video mixed_types).include?(format)
+      icon = if %w(image audio text video 3d mixed_types).include?(format)
              "dri/formats/#{format}_icon.png"
            else
              'no_image.png'
