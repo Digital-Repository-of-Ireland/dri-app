@@ -6,6 +6,7 @@ require 'validators'
 class CollectionsController < BaseObjectsController
   include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
+  include Riiif::Engine.routes.url_helpers
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
@@ -199,32 +200,15 @@ class CollectionsController < BaseObjectsController
   def cover
     enforce_permissions!('show_digital_object', params[:id])
 
-    solr_result = ActiveFedora::SolrService.query(
-      ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:id]])
-    )
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if solr_result.blank?
-
-    object = SolrDocument.new(solr_result.first)
+    object = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if object.blank?
 
     cover_url = object.cover_image
     raise DRI::Exceptions::NotFound if cover_url.blank?
-    if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
-      cover_uri = URI.parse(cover_url)
-      #cover_uri.scheme = 'https'
-      redirect_to cover_uri.to_s
-      return
-    end
 
-    uri = URI.parse(cover_url)
-    cover_name = File.basename(uri.path)
-
-    storage = StorageService.new
-    cover_file = storage.surrogate_url(object.id, cover_name)
-    raise DRI::Exceptions::NotFound unless cover_file
-
-    response.headers['Accept-Ranges'] = 'bytes'
-    response.headers['Content-Length'] = File.size(cover_file).to_s
-    send_file cover_file, { type: MIME::Types.type_for(cover_name).first.content_type, disposition: 'inline' }
+    cover_url = image_url("#{object.id}:#{object.id}", size: '228,128')
+    redirect_to cover_url.to_s
+    return
   end
 
   # Updates the licence.

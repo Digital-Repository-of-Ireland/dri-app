@@ -54,8 +54,8 @@ class IiifController < ApplicationController
     end
 
     def permitted?(method, id)
-      resp = ActiveFedora::SolrService.query("id:#{id}", defType: 'edismax', rows: '1')
-      object_doc = SolrDocument.new(resp.first)
+      object_doc = SolrDocument.find(id)
+      return true if object_doc.collection?
 
       if method == 'show'
         object_doc.published? && object_doc.public_read?
