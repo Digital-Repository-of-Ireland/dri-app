@@ -6,7 +6,6 @@ require 'validators'
 class CollectionsController < BaseObjectsController
   include Blacklight::AccessControls::Catalog
   include DRI::Duplicable
-  include Riiif::Engine.routes.url_helpers
 
   before_action :authenticate_user_from_token!, except: [:cover]
   before_action :authenticate_user!, except: [:cover]
@@ -202,11 +201,9 @@ class CollectionsController < BaseObjectsController
 
     object = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if object.blank?
+    raise DRI::Exceptions::NotFound if object.cover_image.blank?
 
-    cover_url = object.cover_image
-    raise DRI::Exceptions::NotFound if cover_url.blank?
-
-    cover_url = image_url("#{object.id}:#{object.id}", size: '228,128')
+    cover_url = riiif.image_url("#{object.id}:#{object.id}", size: '228,128')
     redirect_to cover_url.to_s
     return
   end
