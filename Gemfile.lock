@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 1a8e9f7065a5f5dc1abfa426991b38c809cd6b0d
-  branch: develop
+  revision: 74ca7c0e5e7958e84cf3395dede84c2ee11f1c19
+  tag: v3.2.7
   specs:
     dri_data_models (3.2.7)
       active-fedora
@@ -73,7 +73,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: 5d242d1dd6b0242042dcad77d8f63865c06e371f
-  branch: develop
+  tag: v1.4.2
   specs:
     user_group (1.4.2)
       devise
@@ -181,7 +181,7 @@ GEM
     aws-sigv4 (1.1.0)
       aws-eventstream (~> 1.0, >= 1.0.2)
     backports (3.15.0)
-    bcrypt (3.1.13)
+    bcrypt (3.1.15)
     better_errors (2.5.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -304,7 +304,7 @@ GEM
     deep_merge (1.2.1)
     deprecation (1.0.0)
       activesupport
-    devise (4.7.1)
+    devise (4.7.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -373,7 +373,7 @@ GEM
       faraday
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.1.7)
+    fastimage (2.2.0)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.12.0)
@@ -631,8 +631,8 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (1.9.0)
-      hashie (>= 3.4.6, < 3.7.0)
+    omniauth (1.9.1)
+      hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
     omniauth-shibboleth (1.3.0)
       omniauth (>= 1.0.0)
@@ -760,7 +760,7 @@ GEM
       uber (< 0.2.0)
     request_store (1.5.0)
       rack (>= 1.4)
-    responders (3.0.0)
+    responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
     resque (1.27.4)
