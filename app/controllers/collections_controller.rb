@@ -201,11 +201,25 @@ class CollectionsController < BaseObjectsController
 
     object = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if object.blank?
-    raise DRI::Exceptions::NotFound if object.cover_image.blank?
 
-    cover_url = riiif.image_url("#{object.id}:#{object.id}", size: '228,128')
-    redirect_to cover_url.to_s
-    return
+    cover_url = object.cover_image
+    raise DRI::Exceptions::NotFound if cover_url.blank?
+    if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
+      cover_uri = URI.parse(cover_url)
+      redirect_to cover_uri.to_s
+      return
+    end
+
+    uri = URI.parse(cover_url)
+    cover_name = File.basename(uri.path)
+
+    storage = StorageService.new
+    cover_file = storage.surrogate_url(object.id, cover_name)
+    raise DRI::Exceptions::NotFound unless cover_file
+
+    response.headers['Accept-Ranges'] = 'bytes'
+    response.headers['Content-Length'] = File.size(cover_file).to_s
+    send_file cover_file, { type: MIME::Types.type_for(cover_name).first.content_type, disposition: 'inline' }
   end
 
   # Updates the licence.
