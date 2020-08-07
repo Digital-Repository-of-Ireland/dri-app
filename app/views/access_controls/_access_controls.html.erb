@@ -97,8 +97,11 @@
     }
 
     function read_toggle_show_textboxes(gid){
+        //if no group id, then this is an object
+        //so set a group to restricted to avoid a public
+        //group being inherited from a parent collection.
         if (typeof gid === "undefined") {
-            read_group_textbox.val("");
+            read_group_textbox.val("restricted");
             read_user_textbox.restore_previous_value();
             $('#read_access_entries').show();
         } else {
