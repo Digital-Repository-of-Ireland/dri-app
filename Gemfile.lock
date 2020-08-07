@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 1e9f311786963e145997ea00b564bc933f1f786e
-  tag: v3.2.6
+  revision: 74ca7c0e5e7958e84cf3395dede84c2ee11f1c19
+  tag: v3.2.7
   specs:
-    dri_data_models (3.2.6)
+    dri_data_models (3.2.7)
       active-fedora
       active_fedora-datastreams
       hydra-derivatives
@@ -162,7 +162,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     ast (2.4.0)
-    autoprefixer-rails (9.8.5)
+    autoprefixer-rails (9.8.6.1)
       execjs
     aws-eventstream (1.0.3)
     aws-partitions (1.207.0)
@@ -181,7 +181,7 @@ GEM
     aws-sigv4 (1.1.0)
       aws-eventstream (~> 1.0, >= 1.0.2)
     backports (3.15.0)
-    bcrypt (3.1.13)
+    bcrypt (3.1.15)
     better_errors (2.5.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -373,7 +373,7 @@ GEM
       faraday
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.1.7)
+    fastimage (2.2.0)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.12.0)
@@ -454,7 +454,7 @@ GEM
       hydra-access-controls (= 10.6.2)
       hydra-core (= 10.6.2)
       rails (>= 3.2.6)
-    i18n (1.8.3)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     i18n-js (3.3.0)
       i18n (>= 0.6.6)
@@ -706,7 +706,7 @@ GEM
     rb-gravatar (1.0.5)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.1.4)
+    rdf (3.1.5)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.1.0)

@@ -6,13 +6,16 @@ Riiif::Image.authorization_service = RiiifAuthorizationService
 Riiif::Image.file_resolver.id_to_uri = lambda do |id|
   ids = id.split(':')
   object_id = ids[0]
-  generic_file_id = ids[1]
+  image_id = ids[1]
 
-  surrogate =  'full'
+  image_key = if object_id != image_id
+                "#{image_id}_full"
+              else
+                "#{image_id}"
+              end
 
   storage = StorageService.new
-  url = storage.surrogate_url(object_id,
-           "#{generic_file_id}_#{surrogate}")
+  url = storage.surrogate_url(object_id, image_key)
 
   raise Riiif::ImageNotFoundError unless url
 
@@ -29,12 +32,12 @@ Riiif::Image.info_service = lambda do |id, file|
   ids = id.split(':')
   id = ids[1]
 
-  file_doc = SolrDocument.find(id)
-  resp = ActiveFedora::SolrService.query("id:#{file_doc['isPartOf_ssim'].first}",
-    defType: 'edismax', rows: '1')
-  object_doc = resp.first
+  image_doc = SolrDocument.find(id)
+  return { height: 128, width: 228 } if image_doc.collection?
 
-  { height: file_doc[HEIGHT_SOLR_FIELD], width: file_doc[WIDTH_SOLR_FIELD] }
+  object_doc = SolrDocument.find("#{image_doc['isPartOf_ssim'].first}")
+
+  { height: image_doc[HEIGHT_SOLR_FIELD], width: image_doc[WIDTH_SOLR_FIELD] }
 end
 
 def blacklight_config
@@ -47,4 +50,4 @@ def logger
   Rails.logger
 end
 
-Riiif::Engine.config.cache_duration_in_days = 30
+Riiif::Engine.config.cache_duration = 30.days
