@@ -44,6 +44,7 @@ gem 'moab-versioning'
 
 # File processing gems
 gem 'mimemagic'
+gem "image_processing", "~> 1.0"
 
 # Language and translation related gems
 gem 'http_accept_language'
