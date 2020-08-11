@@ -1,4 +1,4 @@
-require "image_processing/vips"
+require "image_processing/mini_magick"
 
 module Storage
   module CoverImages
@@ -9,7 +9,8 @@ module Storage
       return false unless %w(image/jpeg image/png image/gif).include?(Validators.file_type(cover_image))
       return false if self.virus?(cover_image)
 
-      processed = ImageProcessing::Vips.source(cover_image.path).resize_to_limit!(228, 128)
+      processed = ImageProcessing::MiniMagick.source(cover_image.path)
+                                             .resize_and_pad!(228, 128)
       url = self.store_cover(processed, cover_image.original_filename, collection)
       unless url
         Rails.logger.error "Unable to save cover image."
