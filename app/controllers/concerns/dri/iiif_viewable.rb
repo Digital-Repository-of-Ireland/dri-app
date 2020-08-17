@@ -209,7 +209,7 @@ module DRI::IIIFViewable
     canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
     canvas.width = file[WIDTH_SOLR_FIELD]
     canvas.height = file[HEIGHT_SOLR_FIELD]
-    canvas.label = file[ActiveFedora.index_field_mapper.solr_name('label')].first
+    canvas.label = file[Solrizer.solr_name('label')].first
 
     base_uri = Settings.iiif.server + '/' + solr_id + ':' + file.id
     image_url =  base_uri + '/full/full/0/default.jpg'

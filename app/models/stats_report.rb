@@ -45,7 +45,11 @@ class StatsReport
   def self.file_format_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get('has_model_ssim:"DRI::GenericFile"', facet: true, 'facet.field' => 'file_format_sim')
+    result = Solr::Query.new(
+               'has_model_ssim:"DRI::GenericFile"',
+               100,
+               { facet: true, 'facet.field' => 'file_format_sim' }
+             ).get
 
     facet = result['facet_counts']['facet_fields']['file_format_sim']
     facet.each_slice(2) { |type,count| type_counts[type] = count }
