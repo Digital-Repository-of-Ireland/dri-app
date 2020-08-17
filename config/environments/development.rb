@@ -14,6 +14,9 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  routes.default_url_options[:host] = 'localhost:3000'
+  Riiif::Engine.routes.default_url_options[:host] = routes.default_url_options[:host]
+
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
@@ -38,8 +41,6 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
-
-  routes.default_url_options[:host] = 'localhost:3000'
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

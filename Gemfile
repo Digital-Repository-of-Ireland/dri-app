@@ -7,13 +7,13 @@ gem 'rails', '~> 5.2.0'
 
 gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
-gem 'blacklight_oai_provider', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git'
+gem 'blacklight_oai_provider', '~> 6'
 
 gem 'hydra-derivatives', '3.5.0'
 gem 'om', '3.2.0'
 gem 'solrizer'
 
-gem 'riiif', '1.2.0'
+gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
@@ -44,6 +44,7 @@ gem 'moab-versioning'
 
 # File processing gems
 gem 'mimemagic'
+gem "image_processing", "~> 1.0"
 
 # Language and translation related gems
 gem 'http_accept_language'
@@ -85,6 +86,7 @@ group :production do
 end
 
 group :development, :test do
+  gem 'thin'
   gem 'rubocop'
   gem 'rubocop-rspec'
   gem 'rspec-rails'

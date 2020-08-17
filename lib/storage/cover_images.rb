@@ -1,3 +1,5 @@
+require "image_processing/mini_magick"
+
 module Storage
   module CoverImages
 
@@ -7,7 +9,9 @@ module Storage
       return false unless %w(image/jpeg image/png image/gif).include?(Validators.file_type(cover_image))
       return false if self.virus?(cover_image)
 
-      url = self.store_cover(cover_image, collection)
+      processed = ImageProcessing::MiniMagick.source(cover_image.path)
+                                             .resize_and_pad!(228, 128)
+      url = self.store_cover(processed, cover_image.original_filename, collection)
       unless url
         Rails.logger.error "Unable to save cover image."
         return false
@@ -28,26 +32,22 @@ module Storage
       true
     end
 
-    def self.store_cover(cover_image, collection)
+    def self.store_cover(cover_image, filename, collection)
       url = nil
       storage = StorageService.new
       storage.create_bucket(collection.noid)
 
-      cover_filename = create_cover_filename(cover_image, collection)
+      cover_filename = "#{collection.id}.#{filename.split(".").last}"
       if (
         storage.store_file(
           collection.noid,
-          cover_image.tempfile.path,
+          cover_image.path,
           cover_filename)
         )
         url = storage.file_url(collection.noid, cover_filename)
       end
 
       url
-    end
-
-    def self.create_cover_filename(cover_image, collection)
-      "#{collection.noid}.#{cover_image.original_filename.split(".").last}"
     end
   end
 end

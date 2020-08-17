@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'csv'
 
-describe "formatters" do
+describe CatalogController, type: :controller do
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -21,9 +21,10 @@ describe "formatters" do
   context "exporting CSV" do
     it "should format an object as a CSV" do
       expected_csv = CSV.read(File.join(fixture_path, "export.csv"))
-      formatter = DRI::Formatters::Csv.new(SolrDocument.find(@object.noid))
+      doc = SolrDocument.find(@object.noid)
+      formatter = DRI::Formatters::Csv.new(controller, doc)
       generated_csv = CSV.parse(formatter.format)
-      
+
       expect(generated_csv[0]).to match_array(expected_csv[0])
       generated_csv[1].pop
       expected_csv[1].pop
@@ -34,9 +35,9 @@ describe "formatters" do
       requested_fields = ['title', 'subject', 'temporal_coverage']
       expected_titles = ["Id", "Title", "Subjects", "Subjects (Temporal)", "Licence", "Url"]
       object_doc = SolrDocument.new(@object.to_solr)
-      formatter = DRI::Formatters::Csv.new(object_doc, { fields: requested_fields })
+      formatter = DRI::Formatters::Csv.new(controller, object_doc, { fields: requested_fields })
       generated_csv = CSV.parse(formatter.format)
-      
+
       expect(generated_csv[0]).to match_array(expected_titles)
       expect(generated_csv[1][0]).to eql(@object.noid)
       expect(generated_csv[1][1]).to eql(@object.title.join('|'))

@@ -11,7 +11,7 @@
         </legend>
       </div>
 
-    	<%= render partial: 'shared/access_controls', locals: { f: f, record: @object } %>
+    	<%= render partial: 'access_controls/access_controls', locals: { f: f, record: @object, inherit_disabled: true } %>
 
     	<div class="checkbox">
     		<label>

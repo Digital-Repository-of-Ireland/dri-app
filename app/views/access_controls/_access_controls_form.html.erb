@@ -4,9 +4,9 @@
         <%= form_for @object, as: :digital_object, url: {controller: "access_controls", action: "update"}, method: "put", 
             html: {class: 'form-vertical', id: 'set_access_controls'} do |f| %>
 
-        <%= render partial: "shared/access_controls", locals: {f: f, record: @object } %>
+        <%= render partial: "access_controls/access_controls", locals: {f: f, record: @object, inherit_disabled: @object.root_collection? } %>
         <%= f.submit t('dri.views.objects.buttons.save'), class: "hidden" %>
-            
+
     <% end %>
   </div>
 </div>

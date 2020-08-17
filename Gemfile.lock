@@ -1,13 +1,4 @@
 GIT
-  remote: https://github.com/Digital-Repository-of-Ireland/blacklight_oai_provider.git
-  revision: adbb656085d1c7cc2e9413ce69cd303be7034c5a
-  specs:
-    blacklight_oai_provider (6.0.0)
-      blacklight (>= 5)
-      oai (~> 0.4)
-      rails (>= 4.2, < 6)
-
-GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
   revision: 32d43322d976413e5e54b34f73358802b2062fc4
   tag: v1.0.6
@@ -99,25 +90,25 @@ GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
   specs:
-    actioncable (5.2.4.2)
-      actionpack (= 5.2.4.2)
+    actioncable (5.2.4.3)
+      actionpack (= 5.2.4.3)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailer (5.2.4.2)
-      actionpack (= 5.2.4.2)
-      actionview (= 5.2.4.2)
-      activejob (= 5.2.4.2)
+    actionmailer (5.2.4.3)
+      actionpack (= 5.2.4.3)
+      actionview (= 5.2.4.3)
+      activejob (= 5.2.4.3)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (5.2.4.2)
-      actionview (= 5.2.4.2)
-      activesupport (= 5.2.4.2)
+    actionpack (5.2.4.3)
+      actionview (= 5.2.4.3)
+      activesupport (= 5.2.4.3)
       rack (~> 2.0, >= 2.0.8)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.2.4.2)
-      activesupport (= 5.2.4.2)
+    actionview (5.2.4.3)
+      activesupport (= 5.2.4.3)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
@@ -143,19 +134,19 @@ GEM
     activejob (5.2.4.2)
       activesupport (= 5.2.4.2)
       globalid (>= 0.3.6)
-    activemodel (5.2.4.2)
-      activesupport (= 5.2.4.2)
-    activerecord (5.2.4.2)
-      activemodel (= 5.2.4.2)
-      activesupport (= 5.2.4.2)
+    activemodel (5.2.4.3)
+      activesupport (= 5.2.4.3)
+    activerecord (5.2.4.3)
+      activemodel (= 5.2.4.3)
+      activesupport (= 5.2.4.3)
       arel (>= 9.0)
     activerecord-import (1.0.4)
       activerecord (>= 3.2)
-    activestorage (5.2.4.2)
-      actionpack (= 5.2.4.2)
-      activerecord (= 5.2.4.2)
+    activestorage (5.2.4.3)
+      actionpack (= 5.2.4.3)
+      activerecord (= 5.2.4.3)
       marcel (~> 0.3.1)
-    activesupport (5.2.4.2)
+    activesupport (5.2.4.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
@@ -215,6 +206,10 @@ GEM
     blacklight_advanced_search (6.4.1)
       blacklight (~> 6.0, >= 6.0.1)
       parslet
+    blacklight_oai_provider (6.0.0)
+      blacklight (~> 6.0)
+      oai (~> 0.4)
+      rails (>= 4.2, < 6)
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
       sass (>= 3.2)
@@ -364,6 +359,7 @@ GEM
     erubi (1.9.0)
     ethon (0.12.0)
       ffi (>= 1.3.0)
+    eventmachine (1.2.7)
     execjs (2.7.0)
     factory_bot (5.2.0)
       activesupport (>= 4.2.0)
@@ -441,7 +437,7 @@ GEM
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
-    hydra-file_characterization (1.1.0)
+    hydra-file_characterization (1.1.2)
       activesupport (>= 3.0.0)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
@@ -460,9 +456,14 @@ GEM
     i18n_sync (0.5.1)
       ya2yaml
     iconv (1.0.8)
+    iiif-image-api (0.2.0)
+      activesupport
+    image_processing (1.11.0)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     is_it_working-cbeer (1.0.16)
     iso-639 (0.3.5)
-    iso8601 (0.12.1)
+    iso8601 (0.13.0)
     it (1.0.0)
       actionpack (>= 3.0.0)
     jaro_winkler (1.5.4)
@@ -471,7 +472,7 @@ GEM
     jmespath (1.4.0)
     jquery-colorbox-rails (1.7.5)
       railties (>= 3.1)
-    jquery-rails (4.3.5)
+    jquery-rails (4.4.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
@@ -504,15 +505,15 @@ GEM
       multi_json
       to_regexp (~> 0.2.1)
     jwt (1.5.2)
-    kaminari (1.2.0)
+    kaminari (1.2.1)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.0)
-      kaminari-activerecord (= 1.2.0)
-      kaminari-core (= 1.2.0)
-    kaminari-actionview (1.2.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
       actionview
-      kaminari-core (= 1.2.0)
-    kaminari-activerecord (1.2.0)
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
       activerecord
       kaminari-core (= 1.2.0)
     kaminari-core (1.2.0)
@@ -592,7 +593,7 @@ GEM
       nokogiri
       nokogiri-happymapper
     mono_logger (1.1.0)
-    multi_json (1.14.1)
+    multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -607,10 +608,10 @@ GEM
     netrc (0.11.0)
     nio4r (2.5.2)
     noid (0.9.0)
-    noid-rails (3.0.1)
-      actionpack (>= 5.0.0, < 6)
+    noid-rails (3.0.2)
+      actionpack (>= 5.0.0, < 7)
       noid (~> 0.9)
-    nokogiri (1.10.9)
+    nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
@@ -661,24 +662,24 @@ GEM
       nokogiri (~> 1.6)
       rails (>= 4.2.0, < 6.0)
       rdf
-    rack (2.2.2)
+    rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     railroady (1.5.3)
-    rails (5.2.4.2)
-      actioncable (= 5.2.4.2)
-      actionmailer (= 5.2.4.2)
-      actionpack (= 5.2.4.2)
-      actionview (= 5.2.4.2)
-      activejob (= 5.2.4.2)
-      activemodel (= 5.2.4.2)
-      activerecord (= 5.2.4.2)
-      activestorage (= 5.2.4.2)
-      activesupport (= 5.2.4.2)
+    rails (5.2.4.3)
+      actioncable (= 5.2.4.3)
+      actionmailer (= 5.2.4.3)
+      actionpack (= 5.2.4.3)
+      actionview (= 5.2.4.3)
+      activejob (= 5.2.4.3)
+      activemodel (= 5.2.4.3)
+      activerecord (= 5.2.4.3)
+      activestorage (= 5.2.4.3)
+      activesupport (= 5.2.4.3)
       bundler (>= 1.3.0)
-      railties (= 5.2.4.2)
+      railties (= 5.2.4.3)
       sprockets-rails (>= 2.0.0)
     rails-assets-leaflet (1.3.4)
     rails-assets-leaflet.markercluster (1.4.1)
@@ -695,9 +696,9 @@ GEM
     rails-i18n (5.1.3)
       i18n (>= 0.7, < 2)
       railties (>= 5.0, < 6)
-    railties (5.2.4.2)
-      actionpack (= 5.2.4.2)
-      activesupport (= 5.2.4.2)
+    railties (5.2.4.3)
+      actionpack (= 5.2.4.3)
+      activesupport (= 5.2.4.3)
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
@@ -707,7 +708,7 @@ GEM
     rb-gravatar (1.0.5)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.1.1)
+    rdf (3.1.5)
       hamster (~> 3.0)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.1.0)
@@ -730,8 +731,9 @@ GEM
     rdf-rdfa (3.1.0)
       haml (~> 5.1)
       htmlentities (~> 4.3)
-      rdf (~> 3.1)
+      rdf (~> 3.1, >= 3.1.2)
       rdf-aggregate-repo (~> 3.1)
+      rdf-vocab (~> 3.1, >= 3.1.5)
       rdf-xsd (~> 3.1)
     rdf-rdfxml (3.1.0)
       htmlentities (~> 4.3)
@@ -849,6 +851,8 @@ GEM
       multipart-post
       oauth2
     ruby-progressbar (1.10.1)
+    ruby-vips (2.0.17)
+      ffi (~> 1.9)
     ruby2_keywords (0.0.2)
     rubyzip (2.3.0)
     rvm (1.11.3.9)
@@ -863,7 +867,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sassc (2.3.0)
+    sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
@@ -947,6 +951,10 @@ GEM
     temple (0.8.2)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
+    thin (1.7.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -976,9 +984,9 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
-    websocket-driver (0.7.1)
+    websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     xml-simple (1.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
@@ -995,7 +1003,7 @@ DEPENDENCIES
   blacklight (~> 6)
   blacklight-maps
   blacklight_advanced_search (~> 6)
-  blacklight_oai_provider!
+  blacklight_oai_provider (~> 6)
   bootstrap-glyphicons
   bootstrap-sass (~> 3.4.1)
   bootstrap-switch-rails
@@ -1030,6 +1038,7 @@ DEPENDENCIES
   i18n-tasks
   i18n_sync
   iiif-presentation!
+  image_processing (~> 1.0)
   is_it_working-cbeer
   it
   jquery-colorbox-rails
@@ -1066,7 +1075,7 @@ DEPENDENCIES
   resque
   resque-status (= 0.5.0)
   rest-client (~> 2.0)
-  riiif (= 1.2.0)
+  riiif
   roo
   rspec-rails
   rspec_junit_formatter
@@ -1090,6 +1099,7 @@ DEPENDENCIES
   sqlite3 (~> 1.3, < 1.4)
   syntax
   syslog-logger
+  thin
   timelineJS3-rails!
   uglifier (>= 1.0.3)
   unicode

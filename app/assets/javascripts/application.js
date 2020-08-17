@@ -57,6 +57,7 @@
 //= require dri/timeline
 //= require dri/forms
 //= require dri/spinner
+//= require dri/access_controls
 //= require dri
 //
 //= require dri/autocomplete_vocabs

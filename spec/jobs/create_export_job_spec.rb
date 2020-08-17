@@ -1,8 +1,8 @@
 require 'rails_helper'
 require 'csv'
 
-describe "CreateExportJob" do
-  
+describe ExportsController, type: :controller do
+
   before(:each) do
     Settings.reload_from_files(
       Rails.root.join(fixture_path, "settings-fs.yml").to_s
@@ -39,16 +39,16 @@ describe "CreateExportJob" do
       Rails.root.join("config", "settings.yml").to_s
     )
   end
-  
+
   describe "run" do
-      
+
     it "creates an export file" do
       delivery = double
       expect(delivery).to receive(:deliver_now).with(no_args)
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller, @collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -63,7 +63,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller, @collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -84,7 +84,7 @@ describe "CreateExportJob" do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(@collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller, @collection.noid, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -93,7 +93,7 @@ describe "CreateExportJob" do
       file_contents = open(files.values.first) { |f| f.read }
       csv = CSV.parse(file_contents, headers: true)
       row = csv.first
-      
+
       expect(row.key?('Subjects')).to be true
       expect(row.key?('Subjects_1')).to be true
     end

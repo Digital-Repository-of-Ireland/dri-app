@@ -6,13 +6,30 @@
     <% else %>
       <% if @document.licence.name == "All Rights Reserved" %>
         <%= t('dri.views.licences.all_rights_reserved') %>
+      <% elsif @document.licence.name == "Public Domain" %>
+        <%= t('dri.views.licences.public_domain') %>
+      <% elsif @document.licence.name == "Orphan Work" %>
+        <div><%= t('dri.views.licences.unlicenced') %></div>
+        <div><%= t('dri.views.licences.orphan_work') %></div>
+        <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
+      <% elsif @document.licence.name == "Educational Use" %>
+        <div><%= t('dri.views.licences.unlicenced') %></div>
+        <div><%= t('dri.views.licences.educational_use') %></div>
+        <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
+      <% elsif @document.licence.name == "Open COVID Licence 1.1" %>
+        <div><%= t('dri.views.licences.open_covid') %></div>
+        <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
       <% elsif @document.licence.url.present? %>
-        <%= link_to "#{@document.licence.name}", @document.licence.url, target: "_blank" %>
+        <% if @document.licence.logo.present? %>
+          <%= link_to @document.licence.url, target: "_blank" do %>
+            <span><%= image_tag(@document.licence.logo, class: 'dri_licence_logo') %> <%= @document.licence.description %></span>
+          <% end %>
+        <% else %>
+          <%= link_to "#{@document.licence.name} - #{@document.licence.description}", @document.licence.url, target: "_blank" %>
+        <% end %>
       <% else %>
         <%= "#{@document.licence.name}" %>
       <% end %>
     <% end %>
-    <%# these logos are too ugly - text looks better %>
-    <%# image_tag(@licence.logo) unless @licence.logo.blank? %>
   </dd>
 <% end %>

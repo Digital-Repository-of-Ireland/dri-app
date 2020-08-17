@@ -197,7 +197,7 @@ class CollectionsController < BaseObjectsController
     enforce_permissions!('show_digital_object', params[:id])
 
     object = SolrDocument.find(params[:id])
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if object.nil?
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if object.blank?
 
     cover_url = object.cover_image
     raise DRI::Exceptions::NotFound if cover_url.blank?

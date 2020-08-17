@@ -7,7 +7,7 @@ Feature: Permissions
 
 Background:
   Given I am logged in as "user1" in the group "cm"
-
+  
 Scenario: Constructing a Collection using the web form should set default permissions
   Given I am on the home page
   And I go to "create new collection"
@@ -21,8 +21,7 @@ Scenario: Constructing a Digital Object using the web form should set default pe
   And I press the button to "continue"
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
-  And the radio button "digital_object_read_groups_string_radio_inherit" should be "checked"
-  And the radio button "digital_object_edit_users_string_radio_inherit" should be "checked"
+  And the radio button "batch_master_file_access_inherit" should be "checked"
 
 Scenario: Constructing a Digital Object using XML upload should set default permissions
   Given a collection with pid "perm2" created by "user1"
@@ -31,5 +30,4 @@ Scenario: Constructing a Digital Object using XML upload should set default perm
   And I press the button to "ingest metadata"
   Then I should see a success message for ingestion
   When I follow the link to edit access controls
-  Then the radio button "digital_object_master_file_access_inherit" should be "checked"
-  And the radio button "digital_object_edit_users_string_radio_inherit" should be "checked"
+  Then the radio button "batch_master_file_access_inherit" should be "checked"

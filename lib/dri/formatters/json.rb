@@ -1,5 +1,7 @@
 module DRI::Formatters
   class Json
+    include ActionController::UrlFor
+    include Rails.application.routes.url_helpers
 
     METADATA_FIELDS_MAP = {
      'title' => 'Title',
@@ -23,9 +25,14 @@ module DRI::Formatters
      'institute' => 'Organisation'
     }
 
-    def initialize(object_doc, options = {})
+    delegate :env, :request, to: :controller
+
+    attr_reader :controller
+
+    def initialize(controller, object_doc, options = {})
       request_fields = options[:fields].presence || METADATA_FIELDS_MAP.keys
       @with_assets = options[:with_assets].presence
+      @controller = controller
       @object_doc = object_doc
       @object_hash = object_doc.extract_metadata(request_fields)
     end
@@ -80,11 +87,11 @@ module DRI::Formatters
     end
 
     def file_path(file_id)
-      Rails.application.routes.url_helpers.file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
+      file_download_path(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
 
     def file_url(file_id)
-      Rails.application.routes.url_helpers.file_download_url(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
+      file_download_url(id: file_id, object_id: @object_doc['id'], type: 'surrogate')
     end
   end
 end

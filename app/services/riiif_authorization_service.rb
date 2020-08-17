@@ -8,6 +8,7 @@ class RiiifAuthorizationService
     id = object.noid.split(':')[1]
 
     file_doc = SolrDocument.find(id)
+    return true if file_doc.collection?
     return false unless file_doc && file_doc['isPartOf_ssim'].present?
 
     object_doc = SolrDocument.find(file_doc['isPartOf_ssim'].first)

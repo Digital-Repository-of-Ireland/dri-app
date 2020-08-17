@@ -49,10 +49,23 @@ describe "DataciteDoi" do
 
     doc = Nokogiri::XML(xml)
     hash = Hash.from_xml(doc.to_s)
-    hash["resource"]["titles"]["title"].should == @object.title.first
-    hash["resource"]["creators"]["creator"]["creatorName"] == @object.creator.first
-    hash["resource"]["publisher"].should == DoiConfig.publisher
-    hash["resource"]["publicationYear"].should == "#{Time.now.year}"
+    expect(hash["resource"]["titles"]["title"]).to eq @object.title.first
+    expect(hash["resource"]["creators"]["creator"]["creatorName"]).to eq @object.creator.first
+    expect(hash["resource"]["publisher"]).to eq DoiConfig.publisher
+    expect(hash["resource"]["publicationYear"]).to eq "#{Time.now.year}"
+  end
+
+  it "should create datacite XML for a documentation object" do
+    doc_obj = FactoryBot.create(:documentation)
+    datacite = DataciteDoi.create(object_id: doc_obj.id)
+    xml = datacite.to_xml
+
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["titles"]["title"]).to eq doc_obj.title.first
+    expect(hash["resource"]["creators"]["creator"]["creatorName"]).to eq doc_obj.creator.first
+    expect(hash["resource"]["publisher"]).to eq DoiConfig.publisher
+    expect(hash["resource"]["publicationYear"]).to eq "#{Time.now.year}"
   end
 
   it 'should use roles if no creator' do
