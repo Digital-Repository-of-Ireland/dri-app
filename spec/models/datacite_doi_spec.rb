@@ -57,7 +57,7 @@ describe "DataciteDoi" do
 
   it "should create datacite XML for a documentation object" do
     doc_obj = FactoryBot.create(:documentation)
-    datacite = DataciteDoi.create(object_id: doc_obj.id)
+    datacite = DataciteDoi.create(object_id: doc_obj.noid)
     xml = datacite.to_xml
 
     doc = Nokogiri::XML(xml)
