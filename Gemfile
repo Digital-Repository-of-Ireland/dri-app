@@ -180,6 +180,6 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 # authorities
-gem 'qa', '~> 1.2'
+gem 'qa', '~> 5.1'
 
 gem "seedbank", "~> 0.5.0"
