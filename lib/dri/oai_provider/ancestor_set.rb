@@ -29,7 +29,7 @@ module DRI::OaiProvider
     end
 
     def load_collection_document
-      ActiveFedora::SolrService.query("id:#{value}").first
+      SolrDocument.find("#{value}")
     end
 
   end
