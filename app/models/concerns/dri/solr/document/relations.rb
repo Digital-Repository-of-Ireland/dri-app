@@ -33,7 +33,7 @@ module DRI::Solr::Document::Relations
         relationships_hash['Is Documentation For'] = [[link_text, documentation]]
       end
     else
-      relationships_hash.merge!(relationships_for_display) unless active_fedora_model == 'DRI::EncodedArchivalDescription'
+      relationships_hash.merge!(relationships_for_display) unless %w(DRI::EadComponent DRI::EadCollection).include?(active_fedora_model)
       relationships_hash.merge!(documentation_for_display)
     end
 
