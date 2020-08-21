@@ -18,7 +18,6 @@ DRI::Derivatives::ExtractMetadata.module_eval do
       Hydra::FileCharacterization.characterize(File.open(path), filename_for_characterization.join(""), :fits) do |config|
         config[:fits] = Settings.plugins.fits_path
       end
-      return
     end
   end
 
