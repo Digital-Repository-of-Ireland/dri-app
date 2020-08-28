@@ -47,7 +47,7 @@ module Preservation
     end
 
     # Return the hash part of the file path
-    # input (optional): object_id String (fedora object id) 
+    # input (optional): object_id String (fedora object id)
     # output: partial path String e.g. "1c/18/df/87/1c18df87m"
     def build_hash_dir(object_id)
       dir = ""

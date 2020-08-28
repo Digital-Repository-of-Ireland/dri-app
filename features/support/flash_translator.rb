@@ -23,6 +23,9 @@ module FlashTranslator
       when /^file upload$/
         I18n.t('dri.flash.notice.file_uploaded', :locale => @user.locale)
 
+      when /^asset deleted$/
+        I18n.t('dri.flash.notice.asset_deleted', :locale => @user.locale)
+
       when /^invalid file type$/
         I18n.t('dri.flash.alert.invalid_file_type', :locale => @user.locale)
 
