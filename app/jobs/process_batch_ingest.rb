@@ -84,7 +84,7 @@ class ProcessBatchIngest
     end
 
     preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets(filenames,[])
+    preservation.preserve_assets({ added: { 'content' => filenames }})
   end
 
   def self.ingest_metadata(collection_id, user, metadata)
@@ -150,7 +150,7 @@ class ProcessBatchIngest
     mime_type = Validators.file_type(file_path)
 
     begin
-      LocalFile.build_local_file(
+      lfile = LocalFile.build_local_file(
         object: object,
         generic_file: @generic_file,
         data:filedata,
@@ -163,7 +163,7 @@ class ProcessBatchIngest
     end
 
     FileUtils.rm_f(file_path)
-    filename
+    lfile.path
   end
 
   def self.build_generic_file(object:, user:, preservation: false)

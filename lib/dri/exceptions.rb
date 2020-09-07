@@ -23,6 +23,9 @@ module DRI
     class VirusDetected < StandardError
     end
 
+    class MoabError < StandardError
+    end
+
     class NotFound < StandardError
     end
 
@@ -73,8 +76,8 @@ module DRI
           code = "#{status_code(status_type)}"
           render(
             json: { errors: [{ status: code, detail: message }] },
-            content_type: 'application/json', 
-            status: code 
+            content_type: 'application/json',
+            status: code
           )
         end
         format.all  { render nothing: true, status: status_type}
@@ -85,13 +88,13 @@ module DRI
     def render_404(e)
       respond_to do |format|
         format.html  {
-          render file: "#{Rails.root}/public/404.html", 
-          layout: false, 
-          status: 404 
+          render file: "#{Rails.root}/public/404.html",
+          layout: false,
+          status: 404
         }
         format.json {
-          render json: {errors: [{status: "404", detail: "#{e}"}] }, 
-          content_type: 'application/json', status: 404 
+          render json: {errors: [{status: "404", detail: "#{e}"}] },
+          content_type: 'application/json', status: 404
         }
       end
     end

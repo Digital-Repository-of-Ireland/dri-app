@@ -3,24 +3,28 @@ class GenericFileContent
 
   attr_accessor :object, :generic_file, :user
 
-  def add_content(file_upload, download_url, path='content')
-    preserved_file = preserve_file(file_upload, path, false)
-
-    external_content(content_url(download_url, preserved_file.version), file_upload[:filename])
+  def add_content(file_upload, download_url, file_category='content')
+    preserved_file = preserve_file(file_upload, file_category, false)
+    external_content(
+                     content_url(download_url, preserved_file.version),
+                     file_upload[:filename]
+                    )
   end
 
-  def update_content(file_upload, download_url, path='content')
-    preserved_file = preserve_file(file_upload, path, true)
-
-    external_content(content_url(download_url, preserved_file.version), file_upload[:filename])
+  def update_content(file_upload, download_url, file_category='content')
+    preserved_file = preserve_file(file_upload, file_category, true)
+    external_content(
+                     content_url(download_url, preserved_file.version),
+                     file_upload[:filename]
+                    )
   end
 
   def checksum
     @file.checksum
   end
 
-  def external_content(url, filename, path='content')
-    generic_file.add_file('', path: path, original_name: filename, mime_type: external_mime_type(url))
+  def external_content(url, filename, file_category='content')
+    generic_file.add_file('', path: file_category, original_name: filename, mime_type: external_mime_type(url))
     generic_file.label = filename
     generic_file.title = [filename]
 
@@ -49,8 +53,28 @@ class GenericFileContent
     "#{URI.escape(download_url)}?version=#{version}"
   end
 
+  def existing_moab_path(file_category, filename, filepath)
+    preservation = Preservation::Preservator.new(object)
+    preservation.existing_filepath(
+                                    file_category,
+                                    "#{generic_file.id}_#{filename}",
+                                    filepath
+                                  )
+  end
+
   def preserve_file(filedata, datastream, update=false)
     filename = "#{generic_file.id}_#{filedata[:filename]}"
+
+    moab_path = existing_moab_path(
+                                    datastream,
+                                    filedata[:filename],
+                                    filedata[:file_upload].path
+                                  )
+
+    # attempting to replace existing file with duplicate
+    if moab_path && filedata[:filename] == generic_file.label
+      raise DRI::Exceptions::MoabError, "File already preserved"
+    end
 
     # Update object version
     object.object_version ||= '1'
@@ -68,16 +92,25 @@ class GenericFileContent
       generic_file: generic_file,
       data: filedata[:file_upload],
       datastream: datastream,
-      opts: { filename: filename, mime_type: filedata[:mime_type], checksum: 'md5' }
+      opts: { filename: filename, mime_type: filedata[:mime_type], checksum: 'md5', moab_path: moab_path }
     )
 
+    changes = {}
     # Do the preservation actions
-    addfiles = [filename]
-    delfiles = []
-    delfiles = ["#{generic_file.id}_#{generic_file.label}"] if update
+    if update && filedata[:filename] == generic_file.label
+      # existing file content is being replaced
+      changes[:modified] = { 'content' => [@file.path] }
+    else
+      changes[:added] = {'content' => [@file.path]}
+      changes[:deleted] = if update
+                            {'content' => ["#{generic_file.id}_#{generic_file.label}"] }
+                          else
+                            { 'content' => [] }
+                          end
+    end
 
     preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets(addfiles, delfiles)
+    preservation.preserve_assets(changes)
 
     @file
   end
@@ -115,5 +148,4 @@ class GenericFileContent
   def external_mime_type(url)
     "message/external-body; access-type=URL; URL=\"#{url}\""
   end
-
 end
