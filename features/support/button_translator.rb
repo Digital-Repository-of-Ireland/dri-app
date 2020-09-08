@@ -91,6 +91,9 @@ module ButtonTranslator
       when /^delete collection with the saved pid$/
         "delete_collection_#{@pid}"
 
+      when /^delete object with the saved pid$/
+        "delete_object_#{@pid}"
+      
       when /^confirm delete object$/
         "confirm_delete_object"
 

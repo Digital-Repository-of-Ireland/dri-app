@@ -44,6 +44,7 @@ gem 'moab-versioning'
 
 # File processing gems
 gem 'mimemagic'
+gem "image_processing", "~> 1.0"
 
 # Language and translation related gems
 gem 'http_accept_language'
@@ -179,6 +180,6 @@ gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'
 
 # authorities
-gem 'qa', '~> 1.2'
+gem 'qa', '~> 5.1'
 
 gem "seedbank", "~> 0.5.0"
