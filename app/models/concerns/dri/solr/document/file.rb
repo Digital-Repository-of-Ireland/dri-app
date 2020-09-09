@@ -5,6 +5,7 @@ module DRI::Solr::Document::File
     'audio' => 'Sound',
     'video' => 'MovingImage',
     'text' => 'Text',
+    '3d' => '3D',
     'mixed_types' => 'MixedType'
   }
 
@@ -55,14 +56,18 @@ module DRI::Solr::Document::File
   end
 
   def file_types
-    file_type_key = ActiveFedora.index_field_mapper.solr_name('file_type_display', :stored_searchable, type: :string).to_sym
+    file_type_key = ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string).to_sym
 
     self[file_type_key] || []
   end
 
+  def parent_type
+   self['type_tesim'].present? ? self['type_tesim'].first : nil
+  end 
+
   def file_type_label
     types = file_types
-
+    
     return I18n.t('dri.data.types.Unknown') if types.blank?
 
     labels = []
@@ -70,7 +75,7 @@ module DRI::Solr::Document::File
       label = FILE_TYPE_LABELS[type.to_s.downcase] || 'Unknown'
       labels << label
     end
-
+    
     labels = labels.uniq
     label = labels.length > 1 ? FILE_TYPE_LABELS['mixed_types'] : labels.first
 
@@ -84,7 +89,7 @@ module DRI::Solr::Document::File
     types.each do |type|
       format = type.to_s.downcase
 
-      icon = if %w(image audio text video mixed_types).include?(format)
+      icon = if %w(image audio text video 3d mixed_types).include?(format)
              "dri/formats/#{format}_icon.png"
            else
              'no_image.png'
@@ -147,4 +152,9 @@ module DRI::Solr::Document::File
   def audio?
     Settings.restrict.mime_types.audio.include? mime_type
   end
+  
+  def _3D? 
+   Settings.restrict.mime_types._3D.include? mime_type
+  end 
+
 end
