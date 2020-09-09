@@ -1,5 +1,5 @@
 # Tell RIIIF to get files via HTTP (not from the local disk)
-Riiif::Image.file_resolver = Riiif::HTTPFileResolver.new
+Riiif::Image.file_resolver = Riiif::HttpFileResolver.new
 Riiif::Image.authorization_service = RiiifAuthorizationService
 
 # This tells RIIIF how to resolve the identifier to an asset URI

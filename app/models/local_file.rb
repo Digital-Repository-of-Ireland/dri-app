@@ -17,6 +17,7 @@ class LocalFile < ActiveRecord::Base
     options[:batch_id] = object.id
     options[:object_version] = object.object_version || 1
     options[:file_name] = opts[:filename]
+    options[:moab_path] = opts[:moab_path]
 
     # Add and save the file
     file.add_file(data, options)
@@ -47,11 +48,15 @@ class LocalFile < ActiveRecord::Base
     self.version = opts[:object_version] || 1
     self.mime_type = opts[:mime_type]
 
-    base_dir = opts[:directory].presence || File.join(content_path(batch_id, version))
-    FileUtils.mkdir_p(base_dir)
-    self.path = File.join(base_dir, opts[:file_name])
+    if opts[:moab_path].present?
+      self.path = File.join(aip_dir(batch_id), opts[:moab_path])
+    else
+      base_dir = opts[:directory].presence || File.join(content_path(batch_id, version))
+      FileUtils.mkdir_p(base_dir)
+      self.path = File.join(base_dir, opts[:file_name])
 
-    upload_to_file(upload)
+      upload_to_file(upload)
+    end
 
     self.checksum = if opts[:checksum]
                       { opts[:checksum] => Checksum.checksum(opts[:checksum], path) }

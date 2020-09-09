@@ -10,7 +10,7 @@ gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
 gem 'hydra-head', '10.6.2'
-gem 'active-fedora', '12.1.1'
+gem 'active-fedora', '~> 12.2'
 gem 'solrizer'
 
 gem 'riiif'

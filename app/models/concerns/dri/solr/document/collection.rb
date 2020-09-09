@@ -109,6 +109,18 @@ module DRI::Solr::Document::Collection
     end
     ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
   end
+   
+   def type_count_3d(type, published_only: false)
+    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
+                 "\" AND " +
+                 "#{ActiveFedora.index_field_mapper.solr_name('type', :facetable, type: :string)}:"+ type
+
+    if published_only
+      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+    end
+    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
+  end 
+
 
   private
 

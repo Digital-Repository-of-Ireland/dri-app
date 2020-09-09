@@ -152,8 +152,7 @@ class ApplicationController < ActionController::Base
     end
 
     def locked(id)
-      docs = ActiveFedora::SolrService.query("id:#{id}")
-      obj = SolrDocument.new(docs.first)
+      obj = SolrDocument.find(id)
 
       return unless CollectionLock.exists?(collection_id: obj.root_collection_id)
 

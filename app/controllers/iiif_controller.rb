@@ -16,7 +16,7 @@ class IiifController < ApplicationController
   def manifest
     iiif_respond do
       Rails.cache.fetch(
-        "#{@document.id}-#{@document['system_modified_dtsi']}"
+        "#{@document.id}-#{@document['timestamp']}"
       ) { iiif_manifest.as_json }
     end
   end
@@ -24,7 +24,7 @@ class IiifController < ApplicationController
   def sequence
     iiif_respond do
       Rails.cache.fetch(
-        "#{@document.id}-iiif-sequence-#{@document['system_modified_dtsi']}"
+        "#{@document.id}-iiif-sequence-#{@document['timestamp']}"
       ) { iiif_sequence.as_json }
     end
   end
