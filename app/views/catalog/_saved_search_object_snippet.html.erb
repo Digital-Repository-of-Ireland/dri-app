@@ -29,34 +29,40 @@
 
 <% else %>
 
-    <div class="dri_content_block">
-      <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
-      <div class="dri_image">
-         <% present(document, DRI::ImagePresenter) do |images| %>
-          <%= image_tag images.image_for_search, width: "200" %>
-        <% end %>
-      </div><!-- close image -->
-      <p class="dri_subject">
-        <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
-            <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
-                <%= subject %>
-                <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject %> | <% end %>
-            <% end %>
-        <% else %>
-            n/a
-        <% end %>
-      </p>
-      <div class="dri_icon">
-      <% if document.file_type_label != t("dri.data.types.Unknown") %>
-          <span class="dri_icon_image">
-            <% document.icon_path.each do |i| %>
-              <%= image_tag(i) %>
-            <% end %> &nbsp; <%= document.file_type_label %></span>
+  <div class="dri_content_block">
+    <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+    <div class="dri_image">
+       <% present(document, DRI::ImagePresenter) do |images| %>
+        <%= image_tag images.image_for_search, width: "200" %>
+      <% end %>
+    </div><!-- close image -->
+    <p class="dri_subject">
+      <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
+          <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
+              <%= subject %>
+              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject %> | <% end %>
+          <% end %>
       <% else %>
+          n/a
+      <% end %>
+    </p>
+    <div class="dri_icon">
+    <% present(document, DRI::ObjectPresenter) do |presenter| %>
+        <% if presenter.file_type_labels != t("dri.data.types.Unknown") %>
+          <span class="dri_icon_image">
+            <% present(document, DRI::ImagePresenter) do |images| %>
+              <% images.icons.each do |icon| %>
+                <%= image_tag(icon) %>
+              <% end %>
+            <% end %> &nbsp;
+            <%= presenter.file_type_labels %>
+          </span>
+        <% else %>
           <!-- takes value from metadata -->
           <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
+        <% end %>
       <% end %>
     </div>
-    </div>
+  </div>
 
 <% end %>

@@ -15,6 +15,8 @@ restrict:
     audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg', 'audio/x-aiff']
     video: ['video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
     _3D: ['application/octet-stream', 'text/plain']
+  file_formats:
+    _3D: ['STL (Standard Tessellation Language) Binary']
 storage:
   driver: s3_interface
 downloads:

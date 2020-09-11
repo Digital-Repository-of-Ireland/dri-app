@@ -1,16 +1,12 @@
 <% @surrogate = nil %>
 <% if generic_file.present? && !generic_file.preservation_only? %>
-   <% if generic_file._3D? && document.parent_type == "3D" %>
-    <%@threeD_url= file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
-      <%= render partial: 'shared/display_3d',locals: { url: @threeD_url} %>
-      <%end%> 
     <% if generic_file.audio? %>
         <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
         <% @surrogate = @surrogate_mp3 %>
         <% if @surrogate %>
           <% @surrogate_ogg = @presenter.surrogate_url(generic_file.id, "ogg") %>
           <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, class: 'dri_audio' %>
-           <%= render partial: 'shared/object_show_single_audio_<!--- details', locals: { generic_file: generic_file } %>
+           <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
         <% end %>
 
     <% elsif generic_file.video? %>
@@ -67,6 +63,9 @@
                 <% end %>
             <% end %>
         <% end %>
+    <% elsif generic_file.threeD? %>
+      <% @threeD_url = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
+      <%= render partial: 'shared/display_3d',locals: { url: @threeD_url } %>
     <% end %>
 
     <% if @surrogate.blank? %>
@@ -79,5 +78,5 @@
           <% end %>
         </p>
     <% end %>
-<% end %> 
+<% end %>
 
