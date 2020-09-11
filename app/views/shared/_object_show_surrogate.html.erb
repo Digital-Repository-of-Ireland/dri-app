@@ -1,6 +1,5 @@
 <% @surrogate = nil %>
 <% if generic_file.present? && !generic_file.preservation_only? %>
-
     <% if generic_file.audio? %>
         <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
         <% @surrogate = @surrogate_mp3 %>
@@ -64,6 +63,9 @@
                 <% end %>
             <% end %>
         <% end %>
+    <% elsif generic_file.threeD? %>
+      <% @threeD_url = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
+      <%= render partial: 'shared/display_3d',locals: { url: @threeD_url } %>
     <% end %>
 
     <% if @surrogate.blank? %>

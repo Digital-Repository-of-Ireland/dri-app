@@ -10,14 +10,14 @@ gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
 gem 'hydra-head', '10.6.2'
-gem 'active-fedora', '12.1.1'
+gem 'active-fedora', '~> 12.2'
 gem 'solrizer'
 
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.7'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.9'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.4.2'
 gem "devise", ">= 4.7.1"
 

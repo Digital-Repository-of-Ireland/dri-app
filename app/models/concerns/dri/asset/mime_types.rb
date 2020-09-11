@@ -23,6 +23,11 @@ module DRI
         self.class.audio_mime_types.include? self.mime_type
       end
 
+      def threeD?
+        self.class._3D_mime_types.include?(self.mime_type) &&
+          self.class._3D_file_formats.any?{ |f| self.file_format.downcase.include?(f.downcase) }
+      end
+
       def file_format
         return nil if self.mime_type.blank? && self.format_label.blank?
         return self.mime_type.split('/')[1] + " (" + self.format_label.join(", ") + ")" unless self.mime_type.blank? || self.format_label.blank?
@@ -49,6 +54,15 @@ module DRI
 
         def audio_mime_types
           Settings.restrict.mime_types.audio
+        end
+
+        def _3D_mime_types
+          Settings.restrict.mime_types._3D
+        end
+
+        # Restrict mimetypes for 3D
+        def _3D_file_formats
+          ::Settings.restrict.file_formats._3D
         end
       end
     end

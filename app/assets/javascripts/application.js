@@ -25,6 +25,12 @@
 //= require i18n
 //= require i18n/translations
 
+//= require Three/three
+//= require Three/OrbitControls
+//= require Three/STLLoader
+//= require Three/dat.gui.min.js
+//= require Three/GLTFLoader.js
+
 //
 // Required by Blacklight-Maps
 //= require blacklight/core
@@ -61,3 +67,7 @@
 //= require dri
 //
 //= require dri/autocomplete_vocabs
+
+
+
+

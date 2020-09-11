@@ -33,6 +33,20 @@ module Preservation
       )
     end
 
+    def existing_filepath(moab_path, filename, file_path)
+      file_signature = ::Moab::FileSignature.from_file(Pathname.new(file_path))
+
+      signature_catalog.catalog_filepath(file_signature)
+    rescue Moab::FileNotFoundException
+      nil
+    end
+
+    def signature_catalog
+      storage_object = ::Moab::StorageObject.new(object.id, aip_dir(object.id))
+      storage_version = storage_object.current_version
+      storage_version.signature_catalog
+    end
+
     # moabify_datastream
     # Takes two paramenters
     # - name (datastream and file name)
@@ -92,7 +106,7 @@ module Preservation
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
         end
-        dslist.push(datastreams.map { |item| item << ".xml" }).flatten!
+        dslist.push(datastreams.map { |item| File.join(metadata_path(object.id, version), item << ".xml") }).flatten!
       end
 
       if @object.object_version == '1'
@@ -107,12 +121,14 @@ module Preservation
       true
     end
 
-
     # preserve_assets
-    def preserve_assets(addfiles, delfiles)
+    def preserve_assets(changes)
       create_moab_dirs()
       moabify_datastream('properties', object.attached_files['properties'])
-      update_manifests({added: {'content' => addfiles}, deleted: {'content' => delfiles}, modified: {'metadata' => ['properties.xml']}})
+      changes[:modified] ||= {}
+      changes[:modified]['metadata'] = [File.join(metadata_path(self.object.id, self.version), 'properties.xml')]
+
+      update_manifests(changes)
     end
 
     # create_manifests
@@ -176,7 +192,7 @@ module Preservation
           path = path_for_type(type)
 
           changes[:modified][type].each do |file|
-            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
+            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(File.basename(file))
 
             moab_add_file_instance(path, file, type)
           end
@@ -196,7 +212,7 @@ module Preservation
       signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.id)
       signature_catalog.parse(Pathname.new(File.join(previous_manifest_path, 'signatureCatalog.xml')).read)
       version_additions = signature_catalog.version_additions(@version_inventory)
-      signature_catalog.update(@version_inventory, Pathname.new( data_path(object.id, self.version) ))
+      signature_catalog.update(@version_inventory, Pathname.new(data_path(object.id, self.version)))
       file_inventory_difference = Moab::FileInventoryDifference.new
       file_inventory_difference.compare(last_version_inventory, @version_inventory)
 
@@ -226,10 +242,10 @@ module Preservation
 
       def moab_add_file_instance(path, file, type)
         file_signature = Moab::FileSignature.new()
-        file_signature.signature_from_file(Pathname.new(File.join(path, file)))
+        file_signature.signature_from_file(Pathname.new(file))
 
         file_instance = Moab::FileInstance.new()
-        file_instance.instance_from_file(Pathname.new(File.join(path, file)), Pathname.new(path))
+        file_instance.instance_from_file(Pathname.new(file), Pathname.new(path))
 
         @version_inventory.groups.find {|g| g.group_id == type.to_s }.add_file_instance(file_signature, file_instance)
       end

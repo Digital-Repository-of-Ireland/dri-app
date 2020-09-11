@@ -35,7 +35,7 @@ DRI::ModelSupport::Files.module_eval do
       raise Exceptions::InternalError
     end
 
-    LocalFile.build_local_file(
+    lfile = LocalFile.build_local_file(
       object: self,
       generic_file: generic_file,
       data: file,
@@ -46,7 +46,7 @@ DRI::ModelSupport::Files.module_eval do
     VersionCommitter.create(version_id: 'v%04d' % object.object_version, obj_id: object.id, committer_login: user.to_s)
 
     preservation = Preservation::Preservator.new(self)
-    preservation.preserve_assets([filename],[])
+    preservation.preserve_assets({ added: { 'content' => [lfile.path] }})
 
     url = Rails.application.routes.url_helpers.url_for(
       controller: 'assets',
