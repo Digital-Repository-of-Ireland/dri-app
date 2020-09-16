@@ -201,6 +201,7 @@ class CatalogController < ApplicationController
 
     # assets ordered by label, excludes preservation only files
     @assets = @document.assets(ordered: true)
+    @file_display_type_count = @document.file_display_type_count(published_only: true)
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
     supported_licences
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
