@@ -14,7 +14,7 @@
 </div>
 
 <div class="dri_report_container">
-  <%= render partial: 'shared/show_collection_object_type_links', locals: { document: @document, objects_count: @document.published_objects_count } %>
+  <%= render partial: 'shared/show_collection_object_type_links', locals: { document: @document, objects_count: @file_display_type_count['all'] } %>
 </div>
 
 <%= form_tag({ controller: "analytics", action: "show", id: @document.id }, method: "get") do %>

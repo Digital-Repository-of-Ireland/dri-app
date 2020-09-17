@@ -120,10 +120,12 @@ class AssetsController < ApplicationController
       else
         message = @generic_file.errors.full_messages.join(', ')
         flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
+        @warnings = t('dri.flash.alert.error_saving_file', error: message)
         logger.error "Error saving file: #{message}"
       end
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
+      @warnings = t('dri.flash.alert.error_saving_file', error: message)
       logger.error "Error saving file: #{e.message}"
     end
 
@@ -156,17 +158,22 @@ class AssetsController < ApplicationController
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
+    begin
+      if file_content.add_content(file_upload, download_url)
+        flash[:notice] = t('dri.flash.notice.file_uploaded')
 
-    if file_content.add_content(file_upload, download_url)
-      flash[:notice] = t('dri.flash.notice.file_uploaded')
-
-      record_version_committer(@object, current_user)
-      mint_doi(@object, 'asset added') if @object.status == 'published'
-    else
-      message = @generic_file.errors.full_messages.join(', ')
-      flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
+        record_version_committer(@object, current_user)
+        mint_doi(@object, 'asset added') if @object.status == 'published'
+      else
+        message = @generic_file.errors.full_messages.join(', ')
+        flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
+        @warnings = t('dri.flash.alert.error_saving_file', error: message)
+        logger.error "Error saving file: #{message}"
+      end
+    rescue DRI::Exceptions::MoabError => e
+      flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: message)
-      logger.error "Error saving file: #{message}"
+      logger.error "Error saving file: #{e.message}"
     end
 
     respond_to do |format|

@@ -9,9 +9,8 @@ class ExportsController < ApplicationController
 
   def create
     enforce_permissions!('manage_collection', params[:id])
-
     begin
-      Resque.enqueue(CreateExportJob, self, params[:id], params[:fields], current_user.email)
+      Resque.enqueue(CreateExportJob, request.base_url, params[:id], params[:fields], current_user.email)
     rescue Exception
       flash[:alert] = t('dri.flash.error.exporting')
       redirect_back(fallback_location: root_path)

@@ -41,7 +41,7 @@
     <%= image_tag(cover_image_path(document), alt: t('dri.views.alt_tags.cover_image')) %>
   </div>
   <% end %>
-  <%= render partial: "show_collection_navigation_tools", locals: { document: document, objects_count: document.total_objects_count } %>
+  <%= render partial: "show_collection_navigation_tools", locals: { document: document, objects_count: @file_display_type_count['all'] } %>
   <%= render partial: "shared/tools", locals: { document: document } %>
   <% if signed_in? && (can? :manage_collection, document) %>
     <%= render partial: "show_collection_manager_tools", locals: { document: document } %>

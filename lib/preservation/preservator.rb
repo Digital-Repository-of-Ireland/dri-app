@@ -44,7 +44,12 @@ module Preservation
     def signature_catalog
       storage_object = ::Moab::StorageObject.new(object.id, aip_dir(object.id))
       storage_version = storage_object.current_version
-      storage_version.signature_catalog
+
+      if ::Moab::SignatureCatalog.xml_pathname_exist?(manifest_path(object.id, storage_version.version_id))
+        storage_version.signature_catalog
+      else
+        raise DRI::Exceptions::MoabError, "Invalid MOAB version"
+      end
     end
 
     # moabify_datastream
