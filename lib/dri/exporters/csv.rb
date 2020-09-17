@@ -1,8 +1,7 @@
 require 'csv'
 
-module DRI::Formatters
+module DRI::Exporters
   class Csv
-    include ActionController::UrlFor
     include Rails.application.routes.url_helpers
 
     METADATA_FIELDS_MAP = {
@@ -29,15 +28,11 @@ module DRI::Formatters
      'identifiers' => 'Identifiers'
     }
 
-    delegate :env, :request, to: :controller
-
-    attr_reader :controller
-
-    def initialize(controller, object_doc, options = {})
+    def initialize(base_url, object_doc, options = {})
       fields = options[:fields].presence
       @with_assets = options[:with_assets].presence
       @request_fields = fields || METADATA_FIELDS_MAP.keys
-      @controller = controller
+      @base_url = base_url
       @object_doc = object_doc
     end
 
@@ -80,11 +75,11 @@ module DRI::Formatters
     end
 
     def file_url(file_id)
-      file_download_url(
+      File.join(@base_url, file_download_path(
         id: file_id,
         object_id: @object_doc['id'],
         type: 'surrogate',
-      )
+      ))
     end
 
     def licence
@@ -105,6 +100,7 @@ module DRI::Formatters
         controller: 'catalog',
         action: 'show',
         id: @object_doc.id,
+        host: @base_url
       )
     end
   end

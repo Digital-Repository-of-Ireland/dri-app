@@ -4,7 +4,7 @@ class CreateExportJob
 
   @queue = :create_archive
 
-  def self.perform(controller, object_id, fields, email)
+  def self.perform(base_url, object_id, fields, email)
     @first_pass = Tempfile.new("#{object_id}_export_first")
 
     assets = fields.delete('assets')
@@ -20,7 +20,7 @@ class CreateExportJob
     end
     titles << 'Url'
 
-    first_pass(controller, object_id, titles, options)
+    first_pass(base_url, object_id, titles, options)
     output = second_pass(object_id, titles)
 
     key = store_export(object_id, email, output.path)
@@ -29,14 +29,14 @@ class CreateExportJob
     JobMailer.export_ready_mail(key, email, object_id).deliver_now
   end
 
-  def self.first_pass(controller, object_id, titles, options)
+  def self.first_pass(base_url, object_id, titles, options)
     q_result = collection_objects(object_id)
 
     CSV.open(@first_pass.path, "wb") do |csv|
       csv << titles # title row
 
       q_result.each do |doc|
-        formatter = DRI::Formatters::Csv.new(controller, doc, options)
+        formatter = DRI::Exporters::Csv.new(base_url, doc, options)
         csv_string = formatter.format
         CSV.parse(csv_string, headers: true) do |row|
           row.each do |header, value|

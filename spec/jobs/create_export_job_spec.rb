@@ -48,7 +48,7 @@ describe ExportsController, type: :controller do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(controller, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller.request.base_url, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -63,7 +63,7 @@ describe ExportsController, type: :controller do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(controller, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller.request.base_url, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
@@ -84,7 +84,7 @@ describe ExportsController, type: :controller do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(controller, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller.request.base_url, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
