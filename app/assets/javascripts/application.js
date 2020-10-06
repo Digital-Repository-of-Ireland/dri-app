@@ -53,7 +53,6 @@
 //= require blacklight/blacklight
 //
 //= require jquery.colorbox
-//= require social-share-button
 //= require jquery-xmleditor
 //= require openseadragon
 //= require spin
