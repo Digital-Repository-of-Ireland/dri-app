@@ -162,7 +162,6 @@ gem 'jquery-colorbox-rails'
 gem 'bootstrap-switch-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
-gem 'social-share-button'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'clipboard-rails'
 
