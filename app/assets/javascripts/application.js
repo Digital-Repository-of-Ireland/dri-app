@@ -25,23 +25,23 @@
 //= require i18n
 //= require i18n/translations
 
-//= require Three/three
+//= require Three/three.min
 //= require Three/OrbitControls
 //= require Three/STLLoader
-//= require Three/dat.gui.min.js
-//= require Three/GLTFLoader.js
+//= require Three/dat.gui.min
+//= require Three/GLTFLoader
 
 //
 // Required by Blacklight-Maps
 //= require blacklight/core
 //= require leaflet
 //= require leaflet.markercluster
-//= require blacklight-maps/blacklight-maps-browse.js
+//= require blacklight-maps/blacklight-maps-browse
 //= require leaflet.extend
 //= require jquery.remotipart
 //= require js.cookie
 //= require jquery.validate
-//= require additional-methods
+//= require jquery.validate-additional-methods
 //= require bootstrap/affix
 //= require bootstrap/carousel
 //= require bootstrap/tooltip
@@ -53,7 +53,6 @@
 //= require blacklight/blacklight
 //
 //= require jquery.colorbox
-//= require social-share-button
 //= require jquery-xmleditor
 //= require openseadragon
 //= require spin
@@ -67,7 +66,3 @@
 //= require dri
 //
 //= require dri/autocomplete_vocabs
-
-
-
-

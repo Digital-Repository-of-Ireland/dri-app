@@ -64,8 +64,8 @@
             <% end %>
         <% end %>
     <% elsif generic_file.threeD? %>
-      <% @threeD_url = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
-      <%= render partial: 'shared/display_3d',locals: { url: @threeD_url } %>
+      <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
+      <%= render partial: 'shared/display_3d', locals: { url: @surrogate } %>
     <% end %>
 
     <% if @surrogate.blank? %>
