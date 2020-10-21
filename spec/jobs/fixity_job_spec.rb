@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'solr/query'
 
 describe 'FixityJob' do
-  
+
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
@@ -22,7 +22,7 @@ describe 'FixityJob' do
   after(:each) do
     @object.delete
     @collection.delete
-   
+
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 

@@ -7,9 +7,9 @@ module Preservation
 
     attr_accessor :base_dir, :object, :version
 
-    def initialize(object)
+    def initialize(object, version=nil)
      self.object = object
-     self.version = object.object_version
+     self.version = version || object.object_version
     end
 
     # create_moab_dir
@@ -172,17 +172,19 @@ module Preservation
     end
 
     # update_manifests
-    # changes: hash with keys :added, :modified and :deleted. Each is an array of filenames (excluding directory paths)
+    # changes: hash with keys :added, :modified and :deleted. Each is an array of filenames
     def update_manifests(changes)
-      current_manifest_path = manifest_path(object.id, self.version)
-      previous_manifest_path = manifest_path(object.id, self.version.to_i-1)
+      current_version_id = version.to_i
+      current_manifest_path = manifest_path(object.id, current_version_id)
 
-      last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: @object.id)
+      previous_version_id, previous_manifest_path = find_previous_manifest_path(current_version_id)
+
+      last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: previous_version_id, digital_object_id: @object.id)
       last_version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
 
-      @version_inventory = Moab::FileInventory.new(type: 'version', version_id: self.version.to_i-1, digital_object_id: @object.id)
+      @version_inventory = Moab::FileInventory.new(type: 'version', version_id: previous_version_id, digital_object_id: @object.id)
       @version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
-      @version_inventory.version_id = @version_inventory.version_id+1
+      @version_inventory.version_id = current_version_id
 
       if changes.key?(:added)
         changes[:added].keys.each do |type|
@@ -217,7 +219,7 @@ module Preservation
       signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.id)
       signature_catalog.parse(Pathname.new(File.join(previous_manifest_path, 'signatureCatalog.xml')).read)
       version_additions = signature_catalog.version_additions(@version_inventory)
-      signature_catalog.update(@version_inventory, Pathname.new(data_path(object.id, self.version)))
+      signature_catalog.update(@version_inventory, Pathname.new(data_path(object.id, current_version_id)))
       file_inventory_difference = Moab::FileInventoryDifference.new
       file_inventory_difference.compare(last_version_inventory, @version_inventory)
 
@@ -226,7 +228,7 @@ module Preservation
       version_additions.write_xml_file(Pathname.new(current_manifest_path))
       file_inventory_difference.write_xml_file(Pathname.new(current_manifest_path))
 
-      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.id, version_id: self.version)
+      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.id, version_id: current_version_id)
       manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(current_manifest_path, recursive=false)
       manifest_inventory.write_xml_file(Pathname.new(current_manifest_path))
 
@@ -236,7 +238,45 @@ module Preservation
       false
     end
 
+    def verify
+      storage_object = ::Moab::StorageObject.new(object.id, aip_dir(object.id))
+      storage_object_version = storage_object.current_version
+
+      begin
+        file_inventory = storage_object_version.file_inventory('version')
+        group = file_inventory.groups.select { |g| g.group_id = 'metadata' }.first
+
+        storage_verify = moab_storage_verify(storage_object_version)
+      rescue Exception => e
+         return { verified: false, output: e.message }
+      end
+
+      equal_versions = storage_object_version.version_id == object.object_version.to_i
+      metadata_match = metadata_matches?(object, group.path_hash['descMetadata.xml'].md5)
+      properties_match = properties_match?(object, group.path_hash['properties.xml'].md5)
+
+      {
+        verified: equal_versions && storage_verify[:verified] && metadata_match && properties_match,
+        storage_verify: storage_verify[:output],
+        versions: equal_versions,
+        metadata: metadata_match,
+        properties: properties_match
+      }
+    end
+
     private
+
+      def find_previous_manifest_path(current_version_id)
+        previous_version_id = current_version_id - 1
+
+        [previous_version_id..1].each do |vid|
+          path = manifest_path(object.id, previous_version_id)
+          if File.exist?(path)
+            previous_version_id = vid
+            break [vid, path]
+          end
+        end
+      end
 
       def make_dir(paths)
         FileUtils.mkdir_p(paths)
@@ -255,6 +295,16 @@ module Preservation
         @version_inventory.groups.find {|g| g.group_id == type.to_s }.add_file_instance(file_signature, file_instance)
       end
 
+      def moab_storage_verify(storage_object_version)
+        verify = storage_object_version.verify_version_storage
+        {
+          verified: verify.verified,
+          output: verify.subentities.select { |s| s.verified == false }
+        }
+      rescue Exception => e
+        { verified: false, output: e.message }
+      end
+
       def path_for_type(type)
         if type == 'content'
           content_path(object.id, self.version)
@@ -263,5 +313,14 @@ module Preservation
         end
       end
 
+      def metadata_matches?(object, moab_metadata_md5)
+        (Checksum.md5_string(object.attached_files[:descMetadata].content) == moab_metadata_md5) ||
+        (Checksum.md5_string(object.descMetadata.to_xml) == moab_metadata_md5)
+      end
+
+      def properties_match?(object, moab_properties_md5)
+        (Checksum.md5_string(object.attached_files[:properties].content) == moab_properties_md5) ||
+        (Checksum.md5_string(object.properties.to_xml) == moab_properties_md5)
+      end
   end
 end
