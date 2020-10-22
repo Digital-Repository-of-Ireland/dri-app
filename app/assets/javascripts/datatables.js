@@ -41,7 +41,7 @@ $(document).ready(function() {
                         if (data == 'passed') {
                           return "<i class=\"fa fa-check-circle-o fa-2x text-success\" >" + "(" + row[5] + " of " + row[4] + " checked)</i>"
                         } else if (data == 'failed') {
-                          return "<i class=\"fa fa-times fa-2x text-danger\" >" + "(" + row[5] + " of " + row[4] + " checked)</i>"
+                          return "<i class=\"fa fa-times fa-2x text-danger\" >" + "(" + row[5] + " of " + row[4] + " checked, " + row[6] + " failures)</i>"
                         } else {
                           return "<i class=\"fa fa-exclamation-circle fa-2x text-warning\" ></i>"
                         }

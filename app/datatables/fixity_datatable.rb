@@ -1,6 +1,6 @@
 class FixityDatatable
   delegate :current_user, :params, :object_history_path, :link_to, :fixity_check_path, to: :@view
-  
+
   def initialize(view)
     @view = view
   end
@@ -25,7 +25,8 @@ private
        fixity[:verified],
        fixity_check_path(collection.id),
        collection.total_objects_count,
-       total_checked(collection.id, fixity[:time])
+       total_checked(collection.id),
+       fixity[:failures]
       ]
     end
   end
@@ -41,7 +42,7 @@ private
 
   def display_on_page
     Kaminari.paginate_array(collections).page(page).per(per_page)
-  end 
+  end
 
   def page
     params[:start].to_i/per_page + 1
@@ -50,7 +51,7 @@ private
   def per_page
     params[:length].to_i > 0 ? params[:length].to_i : 10
   end
-  
+
   def load_collections
     collections = []
 
@@ -66,8 +67,7 @@ private
     collections
   end
 
-  def total_checked(id, start_time)
-    FixityCheck.where(collection_id: id).where("created_at >= '#{start_time}'").count
+  def total_checked(id)
+    FixityReport.where(collection_id: id).latest.fixity_checks.count
   end
-    
 end
