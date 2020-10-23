@@ -97,14 +97,16 @@ describe ObjectHistory  do
   end
 
   it 'should get collection fixity information' do
-    FixityCheck.create(collection_id: @collection.id, object_id: @object.id, verified: true)
+    report = FixityReport.create(collection_id: @collection.id)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.id, object_id: @object.id, verified: true)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('passed')
   end
 
   it 'should get collection fixity information with failures' do
-    FixityCheck.create(collection_id: @collection.id, object_id: @object.id, verified: false)
+    report = FixityReport.create(collection_id: @collection.id)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.id, object_id: @object.id, verified: false)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('failed')
