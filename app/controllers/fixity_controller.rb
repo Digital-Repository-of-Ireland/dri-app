@@ -38,7 +38,9 @@ class FixityController < ApplicationController
   end
 
   def fixity_collection(collection)
-    Resque.enqueue(FixityCollectionJob, collection.id, current_user.id)
+    report = FixityReport.create(collection_id: collection.id)
+
+    Resque.enqueue(FixityCollectionJob, report.id, collection.id, current_user.id)
     flash[:notice] = t('dri.flash.notice.fixity_check_running')
   rescue Exception => e
     logger.error "Unable to submit fixity job: #{e.message}"
