@@ -20,7 +20,6 @@ class FixityJob
     query.each do |o|
       object = DRI::Batch.find(o.id)
       result = Preservation::Preservator.new(object).verify
-      puts result.inspect
 
       FixityCheck.create(
         fixity_report_id: report_id,
