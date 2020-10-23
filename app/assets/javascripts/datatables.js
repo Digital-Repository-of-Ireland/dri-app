@@ -39,18 +39,18 @@ $(document).ready(function() {
         columnDefs: [
           { "render": function ( data, type, row ) {
                         if (data == 'passed') {
-                          return "<i class=\"fa fa-check-circle-o fa-2x text-success\" >" + "(" + row[5] + " of " + row[4] + " checked)</i>"
+                          return "<i class=\"fa fa-check-circle-o text-success\" >" + "(" + row[5] + " of " + row[4] + " checked)</i>"
                         } else if (data == 'failed') {
-                          return "<i class=\"fa fa-times fa-2x text-danger\" >" + "(" + row[5] + " of " + row[4] + " checked, " + row[6] + " failures)</i>"
+                          return "<i class=\"fa fa-times text-danger\" >" + "(" + row[5] + " of " + row[4] + " checked, " + row[6] + " failures)</i>"
                         } else {
-                          return "<i class=\"fa fa-exclamation-circle fa-2x text-warning\" ></i>"
+                          return "<i class=\"fa fa-exclamation-circle text-warning\" ></i>"
                         }
             },
             "targets": 2
           },
           { "render": function ( data, type, row ) {
             return "<a rel=\"nofollow\" data-method=\"put\" href=\"" + data + "\">"
-              + "<i class=\"fa fa-arrow-circle-right fa-2x text-success\"></i></a>"
+              + "<i class=\"fa fa-arrow-circle-right text-success\"></i></a>"
             },
             "targets": 3
           },
