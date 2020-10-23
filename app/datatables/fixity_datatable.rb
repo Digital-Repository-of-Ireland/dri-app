@@ -25,7 +25,7 @@ private
        fixity[:verified],
        fixity_check_path(collection.id),
        collection.total_objects_count,
-       total_checked(collection.id),
+       fixity[:verified] == 'unknown' ? 0 : total_checked(collection.id),
        fixity[:failures]
       ]
     end
