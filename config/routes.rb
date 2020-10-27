@@ -173,4 +173,9 @@ Rails.application.routes.draw do
   end
 
   get 'pages/*id' => 'high_voltage/pages#show'
+
+   namespace 'api' do 
+      get 'oembed' , to: 'oembed#show' , constraints: ->(request){ request.query_parameters["url"].present? } 
+   end
+ 
 end
