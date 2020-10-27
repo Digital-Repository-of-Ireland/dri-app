@@ -6,7 +6,7 @@ class FixityCollectionJob
     sub_collection_verify_jobs(report_id, collection_id)
 
     # verify direct child objects of this collection
-    queue_job(report_id, collection_id)
+    queue_job(report_id, collection_id, collection_id)
   end
 
   def self.sub_collection_verify_jobs(report_id, collection_id)
@@ -16,10 +16,10 @@ class FixityCollectionJob
     job_ids = []
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
-    query.each { |subcoll| queue_job(report_id, subcoll['id']) }
+    query.each { |subcoll| queue_job(report_id, collection_id, subcoll['id']) }
   end
 
-  def self.queue_job(report_id, collection_id)
-    Resque.enqueue(FixityJob, report_id, collection_id)
+  def self.queue_job(report_id, root_collection_id, collection_id)
+    Resque.enqueue(FixityJob, report_id, root_collection_id, collection_id)
   end
 end
