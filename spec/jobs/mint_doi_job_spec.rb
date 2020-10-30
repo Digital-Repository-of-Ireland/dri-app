@@ -4,6 +4,9 @@ require 'doi/datacite'
 describe "MintDoiJob" do
 
   before(:each) do
+    @tmp_assets_dir = Dir.mktmpdir
+    Settings.dri.files = @tmp_assets_dir
+
     stub_const('DoiConfig', OpenStruct.new({ :username => "user", :password => "password", :prefix => '10.5072', :base_url => "http://www.dri.ie/repository", :publisher => "Digital Repository of Ireland" }))
     Settings.doi.enable = true
 
@@ -44,21 +47,22 @@ describe "MintDoiJob" do
     @collection.delete
 
     Settings.doi.enable = false
+    FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
-  
+
   describe "run" do
     it "should mint a doi for an object" do
       expect_any_instance_of(DOI::Datacite).to receive(:mint)
       expect_any_instance_of(DOI::Datacite).to receive(:metadata)
-      
+
       DataciteDoi.create(object_id: @object.id)
-      
+
       job = MintDoiJob.new(@object.id)
       job.run
 
       @object.reload
 
-      expect(@object.doi).to eql("10.5072/DRI.#{@object.id}")     
+      expect(@object.doi).to eql("10.5072/DRI.#{@object.id}")
     end
 
   end
