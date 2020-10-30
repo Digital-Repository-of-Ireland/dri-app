@@ -32,8 +32,9 @@ class PublishJob
     # publish the collection object and mint a DOI
     collection.status = 'published'
     collection.published_at = Time.now.utc.iso8601
-    version = collection.object_version || '1'
-    collection.object_version = (version.to_i + 1).to_s
+    collection.object_version ||= '1'
+    collection.increment_version
+
     if collection.save
       mint_doi(collection)
 
@@ -63,16 +64,16 @@ class PublishJob
 
         next unless o.status == 'reviewed'
         o.status = 'published'
-        version = o.object_version || '1'
-        o.object_version = (version.to_i + 1).to_s
+        o.object_version ||= '1'
+        o.increment_version
 
         if o.save
-          completed += 1
-          mint_doi(o)
-
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
           preservation.preserve(false, false, ['properties'])
+
+          completed += 1
+          mint_doi(o)
         else
           failed += 1
         end
@@ -100,7 +101,7 @@ class PublishJob
       DataciteDoi.create(object_id: obj.id, modified: 'DOI created')
     end
 
-      DRI.queue.push(MintDoiJob.new(obj.id))
+    DRI.queue.push(MintDoiJob.new(obj.id))
   rescue Exception => e
     Rails.logger.error "Unable to submit mint doi job: #{e.message}"
   end
