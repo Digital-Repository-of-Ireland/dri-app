@@ -5,7 +5,7 @@
 <%= content_tag('div', id: 'dri_threejs_view', data: { url: url }) do %>
 <div class = "Embed_3D">
 <p>
-<%= link_to t('dri.views.catalog.links.embed_data'), {:controller=>'api/oembed' ,:action => 'show',:url => catalog_url , :format => 'xml'} %>
+<%= link_to t('dri.views.catalog.links.embed_data'), {:controller=>'api/oembed' ,:action => 'show',:url => catalog_url } %>
 </p>	
 
 </div>

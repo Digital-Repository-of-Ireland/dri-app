@@ -3,17 +3,11 @@ module Api
 
    class OembedController < ApplicationController
     include Blacklight::AccessControls::Catalog
-    
+   
      before_action :set_headers
      
-      def show
+      def show  
         
-
-        format_p = params[:format]
-        if format_p!='json'        
-          raise DRI::Exceptions::NotImplemented  
-        end
-
         url = params.fetch(:url)
         resource_url = URI.parse(url)
         # Extract the resource ID from the path
@@ -22,6 +16,12 @@ module Api
        
         doc = SolrDocument.find(resource_id)
 
+        read_master = doc.read_master? ? 'public' : 'private'
+        
+        if read_master.include? 'private'
+           raise DRI::Exceptions::Unauthorized
+        end  
+        
         type = get_type(doc["type_tesim"])
       
         assets = doc.assets(with_preservation: true, ordered: false)
@@ -55,8 +55,12 @@ module Api
 
           HTML
         }   
-        respond_to do |format|
-            format.json { render(json: @response) }
+        
+        respond_to do |format|         
+           format.json { render(json: @response)} 
+           format.xml  { render :xml => @response}              
+           format.any   { raise DRI::Exceptions::NotImplemented }
+           
         end
 
   
@@ -78,11 +82,16 @@ module Api
 
 private
  
- def set_headers
+  def set_headers
       response.content_type == "application/json+oembed"
       response.headers["Access-Control-Allow-Origin"] = "*"
 
   end
+# shoud I move it to application controller? as its duplicate of method from access_controller
+
+
+
+
 
  end
 
