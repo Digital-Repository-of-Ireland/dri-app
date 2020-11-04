@@ -96,13 +96,13 @@ module Preservation
       if resource
         saved = moabify_resource
         return false unless saved
-        dslist << 'resource.rdf'
+        dslist << File.join(metadata_path(object.id, version), 'resource.rdf')
       end
 
       if permissions
         saved = moabify_permissions
         return false unless saved
-        dslist << 'permissions.rdf'
+        dslist << File.join(metadata_path(object.id, version), 'permissions.rdf')
       end
 
       if datastreams.present?
