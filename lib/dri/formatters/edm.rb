@@ -126,7 +126,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     end
 
     # Identify the type
-    edmtype = edm_type(record["type_tesim"]);
+    edmtype = self.class::edm_type(record["type_tesim"]);
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
@@ -244,8 +244,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
-      mainfile = mainfile_for_type(edmtype, assets)
-      imagefile = mainfile_for_type("IMAGE", assets)
+      mainfile = self.class::mainfile_for_type(edmtype, assets)
+      imagefile = self.class::mainfile_for_type("IMAGE", assets)
       if mainfile.present?
         thumbnail = thumbnail_url(record, edmtype, mainfile, imagefile)
       else
@@ -374,7 +374,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     false
   end
 
-  def edm_type(types)
+  def self.edm_type(types)
     types = types.map(&:upcase)
     return "3D" if types.include?("3D")
     return "VIDEO" if types.to_set.intersect?(["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"].to_set)
@@ -391,7 +391,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   # Get the main file where there is more than one file
-  def mainfile_for_type(edmtype, assets)
+  def self.mainfile_for_type(edmtype, assets)
     case edmtype
     when "VIDEO"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
@@ -402,6 +402,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
     when "IMAGE"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+    when "3D"
+       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "3d" }
     else
       nil
     end
