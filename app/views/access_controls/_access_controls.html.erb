@@ -226,11 +226,8 @@
 	    </div>
 
         <fieldset id="read_access_entries">
-           <% if record.collection? %>
-             <%= f.hidden_field :read_groups_string %>
-           <% else %>
-             <%= f.text_area :read_users_string, style: 'width:100%;' %>
-           <% end %>
+           <%= f.hidden_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
+           <%= f.text_area :read_users_string, style: 'width:100%;' %>
         </fieldset>
 
 	    <div class="field">
