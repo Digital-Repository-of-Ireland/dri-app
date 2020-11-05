@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 describe Preservation::Preservator do
   include_context 'tmp_assets'
 

@@ -269,12 +269,9 @@ module Preservation
       def find_previous_manifest_path(current_version_id)
         previous_version_id = current_version_id - 1
 
-        [previous_version_id..1].each do |vid|
-          path = manifest_path(object.id, previous_version_id)
-          if File.exist?(path)
-            previous_version_id = vid
-            break [vid, path]
-          end
+        previous_version_id.downto(1) do |vid|
+          path = manifest_path(object.id, vid)
+          return [vid, path] if File.exist?(path)
         end
       end
 
