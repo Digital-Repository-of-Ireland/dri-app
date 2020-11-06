@@ -40,7 +40,7 @@ module Api
           version: '1.0',
           title: doc['title_tesim'], # assuming this is the name of resource
           provider_name: 'DRI: Digital Repository of Ireland',
-          provider_url: 'https://www.dri.ie/',
+          provider_url: 'https://repository.dri.ie/',
         
           # not sure if this width and height is correct 
           width: 500,
