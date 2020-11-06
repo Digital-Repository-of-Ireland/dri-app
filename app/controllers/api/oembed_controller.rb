@@ -6,14 +6,6 @@ module Api
    
      before_action :set_headers
      
-      def initialize
-       @namespace = "https://repository.dri.ie/api/oembed"
-
-
-     end
-
-
-
       def show  
         
         url = params.fetch(:url)
