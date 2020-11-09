@@ -3,10 +3,7 @@
     var read_group_textbox;
 
     var edit_user_textbox;
-    var edit_group_textbox;
-
     var manager_user_textbox;
-    var manager_group_textbox;
 
     $('#dri_access_control_fields').ready(function () {
         read_user_textbox = new ImprovedTextBox('#batch_read_users_string');
@@ -14,11 +11,9 @@
         init_read_access();
 
         edit_user_textbox = new ImprovedTextBox('#batch_edit_users_string');
-        edit_group_textbox = new ImprovedTextBox('#batch_edit_groups_string');
         init_edit_access();
 
         manager_user_textbox = new ImprovedTextBox('#batch_manager_users_string');
-        manager_group_textbox = new ImprovedTextBox('#batch_manager_groups_string');
         init_manager_access();
     });
 
@@ -46,7 +41,6 @@
     function init_edit_access(){
         var inherit_disabled = $('#dri_access_control_fields').data('inherit-disabled');
         var original_value_user = edit_user_textbox.value();
-        var original_value_group = edit_group_textbox.value();
 
         if(original_value_user!="" || inherit_disabled){
             $('#batch_edit_users_string_radio_restricted').attr('checked', true);
@@ -60,7 +54,6 @@
     function init_manager_access(){
         var inherit_disabled = $('#dri_access_control_fields').data('inherit-disabled');
         var original_value_user = manager_user_textbox.value();
-        var original_value_group = manager_group_textbox.value();
 
         if (typeof(batch_manager_users_string_radio_restricted)!='undefined'){
             if(original_value_user!="" || inherit_disabled){
@@ -114,11 +107,9 @@
     function edit_field_toggle(){
         var val = $('input[name="batch[edit_users_string]"]:checked').val();
         if(val=="radio_inherit"){
-            edit_group_textbox.val("");
             edit_user_textbox.val("");
             edit_toggle_show_textboxes(false);
         }else if(val=="radio_restricted"){
-            edit_group_textbox.val("");
             edit_user_textbox.val("");
             edit_toggle_show_textboxes(true);
         }else{
@@ -129,11 +120,9 @@
     function manager_field_toggle(){
         var val = $('input[name="batch[manager_users_string]"]:checked').val();
         if(val=="radio_inherit"){
-            manager_group_textbox.val("");
             manager_user_textbox.val("");
             manager_toggle_show_textboxes(false);
         }else if(val=="radio_restricted"){
-            manager_group_textbox.val("");
             manager_user_textbox.val("");
             manager_toggle_show_textboxes(true);
         }else{
@@ -143,7 +132,6 @@
 
     function edit_toggle_show_textboxes(show){
         if(show){
-            edit_group_textbox.restore_previous_value();
             edit_user_textbox.restore_previous_value();
             edit_user_textbox.add_user_string($('#dri_access_control_fields').data('current-user'));
             $('#edit_access_entries').show();
@@ -154,7 +142,6 @@
 
     function manager_toggle_show_textboxes(show){
         if(show){
-            manager_group_textbox.restore_previous_value();
             manager_user_textbox.restore_previous_value();
             manager_user_textbox.add_user_string($('#dri_access_control_fields').data('current-user'));
             $('#manager_access_entries').show();
