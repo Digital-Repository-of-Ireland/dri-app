@@ -106,7 +106,6 @@ module Preservation
       end
 
       if datastreams.present?
-        #object.reload # we must refresh the datastreams list
         datastreams.each do |ds|
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
@@ -252,15 +251,16 @@ module Preservation
       end
 
       equal_versions = storage_object_version.version_id == object.object_version.to_i
-      metadata_match = metadata_matches?(object, group.path_hash['descMetadata.xml'].md5)
-      properties_match = properties_match?(object, group.path_hash['properties.xml'].md5)
+      metadata_match = attached_file_match?(object.attached_files[:descMetadata], group.path_hash['descMetadata.xml'].md5)
+      properties_match = attached_file_match?(object.attached_files[:properties], group.path_hash['properties.xml'].md5)
+      permissions_match = permissions_match?(group.path_hash['permissions.rdf'])
 
       {
         verified: equal_versions && storage_verify[:verified] && metadata_match && properties_match,
         storage_verify: storage_verify[:output],
         versions: equal_versions,
-        metadata: metadata_match,
-        properties: properties_match
+        resources: { permissions: permissions_match },
+        attached_files: { metadata: metadata_match, properties: properties_match }
       }
     end
 
@@ -310,14 +310,15 @@ module Preservation
         end
       end
 
-      def metadata_matches?(object, moab_metadata_md5)
-        (Checksum.md5_string(object.attached_files[:descMetadata].content) == moab_metadata_md5) ||
-        (Checksum.md5_string(object.descMetadata.to_xml) == moab_metadata_md5)
+      def attached_file_match?(file, moab_md5)
+          (Checksum.md5_string(file.content) == moab_md5) ||
+        (Checksum.md5_string(file.to_xml) == moab_md5)
       end
 
-      def properties_match?(object, moab_properties_md5)
-        (Checksum.md5_string(object.attached_files[:properties].content) == moab_properties_md5) ||
-        (Checksum.md5_string(object.properties.to_xml) == moab_properties_md5)
+      def permissions_match?(permissions_hash)
+        return false unless permissions_hash
+
+        Checksum.md5_string(object.permissions.inspect) == permissions_hash.md5
       end
   end
 end
