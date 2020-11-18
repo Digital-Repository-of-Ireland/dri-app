@@ -28,17 +28,19 @@ module Api
         mainfile = DRI::Formatters::EDM.mainfile_for_type(type, assets)
 
          if mainfile['file_type_tesim'].include? "3d"
-          embed_url = file_download_path(doc.id, mainfile.id, type: 'masterfile') 
+          embed_url = (URI.parse(root_url))+file_download_path(doc.id, mainfile.id, type: 'masterfile') 
          end 
        
         raise DRI::Exceptions::NotFound if embed_url.nil?
-      
+
+        resource_title = doc['title_tesim']
+        
         # Build up a JSON response with the required attributes
         # See "2.3.4. Response parameters" at https://oembed.com/
         @response = {
-          type: 'Rich',
+          type: 'rich',
           version: '1.0',
-          title: doc['title_tesim'], # assuming this is the name of resource
+          title: resource_title[0], 
           provider_name: 'DRI: Digital Repository of Ireland',
           provider_url: 'https://repository.dri.ie/',
         
@@ -50,7 +52,7 @@ module Api
           
           html: <<-HTML
           
-          <iframe src = " #{embed_url}">
+          <iframe src = \\"#{embed_url}\\" width=\\"500\\" height=\\"500\\">
 
           </iframe> 
 
