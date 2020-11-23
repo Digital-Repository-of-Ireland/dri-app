@@ -239,7 +239,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Get the asset files
-      assets = record.assets(with_preservation: true, ordered: false)
+      assets = clean_assets(record.assets(with_preservation: true, ordered: false))
       landing_page = doi_url(record.doi) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
@@ -425,6 +425,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     else
       nil
     end
+  end
+
+  # Remove any formats that we don't want to aggregated from the assets list
+  # Currently just xml files as pdf surrogates
+  def clean_assets(assets)
+    assets.select { |obj| obj.key? 'file_type_tesim' and !obj['mime_type_tesim'].include? "text/xml" }
   end
 
 end
