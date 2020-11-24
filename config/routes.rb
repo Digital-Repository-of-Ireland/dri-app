@@ -158,6 +158,8 @@ Rails.application.routes.draw do
     get 'collections/:id' => 'catalog#show'
     get 'objects/:id' => 'objects#show'
 
+    get 'embed3d/:object_id/files/:id/' => 'embed3d#show'
+
     #API paths
     post 'get_objects' => 'api#objects'
     get 'related' => 'api#related'
