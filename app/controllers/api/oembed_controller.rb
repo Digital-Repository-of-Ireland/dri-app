@@ -1,83 +1,11 @@
 module Api
-<<<<<<< HEAD
-   require 'solr/query'
-   
-   class OembedController < ApplicationController
-    include Blacklight::AccessControls::Catalog 
-   
-     before_action :set_headers
-     
-      def show  
-        
-        url = params.fetch(:url)
-        resource_url = URI.parse(url)
-        # Extract the resource ID from the path
-        resource_id = resource_url.path.match(%r|/catalog/([^/]+)|)
-        resource_id &&= resource_id[1]
-       
-        doc = SolrDocument.find(resource_id)
-        raise DRI::Exceptions::Unauthorized unless can_view?(doc) 
-        
-        type =   DRI::Formatters::EDM.edm_type(doc["type_tesim"])
-        assets = doc.assets(with_preservation: true, ordered: false)
-
-        mainfile = DRI::Formatters::EDM.mainfile_for_type(type, assets)
-
-         if mainfile['file_type_tesim'].include? "3d"
-          embed_url = embed3d_display_url(doc.id,mainfile.id)
-          #"http://localhost:3000/embed3d/#{doc.id}/files/#{mainfile.id}" 
-         end 
-       
-        raise DRI::Exceptions::NotFound if embed_url.nil?
-
-        resource_title = doc['title_tesim']
-        
-        # Build up a JSON response with the required attributes
-        # See "2.3.4. Response parameters" at https://oembed.com/
-        @response = {
-          type: 'rich',
-          version: '1.0',
-          title: resource_title[0], 
-          provider_name: 'DRI: Digital Repository of Ireland',
-          provider_url: 'https://repository.dri.ie/',
-
-          # Embedding url 
-          
-          html: <<-HTML
-          
-          <iframe src = "#{embed_url}" width="1024px" height="1024px">
-
-          </iframe> 
-
-          HTML
-        }   
-        
-        respond_to do |format|         
-          if @response
-           format.json { render(json: @response)} 
-           format.xml  { render :xml => @response}              
-           else  
-           format.All   { raise DRI::Exceptions::NotImplemented }
-          end
-        end
-=======
   require 'solr/query'
 
   class OembedController < ApplicationController
     include Blacklight::AccessControls::Catalog
->>>>>>> develop
 
     before_action :set_headers
 
-<<<<<<< HEAD
-    private
-     def can_view?(doc)
-        (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
-      end
-     
-      def set_headers
-          response.headers["Access-Control-Allow-Origin"] = "*"
-=======
     def show
       url = params.fetch(:url)
       resource_url = URI.parse(url)
@@ -96,7 +24,6 @@ module Api
 
       if mainfile['file_type_tesim'].include? "3d"
         embed_url = file_download_url(doc.id, mainfile.id, type: 'masterfile')
->>>>>>> develop
       end
 
       raise DRI::Exceptions::NotFound if embed_url.nil?
@@ -119,11 +46,8 @@ module Api
         # Embedding url
 
         html: <<-HTML
-
         <iframe src = "#{embed_url}" width="500" height="500">
-
         </iframe>
-
         HTML
       }
 
