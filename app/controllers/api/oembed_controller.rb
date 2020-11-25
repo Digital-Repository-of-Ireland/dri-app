@@ -1,8 +1,8 @@
 module Api
    require 'solr/query'
+   
    class OembedController < ApplicationController
-    include Blacklight::AccessControls::Catalog
-    
+    include Blacklight::AccessControls::Catalog 
    
      before_action :set_headers
      
@@ -15,12 +15,7 @@ module Api
         resource_id &&= resource_id[1]
        
         doc = SolrDocument.find(resource_id)
-
-        read_master = doc.read_master? ? 'public' : 'private'
-        
-        if read_master.include? 'private'
-           raise DRI::Exceptions::Unauthorized
-        end  
+        raise DRI::Exceptions::Unauthorized unless can_view?(doc) 
         
         type =   DRI::Formatters::EDM.edm_type(doc["type_tesim"])
         assets = doc.assets(with_preservation: true, ordered: false)
@@ -28,7 +23,8 @@ module Api
         mainfile = DRI::Formatters::EDM.mainfile_for_type(type, assets)
 
          if mainfile['file_type_tesim'].include? "3d"
-          embed_url = (URI.parse(root_url))+file_download_path(doc.id, mainfile.id, type: 'masterfile') 
+          embed_url = embed3d_display_url(doc.id,mainfile.id)
+          #"http://localhost:3000/embed3d/#{doc.id}/files/#{mainfile.id}" 
          end 
        
         raise DRI::Exceptions::NotFound if embed_url.nil?
@@ -43,16 +39,12 @@ module Api
           title: resource_title[0], 
           provider_name: 'DRI: Digital Repository of Ireland',
           provider_url: 'https://repository.dri.ie/',
-        
-          # not sure if this width and height is correct 
-          width: 500,
-          height: 500,
 
           # Embedding url 
           
           html: <<-HTML
           
-          <iframe src = \\"#{embed_url}\\" width=\\"500\\" height=\\"500\\">
+          <iframe src = "#{embed_url}" width="1024px" height="1024px">
 
           </iframe> 
 
@@ -72,13 +64,11 @@ module Api
      end
 
     private
+     def can_view?(doc)
+        (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
+      end
      
       def set_headers
-          if request.format.json?
-          response.content_type == "application/json+oembed"
-          elsif request.format.xml?
-           response.content_type == "text/xml+oembed" 
-          end
           response.headers["Access-Control-Allow-Origin"] = "*"
       end
 

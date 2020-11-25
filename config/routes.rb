@@ -158,6 +158,9 @@ Rails.application.routes.draw do
     get 'collections/:id' => 'catalog#show'
     get 'objects/:id' => 'objects#show'
 
+    get 'embed3d/:object_id/files/:id/' => 'embed3d#show',  as: :embed3d_display
+
+
     #API paths
     post 'get_objects' => 'api#objects'
     get 'related' => 'api#related'
@@ -178,5 +181,7 @@ Rails.application.routes.draw do
    namespace 'api' do 
       get 'oembed' , to: 'oembed#show' , constraints: ->(request){ request.query_parameters["url"].present? } , defaults: { format: 'json' }
    end
+
+   
  
 end
