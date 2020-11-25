@@ -23,7 +23,7 @@ module Api
       mainfile = DRI::Formatters::EDM.mainfile_for_type(type, assets)
 
       if mainfile['file_type_tesim'].include? "3d"
-        embed_url = file_download_url(doc.id, mainfile.id, type: 'masterfile')
+        embed_url = embed3d_display_url(doc.id,mainfile.id)
       end
 
       raise DRI::Exceptions::NotFound if embed_url.nil?
@@ -39,14 +39,10 @@ module Api
         provider_name: 'DRI: Digital Repository of Ireland',
         provider_url: 'https://repository.dri.ie/',
 
-        # not sure if this width and height is correct
-        width: 500,
-        height: 500,
-
         # Embedding url
 
         html: <<-HTML
-        <iframe src = "#{embed_url}" width="500" height="500">
+        <iframe src = "#{embed_url}" width="1024px" height="1024px">
         </iframe>
         HTML
       }
@@ -68,11 +64,7 @@ module Api
       end
 
       def set_headers
-        response.content_type = if request.format.json?
-                                  'application/json+oembed'
-                                elsif request.format.xml?
-                                  'text/xml+oembed'
-                                end
+       
         response.headers["Access-Control-Allow-Origin"] = "*"
       end
    end
