@@ -10,4 +10,5 @@ class ErrorController < ApplicationController
   def error_500
     redirect_to error_500_url
   end
+  
 end

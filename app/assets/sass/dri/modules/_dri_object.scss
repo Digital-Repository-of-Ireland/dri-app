@@ -138,6 +138,21 @@ h2.dri_no_asset_availiable {
   canvas {
     display: block;
   }
+
+  .Embed_3D{
+
+      position: absolute;
+      bottom: 4.3%;
+      left: 20px;
+      text-align: center;
+      z-index: 100;          
+
+  }
+}
+
+.dri_embed_link {
+    margin-left: 10px;
+    float: left;
 }
 
 /*-------------- Media asset Image Tools  --------------*/

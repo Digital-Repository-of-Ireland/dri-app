@@ -5,6 +5,9 @@
     <% if @surrogate.nil? && !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) %>
       <%= t('dri.views.catalog.links.download_not_available', index: index.ordinalize) %>
     <% elsif document.read_master? || @surrogate && can?(:read, document.id) || can?(:edit, document.id) %>
+      <% if generic_file.threeD? %>
+        <%= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %>
+      <% end %>
       <%= link_to '#dri_download_modal_id', :'data-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
           <%= t('dri.views.catalog.links.download') %>
       <% end %>

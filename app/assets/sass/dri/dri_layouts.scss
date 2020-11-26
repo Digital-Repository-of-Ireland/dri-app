@@ -79,6 +79,13 @@
 .dri_messages_container {
     margin-bottom: 25px;
 }
+.main{
+ width: 1024px;
+ height: 1024px;
+    margin: auto;
+    
+}
+
 .dri_main_content_container {
     @include zen-grid-item(4, 1);
     margin-left: 10px;

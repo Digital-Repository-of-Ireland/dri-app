@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+
+		<!-- Mobile viewport optimization h5bp.com/ad -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title"
+          content="<%= application_name %>">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+		<!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+		<meta http-equiv="cleartype" content="on">
+		<title><%= h(@page_title || application_name) %></title>
+
+		<link href="<%= main_app.opensearch_catalog_url(:format => 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
+
+		<%= favicon_link_tag asset_path('favicon.ico') %>
+		<%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
+		<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
+		<%= javascript_include_tag "application" %>
+		<%= csrf_meta_tags %>
+		<%= content_for(:head) %>
+
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<%= favicon_link_tag asset_path('favicon.ico') %>
+        <%= analytics_init(custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
+        <script type="text/javascript">
+            I18n.locale = "<%= I18n.locale %>";
+        </script>
+	</head>
+
+	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
+
+	<body>
+		
+			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
+			<%# - check below is to see if a facet or text query exists %>
+			<% if query_has_constraints? && has_constraint_params? %>
+			  <%= render 'constraints' %>
+			<% end %>
+
+			<% if flash  %>
+			  <%= render partial: '/flash_msg' %>
+			<% end %>
+			<!-- This condition identifies the browse section of the application and every search result and/or facet refinement -->
+			<%# if (((%w(catalog bookmarks my_collections).include?(controller_name)) && action_name == 'index') && has_browse_params?
+			      ) || (controller_name == 'saved_searches' && action_name == 'index') %>
+			<% if should_render_browse_mode_swap? %>
+			  <%= render 'shared/browse_mode_swap' %>
+			<% end %>
+
+			<div class="main">
+				<%= yield %>
+			</div>
+			<!-- close dri_main_content_container -->
+
+
+		</div><!-- close dri_wrapper -->
+
+	</body>
+
+</html>

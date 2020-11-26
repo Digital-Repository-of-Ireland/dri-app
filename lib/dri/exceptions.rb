@@ -41,6 +41,21 @@ module DRI
     class ResqueError < StandardError
     end
 
+    class NotImplemented < StandardError
+    end
+
+    class Unauthorized < StandardError
+    end 
+
+
+    def render_unauthorised(exception)
+      render_exception(:unauthorized, exception.message)
+    end  
+
+    def  render_not_implemented(exception)
+     render_exception(:not_implemented, exception.message)
+    end  
+
     def render_internal_error(exception)
       render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
     end
