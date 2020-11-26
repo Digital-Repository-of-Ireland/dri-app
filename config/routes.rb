@@ -108,11 +108,12 @@ Rails.application.routes.draw do
     get 'error/404' => 'error#404'
     get 'error/422' => 'error#422'
     get 'error/500' => 'error#500'
+    
 
     get '/404' => 'error#error_404'
     get '/422' => 'error#error_422'
     get '/500' => 'error#error_500'
-
+   
     get 'objects/:id/metadata' => 'metadata#show', as: :object_metadata, defaults: { format: 'xml' }
     put 'objects/:id/metadata' => 'metadata#update'
     get 'objects/:id/citation' => 'objects#citation', as: :citation_object
@@ -157,6 +158,9 @@ Rails.application.routes.draw do
     get 'collections/:id' => 'catalog#show'
     get 'objects/:id' => 'objects#show'
 
+    get 'embed3d/:object_id/files/:id/' => 'embed3d#show',  as: :embed3d_display
+
+
     #API paths
     post 'get_objects' => 'api#objects'
     get 'related' => 'api#related'
@@ -173,4 +177,11 @@ Rails.application.routes.draw do
   end
 
   get 'pages/*id' => 'high_voltage/pages#show'
+
+   namespace 'api' do 
+      get 'oembed' , to: 'oembed#show' , constraints: ->(request){ request.query_parameters["url"].present? } , defaults: { format: 'json' }
+   end
+
+   
+ 
 end
