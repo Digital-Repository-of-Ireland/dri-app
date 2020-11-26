@@ -6,6 +6,8 @@ module Api
 
     before_action :set_headers
 
+    after_action :allow_iframe, only: :show
+
     def show
       url = params.fetch(:url)
       resource_url = URI.parse(url)
@@ -57,6 +59,10 @@ module Api
    end
 
     private
+
+      def allow_iframe
+           response.headers.except! 'X-Frame-Options'
+      end
 
       def can_view?(doc)
         (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
