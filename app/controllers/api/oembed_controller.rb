@@ -38,10 +38,12 @@ module Api
         title: resource_title[0],
         provider_name: 'DRI: Digital Repository of Ireland',
         provider_url: 'https://repository.dri.ie/',
+        width: 560,
+        height: 315,
         # Embedding url
 
         html: <<-HTML
-        <iframe src = "#{embed_url}" width="1024px" height="1024px">
+        <iframe src = "#{embed_url}" width="560px" height="315px">
         </iframe>
         HTML
       }
@@ -57,7 +59,6 @@ module Api
    end
 
     private
-
       def can_view?(doc)
         (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
       end
