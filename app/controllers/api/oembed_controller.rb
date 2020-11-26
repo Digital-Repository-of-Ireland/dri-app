@@ -6,8 +6,6 @@ module Api
 
     before_action :set_headers
 
-    after_action :allow_iframe, only: :show
-
     def show
       url = params.fetch(:url)
       resource_url = URI.parse(url)
@@ -40,10 +38,12 @@ module Api
         title: resource_title[0],
         provider_name: 'DRI: Digital Repository of Ireland',
         provider_url: 'https://repository.dri.ie/',
+        width: 560,
+        height: 315,
         # Embedding url
 
         html: <<-HTML
-        <iframe src = "#{embed_url}" width="1024px" height="1024px">
+        <iframe src = "#{embed_url}" width="560px" height="315px">
         </iframe>
         HTML
       }
@@ -59,11 +59,6 @@ module Api
    end
 
     private
-
-      def allow_iframe
-           response.headers.except! 'X-Frame-Options'
-      end
-
       def can_view?(doc)
         (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
       end

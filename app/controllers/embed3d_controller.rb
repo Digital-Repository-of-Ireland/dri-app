@@ -1,6 +1,8 @@
 class Embed3dController < ApplicationController
   layout 'embedded'
 
+  after_action :allow_iframe, only: :show
+
   def show
     @document = SolrDocument.find(params[:object_id])
     raise DRI::Exceptions::Unauthorized unless can_view?
@@ -22,6 +24,10 @@ class Embed3dController < ApplicationController
   end
 
   private
+    def allow_iframe
+      response.headers.except! 'X-Frame-Options'
+    end
+
     def can_view?
       (can?(:read, @document.id) && @document.read_master?) || can?(:edit, @document)
     end
