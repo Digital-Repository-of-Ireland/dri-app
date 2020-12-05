@@ -36,6 +36,7 @@ class PublishJob
     # publish the collection object and mint a DOI
     collection.status = 'published'
     collection.published_at = Time.now.utc.iso8601
+    collection.object_version ||= '1'
     collection.increment_version
 
     if collection.save
@@ -69,17 +70,18 @@ class PublishJob
 
         next unless o.status == 'reviewed'
         o.status = 'published'
+        o.object_version ||= '1'
         o.increment_version
 
         if o.save
-          completed += 1
-          mint_doi(o)
-
           record_version_committer(o, user)
 
-          # Do the preservation actions
+	  # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
           preservation.preserve(['properties'])
+
+          completed += 1
+          mint_doi(o)
         else
           failed += 1
         end

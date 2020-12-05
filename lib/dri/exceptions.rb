@@ -23,6 +23,9 @@ module DRI
     class VirusDetected < StandardError
     end
 
+    class MoabError < StandardError
+    end
+
     class NotFound < StandardError
     end
 
@@ -37,6 +40,21 @@ module DRI
 
     class ResqueError < StandardError
     end
+
+    class NotImplemented < StandardError
+    end
+
+    class Unauthorized < StandardError
+    end 
+
+
+    def render_unauthorised(exception)
+      render_exception(:unauthorized, exception.message)
+    end  
+
+    def  render_not_implemented(exception)
+     render_exception(:not_implemented, exception.message)
+    end  
 
     def render_internal_error(exception)
       render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
@@ -73,8 +91,8 @@ module DRI
           code = "#{status_code(status_type)}"
           render(
             json: { errors: [{ status: code, detail: message }] },
-            content_type: 'application/json', 
-            status: code 
+            content_type: 'application/json',
+            status: code
           )
         end
         format.all  { render nothing: true, status: status_type}
@@ -85,13 +103,13 @@ module DRI
     def render_404(e)
       respond_to do |format|
         format.html  {
-          render file: "#{Rails.root}/public/404.html", 
-          layout: false, 
-          status: 404 
+          render file: "#{Rails.root}/public/404.html",
+          layout: false,
+          status: 404
         }
         format.json {
-          render json: {errors: [{status: "404", detail: "#{e}"}] }, 
-          content_type: 'application/json', status: 404 
+          render json: {errors: [{status: "404", detail: "#{e}"}] },
+          content_type: 'application/json', status: 404
         }
       end
     end

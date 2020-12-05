@@ -89,13 +89,16 @@ class ObjectHistory
     fixity_check[:verified] = 'unknown'
     fixity_check[:result] = []
 
-    return fixity_check unless FixityCheck.exists?(collection_id: object.noid)
+    return fixity_check unless FixityReport.exists?(collection_id: object.noid)
 
-    fixity_check[:time] = FixityCheck.where(collection_id: object.noid).latest.first.created_at
-    failures = FixityCheck.where(collection_id: object.noid).failed.to_a
+    fixity_report = FixityReport.where(collection_id: object.noid).latest
+
+    fixity_check[:time] = fixity_report.created_at
+    failures = fixity_report.fixity_checks.failed.to_a
     if failures.any?
       fixity_check[:verified] = 'failed'
       fixity_check[:result].push(*failures.to_a.map(&:object_id))
+      fixity_check[:failures] = failures.length
     else
       fixity_check[:verified] = 'passed' if fixity_check[:verified] == 'unknown'
     end
@@ -137,8 +140,6 @@ class ObjectHistory
 
   def surrogate_info(file_id)
     storage = StorageService.new
-    surrogates = storage.surrogate_info(object.noid, file_id)
-
-    surrogates
+    storage.surrogate_info(object.noid, file_id)
   end
 end

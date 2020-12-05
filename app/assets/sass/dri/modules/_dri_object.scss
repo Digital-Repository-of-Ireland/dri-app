@@ -95,7 +95,7 @@ h2.dri_no_asset_availiable {
             margin: 0 0 10px 0;
             a {
                 color: $dri_midgrey;
-                
+
             }
         }
         p.dri_restrict_message {
@@ -127,6 +127,34 @@ h2.dri_no_asset_availiable {
   width: 100%;
   height: 100px;
 }
+
+#dri_threejs_view {
+  display: block;
+  margin: 0 auto;
+  max-height: 270px;
+  width: auto;
+  height: auto;
+
+  canvas {
+    display: block;
+  }
+
+  .Embed_3D{
+
+      position: absolute;
+      bottom: 4.3%;
+      left: 20px;
+      text-align: center;
+      z-index: 100;          
+
+  }
+}
+
+.dri_embed_link {
+    margin-left: 10px;
+    float: left;
+}
+
 /*-------------- Media asset Image Tools  --------------*/
 
 .dri_asset_tools {
@@ -250,7 +278,7 @@ a.dri_toggle_metadata::after {
         overflow: scroll;
         dl {
             padding: 15px;
-        } 
+        }
         ul {
           list-style: none;
         }
@@ -306,6 +334,6 @@ a.orcidlink {
     padding-left: 20px;
 }
 /*--slick overrides--*/
-.slick-prev:before, .slick-next:before { 
+.slick-prev:before, .slick-next:before {
     color:$dri_darkgrey !important;
 }

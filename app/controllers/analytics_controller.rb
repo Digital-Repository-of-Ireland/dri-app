@@ -33,6 +33,8 @@ class AnalyticsController < ApplicationController
     @document = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @document.nil?
 
+    @file_display_type_count = @document.file_display_type_count(published_only: true)
+
     respond_to do |format|
       format.html
       format.json do

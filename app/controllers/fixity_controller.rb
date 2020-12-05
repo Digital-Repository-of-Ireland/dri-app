@@ -1,7 +1,6 @@
 require 'moab'
 
 class FixityController < ApplicationController
-  include Preservation::PreservationHelpers
 
   def update
     raise DRI::Exceptions::BadRequest unless params[:id].present?
@@ -9,7 +8,6 @@ class FixityController < ApplicationController
 
     object = DRI::DigitalObject.find_by_noid(params[:id])
     raise DRI::Exceptions::NotFound if object.nil?
-
     fixity(object)
 
     respond_to do |format|
@@ -29,7 +27,7 @@ class FixityController < ApplicationController
   end
 
   def fixity_object(object)
-    result = verify(object.noid)
+    result = Preservation::Preservator.new(object).verify
 
     FixityCheck.create(
           collection_id: object.governing_collection.noid,
@@ -41,7 +39,8 @@ class FixityController < ApplicationController
   end
 
   def fixity_collection(collection)
-    Resque.enqueue(FixityCollectionJob, collection.noid, current_user.id)
+    report = FixityReport.create(collection_id: collection.noid)
+    Resque.enqueue(FixityCollectionJob, report.id, collection.noid, current_user.id)
     flash[:notice] = t('dri.flash.notice.fixity_check_running')
   rescue Exception => e
     logger.error "Unable to submit fixity job: #{e.message}"

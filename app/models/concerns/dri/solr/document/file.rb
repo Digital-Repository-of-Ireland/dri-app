@@ -1,13 +1,5 @@
 module DRI::Solr::Document::File
 
-  FILE_TYPE_LABELS = {
-    'image' => 'Image',
-    'audio' => 'Sound',
-    'video' => 'MovingImage',
-    'text' => 'Text',
-    'mixed_types' => 'MixedType'
-  }
-
   def assets(with_preservation: false, ordered: false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
     files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{id}\""
@@ -56,55 +48,13 @@ module DRI::Solr::Document::File
   end
 
   def file_types
-    file_type_key = Solr::SchemaFields.searchable_string('file_type_display').to_sym
-
-    self[file_type_key] || []
-  end
-
-  def file_type_label
-    types = file_types
-
-    return I18n.t('dri.data.types.Unknown') if types.blank?
-
-    labels = []
-    types.each do |type|
-      label = FILE_TYPE_LABELS[type.to_s.downcase] || 'Unknown'
-      labels << label
-    end
-
-    labels = labels.uniq
-    label = labels.length > 1 ? FILE_TYPE_LABELS['mixed_types'] : labels.first
-
-    I18n.t("dri.data.types.#{label}")
-  end
-
-  def icon_path
-    types = file_types
-
-    icons = []
-    types.each do |type|
-      format = type.to_s.downcase
-
-      icon = if %w(image audio text video mixed_types).include?(format)
-             "dri/formats/#{format}_icon.png"
-           else
-             'no_image.png'
-           end
-
-      icons << icon
-    end
-
-    icons
-  end
-
-  def pdf?
-    Settings.restrict.mime_types.pdf.include? mime_type
+    self['file_type_display_tesim'] || []
   end
 
   def supported_type?
     mime_type.nil? || (audio? ||
       video? || pdf? || image? ||
-      text? && (file_format.include?('RTF') || file_format.include?('msword')))
+      text? || threeD? && (file_format.include?('RTF') || file_format.include?('msword')))
   end
 
   def read_master?
@@ -140,6 +90,10 @@ module DRI::Solr::Document::File
     Settings.restrict.mime_types.image.include? mime_type
   end
 
+  def pdf?
+    Settings.restrict.mime_types.pdf.include? mime_type
+  end
+
   def video?
     Settings.restrict.mime_types.video.include? mime_type
   end
@@ -147,4 +101,10 @@ module DRI::Solr::Document::File
   def audio?
     Settings.restrict.mime_types.audio.include? mime_type
   end
+
+  def threeD?
+   Settings.restrict.mime_types._3D.include?(mime_type) &&
+     Settings.restrict.file_formats._3D.any?{ |f| file_format.downcase.include?(f.downcase) }
+  end
+
 end

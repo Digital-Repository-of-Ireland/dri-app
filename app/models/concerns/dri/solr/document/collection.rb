@@ -28,15 +28,15 @@ module DRI::Solr::Document::Collection
   end
 
   def draft_objects_count
-    status_count('draft')
+    status_counts[:draft_objects]
   end
 
   def draft_subcollections_count
-    status_count('draft', true)
+    status_counts[:draft_collections]
   end
 
   def published_objects_count
-    status_count('published')
+    status_counts[:published_objects]
   end
 
   def published_object_ids
@@ -49,24 +49,24 @@ module DRI::Solr::Document::Collection
 
   def published_images
     published_objects.select do |doc|
-      doc.file_type_label == 'Image'
+      doc.file_types.any? { |type| type.downcase == 'image' }
     end
   end
 
   def published_subcollections_count
-    status_count('published', true)
+    status_counts[:published_collections]
   end
 
   def reviewed_objects_count
-    status_count('reviewed')
+    status_counts[:reviewed_objects]
   end
 
   def reviewed_subcollections_count
-    status_count('reviewed', true)
+    status_counts[:reviewed_collections]
   end
 
   def total_objects_count
-    status_count(nil)
+    status_counts[:total_objects]
   end
 
   def duplicate_total
@@ -94,6 +94,29 @@ module DRI::Solr::Document::Collection
     response = Solr::Query.new(query, 100, { sort: sort, rows: ids.size }).get
 
     return Blacklight::Solr::Response.new(response.response, response.header), response.docs
+  end
+
+  def file_display_type_count(published_only: false)
+    fq = [
+          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}",
+          "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"
+        ]
+
+    if published_only
+       fq << "+#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+    end
+
+     query_params = {
+        fq: fq,
+        facet: true,
+        "facet.mincount" => 1,
+        "facet.field" => "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}"
+      }
+    response = ActiveFedora::SolrService.get('*:*', query_params)
+    counts = Hash[*response['facet_counts']['facet_fields']['file_type_display_sim']]
+    counts['all'] = response['response']['numFound'].to_i
+
+    counts
   end
 
   # @param [String] type
@@ -130,6 +153,42 @@ module DRI::Solr::Document::Collection
     # @return [Integer]
     def status_count(status, subcoll = false)
       Solr::Query.new(status_query(status, subcoll)).count
+    end
+
+    def status_counts
+      return @status_counts unless @status_counts.blank?
+
+      fq = [
+          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}",
+        ]
+
+      query_params = {
+        fq: fq,
+        facet: true,
+        "facet.mincount" => 1,
+        "facet.query" => [
+                          "status_ssim:published AND is_collection_sim:false",
+                          "status_ssim:draft AND is_collection_sim:false",
+                          "status_ssim:reviewed AND is_collection_sim:false",
+                          "status_ssim:reviewed AND is_collection_sim:true",
+                          "status_ssim:draft AND is_collection_sim:true",
+                          "status_ssim:published AND is_collection_sim:true",
+                          "is_collection_sim:false"
+                        ]
+      }
+      response = ActiveFedora::SolrService.get('*:*', query_params)
+      counts = response['facet_counts']['facet_queries']
+
+      @status_counts = {}
+      @status_counts[:published_objects] = counts['status_ssim:published AND is_collection_sim:false']
+      @status_counts[:reviewed_objects] = counts['status_ssim:reviewed AND is_collection_sim:false']
+      @status_counts[:draft_objects] = counts['status_ssim:draft AND is_collection_sim:false']
+      @status_counts[:published_collections] = counts['status_ssim:published AND is_collection_sim:true']
+      @status_counts[:reviewed_collections] = counts['status_ssim:reviewed AND is_collection_sim:true']
+      @status_counts[:draft_collections] = counts['status_ssim:draft AND is_collection_sim:true']
+      @status_counts[:total_objects] = @status_counts[:published_objects] + @status_counts[:reviewed_objects] + @status_counts[:draft_objects]
+
+      @status_counts
     end
 
     # @param [String] status

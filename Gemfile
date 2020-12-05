@@ -32,7 +32,7 @@ gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
 
 gem 'config'
-gem 'sqlite3','~> 1.3', '< 1.4'
+gem 'sqlite3'
 
 gem 'omniauth-shibboleth'
 gem 'oauth'
@@ -81,8 +81,8 @@ gem 'uglifier', '>= 1.0.3'
 
 group :production do
   gem 'clamby'
-  gem 'mysql2', '< 0.5'
-  gem 'honeybadger', '~> 2.0'
+  gem 'mysql2' 
+  gem 'honeybadger'
 end
 
 group :development, :test do
@@ -162,7 +162,6 @@ gem 'jquery-colorbox-rails'
 gem 'bootstrap-switch-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
-gem 'social-share-button'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'clipboard-rails'
 

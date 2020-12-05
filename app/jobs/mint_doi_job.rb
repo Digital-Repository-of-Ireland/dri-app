@@ -17,7 +17,12 @@ class MintDoiJob < IdBasedJob
       client.mint
       object.doi = doi.doi
 
+      object.increment_version
       object.save
+
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(object)
+      preservation.preserve(false, false, ['properties'])
     end
   end
 

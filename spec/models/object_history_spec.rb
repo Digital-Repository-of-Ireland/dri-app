@@ -97,22 +97,25 @@ describe ObjectHistory  do
   end
 
   it 'should get collection fixity information' do
-    FixityCheck.create(collection_id: @collection.noid, object_id: @object.noid, verified: true)
+    report = FixityReport.create(collection_id: @collection.noid)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.noid, object_id: @object.noid, verified: true)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('passed')
   end
 
   it 'should get collection fixity information with failures' do
-    FixityCheck.create(collection_id: @collection.noid, object_id: @object.noid, verified: false)
+    report = FixityReport.create(collection_id: @collection.noid)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.noid, object_id: @object.noid, verified: false)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('failed')
     expect(fixity[:result]).to include(@object.noid)
   end
 
-  it 'should get object fixity information' do
-    FixityCheck.create(collection_id: @collection.noid, object_id: @object.noid, verified: true, result: 'test')
+  it 'should get object fixity information' do 
+    report = FixityReport.create(collection_id: @collection.noid)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.noid, object_id: @object.noid, verified: true, result: 'test')
     fixity = @object_history.fixity_check_object
     expect(fixity[:verified]).to eq('passed')
     expect(fixity[:result]).to eq('test')

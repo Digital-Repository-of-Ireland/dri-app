@@ -53,12 +53,12 @@ class SurrogatesController < ApplicationController
     if @generic_file
       @object_document = SolrDocument.find(params[:object_id])
 
+      file = file_path(params[:object_id], params[:id], surrogate_type_name)
+      raise DRI::Exceptions::NotFound unless file
+
       if @object_document.published?
         Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download",  @object_document.id, 1, true)
       end
-
-      file = file_path(params[:object_id], params[:id], surrogate_type_name)
-      raise DRI::Exceptions::NotFound unless file
 
       type, ext = mime_type(file)
       name = "#{params[:id]}#{ext}"
@@ -120,6 +120,8 @@ class SurrogatesController < ApplicationController
     end
 
     def file_path(object_id, file_id, surrogate)
+      return nil if surrogate.blank? #no surrogate type for this file
+
       base_name = File.basename(surrogate, ".*" )
       storage = StorageService.new
       storage.surrogate_url(

@@ -151,9 +151,9 @@ class MyCollectionsController < ApplicationController
     # "sort results by" select (pulldown)
     config.add_sort_field "system_create_dtsi desc", label: "date created \u25BC"
     config.add_sort_field "system_create_dtsi asc", label: "date created \u25B2"
-    config.add_sort_field "system_modified_dtsi desc", label: "date modified \u25BC"
-    config.add_sort_field "system_modified_dtsi asc", label: "date modified \u25B2"
-    config.add_sort_field "score desc, system_modified_dtsi desc", label: "relevance \u25BC"
+    config.add_sort_field "timestamp desc", label: "date modified \u25BC"
+    config.add_sort_field "timestamp asc", label: "date modified \u25B2"
+    config.add_sort_field "score desc, timestamp desc", label: "relevance \u25BC"
     config.add_sort_field "title_sorted_ssi asc", label: "title (A-Z)"
     config.add_sort_field "title_sorted_ssi desc", label: "title (Z-A)"
     config.add_sort_field 'id_asset_ssi asc, system_create_dtsi desc', label: 'order/sequence'
@@ -211,6 +211,7 @@ class MyCollectionsController < ApplicationController
 
     # assets including preservation only files, ordered by label
     @assets = @document.assets(with_preservation: true, ordered: true)
+    @file_display_type_count = @document.file_display_type_count
     @reader_group = find_reader_group(@document)
 
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)

@@ -44,6 +44,6 @@ DRI::ModelSupport::Files.module_eval do
     VersionCommitter.create(version_id: 'v%04d' % object.object_version, obj_id: object.noid, committer_login: ingest_user.to_s)
 
     preservation = Preservation::Preservator.new(self)
-    preservation.preserve_assets([filename],[])
+    preservation.preserve_assets({ added: { 'content' => [lfile.path] }})
   end
 end

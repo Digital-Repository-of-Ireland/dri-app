@@ -30,6 +30,10 @@ module DRI::Solr::Document
       metadata('qdc_id')
     end
 
+    def object_type
+      self['object_type_ssm']
+    end
+
     def published_date
       metadata('published_date')
     end
@@ -40,6 +44,10 @@ module DRI::Solr::Document
 
     def rights
       metadata('rights')
+    end
+
+    def type
+      metadata('type')
     end
 
     def extract_metadata(metadata_fields)

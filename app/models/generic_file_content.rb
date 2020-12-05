@@ -44,16 +44,56 @@ class GenericFileContent
 
   private
 
-  def preserve_file(filedata, datastream, update=false)
-    filename = "#{generic_file.noid}_#{filedata[:filename]}"
+  def existing_moab_path(file_category, filename, filepath)
+    preservation = Preservation::Preservator.new(object)
+    preservation.existing_filepath(
+                                    file_category,
+                                    "#{generic_file.noid}_#{filename}",
+                                    filepath
+                                  )
+  end
 
+  def preserve_file(filedata, datastream, update=false)
+    filename = "#{generic_file.noid}_#{filedata[:filename]}"    
+
+    moab_path = existing_moab_path(
+                                    datastream,
+                                    filedata[:filename],
+                                    filedata[:file_upload].path
+                                  )
+
+    # attempting to replace existing file with duplicate
+    if moab_path && filedata[:filename] == generic_file.label
+      raise DRI::Exceptions::MoabError, "File already preserved"
+    end
+
+    # Update object version
+    object.object_version ||= '1'
+    object.increment_version
+
+    begin
+      object.save!
+    rescue ActiveFedora::RecordInvalid
+      logger.error "Could not update object version number for #{object.noid} to version #{object.object_version}"
+      raise Exceptions::InternalError
+    end
+
+    changes = {}
     # Do the preservation actions
-    addfiles = [filename]
-    delfiles = []
-    delfiles = ["#{generic_file.noid}_#{@name_of_file_to_replace}"] if update
+    if update && filedata[:filename] == generic_file.label
+      # existing file content is being replaced
+      changes[:modified] = { 'content' => [@file.path] }
+    else
+      changes[:added] = {'content' => [@file.path]}
+      changes[:deleted] = if update
+                            {'content' => ["#{generic_file.noid}_#{generic_file.label}"] }
+                          else
+                            { 'content' => [] }
+                          end
+    end
 
     preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets(addfiles, delfiles)
+    preservation.preserve_assets(changes)
   end
 
   # Takes an optional block and executes the block if the save was successful.

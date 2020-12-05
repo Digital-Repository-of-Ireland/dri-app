@@ -144,7 +144,6 @@ describe ObjectsController do
 
   end
 
-
   describe 'status' do
 
     before(:each) do
@@ -405,11 +404,11 @@ describe ObjectsController do
       @object.save
 
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["An Audio Title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, params: { id: @object.noid, batch: params[:batch] }
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["An Audio Title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, params: { id: @object.noid, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end

@@ -126,7 +126,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     end
 
     # Identify the type
-    edmtype = edm_type(record["type_tesim"]);
+    edmtype = self.class::edm_type(record["type_tesim"]);
     contextual_classes = []
 
     xml = Builder::XmlMarkup.new
@@ -202,7 +202,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             ga = place['properties']['nameGA']
             en = place['properties']['nameEN'] || place['properties']['placename']
             tmp = place['properties']['uri'] || place['properties']['placename'] || place['geometry']['coordinates'].to_s
-            about = "##{tmp.tr(" ", "")}" unless place['properties']['uri'].present?
+            about = "##{tmp.tr(" ", "")}"
             east,north = place['geometry']['coordinates']
             if north.present? && east.present?
               xml.tag! "edm:Place", {"rdf:about" => about} do
@@ -239,13 +239,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Get the asset files
-      assets = record.assets(with_preservation: true, ordered: false)
+      assets = clean_assets(record.assets(with_preservation: true, ordered: false))
       landing_page = doi_url(record.doi) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
-      mainfile = mainfile_for_type(edmtype, assets)
-      imagefile = mainfile_for_type("IMAGE", assets)
+      mainfile = self.class::mainfile_for_type(edmtype, assets)
+      imagefile = self.class::mainfile_for_type("IMAGE", assets)
       if mainfile.present?
         thumbnail = thumbnail_url(record, edmtype, mainfile, imagefile)
       else
@@ -312,7 +312,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
             end
             xml.tag!("svcs:Service",{"rdf:about" => base_url}) do
-              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image/2.0'})
+              xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image'})
               xml.tag!("doap:implements", {"rdf:resource" => 'http://iiif.io/api/image/2/level2.json'})
             end
 
@@ -374,7 +374,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     false
   end
 
-  def edm_type(types)
+  def self.edm_type(types)
     types = types.map(&:upcase)
     return "3D" if types.include?("3D")
     return "VIDEO" if types.to_set.intersect?(["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"].to_set)
@@ -391,7 +391,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   # Get the main file where there is more than one file
-  def mainfile_for_type(edmtype, assets)
+  def self.mainfile_for_type(edmtype, assets)
     case edmtype
     when "VIDEO"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
@@ -402,6 +402,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
     when "IMAGE"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+    when "3D"
+       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "3d" }
     else
       nil
     end
@@ -423,6 +425,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     else
       nil
     end
+  end
+
+  # Remove any formats that we don't want to aggregated from the assets list
+  # Currently just xml files as pdf surrogates
+  def clean_assets(assets)
+    assets.select { |obj| obj.key? 'file_type_tesim' and !obj['mime_type_tesim'].include? "text/xml" }
   end
 
 end

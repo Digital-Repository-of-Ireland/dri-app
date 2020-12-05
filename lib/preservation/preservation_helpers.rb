@@ -40,12 +40,6 @@ module Preservation
       'v%04d' % version
     end
 
-    def verify(object_id)
-      storage_object = ::Moab::StorageObject.new(object_id, aip_dir(object_id))
-      storage_object_version = storage_object.current_version
-      storage_object_version.verify_version_storage
-    end
-
     # Return the hash part of the file path
     # input (optional): object_id String (fedora object id)
     # output: partial path String e.g. "1c/18/df/87/1c18df87m"

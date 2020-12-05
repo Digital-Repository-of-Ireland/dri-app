@@ -127,13 +127,13 @@ class CatalogController < ApplicationController
     end
 
     # "sort results by" options
-    config.add_sort_field "score desc, system_modified_dtsi desc", label: "relevance \u25BC"
+    config.add_sort_field "score desc, timestamp desc", label: "relevance \u25BC"
     config.add_sort_field "title_sorted_ssi asc", label: "title (A-Z)"
     config.add_sort_field "title_sorted_ssi desc", label: "title (Z-A)"
     config.add_sort_field "system_create_dtsi desc", label: "date created \u25BC"
     config.add_sort_field "system_create_dtsi asc", label: "date created \u25B2"
-    config.add_sort_field "system_modified_dtsi desc", label: "date modified \u25BC"
-    config.add_sort_field "system_modified_dtsi asc", label: "date modified \u25B2"
+    config.add_sort_field "timestamp desc", label: "date modified \u25BC"
+    config.add_sort_field "timestamp asc", label: "date modified \u25B2"
     config.add_sort_field "id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
 
     # If there are more than this many search results, no spelling ("did you
@@ -201,6 +201,7 @@ class CatalogController < ApplicationController
 
     # assets ordered by label, excludes preservation only files
     @assets = @document.assets(ordered: true)
+    @file_display_type_count = @document.file_display_type_count(published_only: true)
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
     supported_licences
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?

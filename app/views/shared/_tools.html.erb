@@ -75,14 +75,6 @@
   			  %>
   			<% end %>
 		<% end %>
-
-    <% if @available %>
-      <li class="dri_share">
-      	<% present(@document, DRI::ImagePresenter) do |images| %>
-          <%= social_share_button_tag(document_show_html_title, image: images.image_for_search, popup: 'true') %>
-        <% end %>
-      </li>
-    <% end %>
   </ul>
 </div>
 

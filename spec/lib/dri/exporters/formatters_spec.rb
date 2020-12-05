@@ -22,7 +22,7 @@ describe CatalogController, type: :controller do
     it "should format an object as a CSV" do
       expected_csv = CSV.read(File.join(fixture_path, "export.csv"))
       doc = SolrDocument.find(@object.noid)
-      formatter = DRI::Formatters::Csv.new(controller, doc)
+      formatter = DRI::Exporters::Csv.new(controller.request.base_url, doc)
       generated_csv = CSV.parse(formatter.format)
 
       expect(generated_csv[0]).to match_array(expected_csv[0])
@@ -35,7 +35,7 @@ describe CatalogController, type: :controller do
       requested_fields = ['title', 'subject', 'temporal_coverage']
       expected_titles = ["Id", "Title", "Subjects", "Subjects (Temporal)", "Licence", "Url"]
       object_doc = SolrDocument.new(@object.to_solr)
-      formatter = DRI::Formatters::Csv.new(controller, object_doc, { fields: requested_fields })
+      formatter = DRI::Exporters::Csv.new(controller.request.base_url, object_doc, { fields: requested_fields })
       generated_csv = CSV.parse(formatter.format)
 
       expect(generated_csv[0]).to match_array(expected_titles)

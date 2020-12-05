@@ -56,6 +56,7 @@ en:
         MovingImage: Video
         Sound: Audio
         Text: Text
+        3D: 3D
         Title: Media Types
         Unknown: Unknown
         all: All
@@ -74,6 +75,7 @@ en:
         details: Details
         download: Download
         delete: Delete
+
       user_activity:
         event: Event
         item: Item
@@ -407,6 +409,7 @@ en:
           copy_to_clipboard: Copy to Clipboard 
           copy_success: Copied to Clipboard
           copy_failure: Not copied
+
         headers:
           files: Asset Tools
           related_materials: Related Materials
@@ -467,6 +470,7 @@ en:
           upload_file: Upload Asset
           upload_preservation_file: Upload Preservation-only Asset
           view_assets: View Assets
+          embed_data: Embed
         titles:
           editor_tools: Editor Tools
           object_tools: Object Tools

@@ -1,0 +1,19 @@
+<% @surrogate = nil %>
+<% if @generic_file.present? && !@generic_file.preservation_only? %>
+    <% if @generic_file.threeD? %>
+      <% @surrogate = file_download_path(@document.id, @generic_file.id, type: 'masterfile') %>
+
+      <%= render partial: 'shared/display_3d', locals: { url: @surrogate  } %>
+    <% end %>
+
+    <% if @surrogate.blank? %>
+        <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
+        <p class="dri_restrict_message" id="asset_not_available">
+          <% if @generic_file.supported_type? %>
+            <%= t('dri.views.catalog.legends.surrogate_not_available_why') %>
+          <% else %>
+            <%= t('dri.views.catalog.legends.surrogate_not_supported', mime_type: generic_file.mime_type) %>
+          <% end %>
+        </p>
+    <% end %>
+<% end %>

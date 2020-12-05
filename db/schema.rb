@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_154258) do
+ActiveRecord::Schema.define(version: 2020_10_22_151612) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -209,8 +209,17 @@ ActiveRecord::Schema.define(version: 2020_05_14_154258) do
     t.text "result"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "fixity_report_id"
     t.index ["collection_id"], name: "index_fixity_checks_on_collection_id"
+    t.index ["fixity_report_id"], name: "index_fixity_checks_on_fixity_report_id"
     t.index ["object_id"], name: "index_fixity_checks_on_object_id"
+  end
+
+  create_table "fixity_reports", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "collection_id"
+    t.index ["collection_id"], name: "index_fixity_reports_on_collection_id"
   end
 
   create_table "ingest_statuses", force: :cascade do |t|

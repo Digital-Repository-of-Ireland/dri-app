@@ -71,7 +71,7 @@ class ProcessBatchIngest
     end
 
     preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets(filenames, [])
+    preservation.preserve_assets({ added: { 'content' => filenames }})
   end
 
   def self.ingest_metadata(collection_id, user, metadata)
@@ -145,7 +145,7 @@ class ProcessBatchIngest
       return nil
     end
     FileUtils.rm_f(file_path)
-    filename
+    lfile.path
   end
 
   def self.build_generic_file(object:, user:, preservation: false)

@@ -1,0 +1,6 @@
+<% content_for :head do %>
+    <%= javascript_include_tag 'three_js_viewer', async: Rails.env.production? %>
+<% end %>
+
+<%= content_tag('div', id: 'dri_threejs_view', data: { url: url }) do %>
+<% end %>

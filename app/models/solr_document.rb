@@ -77,7 +77,7 @@ class SolrDocument
   end
 
   def ancestor_ids
-    ancestors_key = Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    ancestors_key = 'ancestor_id_ssim'.to_sym
     return [] unless self[ancestors_key].present?
 
     self[ancestors_key]
@@ -203,17 +203,15 @@ class SolrDocument
   end
 
   def root_collection_id
-    root_key = Solrizer.solr_name('root_collection_id', :stored_searchable, type: :string).to_sym
+    root_key = 'root_collection_id_ssi'.to_sym
 
-    self[root_key].present? ? self[root_key].first : nil
+    self[root_key].present? ? self[root_key] : nil
   end
 
   def root_collection
     root_id = root_collection_id
     return self if root_id && ancestor_docs.blank?
-
-    root = ancestor_docs[root_id] if root_id && ancestor_docs.key?(root_id)
-    root
+    ancestor_docs[root_id] if root_id && ancestor_docs.key?(root_id)
   end
 
   def relatives

@@ -4,6 +4,15 @@ module DRI
     attr_reader :document
     delegate :solr_document_path, :params, :link_to, :image_tag, :logo_path, :uri?, to: :@view
 
+    FILE_TYPE_LABELS = {
+      'image' => 'Image',
+      'audio' => 'Sound',
+      'video' => 'MovingImage',
+      'text' => 'Text',
+      '3d' => '3D',
+      'mixed_types' => 'MixedType'
+    }
+
     def initialize(document, view_context)
       @view = view_context
       @document = document
@@ -29,6 +38,23 @@ module DRI
       return display_brand(organisation) if organisation.brand
 
       organisation.url.present? ? link_to(organisation.name, organisation.url, target: "_blank") : organisation.name
+    end
+
+    def file_type_labels
+      types = document.file_types
+
+      return I18n.t('dri.data.types.Unknown') if types.blank?
+
+      labels = []
+      types.each do |type|
+        label = FILE_TYPE_LABELS[type.to_s.downcase] || 'Unknown'
+        labels << label
+      end
+
+      labels = labels.uniq
+      label = labels.length > 1 ? FILE_TYPE_LABELS['mixed_types'] : labels.first
+
+      I18n.t("dri.data.types.#{label}")
     end
 
     def subjects
