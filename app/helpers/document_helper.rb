@@ -3,12 +3,12 @@ module DocumentHelper
     search_facets = if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil?
       {
         Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],
-        Solrizer.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collection_id]
+        'root_collection_id_ssi'.to_sym => [collection_id]
       }
     else
       {
         Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],
-        Solrizer.solr_name('ancestor_id', :facetable, type: :string).to_sym => [collection_id]
+        'ancestor_id_ssim'.to_sym => [collection_id]
       }
     end
     search_params = { mode: 'objects', search_field: 'all_fields', utf8: '✓', f: search_facets }

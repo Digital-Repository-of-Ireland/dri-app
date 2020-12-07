@@ -94,8 +94,8 @@ class UserCollections
 
     def root_collection_filter
       [
-        "+is_collection_sim:true",
-        "-ancestor_id_sim:[* TO *]"
+        "+is_collection_ssi:true",
+        "-ancestor_id_ssim:[* TO *]"
       ]
     end
 

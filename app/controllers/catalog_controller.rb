@@ -60,11 +60,11 @@ class CatalogController < ApplicationController
     config.add_facet_field Solrizer.solr_name('language', :facetable), helper_method: :label_language, limit: true
     config.add_facet_field Solrizer.solr_name('file_type_display', :facetable)
     config.add_facet_field Solrizer.solr_name('institute', :facetable), limit: 10
-    config.add_facet_field Solrizer.solr_name('root_collection_id', :facetable), helper_method: :collection_title, limit: 10
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
 
     # Added to test sub-collection belonging objects filter in object results view
-    config.add_facet_field Solrizer.solr_name('ancestor_id', :facetable), label: 'ancestor_id', helper_method: :collection_title, show: false
-    config.add_facet_field Solrizer.solr_name('is_collection', :facetable), label: 'is_collection', helper_method: :is_collection, show: false
+    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
+    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
 
     config.add_facet_fields_to_solr_request!
 
@@ -163,7 +163,7 @@ class CatalogController < ApplicationController
         limit: 100,            # number of records returned with each request, default: 15
         set_model: DRI::OaiProvider::AncestorSet,
         set_fields: [        # ability to define ListSets, optional, default: nil
-          { label: 'collection', solr_field: 'ancestor_id_sim' }
+          { label: 'collection', solr_field: 'ancestor_id_ssim' }
         ]
       }
     }

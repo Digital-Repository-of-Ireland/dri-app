@@ -13,7 +13,7 @@ class ReviewCollectionJob < StatusJob
 
     # get all sub-collections
     job_ids = sub_collection_review_jobs(collection_id, user_id)
-    
+
     # review direct child objects of this collection
     job_ids << ReviewJob.create(collection_id: collection_id, user_id: user_id)
     failures = wait_for_completion(collection_id, job_ids)
@@ -25,8 +25,8 @@ class ReviewCollectionJob < StatusJob
 
   def sub_collection_review_jobs(collection_id, user_id)
     # need to include published and reviewed sub-collections in case new draft objects have been added
-    q_str = "#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    q_str = "ancestor_id_ssim:\"#{collection_id}\""
+    f_query = "is_collection_ssi:true"
 
     job_ids = []
     query = Solr::Query.new(q_str, 100, fq: f_query)

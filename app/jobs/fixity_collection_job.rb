@@ -9,9 +9,9 @@ class FixityCollectionJob
     queue_job(report_id, collection_id, collection_id)
   end
 
-  def self.sub_collection_verify_jobs(collection_id)
-    q_str = "#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"#{collection_id}\""
-    f_query = "#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true"
+  def self.sub_collection_verify_jobs(report_id, collection_id)
+    q_str = "ancestor_id_ssim:\"#{collection_id}\""
+    f_query = "is_collection_ssi:true"
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
     query.each { |subcoll| queue_job(report_id, collection_id, subcoll['id']) }

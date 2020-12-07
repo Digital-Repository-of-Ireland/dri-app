@@ -59,14 +59,14 @@ class SavedSearchesController < ApplicationController
     fq = []
     fq << "-#{Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
-      fq << "+#{Solr::SchemaFields.facet('is_collection')}:true"
+      fq << "+is_collection_ssi:true"
       unless user_parameters[:show_subs] == 'true'
-        fq << "-#{Solr::SchemaFields.facet('ancestor_id')}:[* TO *]"
+        fq << "-ancestor_id_ssim:[* TO *]"
       end
     else
-      fq << "+#{Solr::SchemaFields.facet('is_collection')}:false"
+      fq << "+is_collection_ssi:false"
       if user_parameters[:collection].present?
-        fq << "+#{Solr::SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
+        fq << "+root_collection_id_ssi:\"#{user_parameters[:collection]}\""
       end
     end
     fq << "+#{Solr::SchemaFields.facet('status')}:published"

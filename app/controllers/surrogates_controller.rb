@@ -89,7 +89,7 @@ class SurrogatesController < ApplicationController
     if doc.collection?
       # Changed query to work with collections that have sub-collections (e.g. EAD)
       # - ancestor_id rather than collection_id field
-      query = Solr::Query.new("#{Solr::SchemaFields.facet('ancestor_id')}:\"#{doc.id}\"")
+      query = Solr::Query.new("ancestor_id_ssim:\"#{doc.id}\"")
       query.each { |object_doc| generate_surrogates(object_doc.id) }
     else
       generate_surrogates(doc.id)

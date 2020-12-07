@@ -42,10 +42,10 @@ module Preservation
     end
 
     def signature_catalog
-      storage_object = ::Moab::StorageObject.new(object.id, aip_dir(object.id))
+      storage_object = ::Moab::StorageObject.new(object.noid, aip_dir(object.noid))
       storage_version = storage_object.current_version
 
-      if ::Moab::SignatureCatalog.xml_pathname_exist?(manifest_path(object.id, storage_version.version_id))
+      if ::Moab::SignatureCatalog.xml_pathname_exist?(manifest_path(object.noid, storage_version.version_id))
         storage_version.signature_catalog
       else
         raise DRI::Exceptions::MoabError, "Invalid MOAB version"
@@ -81,7 +81,7 @@ module Preservation
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
         end
-        dslist.push(datastreams.map { |item| File.join(metadata_path(object.id, version), item << ".xml") }).flatten!
+        dslist.push(datastreams.map { |item| File.join(metadata_path(object.noid, version), item << ".xml") }).flatten!
       end
 
       if object.object_version == 1
@@ -99,10 +99,9 @@ module Preservation
     # preserve_assets
     def preserve_assets(changes)
       create_moab_dirs()
-      moabify_datastream('properties', object.attached_files['properties'])
-      changes[:modified] ||= {}
-      changes[:modified]['metadata'] = [File.join(metadata_path(self.object.noid, self.version), 'properties.xml')]
-
+      #moabify_datastream('properties', object.attached_files['properties'])
+      #changes[:modified] ||= {}
+      #changes[:modified]['metadata'] = [File.join(metadata_path(object.noid, version), 'properties.xml')]
       update_manifests(changes)
     end
 

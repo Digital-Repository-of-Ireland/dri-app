@@ -141,7 +141,7 @@ describe 'ProcessBatchIngest' do
     let(:asset_master_file) { DriBatchIngest::MasterFile.create }
 
     it "should rescue errors saving metadata" do
-      allow_any_instance_of(DRI::Noid::Service).to receive(:mint).and_raise(Ldp::HttpError)
+      allow_any_instance_of(DRI::DigitalObject).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved)
 
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)

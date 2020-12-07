@@ -68,7 +68,7 @@ class AccessControlsController < ApplicationController
         permissions = read_permissions(document)
 
         title = "#{document['title_tesim'].first}: #{permissions[:read_label]} #{permissions[:assets_label]}"
-        parents = document['ancestor_id_tesim']
+        parents = document['ancestor_id_ssim']
         inherit_objects = count_objects_with_inherited_permissions(document)
 
         entries << {
@@ -143,7 +143,7 @@ class AccessControlsController < ApplicationController
       Solr::Query.new(
                      "collection_id_sim:#{collection['id']}",
                      100,
-                     fq: ['is_collection_sim:false',
+                     fq: ['is_collection_ssi:false',
                           '-read_access_group_ssim:[* TO *]',
                           '-(-master_file_access_sim:inherit master_file_access_sim:*)'
                          ]
@@ -154,7 +154,7 @@ class AccessControlsController < ApplicationController
       query = Solr::Query.new(
                                  "collection_id_sim:#{collection['id']}",
                                  100,
-                                 fq: ['is_collection_sim:false',
+                                 fq: ['is_collection_ssi:false',
                                      '-read_access_group_ssim:[* TO *]',
                                      '-(-master_file_access_sim:inherit master_file_access_sim:*)'
                                  ]
@@ -165,7 +165,7 @@ class AccessControlsController < ApplicationController
     def objects_with_permissions(collection)
       query = Solr::Query.new("collection_id_sim:#{collection['id']}",
                                 100,
-                                fq: ['is_collection_sim:false',
+                                fq: ['is_collection_ssi:false',
                                      'read_access_group_ssim:[* TO *] OR (-master_file_access_sim:inherit master_file_access_sim:[* TO *])'
                                     ]
                                 )

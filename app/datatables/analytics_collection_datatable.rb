@@ -102,7 +102,7 @@ private
   end
 
   def get_object_names(collection_id)
-    query = "(id:\"" + collection_id + "\" OR #{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:\"" + collection_id +
+    query = "(id:\"" + collection_id + "\" OR ancestor_id_ssim:\"" + collection_id +
     "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
     solr_query = Solr::Query.new(query)
     object_hash = {}
@@ -112,5 +112,4 @@ private
     end
     object_hash
   end
-
 end

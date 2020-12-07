@@ -33,7 +33,7 @@ private
 
   def stats_info(collection)
     stats = Solr::Query.new(
-              "{!join from=id to=isPartOf_ssim}root_collection_id_sim:#{collection.id} && is_collection_sim:false",
+              "{!join from=id to=isPartOf_ssim}root_collection_id_ssi:#{collection.id} && is_collection_ssi:false",
               100,
               { stats: true, 'stats.field' => 'file_size_isi' }
             ).get
@@ -63,8 +63,8 @@ private
     solr_query = Solr::Query.new(
                    "*:*",
                    100,
-                   { fq: ["+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true",
-                         "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+                   { fq: ["is_collection_ssi:true",
+                         "-ancestor_id_ssim:[* TO *]"]}
                  )
     solr_query.to_a
   end

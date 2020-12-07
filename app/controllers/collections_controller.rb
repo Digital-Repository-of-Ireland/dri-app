@@ -26,10 +26,10 @@ class CollectionsController < BaseObjectsController
   end
 
   def index
-    query = "_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\""
+    query = "_query_:\"{!join from=id to=ancestor_id_ssim}manager_access_person_ssim:#{current_user.email}\""
     query += " OR manager_access_person_ssim:#{current_user.email}"
 
-    fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
+    fq = ["+is_collection_ssi:true"]
 
     if params[:governing].present?
       fq << "+#{Solr::SchemaFields.searchable_symbol('isGovernedBy')}:#{params[:governing]}"

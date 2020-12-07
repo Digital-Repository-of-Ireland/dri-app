@@ -72,7 +72,7 @@ class StatsReport
 
 
   def self.summary
-    total_objects = Solr::Query.new('has_model_ssim:"DRI::DigitalObject" and is_collection_sim:false').count
+    total_objects = Solr::Query.new('has_model_ssim:"DRI::DigitalObject" and is_collection_ssi:false').count
     total_assets = Solr::Query.new('has_model_ssim:"DRI::GenericFile"').count
 
     { total_objects: total_objects, total_assets: total_assets }

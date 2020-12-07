@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   rescue_from DRI::Exceptions::NotFound, with: :render_not_found
   rescue_from DRI::Exceptions::NotImplemented, with: :render_not_implemented
   rescue_from DRI::Exceptions::Unauthorized, with: :render_unauthorised
-  
+
   rescue_from DRI::Exceptions::InvalidXML do |exception|
     flash[:error] = t('dri.flash.alert.invalid_xml', error: exception)
     render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
@@ -154,7 +154,6 @@ class ApplicationController < ActionController::Base
 
     def locked(id)
       obj = SolrDocument.find(id)
-
       return unless CollectionLock.exists?(collection_id: obj.root_collection.id)
 
       respond_to do |format|

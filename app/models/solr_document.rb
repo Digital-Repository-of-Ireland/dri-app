@@ -93,7 +93,7 @@ class SolrDocument
   end
 
   def collection_id
-    collection_key = Solrizer.solr_name('isGovernedBy', :stored_searchable, type: :symbol)
+    collection_key = 'isGovernedBy_ssim'
 
     self[collection_key].present? ? self[collection_key][0] : nil
   end
@@ -138,9 +138,7 @@ class SolrDocument
 
   # @param [String] field_name
   # @return [Boolean]
-  def truthy_index_field?(field_name)
-    key = Solrizer.solr_name(field_name)
-
+  def truthy_index_field?(key)
     return false unless self[key].present?
     value = if self[key].is_a?(Array)
               self[key].first
@@ -168,7 +166,7 @@ class SolrDocument
   end
 
   def collection?
-    truthy_index_field?('is_collection')
+    truthy_index_field?('is_collection_ssi')
   end
 
   def root_collection?
@@ -229,7 +227,7 @@ class SolrDocument
   end
 
   def retrieve_ancestor_licence
-    ancestors_key = Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym
+    ancestors_key = 'ancestor_id_ssim'.to_sym
     return nil unless ancestor_docs.present?
 
     licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym

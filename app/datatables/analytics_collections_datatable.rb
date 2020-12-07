@@ -99,8 +99,8 @@ private
     solr_query = Solr::Query.new(
       query,
       100,
-      { fq: ["+#{Solrizer.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{Solrizer.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      { fq: ["is_collection_ssi:true",
+            "-ancestor_id_ssim:[* TO *]"]}
     )
 
     while solr_query.has_more?
@@ -125,5 +125,4 @@ private
     end
     collection_hash
   end
-
 end

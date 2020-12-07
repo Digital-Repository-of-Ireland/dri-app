@@ -4,8 +4,8 @@
     <ol class="breadcrumb">
     <% unless @document.is_a?(DRI::DigitalObject) %>
 
-        <% if @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].present? %>
-          <% @document[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
+        <% if @document['ancestor_id_ssim'.to_sym].present? %>
+          <% @document['ancestor_id_ssim'.to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
             <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], url_for_document(ancestor_id) %></li>
           <% end %>
         <% end %>

@@ -86,9 +86,9 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field Solrizer.solr_name('object_type', :facetable), label: 'Type (from Metadata)'
     config.add_facet_field Solrizer.solr_name('depositor', :facetable), label: 'Depositor'
     config.add_facet_field Solrizer.solr_name('institute', :facetable)
-    config.add_facet_field Solrizer.solr_name('root_collection_id', :facetable), helper_method: :collection_title
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title
 
-    config.add_facet_field Solrizer.solr_name('is_collection', :facetable), label: 'is_collection', helper_method: :is_collection, show: false
+    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request

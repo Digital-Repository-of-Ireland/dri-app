@@ -105,7 +105,7 @@ class ProcessBatchIngest
     end
 
     begin
-      update = if object.save
+      update = if object.save!
                  create_reader_group(object) if object.collection?
 
                  preservation = Preservation::Preservator.new(object)
@@ -118,8 +118,8 @@ class ProcessBatchIngest
                  rc = -1
                  { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
                end
-    rescue Ldp::HttpError => e
-      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. service may be overloaded." }
+    rescue ActiveRecord::RecordNotSaved => e
+      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. #{e.message}" }
       rc = -1
     end
 
@@ -130,7 +130,6 @@ class ProcessBatchIngest
   end
 
   def self.ingest_file(user, file_path, object, datastream, filename)
-    filename = "#{@generic_file.noid}_#{filename}"
     mime_type = Validators.file_type(file_path)
 
     begin
@@ -139,13 +138,14 @@ class ProcessBatchIngest
                        object: object,
                        generic_file: @generic_file
                      )
-      file_content.set_content(File.new(file_path), filename, mime_type)
+      file_content.set_content(File.new(file_path), filename, mime_type, datastream, object.object_version)
+      @generic_file.save!
     rescue StandardError => e
-      Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.noid} to #{datastream}: #{e.message}"
+      Rails.logger.error "Could not save the asset file #{file_path} for #{object.noid} to #{datastream}: #{e.message}"
       return nil
     end
     FileUtils.rm_f(file_path)
-    lfile.path
+    @generic_file.path
   end
 
   def self.build_generic_file(object:, user:, preservation: false)

@@ -9,9 +9,9 @@ class SearchBuilder < Blacklight::SearchBuilder
   MAX_TIMELINE_ENTRIES = 50
 
   EXCLUDE_GENERIC_FILES = "-#{::Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\"".freeze
-  INCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:true".freeze
-  EXCLUDE_COLLECTIONS = "+#{::Solr::SchemaFields.facet('is_collection')}:false".freeze
-  EXCLUDE_SUB_COLLECTIONS = "-#{::Solr::SchemaFields.facet('ancestor_id')}:[* TO *]".freeze
+  INCLUDE_COLLECTIONS = "+is_collection_ssi:true".freeze
+  EXCLUDE_COLLECTIONS = "+is_collection_ssi:false".freeze
+  EXCLUDE_SUB_COLLECTIONS = "-ancestor_id_ssim:[* TO *]".freeze
   PUBLISHED_ONLY = "+#{::Solr::SchemaFields.facet('status')}:published".freeze
 
   def exclude_unwanted_models(solr_parameters)
@@ -46,7 +46,7 @@ class SearchBuilder < Blacklight::SearchBuilder
   def objects_only_filters(solr_parameters, user_parameters)
     solr_parameters[:fq] << EXCLUDE_COLLECTIONS
     if user_parameters[:collection].present?
-      solr_parameters[:fq] << "+#{::Solr::SchemaFields.facet('root_collection_id')}:\"#{user_parameters[:collection]}\""
+      solr_parameters[:fq] << "+root_collection_id_ssi:\"#{user_parameters[:collection]}\""
     end
   end
 

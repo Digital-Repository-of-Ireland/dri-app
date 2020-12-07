@@ -53,7 +53,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
         @dois << DataciteDoi.create(object_id: object.noid) if doi
       end
       collection.depositing_institute = @institute.name if @institute
-      collection.manager_users = [@example_user]
+      collection.manager_users_string = @example_user.to_s
       collection.published_at = DateTime.now.strftime("%Y-%m-%d")
       collection.save
       @collections << collection

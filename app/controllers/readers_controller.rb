@@ -113,7 +113,7 @@ class ReadersController < ApplicationController
 
       # if no manager set for this collection it could be inherited, iterate up the tree
       if managers.nil?
-        doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor|
+        doc['ancestor_id_ssim'].reverse_each do |ancestor|
           ancestordoc = SolrDocument.find(ancestor)
           managers = ancestordoc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
           break if managers.present? && managers.size > 0

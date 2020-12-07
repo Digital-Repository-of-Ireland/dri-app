@@ -195,7 +195,7 @@ module DRI::IIIFViewable
     q_str += " AND #{Solrizer.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
     q_str += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
     # excluding sub-collections
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "is_collection_ssi:false"
 
     objects = []
 

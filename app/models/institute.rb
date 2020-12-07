@@ -28,7 +28,7 @@ class Institute < ActiveRecord::Base
     query = Solr::Query.new(
       collections_query,
       100,
-      fq: "-#{Solr::SchemaFields.facet('ancestor_id')}:[* TO *]"
+      fq: "-ancestor_id_ssim:[* TO *]"
     )
     query.to_a
   end

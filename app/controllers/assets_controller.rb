@@ -109,14 +109,15 @@ class AssetsController < ApplicationController
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
     begin
-    if file_content.update_content(file_upload)
-      flash[:notice] = t('dri.flash.notice.file_uploaded')
-      record_version_committer(@object, current_user)
-      mint_doi(@object, 'asset modified') if @object.status == 'published'
-    else
-      message = @generic_file.errors.full_messages.join(', ')
-      flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
-      logger.error "Error saving file: #{message}"
+      if file_content.update_content(file_upload)
+        flash[:notice] = t('dri.flash.notice.file_uploaded')
+        record_version_committer(@object, current_user)
+        mint_doi(@object, 'asset modified') if @object.status == 'published'
+      else
+        message = @generic_file.errors.full_messages.join(', ')
+        flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
+        logger.error "Error saving file: #{message}"
+      end
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: message)

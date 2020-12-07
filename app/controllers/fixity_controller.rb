@@ -30,9 +30,9 @@ class FixityController < ApplicationController
     result = Preservation::Preservator.new(object).verify
 
     FixityCheck.create(
-          collection_id: object.governing_collection.noid,
+          collection_id: object.to_solr['root_collection_ssi'],
           object_id: object.noid,
-          verified: result.verified,
+          verified: result[:verified],
           result: result.to_json
     )
     flash[:notice] = t('dri.flash.notice.fixity_check_completed')

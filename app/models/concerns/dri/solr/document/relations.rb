@@ -128,7 +128,7 @@ module DRI::Solr::Document::Relations
       end
 
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
-      solr_query << " AND root_collection_id_sim:(\"#{relatives_ids}\")"
+      solr_query << " AND root_collection_id_ssi:(\"#{relatives_ids}\")"
 
       response = Solr::Query.new(
                   solr_query,

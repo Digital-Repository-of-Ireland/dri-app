@@ -9,7 +9,7 @@ class FixityJob
     # query for objects within this collection
     q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
     # excluding sub-collections
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "is_collection_ssi:false"
 
     fixity_check(report_id, root_collection_id, collection_id, q_str, f_query)
   end
@@ -17,7 +17,8 @@ class FixityJob
   def self.fixity_check(report_id, root_collection_id, collection_id, q_str, f_query)
     query = Solr::Query.new(q_str, 100, fq: f_query)
     query.each do |o|
-      result = Preservation::Preservator.new(o.id).verify
+      object = DRI::DigitalObject.find_by_noid(o.id)
+      result = Preservation::Preservator.new(object).verify
 
       FixityCheck.create(
         fixity_report_id: report_id,

@@ -23,7 +23,7 @@ class PublishJob
     q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed"
 
     # excluding sub-collections
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "is_collection_ssi:false"
 
     completed, failed = set_as_published(collection_id, user, q_str, f_query)
 

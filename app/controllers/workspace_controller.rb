@@ -16,8 +16,8 @@ class WorkspaceController < ApplicationController
   end
 
   def readers
-    query = "(_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
-    fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
+    query = "(_query_:\"{!join from=id to=ancestor_id_ssim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
+    fq = ["+is_collection_ssi:true"]
     fq << '+read_access_group_ssim:[* TO *]'
     fq << '-read_access_group_ssim:public'
 
@@ -41,8 +41,8 @@ class WorkspaceController < ApplicationController
   private
 
     def manage_or_edit_collections_count(type: nil)
-      manage_query = "(_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
-      edit_query = "(_query_:\"{!join from=id to=ancestor_id_sim}edit_access_person_ssim:#{current_user.email}\" OR edit_access_person_ssim:#{current_user.email})"
+      manage_query = "(_query_:\"{!join from=id to=ancestor_id_ssim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
+      edit_query = "(_query_:\"{!join from=id to=ancestor_id_ssim}edit_access_person_ssim:#{current_user.email}\" OR edit_access_person_ssim:#{current_user.email})"
 
       query = case type
               when :manage
@@ -52,7 +52,7 @@ class WorkspaceController < ApplicationController
               else
                 "#{manage_query} OR #{edit_query}"
               end
-      fq = ["+#{Solr::SchemaFields.facet('is_collection')}:true"]
+      fq = ["+is_collection_ssi:true"]
 
       Solr::Query.new(query, 100, fq: fq).count
     end
