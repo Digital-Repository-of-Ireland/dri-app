@@ -1,5 +1,5 @@
 module DocumentHelper
-  def get_collection_media_type_params(document, collection_id, media_type)
+  def collection_media_type_params(document, collection_id, media_type)
     search_facets = if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil?
       {
         Solrizer.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],

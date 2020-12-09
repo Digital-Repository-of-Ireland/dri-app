@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: e270b359e2f2c54c8a8f63ce278ad9d3919328fa
-  branch: active-record
+  revision: 3100d9fca0f4e00067581d67643e6826f84bbf87
+  branch: ar-valkyrie
   specs:
-    dri_data_models (3.2.7)
+    dri_data_models (3.2.9)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -67,10 +67,11 @@ GIT
       om
       rails (~> 5.2)
       resque
+      valkyrie
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: a3c43be40ecfdabc3f8f8dba2a99aa42ab6cef5b
+  revision: 2cee2c86f55f8cae80b9ce2beb07e0492f65f774
   branch: active-record
   specs:
     user_group (1.4.2)
@@ -136,6 +137,10 @@ GEM
       globalid (>= 0.3.6)
     activemodel (5.2.4.4)
       activesupport (= 5.2.4.4)
+    activemodel-serializers-xml (1.0.2)
+      activemodel (> 5.x)
+      activesupport (> 5.x)
+      builder (~> 3.1)
     activerecord (5.2.4.4)
       activemodel (= 5.2.4.4)
       activesupport (= 5.2.4.4)
@@ -284,6 +289,8 @@ GEM
     database_cleaner (1.8.5)
     debug_inspector (0.0.3)
     declarative (0.0.20)
+    declarative-builder (0.1.0)
+      declarative-option (< 0.2.0)
     declarative-option (0.1.0)
     deep_merge (1.2.1)
     deprecation (1.0.0)
@@ -298,9 +305,21 @@ GEM
       devise
     devise-i18n-views (0.3.7)
     diff-lcs (1.4.4)
+    disposable (0.4.7)
+      declarative (>= 0.0.9, < 1.0.0)
+      declarative-builder (< 0.2.0)
+      declarative-option (< 0.2.0)
+      representable (>= 2.4.0, <= 3.1.0)
+      uber (< 0.2.0)
     docile (1.3.2)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    draper (4.0.1)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
+      activemodel-serializers-xml (>= 1.0)
+      activesupport (>= 5.0)
+      request_store (>= 1.0)
     dropbox_api (0.1.18)
       faraday (<= 1.0)
       oauth2 (~> 1.1)
@@ -330,6 +349,11 @@ GEM
       dry-initializer (~> 3.0)
       dry-logic (~> 1.0)
       dry-types (~> 1.4)
+    dry-struct (1.3.0)
+      dry-core (~> 0.4, >= 0.4.4)
+      dry-equalizer (~> 0.3)
+      dry-types (~> 1.3)
+      ice_nine (~> 0.11)
     dry-types (1.4.0)
       concurrent-ruby (~> 1.0)
       dry-container (~> 0.3)
@@ -451,6 +475,7 @@ GEM
       terminal-table (>= 1.5.1)
     i18n_sync (0.5.1)
       ya2yaml
+    ice_nine (0.11.2)
     iconv (1.0.8)
     iiif-image-api (0.2.0)
       activesupport
@@ -769,6 +794,13 @@ GEM
     redis (4.2.5)
     redis-namespace (1.8.0)
       redis (>= 3.0.4)
+    reform (2.3.3)
+      disposable (>= 0.4.2, < 0.5.0)
+      representable (>= 2.4.0, < 3.1.0)
+      uber (< 0.2.0)
+    reform-rails (0.2.1)
+      activemodel (>= 5.0)
+      reform (>= 2.3.1, < 3.0.0)
     regexp_parser (1.8.2)
     remotipart (1.4.4)
     representable (3.0.4)
@@ -982,6 +1014,20 @@ GEM
     unf_ext (0.0.7.7)
     unicode (0.4.4.4)
     unicode-display_width (1.7.0)
+    valkyrie (2.0.0)
+      activemodel
+      activesupport
+      disposable (~> 0.4.5)
+      draper
+      dry-struct
+      dry-types (~> 1.0)
+      json
+      json-ld
+      railties
+      rdf
+      rdf-vocab
+      reform
+      reform-rails
     vegas (0.1.11)
       rack (>= 1.0.0)
     warden (1.2.9)

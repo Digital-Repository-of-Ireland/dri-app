@@ -155,9 +155,6 @@ Feature: Preservation
     And I go to the "object" "modify" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
-    And I go to the "asset" "details" page for "the saved pid"
-    And I attach the asset file "sample_image.jpeg"
-    And I press the button to "replace a file"
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid

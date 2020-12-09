@@ -25,7 +25,6 @@ class AccessControlsController < ApplicationController
     version = @object.object_version || 1
     params[:digital_object][:object_version] = version.next
 
-    permissionchange = permissions_changed?
     updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?
 
     if updated

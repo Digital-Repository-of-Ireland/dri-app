@@ -91,7 +91,6 @@ module FacetsHelper
 
   def collection_title(args)
     results = nil
-
     if args.is_a?(Hash)
       results = []
       value_list = args[:document][args[:field]]
