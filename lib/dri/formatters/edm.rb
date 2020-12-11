@@ -202,7 +202,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             ga = place['properties']['nameGA']
             en = place['properties']['nameEN'] || place['properties']['placename']
             tmp = place['properties']['uri'] || place['properties']['placename'] || place['geometry']['coordinates'].to_s
-            about = "##{tmp.tr(" ", "")}" unless place['properties']['uri'].present?
+            about = "##{tmp.tr(" ", "")}"
             east,north = place['geometry']['coordinates']
             if north.present? && east.present?
               xml.tag! "edm:Place", {"rdf:about" => about} do
