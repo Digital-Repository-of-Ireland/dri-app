@@ -18,7 +18,7 @@ restrict:
   file_formats:
     _3D: ['STL (Standard Tessellation Language) Binary']
   extensions:
-    restricted_text: ['.pts']
+    restricted_text: ['.pts', '.xyz']
 storage:
   driver: s3_interface
 downloads:
