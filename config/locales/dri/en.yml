@@ -612,6 +612,7 @@ en:
         total_assets: Total number of assets
         type: Types
         types: Types
+        doi: DOI
       ingest:
         buttons:
           continue: Continue
