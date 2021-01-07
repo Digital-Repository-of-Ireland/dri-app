@@ -6,7 +6,7 @@ describe DRI::DigitalObject do
     @t.title = nil
     @t.rights = nil
     @t.language = nil
-    @t.object_type = ["Audio"]
+    @t.type = ["Audio"]
     expect(@t).to_not be_valid
   end
 

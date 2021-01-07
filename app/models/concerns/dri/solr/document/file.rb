@@ -58,16 +58,16 @@ module DRI::Solr::Document::File
   end
 
   def read_master?
-    master_file_key = Solr::SchemaFields.searchable_string('master_file_access')
-    return true if self[master_file_key] == ['public']
-    return false if self[master_file_key] == ['private']
+    master_file_key = 'master_file_access_ssi'
+    return true if self[master_file_key] == 'public'
+    return false if self[master_file_key] == 'private'
 
     result = false
     ancestor_ids.each do |id|
       ancestor = ancestor_docs[id]
       next if ancestor[master_file_key].nil? || ancestor[master_file_key].include?('inherit')
 
-      result = ancestor[master_file_key] == ['public'] ? true : false
+      result = ancestor[master_file_key] == 'public' ? true : false
       break
     end
 

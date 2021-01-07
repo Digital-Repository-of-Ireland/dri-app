@@ -144,7 +144,7 @@ class AccessControlsController < ApplicationController
                      100,
                      fq: ['is_collection_ssi:false',
                           '-read_access_group_ssim:[* TO *]',
-                          '-(-master_file_access_sim:inherit master_file_access_sim:*)'
+                          '-(-master_file_access_ssi:inherit master_file_access_ssi:*)'
                          ]
                      ).count
     end
@@ -155,7 +155,7 @@ class AccessControlsController < ApplicationController
                                  100,
                                  fq: ['is_collection_ssi:false',
                                      '-read_access_group_ssim:[* TO *]',
-                                     '-(-master_file_access_sim:inherit master_file_access_sim:*)'
+                                     '-(-master_file_access_ssi:inherit master_file_access_ssi:*)'
                                  ]
                                )
       query.to_a
@@ -165,7 +165,7 @@ class AccessControlsController < ApplicationController
       query = Solr::Query.new("collection_id_sim:#{collection['id']}",
                                 100,
                                 fq: ['is_collection_ssi:false',
-                                     'read_access_group_ssim:[* TO *] OR (-master_file_access_sim:inherit master_file_access_sim:[* TO *])'
+                                     'read_access_group_ssim:[* TO *] OR (-master_file_access_ssi:inherit master_file_access_ssi:[* TO *])'
                                     ]
                                 )
       query.to_a
@@ -233,9 +233,12 @@ class AccessControlsController < ApplicationController
     end
 
     def permissions_changed?
-      !(@object.read_groups_string == params[:digital_object][:read_groups_string] &&
-      @object.edit_users_string == params[:digital_object][:edit_users_string] &&
-      @object.manager_users_string == params[:digital_object][:manager_users_string])
+      !(
+        @object.read_groups_string == params[:digital_object][:read_groups_string] &&
+        @object.edit_users_string == params[:digital_object][:edit_users_string] &&
+        @object.manager_users_string == params[:digital_object][:manager_users_string]
+        @object.master_file_access == params[:digital_object][:master_file_access]
+      )
     end
 
 end

@@ -23,7 +23,6 @@ class ObjectsController < BaseObjectsController
     @object.creator = ['']
 
     if params[:is_sub_collection].present? && params[:is_sub_collection] == 'true'
-      @object.object_type = ['Collection']
       @object.type = ['Collection']
     end
 

@@ -138,7 +138,7 @@ class ProcessBatchIngest
                        object: object,
                        generic_file: @generic_file
                      )
-      file_content.set_content(File.new(file_path), filename, mime_type, datastream, object.object_version)
+      file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
       @generic_file.save!
     rescue StandardError => e
       Rails.logger.error "Could not save the asset file #{file_path} for #{object.noid} to #{datastream}: #{e.message}"

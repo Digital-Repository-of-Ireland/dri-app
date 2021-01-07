@@ -54,7 +54,6 @@ class CollectionsController < BaseObjectsController
     @object.discover_groups_string = 'public'
     @object.read_groups_string = 'public'
     @object.master_file_access = 'private'
-    @object.object_type = ['Collection']
     @object.title = ['']
     @object.description = ['']
     @object.creator = ['']

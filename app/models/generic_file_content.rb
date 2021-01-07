@@ -24,8 +24,15 @@ class GenericFileContent
     end
   end
 
-  def set_content(file, filename, mime_type, path='content', version)
-    generic_file.add_file(file, { version: version, path: path, file_name: "#{generic_file.noid}_#{filename}", mime_type: mime_type })
+  def set_content(file, filename, mime_type, version, path='content', moab_path=nil)
+    options = {
+      version: version,
+      path: path,
+      file_name: "#{generic_file.noid}_#{filename}",
+      mime_type: mime_type,
+      moab_path: moab_path
+    }
+    generic_file.add_file(file, options)
     generic_file.label = filename
     generic_file.title = [filename]
   end
@@ -63,8 +70,9 @@ class GenericFileContent
       filedata[:file_upload],
       filedata[:filename],
       filedata[:mime_type],
+      object.object_version,
       datastream,
-      object.object_version
+      moab_path
     )
 
     save_and_characterize
