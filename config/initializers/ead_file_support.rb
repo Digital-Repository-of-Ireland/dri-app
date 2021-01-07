@@ -1,9 +1,9 @@
-require 'dri/model_support/files'
+require 'dri/model_support/ead_support'
 require 'validators'
 
-DRI::ModelSupport::Files.module_eval do
+DRI::ModelSupport::EadSupport.module_eval do
 
-  def add_file(file, dsid='content', original_file_name)
+  def add_file_to_object(file, original_file_name, dsid='content')
     mime_type = Validators.file_type(file.path)
     pass_validation = false
 
@@ -29,21 +29,16 @@ DRI::ModelSupport::Files.module_eval do
                        object: self,
                        generic_file: generic_file
                      )
-    file_content.set_content(file, filename, mime_type)
 
-    # Update object version
-    self.increment_version
+    filedata = {
+      file_upload: file,
+      filename: original_file_name,
+      mime_type: mime_type
+    }
 
-    begin
-      self.save!
-    rescue ActiveRecord::RecordInvalid
-      logger.error "Could not update object version number for #{self.noid} to version #{object_version}"
-      raise Exceptions::InternalError
-    end
+    file_content.add_content(filedata)
 
-    VersionCommitter.create(version_id: 'v%04d' % object.object_version, obj_id: object.noid, committer_login: ingest_user.to_s)
-
-    preservation = Preservation::Preservator.new(self)
-    preservation.preserve_assets({ added: { 'content' => [lfile.path] }})
+    VersionCommitter.create(version_id: 'v%04d' % self.object_version, obj_id: self.noid, committer_login: ingest_user.to_s)
+    true
   end
 end
