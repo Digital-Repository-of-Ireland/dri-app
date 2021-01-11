@@ -103,7 +103,7 @@ module DRI::Solr::Document::Collection
         ]
 
     if published_only
-       fq << "+#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:published"
+       fq << "+status_ssi:published"
     end
 
      query_params = {
@@ -127,7 +127,7 @@ module DRI::Solr::Document::Collection
                  "\" AND " +
                  "#{Solr::SchemaFields.searchable_string('file_type_display')}:"+ type
     if published_only
-      solr_query += " AND #{Solr::SchemaFields.searchable_symbol('status')}:published"
+      solr_query += " AND status_ssi:published"
     end
     Solr::Query.new(solr_query).count
   end
@@ -143,7 +143,7 @@ module DRI::Solr::Document::Collection
     # @return [String] solr query for children of self (id) with given status
     def status_query(status, subcoll = false)
       query = "ancestor_id_ssim:#{self.id}"
-      query += " AND #{Solr::SchemaFields.searchable_symbol('status')}:#{status}" unless status.nil?
+      query += " AND status_ssi:#{status}" unless status.nil?
       query += " AND is_collection_ssi:#{subcoll}"
       query
     end
@@ -167,12 +167,12 @@ module DRI::Solr::Document::Collection
         facet: true,
         "facet.mincount" => 1,
         "facet.query" => [
-                          "status_ssim:published AND is_collection_ssi:false",
-                          "status_ssim:draft AND is_collection_ssi:false",
-                          "status_ssim:reviewed AND is_collection_ssi:false",
-                          "status_ssim:reviewed AND is_collection_ssi:true",
-                          "status_ssim:draft AND is_collection_ssi:true",
-                          "status_ssim:published AND is_collection_ssi:true",
+                          "status_ssi:published AND is_collection_ssi:false",
+                          "status_ssi:draft AND is_collection_ssi:false",
+                          "status_ssi:reviewed AND is_collection_ssi:false",
+                          "status_ssi:reviewed AND is_collection_ssi:true",
+                          "status_ssi:draft AND is_collection_ssi:true",
+                          "status_ssi:published AND is_collection_ssi:true",
                           "is_collection_ssi:false"
                         ]
       }
@@ -180,12 +180,12 @@ module DRI::Solr::Document::Collection
       counts = response['facet_counts']['facet_queries']
 
       @status_counts = {}
-      @status_counts[:published_objects] = counts['status_ssim:published AND is_collection_ssi:false']
-      @status_counts[:reviewed_objects] = counts['status_ssim:reviewed AND is_collection_ssi:false']
-      @status_counts[:draft_objects] = counts['status_ssim:draft AND is_collection_ssi:false']
-      @status_counts[:published_collections] = counts['status_ssim:published AND is_collection_ssi:true']
-      @status_counts[:reviewed_collections] = counts['status_ssim:reviewed AND is_collection_ssi:true']
-      @status_counts[:draft_collections] = counts['status_ssim:draft AND is_collection_ssi:true']
+      @status_counts[:published_objects] = counts['status_ssi:published AND is_collection_ssi:false']
+      @status_counts[:reviewed_objects] = counts['status_ssi:reviewed AND is_collection_ssi:false']
+      @status_counts[:draft_objects] = counts['status_ssi:draft AND is_collection_ssi:false']
+      @status_counts[:published_collections] = counts['status_ssi:published AND is_collection_ssi:true']
+      @status_counts[:reviewed_collections] = counts['status_ssi:reviewed AND is_collection_ssi:true']
+      @status_counts[:draft_collections] = counts['status_ssi:draft AND is_collection_ssi:true']
       @status_counts[:total_objects] = @status_counts[:published_objects] + @status_counts[:reviewed_objects] + @status_counts[:draft_objects]
 
       @status_counts

@@ -47,7 +47,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'date_range_start_isi', show: false
 
     config.add_facet_field Solrizer.solr_name('licence', :facetable), label: 'Licence', limit: 20
-    config.add_facet_field Solrizer.solr_name('status', :facetable), label: 'Record Status'
+    config.add_facet_field 'status_ssi', label: 'Record Status'
     config.add_facet_field Solrizer.solr_name('master_file_access', :facetable), label: 'Master File Access'
     config.add_facet_field Solrizer.solr_name('subject', :facetable), limit: 20
     config.add_facet_field Solrizer.solr_name('subject_gle', :facetable), label: 'Subjects (in Irish)'
@@ -130,7 +130,7 @@ class MyCollectionsController < ApplicationController
     config.add_show_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
     config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
     config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
-    config.add_show_field Solrizer.solr_name('properties_status', :stored_searchable, type: :string), label: 'status'
+    config.add_show_field 'status_ssi', label: 'status'
 
     config.add_search_field 'all_fields', label: 'All Fields'
     config.dri_display_search_fields = %i[all_fields title subject person place]

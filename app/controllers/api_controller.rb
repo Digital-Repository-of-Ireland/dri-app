@@ -87,7 +87,7 @@ class ApiController < CatalogController
         params: {
           q: solr_query, qt: 'standard',
           fq: "is_collection_ssi:false
-               AND #{Solr::SchemaFields.searchable_symbol('status')}:published",
+               AND status_ssi:published",
           mlt: 'true',
           :'mlt.fl' => "#{Solr::SchemaFields.searchable_string('subject')},
                         #{Solr::SchemaFields.searchable_string('subject')}",

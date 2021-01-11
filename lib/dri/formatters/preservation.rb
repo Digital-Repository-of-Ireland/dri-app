@@ -4,20 +4,20 @@ module DRI::Formatters
     def initialize(object_doc, options = {})
       fields = options[:fields].presence
       @object_doc = object_doc
-      
+
       build_graph
     end
 
     def build_graph
       graph << [uri, RDF::FOAF.primaryTopic, RDF::URI("#{uri}#id")]
       graph << [uri, RDF.type, RDF::FOAF.Document]
-      
+
       add_licence
       add_metadata
       add_hierarchy
       add_relationships
       add_assets
-      
+
       graph
     end
 
@@ -25,10 +25,10 @@ module DRI::Formatters
       id = "#{uri}#id"
 
       if @object_doc.collection?
-        graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection] 
+        graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection]
         graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['creator_tesim'].first)] if @object_doc['creator_tesim'].present?
       else
-        graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['depositor_tesim'].first)]
+        graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['depositor_ss'])
       end
       graph << [RDF::URI.new(id), RDF::URI("info\:fedora/fedora-system\:def/model#hasModel"), RDF::Literal.new(@object_doc['active_fedora_model_ssi'])]
       graph << [RDF::URI.new(id), RDF::DC.contributor, RDF::Literal.new(committer)]
@@ -39,8 +39,8 @@ module DRI::Formatters
 
     def add_assets
       assets = @object_doc.assets
-      
-      assets.each do |a| 
+
+      assets.each do |a|
         id = "#{base_uri}#{object_file_path(a['id'])}#id"
         graph << [RDF::URI("#{uri}#id"), RDF::DC.hasPart, RDF::URI.new(id)]
         graph << [RDF::URI.new(id), RDF::FOAF.topic, RDF::URI("#{uri}#id")]

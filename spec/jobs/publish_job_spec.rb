@@ -5,7 +5,7 @@ require 'solr/query'
 RSpec.configure { |c| c.filter_run_excluding(slow: true) }
 
 describe 'PublishJob' do
-  
+
   before do
     allow_any_instance_of(PublishJob).to receive(:completed)
     allow_any_instance_of(PublishJob).to receive(:set_status)
@@ -32,7 +32,7 @@ describe 'PublishJob' do
 
   after(:each) do
     @collection.destroy
-   
+
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
@@ -96,15 +96,15 @@ describe 'PublishJob' do
 
     it 'should queue a doi job when publishing an object' do
         stub_const("DoiConfig", OpenStruct.new(
-        username: 'user', 
-        password: 'password', 
-        prefix: '10.5072', 
-        base_url: 'http://www.dri.ie/repository', 
+        username: 'user',
+        password: 'password',
+        prefix: '10.5072',
+        base_url: 'http://www.dri.ie/repository',
         publisher: 'Digital Repository of Ireland'))
       Settings.doi.enable = true
 
       job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
-      
+
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
 
@@ -132,7 +132,7 @@ describe 'PublishJob' do
       job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
       job.perform
 
-      q = "collection_id_sim:\"#{@collection.noid}\" AND status_ssim:published"
+      q = "collection_id_sim:\"#{@collection.noid}\" AND status_ssi:published"
       expect(SolrQuery.new(q).count).to eq(21)
     end
   end

@@ -103,7 +103,7 @@ class CatalogController < ApplicationController
     config.add_show_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
     config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
     config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
-    config.add_show_field Solrizer.solr_name('properties_status', :stored_searchable, type: :string), label: 'status'
+    config.add_show_field 'status_ssi', label: 'status'
 
     config.add_search_field 'all_fields', label: 'All Fields'
 

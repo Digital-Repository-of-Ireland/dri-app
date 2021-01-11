@@ -191,7 +191,7 @@ module DRI::IIIFViewable
   def child_objects
     # query for objects within this collection
     q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
-    q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:\"published\""
+    q_str += " AND status_ssi:\"published\""
     q_str += " AND #{Solrizer.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
     q_str += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
     # excluding sub-collections

@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 8774acf849557691ef0672551be578b6276bbabf
+  revision: 046fe2c7dde3d9bf8dd60a592941c2e01d3b5992
   branch: ar-valkyrie
   specs:
     dri_data_models (3.2.9)
@@ -71,7 +71,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 2cee2c86f55f8cae80b9ce2beb07e0492f65f774
+  revision: ba812b74c32d06069e8981f46592f802ccaa1284
   branch: active-record
   specs:
     user_group (1.4.2)
@@ -160,7 +160,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     ast (2.4.1)
-    autoprefixer-rails (10.0.3.0)
+    autoprefixer-rails (10.2.0.0)
       execjs
     aws-eventstream (1.1.0)
     aws-partitions (1.402.0)
@@ -389,11 +389,11 @@ GEM
       faraday
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.2.0)
+    fastimage (2.2.1)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.17.0)
-    ffi (1.13.1)
+    ffi (1.14.2)
     filesize (0.2.0)
     font-awesome-rails (4.7.0.5)
       railties (>= 3.2, < 6.1)
@@ -621,7 +621,7 @@ GEM
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.3)
-    namae (1.0.1)
+    namae (1.0.2)
     nest (3.2.0)
       redic
     net-http-persistent (3.1.0)

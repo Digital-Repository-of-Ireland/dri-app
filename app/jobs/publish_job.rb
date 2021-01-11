@@ -20,7 +20,7 @@ class PublishJob
 
     # query for reviewed objects within this collection
     q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:reviewed"
+    q_str += " AND status_ssi:reviewed"
 
     # excluding sub-collections
     f_query = "is_collection_ssi:false"

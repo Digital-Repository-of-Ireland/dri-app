@@ -27,7 +27,7 @@ class PublishCollectionJob < StatusJob
     # sub-collections that are not draft (need to include published to allow for iterative publishing
     # i.e., publishing of reviewed objects added to already published collections)
     q_str = "ancestor_id_ssim:\"#{collection_id}\""
-    q_str += " AND -#{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:draft"
+    q_str += " AND -status_ssi:draft"
 
     f_query = "is_collection_ssi:true"
 

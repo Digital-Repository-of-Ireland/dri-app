@@ -103,7 +103,7 @@ describe "ReviewJob" do
       job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id})
       job.perform
 
-      expect(Solr::Query.new("collection_id_sim:\"#{@collection.noid}\" AND status_ssim:reviewed").count).to eq(22)
+      expect(Solr::Query.new("collection_id_sim:\"#{@collection.noid}\" AND status_ssi:reviewed").count).to eq(22)
     end
   end
 end

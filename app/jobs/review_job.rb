@@ -19,7 +19,7 @@ class ReviewJob
 
     # get objects within this collection, not including sub-collections
     q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{Solrizer.solr_name('status', :stored_searchable, type: :symbol)}:draft"
+    q_str += " AND status_ssi:draft"
     f_query = "is_collection_ssi:false"
 
     completed, failed = set_as_reviewed(collection_id, user, q_str, f_query)

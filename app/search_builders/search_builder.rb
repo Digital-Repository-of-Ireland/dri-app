@@ -12,7 +12,7 @@ class SearchBuilder < Blacklight::SearchBuilder
   INCLUDE_COLLECTIONS = "+is_collection_ssi:true".freeze
   EXCLUDE_COLLECTIONS = "+is_collection_ssi:false".freeze
   EXCLUDE_SUB_COLLECTIONS = "-ancestor_id_ssim:[* TO *]".freeze
-  PUBLISHED_ONLY = "+#{::Solr::SchemaFields.facet('status')}:published".freeze
+  PUBLISHED_ONLY = "+status_ssi:published".freeze
 
   def exclude_unwanted_models(solr_parameters)
     solr_parameters[:fq] ||= []

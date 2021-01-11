@@ -69,7 +69,7 @@ class SavedSearchesController < ApplicationController
         fq << "+root_collection_id_ssi:\"#{user_parameters[:collection]}\""
       end
     end
-    fq << "+#{Solr::SchemaFields.facet('status')}:published"
+    fq << "+status_ssi:published"
 
     fq
   end

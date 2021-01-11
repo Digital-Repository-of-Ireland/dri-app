@@ -241,9 +241,7 @@ class SolrDocument
   end
 
   def status
-    status_key = Solrizer.solr_name('status', :stored_searchable, type: :string).to_sym
-
-    self[status_key].first
+    self['status_ssi'.to_sym]
   end
 
   def draft?
