@@ -28,7 +28,7 @@ module DRI::Formatters
         graph << [RDF::URI.new(id), RDF.type, RDF::Vocab::DCMIType.Collection]
         graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['creator_tesim'].first)] if @object_doc['creator_tesim'].present?
       else
-        graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['depositor_ss'])
+        graph << [RDF::URI.new(id), RDF::DC.creator, RDF::Literal.new(@object_doc['depositor_ss'])]
       end
       graph << [RDF::URI.new(id), RDF::URI("info\:fedora/fedora-system\:def/model#hasModel"), RDF::Literal.new(@object_doc['active_fedora_model_ssi'])]
       graph << [RDF::URI.new(id), RDF::DC.contributor, RDF::Literal.new(committer)]
