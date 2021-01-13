@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_122820) do
+ActiveRecord::Schema.define(version: 2021_01_11_201003) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -63,6 +63,23 @@ ActiveRecord::Schema.define(version: 2021_01_08_122820) do
     t.index ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
   end
 
+  create_table "dri_access_controls", force: :cascade do |t|
+    t.string "master_file_access"
+    t.string "discover_users"
+    t.string "discover_groups"
+    t.string "read_users"
+    t.string "read_groups"
+    t.string "edit_users"
+    t.string "edit_groups"
+    t.string "manager_users"
+    t.string "manager_groups"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "digital_object_type"
+    t.integer "digital_object_id"
+    t.index ["digital_object_type", "digital_object_id"], name: "do_acl_idx"
+  end
+
   create_table "dri_batch_ingest_ingest_batches", force: :cascade do |t|
     t.string "email"
     t.string "collection_id"
@@ -111,17 +128,8 @@ ActiveRecord::Schema.define(version: 2021_01_08_122820) do
 
   create_table "dri_digital_objects", force: :cascade do |t|
     t.string "ingest_files_from_metadata"
-    t.string "master_file_access"
     t.string "published_at"
     t.string "digital_object_type"
-    t.string "discover_users"
-    t.string "discover_groups"
-    t.string "read_users"
-    t.string "read_groups"
-    t.string "edit_users"
-    t.string "edit_groups"
-    t.string "manager_users"
-    t.string "manager_groups"
     t.string "governing_collection_type"
     t.integer "governing_collection_id"
     t.string "previous_sibling_type"
@@ -152,14 +160,6 @@ ActiveRecord::Schema.define(version: 2021_01_08_122820) do
     t.string "checksum_md5"
     t.string "checksum_sha256"
     t.string "checksum_rmd160"
-    t.string "discover_users"
-    t.string "discover_groups"
-    t.string "read_users"
-    t.string "read_groups"
-    t.string "edit_users"
-    t.string "edit_groups"
-    t.string "manager_users"
-    t.string "manager_groups"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "digital_object_type"
