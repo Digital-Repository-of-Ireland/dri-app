@@ -41,7 +41,7 @@ class BaseObjectsController < CatalogController
 
         # Do the preservation actions
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(['properties'])
+        preservation.preserve
       end
 
       respond_to do |format|

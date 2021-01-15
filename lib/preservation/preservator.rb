@@ -71,10 +71,10 @@ module Preservation
     # preserve
     def preserve(datastreams=nil)
       create_moab_dirs()
-      dslist = []
-      added = []
-      deleted = []
-      modified = []
+
+      saved = moabify_attributes
+      return false unless saved
+      dslist = [File.join(metadata_path(object.noid, version), 'attributes.json')]
 
       if datastreams.present?
         datastreams.each do |ds|
@@ -99,9 +99,10 @@ module Preservation
     # preserve_assets
     def preserve_assets(changes)
       create_moab_dirs()
-      #moabify_datastream('properties', object.attached_files['properties'])
-      #changes[:modified] ||= {}
-      #changes[:modified]['metadata'] = [File.join(metadata_path(object.noid, version), 'properties.xml')]
+      moabify_attributes
+      changes[:modified] ||= {}
+      changes[:modified]['metadata'] = [File.join(metadata_path(self.object.noid, self.version), 'attributes.json')]
+
       update_manifests(changes)
     end
 
@@ -221,13 +222,12 @@ module Preservation
 
       equal_versions = storage_object_version.version_id == object.object_version.to_i
       metadata_match = attached_file_match?(object.attached_files[:descMetadata], group.path_hash['descMetadata.xml'].md5)
-      properties_match = attached_file_match?(object.attached_files[:properties], group.path_hash['properties.xml'].md5)
 
       {
-        verified: equal_versions && storage_verify[:verified] && metadata_match && properties_match,
+        verified: equal_versions && storage_verify[:verified] && metadata_match,
         storage_verify: storage_verify[:output],
         versions: equal_versions,
-        attached_files: { metadata: metadata_match, properties: properties_match }
+        attached_files: { metadata: metadata_match }
       }
     end
 
@@ -267,6 +267,25 @@ module Preservation
         }
       rescue Exception => e
         { verified: false, output: e.message }
+      end
+
+      def moabify_attributes
+        attributes = object.attributes.merge("access_control" =>
+                       object.access_control.attributes.except(
+                         'id','digital_object_type','digital_object_id'
+                       )
+                     )
+
+        attributes['alternate_indentifier'] = object.noid
+        if object.governing_collection
+          attributes['governing_collection_alternate_identifier'] = object.governing_collection.noid
+        end
+
+        File.write(File.join(metadata_path(self.object.noid, self.version), 'attributes.json'), attributes.to_json)
+        true
+      rescue StandardError => e
+        Rails.logger.error "unable to write attributes: #{e}"
+        false
       end
 
       def path_for_type(type)

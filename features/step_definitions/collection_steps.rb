@@ -115,7 +115,7 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.save!
 
   preservation = Preservation::Preservator.new(@digital_object)
-  preservation.preserve(['descMetadata','properties'])
+  preservation.preserve(['descMetadata'])
 end
 
 Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|

@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 0b0bac1f29ce18671fcc7eacae93898579ce9854
+  revision: 57bdc3253035bce87dbd7cf4312ddf7524795b0a
   branch: ar-valkyrie
   specs:
     dri_data_models (3.2.9)
@@ -591,7 +591,7 @@ GEM
     listen (3.3.3)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.8.0)
+    loofah (2.9.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)

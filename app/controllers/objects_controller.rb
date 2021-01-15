@@ -214,7 +214,7 @@ class ObjectsController < BaseObjectsController
     preservation.update_manifests(
       deleted: {
         'content' => assets,
-        'metadata' => ['descMetadata.xml','properties.xml']
+        'metadata' => ['descMetadata.xml']
         }
     )
     collection_id = @object.governing_collection.noid
@@ -277,7 +277,7 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(['properties'])
+      preservation.preserve
 
       # if this object is in a sub-collection, we need to set that collection status
       # to reviewed so that a publish job will run on the collection
@@ -351,7 +351,7 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(['descMetadata','properties'])
+      preservation.preserve(['descMetadata'])
     end
 
     def retrieve_linked_data
@@ -371,7 +371,7 @@ class ObjectsController < BaseObjectsController
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(governing_collection)
-          preservation.preserve(['properties'])
+          preservation.preserve
         end
 
         governing_collection = governing_collection.governing_collection

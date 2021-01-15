@@ -33,17 +33,14 @@ module DRI::Duplicable
   private
 
   def duplicate_query(object)
-    md5_field = Solrizer.solr_name(
-      'metadata_md5',
-      :stored_searchable,
-      type: :string
-    )
+    checksum_field = 'metadata_checksum_ssi'
+    
     governed_field = Solrizer.solr_name(
       'isGovernedBy',
       :stored_searchable,
       type: :symbol
     )
-    query = "#{md5_field}:\"#{object.metadata_checksum}\""
+    query = "#{checksum_field}:\"#{object.metadata_checksum}\""
     query += " AND #{governed_field}:\"#{object.governing_collection.noid}\""
 
     query

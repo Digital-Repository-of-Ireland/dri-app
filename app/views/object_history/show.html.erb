@@ -3,13 +3,13 @@
   <h3><%= t('dri.reports.headings.object') %></h3>
   <table>
     <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.noid %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi.first %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.doi') %> </td><td> <%= @object.doi %> </td></tr>
     <tr><td> <%= t('dri.reports.object.title') %> </td><td> <%= @object.title.join(' : ') %> </td></tr>
     <tr><td> <%= t('dri.reports.object.created_at') %> </td><td> <%= @object.create_date %> </td></tr>
     <tr><td> <%= t('dri.reports.object.last_mod') %> </td><td> <%= @object.modified_date %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor.first %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor %> </td></tr>
     <tr><td> <%= t('dri.reports.object.status') %> </td><td> <%= @object.status %> </td></tr>
-    <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_md5.first %> </td></tr>
+    <tr><td> <%= t('dri.reports.object.metadata_md5') %> </td><td> <%= @object.metadata_checksum %> </td></tr>
     <tr><td> <%= t('dri.reports.object.licence') %> </td><td> <%= @licence %> </td></tr>
     <tr><td> <%= t('dri.reports.object.copyright') %> </td><td> <%= @object.rights.join(' : ') %> </td></tr>
   </table>

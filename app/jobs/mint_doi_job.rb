@@ -22,7 +22,7 @@ class MintDoiJob < IdBasedJob
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(object)
-      preservation.preserve(['properties'])
+      preservation.preserve
     end
   end
 

@@ -16,7 +16,7 @@ module Storage
         Rails.logger.error "Unable to save cover image."
         return false
       end
-      collection.properties.cover_image = url
+      collection.cover_image = url
       collection.save
 
       true

@@ -109,7 +109,7 @@ class MetadataController < ApplicationController
         retrieve_linked_data if AuthoritiesConfig
 
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(['descMetadata', 'properties'])
+        preservation.preserve(['descMetadata'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e

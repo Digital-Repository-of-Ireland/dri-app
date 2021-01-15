@@ -46,7 +46,7 @@ class PublishJob
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(['properties'])
+      preservation.preserve
     else
       failed += 1
     end
@@ -78,7 +78,7 @@ class PublishJob
 
 	  # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(['properties'])
+          preservation.preserve
 
           completed += 1
           mint_doi(o)

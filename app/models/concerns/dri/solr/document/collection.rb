@@ -23,7 +23,7 @@ module DRI::Solr::Document::Collection
   end
 
   def cover_image
-    cover_field = Solr::SchemaFields.searchable_string('cover_image')
+    cover_field = 'cover_image_ss'
     self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
   end
 
@@ -72,7 +72,7 @@ module DRI::Solr::Document::Collection
   def duplicate_total
     response = duplicate_query
 
-    duplicates = response['facet_counts']['facet_pivot']['metadata_md5_tesim,id'].select { |value| value['count'] > 1 && value['pivot'].present? }
+    duplicates = response['facet_counts']['facet_pivot']['metadata_checksum_ssi,id'].select { |value| value['count'] > 1 && value['pivot'].present? }
     total = 0
     duplicates.each { |duplicate| total += duplicate['count'] }
 
@@ -135,7 +135,7 @@ module DRI::Solr::Document::Collection
   private
 
     def metadata_field
-      Solr::SchemaFields.searchable_string('metadata_md5')
+      'metadata_checksum_ssi'
     end
 
     # @param [String] status

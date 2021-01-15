@@ -58,7 +58,7 @@ module DRI
       path = nil
 
       solr_doc = document.is_a?(SolrDocument) ? document : SolrDocument.new(document)
-      cover_key = Solrizer.solr_name('cover_image', :stored_searchable, type: :string).to_sym
+      cover_key = 'cover_image_ss'.to_sym
 
       path = if solr_doc[cover_key].present? && solr_doc[cover_key].first
                cover_image_path(solr_doc)

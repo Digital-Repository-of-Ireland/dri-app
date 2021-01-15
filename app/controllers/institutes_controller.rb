@@ -129,7 +129,7 @@ class InstitutesController < ApplicationController
       VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
 
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(['properties'])
+      preservation.preserve
     else
       raise DRI::Exceptions::InternalError
     end
@@ -173,7 +173,7 @@ class InstitutesController < ApplicationController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(['properties'])
+      preservation.preserve
 
       respond_to do |format|
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.noid }

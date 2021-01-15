@@ -43,7 +43,6 @@ def create_object(owner, title, access: 'public', type: 'Object')
   object.depositing_institute = institute
   object.role_org = [institute]
 
-  object.object_type = [type]
   object.type = [type]
 
   # dates have to be string otherwise Error: undefined method `gsub' for 25:Integer

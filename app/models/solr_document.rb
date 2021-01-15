@@ -107,13 +107,11 @@ class SolrDocument
   end
 
   def doi
-    doi_key = Solrizer.solr_name('doi')
-
-    self[doi_key]
+    self['doi_ss']
   end
 
   def depositing_institute
-    institute_name = ancestor_field(Solrizer.solr_name('depositing_institute', :displayable, type: :string))
+    institute_name = ancestor_field('depositing_institute_ssi')
 
     return Institute.find_by(name: institute_name) if institute_name
 
@@ -125,7 +123,7 @@ class SolrDocument
   end
 
   def has_doi?
-    doi_key = Solrizer.solr_name('doi', :displayable, type: :symbol).to_sym
+    doi_key = 'doi_ss'.to_sym
 
     self[doi_key].present?
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_201003) do
+ActiveRecord::Schema.define(version: 2021_01_13_183453) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -142,6 +142,13 @@ ActiveRecord::Schema.define(version: 2021_01_11_201003) do
     t.integer "object_version"
     t.string "status"
     t.string "depositor"
+    t.string "model_version"
+    t.string "verified"
+    t.string "doi"
+    t.string "cover_image"
+    t.string "institute"
+    t.string "depositing_institute"
+    t.string "licence"
     t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
     t.index ["governing_collection_type", "governing_collection_id"], name: "governing_index"
     t.index ["metadata_checksum"], name: "metadata_chksm_index"

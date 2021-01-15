@@ -109,7 +109,7 @@ class ProcessBatchIngest
                  create_reader_group(object) if object.collection?
 
                  preservation = Preservation::Preservator.new(object)
-                 preservation.preserve(['descMetadata','properties'])
+                 preservation.preserve(['descMetadata'])
 
                  rc = 0
                  { status_code: 'COMPLETED',
