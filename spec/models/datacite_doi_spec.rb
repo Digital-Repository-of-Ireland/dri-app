@@ -39,12 +39,12 @@ describe "DataciteDoi" do
   end
 
   it "should create a DOI" do
-    datacite = DataciteDoi.create(object_id: @object.noid)
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
   end
 
   it "should create datacite XML" do
-    datacite = DataciteDoi.create(object_id: @object.noid)
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
     xml = datacite.to_xml
 
     doc = Nokogiri::XML(xml)
@@ -57,7 +57,7 @@ describe "DataciteDoi" do
 
   it "should create datacite XML for a documentation object" do
     doc_obj = FactoryBot.create(:documentation)
-    datacite = DataciteDoi.create(object_id: doc_obj.noid)
+    datacite = DataciteDoi.create(object_id: doc_obj.alternate_id)
     xml = datacite.to_xml
 
     doc = Nokogiri::XML(xml)
@@ -78,7 +78,7 @@ describe "DataciteDoi" do
     @creator[:resource_type] = ["Sound"]
     @creator.save
 
-    datacite = DataciteDoi.create(object_id: @creator.noid)
+    datacite = DataciteDoi.create(object_id: @creator.alternate_id)
     xml = datacite.to_xml
 
     doc = Nokogiri::XML(xml)
@@ -91,40 +91,40 @@ describe "DataciteDoi" do
   end
 
   it "should require update if title changed" do
-    datacite = DataciteDoi.create(object_id: @object.noid)
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
     fields = { title: ["A modified title"], creator: @object.creator }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be true
   end
 
   it "should require update if creator changed" do
-    datacite = DataciteDoi.create(object_id: @object.noid)
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
     fields = { title: @object.title, creator: ["A. Body"] }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be true
   end
 
   it "should not need an update if no change" do
-    datacite = DataciteDoi.create(object_id: @object.noid)
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
     fields = { title: @object.title, creator: @object.creator }
     datacite.update_metadata(fields)
     expect(datacite.changed?).to be false
   end
 
   it "should add version numbers to doi" do
-    datacite = DataciteDoi.create(object_id: @object.noid)
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
 
     datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
 
-    datacite2 = DataciteDoi.create(object_id: @object.noid)
+    datacite2 = DataciteDoi.create(object_id: @object.alternate_id)
     datacite2.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-1"))
 
-    datacite3 = DataciteDoi.create(object_id: @object.noid)
+    datacite3 = DataciteDoi.create(object_id: @object.alternate_id)
     datacite3.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-2"))
   end
 
   describe 'show' do
-    before(:each) { @doi = DataciteDoi.create(object_id: @object.noid) }
+    before(:each) { @doi = DataciteDoi.create(object_id: @object.alternate_id) }
     after(:each) { @doi.delete }
     it 'should include a doi link' do
       expect(@doi.show['url']).to match(/https\:\/\/doi\.org\/10\.5072\/DRI\.(.+)/)

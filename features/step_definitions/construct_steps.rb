@@ -7,7 +7,7 @@ When /^I commit the Digital Object$/ do
 end
 
 Then /^I should be given a PID from the digital repository$/ do
-  @digital_object.noid.should =~ /^\w\w\d\d\w\w\d\d\w$/
+  @digital_object.alternate_id.should =~ /^\w\w\d\d\w\w\d\d\w$/
 end
 
 When /^I add (.*?) metadata$/ do |type|

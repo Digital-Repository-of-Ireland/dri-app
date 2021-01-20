@@ -84,7 +84,7 @@ describe DRI::IIIFViewable do
     FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'),
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
 
-    @generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
     @generic_file.digital_object = @sound
     @generic_file.apply_depositor_metadata(@login_user.email)
     options = {}
@@ -122,7 +122,7 @@ describe DRI::IIIFViewable do
     it "should set within for collection objects" do
       manifest = iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest
 
-      expect(manifest.within['@id']).to end_with("#{@collection.noid}.json")
+      expect(manifest.within['@id']).to end_with("#{@collection.alternate_id}.json")
     end
 
     it "should include subcollections in the collection manifest" do
@@ -137,7 +137,7 @@ describe DRI::IIIFViewable do
       manifest = iiif_test.new(SolrDocument.new(@collection.to_solr)).iiif_manifest
 
       expect(manifest.collections.length).to be 1
-      expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.noid}.json")
+      expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.alternate_id}.json")
     end
 
     it 'should add images to objects' do
@@ -148,7 +148,7 @@ describe DRI::IIIFViewable do
       expect(manifest.sequences.first.canvases.first.images.length).to be 1
 
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
-        "#{@sound.noid}:#{@generic_file.noid}/full/full/0/default.jpg")
+        "#{@sound.alternate_id}:#{@generic_file.alternate_id}/full/full/0/default.jpg")
     end
 
   end

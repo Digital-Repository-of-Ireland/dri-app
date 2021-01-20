@@ -11,7 +11,7 @@ class CatalogController < ApplicationController
       query_parser: 'edismax',
       url_key: 'advanced'
     }
-
+    #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
 
     config.show.route = { controller: 'catalog' }

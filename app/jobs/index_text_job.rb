@@ -32,7 +32,7 @@ class IndexTextJob < IdBasedJob
     end
 
   rescue => e
-    Rails.logger.error("Error extracting content from #{self.noid}: #{e.inspect}")
+    Rails.logger.error("Error extracting content from #{self.alternate_id}: #{e.inspect}")
   end
 
 end

@@ -5,7 +5,7 @@ class DeleteCollectionJob < IdBasedJob
   end
 
   def run
-    Rails.logger.info "Deleting all objects in #{object.noid}"
+    Rails.logger.info "Deleting all objects in #{object.alternate_id}"
     object.destroy
   end
 end

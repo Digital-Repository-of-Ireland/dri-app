@@ -26,8 +26,8 @@ module DRI::Solr::Document::File
   end
 
   def preservation_only?
-    key = 'preservation_only_tesim'
-    self[key].present? && self[key] == ['true'] ? true : false
+    key = 'preservation_only_ssi'
+    self[key].present? && self[key] == 'true' ? true : false
   end
 
   def label

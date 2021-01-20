@@ -44,12 +44,12 @@ RSpec.describe "Oai requests", type: :request do
 
   it "has lists sets" do
     get "/oai?verb=ListSets"
-    expect(response.body).to match(/collection:#{collection.noid}/)
+    expect(response.body).to match(/collection:#{collection.alternate_id}/)
   end
 
   it "has a setSpec" do
     get "/oai", params: { verb: 'ListRecords', metadataPrefix: 'oai_dri' }
-    expect(response.body).to match(%r{<setSpec>collection:#{collection.noid}<\/setSpec>})
+    expect(response.body).to match(%r{<setSpec>collection:#{collection.alternate_id}<\/setSpec>})
   end
 
   it "has a record in the repo" do

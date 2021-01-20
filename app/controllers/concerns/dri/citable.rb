@@ -13,11 +13,11 @@ module DRI::Citable
   def mint_doi(object, modified)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    DataciteDoi.create(object_id: object.noid, modified: modified, mod_version: object.object_version)
-    DRI.queue.push(MintDoiJob.new(object.noid))
+    DataciteDoi.create(object_id: object.alternate_id, modified: modified, mod_version: object.object_version)
+    DRI.queue.push(MintDoiJob.new(object.alternate_id))
   end
 
   def doi_metadata_update(object)
-    DRI.queue.push(UpdateDoiJob.new(object.noid))
+    DRI.queue.push(UpdateDoiJob.new(object.alternate_id))
   end
 end

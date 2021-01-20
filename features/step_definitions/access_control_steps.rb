@@ -27,7 +27,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
   file.add_file(uploaded, { :directory => Dir.tmpdir })
   file.save
 
-  file_content = GenericFileContent.new(generic_file: gf, user: current_user)  
+  file_content = GenericFileContent.new(generic_file: gf, user: current_user)
   file_content.create_content(uploaded, uploaded.original_filename, "content", uploaded.content_type)
   gf.save
 
@@ -100,7 +100,7 @@ Given /^the object with pid "(.*?)" has permission "(.*?)" for "(.*?)" "(.*?)"$/
   pid = "o" + @random_pid if (pid == "@random")
   if permission == 'inherited access'
     object = DRI::Identifier.retrieve_object(pid)
-    fedora_document = DRI::Identifier.retrieve_object(object.governing_collection.noid)
+    fedora_document = DRI::Identifier.retrieve_object(object.governing_collection.alternate_id)
   elsif permission == 'read access'
     fedora_document = DRI::Identifier.retrieve_object(pid)
   else
@@ -153,14 +153,14 @@ Given(/^the object with pid "(.*?)" has a deliverable surrogate file$/) do |pid|
   object = DRI::Identifier.retrieve_object(pid)
   generic_file = object.generic_files.first
   storage = StorageService.new
-  storage.create_bucket(object.noid)
+  storage.create_bucket(object.alternate_id)
   case object.type.first
     when "Sound"
-      storage.store_surrogate(object.noid, File.join(cc_fixture_path, 'SAMPLEA.mp3'), generic_file.noid + '_mp3.mp3')
+      storage.store_surrogate(object.alternate_id, File.join(cc_fixture_path, 'SAMPLEA.mp3'), generic_file.alternate_id + '_mp3.mp3')
     when "Text"
-      storage.store_surrogate(object.noid, File.join(cc_fixture_path, 'SAMPLEA.pdf'), generic_file.noid + '_thumbnail.png')
+      storage.store_surrogate(object.alternate_id, File.join(cc_fixture_path, 'SAMPLEA.pdf'), generic_file.alternate_id + '_thumbnail.png')
     when "Image"
-      storage.store_surrogate(object.noid, File.join(cc_fixture_path, 'sample_image.png'), "#{generic_file.noid}_thumbnail.png")
+      storage.store_surrogate(object.alternate_id, File.join(cc_fixture_path, 'sample_image.png'), "#{generic_file.alternate_id}_thumbnail.png")
   end
 end
 

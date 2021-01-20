@@ -8,7 +8,7 @@ class LinkedDataJob < IdBasedJob
   end
 
   def run
-    Rails.logger.info "Retrieving linked data for #{object.noid}"
+    Rails.logger.info "Retrieving linked data for #{object.alternate_id}"
     return unless AuthoritiesConfig
 
     loc_array = object.geographical_coverage + object.coverage
@@ -25,7 +25,7 @@ class LinkedDataJob < IdBasedJob
           object.update_index
         end
       rescue URI::InvalidURIError
-        Rails.logger.info "Bad URI #{uri} in #{object.noid}"
+        Rails.logger.info "Bad URI #{uri} in #{object.alternate_id}"
       end
     end
   end
@@ -35,7 +35,7 @@ class LinkedDataJob < IdBasedJob
 
     select = "select ?recon
               where {
-              <https://repository.dri.ie/catalog/#{object.noid}#id> ?p ?resource .
+              <https://repository.dri.ie/catalog/#{object.alternate_id}#id> ?p ?resource .
               ?resource rdfs:seeAlso ?recon }"
     client = DRI::Sparql::Client.new AuthoritiesConfig['data.dri.ie']['endpoint']
     results = client.query select
@@ -44,7 +44,7 @@ class LinkedDataJob < IdBasedJob
     results.each_solution do |s|
       uri = s[:recon].to_s
       uris << uri
-      DRI::ReconciliationResult.create(object_id: object.noid, uri: uri)
+      DRI::ReconciliationResult.create(object_id: object.alternate_id, uri: uri)
     end
     uris
   end

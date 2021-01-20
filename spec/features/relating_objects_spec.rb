@@ -59,8 +59,8 @@ feature 'Relating objects' do
       collection_b.reload
       collection_b.update_index
 
-      visit(my_collections_path(object_b.noid))
-      expect(page).to have_link(href: my_collections_path(object_a.noid))
+      visit(my_collections_path(object_b.alternate_id))
+      expect(page).to have_link(href: my_collections_path(object_a.alternate_id))
 
       collection_a.delete
       collection_b.delete
@@ -92,8 +92,8 @@ feature 'Relating objects' do
       collection_a.governed_items << object_b
       collection_a.save
 
-      visit(my_collections_path(object_b.noid))
-      expect(page).to have_link(href: my_collections_path(object_a.noid))
+      visit(my_collections_path(object_b.alternate_id))
+      expect(page).to have_link(href: my_collections_path(object_a.alternate_id))
 
       collection_a.delete
     end

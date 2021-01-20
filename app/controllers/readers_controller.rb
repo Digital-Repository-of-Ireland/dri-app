@@ -18,11 +18,11 @@ class ReadersController < ApplicationController
   # User requesting read access to collection
   def create
     @collection = retrieve_object!(params[:id])
-    @reader_group = governing_reader_group(@collection.noid)
+    @reader_group = governing_reader_group(@collection.alternate_id)
 
     unless @reader_group
       flash[:alert] = t('dri.flash.error.no_read_group')
-      redirect_back(fallback_location: catalog_path(id: @collection.noid))
+      redirect_back(fallback_location: catalog_path(id: @collection.alternate_id))
       return
     end
 
@@ -108,7 +108,7 @@ class ReadersController < ApplicationController
 
     def notify_managers(group)
       # inform managers for reader group requests
-      doc = SolrDocument.find(@collection.noid)
+      doc = SolrDocument.find(@collection.alternate_id)
       managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
 
       # if no manager set for this collection it could be inherited, iterate up the tree

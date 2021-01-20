@@ -113,7 +113,7 @@ class MetadataController < ApplicationController
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
-        logger.error "Could not save object #{@object.noid}: #{e.message}"
+        logger.error "Could not save object #{@object.alternate_id}: #{e.message}"
         raise DRI::Exceptions::InternalError
       end
     else
@@ -149,7 +149,7 @@ class MetadataController < ApplicationController
     end
 
     def update_or_mint_doi
-      doi = DataciteDoi.find_by(object_id: @object.noid)
+      doi = DataciteDoi.find_by(object_id: @object.alternate_id)
       return unless doi
 
       doi_metadata_fields = {}
@@ -161,7 +161,7 @@ class MetadataController < ApplicationController
     end
 
     def retrieve_linked_data
-      DRI.queue.push(LinkedDataJob.new(@object.noid)) if @object.geographical_coverage.present? || @object.coverage.present?
+      DRI.queue.push(LinkedDataJob.new(@object.alternate_id)) if @object.geographical_coverage.present? || @object.coverage.present?
     rescue Exception => e
       Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end

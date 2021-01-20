@@ -52,7 +52,7 @@ describe CollectionsController do
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
 
-      delete :destroy, params: { :id => @collection.noid }
+      delete :destroy, params: { :id => @collection.alternate_id }
     end
 
   end
@@ -93,7 +93,7 @@ describe CollectionsController do
 
       expect(PublishCollectionJob).to receive(:create)
 
-      post :publish, params: { id: @collection.noid }
+      post :publish, params: { id: @collection.alternate_id }
     end
   end
 
@@ -111,33 +111,33 @@ describe CollectionsController do
     end
 
     it 'should return not-found for no cover image' do
-      get :cover, params: { id: @collection.noid }
+      get :cover, params: { id: @collection.alternate_id }
       expect(response.status).to eq(404)
     end
 
     it 'should return not found if cover image cannot be found for storage interface' do
-      get :cover, params: { id: @collection.noid }
+      get :cover, params: { id: @collection.alternate_id }
       expect(response.status).to eq(404)
     end
 
     it 'accepts a valid image' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, params: { id: @collection.noid, digital_object: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: @uploaded } }
       expect(flash[:notice]).to be_present
     end
 
     it 'rejects unsupported image format' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.tiff"), "image/tiff")
-      put :add_cover_image, params: { id: @collection.noid, digital_object: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: @uploaded } }
       expect(flash[:error]).to be_present
     end
 
     it 'creates new AIP' do
       @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :add_cover_image, params: { id: @collection.noid, digital_object: { cover_image: @uploaded } }
+      put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: @uploaded } }
 
-      expect(Dir.entries(aip_dir(@collection.noid)).size - 2).to eq(2)
-      expect(aip_valid?(@collection.noid, 2)).to be true
+      expect(Dir.entries(aip_dir(@collection.alternate_id)).size - 2).to eq(2)
+      expect(aip_valid?(@collection.alternate_id, 2)).to be true
     end
 
   end
@@ -183,7 +183,7 @@ describe CollectionsController do
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A modified sub collection title"]
 
-      put :update, params: { id: @subcollection.noid, digital_object: params[:digital_object] }
+      put :update, params: { id: @subcollection.alternate_id, digital_object: params[:digital_object] }
       @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
 
@@ -218,7 +218,7 @@ describe CollectionsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @collection.noid)
+      DataciteDoi.create(object_id: @collection.alternate_id)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
@@ -227,9 +227,9 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A modified title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
 
-      DataciteDoi.where(object_id: @collection.noid).first.delete
+      DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -261,7 +261,7 @@ describe CollectionsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @collection.noid)
+      DataciteDoi.create(object_id: @collection.alternate_id)
 
       expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
@@ -269,9 +269,9 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
 
-      DataciteDoi.where(object_id: @collection.noid).first.delete
+      DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -312,7 +312,7 @@ describe CollectionsController do
     end
 
     after(:each) do
-      @collection.delete if DRI::Identifier.object_exists?(@collection.noid)
+      @collection.delete if DRI::Identifier.object_exists?(@collection.alternate_id)
       @login_user.delete
 
       Settings.reload_from_files(
@@ -341,7 +341,7 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end
@@ -359,14 +359,14 @@ describe CollectionsController do
       sign_in @login_user
 
       @collection = FactoryBot.create(:collection)
-      CollectionLock.create(collection_id: @collection.noid)
+      CollectionLock.create(collection_id: @collection.alternate_id)
 
       request.env["HTTP_REFERER"] = search_catalog_path
     end
 
     after(:each) do
-      CollectionLock.where(collection_id: @collection.noid).delete_all
-      @collection.delete if DRI::DigitalObject.exists?(@collection.noid)
+      CollectionLock.where(collection_id: @collection.alternate_id).delete_all
+      @collection.delete if DRI::DigitalObject.exists?(@collection.alternate_id)
 
       @login_user.delete
 
@@ -379,7 +379,7 @@ describe CollectionsController do
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @collection.noid, digital_object: params[:digital_object] }
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end

@@ -39,7 +39,7 @@ describe 'PublishJob' do
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
       allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
-      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
@@ -63,7 +63,7 @@ describe 'PublishJob' do
       @collection.save
 
       allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
-      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
@@ -83,7 +83,7 @@ describe 'PublishJob' do
       @collection.governed_items << @draft
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
@@ -103,7 +103,7 @@ describe 'PublishJob' do
         publisher: 'Digital Repository of Ireland'))
       Settings.doi.enable = true
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
@@ -129,10 +129,10 @@ describe 'PublishJob' do
 
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
-      q = "collection_id_sim:\"#{@collection.noid}\" AND status_ssi:published"
+      q = "collection_id_sim:\"#{@collection.alternate_id}\" AND status_ssi:published"
       expect(SolrQuery.new(q).count).to eq(21)
     end
   end

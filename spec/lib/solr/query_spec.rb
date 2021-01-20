@@ -28,7 +28,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.noid}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count
@@ -48,7 +48,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.noid}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count
@@ -68,7 +68,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.noid}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count

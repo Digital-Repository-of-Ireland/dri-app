@@ -44,8 +44,8 @@ describe ObjectsController do
       collection.governed_items << object
 
       expect {
-        delete :destroy, params: { id: object.noid }
-      }.to change { DRI::Identifier.object_exists?(object.noid) }.from(true).to(false)
+        delete :destroy, params: { id: object.alternate_id }
+      }.to change { DRI::Identifier.object_exists?(object.alternate_id) }.from(true).to(false)
 
       collection.reload
       collection.destroy
@@ -65,9 +65,9 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, params: { id: @object.noid }
+      delete :destroy, params: { id: @object.alternate_id }
 
-      expect(DRI::Identifier.object_exists?(@object.noid)).to be true
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be true
 
       @collection.reload
       @collection.destroy
@@ -86,9 +86,9 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy,  params: { id: @object.noid }
+      delete :destroy,  params: { id: @object.alternate_id }
 
-      expect(DRI::Identifier.object_exists?(@object.noid)).to be false
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
 
       @collection.reload
       @collection.destroy
@@ -119,7 +119,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.noid }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
@@ -136,7 +136,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.noid }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
@@ -204,19 +204,19 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @collection.destroy if DRI::Identifier.object_exists?(@collection.noid)
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
       @login_user.delete
     end
 
     it 'should set an object status' do
-      post :status, params: { id: @object.noid, status: "reviewed" }
+      post :status, params: { id: @object.alternate_id, status: "reviewed" }
 
 
       @object.reload
 
       expect(@object.status).to eql("reviewed")
 
-      post :status, params: { id: @object.noid, status: "draft" }
+      post :status, params: { id: @object.alternate_id, status: "draft" }
 
       @object.reload
 
@@ -224,7 +224,7 @@ describe ObjectsController do
     end
 
     it 'should set a parent subcollection to reviewed' do
-      post :status, params: { id: @object4.noid, status: "reviewed" }
+      post :status, params: { id: @object4.alternate_id, status: "reviewed" }
 
       @object4.reload
       expect(@object4.status).to eql("reviewed")
@@ -246,7 +246,7 @@ describe ObjectsController do
       @object.status = "published"
       @object.save
 
-      post :status, params: { id: @object.noid, status: "draft" }
+      post :status, params: { id: @object.alternate_id, status: "draft" }
       @object.reload
 
       expect(@object.status).to eql("published")
@@ -267,7 +267,7 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.noid)
+      DataciteDoi.create(object_id: @object.alternate_id)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
@@ -275,9 +275,9 @@ describe ObjectsController do
       params[:digital_object][:title] = ["A modified title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { :id => @object.noid, :digital_object => params[:digital_object] }
+      put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
 
-      DataciteDoi.where(object_id: @object.noid).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -296,7 +296,7 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.noid)
+      DataciteDoi.create(object_id: @object.alternate_id)
 
       expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
@@ -304,9 +304,9 @@ describe ObjectsController do
       params[:digital_object][:title] = ["An Audio Title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { :id => @object.noid, :digital_object => params[:digital_object] }
+      put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
 
-      DataciteDoi.where(object_id: @object.noid).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -349,7 +349,7 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, params: { digital_object: { governing_collection: @collection.noid }, metadata_file: @file }
+        post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
 
         expect(flash[:error]).to be_present
       end
@@ -360,7 +360,7 @@ describe ObjectsController do
         params[:digital_object][:title] = ["An Audio Title"]
         params[:digital_object][:read_users_string] = "public"
         params[:digital_object][:edit_users_string] = @login_user.email
-        put :update, params: { :id => @object.noid, :digital_object => params[:digital_object] }
+        put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
 
         expect(flash[:error]).to be_present
       end
@@ -374,14 +374,14 @@ describe ObjectsController do
       sign_in @login_user
       @collection = FactoryBot.create(:collection)
       @object = FactoryBot.create(:sound)
-      CollectionLock.create(collection_id: @collection.noid)
+      CollectionLock.create(collection_id: @collection.alternate_id)
 
-      request.env["HTTP_REFERER"] = my_collections_path(@collection.noid)
+      request.env["HTTP_REFERER"] = my_collections_path(@collection.alternate_id)
     end
 
     after(:each) do
-      CollectionLock.where(collection_id: @collection.noid).delete_all
-      @collection.delete if DRI::Identifier.object_exists?(@collection.noid)
+      CollectionLock.where(collection_id: @collection.alternate_id).delete_all
+      @collection.delete if DRI::Identifier.object_exists?(@collection.alternate_id)
       @login_user.delete
     end
 
@@ -395,7 +395,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.noid }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 
@@ -408,7 +408,7 @@ describe ObjectsController do
       params[:digital_object][:title] = ["An Audio Title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @object.noid, digital_object: params[:digital_object] }
+      put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end

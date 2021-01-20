@@ -5,11 +5,11 @@ module CollectionHelper
   # @return [FedoraObject] collection
   def get_collection(pid = nil)
     # override pid with collection id if pid is nil and collection.id exists
-    pid ||= @collection&.noid
+    pid ||= @collection&.alternate_id
     if pid == 'the saved pid'
       pid = @collection_pid ? @collection_pid : @pid
     end
-    DRI::DigitalObject.find_by_noid(pid)
+    DRI::DigitalObject.find_by_alternate_id(pid)
   end
 end
 World(CollectionHelper)
@@ -18,7 +18,7 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   pid = @random_pid if (pid.nil? || pid == "random")
   @pid = pid
 
-  @collection = DRI::QualifiedDublinCore.new(noid: pid)
+  @collection = DRI::QualifiedDublinCore.new(alternate_id: pid)
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]
   @collection.rights = [SecureRandom.hex(20)]
@@ -49,8 +49,8 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
 
   expect(@collection.governed_items.count).to be == 0
 
-  group = UserGroup::Group.new(name: @collection.noid,
-                               description: "Default Reader group for collection #{@collection.noid}")
+  group = UserGroup::Group.new(name: @collection.alternate_id,
+                               description: "Default Reader group for collection #{@collection.alternate_id}")
   group.save
 end
 
@@ -77,13 +77,13 @@ end
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
-    @digital_object = DRI::QualifiedDublinCore.create(noid: pid)
+    @digital_object = DRI::QualifiedDublinCore.create(alternate_id: pid)
     # TODO: add similar guard clause to build_hash_dir ?
     err_msg = 'A pid must be at least 6 characters long. '\
     'Otherwise methods will break, for example '\
     'preservation_helpers.rb#build_hash_dir assumes pid.length >= 6'
     raise ArgumentError, err_msg if pid.length < 6
-    @digital_object = DRI::DigitalObject.with_standard(:qdc, { noid: pid })
+    @digital_object = DRI::DigitalObject.with_standard(:qdc, { alternate_id: pid })
   else
     @digital_object = DRI::DigitalObject.with_standard(:qdc)
   end
@@ -107,7 +107,7 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.creation_date = ["2000-01-01"]
   @digital_object.status = 'draft'
 
-  coll ||= @collection.noid unless @collection.nil?
+  coll ||= @collection.alternate_id unless @collection.nil?
 
   @digital_object.governing_collection = DRI::Identifier.retrieve_object(coll) if coll
 
@@ -119,8 +119,8 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
 end
 
 Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|
-  subcollection = DRI::DigitalObject.find_by_noid(subcolid)
-  subcollection.governing_collection = DRI::DigitalObject.find_by_noid(colid)
+  subcollection = DRI::DigitalObject.find_by_alternate_id(subcolid)
+  subcollection.governing_collection = DRI::DigitalObject.find_by_alternate_id(colid)
   subcollection.save
 end
 
@@ -130,7 +130,7 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
   else
     object = @digital_object
   end
-  colid = @collection.noid unless colid
+  colid = @collection.alternate_id unless colid
 
   collection = DRI::Identifier.retrieve_object(colid)
   object.governing_collection = collection
@@ -176,7 +176,7 @@ end
 # Given /^the object with pid "([^\"]+) is reviewed"$/ do |pid|
 Given /^the (object|collection)(?: with pid "([^\"]+)")? is reviewed$/ do |_, objid|
   if objid
-    object = DRI::DigitalObject.find_by_noid(objid)
+    object = DRI::DigitalObject.find_by_alternate_id(objid)
   else
     object = @digital_object
   end

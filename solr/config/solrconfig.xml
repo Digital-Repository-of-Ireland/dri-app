@@ -102,7 +102,8 @@
        -->
        <str name="qf">
           id
-          title_tesim
+	  alternate_id
+	  title_tesim
           text
           active_fedora_model_ssi
           object_type_sim
@@ -211,17 +212,14 @@
       <str name="rows">1</str>
       <str name="q">{!raw f=id v=$id}</str> <!-- use id=666 instead of q=id:666 -->
       <str name="fl">
-        id,
-        access_ssim,
+        alternate_id,
         discover_access_group_ssim,discover_access_person_ssim,
         read_access_group_ssim,read_access_person_ssim,
         edit_access_group_ssim,edit_access_person_ssim,
         manager_access_group_ssim,manager_access_person_ssim,
-        depositor_ti,
-        embargo_release_date_dtsi,
-        private_metadata_isi,
-        master_file_isi,
-        status_ssim,
+        depositor_sim,
+        master_file_access_ssi,
+        status_ssi,
         isGovernedBy_ssim
       </str>
     </lst>

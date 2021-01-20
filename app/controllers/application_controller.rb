@@ -154,7 +154,7 @@ class ApplicationController < ActionController::Base
 
     def locked(id)
       obj = SolrDocument.find(id)
-      return unless CollectionLock.exists?(collection_id: obj.root_collection.id)
+      return unless CollectionLock.exists?(collection_id: obj.root_collection.alternate_id)
 
       respond_to do |format|
         format.json { head :forbidden }

@@ -9,16 +9,16 @@ describe WorkspaceController do
 
     @collection = FactoryBot.create(:collection)
     @collection.manager_users_string = @manager_user.email
-    @collection.read_groups_string = "#{@collection.noid}"
+    @collection.read_groups_string = "#{@collection.alternate_id}"
     @collection.save
 
     @edit_collection = FactoryBot.create(:collection)
     @edit_collection.edit_users_string = @manager_user.email
-    @edit_collection.read_groups_string = "#{@collection.noid}"
+    @edit_collection.read_groups_string = "#{@collection.alternate_id}"
     @edit_collection.save
 
-    @group = UserGroup::Group.new(name: @collection.noid,
-      description: "Default Reader group for collection #{@collection.noid}")
+    @group = UserGroup::Group.new(name: @collection.alternate_id,
+      description: "Default Reader group for collection #{@collection.alternate_id}")
     @group.reader_group = true
     @group.save
 
@@ -64,14 +64,14 @@ describe WorkspaceController do
     it "list the collections reader groups" do
       sign_in @manager_user
 
-      group = UserGroup::Group.find_by(name: @collection.noid)
+      group = UserGroup::Group.find_by(name: @collection.alternate_id)
       membership = @login_user.join_group(group.id)
       membership.approve_membership(@manager_user.id)
       membership.save
 
       get :readers
       expect(assigns(:read_group_memberships).size).to eq 1
-      expect(assigns(:read_group_memberships)[0][:collection].id).to eq @collection.noid
+      expect(assigns(:read_group_memberships)[0][:collection].id).to eq @collection.alternate_id
       expect(assigns(:read_group_memberships)[0][:approved].size).to eq 1
     end
   end

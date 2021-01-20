@@ -32,7 +32,7 @@ describe IiifController, type: :request do
     end
     it 'should put all published images in the collection in a sequence' do
       # get :sequence, id: @collections.first .id, format: :json
-      get "/iiif/#{@collections.first.noid}/sequence", params: { format: :json }
+      get "/iiif/#{@collections.first.alternate_id}/sequence", params: { format: :json }
       sequences = JSON.parse(response.body)['sequences']
       image_ids = sequences.map do |seq|
         seq['canvases'].map do |canvas|
@@ -44,7 +44,7 @@ describe IiifController, type: :request do
           end
         end
       end.flatten
-      expect(image_ids.sort).to eq(@collections.first.governed_items.map(&:noid).sort)
+      expect(image_ids.sort).to eq(@collections.first.governed_items.map(&:alternate_id).sort)
     end
   end
 end

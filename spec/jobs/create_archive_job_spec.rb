@@ -30,7 +30,7 @@ describe CreateArchiveJob do
     @object.save
     @object.reload
 
-    @generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
     @generic_file.digital_object = @object
     @generic_file.apply_depositor_metadata(@login_user.email)
     @generic_file.label = "sample_image.jpeg"
@@ -41,11 +41,11 @@ describe CreateArchiveJob do
     uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
     @generic_file.add_file uploaded, options
     @generic_file.save
-    file_id = @generic_file.noid
+    file_id = @generic_file.alternate_id
 
     storage = StorageService.new
-    storage.create_bucket(@object.noid)
-    storage.store_surrogate(@object.noid, File.join(fixture_path, "sample_image.jpeg"), "#{@generic_file.noid}_full_size_web_format.jpg")
+    storage.create_bucket(@object.alternate_id)
+    storage.store_surrogate(@object.alternate_id, File.join(fixture_path, "sample_image.jpeg"), "#{@generic_file.alternate_id}_full_size_web_format.jpg")
   end
 
   after(:each) do
@@ -63,17 +63,17 @@ describe CreateArchiveJob do
     expect(JobMailer).to receive(:archive_ready_mail)
       .and_return(delivery)
 
-    CreateArchiveJob.perform(@object.noid, @login_user.email)
+    CreateArchiveJob.perform(@object.alternate_id, @login_user.email)
 
-    zip_file = Dir[File.join("#{@tmp_downloads_dir}","#{@object.noid}_*")]
+    zip_file = Dir[File.join("#{@tmp_downloads_dir}","#{@object.alternate_id}_*")]
     expect(zip_file).not_to be_empty
 
     zip = Zip::File.open(zip_file.first)
-    expect(zip.entries.map(&:name).any? { |entry| entry.include?("#{@generic_file.noid}_optimised_sample_image.jpeg") }).to be true
+    expect(zip.entries.map(&:name).any? { |entry| entry.include?("#{@generic_file.alternate_id}_optimised_sample_image.jpeg") }).to be true
   end
 
   it 'should create an archive for object containing non image surrogates' do
-    @generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+    @generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
     @generic_file.digital_object = @object
     @generic_file.apply_depositor_metadata(@login_user.email)
     @generic_file.label = "sample_audio.mp3"
@@ -84,11 +84,11 @@ describe CreateArchiveJob do
     uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_audio.mp3"), "audio/mp3")
     @generic_file.add_file uploaded, options
     @generic_file.save
-    file_id = @generic_file.noid
+    file_id = @generic_file.alternate_id
 
     storage = StorageService.new
-    storage.create_bucket(@object.noid)
-    storage.store_surrogate(@object.noid, File.join(fixture_path, "sample_audio.mp3"), "#{@generic_file.noid}_mp3.mp3")
+    storage.create_bucket(@object.alternate_id)
+    storage.store_surrogate(@object.alternate_id, File.join(fixture_path, "sample_audio.mp3"), "#{@generic_file.alternate_id}_mp3.mp3")
 
     delivery = double
     expect(delivery).to receive(:deliver_now).with(no_args)
@@ -96,12 +96,12 @@ describe CreateArchiveJob do
     expect(JobMailer).to receive(:archive_ready_mail)
       .and_return(delivery)
 
-    CreateArchiveJob.perform(@object.noid, @login_user.email)
+    CreateArchiveJob.perform(@object.alternate_id, @login_user.email)
 
-    zip_file = Dir[File.join("#{@tmp_downloads_dir}","#{@object.noid}_*")]
+    zip_file = Dir[File.join("#{@tmp_downloads_dir}","#{@object.alternate_id}_*")]
     expect(zip_file).not_to be_empty
 
     zip = Zip::File.open(zip_file.first)
-    expect(zip.entries.map(&:name).any? { |entry| entry.include?("#{@generic_file.noid}_optimised_sample_audio.mp3") }).to be true
+    expect(zip.entries.map(&:name).any? { |entry| entry.include?("#{@generic_file.alternate_id}_optimised_sample_audio.mp3") }).to be true
   end
 end

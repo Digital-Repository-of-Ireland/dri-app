@@ -42,6 +42,10 @@ class SolrDocument
     Solr::Query.find(id)
   end
 
+  def alternate_id
+    self['alternate_id']
+  end
+
   def active_fedora_model
     self[Solrizer.solr_name('active_fedora_model', :stored_sortable, type: :string)]
   end

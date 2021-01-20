@@ -58,11 +58,11 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(catalog_url(@object.noid)) }
+      format.html { redirect_to(catalog_url(@object.alternate_id)) }
       format.endnote { render plain: @object.export_as_endnote, layout: false }
       format.json do
         json = @object.as_json
-        solr_doc = SolrDocument.find(@object.noid)
+        solr_doc = SolrDocument.find(@object.alternate_id)
 
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
         json['doi'] = DRI::Formatters::Json.dois(solr_doc)
@@ -122,7 +122,7 @@ class ObjectsController < BaseObjectsController
       end
 
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       format.json { render json: @object }
     end
   end
@@ -151,8 +151,8 @@ class ObjectsController < BaseObjectsController
       end
     end
 
-    enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].noid)
-    locked(params[:digital_object][:governing_collection].noid); return if performed?
+    enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].alternate_id)
+    locked(params[:digital_object][:governing_collection].alternate_id); return if performed?
 
     if params[:digital_object][:documentation_for].present?
       create_from_form :documentation
@@ -173,13 +173,13 @@ class ObjectsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.noid
+          redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id
         end
         format.json do
-          response = { pid: @object.noid }
+          response = { pid: @object.alternate_id }
           response[:warning] = @warnings if @warnings
 
-          render json: response, location: my_collections_url(@object.noid), status: :created
+          render json: response, location: my_collections_url(@object.alternate_id), status: :created
         end
       end
     else
@@ -208,7 +208,7 @@ class ObjectsController < BaseObjectsController
     @object.increment_version
 
     assets = []
-    @object.generic_files.map { |gf| assets << "#{gf.noid}_#{gf.label}" }
+    @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
 
     preservation = Preservation::Preservator.new(@object)
     preservation.update_manifests(
@@ -217,7 +217,7 @@ class ObjectsController < BaseObjectsController
         'metadata' => ['descMetadata.xml']
         }
     )
-    collection_id = @object.governing_collection.noid
+    collection_id = @object.governing_collection.alternate_id
     @object.delete
 
     flash[:notice] = t('dri.flash.notice.object_deleted')
@@ -243,7 +243,7 @@ class ObjectsController < BaseObjectsController
                 url_based_filename: true
 
           if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.noid, 1, true)
+            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.alternate_id, 1, true)
           end
           file_sent = true
         else
@@ -286,9 +286,9 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       format.json do
-        response = { id: @object.noid, status: @object.status }
+        response = { id: @object.alternate_id, status: @object.status }
         response[:warning] = @warnings if @warnings
         render json: response, status: :accepted
       end
@@ -329,8 +329,8 @@ class ObjectsController < BaseObjectsController
 
     def create_reader_group
       group = UserGroup::Group.new(
-        name: @object.noid,
-        description: "Default Reader group for collection #{@object.noid}"
+        name: @object.alternate_id,
+        description: "Default Reader group for collection #{@object.alternate_id}"
       )
       group.reader_group = true
       group.save
@@ -355,7 +355,7 @@ class ObjectsController < BaseObjectsController
     end
 
     def retrieve_linked_data
-      DRI.queue.push(LinkedDataJob.new(@object.noid)) if @object.geographical_coverage.present? || @object.coverage.present?
+      DRI.queue.push(LinkedDataJob.new(@object.alternate_id)) if @object.geographical_coverage.present? || @object.coverage.present?
     rescue Exception => e
       Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end

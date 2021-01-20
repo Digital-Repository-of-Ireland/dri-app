@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 57bdc3253035bce87dbd7cf4312ddf7524795b0a
+  revision: 22199e58965c02255e7e483f856c34809569e926
   branch: ar-valkyrie
   specs:
     dri_data_models (3.2.9)
@@ -71,7 +71,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: ba812b74c32d06069e8981f46592f802ccaa1284
+  revision: 0121f823d31f3d264a3ca67e5081baa04f26d956
   branch: active-record
   specs:
     user_group (1.4.2)
@@ -254,7 +254,7 @@ GEM
     clamby (1.6.6)
     clipboard-rails (1.7.1)
     coderay (1.1.3)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     config (2.2.1)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
@@ -891,7 +891,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby-vips (2.0.17)
       ffi (~> 1.9)
-    ruby2_keywords (0.0.2)
+    ruby2_keywords (0.0.4)
     rubyzip (2.3.0)
     rvm (1.11.3.9)
     sass (3.7.4)
@@ -1112,6 +1112,7 @@ DEPENDENCIES
   nest
   oauth
   om (= 3.2.0)
+  omniauth (~> 1.9.1)
   omniauth-shibboleth
   openlayers-rails
   openseadragon

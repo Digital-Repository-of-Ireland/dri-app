@@ -36,7 +36,7 @@ describe 'ProcessBatchIngest' do
       FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), asset_tmp_file.path)
 
       ingest_message = {}
-      ingest_message['collection'] = @collection.noid
+      ingest_message['collection'] = @collection.alternate_id
       ingest_message['media_object'] = 1
       ingest_message['metadata'] = {
         'id' => master_file.id,
@@ -57,7 +57,7 @@ describe 'ProcessBatchIngest' do
         }
       ]
 
-      ProcessBatchIngest.perform(@login_user.id, @collection.noid, ingest_message.to_json)
+      ProcessBatchIngest.perform(@login_user.id, @collection.alternate_id, ingest_message.to_json)
 
       master_file.reload
       asset_master_file.reload
@@ -77,7 +77,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection.noid, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
       expect(rc).to eq 0
       expect(object.valid?).to be true
@@ -88,13 +88,13 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection.noid, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
       expect(rc).to eq 0
       object.reload
       expect(object.valid?).to be true
       expect(object.persisted?).to be true
-      expect(object.governing_collection.noid).to eq @collection.noid
+      expect(object.governing_collection.alternate_id).to eq @collection.alternate_id
     end
 
   end
@@ -129,7 +129,7 @@ describe 'ProcessBatchIngest' do
       master_file.reload
       id = master_file.file_location.split('/').last
 
-      expect(DRI::GenericFile.find_by_noid(id).preservation?).to be true
+      expect(DRI::GenericFile.find_by_alternate_id(id).preservation?).to be true
       expect(master_file.status_code).to eq 'COMPLETED'
     end
 
@@ -146,7 +146,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection.noid, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
       master_file.reload
 
@@ -159,7 +159,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'metadata_no_rights.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection.noid, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
       master_file.reload
 
@@ -172,7 +172,7 @@ describe 'ProcessBatchIngest' do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'invalid_xml_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
-      rc, object = ProcessBatchIngest.ingest_metadata(@collection.noid, @login_user, metadata)
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
       master_file.reload
 
@@ -201,7 +201,7 @@ describe 'ProcessBatchIngest' do
       }
       ingest_message['files'] = []
 
-      ProcessBatchIngest.perform(@login_user.id, @collection.noid, ingest_message.to_json)
+      ProcessBatchIngest.perform(@login_user.id, @collection.alternate_id, ingest_message.to_json)
 
       master_file.reload
       expect(master_file.status_code).to eq 'FAILED'
@@ -239,7 +239,7 @@ describe 'ProcessBatchIngest' do
         }
       ]
 
-      ProcessBatchIngest.perform(@login_user.id, @collection.noid, ingest_message.to_json)
+      ProcessBatchIngest.perform(@login_user.id, @collection.alternate_id, ingest_message.to_json)
 
       master_file.reload
       asset_master_file.reload

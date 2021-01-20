@@ -19,7 +19,7 @@ class GenericFileContent
     begin
       object.save!
     rescue ActiveRecord::RecordNotSaved
-      logger.error "Could not update object version number for #{object.noid} to version #{object.object_version}"
+      logger.error "Could not update object version number for #{object.alternate_id} to version #{object.object_version}"
       raise Exceptions::InternalError
     end
   end
@@ -28,7 +28,7 @@ class GenericFileContent
     options = {
       version: version,
       path: path,
-      file_name: "#{generic_file.noid}_#{filename}",
+      file_name: "#{generic_file.alternate_id}_#{filename}",
       mime_type: mime_type,
       moab_path: moab_path
     }
@@ -43,13 +43,13 @@ class GenericFileContent
     preservation = Preservation::Preservator.new(object)
     preservation.existing_filepath(
                                     file_category,
-                                    "#{generic_file.noid}_#{filename}",
+                                    "#{generic_file.alternate_id}_#{filename}",
                                     filepath
                                   )
   end
 
   def preserve_file(filedata, datastream, update=false)
-    filename = "#{generic_file.noid}_#{filedata[:filename]}"
+    filename = "#{generic_file.alternate_id}_#{filedata[:filename]}"
 
     moab_path = existing_moab_path(
                                     datastream,
@@ -85,7 +85,7 @@ class GenericFileContent
     else
       changes[:added] = {'content' => [generic_file.path]}
       changes[:deleted] = if update
-                            {'content' => ["#{generic_file.noid}_#{generic_file.label}"] }
+                            {'content' => ["#{generic_file.alternate_id}_#{generic_file.label}"] }
                           else
                             { 'content' => [] }
                           end
@@ -103,6 +103,6 @@ class GenericFileContent
   end
 
   def push_characterize_job
-    DRI.queue.push(CharacterizeJob.new(generic_file.noid))
+    DRI.queue.push(CharacterizeJob.new(generic_file.alternate_id))
   end
 end

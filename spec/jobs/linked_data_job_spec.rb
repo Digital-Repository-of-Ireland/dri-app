@@ -29,7 +29,7 @@ describe LinkedDataJob do
     it "should try to process a URI" do
       expect_any_instance_of(DRI::Sparql::Provider::Logainm).to receive(:retrieve_data)
 
-      job = LinkedDataJob.new(@object.noid)
+      job = LinkedDataJob.new(@object.alternate_id)
       job.run
     end
 
@@ -39,7 +39,7 @@ describe LinkedDataJob do
 
       expect_any_instance_of(DRI::Sparql::Provider::Logainm).to receive(:retrieve_data)
 
-      job = LinkedDataJob.new(@object.noid)
+      job = LinkedDataJob.new(@object.alternate_id)
       job.run
     end
   end

@@ -4,21 +4,21 @@
     <% if @generic_file.audio? %>
       <div class="dri_audio_player">
         <audio controls>
-          <source src="<%= @presenter.surrogate_url(@generic_file.noid, "mp3") %>" type="audio/mpeg">
+          <source src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "mp3") %>" type="audio/mpeg">
         </audio>
       </div><!-- close dri_audio_player -->
     <% elsif @generic_file.video? %>
       <div>
         <video width="320" height="240" controls>
-          <source src="<%= @presenter.surrogate_url(@generic_file.noid, "mp4") %>" type="video/mp4">
+          <source src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "mp4") %>" type="video/mp4">
         </video>
       </div>
     <% elsif @generic_file.pdf? %>
       <div>
-        <img src="<%= @presenter.surrogate_url(@generic_file.noid, "thumbnail_large") %>">
+        <img src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "thumbnail_large") %>">
       </div>
     <% elsif @generic_file.image? %>
-      <img src="<%= @presenter.surrogate_url(@generic_file.noid, "thumbnail_medium")  %>">
+      <img src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "thumbnail_medium")  %>">
     <% end %>
   </div>
 

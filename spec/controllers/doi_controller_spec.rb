@@ -37,26 +37,26 @@ describe DoiController do
   describe "GET show" do
 
     it "assigns @history" do
-      doi = DataciteDoi.create(object_id: @object.noid)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
 
-      get :show, params: { object_id: @object.noid, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
+      get :show, params: { object_id: @object.alternate_id, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(assigns(:history)).to eq([doi])
     end
 
     it "alerts if doi is not the latest" do
-      initial_doi = DataciteDoi.create(object_id: @object.noid)
-      updated_doi = DataciteDoi.create(object_id: @object.noid, modified: 'test update')
+      initial_doi = DataciteDoi.create(object_id: @object.alternate_id)
+      updated_doi = DataciteDoi.create(object_id: @object.alternate_id, modified: 'test update')
 
-      get :show, params: { object_id: @object.noid, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
+      get :show, params: { object_id: @object.alternate_id, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(flash[:notice]).to be_present
     end
 
     it "redirects if DOI is current" do
-      initial_doi = DataciteDoi.create(object_id: @object.noid)
-      updated_doi = DataciteDoi.create(object_id: @object.noid, modified: 'test update')
+      initial_doi = DataciteDoi.create(object_id: @object.alternate_id)
+      updated_doi = DataciteDoi.create(object_id: @object.alternate_id, modified: 'test update')
 
-      get :show, params: { object_id: @object.noid, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
-      expect(response).to redirect_to(solr_document_path(@object.noid))
+      get :show, params: { object_id: @object.alternate_id, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
+      expect(response).to redirect_to(solr_document_path(@object.alternate_id))
     end
 
     it "updates doi" do
@@ -71,19 +71,19 @@ describe DoiController do
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
       @collection.save
-      DataciteDoi.create(object_id: @collection.noid)
+      DataciteDoi.create(object_id: @collection.alternate_id)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, params: { object_id: @collection.noid, modified: 'objects added' }
+      put :update, params: { object_id: @collection.alternate_id, modified: 'objects added' }
 
-      DataciteDoi.where(object_id: @collection.noid).first.delete
+      DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       @collection.delete
     end
 
     it "returns 404 for unknown DOI" do
-      doi = DataciteDoi.create(object_id: @object.noid)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
 
-      get :show, params: { object_id: @object.noid, id: 'aaa-9' }
+      get :show, params: { object_id: @object.alternate_id, id: 'aaa-9' }
       expect(response.status).to eq(404)
     end
 

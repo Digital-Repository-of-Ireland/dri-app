@@ -37,7 +37,7 @@ class AccessControlsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
     end
   end
 

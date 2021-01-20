@@ -7,7 +7,7 @@ class CreateBucketJob < IdBasedJob
 
   def run
     with_status_update('create_bucket') do
-      bucket_id = object.digital_object.nil? ? object.noid : object.digital_object.noid
+      bucket_id = object.digital_object.nil? ? object.alternate_id : object.digital_object.alternate_id
       Rails.logger.info "Creating bucket for object #{bucket_id}"
 
       storage = StorageService.new

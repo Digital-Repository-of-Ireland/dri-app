@@ -18,17 +18,17 @@ describe StatsReport do
 
   context "Mime_type stats" do
     it "should return mime type counts" do
-      generic_file1 = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file1 = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file1.digital_object = @object
       generic_file1.mime_type = "application/pdf"
       generic_file1.save
 
-      generic_file2 = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file2 = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file2.digital_object = @object
       generic_file2.mime_type = "image/jpeg"
       generic_file2.save
 
-      generic_file3 = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file3 = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file3.digital_object = @object2
       generic_file3.mime_type = "application/pdf"
       generic_file3.save
@@ -49,12 +49,12 @@ describe StatsReport do
 
   context "file size count" do
     it "should return total file size" do
-      generic_file1 = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file1 = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file1.digital_object = @object
       generic_file1.file_size = 200
       generic_file1.save
 
-      generic_file2 = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file2 = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file2.digital_object = @object
       generic_file2.file_size = 100
       generic_file2.save

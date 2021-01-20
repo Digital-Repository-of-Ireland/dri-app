@@ -27,14 +27,14 @@ describe AccessControlsController, type: :request do
   describe 'update' do
 
     it 'should update valid permissions' do
-      put "/objects/#{@collection.noid}/access", params: { digital_object: { read_groups_string: @collection.noid.to_s, manager_users_string: @login_user.to_s } }
+      put "/objects/#{@collection.alternate_id}/access", params: { digital_object: { read_groups_string: @collection.alternate_id.to_s, manager_users_string: @login_user.to_s } }
       @collection.reload
 
-      expect(@collection.read_groups_string).to eq(@collection.noid.to_s)
+      expect(@collection.read_groups_string).to eq(@collection.alternate_id.to_s)
     end
 
     it 'should not update with invalid permissions' do
-      put "/objects/#{@collection.noid}/access", params: { digital_object: { edit_users_string: '', manager_users_string: '' } }
+      put "/objects/#{@collection.alternate_id}/access", params: { digital_object: { edit_users_string: '', manager_users_string: '' } }
       @collection.reload
 
       expect(@collection.manager_users_string).to eq(@login_user.to_s)
@@ -55,7 +55,7 @@ describe AccessControlsController, type: :request do
       @collection.governed_items << object2
       @collection.save
 
-      get "/my_collections/#{@collection.noid}/access.csv"
+      get "/my_collections/#{@collection.alternate_id}/access.csv"
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('text/csv')
 
@@ -73,13 +73,13 @@ describe AccessControlsController, type: :request do
 
     it 'should include objects with inherit file and restricted read' do
       object2.master_file_access = 'inherit'
-      object2.read_groups_string = object2.noid
+      object2.read_groups_string = object2.alternate_id
       object2.save
       @collection.governed_items << object1
       @collection.governed_items << object2
       @collection.save
 
-      get "/my_collections/#{@collection.noid}/access.csv"
+      get "/my_collections/#{@collection.alternate_id}/access.csv"
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('text/csv')
 
@@ -110,7 +110,7 @@ describe AccessControlsController, type: :request do
       @collection.governed_items << object2
       @collection.save
 
-      get "/my_collections/#{@collection.noid}/access.csv"
+      get "/my_collections/#{@collection.alternate_id}/access.csv"
 
       csv = CSV.parse(response.body, headers: true)
 

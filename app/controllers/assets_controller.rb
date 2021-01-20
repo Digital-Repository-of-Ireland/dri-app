@@ -27,7 +27,7 @@ class AssetsController < ApplicationController
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @generic_file = retrieve_object! params[:id]
 
-    @status = status(@generic_file.noid)
+    @status = status(@generic_file.alternate_id)
 
     respond_to do |format|
       format.html
@@ -84,8 +84,8 @@ class AssetsController < ApplicationController
     object.save
     record_version_committer(object, current_user)
 
-    delfiles = ["#{generic_file.noid}_#{generic_file.label}"]
-    delete_surrogates(params[:object_id], generic_file.noid)
+    delfiles = ["#{generic_file.alternate_id}_#{generic_file.label}"]
+    delete_surrogates(params[:object_id], generic_file.alternate_id)
     generic_file.delete
 
     # Do the preservation actions
@@ -125,7 +125,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to object_file_url(@object.noid, @generic_file.noid) }
+      format.html { redirect_to object_file_url(@object.alternate_id, @generic_file.alternate_id) }
       format.json do
         response = { checksum: file_content.checksum }
         response[:warning] = @warnings if @warnings
@@ -182,7 +182,7 @@ class AssetsController < ApplicationController
   private
 
     def build_generic_file(object:, user:, preservation: false)
-      generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+      generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
       generic_file.digital_object = object
       generic_file.apply_depositor_metadata(user)
       generic_file.preservation_only = 'true' if preservation

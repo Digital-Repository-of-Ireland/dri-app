@@ -66,7 +66,7 @@ class PublishJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = DRI::DigitalObject.find_by_noid(object['id'])
+        o = DRI::DigitalObject.find_by_alternate_id(object['alternate_id'])
 
         next unless o.status == 'reviewed'
         o.status = 'published'
@@ -99,8 +99,8 @@ class PublishJob
   def mint_doi(obj)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    DataciteDoi.create(object_id: obj.noid, modified: 'DOI created')
-    DRI.queue.push(MintDoiJob.new(obj.noid))
+    DataciteDoi.create(object_id: obj.alternate_id, modified: 'DOI created')
+    DRI.queue.push(MintDoiJob.new(obj.alternate_id))
   rescue Exception => e
     Rails.logger.error "Unable to submit mint doi job: #{e.message}"
   end

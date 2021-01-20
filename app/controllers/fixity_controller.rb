@@ -6,7 +6,7 @@ class FixityController < ApplicationController
     raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!('edit', params[:id])
 
-    object = DRI::DigitalObject.find_by_noid(params[:id])
+    object = DRI::DigitalObject.find_by_alternate_id(params[:id])
     raise DRI::Exceptions::NotFound if object.nil?
     fixity(object)
 
@@ -31,7 +31,7 @@ class FixityController < ApplicationController
 
     FixityCheck.create(
           collection_id: object.to_solr['root_collection_ssi'],
-          object_id: object.noid,
+          object_id: object.alternate_id,
           verified: result[:verified],
           result: result.to_json
     )
@@ -39,8 +39,8 @@ class FixityController < ApplicationController
   end
 
   def fixity_collection(collection)
-    report = FixityReport.create(collection_id: collection.noid)
-    Resque.enqueue(FixityCollectionJob, report.id, collection.noid, current_user.id)
+    report = FixityReport.create(collection_id: collection.alternate_id)
+    Resque.enqueue(FixityCollectionJob, report.id, collection.alternate_id, current_user.id)
     flash[:notice] = t('dri.flash.notice.fixity_check_running')
   rescue Exception => e
     logger.error "Unable to submit fixity job: #{e.message}"

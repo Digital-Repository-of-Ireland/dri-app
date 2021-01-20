@@ -35,16 +35,16 @@ module Storage
     def self.store_cover(cover_image, filename, collection)
       url = nil
       storage = StorageService.new
-      storage.create_bucket(collection.noid)
+      storage.create_bucket(collection.alternate_id)
 
       cover_filename = "#{collection.id}.#{filename.split(".").last}"
       if (
         storage.store_file(
-          collection.noid,
+          collection.alternate_id,
           cover_image.path,
           cover_filename)
         )
-        url = storage.file_url(collection.noid, cover_filename)
+        url = storage.file_url(collection.alternate_id, cover_filename)
       end
 
       url

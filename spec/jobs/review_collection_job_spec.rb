@@ -50,7 +50,7 @@ describe "ReviewCollectionJob" do
   describe "run" do
     it "should trigger jobs for subcollections" do
       expect(ReviewJob).to receive(:create).exactly(3).times
-      job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
     end
   end

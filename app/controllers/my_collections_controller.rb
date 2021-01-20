@@ -15,6 +15,7 @@ class MyCollectionsController < ApplicationController
       url_key: 'advanced'
     }
 
+    #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::MyCollectionsSearchBuilder
 
     config.show.route = { controller: 'my_collections' }
@@ -261,8 +262,8 @@ class MyCollectionsController < ApplicationController
     def find_reader_group(document)
       read_groups = document["#{Solr::SchemaFields.searchable_symbol('read_access_group')}"]
 
-      if read_groups.present? && read_groups.include?(document.id)
-        UserGroup::Group.find_by(name: document.id)
+      if read_groups.present? && read_groups.include?(document.alternate_id)
+        UserGroup::Group.find_by(name: document.alternate_id)
       end
     end
 end

@@ -38,28 +38,28 @@ describe "DeleteCollectionJob" do
     @object[:status] = "reviewed"
     @object.save
   end
-  
+
   describe "run" do
     it "should delete a collection and governed_items" do
       @collection.governed_items << @object
       @collection.save
-      job = DeleteCollectionJob.new(@collection.noid)
+      job = DeleteCollectionJob.new(@collection.alternate_id)
       job.run
 
-      expect(DRI::Identifier.object_exists?(@object.noid)).to be false
-      expect(DRI::Identifier.object_exists?(@collection.noid)).to be false
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
     end
 
     it "should delete objects with governing collection" do
       @object.governing_collection = @collection
       @object.save
-      job = DeleteCollectionJob.new(@collection.noid)
+      job = DeleteCollectionJob.new(@collection.alternate_id)
       job.run
 
-      expect(DRI::Identifier.object_exists?(@object.noid)).to be false
-      expect(DRI::Identifier.object_exists?(@collection.noid)).to be false
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
     end
 
   end
- 
+
 end

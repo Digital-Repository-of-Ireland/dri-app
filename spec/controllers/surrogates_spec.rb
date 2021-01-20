@@ -33,13 +33,13 @@ describe SurrogatesController do
     it 'should update a collections surrogates' do
       request.env["HTTP_REFERER"] = "/"
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
-      put :update, params: { id: @collection.noid }
+      put :update, params: { id: @collection.alternate_id }
     end
 
     it 'should update an objects surrogates' do
       request.env["HTTP_REFERER"] = "/"
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
-      put :update, params: { id: @object.noid }
+      put :update, params: { id: @object.alternate_id }
     end
 
     it 'should update multiple files' do
@@ -50,7 +50,7 @@ describe SurrogatesController do
 
       request.env["HTTP_REFERER"] = "/"
       expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).twice
-      put :update, params: { id: @object.noid }
+      put :update, params: { id: @object.alternate_id }
 
       @gf2.destroy
     end
@@ -60,12 +60,12 @@ describe SurrogatesController do
   describe 'show' do
 
     it 'should return 404 for a surrogate that does not exist' do
-      generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.save
 
-      get :show, params: { object_id: @object.noid, id: generic_file.noid, surrogate: 'thumbnail' }
+      get :show, params: { object_id: @object.alternate_id, id: generic_file.alternate_id, surrogate: 'thumbnail' }
       expect(response.status).to eq(404)
       generic_file.destroy
     end
@@ -83,7 +83,7 @@ describe SurrogatesController do
       @object.save
       @object.reload
 
-      generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file.digital_object = @object
       generic_file.apply_depositor_metadata(@login_user.email)
       generic_file.mime_type = "audio/mp3"
@@ -94,13 +94,13 @@ describe SurrogatesController do
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
       generic_file.save
-      file_id = generic_file.noid
+      file_id = generic_file.alternate_id
 
       storage = StorageService.new
-      storage.create_bucket(@object.noid)
-      storage.store_surrogate(@object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.noid}_mp3.mp3")
+      storage.create_bucket(@object.alternate_id)
+      storage.store_surrogate(@object.alternate_id, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.alternate_id}_mp3.mp3")
 
-      get :download, params: { id: file_id, object_id: @object.noid, type: 'surrogate' }
+      get :download, params: { id: file_id, object_id: @object.alternate_id, type: 'surrogate' }
       expect(response.status).to eq(200)
       expect(response.header['Content-Type']).to eq('audio/mpeg')
       generic_file.destroy

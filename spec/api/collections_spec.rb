@@ -55,7 +55,7 @@ describe "Collections API" do
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
         let(:user_email) { nil }
-        let(:id) { @collections.first.noid }
+        let(:id) { @collections.first.alternate_id }
 
         it_behaves_like 'a pretty json response'
         include_context 'rswag_include_json_spec_output' do
@@ -80,7 +80,7 @@ describe "Collections API" do
         let(:user_token) { @example_user.authentication_token }
         let(:user_email) { CGI.escape(@example_user.to_s) }
         context 'Collection' do
-          let(:id) { @collections.first.noid }
+          let(:id) { @collections.first.alternate_id }
           it_behaves_like 'it has no json licence information'
           it_behaves_like 'it has json related objects information'
           include_context 'rswag_include_json_spec_output', 'Found Collection' do
@@ -88,7 +88,7 @@ describe "Collections API" do
           end
         end
         context 'Object' do
-          let(:id) { @collections.first.governed_items.first.noid }
+          let(:id) { @collections.first.governed_items.first.alternate_id }
           it_behaves_like 'it has json licence information'
           include_context 'rswag_include_json_spec_output', 'Found Object' do
             it_behaves_like 'it has json doi information'

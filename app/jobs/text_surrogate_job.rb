@@ -13,7 +13,7 @@ class TextSurrogateJob < IdBasedJob
 
       filename = generic_file.path
 
-      bucket_id = object.digital_object.nil? ? object.noid : generic_file.noid
+      bucket_id = object.digital_object.nil? ? object.alternate_id : generic_file.alternate_id
 
       ext = Rack::Mime::MIME_TYPES.invert[generic_file.mime_type]
       ext = ext[1..-1] if ext[0] == '.'

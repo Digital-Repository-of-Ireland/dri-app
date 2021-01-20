@@ -26,7 +26,7 @@ module DRI::Duplicable
     if object.governing_collection.present?
       Solr::Query.new(
           duplicate_query(object)
-        ).to_a.delete_if { |obj| obj.id == object.noid }
+        ).to_a.delete_if { |obj| obj.alternate_id == object.alternate_id }
     end
   end
 
@@ -34,14 +34,14 @@ module DRI::Duplicable
 
   def duplicate_query(object)
     checksum_field = 'metadata_checksum_ssi'
-    
+
     governed_field = Solrizer.solr_name(
       'isGovernedBy',
       :stored_searchable,
       type: :symbol
     )
     query = "#{checksum_field}:\"#{object.metadata_checksum}\""
-    query += " AND #{governed_field}:\"#{object.governing_collection.noid}\""
+    query += " AND #{governed_field}:\"#{object.governing_collection.alternate_id}\""
 
     query
   end

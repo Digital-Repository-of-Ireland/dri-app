@@ -2,14 +2,14 @@ require 'rails_helper'
 
 describe 'Status' do
 
-  let(:dummy_class) { Class.new { 
+  let(:dummy_class) { Class.new {
     include BackgroundTasks::Status
 
     def generic_file
-      Class.new { 
+      Class.new {
         def digital_object
           Class.new {
-            def noid
+            def alternate_id
               'test-1'
             end
           }.new

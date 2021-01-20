@@ -105,7 +105,7 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-      format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
     end
   end
 
@@ -148,7 +148,7 @@ class CollectionsController < BaseObjectsController
         update_doi(@object, doi, "metadata update") if doi && doi.changed?
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-        format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+        format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       else
         format.html  { render action: 'edit' }
       end
@@ -188,7 +188,7 @@ class CollectionsController < BaseObjectsController
       else
         flash[:error] = t('dri.flash.error.cover_image_not_saved')
       end
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
     end
   end
 
@@ -245,11 +245,11 @@ class CollectionsController < BaseObjectsController
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.collection_created')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.noid
+          redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id
         end
         format.json do
           @response = {}
-          @response[:id] = @object.noid
+          @response[:id] = @object.alternate_id
           @response[:title] = @object.title
           @response[:description] = @object.description
           render(json: @response, status: :created)
@@ -313,9 +313,9 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       format.json do
-        response = { id: @object.noid, status: @object.status }
+        response = { id: @object.alternate_id, status: @object.status }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :accepted
@@ -338,9 +338,9 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       format.json do
-        response = { id: @object.noid, status: @object.status }
+        response = { id: @object.alternate_id, status: @object.status }
         response[:warning] = @warnings if @warnings
 
         render json: response, status: :accepted
@@ -444,7 +444,7 @@ class CollectionsController < BaseObjectsController
     def create_reader_group
       @group = UserGroup::Group.new(
         name: reader_group_name,
-        description: "Default Reader group for collection #{@object.noid}"
+        description: "Default Reader group for collection #{@object.alternate_id}"
       )
       @group.reader_group = true
       @group.save
@@ -452,7 +452,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def reader_group_name
-      @object.noid
+      @object.alternate_id
     end
 
     def redirect_url(cover_url)
@@ -496,7 +496,7 @@ class CollectionsController < BaseObjectsController
 
     def review_all
       job_id = ReviewCollectionJob.create(
-        'collection_id' => @object.noid,
+        'collection_id' => @object.alternate_id,
         'user_id' => current_user.id
       )
       UserBackgroundTask.create(
@@ -512,7 +512,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def delete_collection
-      DRI.queue.push(DeleteCollectionJob.new(@object.noid))
+      DRI.queue.push(DeleteCollectionJob.new(@object.alternate_id))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
       raise DRI::Exceptions::ResqueError, e.message
@@ -520,7 +520,7 @@ class CollectionsController < BaseObjectsController
 
     def publish_collection
       job_id = PublishCollectionJob.create(
-        'collection_id' => @object.noid,
+        'collection_id' => @object.alternate_id,
         'user_id' => current_user.id
       )
       UserBackgroundTask.create(

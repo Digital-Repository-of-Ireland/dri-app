@@ -82,17 +82,17 @@ describe SolrDocument do
   context "getting inherited fields" do
     it "returns a list of ancestor ids" do
       doc = SolrDocument.new(@object.to_solr)
-      expect(doc.ancestor_ids).to eq [@subcollection.noid, @collection.noid]
+      expect(doc.ancestor_ids).to eq [@subcollection.alternate_id, @collection.alternate_id]
     end
 
     it "returns the root collection" do
       doc = SolrDocument.new(@object.to_solr)
-      expect(doc.root_collection.id).to eq @collection.noid
+      expect(doc.root_collection.alternate_id).to eq @collection.alternate_id
     end
 
     it "returns the governing collection" do
       doc = SolrDocument.new(@object.to_solr)
-      expect(doc.governing_collection.id).to eq @subcollection.noid
+      expect(doc.governing_collection.alternate_id).to eq @subcollection.alternate_id
     end
   end
 
@@ -139,7 +139,7 @@ describe SolrDocument do
       labels.each { |l| @object.generic_files << DRI::GenericFile.create(label: l) }
       @object.save
 
-      od = SolrDocument.find(@object.noid)
+      od = SolrDocument.find(@object.alternate_id)
       expect(od.assets(ordered: false).map(&:label)).to match_array(labels)
       expect(od.assets(ordered: true).map(&:label)).to eq ordered_labels
     end
@@ -153,7 +153,7 @@ describe SolrDocument do
       @collection.save
       @collection.reload
 
-      doc = SolrDocument.find(@collection.noid)
+      doc = SolrDocument.find(@collection.alternate_id)
       expect(doc.total_objects_count).to eq 6
     end
 
@@ -172,7 +172,7 @@ describe SolrDocument do
       @collection.save
       @collection.reload
 
-      doc = SolrDocument.find(@collection.noid)
+      doc = SolrDocument.find(@collection.alternate_id)
       expect(doc.published_objects_count).to eq 3
     end
 
@@ -184,8 +184,8 @@ describe SolrDocument do
       @collection.reload
       @collection.update_index
 
-      doc = SolrDocument.find(@collection.noid)
-      expect(doc.relatives).to match_array([collection_b.noid])
+      doc = SolrDocument.find(@collection.alternate_id)
+      expect(doc.relatives).to match_array([collection_b.alternate_id])
     end
 
     # ensure responses grouped into pages of 10 still return the correct count
@@ -197,10 +197,10 @@ describe SolrDocument do
           object = FactoryBot.create(:sound)
           object.status = 'published'
           object.save
-          @pub_obj_ids << object.noid
+          @pub_obj_ids << object.alternate_id
           @collection.governed_items << object
         end
-        @doc = SolrDocument.find(@collection.noid)
+        @doc = SolrDocument.find(@collection.alternate_id)
       end
       describe 'published_objects' do
         # previously failing due to solr response pagination
@@ -225,20 +225,20 @@ describe SolrDocument do
   context 'object type methods' do
     before(:each) do
       @to_delete = []
-      @solr_root_collection = SolrDocument.find(@collection.noid)
-      @solr_subcollection = SolrDocument.find(@subcollection.noid)
+      @solr_root_collection = SolrDocument.find(@collection.alternate_id)
+      @solr_subcollection = SolrDocument.find(@subcollection.alternate_id)
 
       @solr_objects = %i[sound audio text image documentation].map do |name|
         object = FactoryBot.create(name)
         object.save
         @to_delete << object
-        SolrDocument.find(object.noid)
+        SolrDocument.find(object.alternate_id)
       end
 
       generic_file = FactoryBot.create(:generic_png_file)
       generic_file.save
       @to_delete << generic_file
-      @solr_generic_file = SolrDocument.find(generic_file.noid)
+      @solr_generic_file = SolrDocument.find(generic_file.alternate_id)
     end
 
     after(:each) do

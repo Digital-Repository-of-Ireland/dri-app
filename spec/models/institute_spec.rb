@@ -29,7 +29,7 @@ describe Institute do
     @collection.institute = [@institute.name]
     @collection.save
 
-    expect(@institute.collections.first[:id]).to eq @collection.noid
+    expect(@institute.collections.first[:id]).to eq @collection.alternate_id
   end
 
   it "should return empty array if not associated" do

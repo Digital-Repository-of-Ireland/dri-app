@@ -156,8 +156,8 @@ module PathTranslator
       when /asset/
         case page
           when /details/
-            object = DRI::DigitalObject.find_by_noid(pid)
-            object_file_path(pid, object.generic_files.first.noid)
+            object = DRI::DigitalObject.find_by_alternate_id(pid)
+            object_file_path(pid, object.generic_files.first.alternate_id)
           else
             raise('Unknown route')
         end

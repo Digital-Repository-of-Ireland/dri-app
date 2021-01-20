@@ -14,14 +14,14 @@ describe CatalogController, type: :controller do
 
   after(:each) do
     @object.destroy
-   
+
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   context "exporting CSV" do
     it "should format an object as a CSV" do
       expected_csv = CSV.read(File.join(fixture_path, "export.csv"))
-      doc = SolrDocument.find(@object.noid)
+      doc = SolrDocument.find(@object.alternate_id)
       formatter = DRI::Exporters::Csv.new(controller.request.base_url, doc)
       generated_csv = CSV.parse(formatter.format)
 
@@ -39,7 +39,7 @@ describe CatalogController, type: :controller do
       generated_csv = CSV.parse(formatter.format)
 
       expect(generated_csv[0]).to match_array(expected_titles)
-      expect(generated_csv[1][0]).to eql(@object.noid)
+      expect(generated_csv[1][0]).to eql(@object.alternate_id)
       expect(generated_csv[1][1]).to eql(@object.title.join('|'))
       expect(generated_csv[1][2]).to eql(@object.subject.join('|'))
       expect(generated_csv[1][3]).to eql(object_doc['temporal_coverage_tesim'].join('|'))

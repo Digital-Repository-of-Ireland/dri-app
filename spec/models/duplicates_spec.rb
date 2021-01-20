@@ -54,9 +54,9 @@ describe 'DRI::Solr::Document::Collection' do
       ids = duplicates.map(&:id)
 
       expect(ids.count).to eq(2)
-      expect(ids).to include(@object.noid)
-      expect(ids).to include(@object2.noid)
-      expect(ids).to_not include(@object3.noid)
+      expect(ids).to include(@object.alternate_id)
+      expect(ids).to include(@object2.alternate_id)
+      expect(ids).to_not include(@object3.alternate_id)
     end
   end
 

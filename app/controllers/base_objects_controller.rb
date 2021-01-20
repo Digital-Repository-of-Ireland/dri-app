@@ -3,7 +3,7 @@ class BaseObjectsController < CatalogController
   include DRI::Versionable
 
   def doi
-    @doi ||= DataciteDoi.where(object_id: @object.noid)
+    @doi ||= DataciteDoi.where(object_id: @object.alternate_id)
     @doi.empty? ? nil : @doi.current
   end
 
@@ -50,7 +50,7 @@ class BaseObjectsController < CatalogController
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')
         end
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.noid }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       end
     end
 end

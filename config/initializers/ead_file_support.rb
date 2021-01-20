@@ -16,9 +16,9 @@ DRI::ModelSupport::EadSupport.module_eval do
 
     return false unless pass_validation
 
-    generic_file = DRI::GenericFile.new(noid: DRI::Noid::Service.new.mint)
+    generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
     generic_file.digital_object = self
-    filename = "#{generic_file.noid}_#{original_file_name}"
+    filename = "#{generic_file.alternate_id}_#{original_file_name}"
 
     # Apply depositor metadata, other permissions currently unused for generic files
     ingest_user = UserGroup::User.find_by_email(self.depositor)
@@ -38,7 +38,7 @@ DRI::ModelSupport::EadSupport.module_eval do
 
     file_content.add_content(filedata)
 
-    VersionCommitter.create(version_id: 'v%04d' % self.object_version, obj_id: self.noid, committer_login: ingest_user.to_s)
+    VersionCommitter.create(version_id: 'v%04d' % self.object_version, obj_id: self.alternate_id, committer_login: ingest_user.to_s)
     true
   end
 end

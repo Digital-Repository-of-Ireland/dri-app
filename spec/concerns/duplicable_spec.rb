@@ -50,6 +50,6 @@ describe 'DRI::Duplicable' do
     duplicates = duplicable_test.new.find_object_duplicates(@object)
 
     expect(duplicates.length).to eq(1)
-    expect(duplicates.first['id']).to eq(@object2.noid)
+    expect(duplicates.first['id']).to eq(@object2.alternate_id)
   end
 end

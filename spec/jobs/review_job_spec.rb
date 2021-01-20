@@ -52,7 +52,7 @@ describe "ReviewJob" do
 
   describe "run" do
     it "should set all objects status to reviewed" do
-      job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = ReviewJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @object.reload
@@ -63,7 +63,7 @@ describe "ReviewJob" do
     end
 
      it "should set subcollection status to reviewed if draft" do
-      job = ReviewJob.new('test', { 'collection_id' => @subcollection.noid, 'user_id' => @login_user.id })
+      job = ReviewJob.new('test', { 'collection_id' => @subcollection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @subcollection.reload
@@ -76,7 +76,7 @@ describe "ReviewJob" do
       @published[:status] = "published"
       @published.save
 
-      job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id })
+      job = ReviewJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @object.reload
@@ -100,10 +100,10 @@ describe "ReviewJob" do
       end
 
       @collection.save
-      job = ReviewJob.new('test', { 'collection_id' => @collection.noid, 'user_id' => @login_user.id})
+      job = ReviewJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id})
       job.perform
 
-      expect(Solr::Query.new("collection_id_sim:\"#{@collection.noid}\" AND status_ssi:reviewed").count).to eq(22)
+      expect(Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\" AND status_ssi:reviewed").count).to eq(22)
     end
   end
 end

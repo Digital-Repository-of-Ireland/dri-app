@@ -14,7 +14,7 @@ Given /^"(.*?)" has created a Digital Object$/ do |user|
 end
 
 Given /^I have created an object with metadata "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |metadata_file, collection_pid|
-  collection_pid = @collection.noid unless collection_pid
+  collection_pid = @collection.alternate_id unless collection_pid
   steps %{
     When I go to the "metadata" "upload" page for "#{collection_pid}"
     And I attach the metadata file "#{metadata_file}"
@@ -24,7 +24,7 @@ Given /^I have created an object with metadata "(.*?)" in the collection(?: with
 end
 
 Given /^I have created an object with title "(.*?)" in the collection(?: with pid "(.*?)")?$/ do |title, collection_pid|
-  collection_pid = @collection.noid unless collection_pid
+  collection_pid = @collection.alternate_id unless collection_pid
   steps %{
     When I go to the "my collections" "show" page for "#{collection_pid}"
     And I follow the link to add an object
@@ -94,9 +94,9 @@ end
 
 When /^(?:|I )go to the "([^"]*)" "([^"]*)" page(?: for "([^"]*)")?$/ do |type, page, pid|
   if(pid.nil? && ['my collections', 'collection', 'metadata'].include?(type))
-    pid = @collection.noid
+    pid = @collection.alternate_id
   elsif(pid.nil? && type == "object")
-    pid = @digital_object.noid
+    pid = @digital_object.alternate_id
   elsif (pid.eql?('the saved pid') && (type.eql?("collection") || type == 'my collections'))
     pid = @collection_pid ? @collection_pid : @pid
   elsif (pid.eql?('the saved pid') && (type == "object" || type == 'asset'))
@@ -253,7 +253,7 @@ When /^contains_images\? always returns true$/ do
 end
 
 When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
-  obj = DRI::DigitalObject.find_by_noid(pid)
+  obj = DRI::DigitalObject.find_by_alternate_id(pid)
   generic_files = if obj.collection?
                     obj.governed_items.map(&:generic_files).flatten
                   else

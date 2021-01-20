@@ -31,6 +31,6 @@ DRI::Derivatives::ExtractMetadata.module_eval do
       end
       version_id = 1 # TODO fixme
 
-      ["#{noid}-#{version_id}", "#{extension}"]
+      ["#{alternate_id}-#{version_id}", "#{extension}"]
     end
 end

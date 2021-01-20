@@ -40,7 +40,7 @@ describe ApiController do
     it 'should assign valid JSON to @list' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :objects, params: { objects: [{ 'pid' => object.noid }] }
+      post :objects, params: { objects: [{ 'pid' => object.alternate_id }] }
       list = controller.instance_variable_get(:@list)
       expect { JSON.parse(list.to_json) }.not_to raise_error
     end
@@ -48,7 +48,7 @@ describe ApiController do
     it 'should contain the metadata fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :objects, params: { objects: [{ 'pid' => object.noid }] }
+      post :objects, params: { objects: [{ 'pid' => object.alternate_id }] }
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
 
@@ -60,7 +60,7 @@ describe ApiController do
     it 'should only return the requested fields' do
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :objects, params: { objects: [{ 'pid' => object.noid }], metadata: ['title', 'description'] }
+      post :objects, params: { objects: [{ 'pid' => object.alternate_id }], metadata: ['title', 'description'] }
       list = controller.instance_variable_get(:@list)
       json = JSON.parse(list.to_json)
 
@@ -76,11 +76,11 @@ describe ApiController do
       gf.save
 
       storage = StorageService.new
-      storage.create_bucket(object.noid)
-      storage.store_surrogate(object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{gf.noid}_mp3.mp3")
+      storage.create_bucket(object.alternate_id)
+      storage.store_surrogate(object.alternate_id, File.join(fixture_path, "SAMPLEA.mp3"), "#{gf.alternate_id}_mp3.mp3")
 
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :objects, params: { objects: [{ 'pid' => object.noid }] }
+      post :objects, params: { objects: [{ 'pid' => object.alternate_id }] }
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')
@@ -100,7 +100,7 @@ describe ApiController do
 
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :objects, params: { objects: [{ 'pid' => object.noid }] }
+      post :objects, params: { objects: [{ 'pid' => object.alternate_id }] }
       expect(response.status).to eq(200)
 
       user.destroy
@@ -118,7 +118,7 @@ describe ApiController do
 
       request.env["HTTP_ACCEPT"] = 'application/json'
 
-      post :objects, params: { objects: [{ 'pid' => object.noid }] }
+      post :objects, params: { objects: [{ 'pid' => object.alternate_id }] }
       expect(response.status).to eq(404)
 
       user.destroy
@@ -136,7 +136,7 @@ describe ApiController do
       object.save
       object.reload
 
-      generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file.digital_object = object
       generic_file.apply_depositor_metadata(login_user.email)
       options = {}
@@ -148,13 +148,13 @@ describe ApiController do
       generic_file.save
 
       storage = StorageService.new
-      storage.create_bucket(object.noid)
-      storage.store_surrogate(object.noid, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.noid}_mp3.mp3")
+      storage.create_bucket(object.alternate_id)
+      storage.store_surrogate(object.alternate_id, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.alternate_id}_mp3.mp3")
     end
 
     it "should return a list of asset information" do
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :assets, params: { objects: [ { "pid" => "#{object.noid}" } ] }
+      post :assets, params: { objects: [ { "pid" => "#{object.alternate_id}" } ] }
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')
@@ -163,7 +163,7 @@ describe ApiController do
     end
 
     it "should not return preservation only files" do
-      generic_file = DRI::GenericFile.new(noid: Noid::Rails::Service.new.mint)
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
       generic_file.digital_object = object
       generic_file.apply_depositor_metadata(login_user.email)
       generic_file.preservation_only = 'true'
@@ -176,7 +176,7 @@ describe ApiController do
       generic_file.save
 
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :assets, params: { objects: [ { "pid" => "#{object.noid}" } ] }
+      post :assets, params: { objects: [ { "pid" => "#{object.alternate_id}" } ] }
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')

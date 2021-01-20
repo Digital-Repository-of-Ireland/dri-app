@@ -46,9 +46,9 @@ class DoiController < ApplicationController
     flash[:notice] = t('dri.flash.notice.collection_doi_request')
 
     respond_to do |format|
-      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.noid }
+      format.html { redirect_to controller: 'catalog', action: 'show', id: @object.alternate_id }
       format.json do
-        response = { id: @object.noid }
+        response = { id: @object.alternate_id }
         render json: response, status: :accepted
       end
     end

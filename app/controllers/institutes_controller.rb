@@ -126,7 +126,7 @@ class InstitutesController < ApplicationController
 
     if @collection.save
       # Do the preservation actions
-      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
+      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.alternate_id, committer_login: current_user.to_s)
 
       preservation = Preservation::Preservator.new(@collection)
       preservation.preserve
@@ -136,7 +136,7 @@ class InstitutesController < ApplicationController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.noid }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.alternate_id }
     end
   end
 
@@ -169,14 +169,14 @@ class InstitutesController < ApplicationController
       @collection_institutes = Institute.where(name: @collection.institute.flatten).to_a
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
 
-      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.noid, committer_login: current_user.to_s)
+      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.alternate_id, committer_login: current_user.to_s)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@collection)
       preservation.preserve
 
       respond_to do |format|
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.noid }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.alternate_id }
       end
     end
 

@@ -57,7 +57,7 @@ class ObjectHistory
   def audit_trail
     versions = []
 
-    committed_versions = VersionCommitter.where(obj_id: object.noid).order('created_at asc')
+    committed_versions = VersionCommitter.where(obj_id: object.alternate_id).order('created_at asc')
     committed_versions.each do |version|
       versions << { version_id: version.version_id,
                     created: version.created_at,
@@ -72,8 +72,8 @@ class ObjectHistory
     asset_info = {}
 
     object.generic_files.each do |file|
-      asset_info[file.noid] = {}
-      asset_info[file.noid][:surrogates] = surrogate_info(file.noid)
+      asset_info[file.alternate_id] = {}
+      asset_info[file.alternate_id][:surrogates] = surrogate_info(file.alternate_id)
     end
 
     asset_info
@@ -89,9 +89,9 @@ class ObjectHistory
     fixity_check[:verified] = 'unknown'
     fixity_check[:result] = []
 
-    return fixity_check unless FixityReport.exists?(collection_id: object.noid)
+    return fixity_check unless FixityReport.exists?(collection_id: object.alternate_id)
 
-    fixity_report = FixityReport.where(collection_id: object.noid).latest
+    fixity_report = FixityReport.where(collection_id: object.alternate_id).latest
 
     fixity_check[:time] = fixity_report.created_at
     failures = fixity_report.fixity_checks.failed.to_a
@@ -109,9 +109,9 @@ class ObjectHistory
   def fixity_check_object
     fixity_check = {}
 
-    return fixity_check unless FixityCheck.exists?(object_id: object.noid)
+    return fixity_check unless FixityCheck.exists?(object_id: object.alternate_id)
 
-    check = FixityCheck.where(object_id: object.noid).last
+    check = FixityCheck.where(object_id: object.alternate_id).last
     fixity_check[:time] = check.created_at
     fixity_check[:verified] = check.verified == true ? 'passed' : 'failed'
     fixity_check[:result] = check.result
@@ -120,7 +120,7 @@ class ObjectHistory
   end
 
   def object_versions
-    storage_object = Moab::StorageObject.new(object.noid, base_path(object.noid))
+    storage_object = Moab::StorageObject.new(object.alternate_id, base_path(object.alternate_id))
     storage_object.versions
   end
 
@@ -140,6 +140,6 @@ class ObjectHistory
 
   def surrogate_info(file_id)
     storage = StorageService.new
-    storage.surrogate_info(object.noid, file_id)
+    storage.surrogate_info(object.alternate_id, file_id)
   end
 end

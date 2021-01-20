@@ -16,19 +16,19 @@ module Preservation
     # Creates MOAB preservation directory structure and saves metadata there
     #
     def create_moab_dirs()
-      target_path = manifest_path(self.object.noid, self.version)
+      target_path = manifest_path(self.object.alternate_id, self.version)
       if File.directory?(target_path)
         err_string  = "The Moab directory #{target_path} for "\
-          "#{self.object.noid} version #{self.version} already exists"
+          "#{self.object.alternate_id} version #{self.version} already exists"
         Rails.logger.error(err_string)
         raise DRI::Exceptions::InternalError, err_string
       end
 
       make_dir(
         [
-          version_path(self.object.noid, self.version),
-          metadata_path(self.object.noid, self.version),
-          content_path(self.object.noid, self.version)
+          version_path(self.object.alternate_id, self.version),
+          metadata_path(self.object.alternate_id, self.version),
+          content_path(self.object.alternate_id, self.version)
         ]
       )
     end
@@ -42,10 +42,10 @@ module Preservation
     end
 
     def signature_catalog
-      storage_object = ::Moab::StorageObject.new(object.noid, aip_dir(object.noid))
+      storage_object = ::Moab::StorageObject.new(object.alternate_id, aip_dir(object.alternate_id))
       storage_version = storage_object.current_version
 
-      if ::Moab::SignatureCatalog.xml_pathname_exist?(manifest_path(object.noid, storage_version.version_id))
+      if ::Moab::SignatureCatalog.xml_pathname_exist?(manifest_path(object.alternate_id, storage_version.version_id))
         storage_version.signature_catalog
       else
         raise DRI::Exceptions::MoabError, "Invalid MOAB version"
@@ -61,7 +61,7 @@ module Preservation
       return if data.nil?
 
       begin
-        File.write(File.join(metadata_path(self.object.noid, self.version), "#{name.to_s}.xml"), data)
+        File.write(File.join(metadata_path(self.object.alternate_id, self.version), "#{name.to_s}.xml"), data)
       rescue StandardError => e
         Rails.logger.error "unable to write datastream: #{e}"
         false
@@ -74,14 +74,14 @@ module Preservation
 
       saved = moabify_attributes
       return false unless saved
-      dslist = [File.join(metadata_path(object.noid, version), 'attributes.json')]
+      dslist = [File.join(metadata_path(object.alternate_id, version), 'attributes.json')]
 
       if datastreams.present?
         datastreams.each do |ds|
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
         end
-        dslist.push(datastreams.map { |item| File.join(metadata_path(object.noid, version), item << ".xml") }).flatten!
+        dslist.push(datastreams.map { |item| File.join(metadata_path(object.alternate_id, version), item << ".xml") }).flatten!
       end
 
       if object.object_version == 1
@@ -101,26 +101,26 @@ module Preservation
       create_moab_dirs()
       moabify_attributes
       changes[:modified] ||= {}
-      changes[:modified]['metadata'] = [File.join(metadata_path(self.object.noid, self.version), 'attributes.json')]
+      changes[:modified]['metadata'] = [File.join(metadata_path(self.object.alternate_id, self.version), 'attributes.json')]
 
       update_manifests(changes)
     end
 
     # create_manifests
     def create_manifests
-      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.noid, version_id: 0)
+      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.alternate_id, version_id: 0)
       new_version_id = signature_catalog.version_id + 1
-      new_manifest_path = manifest_path(object.noid, new_version_id)
+      new_manifest_path = manifest_path(object.alternate_id, new_version_id)
 
-      version_inventory = Moab::FileInventory.new(type: 'version', version_id: new_version_id, digital_object_id: object.noid)
-      file_group = Moab::FileGroup.new(group_id: 'metadata').group_from_directory(Pathname.new(metadata_path(object.noid, new_version_id)))
+      version_inventory = Moab::FileInventory.new(type: 'version', version_id: new_version_id, digital_object_id: object.alternate_id)
+      file_group = Moab::FileGroup.new(group_id: 'metadata').group_from_directory(Pathname.new(metadata_path(object.alternate_id, new_version_id)))
       version_inventory.groups << file_group
-      file_group = Moab::FileGroup.new(group_id: 'content').group_from_directory(Pathname.new(content_path(object.noid, new_version_id)))
+      file_group = Moab::FileGroup.new(group_id: 'content').group_from_directory(Pathname.new(content_path(object.alternate_id, new_version_id)))
       version_inventory.groups << file_group
 
       version_additions = signature_catalog.version_additions(version_inventory)
 
-      signature_catalog.update(version_inventory, Pathname.new(data_path(object.noid, new_version_id)))
+      signature_catalog.update(version_inventory, Pathname.new(data_path(object.alternate_id, new_version_id)))
 
       file_inventory_difference = Moab::FileInventoryDifference.new
       file_inventory_difference.compare(Moab::FileInventory.new(), version_inventory)
@@ -130,7 +130,7 @@ module Preservation
       version_additions.write_xml_file(Pathname.new(new_manifest_path))
       file_inventory_difference.write_xml_file(Pathname.new(new_manifest_path))
 
-      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.noid, version_id: new_version_id)
+      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.alternate_id, version_id: new_version_id)
       manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(new_manifest_path, recursive=false)
 
       manifest_inventory.write_xml_file(Pathname.new(new_manifest_path))
@@ -145,14 +145,14 @@ module Preservation
     # changes: hash with keys :added, :modified and :deleted. Each is an array of filenames
     def update_manifests(changes)
       current_version_id = version.to_i
-      current_manifest_path = manifest_path(object.noid, current_version_id)
+      current_manifest_path = manifest_path(object.alternate_id, current_version_id)
 
       previous_version_id, previous_manifest_path = find_previous_manifest_path(current_version_id)
 
-      last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: previous_version_id, digital_object_id: @object.noid)
+      last_version_inventory = Moab::FileInventory.new(type: 'version', version_id: previous_version_id, digital_object_id: @object.alternate_id)
       last_version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
 
-      @version_inventory = Moab::FileInventory.new(type: 'version', version_id: previous_version_id, digital_object_id: @object.noid)
+      @version_inventory = Moab::FileInventory.new(type: 'version', version_id: previous_version_id, digital_object_id: @object.alternate_id)
       @version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
       @version_inventory.version_id = current_version_id
 
@@ -185,10 +185,10 @@ module Preservation
         end
       end
 
-      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.noid)
+      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.alternate_id)
       signature_catalog.parse(Pathname.new(File.join(previous_manifest_path, 'signatureCatalog.xml')).read)
       version_additions = signature_catalog.version_additions(@version_inventory)
-      signature_catalog.update(@version_inventory, Pathname.new(data_path(object.noid, self.version)))
+      signature_catalog.update(@version_inventory, Pathname.new(data_path(object.alternate_id, self.version)))
       file_inventory_difference = Moab::FileInventoryDifference.new
       file_inventory_difference.compare(last_version_inventory, @version_inventory)
 
@@ -197,7 +197,7 @@ module Preservation
       version_additions.write_xml_file(Pathname.new(current_manifest_path))
       file_inventory_difference.write_xml_file(Pathname.new(current_manifest_path))
 
-      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.noid, version_id: current_version_id)
+      manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.alternate_id, version_id: current_version_id)
       manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(current_manifest_path, recursive=false)
       manifest_inventory.write_xml_file(Pathname.new(current_manifest_path))
 
@@ -208,7 +208,7 @@ module Preservation
     end
 
     def verify
-      storage_object = ::Moab::StorageObject.new(object.noid, aip_dir(object.noid))
+      storage_object = ::Moab::StorageObject.new(object.alternate_id, aip_dir(object.alternate_id))
       storage_object_version = storage_object.current_version
 
       begin
@@ -237,7 +237,7 @@ module Preservation
         previous_version_id = current_version_id - 1
 
         previous_version_id.downto(1) do |vid|
-          path = manifest_path(object.noid, vid)
+          path = manifest_path(object.alternate_id, vid)
           return [vid, path] if File.exist?(path)
         end
       end
@@ -276,12 +276,12 @@ module Preservation
                        )
                      )
 
-        attributes['alternate_indentifier'] = object.noid
+        attributes['alternate_indentifier'] = object.alternate_id
         if object.governing_collection
-          attributes['governing_collection_alternate_identifier'] = object.governing_collection.noid
+          attributes['governing_collection_alternate_identifier'] = object.governing_collection.alternate_id
         end
 
-        File.write(File.join(metadata_path(self.object.noid, self.version), 'attributes.json'), attributes.to_json)
+        File.write(File.join(metadata_path(self.object.alternate_id, self.version), 'attributes.json'), attributes.to_json)
         true
       rescue StandardError => e
         Rails.logger.error "unable to write attributes: #{e}"
@@ -290,9 +290,9 @@ module Preservation
 
       def path_for_type(type)
         if type == 'content'
-          content_path(object.noid, self.version)
+          content_path(object.alternate_id, self.version)
         elsif type == 'metadata'
-          metadata_path(object.noid, self.version)
+          metadata_path(object.alternate_id, self.version)
         end
       end
 
