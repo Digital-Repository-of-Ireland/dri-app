@@ -6,6 +6,9 @@
     &nbsp;
   </div>
   <dl class="dri_object_metadata_readview">
+
+    <%= render partial: 'shared/show_doi' %>
+
     <% document_show_fields.each do |solr_fname, field| -%>
       <% if should_render_show_field? document, field %>
         <dt class="blacklight-<%= solr_fname.parameterize %>">
@@ -16,6 +19,9 @@
         </dd>
       <% end -%>
     <% end -%>
+
+    <%= render partial: 'shared/display_licence' %>
+
     <dt class="blacklight-depositing_institute">
       <%= t('dri.views.fields.depositing_institute') %>
     </dt>
