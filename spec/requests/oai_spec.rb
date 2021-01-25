@@ -66,6 +66,7 @@ RSpec.describe "Oai requests", type: :request do
     licence = Licence.create(name: "Test Licence", url: "http://test.com/licence")
     collection.licence = licence.name
     collection.save
+    collection.reload
 
     get "/oai?verb=ListRecords&metadataPrefix=oai_dri"
     expect(response.body).to match(%r{<dcterms:license>http://test.com/licence<\/dcterms:license>})

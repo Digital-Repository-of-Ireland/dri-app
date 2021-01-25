@@ -2,7 +2,7 @@ module DRI::Solr::Document::Collection
 
   def descendants(limit: 100)
     # Find all sub-collections below this collection
-    solr_query = "ancestor_id_ssim:\"#{self.id}\""
+    solr_query = "ancestor_id_ssim:\"#{self.alternate_id}\""
     f_query = "is_collection_ssi:true"
 
     Solr::Query.new(solr_query, limit, fq: f_query).to_a
@@ -12,7 +12,7 @@ module DRI::Solr::Document::Collection
   # fq=is_collection_tesim:true
   def children(limit: 100)
     # Find immediate children of this collection
-    solr_query = "collection_id_sim:\"#{self.id}\""
+    solr_query = "collection_id_sim:\"#{self.alternate_id}\""
     f_query = "is_collection_ssi:true"
 
     Solr::Query.new(
@@ -72,7 +72,7 @@ module DRI::Solr::Document::Collection
   def duplicate_total
     response = duplicate_query
 
-    duplicates = response['facet_counts']['facet_pivot']['metadata_checksum_ssi,id'].select { |value| value['count'] > 1 && value['pivot'].present? }
+    duplicates = response['facet_counts']['facet_pivot']['metadata_checksum_ssi,alternate_id'].select { |value| value['count'] > 1 && value['pivot'].present? }
     total = 0
     duplicates.each { |duplicate| total += duplicate['count'] }
 
@@ -83,7 +83,7 @@ module DRI::Solr::Document::Collection
     response = duplicate_query
 
     ids = []
-    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
+    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},alternate_id"].select { |f| f['count'] > 1 }
     duplicates.each do |duplicate|
       pivot = duplicate["pivot"]
       next unless pivot
@@ -98,7 +98,7 @@ module DRI::Solr::Document::Collection
 
   def file_display_type_count(published_only: false)
     fq = [
-          "+ancestor_id_ssim:#{self.id}",
+          "+ancestor_id_ssim:#{self.alternate_id}",
           "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_ssi:false"
         ]
 
@@ -123,7 +123,7 @@ module DRI::Solr::Document::Collection
   # @param [Boolean] published_only
   # @return [Integer]
   def type_count(type, published_only: false)
-    solr_query = "ancestor_id_ssim:\"" + self.id +
+    solr_query = "ancestor_id_ssim:\"" + self.alternate_id +
                  "\" AND " +
                  "#{Solr::SchemaFields.searchable_string('file_type_display')}:"+ type
     if published_only
@@ -142,7 +142,7 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [String] solr query for children of self (id) with given status
     def status_query(status, subcoll = false)
-      query = "ancestor_id_ssim:#{self.id}"
+      query = "ancestor_id_ssim:#{self.alternate_id}"
       query += " AND status_ssi:#{status}" unless status.nil?
       query += " AND is_collection_ssi:#{subcoll}"
       query
@@ -159,7 +159,7 @@ module DRI::Solr::Document::Collection
       return @status_counts unless @status_counts.blank?
 
       fq = [
-          "+ancestor_id_ssim:#{self.id}",
+          "+ancestor_id_ssim:#{self.alternate_id}",
         ]
 
       query_params = {
@@ -202,16 +202,16 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [Array] List of IDs
     def status_ids(status, subcoll = false)
-      Solr::Query.new(status_query(status, subcoll)).map(&:id)
+      Solr::Query.new(status_query(status, subcoll)).map(&:alternate_id)
     end
 
     def duplicate_query
       query_params = {
         fq: [
-          "+ancestor_id_ssim:#{id}",
+          "+ancestor_id_ssim:#{alternate_id}",
           "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_ssi:false"
         ],
-        "facet.pivot" => "#{metadata_field},id",
+        "facet.pivot" => "#{metadata_field},alternate_id",
         facet: true,
         "facet.mincount" => 2,
         "facet.field" => "#{metadata_field}"

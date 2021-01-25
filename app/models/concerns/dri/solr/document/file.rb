@@ -2,8 +2,7 @@ module DRI::Solr::Document::File
 
   def assets(with_preservation: false, ordered: false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{id}\""
-
+    files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{alternate_id}\""
     query = ::Solr::Query.new(files_query)
     assets = query.reject { |sd| with_preservation == false && sd.preservation_only? }
     ordered ? sort_assets(assets) : assets

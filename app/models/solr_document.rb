@@ -42,6 +42,10 @@ class SolrDocument
     Solr::Query.find(id)
   end
 
+  def self.find_by_alternate_id(id)
+    Solr::Query.find_by_alternate_id(id)
+  end
+
   def alternate_id
     self['alternate_id']
   end
@@ -58,9 +62,9 @@ class SolrDocument
     ids = ancestor_ids
     if ids.present?
       docs = {}
-      query = Solr::Query.construct_query_for_ids(ids)
+      query = Solr::Query.construct_query_for_ids(ids, 'alternate_id')
       results = Solr::Query.new(query, 100, { rows: ids.length }).to_a
-      results.each { |r| docs[r['id']] = r }
+      results.each { |r| docs[r['alternate_id']] = r }
     end
 
     docs
@@ -104,7 +108,7 @@ class SolrDocument
 
   def contains_images?
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{id}"
+    files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{alternate_id}"
     files_query += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
 
     Solr::Query.new(files_query).count > 0

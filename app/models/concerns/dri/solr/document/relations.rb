@@ -69,7 +69,7 @@ module DRI::Solr::Document::Relations
 
       documentation_ids = documentation_object_ids
       documentation_ids.each do |id|
-        solr_doc = SolrDocument.find(id)
+        solr_doc = SolrDocument.find_by_alternate_id(id)
         next if solr_doc.nil?
 
         link_text = solr_doc['title_tesim'].first
@@ -120,10 +120,10 @@ module DRI::Solr::Document::Relations
 
       # Get Root collection of current object.
       root = root_collection
-      relatives_ids = [root.relatives << root.id].uniq
+      relatives_ids = [root.relatives << root.alternate_id].uniq
 
       unless root
-        Rails.logger.error("Root collection ID for object with PID #{id} not found in Solr")
+        Rails.logger.error("Root collection ID for object with PID #{alternate_id} not found in Solr")
         return records
       end
 
@@ -137,7 +137,7 @@ module DRI::Solr::Document::Relations
                 ).get
 
       unless response.documents.present?
-        Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
+        Rails.logger.error("Relationship target objects not found in Solr for object #{alternate_id}")
       end
 
       response.documents

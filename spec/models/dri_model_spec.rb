@@ -100,9 +100,9 @@ describe DRI::DigitalObject do
       generic_file.digital_object = @t
       generic_file.save
     end
-
+    @t.reload
     solr_doc = @t.to_solr
-    expect(solr_doc[Solrizer.solr_name('file_count', :stored_sortable, type: :integer)]).to eq [11]
+    expect(solr_doc[Solrizer.solr_name('file_count', :stored_sortable, type: :integer)]).to eq 11
   end
 
   after(:each) do

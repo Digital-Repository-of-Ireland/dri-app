@@ -33,6 +33,9 @@ describe StatsReport do
       generic_file3.mime_type = "application/pdf"
       generic_file3.save
 
+      @object.reload
+      @object2.reload
+
       @object.update_index
       @object2.update_index
 

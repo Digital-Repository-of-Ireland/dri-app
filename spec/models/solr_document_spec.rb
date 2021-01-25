@@ -16,6 +16,7 @@ describe SolrDocument do
 
     @object.governing_collection = @subcollection
     @object.save
+    @object.reload
 
     @institute = Institute.new
     @institute.name = "Test Institute"
@@ -38,6 +39,7 @@ describe SolrDocument do
   end
 
   after(:each) do
+    @object.destroy
     @collection.destroy
     @institute.delete
     @dinstitute.delete
@@ -133,13 +135,16 @@ describe SolrDocument do
     end
 
     it "should return the asset docs ordered or unordered" do
-      labels = %w(g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.20.tif g445rv188_DCLA.RDFA.006.07.tif g445rv188_DCLA.RDFA.006.13.tif)
-      ordered_labels = %w(g445rv188_DCLA.RDFA.006.07.tif g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.13.tif g445rv188_DCLA.RDFA.006.20.tif)
+      labels = %w(g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.06.tif g445rv188_DCLA.RDFA.006.20.tif g445rv188_DCLA.RDFA.006.13.tif)
+      ordered_labels = %w(g445rv188_DCLA.RDFA.006.06.tif g445rv188_DCLA.RDFA.006.08.tif g445rv188_DCLA.RDFA.006.13.tif g445rv188_DCLA.RDFA.006.20.tif)
 
-      labels.each { |l| @object.generic_files << DRI::GenericFile.create(label: l) }
+      labels.each do |l|
+        f = DRI::GenericFile.create(label: l)
+        @object.generic_files << f
+      end
       @object.save
 
-      od = SolrDocument.find(@object.alternate_id)
+      od = SolrDocument.find_by_alternate_id(@object.alternate_id)
       expect(od.assets(ordered: false).map(&:label)).to match_array(labels)
       expect(od.assets(ordered: true).map(&:label)).to eq ordered_labels
     end
@@ -153,7 +158,7 @@ describe SolrDocument do
       @collection.save
       @collection.reload
 
-      doc = SolrDocument.find(@collection.alternate_id)
+      doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
       expect(doc.total_objects_count).to eq 6
     end
 
@@ -172,7 +177,7 @@ describe SolrDocument do
       @collection.save
       @collection.reload
 
-      doc = SolrDocument.find(@collection.alternate_id)
+      doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
       expect(doc.published_objects_count).to eq 3
     end
 
@@ -184,7 +189,7 @@ describe SolrDocument do
       @collection.reload
       @collection.update_index
 
-      doc = SolrDocument.find(@collection.alternate_id)
+      doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
       expect(doc.relatives).to match_array([collection_b.alternate_id])
     end
 
@@ -200,7 +205,7 @@ describe SolrDocument do
           @pub_obj_ids << object.alternate_id
           @collection.governed_items << object
         end
-        @doc = SolrDocument.find(@collection.alternate_id)
+        @doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
       end
       describe 'published_objects' do
         # previously failing due to solr response pagination
@@ -225,20 +230,20 @@ describe SolrDocument do
   context 'object type methods' do
     before(:each) do
       @to_delete = []
-      @solr_root_collection = SolrDocument.find(@collection.alternate_id)
-      @solr_subcollection = SolrDocument.find(@subcollection.alternate_id)
+      @solr_root_collection = SolrDocument.find_by_alternate_id(@collection.alternate_id)
+      @solr_subcollection = SolrDocument.find_by_alternate_id(@subcollection.alternate_id)
 
       @solr_objects = %i[sound audio text image documentation].map do |name|
         object = FactoryBot.create(name)
         object.save
         @to_delete << object
-        SolrDocument.find(object.alternate_id)
+        SolrDocument.find_by_alternate_id(object.alternate_id)
       end
 
       generic_file = FactoryBot.create(:generic_png_file)
       generic_file.save
       @to_delete << generic_file
-      @solr_generic_file = SolrDocument.find(generic_file.alternate_id)
+      @solr_generic_file = SolrDocument.find_by_alternate_id(generic_file.alternate_id)
     end
 
     after(:each) do

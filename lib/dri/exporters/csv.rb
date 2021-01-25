@@ -51,6 +51,8 @@ module DRI::Exporters
         @request_fields.each do |key|
           field = if key == 'identifiers'
                     @object_doc.identifier
+                  elsif key == 'status'
+                    @object_doc.status
                   else
                     @object_doc[Solrizer.solr_name(key, :stored_searchable, type: :string)]
                   end

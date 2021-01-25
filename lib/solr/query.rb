@@ -81,14 +81,27 @@ module Solr
         nil
       end
 
+      def find_by_alternate_id(id)
+        args = { q: "alternate_id:\"#{id}\"", fl: "*", rows: 1 }
+        response = repository.connection.get("select", params: args)
+
+        bl_response = blacklight_config.response_model.new(
+                        response,
+                        args,
+                        document_model: blacklight_config.document_model,
+                        blacklight_config: blacklight_config
+                      )
+        return bl_response.documents.first unless bl_response.documents.empty?
+      end
+
       def repository
         blacklight_config.repository_class.new(blacklight_config)
       end
 
-      def construct_query_for_ids(id_array)
+      def construct_query_for_ids(id_array, id_field='id')
         ids = id_array.reject(&:blank?)
-        return "id:NEVER_USE_THIS_ID" if ids.empty?
-        "{!terms f=id}#{ids.join(',')}"
+        return "#{id_field}:NEVER_USE_THIS_ID" if ids.empty?
+        "{!terms f=#{id_field}}#{ids.join(',')}"
       end
     end
   end
