@@ -184,23 +184,20 @@ describe ApiController do
     end
 
     it "should return preservation only files if requested and have permissions" do
-      generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
-      generic_file.batch = object
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+      generic_file.digital_object = object
       generic_file.apply_depositor_metadata(login_user.email)
       generic_file.preservation_only = 'true'
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = object.id
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      file.add_file uploaded, options
-      file.save
+      generic_file.add_file uploaded, options
       generic_file.save
 
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :assets, params: { objects: [ { "pid" => "#{object.id}" } ], preservation: true }
+      post :assets, params: { objects: [ { "pid" => "#{object.alternate_id}" } ], preservation: true }
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')
@@ -208,19 +205,16 @@ describe ApiController do
     end
 
     it "should not return preservation only files if requested and don't have permissions" do
-      generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
-      generic_file.batch = object
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+      generic_file.digital_object = object
       generic_file.apply_depositor_metadata(login_user.email)
       generic_file.preservation_only = 'true'
-      file = LocalFile.new(fedora_id: generic_file.id, ds_id: "content")
       options = {}
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
-      options[:batch_id] = object.id
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      file.add_file uploaded, options
-      file.save
+      generic_file.add_file uploaded, options
       generic_file.save
 
       user = FactoryBot.create(:user)
@@ -231,7 +225,7 @@ describe ApiController do
       sign_in user
 
       request.env["HTTP_ACCEPT"] = 'application/json'
-      post :assets, params: { objects: [ { "pid" => "#{object.id}" } ], preservation: true }
+      post :assets, params: { objects: [ { "pid" => "#{object.alternate_id}" } ], preservation: true }
       list = controller.instance_variable_get(:@list)
 
       expect(list.first).to include('files')
