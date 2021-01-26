@@ -4,7 +4,11 @@
     <% if @document.licence.is_a? Array %>
       <%= "#{@document.licence.first}" %>
     <% else %>
-      <% if @document.licence.name == "All Rights Reserved" %>
+      <% if @document.collection? and controller_name=="catalog" %>
+        <%= t('dri.views.licences.collection') %>
+      <% elsif @document.collection? %>
+        <%= t('dri.views.licences.collection_mgr', licence: @document.licence.name) %>
+      <% elsif @document.licence.name == "All Rights Reserved" %>
         <%= t('dri.views.licences.all_rights_reserved') %>
       <% elsif @document.licence.name == "Public Domain" %>
         <%= t('dri.views.licences.public_domain') %>

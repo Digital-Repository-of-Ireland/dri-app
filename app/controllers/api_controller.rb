@@ -124,7 +124,8 @@ class ApiController < CatalogController
     asset_list = []
     return asset_list unless can?(:read, doc)
 
-    files = doc.assets
+    with_preservation = params[:preservation].present? && can?(:edit, doc)
+    files = doc.assets(with_preservation: with_preservation)
 
     files.each do |file_doc|
       file_list = {}
@@ -132,6 +133,7 @@ class ApiController < CatalogController
       if doc.read_master? || can?(:edit, doc)
         url = url_for(file_download_url(doc.id, file_doc.id))
         file_list['masterfile'] = url
+        file_list['preservation'] = true if file_doc.preservation_only?
       end
 
       surrogates = doc.surrogates(file_doc.id, timeout)

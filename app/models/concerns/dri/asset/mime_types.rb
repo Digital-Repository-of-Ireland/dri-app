@@ -8,7 +8,8 @@ module DRI
       end
 
       def text?
-        self.class.text_mime_types.include? self.mime_type
+        self.class.text_mime_types.include?(self.mime_type) &&
+          !self.class.restricted_text_extensions.include?(extension)
       end
 
       def image?
@@ -33,6 +34,10 @@ module DRI
         return self.mime_type.split('/')[1] + " (" + self.format_label.join(", ") + ")" unless self.mime_type.blank? || self.format_label.blank?
         return self.mime_type.split('/')[1] unless self.mime_type.blank?
         return self.format_label
+      end
+
+      def extension
+        File.extname(self.label).downcase if self.label
       end
 
       module ClassMethods
@@ -63,6 +68,10 @@ module DRI
         # Restrict mimetypes for 3D
         def _3D_file_formats
           ::Settings.restrict.file_formats._3D
+        end
+
+        def restricted_text_extensions
+          ::Settings.restrict.extensions.restricted_text
         end
       end
     end
