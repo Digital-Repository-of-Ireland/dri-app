@@ -71,7 +71,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 0121f823d31f3d264a3ca67e5081baa04f26d956
+  revision: 3ba535836c0b2cb1124fe6e86d086f9c46dc053a
   branch: active-record
   specs:
     user_group (1.4.2)
@@ -188,7 +188,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
-    blacklight (6.23.0)
+    blacklight (6.24.0)
       bootstrap-sass (~> 3.2)
       deprecation
       globalid
@@ -483,7 +483,7 @@ GEM
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
-    jbuilder (2.10.1)
+    jbuilder (2.11.1)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
     jquery-colorbox-rails (1.7.5)
