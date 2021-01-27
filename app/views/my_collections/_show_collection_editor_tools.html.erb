@@ -17,18 +17,18 @@
         <li>
           <%= t('dri.views.catalog.links.draft') %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
-          <%= review_link("#{draft_subcoll} ", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status ssi][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
+          <%= review_link("#{draft_subcoll} ", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
           /<i class="fa fa-file" aria-hidden="true"></i>
-          <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status ssi][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
+          <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
         </li>
         <!-- end Draft Stats Block -->
         <!-- Reviewed Stats Block -->
         <li>
           <%= "#{t('dri.views.catalog.links.reviewed')}" %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
-          <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
+          <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
           /<i class="fa fa-file" aria-hidden="true"></i>
-          <%= review_link("#{reviewed_objects} )","#{search_catalog_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
+          <%= review_link("#{reviewed_objects} )","#{search_catalog_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
           <!-- end Reviewed Stats Block -->
           <!-- Published Stats Block -->
           <% if duplicate_total > 0 %>
@@ -38,9 +38,9 @@
           <% end %>
           <%= "#{t('dri.views.catalog.links.published')}" %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
-          <%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status ssi][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
+          <%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
           /<i class="fa fa-file" aria-hidden="true"></i>
-          <%= review_link("#{published_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status ssi][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
+          <%= review_link("#{published_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
         </li>
         <!-- end Published Stats Block -->
         <!-- Duplicate Stats Block -->
