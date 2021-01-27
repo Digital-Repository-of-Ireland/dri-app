@@ -16,13 +16,13 @@ module DRI::Derivatives::Services
 
     def temp_filename
       registered_mime_type = MIME::Types[source_file.mime_type].first
-      Logger.warn "Unable to find a registered mime type for #{source_file.mime_type.inspect} on #{source_file.original_name}" unless registered_mime_type
+      Logger.warn "Unable to find a registered mime type for #{source_file.mime_type.inspect} on #{source_file.original_filename}" unless registered_mime_type
       extension = registered_mime_type ? ".#{registered_mime_type.extensions.first}" : ''
 
       extension = '.mp3' if extension == '.mp2'
       version_id = 1 # TODO fixme
 
-      ["#{source_file.original_name}-#{version_id}", "#{extension}"]
+      ["#{source_file.original_filename}-#{version_id}", "#{extension}"]
     end
   end
 end
