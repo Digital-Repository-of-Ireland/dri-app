@@ -328,11 +328,6 @@ dl.dri_object_metadata_readview {
         }
     }
 }
-a.orcidlink {
-    background: url(image-path('ORCID-iD_icon-16x16.png'));
-    background-repeat: no-repeat;
-    padding-left: 20px;
-}
 /*--slick overrides--*/
 .slick-prev:before, .slick-next:before {
     color:$dri_darkgrey !important;
