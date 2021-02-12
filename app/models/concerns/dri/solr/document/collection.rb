@@ -9,7 +9,7 @@ module DRI::Solr::Document::Collection
   end
 
   # Filter to only get those that are collections:
-  # fq=is_collection_tesim:true
+  # fq=is_collection_ssi:true
   def children(limit: 100)
     # Find immediate children of this collection
     solr_query = "collection_id_sim:\"#{self.alternate_id}\""
