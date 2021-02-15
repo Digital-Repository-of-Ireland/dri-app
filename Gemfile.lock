@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 425b0cdcfed41e88792ce2f55480cea2c4607488
+  revision: 7b9e0bb0da7acd7efe0f7622db4d98cbf630465c
   branch: ar-valkyrie
   specs:
     dri_data_models (3.2.9)
@@ -325,7 +325,7 @@ GEM
       oauth2 (~> 1.1)
     druid-tools (2.1.0)
       deprecation
-    dry-configurable (0.12.0)
+    dry-configurable (0.12.1)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5.0)
     dry-container (0.7.2)
@@ -453,7 +453,7 @@ GEM
       mini_magick (>= 3.2, < 5)
     hydra-file_characterization (1.1.2)
       activesupport (>= 3.0.0)
-    i18n (1.8.8)
+    i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.0)
       i18n (>= 0.6.6)
@@ -593,7 +593,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2020.1104)
+    mime-types-data (3.2021.0212)
     mimemagic (0.3.5)
     mini_magick (4.11.0)
     mini_mime (1.0.2)
