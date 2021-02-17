@@ -139,11 +139,20 @@ class MyCollectionsController < ApplicationController
       title subject description creator contributor publisher person place
     ]
 
+    config.add_search_field(:title) do |field|
+      field.solr_parameters = {
+        qf: "title_unstem_search^50000 title_tesim^5000",
+        pf: "title_unstem_search^500000 title_tesim^50000"
+      }
+      field.label = self.solr_field_to_label(:title)
+    end
     config.dri_all_search_fields.each do |field_name|
+      next if field_name == :title
+
       config.add_search_field(field_name) do |field|
-        field.solr_local_parameters = {
-          qf: "$#{field_name}_qf",
-          pf: "$#{field_name}_pf"
+        field.solr_parameters = {
+          qf: "#{field_name}_unstem_search^125 #{field_name}_tesim^50",
+          pf: "#{field_name}_unstem_search^1250 #{field_name}_tesim^1000"
         }
         field.label = self.solr_field_to_label(field_name)
       end

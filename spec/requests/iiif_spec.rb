@@ -29,6 +29,10 @@ describe IiifController, type: :request do
           )
         ]
       end
+
+      allow_any_instance_of(
+        DRI::Solr::Document::File
+      ).to receive(:file_types).and_return(['image'])
     end
     it 'should put all published images in the collection in a sequence' do
       # get :sequence, id: @collections.first .id, format: :json

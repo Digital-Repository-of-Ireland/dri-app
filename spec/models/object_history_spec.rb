@@ -45,6 +45,8 @@ describe ObjectHistory  do
     @generic_file.apply_depositor_metadata(@user.email)
     @generic_file.save
 
+    @object.reload
+
     @collection.governed_items << @object
     @collection.save
 

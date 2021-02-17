@@ -13,16 +13,17 @@ module DRI::Catalog
     'date' => 'Date'
   }.freeze
 
+  FIELD_LABEL_MAPPINGS = {
+        title: 'Titles', subject: 'Subjects', description: 'Descriptions',
+        creator: 'Creators', contributor: 'Contributors', publisher: 'Publishers',
+        person: 'Names', place: 'Places'
+  }.freeze
+
   module ClassMethods
     # @param [Symbol] solr_field
     # @return [String]
     def solr_field_to_label(solr_field)
-      field_label_mappings = {
-        title: 'Titles', subject: 'Subjects', description: 'Descriptions',
-        creator: 'Creators', contributor: 'Contributors', publisher: 'Publishers',
-        person: 'Names', place: 'Places'
-      }
-      field_label_mappings[solr_field]
+      FIELD_LABEL_MAPPINGS[solr_field]
     end
   end
 

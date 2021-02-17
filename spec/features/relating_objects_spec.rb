@@ -58,7 +58,6 @@ feature 'Relating objects' do
       related.save
       collection_b.reload
       collection_b.update_index
-
       visit(my_collections_path(object_b.alternate_id))
       expect(page).to have_link(href: my_collections_path(object_a.alternate_id))
 

@@ -133,7 +133,7 @@ module DRI::Solr::Document::Relations
       response = Solr::Query.new(
                   solr_query,
                   100,
-                  { rows: relations_array.length, defType: 'edismax'}
+                  { rows: relations_array.length }
                 ).get
 
       unless response.documents.present?

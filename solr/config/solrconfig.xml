@@ -86,9 +86,11 @@
          will be overridden by parameters in the request
       -->
      <lst name="defaults">
+       <str name="defType">edismax</str>	     
        <str name="echoParams">explicit</str>
        <str name="q.alt">*:*</str>
        <str name="q.op">AND</str>
+       <str name="df">text</str>
        <!-- <str name="mm">2&lt;-1 5&lt;-2 6&lt;90%</str> -->
        <int name="qs">1</int>
        <int name="ps">2</int>
@@ -112,14 +114,14 @@
           text^10
         </str>
 
-       <str name="author_qf">
+	<!-- <str name="author_qf">
          author_unstem_search^200
          author_tesim^20
        </str>
        <str name="author_pf">
          author_unstem_search^2000
          author_tesim^200
-       </str>
+       </str> -->
        <str name="title_qf">
          title_unstem_search^50000
          title_tesim^5000
@@ -229,6 +231,7 @@
      <lst name="defaults">
        <str name="echoParams">explicit</str>
        <str name="defType">lucene</str>
+       <str name="df">text</str>
      </lst>
   </requestHandler>
 
