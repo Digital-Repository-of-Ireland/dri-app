@@ -37,8 +37,6 @@ class AssetsController < ApplicationController
 
   # Retrieves external datastream files that have been stored in the filesystem.
   def download
-    enforce_permissions!('edit', params[:object_id]) if params[:version].present?
-
     @generic_file = retrieve_object! params[:id]
     if @generic_file
       @document = SolrDocument.find(params[:object_id])
