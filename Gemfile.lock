@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 9591c13ab7e601e2b6dcd11e20b34d4afa8a6c11
+  revision: 19faa14fc8853a525ee8f06ed52f2278b8089afe
   branch: ar-valkyrie
   specs:
-    dri_data_models (3.2.9)
+    dri_data_models (4.0.0)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -71,10 +71,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 3ba535836c0b2cb1124fe6e86d086f9c46dc053a
+  revision: ea1235e1f081aab65314823986044f5396ff559a
   branch: active-record
   specs:
-    user_group (1.4.2)
+    user_group (2.0.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -160,7 +160,7 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     ast (2.4.1)
-    autoprefixer-rails (10.2.0.0)
+    autoprefixer-rails (10.2.4.0)
       execjs
     aws-eventstream (1.1.0)
     aws-partitions (1.402.0)
@@ -385,7 +385,7 @@ GEM
       faraday
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.2.1)
+    fastimage (2.2.2)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.17.0)
@@ -492,7 +492,7 @@ GEM
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
-    jbuilder (2.11.1)
+    jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jmespath (1.4.0)
     jquery-colorbox-rails (1.7.5)
