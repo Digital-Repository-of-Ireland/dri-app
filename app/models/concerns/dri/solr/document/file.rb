@@ -11,7 +11,7 @@ module DRI::Solr::Document::File
 
   def characterized?
     # not characterized if all empty
-    !self[ActiveFedora.index_field_mapper.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+    self['characterization__mime_type_tesim'].present? && !self['characterization__mime_type_tesim'].all? { |m| m.empty? }
   end
 
   def sort_assets(assets)
