@@ -267,6 +267,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           is_shown_by   = riiif.image_url("#{record.id}:#{mainfile.id}", size: 'full')
         elsif mainfile['file_type_tesim'].include? "text"
           is_shown_by   = object_file_url(record.id, mainfile.id, surrogate: 'pdf')
+        elsif mainfile['file_type_tesim'].include? "3d"
+          is_shown_by = object_3d_url(record)
         end
 
         xml.tag!("edm:isShownBy",{"rdf:resource" => is_shown_by}) if is_shown_by
@@ -283,6 +285,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               url = object_file_url(record.id, file.id, surrogate: 'pdf')
             elsif file["file_type_tesim"].include? "image"
               url = riiif.image_url("#{record.id}:#{file.id}",size: 'full')
+            elsif file["file_type_tesim"].include? "3d"
+              url =  object_3d_url(record)  
             end
 
             xml.tag!("edm:hasView", {"rdf:resource" => url})
@@ -318,6 +322,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
           elsif file['file_type_tesim'].include? "text"
             url = object_file_url(record.id, file.id, surrogate:'pdf')
+          elsif file['file_type_tesim'].include? "3d"
+            url = object_3d_url(record)
           end
 
           if !(file['file_type_tesim'].include? "image") && url
@@ -422,6 +428,12 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       object_file_url(record.id, file.id, surrogate: 'lightbox_format')
     elsif file['file_type_tesim'].include? "image"
       riiif.image_url("#{record.id}:#{file.id}", size: '500,')
+    elsif file['file_type_tesim'].include? "3d" 
+       if image.present?
+        object_file_url(record.id, image.id, surrogate: 'lightbox_format')
+      else
+        cover_image_url(record.collection_id)
+      end
     else
       nil
     end
@@ -432,5 +444,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   def clean_assets(assets)
     assets.select { |obj| obj.key? 'file_type_tesim' and !obj['mime_type_tesim'].include? "text/xml" }
   end
+  
+  def object_3d_url(record)
+
+    api_oembed_url+"?url="+catalog_url(record.id)
+   
+  end  
+
+
 
 end
