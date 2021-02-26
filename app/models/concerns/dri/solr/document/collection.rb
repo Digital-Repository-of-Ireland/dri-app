@@ -24,7 +24,7 @@ module DRI::Solr::Document::Collection
 
   def cover_image
     cover_field = 'cover_image_ss'
-    self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
+    self[cover_field].presence
   end
 
   def draft_objects_count
