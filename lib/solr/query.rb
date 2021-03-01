@@ -2,7 +2,7 @@ module Solr
   class Query
     include Enumerable
 
-    def initialize(query, chunk=100, args = {})
+    def initialize(query, chunk=1000, args = {})
       @query = query
       @chunk = chunk
       @args = args
@@ -40,7 +40,9 @@ module Solr
       params = { q: @query }.merge(query_args)
       response = solr_index.search(params)
 
-      if response['nextCursorMark'].present?
+      if response['response']['numFound'] < query_args[:rows]
+        @has_more = false
+      elsif response['nextCursorMark'].present?
         nextCursorMark = response['nextCursorMark']
         @has_more = false if @cursor_mark == nextCursorMark
 
