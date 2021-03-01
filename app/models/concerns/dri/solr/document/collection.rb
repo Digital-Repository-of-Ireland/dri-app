@@ -25,7 +25,7 @@ module DRI::Solr::Document::Collection
   def collection_contains_published_images?
     contains_images_query = status_query('published')
     contains_images_query += " AND file_type_tesim:image"
-    ActiveFedora::SolrService.count(contains_images_query) > 0
+    Solr::Query.new(contains_images_query).count.positive?
   end
 
   def cover_image
@@ -54,7 +54,6 @@ module DRI::Solr::Document::Collection
   end
 
   def published_images
-    puts "Getting published images"
     published_objects.select do |doc|
       doc.file_types.any? { |type| type.downcase == 'image' }
     end
