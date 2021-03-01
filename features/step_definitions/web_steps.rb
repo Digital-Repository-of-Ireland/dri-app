@@ -244,12 +244,17 @@ end
 When /^I fake the update to solr to add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   steps %{
     When contains_images? always returns true
+    And collection_contains_published_images? always returns true
     And published_images returns generic files from "#{pid}"
   }
 end
 
 When /^contains_images\? always returns true$/ do
   allow_any_instance_of(SolrDocument).to receive(:contains_images?) { true }
+end
+
+When /^collection_contains_published_images\? always returns true$/ do
+  allow_any_instance_of(SolrDocument).to receive(:collection_contains_published_images?) { true }
 end
 
 When /^published_images returns generic files from "([^\"]+)"$/ do |pid|
