@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 19faa14fc8853a525ee8f06ed52f2278b8089afe
+  revision: d262aaa838d4139630f904a292fccfac3abf9ea0
   branch: ar-valkyrie
   specs:
     dri_data_models (4.0.0)
@@ -604,12 +604,12 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0212)
+    mime-types-data (3.2021.0225)
     mimemagic (0.3.5)
     mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.5.0)
-    minitest (5.14.3)
+    minitest (5.14.4)
     moab-versioning (4.4.1)
       druid-tools (>= 1.0.0)
       json
@@ -795,7 +795,7 @@ GEM
     redis (4.2.5)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
-    reform (2.3.3)
+    reform (2.5.0)
       disposable (>= 0.4.2, < 0.5.0)
       representable (>= 2.4.0, < 3.1.0)
       uber (< 0.2.0)
