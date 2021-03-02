@@ -52,7 +52,6 @@ module DRI::Solr::Document::Collection
   end
 
   def published_images
-    puts "Getting published images"
     published_objects.select do |doc|
       doc.file_types.any? { |type| type.downcase == 'image' }
     end
