@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_13_183453) do
+ActiveRecord::Schema.define(version: 2021_03_03_185935) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -196,7 +196,7 @@ ActiveRecord::Schema.define(version: 2021_01_13_183453) do
 
   create_table "dri_om_datastreams", force: :cascade do |t|
     t.string "type"
-    t.binary "datastream_content"
+    t.binary "datastream_content", limit: 16777216
     t.string "describable_type"
     t.integer "describable_id"
     t.datetime "created_at"
