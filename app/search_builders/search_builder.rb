@@ -80,36 +80,37 @@ class SearchBuilder < Blacklight::SearchBuilder
   end
 
   def configure_timeline(solr_parameters)
-    if blacklight_params[:view] == 'timeline'
-      tl_field = blacklight_params[:tl_field].presence || 'sdate'
-      case tl_field
-      when 'cdate'
-        solr_parameters[:fq] << "+cdateRange:*"
-        solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "cdate_range_start_isi asc"
-      when 'pdate'
-        solr_parameters[:fq] << "+pdateRange:*"
-        solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "pdate_range_start_isi asc"
-      when 'sdate'
-        solr_parameters[:fq] << "+sdateRange:*"
-        solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "sdate_range_start_isi asc"
-      when 'date'
-        solr_parameters[:fq] << "+ddateRange:*"
-        solr_parameters[:fq] << "+date_range_start_isi:[* TO *]"
-        solr_parameters[:sort] = "date_range_start_isi asc"
-      end
-
-      solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
-      solr_parameters[:start] = if blacklight_params[:tl_page].present? && blacklight_params[:tl_page].to_i > 1
-                                  MAX_TIMELINE_ENTRIES * (blacklight_params[:tl_page].to_i - 1)
-                                else
-                                  0
-                                end
-    else
+    if blacklight_params[:view] != 'timeline'
       blacklight_params.delete(:tl_page)
       blacklight_params.delete(:tl_field)
+      return
     end
+
+    tl_field = blacklight_params[:tl_field].presence || 'sdate'
+    case tl_field
+    when 'cdate'
+      solr_parameters[:fq] << "+cdateRange:*"
+      solr_parameters[:fq] << "+cdate_range_start_isi:[* TO *]"
+      solr_parameters[:sort] = "cdate_range_start_isi asc"
+    when 'pdate'
+      solr_parameters[:fq] << "+pdateRange:*"
+      solr_parameters[:fq] << "+pdate_range_start_isi:[* TO *]"
+      solr_parameters[:sort] = "pdate_range_start_isi asc"
+    when 'sdate'
+      solr_parameters[:fq] << "+sdateRange:*"
+      solr_parameters[:fq] << "+sdate_range_start_isi:[* TO *]"
+      solr_parameters[:sort] = "sdate_range_start_isi asc"
+    when 'date'
+      solr_parameters[:fq] << "+ddateRange:*"
+      solr_parameters[:fq] << "+date_range_start_isi:[* TO *]"
+      solr_parameters[:sort] = "date_range_start_isi asc"
+    end
+
+    solr_parameters[:rows] = MAX_TIMELINE_ENTRIES
+    solr_parameters[:start] = if blacklight_params[:tl_page].present? && blacklight_params[:tl_page].to_i > 1
+                                MAX_TIMELINE_ENTRIES * (blacklight_params[:tl_page].to_i - 1)
+                              else
+                                0
+                              end
   end
 end
