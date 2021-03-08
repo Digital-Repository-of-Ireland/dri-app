@@ -40,7 +40,7 @@ module Solr
       params = { q: @query }.merge(query_args)
       response = solr_index.search(params)
 
-      if response['response']['numFound'] < query_args[:rows]
+      if response['response']['numFound'].to_i < query_args[:rows].to_i
         @has_more = false
       elsif response['nextCursorMark'].present?
         nextCursorMark = response['nextCursorMark']

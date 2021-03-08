@@ -28,7 +28,7 @@ class SavedSearchesController < ApplicationController
     Solr::Query.new(
       solr_query,
       10,
-      { fq: fq, defType: "edismax", rows: "3" }
+      { fq: fq, defType: "edismax", rows: 3 }
     ).query
   end
 
