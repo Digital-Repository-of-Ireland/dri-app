@@ -18,7 +18,7 @@ Before('not @javascript') do
 end
 
 Before('@stub_qa') do
-  %w(Hasset Nuts3 Logainm Unesco Loc::GenericAuthority).each do |auth|
+  %w(Hasset Nuts3 Logainm Unesco Homosaurus Loc::GenericAuthority).each do |auth|
     allow_any_instance_of("Qa::Authorities::#{auth}".constantize).to receive(:search) do |_instance, arg|
       label = arg.split(/\s+/).map {|v| v.capitalize }.join(' ')
       uri = "http://example.com/#{arg.gsub(/\s+/, '_')}"

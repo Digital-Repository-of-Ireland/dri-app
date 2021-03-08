@@ -6,6 +6,7 @@ module DRI
         { name: "LOC Names", endpoint: "/qa/search/loc/names?q=" },
         { name: "Getty Art and Architecture", endpoint: "/qa/search/getty/aat?q=" },
         { name: "Hasset", endpoint: "/qa/search/hasset/subjects?q=" },
+        { name: "Homosaurus", endpoint: "/qa/search/homosaurus/subjects?q="},
         { name: "Logainm", endpoint: "/qa/search/logainm/subjects?q=" },
         { name: "Nuts3", endpoint: "/qa/search/nuts3/subjects?q=" },
         { name: "OCLC FAST", endpoint: "/qa/search/assign_fast/all?q=" },

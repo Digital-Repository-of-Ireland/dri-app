@@ -4,7 +4,12 @@ class SearchBuilder < Blacklight::SearchBuilder
   include BlacklightMaps::MapsSearchBuilderBehavior
   include Blacklight::AccessControls::Enforcement
 
-  self.default_processor_chain += [:subject_place_filter, :exclude_unwanted_models, :configure_timeline]
+  self.default_processor_chain += [
+    :subject_place_filter,
+    :exclude_unwanted_models,
+    :order_subcollections,
+    :configure_timeline
+  ]
 
   MAX_TIMELINE_ENTRIES = 50
 
@@ -48,6 +53,11 @@ class SearchBuilder < Blacklight::SearchBuilder
     if user_parameters[:collection].present?
       solr_parameters[:fq] << "+root_collection_id_ssi:\"#{user_parameters[:collection]}\""
     end
+  end
+
+  def order_subcollections(solr_parameters)
+    return unless subcollections_tab_active(blacklight_params) && blacklight_params.dig(:f, :root_collection_id_sim).present?
+    solr_parameters[:sort] = 'system_create_dtsi asc' unless blacklight_params.key?(:sort)
   end
 
   # If querying geographical_coverage, then query the Solr geospatial field
