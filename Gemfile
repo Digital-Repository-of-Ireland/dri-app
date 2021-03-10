@@ -42,6 +42,7 @@ gem 'oauth'
 
 # Storage-related gems
 gem 'moab-versioning'
+gem 'bagit'
 
 # File processing gems
 gem 'mimemagic'
