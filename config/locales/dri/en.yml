@@ -219,15 +219,11 @@ en:
       admin: Admin
       batch_ingest: Batch Ingest
       blog: Blog
-      browse: Browse Repository
-      browse_collections: Browse by Data & Collections
-      browse_organisations: Browse by Organisation
+      browse: Discover
       collection: Collection
       collections: Collections
       deposit_guide: Guide to Deposit
       end_user_agreement: End User Agreement
-      news_events: News & Events
-      news: News
       events: Events
       help: FAQ
       home: Home
@@ -238,9 +234,9 @@ en:
       manage: Manage
       manage_users: Assign Collection Manager
       manage_om_users: Assign Manager
-      desposit: Deposit
-      membership: DRI Membership
-      community_archive: Community Archive Scheme
+      membership: Membership
+      member_benefits: Member Benefits
+      membership_fees: Membership Fees
       heritage_week_2020: HeritageWeek2020
       my_collections: My Collections
       search_my_collections: Search My Collections
@@ -262,15 +258,10 @@ en:
       team: Team
       usergroups: 'Users & Groups'
       vacancies: Vacancies
-      collection_policy: 'Collection Policy'
+      why_join_dri: 'Why Join DRI?'
       workspace: Workspace
       find_us: 'Find Us'
-      research_data: Research Data Management
-      training: Training & Education
-      user_guides: User Guides
-      early_career: DRI Early Career Research Award
-      networks: International Networks
-      advocacy: Advocacy
+      research_data: Research Data and DRI
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information

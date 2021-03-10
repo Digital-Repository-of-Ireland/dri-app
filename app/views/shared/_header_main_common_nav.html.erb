@@ -6,28 +6,33 @@
 <%= link_to t('dri.headerlinks.home'), 'http://www.dri.ie/', id: 'dri_home_id' %>
 </li>
 
-<li>
-  <%= render 'shared/header_main_browse_dropdown' %>
+<% if ((controller_name == 'catalog') && (controller.action_name != 'index')  || (request.path.include? "/catalog") ) %>
+    <li class="active">
+<% else %>
+    <li>
+<% end %>
+
+<%= link_to t('dri.headerlinks.browse'), main_app.search_catalog_path(mode: 'collections', search_field: 'all_fields'), id: 'browse' %>
+</li>
+
+<% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
+    <li class="active">
+<% else %>
+    <li>
+<% end %>
+<%= link_to t('dri.headerlinks.institutions'), main_app.organisations_path, id: 'institutions' %>
 </li>
 
 <li>
-  <%= render 'shared/header_main_deposit_dropdown' %>
-</li>
-
-<li>
-  <%= render 'shared/header_main_resources_dropdown' %>
-</li>
-
-<li>
-  <%= render 'shared/header_main_ourwork_dropdown' %>
-</li>
-
-<li>
-  <%= render 'shared/header_main_newsevents_dropdown' %>
+  <%= render 'shared/header_main_membership_dropdown' %>
 </li>
 
 <li>
   <%= render 'shared/header_main_about_dropdown' %>
+</li>
+
+<li>
+  <%= render 'shared/header_main_team_dropdown' %>
 </li>
 
 <% if ['/bookmarks','/user_groups/users','/search_history','/saved_searches','/ingest/','/ingest/batch','/ingest/ingests', '/pages/reports', '/reports'].include?(request.path) || controller.controller_name == 'my_collections' || controller.controller_name == 'workspace' %>
