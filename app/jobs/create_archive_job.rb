@@ -65,7 +65,7 @@ class CreateArchiveJob
       next if gf.preservation_only == 'true'
 
       if inherited_masterfile_access(object) == "public"
-        bag.add_file(File.join('originals', "#{gf.alterbate_id}_#{gf.label}"), gf.path)
+        bag.add_file(File.join('originals', "#{gf.alternate_id}_#{gf.label}"), gf.path)
         checksums << "#{gf.original_checksum.first} originals/#{gf.alternate_id}_#{gf.label}"
       end
 
