@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'zip'
+require 'bagit'
 
 describe CreateArchiveJob do
 
@@ -70,6 +71,33 @@ describe CreateArchiveJob do
 
     zip = Zip::File.open(zip_file.first)
     expect(zip.entries.map(&:name).any? { |entry| entry.include?("#{@generic_file.alternate_id}_optimised_sample_image.jpeg") }).to be true
+  end
+
+  it 'should create an valid bagit archive' do
+    delivery = double
+    expect(delivery).to receive(:deliver_now).with(no_args)
+
+    expect(JobMailer).to receive(:archive_ready_mail)
+      .and_return(delivery)
+
+    CreateArchiveJob.perform(@object.alternate_id, @login_user.email)
+
+    zip_file = Dir[File.join("#{@tmp_downloads_dir}","#{@object.alternate_id}_*")]
+    expect(zip_file).not_to be_empty
+
+    Zip::File.open(zip_file.first) do |zip_file|
+    # Handle entries one by one
+      zip_file.each do |entry|
+        fpath = File.join("#{@tmp_downloads_dir}","#{@object.alternate_id}", entry.to_s)
+        FileUtils.mkdir_p(File.dirname(fpath))
+        # the block is for handling an existing file.
+        # returning true will overwrite the files.
+        zip_file.extract(entry, fpath){ true }
+      end
+    end
+
+    bag = BagIt::Bag.new File.join("#{@tmp_downloads_dir}","#{@object.alternate_id}")
+    expect(bag.valid?).to be true
   end
 
   it 'should create an archive for object containing non image surrogates' do

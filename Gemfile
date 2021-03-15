@@ -43,6 +43,7 @@ gem 'oauth'
 # Storage-related gems
 gem 'moab-versioning'
 gem 'valkyrie', '2.1.1'
+gem 'bagit'
 
 # File processing gems
 gem 'mimemagic'

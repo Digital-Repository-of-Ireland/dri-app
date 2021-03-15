@@ -30,7 +30,7 @@
 		<![endif]-->
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-        <%= analytics_init(custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
+        <%= analytics_init(anonymize: true, custom_vars: custom_vars) if !(Settings.analytics && Settings.analytics.disable == true) %>
         <script type="text/javascript">
             I18n.locale = "<%= I18n.locale %>";
         </script>
