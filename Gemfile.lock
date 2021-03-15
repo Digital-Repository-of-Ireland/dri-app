@@ -179,6 +179,9 @@ GEM
     aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.18.2)
+    bagit (0.4.4)
+      docopt (~> 0.5.0)
+      validatable (~> 1.6)
     bcp47 (0.3.3)
       i18n
     bcrypt (3.1.16)
@@ -1015,6 +1018,7 @@ GEM
     unf_ext (0.0.7.7)
     unicode (0.4.4.4)
     unicode-display_width (1.7.0)
+    validatable (1.6.7)
     valkyrie (2.1.1)
       activemodel
       activesupport
