@@ -185,6 +185,16 @@ module Preservation
       @version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
       @version_inventory.version_id = current_version_id
 
+      if changes.key?(:deleted)
+        changes[:deleted].keys.each do |type|
+          path = path_for_type(type)
+
+          changes[:deleted][type].each do |file|
+            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
+          end
+        end
+      end
+
       if changes.key?(:added)
         changes[:added].keys.each do |type|
           path = path_for_type(type)
@@ -201,16 +211,6 @@ module Preservation
             @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(File.basename(file))
 
             moab_add_file_instance(path, file, type)
-          end
-        end
-      end
-
-      if changes.key?(:deleted)
-        changes[:deleted].keys.each do |type|
-          path = path_for_type(type)
-
-          changes[:deleted][type].each do |file|
-            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
           end
         end
       end
