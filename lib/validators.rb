@@ -1,6 +1,5 @@
 module Validators
   # Contains File validator methods for uploaded files
-  require 'mimemagic'
 
   # Validate the file upload
   #
@@ -58,8 +57,8 @@ module Validators
     init_types
 
     path, extension = file_path(file)
-    mime_type = MimeMagic.by_magic(File.open(path))
-    return mime_type.type unless mime_type.nil?
+    mime_type = Marcel::MimeType.for File.open(path)
+    return mime_type unless mime_type.blank?
 
     # If we can't determine from file structure, then determine by extension
     extension_results = MIME::Types.type_for(extension)
@@ -74,8 +73,8 @@ module Validators
     init_types
 
     path, extension = file_path(file)
-    mime_type = MimeMagic.by_magic(File.open(path))
-    return mime_type.mediatype unless mime_type.nil?
+    mime_type = Marcel::MimeType.for File.open(path)
+    return mime_type.split('/', 2)[0] unless mime_type.blank?
 
     # If we can't determine from file structure, then determine by extension
     extension_results = MIME::Types.type_for(extension)
@@ -104,8 +103,8 @@ module Validators
   # Add additional mime types
   #
   def self.init_types
-    MimeMagic.add('audio/mpeg', { magic: [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] })
-    MimeMagic.add('audio/mp2', { extensions: 'mp2, mpeg', magic: [[0, '\377\364'], [0, '\377\365'], [0, '\377\374'], [0, '\377\375']] })
+    Marcel::Magic.add('audio/mpeg', { magic: [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] })
+    Marcel::Magic.add('audio/mp2', { extensions: 'mp2, mpeg', magic: [[0, '\377\364'], [0, '\377\365'], [0, '\377\374'], [0, '\377\375']] })
   end
 
   def self.file_path(file)

@@ -45,7 +45,6 @@ gem 'moab-versioning'
 gem 'bagit'
 
 # File processing gems
-gem 'mimemagic'
 gem "image_processing", "~> 1.0"
 
 # Language and translation related gems
