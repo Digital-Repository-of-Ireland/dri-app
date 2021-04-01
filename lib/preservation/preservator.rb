@@ -185,6 +185,15 @@ module Preservation
       @version_inventory.parse(Pathname.new(File.join(previous_manifest_path, 'versionInventory.xml')).read)
       @version_inventory.version_id = current_version_id
 
+      if changes.key?(:deleted)
+        changes[:deleted].keys.each do |type|
+          changes[:deleted][type].each do |file|
+            @file_group = @version_inventory.group(type.to_s)
+            remove_file_instance(file)
+          end
+        end
+      end
+
       if changes.key?(:added)
         changes[:added].keys.each do |type|
           path = path_for_type(type)
@@ -201,16 +210,6 @@ module Preservation
             @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(File.basename(file))
 
             moab_add_file_instance(path, file, type)
-          end
-        end
-      end
-
-      if changes.key?(:deleted)
-        changes[:deleted].keys.each do |type|
-          path = path_for_type(type)
-
-          changes[:deleted][type].each do |file|
-            @version_inventory.groups.find {|g| g.group_id == type.to_s }.remove_file_having_path(file)
           end
         end
       end
@@ -307,6 +306,17 @@ module Preservation
           content_path(object.id, self.version)
         elsif type == 'metadata'
           metadata_path(object.id, self.version)
+        end
+      end
+
+      def remove_file_instance(file)
+        signature = @file_group.path_hash[file]
+        file_manifestation = @file_group.signature_hash[signature]
+        instances = file_manifestation.instances
+        if instances.size > 1
+          file_manifestation.instances = instances.reject { |fi| fi.path == file }
+        else
+          @file_group.remove_file_having_path(file)
         end
       end
 
