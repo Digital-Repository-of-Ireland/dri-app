@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 88f3d2ca23b4ddd597f9db2d5929e03c443b21da
+  revision: 1fa12ec014b951b886dc907ff8b44e54716d257c
   branch: ar-valkyrie
   specs:
     dri_data_models (4.0.0)
@@ -66,6 +66,7 @@ GIT
       noid-rails
       om
       rails (~> 5.2)
+      reform-rails (~> 0.2.2)
       resque
       valkyrie
 
@@ -341,7 +342,7 @@ GEM
     dry-equalizer (0.3.0)
     dry-inflector (0.2.0)
     dry-initializer (3.0.4)
-    dry-logic (1.1.0)
+    dry-logic (1.1.1)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5)
     dry-schema (1.5.6)
@@ -469,7 +470,7 @@ GEM
       mini_magick (>= 3.2, < 5)
     hydra-file_characterization (1.1.2)
       activesupport (>= 3.0.0)
-    i18n (1.8.9)
+    i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     i18n-js (3.8.0)
       i18n (>= 0.6.6)
@@ -598,19 +599,19 @@ GEM
     listen (3.3.3)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.9.0)
+    loofah (2.9.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.0)
+    marcel (1.0.1)
     memoist (0.16.0)
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2020.0512)
-    mini_magick (4.10.1)
-    mini_mime (1.0.3)
+    mime-types-data (3.2021.0225)
+    mini_magick (4.11.0)
+    mini_mime (1.1.0)
     mini_portile2 (2.5.0)
     minitest (5.14.4)
     moab-versioning (4.2.2)
@@ -619,7 +620,7 @@ GEM
       json
       nokogiri
       nokogiri-happymapper
-    mono_logger (1.1.0)
+    mono_logger (1.1.1)
     multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -627,7 +628,7 @@ GEM
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.3)
-    namae (1.0.2)
+    namae (1.1.1)
     nest (3.2.0)
       redic
     net-http-persistent (3.1.0)
@@ -638,7 +639,7 @@ GEM
     noid-rails (3.0.2)
       actionpack (>= 5.0.0, < 7)
       noid (~> 0.9)
-    nokogiri (1.11.2)
+    nokogiri (1.11.3)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
@@ -803,7 +804,7 @@ GEM
       disposable (>= 0.4.2, < 0.5.0)
       representable (>= 2.4.0, < 3.1.0)
       uber (< 0.2.0)
-    reform-rails (0.2.1)
+    reform-rails (0.2.2)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
     regexp_parser (1.8.2)
