@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_185935) do
+ActiveRecord::Schema.define(version: 2021_04_19_120327) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -65,14 +65,14 @@ ActiveRecord::Schema.define(version: 2021_03_03_185935) do
 
   create_table "dri_access_controls", force: :cascade do |t|
     t.string "master_file_access"
-    t.string "discover_users"
-    t.string "discover_groups"
-    t.string "read_users"
-    t.string "read_groups"
-    t.string "edit_users"
-    t.string "edit_groups"
-    t.string "manager_users"
-    t.string "manager_groups"
+    t.text "discover_users"
+    t.text "discover_groups"
+    t.text "read_users"
+    t.text "read_groups"
+    t.text "edit_users"
+    t.text "edit_groups"
+    t.text "manager_users"
+    t.text "manager_groups"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "digital_object_type"
