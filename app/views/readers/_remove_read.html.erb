@@ -9,11 +9,11 @@
   <td>
     <% unless membership.request_form.blank? %>
       <%= link_to (t :'dri.views.readers.links.pending.view'),
-                   collection_view_read_request_path(collection.id, membership.user_id, format: 'js'),
+                   collection_view_read_request_path(collection.alternate_id, membership.user_id, format: 'js'),
                    id: "request_form", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_request_form_modal_id' %>
     <% end %>
     <%= link_to (t :'dri.views.readers.links.approved.remove'),
-      collection_remove_read_path(collection.id, membership.user_id), method: :delete %>
+      collection_remove_read_path(collection.alternate_id, membership.user_id), method: :delete %>
   </td>
   </tr>
 <% end %>
