@@ -48,12 +48,12 @@ class MetadataController < ApplicationController
 
     respond_to do |format|
       format.xml do
-        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
+        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].datastream_content
                  @object.attached_files[:fullMetadata].content
                else
                  @object.attached_files[:descMetadata].content
                end
-        send_data(data, filename: "#{@object.id}.xml")
+        send_data(data, filename: "#{@object.alternate_id}.xml")
         return
       end
       format.js do
