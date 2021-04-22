@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 784176ae407823b610131649949a181aa40c5d15
-  branch: ar-valkyrie
+  revision: a4059d253ce0c911f8b1c9e1789dcb55aa958dad
+  branch: develop
   specs:
     dri_data_models (4.0.0)
       hydra-derivatives
@@ -72,7 +72,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: ea1235e1f081aab65314823986044f5396ff559a
-  branch: active-record
+  branch: develop
   specs:
     user_group (2.0.0)
       blacklight-access_controls
@@ -390,11 +390,11 @@ GEM
       faraday
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.2.2)
+    fastimage (2.2.3)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.17.0)
-    ffi (1.14.2)
+    ffi (1.15.0)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
