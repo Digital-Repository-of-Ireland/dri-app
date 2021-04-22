@@ -8,12 +8,13 @@ class TextSurrogateJob < IdBasedJob
   end
 
   def run
+    raise "Incorrect object type" unless generic_file.is_a?(DRI::GenericFile)
+
     with_status_update('text') do
       Rails.logger.info "Creating surrogate of #{generic_file_id} asset"
 
       filename = generic_file.path
-
-      bucket_id = object.digital_object.nil? ? object.alternate_id : generic_file.alternate_id
+      bucket_id = generic_file.digital_object.alternate_id
 
       ext = Rack::Mime::MIME_TYPES.invert[generic_file.mime_type]
       ext = ext[1..-1] if ext[0] == '.'
