@@ -10,7 +10,7 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-ruby_version=2.6.5
+ruby_version=2.6.6
 
 rvm use ruby-$ruby_version || exit 100
 
@@ -31,7 +31,6 @@ gem install bundler
 
 rm -rf dri_files/*
 
-cp config/fedora.yml.sample config/fedora.yml
 cp config/solr.yml.sample config/solr.yml
 cp config/database.yml.sample config/database.yml
 cp config/redis.yml.sample config/redis.yml
