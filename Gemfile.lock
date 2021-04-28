@@ -961,7 +961,7 @@ GEM
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
     slop (4.8.2)
-    solr_wrapper (3.0.2)
+    solr_wrapper (3.1.2)
       http
       retriable
       ruby-progressbar
