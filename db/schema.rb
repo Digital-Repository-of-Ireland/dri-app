@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_151612) do
+ActiveRecord::Schema.define(version: 2021_04_19_120327) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -63,6 +63,23 @@ ActiveRecord::Schema.define(version: 2020_10_22_151612) do
     t.index ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
   end
 
+  create_table "dri_access_controls", force: :cascade do |t|
+    t.string "master_file_access"
+    t.text "discover_users"
+    t.text "discover_groups"
+    t.text "read_users"
+    t.text "read_groups"
+    t.text "edit_users"
+    t.text "edit_groups"
+    t.text "manager_users"
+    t.text "manager_groups"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "digital_object_type"
+    t.integer "digital_object_id"
+    t.index ["digital_object_type", "digital_object_id"], name: "do_acl_idx"
+  end
+
   create_table "dri_batch_ingest_ingest_batches", force: :cascade do |t|
     t.string "email"
     t.string "collection_id"
@@ -100,6 +117,91 @@ ActiveRecord::Schema.define(version: 2020_10_22_151612) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
+  end
+
+  create_table "dri_collection_relationships", force: :cascade do |t|
+    t.integer "digital_object_id"
+    t.integer "collection_relative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dri_digital_objects", force: :cascade do |t|
+    t.string "ingest_files_from_metadata"
+    t.string "published_at"
+    t.string "digital_object_type"
+    t.string "governing_collection_type"
+    t.integer "governing_collection_id"
+    t.string "previous_sibling_type"
+    t.integer "previous_sibling_id"
+    t.string "documentation_for_type"
+    t.integer "documentation_for_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "metadata_checksum"
+    t.integer "object_version"
+    t.string "status"
+    t.string "depositor"
+    t.string "model_version"
+    t.string "verified"
+    t.string "doi"
+    t.string "cover_image"
+    t.string "institute"
+    t.string "depositing_institute"
+    t.string "licence"
+    t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
+    t.index ["governing_collection_type", "governing_collection_id"], name: "governing_index"
+    t.index ["metadata_checksum"], name: "metadata_chksm_index"
+    t.index ["previous_sibling_type", "previous_sibling_id"], name: "sibling_index"
+  end
+
+  create_table "dri_generic_files", force: :cascade do |t|
+    t.text "title"
+    t.text "creator"
+    t.string "filename"
+    t.string "label"
+    t.string "depositor"
+    t.string "mime_type"
+    t.integer "version"
+    t.string "path"
+    t.string "checksum_md5"
+    t.string "checksum_sha256"
+    t.string "checksum_rmd160"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "digital_object_type"
+    t.integer "digital_object_id"
+    t.boolean "preservation_only"
+    t.index ["digital_object_type", "digital_object_id"], name: "gf_do_idx"
+  end
+
+  create_table "dri_identifiers", force: :cascade do |t|
+    t.string "alternate_id"
+    t.string "identifiable_type"
+    t.integer "identifiable_id"
+    t.index ["alternate_id"], name: "index_dri_identifiers_on_alternate_id", unique: true
+    t.index ["identifiable_type", "identifiable_id"], name: "index_dri_identifiers_on_identifiable_type_and_identifiable_id"
+  end
+
+  create_table "dri_linked_data", force: :cascade do |t|
+    t.text "title"
+    t.string "creator"
+    t.string "resource_type"
+    t.string "identifier"
+    t.string "source"
+    t.text "spatial"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "dri_om_datastreams", force: :cascade do |t|
+    t.string "type"
+    t.binary "datastream_content", limit: 16777216
+    t.string "describable_type"
+    t.integer "describable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["describable_type", "describable_id"], name: "om_index"
   end
 
   create_table "dri_reconciliation_results", force: :cascade do |t|
@@ -167,15 +269,6 @@ ActiveRecord::Schema.define(version: 2020_10_22_151612) do
     t.string "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "local_files", force: :cascade do |t|
-    t.string "path"
-    t.string "fedora_id"
-    t.string "ds_id"
-    t.string "mime_type"
-    t.integer "version"
-    t.text "checksum"
   end
 
   create_table "qa_local_authorities", force: :cascade do |t|

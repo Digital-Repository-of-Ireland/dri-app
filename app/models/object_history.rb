@@ -1,5 +1,9 @@
+require 'moab'
+require 'preservation/preservation_helpers'
+
 class ObjectHistory
   include ActiveModel::Model
+  include Preservation::PreservationHelpers
 
   attr_accessor :object
 
@@ -18,9 +22,15 @@ class ObjectHistory
 
   # Get the institute manager for any collection or object
   def institute_manager
-    root_collection = ActiveFedora::Base.find(object.root_collection.first)
+    parent = object.governing_collection
+    return object.try(:depositor) if parent.nil?
 
-    root_collection.depositor
+    while !parent.nil?
+      current = parent
+      parent = current.governing_collection
+    end
+
+    current.try(:depositor)
   end
 
   def read_users_by_group(parent = nil)
@@ -47,7 +57,7 @@ class ObjectHistory
   def audit_trail
     versions = []
 
-    committed_versions = VersionCommitter.where(obj_id: object.id).order('created_at asc')
+    committed_versions = VersionCommitter.where(obj_id: object.alternate_id).order('created_at asc')
     committed_versions.each do |version|
       versions << { version_id: version.version_id,
                     created: version.created_at,
@@ -62,10 +72,8 @@ class ObjectHistory
     asset_info = {}
 
     object.generic_files.each do |file|
-      asset_info[file.id] = {}
-
-      asset_info[file.id][:versions] = local_files(file.id)
-      asset_info[file.id][:surrogates] = surrogate_info(file.id)
+      asset_info[file.alternate_id] = {}
+      asset_info[file.alternate_id][:surrogates] = surrogate_info(file.alternate_id)
     end
 
     asset_info
@@ -81,9 +89,9 @@ class ObjectHistory
     fixity_check[:verified] = 'unknown'
     fixity_check[:result] = []
 
-    return fixity_check unless FixityReport.exists?(collection_id: object.id)
+    return fixity_check unless FixityReport.exists?(collection_id: object.alternate_id)
 
-    fixity_report = FixityReport.where(collection_id: object.id).latest
+    fixity_report = FixityReport.where(collection_id: object.alternate_id).latest
 
     fixity_check[:time] = fixity_report.created_at
     failures = fixity_report.fixity_checks.failed.to_a
@@ -101,9 +109,9 @@ class ObjectHistory
   def fixity_check_object
     fixity_check = {}
 
-    return fixity_check unless FixityCheck.exists?(object_id: object.id)
+    return fixity_check unless FixityCheck.exists?(object_id: object.alternate_id)
 
-    check = FixityCheck.where(object_id: object.id).last
+    check = FixityCheck.where(object_id: object.alternate_id).last
     fixity_check[:time] = check.created_at
     fixity_check[:verified] = check.verified == true ? 'passed' : 'failed'
     fixity_check[:result] = check.result
@@ -111,8 +119,9 @@ class ObjectHistory
     fixity_check
   end
 
-  def local_files(file_id)
-    LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', { f: file_id, d: 'content' }).to_a
+  def object_versions
+    storage_object = Moab::StorageObject.new(object.alternate_id, base_path(object.alternate_id))
+    storage_object.versions
   end
 
   def licence
@@ -131,8 +140,6 @@ class ObjectHistory
 
   def surrogate_info(file_id)
     storage = StorageService.new
-    surrogates = storage.surrogate_info(@object.id, file_id)
-
-    surrogates
+    storage.surrogate_info(object.alternate_id, file_id)
   end
 end

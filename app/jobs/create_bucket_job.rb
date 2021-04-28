@@ -1,4 +1,4 @@
-class CreateBucketJob < ActiveFedoraIdBasedJob
+class CreateBucketJob < IdBasedJob
   include BackgroundTasks::Status
 
   def queue_name
@@ -7,12 +7,12 @@ class CreateBucketJob < ActiveFedoraIdBasedJob
 
   def run
     with_status_update('create_bucket') do
-      bucket_id = object.batch.nil? ? object.id : object.batch.id
+      bucket_id = object.digital_object.nil? ? object.alternate_id : object.digital_object.alternate_id
       Rails.logger.info "Creating bucket for object #{bucket_id}"
 
       storage = StorageService.new
       created = storage.create_bucket(bucket_id)
-      
+
       raise "Unable to create storage bucket" unless created
 
       after_create_bucket

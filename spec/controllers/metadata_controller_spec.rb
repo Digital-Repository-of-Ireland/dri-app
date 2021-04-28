@@ -19,7 +19,7 @@ describe MetadataController do
 
     after(:each) do
       @login_user.delete
-      @object.delete
+      @object.destroy
 
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
@@ -35,7 +35,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.id, metadata_file: @file }
+      put :update, params: { id: @object.alternate_id, metadata_file: @file }
 
       @object.reload
       expect(@object.title).to eq(['SAMPLE AUDIO TITLE'])
@@ -52,7 +52,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.id, metadata_file: @file }
+      put :update, params: { id: @object.alternate_id, metadata_file: @file }
 
       @object.reload
       expect(@object.title).to eq(['An Audio Title'])
@@ -73,7 +73,7 @@ describe MetadataController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.alternate_id)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       request.env["HTTP_ACCEPT"] = 'application/json'
@@ -86,9 +86,9 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.id, metadata_file: @file }
+      put :update, params: { id: @object.alternate_id, metadata_file: @file }
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -108,7 +108,7 @@ describe MetadataController do
       @object.creator = ["Gallagher, Damien"]
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.alternate_id)
 
       expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       request.env["HTTP_ACCEPT"] = 'application/json'
@@ -121,9 +121,9 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.id, metadata_file: @file }
+      put :update, params: { id: @object.alternate_id, metadata_file: @file }
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -146,7 +146,7 @@ describe MetadataController do
       end
 
       after(:each) do
-        @object.delete if ActiveFedora::Base.exists?(@object.id)
+        @object.delete if DRI::Identifier.object_exists?(@object.alternate_id)
         @login_user.delete
 
         Settings.reload_from_files(
@@ -167,7 +167,7 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.id, metadata_file: @file }
+      put :update, params: { id: @object.alternate_id, metadata_file: @file }
       expect(response.status).to eq(503)
     end
 

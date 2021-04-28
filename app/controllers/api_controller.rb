@@ -19,7 +19,7 @@ class ApiController < CatalogController
       raise DRI::Exceptions::BadRequest
     end
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(object_ids)
+    solr_query = Solr::Query.construct_query_for_ids(object_ids)
     results = Solr::Query.new(solr_query)
 
     results.each do |solr_doc|
@@ -52,7 +52,7 @@ class ApiController < CatalogController
 
     raise DRI::Exceptions::BadRequest unless params[:objects].present?
 
-    solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(
+    solr_query = Solr::Query.construct_query_for_ids(
       params[:objects].map { |o| o.values.first }
     )
     result_docs = Solr::Query.new(solr_query)
@@ -81,16 +81,16 @@ class ApiController < CatalogController
             end
 
     if params[:object].present?
-      solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([params[:object]])
-      result = ActiveFedora::SolrService.instance.conn.get(
+      solr_query = Solr::Query.construct_query_for_ids([params[:object]])
+      result = repository.connection.get(
         'select',
         params: {
           q: solr_query, qt: 'standard',
-          fq: "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false
-               AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published",
+          fq: "is_collection_ssi:false
+               AND status_ssi:published",
           mlt: 'true',
-          :'mlt.fl' => "#{ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string)},
-                        #{ActiveFedora.index_field_mapper.solr_name('subject', :stored_searchable, type: :string)}",
+          :'mlt.fl' => "#{Solr::SchemaFields.searchable_string('subject')},
+                        #{Solr::SchemaFields.searchable_string('subject')}",
           :'mlt.count' => count,
           fl: 'id,score',
           :'mlt.match.include' => 'false'

@@ -31,7 +31,7 @@ describe ExportsController, type: :controller do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -48,11 +48,11 @@ describe ExportsController, type: :controller do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(controller.request.base_url, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller.request.base_url, @collection.alternate_id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
-      key = "#{@collection_id}"
+      key = "#{@collection.alternate_id}"
 
       expect(storage.surrogate_exists?(bucket_name, key)).to be true
     end
@@ -63,11 +63,11 @@ describe ExportsController, type: :controller do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(controller.request.base_url, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller.request.base_url, @collection.alternate_id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
-      key = "#{@collection_id}"
+      key = "#{@collection.alternate_id}"
       files = storage.get_surrogates(bucket_name, key)
       file_contents = open(files.values.first) { |f| f.read }
       csv = CSV.parse(file_contents)
@@ -84,11 +84,11 @@ describe ExportsController, type: :controller do
 
       expect(JobMailer).to receive(:export_ready_mail)
       .and_return(delivery)
-      CreateExportJob.perform(controller.request.base_url, @collection.id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
+      CreateExportJob.perform(controller.request.base_url, @collection.alternate_id, {'title' => 'Title', 'description' => 'Description', 'subject' => 'Subjects'}, @login_user.email)
 
       storage = StorageService.new
       bucket_name = "users.#{Mail::Address.new(@login_user.email).local}"
-      key = "#{@collection_id}"
+      key = "#{@collection.alternate_id}"
       files = storage.get_surrogates(bucket_name, key)
       file_contents = open(files.values.first) { |f| f.read }
       csv = CSV.parse(file_contents, headers: true)

@@ -48,7 +48,7 @@ class IiifController < ApplicationController
       document = SolrDocument.find(params[:id])
 
       unless document && (document.collection? || can?(:read, document.id))
-        raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied'))
+        raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied'))
       end
       document
     end

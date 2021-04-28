@@ -3,18 +3,18 @@ class BaseObjectsController < CatalogController
   include DRI::Versionable
 
   def doi
-    @doi ||= DataciteDoi.where(object_id: @object.id)
+    @doi ||= DataciteDoi.where(object_id: @object.alternate_id)
     @doi.empty? ? nil : @doi.current
   end
 
   protected
 
     def create_params
-      params.require(:batch).permit!
+      params.require(:digital_object).permit!
     end
 
     def update_params
-      params.require(:batch).except(
+      params.require(:digital_object).except(
         :read_groups_string,
         :read_users_string,
         :master_file_access,
@@ -28,19 +28,20 @@ class BaseObjectsController < CatalogController
     def set_licence
       @object = retrieve_object!(params[:id])
 
-      licence = params[:batch][:licence]
+      licence = params[:digital_object][:licence]
       if licence.present?
         @object.licence = licence
-        @object.object_version ||= '1'
         @object.increment_version
       end
 
       updated = @object.save
 
       if updated
+        record_version_committer(@object, current_user)
+
         # Do the preservation actions
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, false, ['properties'])
+        preservation.preserve
       end
 
       respond_to do |format|
@@ -49,7 +50,7 @@ class BaseObjectsController < CatalogController
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')
         end
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       end
     end
 end

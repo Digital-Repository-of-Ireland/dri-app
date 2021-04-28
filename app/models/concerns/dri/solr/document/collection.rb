@@ -2,33 +2,35 @@ module DRI::Solr::Document::Collection
 
   def descendants(limit: 100)
     # Find all sub-collections below this collection
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string)}:\"#{self.id}\""
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    solr_query = "ancestor_id_ssim:\"#{self.alternate_id}\""
+    f_query = "is_collection_ssi:true"
 
-    q_result = Solr::Query.new(solr_query, limit, fq: f_query)
-    q_result.to_a
+    Solr::Query.new(solr_query, limit, fq: f_query).to_a
   end
 
   # Filter to only get those that are collections:
-  # fq=is_collection_tesim:true
+  # fq=is_collection_ssi:true
   def children(limit: 100)
     # Find immediate children of this collection
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)}:\"#{self.id}\""
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:true"
+    solr_query = "collection_id_sim:\"#{self.alternate_id}\""
+    f_query = "is_collection_ssi:true"
 
-    q_result = Solr::Query.new(solr_query, limit, {fq: f_query, sort: "system_create_dtsi asc"})
-    q_result.to_a
+    Solr::Query.new(
+      solr_query,
+      limit,
+      {fq: f_query, sort: "system_create_dtsi asc"}
+    ).to_a
   end
 
   def collection_contains_published_images?
     contains_images_query = status_query('published')
     contains_images_query += " AND file_type_tesim:image"
-    ActiveFedora::SolrService.count(contains_images_query) > 0
+    Solr::Query.new(contains_images_query).count.positive?
   end
 
   def cover_image
-    cover_field = ActiveFedora.index_field_mapper.solr_name('cover_image', :stored_searchable, type: :string)
-    self[cover_field] && self[cover_field][0] ? self[cover_field][0] : nil
+    cover_field = 'cover_image_ss'
+    self[cover_field].presence
   end
 
   def draft_objects_count
@@ -76,7 +78,7 @@ module DRI::Solr::Document::Collection
   def duplicate_total
     response = duplicate_query
 
-    duplicates = response['facet_counts']['facet_pivot']['metadata_md5_tesim,id'].select { |value| value['count'] > 1 && value['pivot'].present? }
+    duplicates = response['facet_counts']['facet_pivot']['metadata_checksum_ssi,alternate_id'].select { |value| value['count'] > 1 && value['pivot'].present? }
     total = 0
     duplicates.each { |duplicate| total += duplicate['count'] }
 
@@ -87,39 +89,36 @@ module DRI::Solr::Document::Collection
     response = duplicate_query
 
     ids = []
-    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},id"].select { |f| f['count'] > 1 }
+    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},alternate_id"].select { |f| f['count'] > 1 }
     duplicates.each do |duplicate|
       pivot = duplicate["pivot"]
       next unless pivot
       pivot.each { |p| ids << p['value'] }
     end
 
-    query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids(ids)
-    response = ActiveFedora::SolrService.get(query, sort: sort, rows: ids.size)
+    query = Solr::Query.construct_query_for_ids(ids)
+    response = Solr::Query.new(query, 100, { sort: sort, rows: ids.size }).get
 
-    docs = response['response']['docs']
-    duplicate_docs = docs.collect { |d| SolrDocument.new(d) }
-
-    return Blacklight::Solr::Response.new(response['response'], response['responseHeader']), duplicate_docs
+    return Blacklight::Solr::Response.new(response.response, response.header), response.docs
   end
 
   def file_display_type_count(published_only: false)
     fq = [
-          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}",
-          "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"
+          "+ancestor_id_ssim:#{self.alternate_id}",
+          "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_ssi:false"
         ]
 
     if published_only
-       fq << "+#{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+       fq << "+status_ssi:published"
     end
 
      query_params = {
         fq: fq,
         facet: true,
         "facet.mincount" => 1,
-        "facet.field" => "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}"
+        "facet.field" => "#{Solrizer.solr_name('file_type_display', :facetable, type: :string)}"
       }
-    response = ActiveFedora::SolrService.get('*:*', query_params)
+    response = Solr::Query.new('*:*', 100, query_params).get
     counts = Hash[*response['facet_counts']['facet_fields']['file_type_display_sim']]
     counts['all'] = response['response']['numFound'].to_i
 
@@ -130,28 +129,28 @@ module DRI::Solr::Document::Collection
   # @param [Boolean] published_only
   # @return [Integer]
   def type_count(type, published_only: false)
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:\"" + self.id +
+    solr_query = "ancestor_id_ssim:\"" + self.alternate_id +
                  "\" AND " +
-                 "#{ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string)}:"+ type
+                 "#{Solr::SchemaFields.searchable_string('file_type_display')}:"+ type
     if published_only
-      solr_query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:published"
+      solr_query += " AND status_ssi:published"
     end
-    ActiveFedora::SolrService.count(solr_query, defType: 'edismax')
+    Solr::Query.new(solr_query).count
   end
 
   private
 
     def metadata_field
-      ActiveFedora.index_field_mapper.solr_name('metadata_md5', :stored_searchable, type: :string)
+      'metadata_checksum_ssi'
     end
 
     # @param [String] status
     # @param [Boolean] subcoll
     # @return [String] solr query for children of self (id) with given status
     def status_query(status, subcoll = false)
-      query = "#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}"
-      query += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:#{status}" unless status.nil?
-      query += " AND #{ActiveFedora.index_field_mapper.solr_name('is_collection', :searchable, type: :symbol)}:#{subcoll}"
+      query = "ancestor_id_ssim:#{self.alternate_id}"
+      query += " AND status_ssi:#{status}" unless status.nil?
+      query += " AND is_collection_ssi:#{subcoll}"
       query
     end
 
@@ -159,14 +158,14 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [Integer]
     def status_count(status, subcoll = false)
-      ActiveFedora::SolrService.count(status_query(status, subcoll))
+      Solr::Query.new(status_query(status, subcoll)).count
     end
 
     def status_counts
       return @status_counts unless @status_counts.blank?
 
       fq = [
-          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}",
+          "+ancestor_id_ssim:#{self.alternate_id}",
         ]
 
       query_params = {
@@ -174,25 +173,25 @@ module DRI::Solr::Document::Collection
         facet: true,
         "facet.mincount" => 1,
         "facet.query" => [
-                          "status_ssim:published AND is_collection_sim:false",
-                          "status_ssim:draft AND is_collection_sim:false",
-                          "status_ssim:reviewed AND is_collection_sim:false",
-                          "status_ssim:reviewed AND is_collection_sim:true",
-                          "status_ssim:draft AND is_collection_sim:true",
-                          "status_ssim:published AND is_collection_sim:true",
-                          "is_collection_sim:false"
+                          "status_ssi:published AND is_collection_ssi:false",
+                          "status_ssi:draft AND is_collection_ssi:false",
+                          "status_ssi:reviewed AND is_collection_ssi:false",
+                          "status_ssi:reviewed AND is_collection_ssi:true",
+                          "status_ssi:draft AND is_collection_ssi:true",
+                          "status_ssi:published AND is_collection_ssi:true",
+                          "is_collection_ssi:false"
                         ]
       }
-      response = ActiveFedora::SolrService.get('*:*', query_params)
+      response = Solr::Query.new('*:*', 100, query_params).get
       counts = response['facet_counts']['facet_queries']
 
       @status_counts = {}
-      @status_counts[:published_objects] = counts['status_ssim:published AND is_collection_sim:false']
-      @status_counts[:reviewed_objects] = counts['status_ssim:reviewed AND is_collection_sim:false']
-      @status_counts[:draft_objects] = counts['status_ssim:draft AND is_collection_sim:false']
-      @status_counts[:published_collections] = counts['status_ssim:published AND is_collection_sim:true']
-      @status_counts[:reviewed_collections] = counts['status_ssim:reviewed AND is_collection_sim:true']
-      @status_counts[:draft_collections] = counts['status_ssim:draft AND is_collection_sim:true']
+      @status_counts[:published_objects] = counts['status_ssi:published AND is_collection_ssi:false']
+      @status_counts[:reviewed_objects] = counts['status_ssi:reviewed AND is_collection_ssi:false']
+      @status_counts[:draft_objects] = counts['status_ssi:draft AND is_collection_ssi:false']
+      @status_counts[:published_collections] = counts['status_ssi:published AND is_collection_ssi:true']
+      @status_counts[:reviewed_collections] = counts['status_ssi:reviewed AND is_collection_ssi:true']
+      @status_counts[:draft_collections] = counts['status_ssi:draft AND is_collection_ssi:true']
       @status_counts[:total_objects] = @status_counts[:published_objects] + @status_counts[:reviewed_objects] + @status_counts[:draft_objects]
 
       @status_counts
@@ -209,21 +208,21 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [Array] List of IDs
     def status_ids(status, subcoll = false)
-      Solr::Query.new(status_query(status, subcoll)).map(&:id)
+      Solr::Query.new(status_query(status, subcoll)).map(&:alternate_id)
     end
 
     def duplicate_query
       query_params = {
         fq: [
-          "+#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:#{self.id}",
-          "+has_model_ssim:\"DRI::Batch\"", "+is_collection_sim:false"
+          "+ancestor_id_ssim:#{alternate_id}",
+          "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_ssi:false"
         ],
-        "facet.pivot" => "#{metadata_field},id",
+        "facet.pivot" => "#{metadata_field},alternate_id",
         facet: true,
         "facet.mincount" => 2,
         "facet.field" => "#{metadata_field}"
       }
 
-      ActiveFedora::SolrService.get('*:*', query_params)
+      Solr::Query.new('*:*', 100, query_params).get
     end
 end

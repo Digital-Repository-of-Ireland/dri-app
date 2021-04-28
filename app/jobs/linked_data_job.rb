@@ -1,14 +1,14 @@
 require 'dri/sparql'
 require 'dri/sparql/provider'
 
-class LinkedDataJob < ActiveFedoraIdBasedJob
+class LinkedDataJob < IdBasedJob
 
   def queue_name
     :linked_data
   end
 
   def run
-    Rails.logger.info "Retrieving linked data for #{object.id}"
+    Rails.logger.info "Retrieving linked data for #{object.alternate_id}"
     return unless AuthoritiesConfig
 
     loc_array = object.geographical_coverage + object.coverage
@@ -25,7 +25,7 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
           object.update_index
         end
       rescue URI::InvalidURIError
-        Rails.logger.info "Bad URI #{uri} in #{object.id}"
+        Rails.logger.info "Bad URI #{uri} in #{object.alternate_id}"
       end
     end
   end
@@ -35,7 +35,7 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
 
     select = "select ?recon
               where {
-              <https://repository.dri.ie/catalog/#{object.id}#id> ?p ?resource .
+              <https://repository.dri.ie/catalog/#{object.alternate_id}#id> ?p ?resource .
               ?resource rdfs:seeAlso ?recon }"
     client = DRI::Sparql::Client.new AuthoritiesConfig['data.dri.ie']['endpoint']
     results = client.query select
@@ -44,7 +44,7 @@ class LinkedDataJob < ActiveFedoraIdBasedJob
     results.each_solution do |s|
       uri = s[:recon].to_s
       uris << uri
-      DRI::ReconciliationResult.create(object_id: object.id, uri: uri)
+      DRI::ReconciliationResult.create(object_id: object.alternate_id, uri: uri)
     end
     uris
   end

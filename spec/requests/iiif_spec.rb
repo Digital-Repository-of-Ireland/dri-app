@@ -14,7 +14,7 @@ describe IiifController, type: :request do
       # set up fake image for iiif_viewable#create_canvas
       HEIGHT_SOLR_FIELD = 'height_isi'
       WIDTH_SOLR_FIELD = 'width_isi'
-      LABEL_SOLR_FIELD = ActiveFedora.index_field_mapper.solr_name('label')
+      LABEL_SOLR_FIELD = Solrizer.solr_name('label')
 
       allow_any_instance_of(
         DRI::IIIFViewable
@@ -29,10 +29,14 @@ describe IiifController, type: :request do
           )
         ]
       end
+
+      allow_any_instance_of(
+        DRI::Solr::Document::File
+      ).to receive(:file_types).and_return(['image'])
     end
     it 'should put all published images in the collection in a sequence' do
       # get :sequence, id: @collections.first .id, format: :json
-      get "/iiif/#{@collections.first.id}/sequence", params: { format: :json }
+      get "/iiif/#{@collections.first.alternate_id}/sequence", params: { format: :json }
       sequences = JSON.parse(response.body)['sequences']
       image_ids = sequences.map do |seq|
         seq['canvases'].map do |canvas|
@@ -44,7 +48,7 @@ describe IiifController, type: :request do
           end
         end
       end.flatten
-      expect(image_ids.sort).to eq(@collections.first.governed_items.map(&:id).sort)
+      expect(image_ids.sort).to eq(@collections.first.governed_items.map(&:alternate_id).sort)
     end
   end
 end

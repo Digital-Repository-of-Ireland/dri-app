@@ -2,8 +2,7 @@ module DRI::Solr::Document::File
 
   def assets(with_preservation: false, ordered: false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{ActiveFedora.index_field_mapper.solr_name('isPartOf', :stored_searchable, type: :symbol)}:\"#{id}\""
-
+    files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{alternate_id}\""
     query = ::Solr::Query.new(files_query)
     assets = query.reject { |sd| with_preservation == false && sd.preservation_only? }
     ordered ? sort_assets(assets) : assets
@@ -11,7 +10,9 @@ module DRI::Solr::Document::File
 
   def characterized?
     # not characterized if all empty
-    self['characterization__mime_type_tesim'].present? && !self['characterization__mime_type_tesim'].all? { |m| m.empty? }
+    return false unless self.key?(Solrizer.solr_name('characterization__mime_type'))
+
+    !self[Solrizer.solr_name('characterization__mime_type')].all? { |m| m.empty? }
   end
 
   def sort_assets(assets)
@@ -24,9 +25,8 @@ module DRI::Solr::Document::File
   end
 
   def preservation_only?
-    key = 'preservation_only_tesim'
-
-    self[key].present? && self[key] == ['true'] ? true : false
+    key = 'preservation_only_ssi'
+    self[key].present? && self[key] == 'true' ? true : false
   end
 
   def label
@@ -57,17 +57,16 @@ module DRI::Solr::Document::File
   end
 
   def read_master?
-    master_file_key = ActiveFedora.index_field_mapper.solr_name('master_file_access', :stored_searchable, type: :string)
-    return true if self[master_file_key] == ['public']
-    return false if self[master_file_key] == ['private']
+    master_file_key = 'master_file_access_ssi'
+    return true if self[master_file_key] == 'public'
+    return false if self[master_file_key] == 'private'
 
     result = false
-
     ancestor_ids.each do |id|
       ancestor = ancestor_docs[id]
       next if ancestor[master_file_key].nil? || ancestor[master_file_key].include?('inherit')
 
-      result = ancestor[master_file_key] == ['public'] ? true : false
+      result = ancestor[master_file_key] == 'public' ? true : false
       break
     end
 

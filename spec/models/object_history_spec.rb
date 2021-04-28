@@ -38,12 +38,14 @@ describe ObjectHistory  do
     @object[:depositor] = "edituser@dri.ie"
     @object.save
 
-    VersionCommitter.create(obj_id: @object.id, version_id: 'v0001', committer_login: "instmgr@dri.ie")
+    VersionCommitter.create(obj_id: @object.alternate_id, version_id: 'v0001', committer_login: "instmgr@dri.ie")
 
-    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
-    @generic_file.batch = @object
+    @generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+    @generic_file.digital_object = @object
     @generic_file.apply_depositor_metadata(@user.email)
     @generic_file.save
+
+    @object.reload
 
     @collection.governed_items << @object
     @collection.save
@@ -82,7 +84,7 @@ describe ObjectHistory  do
 
   it 'should get asset information' do
     asset_info = @object_history.asset_info
-    expect(asset_info.keys).to include(@generic_file.id)
+    expect(asset_info.keys).to include(@generic_file.alternate_id)
   end
 
   it 'should call fixity check info for a collection' do
@@ -97,27 +99,27 @@ describe ObjectHistory  do
   end
 
   it 'should get collection fixity information' do
-    report = FixityReport.create(collection_id: @collection.id)
-    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.id, object_id: @object.id, verified: true)
+    report = FixityReport.create(collection_id: @collection.alternate_id)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.alternate_id, object_id: @object.alternate_id, verified: true)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('passed')
   end
 
   it 'should get collection fixity information with failures' do
-    report = FixityReport.create(collection_id: @collection.id)
-    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.id, object_id: @object.id, verified: false)
+    report = FixityReport.create(collection_id: @collection.alternate_id)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.alternate_id, object_id: @object.alternate_id, verified: false)
     history = ObjectHistory.new(object: @collection)
     fixity = history.fixity_check_collection
     expect(fixity[:verified]).to eq('failed')
-    expect(fixity[:result]).to include(@object.id)
+    expect(fixity[:result]).to include(@object.alternate_id)
   end
 
   it 'should get object fixity information' do
-    FixityCheck.create(collection_id: @collection.id, object_id: @object.id, verified: true, result: 'test')
+    report = FixityReport.create(collection_id: @collection.alternate_id)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.alternate_id, object_id: @object.alternate_id, verified: true, result: 'test')
     fixity = @object_history.fixity_check_object
     expect(fixity[:verified]).to eq('passed')
     expect(fixity[:result]).to eq('test')
   end
-
 end

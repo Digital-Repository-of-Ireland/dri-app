@@ -1,7 +1,7 @@
 module Solr::SchemaFields
 
   def self.facet(field)
-    ActiveFedora.index_field_mapper.solr_name(field, :facetable)
+    Solrizer.solr_name(field, :facetable)
   end
 
   def self.searchable_string(field)
@@ -13,6 +13,6 @@ module Solr::SchemaFields
   end
 
   def self.stored_searchable(field, type)
-    ActiveFedora.index_field_mapper.solr_name(field, :stored_searchable, type: type)
+    Solrizer.solr_name(field, :stored_searchable, type: type)
   end
 end

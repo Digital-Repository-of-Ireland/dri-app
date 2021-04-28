@@ -29,7 +29,7 @@ Scenario: Ingesting a duplicate Digital Object using form input
   Then I should see a success message for ingestion
   And I should see the message "Possible duplicate objects found"
 
-@random_pid
+@random_pid @test
 Scenario: Creating a duplicate Digital Object by replacing the metadata file
   Given a collection with title "Test Collection" created by "user1"
   And I have created an object with metadata "SAMPLEA.xml" in the collection
@@ -46,7 +46,7 @@ Scenario: Creating a duplicate Digital Object by replacing the metadata file
   And I press the button to "upload metadata"
   Then I should see the message "Possible duplicate objects found"
 
-@random_pid
+@random_pid 
 Scenario: Creating a duplicate Digital Object by editing with the metadata form
   Given a collection with title "Test Collection" created by "user1"
   And I go to the "collection" "new object" page for "the saved pid"

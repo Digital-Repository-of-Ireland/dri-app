@@ -23,11 +23,11 @@ RSpec.describe "Preservation actions", type: :request do
 
 
     it "creates a new AIP when a licence is added" do
-      expect(aip_version(@collection.id)).to eq 1
+      expect(aip_version(@collection.alternate_id)).to eq 1
 
-      put "/collections/#{@collection.id}/licences", params: { batch: { licence: "New licence" } }
+      put "/collections/#{@collection.alternate_id}/licences", params: { digital_object: { licence: "New licence" } }
 
-      expect(aip_version(@collection.id)).to eq 2
+      expect(aip_version(@collection.alternate_id)).to eq 2
     end
 
   end

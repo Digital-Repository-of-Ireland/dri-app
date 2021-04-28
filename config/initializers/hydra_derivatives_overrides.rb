@@ -19,5 +19,3 @@ Hydra::Derivatives::DocumentDerivatives.class_eval do
     DRI::Derivatives::Processors::Document
   end
 end
-
-

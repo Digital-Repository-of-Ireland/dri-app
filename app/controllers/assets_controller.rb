@@ -27,7 +27,7 @@ class AssetsController < ApplicationController
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @generic_file = retrieve_object! params[:id]
 
-    @status = status(@generic_file.id)
+    @status = status(@generic_file.alternate_id)
 
     respond_to do |format|
       format.html
@@ -37,8 +37,6 @@ class AssetsController < ApplicationController
 
   # Retrieves external datastream files that have been stored in the filesystem.
   def download
-    enforce_permissions!('edit', params[:object_id]) if params[:version].present?
-
     @generic_file = retrieve_object! params[:id]
     if @generic_file
       @document = SolrDocument.find(params[:object_id])
@@ -55,12 +53,10 @@ class AssetsController < ApplicationController
         )
       end
 
-      local_file = GenericFileContent.new(generic_file: @generic_file).local_file(params[:version])
-
-      if local_file
-        response.headers['Content-Length'] = File.size?(local_file.path).to_s
-        send_file local_file.path,
-              type: local_file.mime_type || @generic_file.mime_type,
+      if File.file?(@generic_file.path)
+        response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
+        send_file @generic_file.path,
+              type: @generic_file.mime_type,
               stream: true,
               buffer: 4096,
               disposition: "attachment; filename=\"#{@generic_file.filename.first}\";",
@@ -79,16 +75,15 @@ class AssetsController < ApplicationController
     generic_file = retrieve_object!(params[:id])
 
     if object.status == 'published' && !current_user.is_admin?
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
-    object.object_version ||= '1'
     object.increment_version
     object.save
     record_version_committer(object, current_user)
 
-    delfiles = ["#{generic_file.id}_#{generic_file.label}"]
-    delete_surrogates(params[:object_id], generic_file.id)
+    delfiles = ["#{generic_file.alternate_id}_#{generic_file.label}"]
+    delete_surrogates(params[:object_id], generic_file.alternate_id)
     generic_file.delete
 
     # Do the preservation actions
@@ -112,15 +107,13 @@ class AssetsController < ApplicationController
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
     begin
-      if file_content.update_content(file_upload, download_url)
+      if file_content.update_content(file_upload)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
         record_version_committer(@object, current_user)
-
         mint_doi(@object, 'asset modified') if @object.status == 'published'
       else
         message = @generic_file.errors.full_messages.join(', ')
         flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
-        @warnings = t('dri.flash.alert.error_saving_file', error: message)
         logger.error "Error saving file: #{message}"
       end
     rescue DRI::Exceptions::MoabError => e
@@ -130,7 +123,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to object_file_url(@object.id, @generic_file.id) }
+      format.html { redirect_to object_file_url(@object.alternate_id, @generic_file.alternate_id) }
       format.json do
         response = { checksum: file_content.checksum }
         response[:warning] = @warnings if @warnings
@@ -140,28 +133,25 @@ class AssetsController < ApplicationController
     end
   end
 
-  # Stores an uploaded file to the local filesystem and then attaches it to one
-  # of the objects datastreams. content is used by default.
+  # Stores an uploaded file to the local filesystem and then attaches it to
+  # a new GenericFile.
   #
   def create
     enforce_permissions!('edit', params[:object_id])
 
     file_upload = upload_from_params
-
     @object = retrieve_object! params[:object_id]
     if @object.nil?
       flash[:notice] = t('dri.flash.notice.specify_object_id')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
-
     preservation = params[:preservation].presence == 'true' ? true : false
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
     begin
-      if file_content.add_content(file_upload, download_url)
+      if file_content.add_content(file_upload)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
-
         record_version_committer(@object, current_user)
         mint_doi(@object, 'asset added') if @object.status == 'published'
       else
@@ -190,8 +180,8 @@ class AssetsController < ApplicationController
   private
 
     def build_generic_file(object:, user:, preservation: false)
-      generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-      generic_file.batch = object
+      generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
+      generic_file.digital_object = object
       generic_file.apply_depositor_metadata(user)
       generic_file.preservation_only = 'true' if preservation
 
@@ -200,7 +190,7 @@ class AssetsController < ApplicationController
 
     def can_view?
       if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
-        raise Hydra::AccessDenied.new(
+        raise Blacklight::AccessControls::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
           params[:object_id]
@@ -211,15 +201,6 @@ class AssetsController < ApplicationController
     def delete_surrogates(bucket_name, file_prefix)
       storage = StorageService.new
       storage.delete_surrogates(bucket_name, file_prefix)
-    end
-
-    def download_url
-      url_for(
-        controller: 'assets',
-        action: 'download',
-        object_id: @object.id,
-        id: @generic_file.id
-      )
     end
 
     def local_file_ingest(name)

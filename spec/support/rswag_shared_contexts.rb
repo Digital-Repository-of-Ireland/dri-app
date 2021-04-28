@@ -37,7 +37,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
 
       if docs
         doc = FactoryBot.create(:documentation)
-        collection.documentation_object_ids = doc.id
+        collection.documentation_objects << doc
         @docs << doc
       end
 
@@ -50,11 +50,11 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
         )
         object.depositing_institute = @institute.name if @institute
         collection.governed_items << object
-        @dois << DataciteDoi.create(object_id: object.id) if doi
+        @dois << DataciteDoi.create(object_id: object.alternate_id) if doi
       end
       collection.depositing_institute = @institute.name if @institute
-      collection.manager_users = [@example_user]
-      collection.published_at = DateTime.now.strftime("%Y-%m-%d")
+      collection.manager_users_string = @example_user.to_s
+      collection.published_at = Time.now.utc.iso8601
       collection.save
       @collections << collection
     end

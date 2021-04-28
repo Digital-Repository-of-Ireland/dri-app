@@ -17,7 +17,7 @@ describe "Resource API" do
         include_context 'sign_out_before_request'
         let(:user_token) { nil }
         let(:user_email) { nil }
-        let(:id) { @collections.first.id }
+        let(:id) { @collections.first.alternate_id }
         run_test!
       end
     end

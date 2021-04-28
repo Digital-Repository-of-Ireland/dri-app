@@ -29,7 +29,7 @@ module DRI::OaiProvider
     end
 
     def load_collection_document
-      SolrDocument.find("#{value}")
+      ::SolrDocument.find(value)
     end
 
   end

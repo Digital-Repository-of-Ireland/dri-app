@@ -52,10 +52,10 @@ class CreateExportJob
 
   def self.collection_objects(object_id)
     collection = SolrDocument.find(object_id)
-    search_key = collection.root_collection? ? 'root_collection_id' : 'ancestor_id'
+    search_key = collection.root_collection? ? 'root_collection_id_ssi' : 'ancestor_id_ssim'
 
-    solr_query = "#{ActiveFedora.index_field_mapper.solr_name(search_key, :facetable, type: :string)}:\"#{object_id}\""
-    f_query = "-#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"
+    solr_query = "#{search_key}:\"#{object_id}\""
+    f_query = "-is_collection_ssi:true"
 
     Solr::Query.new(solr_query, 500, fq: f_query)
   end

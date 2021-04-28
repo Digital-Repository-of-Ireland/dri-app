@@ -17,7 +17,7 @@ class ProcessBatchIngest
 
     rc, object = if metadata_info['object_id'].present?
                    # metadata ingest was successful so only ingest missing assets
-                   [0, DRI::Batch.find(metadata_info['object_id'], cast: true)]
+                   [0, DRI::DigitalObject.find_by_alternate_id(metadata_info['object_id'], cast: true)]
                  else
                    metadata = retrieve_files(download_path, [metadata_info])[0]
                    ingest_metadata(collection_id, user, metadata)
@@ -52,30 +52,17 @@ class ProcessBatchIngest
 
       original_file_name = File.basename(asset[:path])
 
-      moab_filename = ingest_file(asset[:path], object, 'content', original_file_name)
+      moab_filename = ingest_file(user, asset[:path], object, 'content', original_file_name)
       saved = if moab_filename.nil?
                 false
               else
-                url = Rails.application.routes.url_helpers.url_for(
-                        controller: 'assets',
-                        action: 'download',
-                        object_id: object.id,
-                        id: @generic_file.id,
-                        version: object.object_version
-                      )
-                file_content = GenericFileContent.new(user: user, object: object, generic_file: @generic_file)
-                file_content.external_content(
-                  url,
-                  original_file_name
-                )
-
                 filenames << moab_filename
                 true
               end
 
       update = if saved
                  { status_code: 'COMPLETED',
-                   file_location: Rails.application.routes.url_helpers.object_file_path(object, @generic_file) }
+                   file_location: Rails.application.routes.url_helpers.object_file_path(object.alternate_id, @generic_file.alternate_id) }
                else
                  { status_code: 'FAILED' }
                end
@@ -118,21 +105,21 @@ class ProcessBatchIngest
     end
 
     begin
-      update = if object.save
+      update = if object.save!
                  create_reader_group(object) if object.collection?
 
                  preservation = Preservation::Preservator.new(object)
-                 preservation.preserve(true, true, ['descMetadata','properties'])
+                 preservation.preserve(['descMetadata'])
 
                  rc = 0
                  { status_code: 'COMPLETED',
-                   file_location: Rails.application.routes.url_helpers.my_collections_path(object) }
+                   file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
                else
                  rc = -1
                  { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
                end
-    rescue Ldp::HttpError => e
-      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. service may be overloaded." }
+    rescue ActiveRecord::RecordNotSaved => e
+      update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. #{e.message}" }
       rc = -1
     end
 
@@ -142,33 +129,28 @@ class ProcessBatchIngest
     return rc, object
   end
 
-  def self.ingest_file(file_path, object, datastream, filename)
-    filename = "#{@generic_file.id}_#{filename}"
-
-    filedata = OpenStruct.new
-    filedata.path = file_path
+  def self.ingest_file(user, file_path, object, datastream, filename)
     mime_type = Validators.file_type(file_path)
 
     begin
-      lfile = LocalFile.build_local_file(
-        object: object,
-        generic_file: @generic_file,
-        data:filedata,
-        datastream: datastream,
-        opts: { filename: filename, mime_type: mime_type, checksum: 'md5'}
-      )
+      file_content = GenericFileContent.new(
+                       user: user,
+                       object: object,
+                       generic_file: @generic_file
+                     )
+      file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
+      @generic_file.save!
     rescue StandardError => e
-      Rails.logger.error "Could not save the asset file #{filedata.path} for #{object.id} to #{datastream}: #{e.message}"
+      Rails.logger.error "Could not save the asset file #{file_path} for #{object.alternate_id} to #{datastream}: #{e.message}"
       return nil
     end
-
     FileUtils.rm_f(file_path)
-    lfile.path
+    @generic_file.path
   end
 
   def self.build_generic_file(object:, user:, preservation: false)
-    @generic_file = DRI::GenericFile.new(id: DRI::Noid::Service.new.mint)
-    @generic_file.batch = object
+    @generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
+    @generic_file.digital_object = object
     @generic_file.apply_depositor_metadata(user)
     @generic_file.preservation_only = 'true' if preservation
   end
@@ -176,11 +158,11 @@ class ProcessBatchIngest
   def self.create_object(collection_id, user, xml_ds)
     standard = xml_ds.metadata_standard
 
-    object = DRI::Batch.with_standard standard
-    object.governing_collection_id = collection_id
+    object = DRI::DigitalObject.with_standard standard
+    object.governing_collection = DRI::DigitalObject.find_by_alternate_id(collection_id)
     object.depositor = user.to_s
     object.status = 'draft'
-    object.object_version = '1'
+    object.object_version = 1
 
     object.update_metadata(xml_ds.xml)
     checksum_metadata(object)
@@ -190,16 +172,11 @@ class ProcessBatchIngest
 
   def self.create_reader_group(object)
     group = UserGroup::Group.new(
-      name: object.id.to_s,
-      description: "Default Reader group for collection #{object.id}"
+      name: object.alternate_id,
+      description: "Default Reader group for collection #{object.alternate_id}"
     )
     group.reader_group = true
     group.save
-  end
-
-  def self.download_url(generic_file)
-    Rails.application.routes.url_helpers.url_for controller: 'assets',
-             action: 'download', object_id: generic_file.batch.id, id: generic_file.id
   end
 
   def self.file_data(path)
@@ -246,7 +223,7 @@ class ProcessBatchIngest
   end
 
   def self.record_committer(object, user)
-    VersionCommitter.create(version_id: version_id(object), obj_id: object.id, committer_login: user.to_s)
+    VersionCommitter.create(version_id: version_id(object), obj_id: object.alternate_id, committer_login: user.to_s)
   end
 
   def self.version_id(object)
@@ -256,7 +233,7 @@ class ProcessBatchIngest
   def self.checksum_metadata(object)
     if object.attached_files.key?(:descMetadata)
       xml = object.attached_files[:descMetadata].content
-      object.metadata_md5 = Checksum.md5_string(xml)
+      object.metadata_checksum = Checksum.md5_string(xml)
     end
   end
 end

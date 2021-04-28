@@ -7,8 +7,8 @@ describe RiiifAuthorizationService do
     @object[:depositor] = "edituser@dri.ie"
     @object.save
 
-    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
-    @generic_file.batch = @object
+    @generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+    @generic_file.digital_object = @object
     @generic_file.apply_depositor_metadata("edituser@dri.ie")
     @generic_file.save
   end
@@ -18,8 +18,8 @@ describe RiiifAuthorizationService do
     @object.read_groups = [SETTING_GROUP_PUBLIC]
     @object.save
 
-    Struct.new("Object", :id)
-    o = Struct::Object.new("id:#{@generic_file.id}")
+    Struct.new("Object", :alternate_id)
+    o = Struct::Object.new("alternate_id:#{@generic_file.alternate_id}")
 
     auth = RiiifAuthorizationService.new(nil)
     expect(auth.can?(:show, o)).to be true
@@ -29,8 +29,8 @@ describe RiiifAuthorizationService do
     @object[:status] = "published"
     @object.save
 
-    Struct.new("Object", :id)
-    o = Struct::Object.new("id:#{@generic_file.id}")
+    Struct.new("Object", :alternate_id)
+    o = Struct::Object.new("alternate_id:#{@generic_file.alternate_id}")
 
     auth = RiiifAuthorizationService.new(nil)
     expect(auth.can?(:info, o)).to be true

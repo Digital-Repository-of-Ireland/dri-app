@@ -15,11 +15,11 @@ describe Preservation::Preservator do
     @preservator = Preservation::Preservator.new(@object)
 
     @target_path = @preservator.manifest_path(
-      @preservator.object.id, 
+      @preservator.object.alternate_id,
       @preservator.version
-    )    
+    )
     @err_string = "The Moab directory #{@target_path} for "\
-      "#{@preservator.object.id} version #{@preservator.version} "\
+      "#{@preservator.object.alternate_id} version #{@preservator.version} "\
       "already exists"
   end
 

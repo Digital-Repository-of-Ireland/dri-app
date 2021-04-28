@@ -14,7 +14,7 @@ module ButtonTranslator
       "ingesttype"
 
     when /^role type$/
-      "batch_roles][type]["
+      "digital_object_roles][type]["
 
     when /^language$/
       "user_locale"
@@ -32,7 +32,7 @@ module ButtonTranslator
       "select_institutes" #"add_institute"
 
     when /^licence$/
-      "batch_licence"
+      "digital_object_licence"
 
     else "Unknown"
 

@@ -1,5 +1,6 @@
 class ReviewJob
   include Resque::Plugins::Status
+  include DRI::Versionable
 
   def queue
     :review
@@ -11,35 +12,38 @@ class ReviewJob
 
   def perform
     collection_id = options['collection_id']
+    user_id = options['user_id']
+    user = UserGroup::User.find(user_id)
+
     set_status(collection_id: collection_id)
 
     # get objects within this collection, not including sub-collections
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:draft"
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str += " AND status_ssi:draft"
+    f_query = "is_collection_ssi:false"
 
-    completed, failed = set_as_reviewed(collection_id, q_str, f_query)
-
-    collection = ActiveFedora::Base.find(collection_id, cast: true)
+    completed, failed = set_as_reviewed(collection_id, user, q_str, f_query)
+    collection = DRI::Identifier.retrieve_object(collection_id)
 
     # Need to set sub-collection to reviewed
     if subcollection?(collection) && collection.status == 'draft'
       collection.status = 'reviewed'
-      collection.object_version ||= '1'
       collection.increment_version
 
       failed += 1 unless collection.save
 
+      record_version_committer(collection, user)
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve
     end
 
     completed(completed: completed, failed: failed)
   end
 
-  def set_as_reviewed(collection_id, q_str, f_query)
-    total_objects = ActiveFedora::SolrService.count(q_str, { fq: f_query })
+  def set_as_reviewed(collection_id, user, q_str, f_query)
+    total_objects = Solr::Query.new(q_str, 100, { fq: f_query }).count
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
 
@@ -50,23 +54,17 @@ class ReviewJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        begin
-          o = ActiveFedora::Base.find(object['id'], { cast: true })
-          if o.status == 'draft'
-            o.status = 'reviewed'
-            o.object_version ||= '1'
-            o.increment_version
+        o = DRI::Identifier.retrieve_object(object['id'])
+        if o && o.status == 'draft'
+          o.status = 'reviewed'
+          o.increment_version
+          o.save ? (completed += 1) : (failed += 1)
 
-            o.save ? (completed += 1) : (failed += 1)
+          record_version_committer(o, user)
 
-            # Do the preservation actions
-            preservation = Preservation::Preservator.new(o)
-            preservation.preserve(false, false, ['properties'])
-          end
-        rescue Ldp::HttpError
-          failed += 1
-        rescue Ldp::BadRequest
-          failed += 1
+          # Do the preservation actions
+          preservation = Preservation::Preservator.new(o)
+          preservation.preserve
         end
       end
 

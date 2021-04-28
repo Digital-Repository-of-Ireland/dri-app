@@ -58,8 +58,8 @@ private
     solr_query = Solr::Query.new(
       "*:*",
       100,
-      { fq: ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true",
-            "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"]}
+      { fq: ["+is_collection_ssi:true",
+            "-ancestor_id_ssim:[* TO *]"]}
     )
 
     solr_query.each { |object| collections.push(object) }

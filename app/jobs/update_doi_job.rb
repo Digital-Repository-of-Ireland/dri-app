@@ -1,6 +1,6 @@
 require 'doi/datacite'
 
-class UpdateDoiJob < ActiveFedoraIdBasedJob
+class UpdateDoiJob < IdBasedJob
 
   def queue_name
     :doi
@@ -8,7 +8,7 @@ class UpdateDoiJob < ActiveFedoraIdBasedJob
 
   def run
     Rails.logger.info "Update DOI metadata for #{id}"
-    
+
     doi = DataciteDoi.where(object_id: id).current
 
     client = DOI::Datacite.new(doi)

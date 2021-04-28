@@ -2,7 +2,7 @@ module Solr
   class Query
     include Enumerable
 
-    def initialize(query, chunk=100, args = {})
+    def initialize(query, chunk=1000, args = {})
       @query = query
       @chunk = chunk
       @args = args
@@ -11,21 +11,50 @@ module Solr
       @sort = "id asc"
     end
 
+    def count
+      args = @args.merge(rows: 0, qt: 'standard')
+      params = { q: @query }.merge(args)
+      response = solr_index.connection.get('select', params: params)['response']
+      response['numFound'].to_i
+    end
+
+    def get
+      args = @args.merge(q: @query, qt: 'standard')
+      response = solr_index.connection.get('select', params: args)
+      blacklight_config.response_model.new(
+        response,
+        args,
+        document_model: blacklight_config.document_model,
+        blacklight_config: blacklight_config
+      )
+    end
+
     def query
       sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
-      query_args = @args.merge({:raw => true, :rows => @chunk, :sort => sort, :cursorMark => @cursor_mark})
+      query_args = if @args[:rows].present?
+                     @args.merge({sort: sort})
+                   else
+                     @args.merge({raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark})
+                   end
 
-      result = ActiveFedora::SolrService.get(@query, query_args)
-      result_docs = result['response']['docs']
+      params = { q: @query }.merge(query_args)
+      response = solr_index.search(params)
 
-      nextCursorMark = result['nextCursorMark']
-      if @cursor_mark == nextCursorMark
+      if response['response']['numFound'].to_i < query_args[:rows].to_i
+        @has_more = false
+      elsif response['nextCursorMark'].present?
+        nextCursorMark = response['nextCursorMark']
+        @has_more = false if @cursor_mark == nextCursorMark
+
+        @cursor_mark = nextCursorMark
+      else
         @has_more = false
       end
+      response.documents
+    end
 
-      @cursor_mark = nextCursorMark
-
-      result_docs
+    def solr_index
+      @solr_index ||= Solr::Query.repository
     end
 
     def has_more?
@@ -40,12 +69,42 @@ module Solr
       while has_more?
         objects = pop
 
-        objects.each do |object|
-          object_doc = SolrDocument.new(object)
+        objects.each do |object_doc|
           yield(object_doc)
         end
       end
     end
 
+    class << self
+      def find(id)
+        response = repository.find(id)
+        response.documents.first unless response.documents.empty?
+      rescue Blacklight::Exceptions::RecordNotFound
+        nil
+      end
+
+      def find_by_alternate_id(id)
+        args = { q: "alternate_id:\"#{id}\"", fl: "*", rows: 1 }
+        response = repository.connection.get("select", params: args)
+
+        bl_response = blacklight_config.response_model.new(
+                        response,
+                        args,
+                        document_model: blacklight_config.document_model,
+                        blacklight_config: blacklight_config
+                      )
+        return bl_response.documents.first unless bl_response.documents.empty?
+      end
+
+      def repository
+        blacklight_config.repository_class.new(blacklight_config)
+      end
+
+      def construct_query_for_ids(id_array, id_field='id')
+        ids = id_array.reject(&:blank?)
+        return "#{id_field}:NEVER_USE_THIS_ID" if ids.empty?
+        "{!terms f=#{id_field}}#{ids.join(',')}"
+      end
+    end
   end
 end

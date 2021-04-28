@@ -28,7 +28,7 @@ describe ExportsController do
       @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
 
       expect(Resque).to receive(:enqueue).once
-      post :create, params: { id: @collection.id }
+      post :create, params: { id: @collection.alternate_id }
     end
   end
 end

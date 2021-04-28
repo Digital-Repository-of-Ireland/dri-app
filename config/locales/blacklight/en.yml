@@ -143,7 +143,7 @@ en:
           licence_sim: Licence
           person_sim: Names
           placename_field_sim: Places
-          root_collection_id_sim: Collection
+          root_collection_id_ssi: Collection
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
         label:

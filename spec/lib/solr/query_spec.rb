@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'solr/query'
 
 RSpec.configure do |c|
@@ -9,22 +9,13 @@ end
 describe "Query" do
 
   before(:each) do
-    @collection = DRI::Batch.with_standard :qdc
-    @collection[:title] = ["A collection"]
-    @collection[:description] = ["This is a Collection"]
-    @collection[:rights] = ["This is a statement about the rights associated with this object"]
-    @collection[:publisher] = ["RnaG"]
-    @collection[:type] = ["Collection"]
-    @collection[:creation_date] = ["1916-01-01"]
-    @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = "draft"
-    @collection.save
+    @collection = FactoryBot.create(:collection)
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
   end
-  
+
   describe "run" do
     @slow
     it "should return results more than chunk size", :slow => true do
@@ -37,12 +28,12 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.id}\"", 10)
-      count = 0      
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\"", 10)
+      count = 0
       while query.has_more?
         count += query.pop.count
       end
- 
+
       count.should eq(20)
     end
 
@@ -57,7 +48,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.id}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count
@@ -77,7 +68,7 @@ describe "Query" do
 
       @collection.save
 
-      query = Solr::Query.new("collection_id_sim:\"#{@collection.id}\"", 10)
+      query = Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\"", 10)
       count = 0
       while query.has_more?
         count += query.pop.count
@@ -87,5 +78,5 @@ describe "Query" do
     end
 
   end
- 
+
 end

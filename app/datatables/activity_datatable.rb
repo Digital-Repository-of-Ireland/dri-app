@@ -123,8 +123,7 @@ private
   end
 
   def solr_doc_for_id(id)
-    result = ActiveFedora::SolrService.query("id:#{id}")
-    doc = result.present? ? result.first : nil
+    SolrDocument.find(id)
   end
 
 end

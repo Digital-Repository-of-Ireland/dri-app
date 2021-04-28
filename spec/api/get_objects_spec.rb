@@ -27,7 +27,7 @@ describe "Get Objects API" do
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
         let(:user_email) { nil }
-        let(:objects) { @collections.map(&:id) }
+        let(:objects) { @collections.map(&:alternate_id) }
 
         it_behaves_like 'a pretty json response'
         include_context 'rswag_include_json_spec_output' do
@@ -47,7 +47,8 @@ describe "Get Objects API" do
           let(:object_ids) {
             @collections.map do |c|
               c.governed_items.map do |i|
-                [[i.id, i.id]].to_h
+                next if i.collection?
+                [[i.alternate_id, i.alternate_id]].to_h
               end
             end.flatten
           }
@@ -61,9 +62,10 @@ describe "Get Objects API" do
                 # get licence (stored at collection level)
                 pid = object['pid']
                 governing_collection = @collections.select do |c|
-                  c.governed_items.map(&:id).include?(pid)
+                  c.governed_items.map(&:alternate_id).include?(pid)
                 end
                 licence = Licence.find_by(name: governing_collection.first.licence)
+
                 expect(object['metadata']['licence']).to eq licence.show
               end
             end
@@ -76,7 +78,7 @@ describe "Get Objects API" do
           # # produces {"object"=>{"_json"=>[{"zp38wc65b"=>"zp38wc65b"}}
           # # https://github.com/domaindrivendev/rswag/issues/132
           # let(:objects) { {objects: [{k: @collections.first.id}]} }
-          let(:collection_ids) { @collections.map {|c| [[c.id, c.id]].to_h} }
+          let(:collection_ids) { @collections.map {|c| [[c.alternate_id, c.alternate_id]].to_h} }
           let(:objects) { {objects: collection_ids} }
           exn = "/get_objects?(collection ids)"
           include_context 'rswag_include_json_spec_output', exn do

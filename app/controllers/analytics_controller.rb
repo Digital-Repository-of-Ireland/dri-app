@@ -5,43 +5,49 @@ class AnalyticsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    if signed_in? && (current_user.is_admin? || current_user.is_om? || current_user.is_cm?)
-      @startdate = params[:startdate] || Date.today.at_beginning_of_month
-      @enddate = params[:enddate] || Date.today
-
-      respond_to do |format|
-        format.html
-        format.json do
-          render json: AnalyticsCollectionsDatatable.new(profile, view_context)
-        end
-      end
-    else
+    unless signed_in? && authorized_user?
       flash[:error] = t('dri.flash.error.manager_user_permission')
+      return
+    end
+
+    @startdate = params[:startdate] || Date.today.at_beginning_of_month
+    @enddate = params[:enddate] || Date.today
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: AnalyticsCollectionsDatatable.new(profile, view_context)
+      end
     end
   end
 
   def show
-    if signed_in? && (current_user.is_admin? || current_user.is_om? || current_user.is_cm?)
-      @startdate = params[:startdate] || Date.today.at_beginning_of_month
-      @enddate = params[:enddate] || Date.today
-
-      @document = SolrDocument.find(params[:id])
-      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @document.nil?
-
-      @file_display_type_count = @document.file_display_type_count(published_only: true)
-
-      respond_to do |format|
-        format.html
-        format.json do
-          render json: AnalyticsCollectionDatatable.new(profile, view_context)
-        end
-      end
-    else
+    unless signed_in? && authorized_user?
       flash[:error] = t('dri.flash.error.manager_user_permission')
+      return
+    end
+
+    @startdate = params[:startdate] || Date.today.at_beginning_of_month
+    @enddate = params[:enddate] || Date.today
+
+    @document = SolrDocument.find(params[:id])
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @document.nil?
+
+    @file_display_type_count = @document.file_display_type_count(published_only: true)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: AnalyticsCollectionDatatable.new(profile, view_context)
+      end
     end
   end
 
   private
+
+    def authorized_user?
+      current_user.is_admin? || current_user.is_om? || current_user.is_cm?
+    end
 
     def profile
       @profile ||= create_profile

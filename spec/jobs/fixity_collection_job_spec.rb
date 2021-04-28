@@ -36,7 +36,7 @@ describe "FixityCollectionJob" do
   describe "perform" do
     it "should trigger jobs for subcollections" do
       expect(Resque).to receive(:enqueue).exactly(3).times
-      FixityCollectionJob.perform(@report.id, @collection.id, @login_user.id)
+      FixityCollectionJob.perform(@report.id, @collection.alternate_id, @login_user.id)
     end
   end
 

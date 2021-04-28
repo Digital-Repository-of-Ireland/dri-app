@@ -78,23 +78,20 @@ describe DRI::IIIFViewable do
     @sound.governing_collection = @collection
     @sound.save
 
-    allow_any_instance_of(GenericFileContent).to receive(:external_content)
-    allow_any_instance_of(GenericFileContent).to receive(:external_content)
+    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
+    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
     FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'),
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
 
-    @generic_file = DRI::GenericFile.new(id: Noid::Rails::Service.new.mint)
-    @generic_file.batch = @sound
+    @generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
+    @generic_file.digital_object = @sound
     @generic_file.apply_depositor_metadata(@login_user.email)
-    file = LocalFile.new(fedora_id: @generic_file.id, ds_id: 'content')
     options = {}
     options[:mime_type] = 'image/jpeg'
     options[:file_name] = 'sample_image.jpeg'
-    options[:batch_id] = @sound.id
 
-    file.add_file File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options
-    file.save
+    @generic_file.add_file(File.new(File.join(@tmp_upload_dir, 'sample_image.jpeg')), options)
 
     @generic_file.characterization.ng_xml = Nokogiri::XML(FITS_DATA)
     @generic_file.filename = ['sample_image.jpeg']
@@ -125,7 +122,7 @@ describe DRI::IIIFViewable do
     it "should set within for collection objects" do
       manifest = iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest
 
-      expect(manifest.within['@id']).to end_with("#{@collection.id}.json")
+      expect(manifest.within['@id']).to end_with("#{@collection.alternate_id}.json")
     end
 
     it "should include subcollections in the collection manifest" do
@@ -140,7 +137,7 @@ describe DRI::IIIFViewable do
       manifest = iiif_test.new(SolrDocument.new(@collection.to_solr)).iiif_manifest
 
       expect(manifest.collections.length).to be 1
-      expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.id}.json")
+      expect(manifest.collections.first['@id']).to end_with("collection/#{@subcollection.alternate_id}.json")
     end
 
     it 'should add images to objects' do
@@ -151,7 +148,7 @@ describe DRI::IIIFViewable do
       expect(manifest.sequences.first.canvases.first.images.length).to be 1
 
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
-        "#{@sound.id}:#{@generic_file.id}/full/full/0/default.jpg")
+        "#{@sound.alternate_id}:#{@generic_file.alternate_id}/full/full/0/default.jpg")
     end
 
   end

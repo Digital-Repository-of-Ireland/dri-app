@@ -16,7 +16,7 @@ module Storage
         Rails.logger.error "Unable to save cover image."
         return false
       end
-      collection.properties.cover_image = url
+      collection.cover_image = url
       collection.save
 
       true
@@ -35,16 +35,16 @@ module Storage
     def self.store_cover(cover_image, filename, collection)
       url = nil
       storage = StorageService.new
-      storage.create_bucket(collection.id)
+      storage.create_bucket(collection.alternate_id)
 
       cover_filename = "#{collection.id}.#{filename.split(".").last}"
       if (
         storage.store_file(
-          collection.id,
+          collection.alternate_id,
           cover_image.path,
           cover_filename)
         )
-        url = storage.file_url(collection.id, cover_filename)
+        url = storage.file_url(collection.alternate_id, cover_filename)
       end
 
       url

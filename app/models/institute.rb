@@ -22,13 +22,13 @@ class Institute < ActiveRecord::Base
 
     save
   end
- 
+
   # Return all collections for this institute
   def collections
     query = Solr::Query.new(
       collections_query,
       100,
-      fq: "-#{ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string)}:[* TO *]"
+      fq: "-ancestor_id_ssim:[* TO *]"
     )
     query.to_a
   end
@@ -65,7 +65,7 @@ class Institute < ActiveRecord::Base
   private
 
     def collections_query
-      "#{ActiveFedora.index_field_mapper.solr_name('institute', :stored_searchable, type: :string)}:\"" + name.mb_chars.downcase + 
-      "\" AND " + "#{ActiveFedora.index_field_mapper.solr_name('type', :stored_searchable, type: :string)}:Collection"
+      "#{Solr::SchemaFields.searchable_string('institute')}:\"" + name.mb_chars.downcase +
+      "\" AND " + "#{Solr::SchemaFields.searchable_string('type')}:Collection"
     end
 end

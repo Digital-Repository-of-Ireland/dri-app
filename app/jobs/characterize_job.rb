@@ -1,4 +1,4 @@
-class CharacterizeJob < ActiveFedoraIdBasedJob
+class CharacterizeJob < IdBasedJob
   include BackgroundTasks::Status
 
   def queue_name
@@ -8,7 +8,7 @@ class CharacterizeJob < ActiveFedoraIdBasedJob
   def run
     with_status_update('characterize') do
       status_for_type('preservation') if generic_file.preservation?
-      
+
       generic_file.characterize
       generic_file.save
 
@@ -23,8 +23,8 @@ class CharacterizeJob < ActiveFedoraIdBasedJob
 
     # Update the Batch object's Solr index now that the GenericFile
     # has characterization metadata
-    unless generic_file.batch.nil?
-      DRI.queue.push(UpdateIndexJob.new(generic_file.batch.id))
+    unless generic_file.digital_object.nil?
+      DRI.queue.push(UpdateIndexJob.new(generic_file.digital_object.alternate_id))
     end
   end
 end

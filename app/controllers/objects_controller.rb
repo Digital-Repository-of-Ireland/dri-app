@@ -19,11 +19,10 @@ class ObjectsController < BaseObjectsController
 
     locked(@collection); return if performed?
 
-    @object = DRI::Batch.with_standard :qdc
+    @object = DRI::DigitalObject.with_standard :qdc
     @object.creator = ['']
 
     if params[:is_sub_collection].present? && params[:is_sub_collection] == 'true'
-      @object.object_type = ['Collection']
       @object.type = ['Collection']
     end
 
@@ -59,12 +58,11 @@ class ObjectsController < BaseObjectsController
     @object = retrieve_object!(params[:id])
 
     respond_to do |format|
-      format.html { redirect_to(catalog_url(@object.id)) }
+      format.html { redirect_to(catalog_url(@object.alternate_id)) }
       format.endnote { render plain: @object.export_as_endnote, layout: false }
       format.json do
         json = @object.as_json
-        solr_query = ActiveFedora::SolrQueryBuilder.construct_query_for_ids([@object.id])
-        solr_doc = Solr::Query.new(solr_query).first
+        solr_doc = SolrDocument.find(@object.alternate_id)
 
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
         json['doi'] = DRI::Formatters::Json.dois(solr_doc)
@@ -94,12 +92,11 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if params[:batch][:governing_collection_id].present?
-      collection = DRI::Batch.find(params[:batch][:governing_collection_id])
+    if params[:digital_object][:governing_collection_id].present?
+      collection = retrieve_object(params[:digital_object][:governing_collection_id])
       @object.governing_collection = collection
     end
 
-    @object.object_version ||= '1'
     @object.increment_version
     @object.assign_attributes(update_params)
 
@@ -120,12 +117,12 @@ class ObjectsController < BaseObjectsController
         return
       end
 
-      post_save(false) do
+      post_save do
         update_doi(@object, doi, 'metadata update') if doi && doi.changed?
       end
 
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       format.json { render json: @object }
     end
   end
@@ -139,21 +136,25 @@ class ObjectsController < BaseObjectsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
+    if params[:digital_object][:read_users_string].present?
+      params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+    end
+    if params[:digital_object][:edit_users_string].present?
+      params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+    end
 
-    if params[:batch][:governing_collection].present?
-      params[:batch][:governing_collection] = DRI::Batch.find(params[:batch][:governing_collection])
+    if params[:digital_object][:governing_collection].present?
+      params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
       # governing_collection present and also whether this is a documentation object?
-      if params[:batch][:documentation_for].present?
-        params[:batch][:documentation_for] = DRI::Batch.find(params[:batch][:documentation_for])
+      if params[:digital_object][:documentation_for].present?
+        params[:digital_object][:documentation_for] = retrieve_object(params[:digital_object][:documentation_for])
       end
     end
 
-    enforce_permissions!('create_digital_object', params[:batch][:governing_collection].id)
-    locked(params[:batch][:governing_collection].id); return if performed?
+    enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].alternate_id)
+    locked(params[:digital_object][:governing_collection].alternate_id); return if performed?
 
-    if params[:batch][:documentation_for].present?
+    if params[:digital_object][:documentation_for].present?
       create_from_form :documentation
     elsif params[:metadata_file].present?
       create_from_upload
@@ -163,23 +164,22 @@ class ObjectsController < BaseObjectsController
 
     checksum_metadata(@object)
     supported_licences
-    @object.object_version = '1'
 
     if @object.valid? && @object.save
-      post_save(true) do
+      post_save do
         create_reader_group if @object.collection?
       end
 
       respond_to do |format|
         format.html do
           flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.id
+          redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id
         end
         format.json do
-          response = { pid: @object.id }
+          response = { pid: @object.alternate_id }
           response[:warning] = @warnings if @warnings
 
-          render json: response, location: my_collections_url(@object.id), status: :created
+          render json: response, location: my_collections_url(@object.alternate_id), status: :created
         end
       end
     else
@@ -198,38 +198,26 @@ class ObjectsController < BaseObjectsController
   def destroy
     enforce_permissions!('edit', params[:id])
 
-    id = params[:id]
-    begin
-      @object = retrieve_object(id)
-    rescue Ldp::HttpError
-      doc = SolrDocument.find(id)
-      delete_if_incomplete(id)
-
-      respond_to do |format|
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: doc.collection_id }
-      end
-      return
-    end
+    @object = retrieve_object!(params[:id])
 
     if @object.status == 'published' && !current_user.is_admin?
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
     # Do the preservation actions
-    @object.object_version || '1'
     @object.increment_version
 
     assets = []
-    @object.generic_files.map { |gf| assets << "#{gf.id}_#{gf.label}" }
+    @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
 
     preservation = Preservation::Preservator.new(@object)
     preservation.update_manifests(
       deleted: {
         'content' => assets,
-        'metadata' => ['descMetadata.xml','permissions.rdf','properties.xml','resource.rdf']
+        'metadata' => ['descMetadata.xml']
         }
     )
-    collection_id = @object.governing_collection_id
+    collection_id = @object.governing_collection.alternate_id
     @object.delete
 
     flash[:notice] = t('dri.flash.notice.object_deleted')
@@ -241,11 +229,7 @@ class ObjectsController < BaseObjectsController
 
   def retrieve
     id = params[:id]
-    begin
-      object = retrieve_object!(id)
-    rescue ActiveFedora::ObjectNotFoundError
-      flash[:error] = t('dri.flash.error.download_no_file')
-    end
+    object = retrieve_object!(id)
 
     if object.present?
       if can?(:read, object)
@@ -259,7 +243,7 @@ class ObjectsController < BaseObjectsController
                 url_based_filename: true
 
           if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.id, 1, true)
+            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.alternate_id, 1, true)
           end
           file_sent = true
         else
@@ -288,13 +272,12 @@ class ObjectsController < BaseObjectsController
 
     if @object.status != 'published' || current_user.is_admin?
       @object.status = params[:status] if params[:status].present?
-      @object.object_version ||= '1'
       @object.increment_version
       @object.save
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve
 
       # if this object is in a sub-collection, we need to set that collection status
       # to reviewed so that a publish job will run on the collection
@@ -303,9 +286,9 @@ class ObjectsController < BaseObjectsController
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       format.json do
-        response = { id: @object.id, status: @object.status }
+        response = { id: @object.alternate_id, status: @object.status }
         response[:warning] = @warnings if @warnings
         render json: response, status: :accepted
       end
@@ -324,7 +307,7 @@ class ObjectsController < BaseObjectsController
       xml_ds = XmlDatastream.new
       xml = xml_ds.load_xml(params[:metadata_file])
 
-      @object = DRI::Batch.with_standard(xml_ds.metadata_standard)
+      @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
       @object.depositor = current_user.to_s
       @object.assign_attributes create_params
 
@@ -336,9 +319,9 @@ class ObjectsController < BaseObjectsController
     #
     def create_from_form(standard = nil)
       @object = if standard
-                  DRI::Batch.with_standard(standard)
+                  DRI::DigitalObject.with_standard(standard)
                 else
-                  DRI::Batch.with_standard(:qdc)
+                  DRI::DigitalObject.with_standard(:qdc)
                 end
       @object.depositor = current_user.to_s
       @object.assign_attributes create_params
@@ -346,21 +329,11 @@ class ObjectsController < BaseObjectsController
 
     def create_reader_group
       group = UserGroup::Group.new(
-        name: @object.id.to_s,
-        description: "Default Reader group for collection #{@object.id}"
+        name: @object.alternate_id,
+        description: "Default Reader group for collection #{@object.alternate_id}"
       )
       group.reader_group = true
       group.save
-    end
-
-    def delete_if_incomplete(id)
-      if File.exist?(aip_dir(id))
-        flash[:alert] = t('dri.flash.alert.delete_error')
-        return
-      end
-
-      ActiveFedora::SolrService.delete(id)
-      flash[:notice] = t('dri.flash.notice.object_deleted')
     end
 
     def metadata_standard
@@ -369,7 +342,7 @@ class ObjectsController < BaseObjectsController
       standard == 'documentation' ? 'qualifieddublincore' : standard
     end
 
-    def post_save(create)
+    def post_save
       warn_if_has_duplicates(@object)
       retrieve_linked_data if AuthoritiesConfig
       record_version_committer(@object, current_user)
@@ -378,11 +351,11 @@ class ObjectsController < BaseObjectsController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(create, create, ['descMetadata','properties'])
+      preservation.preserve(['descMetadata'])
     end
 
     def retrieve_linked_data
-      DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
+      DRI.queue.push(LinkedDataJob.new(@object.alternate_id)) if @object.geographical_coverage.present? || @object.coverage.present?
     rescue Exception => e
       Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end
@@ -398,7 +371,7 @@ class ObjectsController < BaseObjectsController
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(governing_collection)
-          preservation.preserve(false, false, ['properties'])
+          preservation.preserve
         end
 
         governing_collection = governing_collection.governing_collection

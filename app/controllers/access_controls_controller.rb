@@ -17,14 +17,11 @@ class AccessControlsController < ApplicationController
     @object = retrieve_object!(params[:id])
     @object.collection? ? enforce_permissions!('manage_collection', params[:id]) : enforce_permissions!('edit', params[:id])
 
-    params[:batch][:read_users_string] = params[:batch][:read_users_string].to_s.downcase
-    params[:batch][:edit_users_string] = params[:batch][:edit_users_string].to_s.downcase
-    params[:batch][:manager_users_string] = params[:batch][:manager_users_string].to_s.downcase if params[:batch][:manager_users_string].present?
+    params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+    params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+    params[:digital_object][:manager_users_string] = params[:digital_object][:manager_users_string].to_s.downcase if params[:digital_object][:manager_users_string].present?
+    params[:digital_object][:object_version] = @object.increment_version
 
-    version = @object.object_version || '1'
-    params[:batch][:object_version] = version.next
-
-    permissionchange = permissions_changed?
     updated = @object.update_attributes(update_params) unless @object.collection? && !valid_permissions?
 
     if updated
@@ -34,13 +31,13 @@ class AccessControlsController < ApplicationController
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(false, permissionchange, ['properties'])
+      preservation.preserve
     else
       flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
     end
   end
 
@@ -67,7 +64,7 @@ class AccessControlsController < ApplicationController
         permissions = read_permissions(document)
 
         title = "#{document['title_tesim'].first}: #{permissions[:read_label]} #{permissions[:assets_label]}"
-        parents = document['ancestor_id_tesim']
+        parents = document['ancestor_id_ssim']
         inherit_objects = count_objects_with_inherited_permissions(document)
 
         entries << {
@@ -139,32 +136,33 @@ class AccessControlsController < ApplicationController
     end
 
     def count_objects_with_inherited_permissions(collection)
-      ActiveFedora::SolrService.count(
-                                 "collection_id_sim:#{collection['id']}",
-                                 fq: ['is_collection_sim:false',
-                                     '-read_access_group_ssim:[* TO *]',
-                                     '-(-master_file_access_sim:inherit master_file_access_sim:*)'
-                                 ]
-                               )
+      Solr::Query.new(
+                     "collection_id_sim:#{collection['id']}",
+                     100,
+                     fq: ['is_collection_ssi:false',
+                          '-read_access_group_ssim:[* TO *]',
+                          '-(-master_file_access_ssi:inherit master_file_access_ssi:*)'
+                         ]
+                     ).count
     end
 
     def objects_with_inherited_permissions(collection)
-      query = ::Solr::Query.new(
+      query = Solr::Query.new(
                                  "collection_id_sim:#{collection['id']}",
                                  100,
-                                 fq: ['is_collection_sim:false',
+                                 fq: ['is_collection_ssi:false',
                                      '-read_access_group_ssim:[* TO *]',
-                                     '-(-master_file_access_sim:inherit master_file_access_sim:*)'
+                                     '-(-master_file_access_ssi:inherit master_file_access_ssi:*)'
                                  ]
                                )
       query.to_a
     end
 
     def objects_with_permissions(collection)
-      query = ::Solr::Query.new("collection_id_sim:#{collection['id']}",
+      query = Solr::Query.new("collection_id_sim:#{collection['id']}",
                                 100,
-                                fq: ['is_collection_sim:false',
-                                     'read_access_group_ssim:[* TO *] OR (-master_file_access_sim:inherit master_file_access_sim:[* TO *])'
+                                fq: ['is_collection_ssi:false',
+                                     'read_access_group_ssim:[* TO *] OR (-master_file_access_ssi:inherit master_file_access_ssi:[* TO *])'
                                     ]
                                 )
       query.to_a
@@ -215,7 +213,7 @@ class AccessControlsController < ApplicationController
     end
 
     def update_params
-      params.require(:batch).permit(
+      params.require(:digital_object).permit(
         :read_groups_string,
         :read_users_string,
         :master_file_access,
@@ -227,14 +225,17 @@ class AccessControlsController < ApplicationController
     def valid_permissions?
       !(
         @object.governing_collection_id.blank? &&
-        (params[:batch][:manager_users_string].blank? && params[:batch][:edit_users_string].blank?)
+        (params[:digital_object][:manager_users_string].blank? && params[:digital_object][:edit_users_string].blank?)
       )
     end
 
     def permissions_changed?
-      !(@object.read_groups_string == params[:batch][:read_groups_string] &&
-      @object.edit_users_string == params[:batch][:edit_users_string] &&
-      @object.manager_users_string == params[:batch][:manager_users_string])
+      !(
+        @object.read_groups_string == params[:digital_object][:read_groups_string] &&
+        @object.edit_users_string == params[:digital_object][:edit_users_string] &&
+        @object.manager_users_string == params[:digital_object][:manager_users_string]
+        @object.master_file_access == params[:digital_object][:master_file_access]
+      )
     end
 
 end

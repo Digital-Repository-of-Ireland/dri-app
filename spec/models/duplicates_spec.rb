@@ -54,9 +54,9 @@ describe 'DRI::Solr::Document::Collection' do
       ids = duplicates.map(&:id)
 
       expect(ids.count).to eq(2)
-      expect(ids).to include(@object.id)
-      expect(ids).to include(@object2.id)
-      expect(ids).to_not include(@object3.id)
+      expect(ids).to include(@object.alternate_id)
+      expect(ids).to include(@object2.alternate_id)
+      expect(ids).to_not include(@object3.alternate_id)
     end
   end
 
@@ -103,14 +103,13 @@ describe 'DRI::Solr::Document::Collection' do
 
       duplicates = doc.duplicates[1]
       titles = duplicates.map(&:title)
-      expect([@object[:title], @object2[:title], @object[:title], @object2[:title]]).to eq titles
+      expect([@object.title, @object2.title, @object.title, @object2.title]).to eq titles
 
       duplicates = doc.duplicates('title_sorted_ssi asc')[1]
       titles = duplicates.map(&:title)
-      expect([@object[:title], @object[:title], @object2[:title], @object2[:title]]).to eq titles
+      expect([@object.title, @object.title, @object2.title, @object2.title]).to eq titles
     end
   end
-
 end
 
 

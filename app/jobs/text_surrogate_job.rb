@@ -1,6 +1,6 @@
 require 'rack/mime'
 
-class TextSurrogateJob < ActiveFedoraIdBasedJob
+class TextSurrogateJob < IdBasedJob
   include BackgroundTasks::Status
 
   def queue_name
@@ -8,18 +8,15 @@ class TextSurrogateJob < ActiveFedoraIdBasedJob
   end
 
   def run
+    raise "Incorrect object type" unless generic_file.is_a?(DRI::GenericFile)
+
     with_status_update('text') do
       Rails.logger.info "Creating surrogate of #{generic_file_id} asset"
 
-      local_file_info = LocalFile.where(
-                          "fedora_id LIKE :f AND ds_id LIKE 'content'",
-                          { f: generic_file_id }
-                        ).order("version DESC").limit(1).to_a
-      filename = local_file_info.first.path
+      filename = generic_file.path
+      bucket_id = generic_file.digital_object.alternate_id
 
-      bucket_id = object.batch.nil? ? object.id : object.batch.id
-
-      ext = Rack::Mime::MIME_TYPES.invert[local_file_info.first.mime_type]
+      ext = Rack::Mime::MIME_TYPES.invert[generic_file.mime_type]
       ext = ext[1..-1] if ext[0] == '.'
       ext = 'doc' if ext == 'dot'
       surrogate_filename = "#{generic_file_id}_#{ext}.#{ext}"

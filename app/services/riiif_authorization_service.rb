@@ -5,7 +5,7 @@ class RiiifAuthorizationService
   end
 
   def can?(action, object)
-    id = object.id.split(':')[1]
+    id = object.alternate_id.split(':')[1]
 
     file_doc = SolrDocument.find(id)
     return true if file_doc.collection?

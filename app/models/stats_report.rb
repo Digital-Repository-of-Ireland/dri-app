@@ -4,16 +4,18 @@ class StatsReport
   def self.file_type_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get(
-               'has_model_ssim:"DRI::GenericFile"',
-               facet: true,
-               'facet.query' => [
+    result = Solr::Query.new(
+               'has_model_ssim:"DRI::DigitalObject"',
+               100,
+               { facet: true,
+                 'facet.query' => [
                                   'file_type_tesim:image',
                                   'file_type_tesim:text',
                                   'file_type_tesim:video',
                                   'file_type_tesim:audio'
                                 ]
-             )
+               }
+             ).get
     facet = result['facet_counts']['facet_queries']
     facet.each do |key, count|
       type = key.split(':')[1]
@@ -26,10 +28,10 @@ class StatsReport
   def self.mime_type_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get('has_model_ssim:"DRI::Batch"',
-                                           facet: true,
-                                           'facet.field' => 'mime_type_sim'
-                                          )
+    result = Solr::Query.new(
+               'has_model_ssim:"DRI::DigitalObject"',
+               100, { facet: true, 'facet.field' => 'mime_type_sim' }
+             ).get
 
     facet = result['facet_counts']['facet_fields']['mime_type_sim']
     facet.each_slice(2) do |type,count|
@@ -43,7 +45,11 @@ class StatsReport
   def self.file_format_counts
     type_counts = {}
 
-    result = ActiveFedora::SolrService.get('has_model_ssim:"DRI::GenericFile"', facet: true, 'facet.field' => 'file_format_sim')
+    result = Solr::Query.new(
+               'has_model_ssim:"DRI::GenericFile"',
+               100,
+               { facet: true, 'facet.field' => 'file_format_sim' }
+             ).get
 
     facet = result['facet_counts']['facet_fields']['file_format_sim']
     facet.each_slice(2) { |type,count| type_counts[type] = count }
@@ -66,14 +72,18 @@ class StatsReport
 
 
   def self.summary
-    total_objects = ActiveFedora::SolrService.count('has_model_ssim:"DRI::Batch" and is_collection_sim:false')
-    total_assets = ActiveFedora::SolrService.count('has_model_ssim:"DRI::GenericFile"')
+    total_objects = Solr::Query.new('has_model_ssim:"DRI::DigitalObject" and is_collection_ssi:false').count
+    total_assets = Solr::Query.new('has_model_ssim:"DRI::GenericFile"').count
 
     { total_objects: total_objects, total_assets: total_assets }
   end
 
   def self.total_file_size
-    stats = ActiveFedora::SolrService.get('*:*', stats: true, 'stats.field' => 'file_size_isi')
+    stats = Solr::Query.new(
+              '*:*',
+              100,
+              { stats: true, 'stats.field' => 'file_size_isi' }
+            ).get
     if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_isi'].present?
       stats['stats']['stats_fields']['file_size_isi']['sum']
     else

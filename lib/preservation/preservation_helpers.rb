@@ -37,7 +37,7 @@ module Preservation
     # versions start at 0, but MOAB expects v0001 as first version
     # output: incremented & formatted version number String of format vxxxx
     def version_string(version)
-      'v%04d' % version.to_s
+      'v%04d' % version
     end
 
     # Return the hash part of the file path

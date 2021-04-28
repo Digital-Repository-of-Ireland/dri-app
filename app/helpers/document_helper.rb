@@ -1,19 +1,14 @@
 module DocumentHelper
   def collection_media_type_params(document, collection_id, media_type)
-    search_facets = if document[ActiveFedora.index_field_mapper.solr_name('collection_id', :stored_searchable, type: :string)].nil?
-      {
-        ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],
-        ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable, type: :string).to_sym => [collection_id]
-      }
-    else
-      {
-        ActiveFedora.index_field_mapper.solr_name('file_type_display', :facetable, type: :string).to_sym => [media_type],
-        ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable, type: :string).to_sym => [collection_id]
-      }
-    end
-    search_params = { mode: 'objects', search_field: 'all_fields', utf8: '✓', f: search_facets }
+    search_facets = { file_type_display_sim: [media_type] }
 
-    search_params
+    if document.root_collection?
+      search_facets[:root_collection_id_ssi] = [collection_id]
+    else
+      search_facets[:ancestor_id_ssim] = [collection_id]
+    end
+
+    { mode: 'objects', search_field: 'all_fields', utf8: '✓', f: search_facets }
   end
 
   def truncate_description(description, count)

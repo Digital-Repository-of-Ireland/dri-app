@@ -19,32 +19,32 @@ Scenario: Seeing autocomplete vocab dropdown
 Scenario: Seeing autocomplete results
   Then I should see 0 visible elements ".ui-autocomplete"
   When I press the edit collection button with text "Add Place"
-  And I fill in "batch_geographical_coverage][" with "dublin"
+  And I fill in "digital_object_geographical_coverage][" with "dublin"
   Then I should see 1 visible element ".ui-autocomplete"
 
 Scenario: Choosing an autocomplete result
   When I press the edit collection button with text "Add Temporal Coverage"
-  And I fill in "batch_temporal_coverage][" with "20th century"
-  Then the text in "batch_temporal_coverage][" should not have link styling
+  And I fill in "digital_object_temporal_coverage][" with "20th century"
+  Then the text in "digital_object_temporal_coverage][" should not have link styling
   And I should see 1 visible element ".ui-autocomplete"
   And I click the first autocomplete result
-  Then the text in "batch_temporal_coverage][" should have link styling
+  Then the text in "digital_object_temporal_coverage][" should have link styling
 
 Scenario: Choosing an autocomplete result should save the label text and hidden URL of the subject
   When I press the edit collection button with text "Add Subject"
-  And I fill in "batch_subject][" with "Dublin"
+  And I fill in "digital_object_subject][" with "Dublin"
   And I click the first autocomplete result
-  Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
+  Then the hidden "digital_object_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
 
 Scenario: Choosing an autocomplete result, then changing your mind
   When I press the edit collection button with text "Add Subject"
-  And I fill in "batch_subject][" with "Dublin"
+  And I fill in "digital_object_subject][" with "Dublin"
   And I click the first autocomplete result
-  Then the hidden "batch_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
-  And the text in "batch_subject][" should have link styling
-  When I fill in "batch_subject][" with "asdf"
-  Then I should not see a hidden "input#batch_subject][" within "fieldset#subject"
-  Then the text in "batch_subject][" should not have link styling
+  Then the hidden "digital_object_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
+  And the text in "digital_object_subject][" should have link styling
+  When I fill in "digital_object_subject][" with "asdf"
+  Then I should not see a hidden "input#digital_object_subject][" within "fieldset#subject"
+  Then the text in "digital_object_subject][" should not have link styling
 
 @wip
 Scenario: Submitting a collection with autocomplete results
@@ -68,16 +68,16 @@ Scenario: Submitting a collection with autocomplete results
 Scenario: Disabling autocomplete
   When I press the edit collection button with text "Add Coverage"
   And I select "Disable" from the autocomplete menu
-  And I fill in "batch[coverage][]" with "test"
+  And I fill in "digital_object[coverage][]" with "test"
   Then I should see 0 visible elements ".ui-autocomplete"
 
 Scenario: Re-enabling autocomplete
   When I press the edit collection button with text "Add Coverage"
   And I select "Disable" from the autocomplete menu
-  And I fill in "batch[coverage][]" with "test"
+  And I fill in "digital_object[coverage][]" with "test"
   Then I should see 0 visible elements ".ui-autocomplete"
   When I select "Nuts3" from the autocomplete menu
-  And I fill in "batch[coverage][]" with "dublin"
+  And I fill in "digital_object[coverage][]" with "dublin"
   Then I should see 1 visible elements ".ui-autocomplete"
 
 Scenario Outline: Local authorities should be hidden if the data is missing
@@ -97,7 +97,7 @@ Scenario Outline: Local authorities should be hidden if the data is missing
 #   Given the hasset autocomplete endpoint is errored
 #   When I press the edit collection button with text "Add Coverage"
 #   And I select "Hasset" from the autocomplete menu
-#   And I fill in "batch[coverage][]" with "test"
+#   And I fill in "digital_object[coverage][]" with "test"
 #   Then I should see 1 visible element ".ui-autocomplete-loading"
 #   # timeout for autocomplete, set in "endpoint is errored"
 #   When I wait for "1" seconds

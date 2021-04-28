@@ -2,32 +2,32 @@
 <% if @document %>
   <div id="dri_crumbtrail_nav_container_id">
     <ol class="breadcrumb">
-    <% unless @document.is_a?(DRI::Batch) %>
+    <% unless @document.is_a?(DRI::DigitalObject) %>
 
-        <% if @document[ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].present? %>
-          <% @document[ActiveFedora.index_field_mapper.solr_name('ancestor_id', :stored_searchable, type: :string).to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
-            <li><%= link_to @document[ActiveFedora.index_field_mapper.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], url_for_document(ancestor_id) %></li>
+        <% if @document['ancestor_id_ssim'.to_sym].present? %>
+          <% @document['ancestor_id_ssim'.to_sym].to_enum.with_index.reverse_each do |ancestor_id, index| %>
+            <li><%= link_to @document[Solrizer.solr_name('ancestor_title', :stored_searchable, type: :string).to_sym][index], url_for_document(ancestor_id) %></li>
           <% end %>
         <% end %>
 
         <% if @generic_file %>
-          <li><%= link_to truncate(@document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), url_for_document(@document.id) %></li>
+          <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), url_for_document(@document.id) %></li>
           <li class="active"><%= @generic_file.label %></li>
 
         <% else %>
           <% if controller.action_name == 'edit' %>
-            <li><%= link_to truncate(@document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
+            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
                      url_for_document(@document['id']) %></li>
             <li class="active"><%= t('dri.views.objects.edit.title') %></li>
           <% elsif controller.action_name == 'view' %>
-            <li><%= link_to truncate(@document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
+            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
                      url_for_document(@document['id']) %></li>
             <li class="active"><%= t('dri.views.catalog.links.iiif_viewer') %></li>
           <% elsif controller_name == 'assets' && controller.action_name = 'index' %>
-            <li><%= link_to truncate(@document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), url_for_document(@document.id) %></li>
+            <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), url_for_document(@document.id) %></li>
             <li class="active"><%= t('dri.views.catalog.links.view_assets') %></li>
           <% else %>
-            <li class="active"><%= truncate(@document[ActiveFedora.index_field_mapper.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
+            <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
           <% end %>
         <% end %>
 

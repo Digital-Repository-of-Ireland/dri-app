@@ -1,4 +1,4 @@
-class ThumbnailJob < ActiveFedoraIdBasedJob
+class ThumbnailJob < IdBasedJob
   include BackgroundTasks::Status
 
   def queue_name

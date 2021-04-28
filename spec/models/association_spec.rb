@@ -3,7 +3,7 @@ require 'rails_helper'
 describe "collection associations" do
 
   before :each do
-    @collection = DRI::Batch.with_standard(:qdc)
+    @collection = DRI::DigitalObject.with_standard(:qdc)
     @collection.title = ["Test Associations Collection"]
     @collection.description = ["Description"]
     @collection.creator = ["Creator"]
@@ -13,7 +13,7 @@ describe "collection associations" do
 
     @collection.save
 
-    @object = DRI::Batch.with_standard(:qdc)
+    @object = DRI::DigitalObject.with_standard(:qdc)
     @object.title = ["Test Associations Object"]
     @object.description = ["Description"]
     @object.creator = ["Creator"]
@@ -25,7 +25,7 @@ describe "collection associations" do
   end
 
   after :each do
-    @collection.delete
+    @collection.destroy
   end
 
   it "should associate from object to collection" do

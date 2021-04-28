@@ -12,7 +12,7 @@ describe 'Timeline' do
   end
 
   after(:each) do
-    @object.delete
+    @object.destroy
     FileUtils.remove_dir(@tmp_assets_dir, :force => true)
   end
 

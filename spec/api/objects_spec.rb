@@ -28,7 +28,7 @@ describe 'Objects API' do
 
       response '200', 'Found'  do
         context 'Collection' do
-          let(:id) { @collections.first.id }
+          let(:id) { @collections.first.alternate_id }
           it_behaves_like 'a pretty json response'
           it_behaves_like 'it has no json licence information', 'licence'
           include_context 'rswag_include_json_spec_output', 'Found Collection' do
@@ -36,7 +36,7 @@ describe 'Objects API' do
           end
         end
         context 'Object' do
-          let(:id) { @collections.first.governed_items.first.id }
+          let(:id) { @collections.first.governed_items.first.alternate_id }
           it_behaves_like 'it has json licence information', 'licence'
           include_context 'rswag_include_json_spec_output', 'Found Object' do
             it_behaves_like 'it has json doi information', 'doi'

@@ -43,6 +43,7 @@ Scenario Outline: Constructing a valid Digital Object
     | dublin_core_pdfdoc_sample.xml | Text        |
     | SAMPLEA.xml                   | Sound       |
 
+@test
 Scenario: Adding a pdf asset to an object
   When I create an object and save the pid
   And I go to the "object" "modify" page for "the saved pid"
@@ -122,6 +123,7 @@ Scenario Outline: Adding an audio file that is not valid
     | sample_audio.txt         | invalid file type |
 #    | sample_invalid_audio.mp3 | invalid file type |
 
+@noexec
 Scenario: Adding a file that contains a virus
   When I create a collection and save the pid
   And I create an object and save the pid

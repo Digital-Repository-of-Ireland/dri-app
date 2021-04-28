@@ -6,9 +6,9 @@
 
     <!-- If it's a root collection, we show all the objects within it -->
     <% if document.root_collection? %>
-      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable).to_sym => [document[ActiveFedora.index_field_mapper.solr_name('root_collection_id', :stored_searchable, type: :string)].first]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+      <% collection_objects_params = { f: {'root_collection_id_ssi'.to_sym => [document['root_collection_id_ssi']]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
     <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-      <% collection_objects_params = { f: {ActiveFedora.index_field_mapper.solr_name('ancestor_id', :facetable).to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+      <% collection_objects_params = { f: {'ancestor_id_ssim'.to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
     <% end %>
 
     <h5>

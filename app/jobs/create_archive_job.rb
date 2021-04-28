@@ -7,7 +7,7 @@ class CreateArchiveJob
   @queue = :create_archive
 
   def self.perform(object_id, email)
-    object = ActiveFedora::Base.find(object_id, cast: true)
+    object = DRI::Identifier.retrieve_object(object_id)
 
     # Get metadata
     # Get assets if masterfile
@@ -16,9 +16,9 @@ class CreateArchiveJob
 
     # 'optimised' directory containing all surrogates
     # 'originals' directory containing all master assets if master asset is accessible
-    Rails.logger.info "Creating archive package for object #{object.id}"
+    Rails.logger.info "Creating archive package for object #{object.alternate_id}"
 
-    bag_dir = Dir.mktmpdir("#{object.id}_")
+    bag_dir = Dir.mktmpdir("#{object.alternate_id}_")
     bag = ::BagIt::Bag.new bag_dir
     bag.write_bag_info({ "Source-Organization" => "Digital Repository of Ireland" })
     bag.write_bag_info(bag_info(object))
@@ -40,7 +40,7 @@ class CreateArchiveJob
     bag.manifest!
 
     # pick the filname and location
-    tmp = Tempfile.new("#{object.id}_")
+    tmp = Tempfile.new("#{object.alternate_id}_")
     zipfile = Zip::File.open(tmp.path, Zip::File::CREATE)
 
     files_to_zip = bag.bag_files + Dir.glob(File.join(bag_dir, '*.txt'))
@@ -65,15 +65,14 @@ class CreateArchiveJob
       next if gf.preservation_only == 'true'
 
       if inherited_masterfile_access(object) == "public"
-        lf = LocalFile.where('fedora_id LIKE :f AND ds_id LIKE :d', f: gf.id, d: 'content').order('version DESC').to_a.first
-        bag.add_file(File.join('originals', "#{gf.id}_#{gf.label}"), lf.path)
-        checksums << "#{gf.original_checksum.first} originals/#{gf.id}_#{gf.label}"
+        bag.add_file(File.join('originals', "#{gf.alternate_id}_#{gf.label}"), gf.path)
+        checksums << "#{gf.original_checksum.first} originals/#{gf.alternate_id}_#{gf.label}"
       end
 
       # Get surrogates
       surrogate = file_surrogate(object, gf)
       if surrogate
-        bag.add_file(File.join('optimised', "#{gf.id}_optimised_#{gf.label}"), surrogate)
+        bag.add_file(File.join('optimised', "#{gf.alternate_id}_optimised_#{gf.label}"), surrogate)
       end
     end
 
@@ -88,7 +87,7 @@ class CreateArchiveJob
 
   def self.bag_info(object)
     bag_info = {}
-    bag_info['Internal-Sender-Identifier'] = object.id
+    bag_info['Internal-Sender-Identifier'] = object.alternate_id
     bag_info['External-Identifier'] = object.doi if object.doi
 
     bag_info
@@ -127,9 +126,9 @@ class CreateArchiveJob
     storage = StorageService.new
 
     surrogate = Tempfile.new('surrogate')
-    storage_url = storage.surrogate_url(object.id,"#{generic_file.id}_full_size_web_format") ||
-                  storage.surrogate_url(object.id,"#{generic_file.id}_webm") ||
-                  storage.surrogate_url(object.id,"#{generic_file.id}_mp3")
+    storage_url = storage.surrogate_url(object.alternate_id,"#{generic_file.alternate_id}_full_size_web_format") ||
+                  storage.surrogate_url(object.alternate_id,"#{generic_file.alternate_id}_webm") ||
+                  storage.surrogate_url(object.alternate_id,"#{generic_file.alternate_id}_mp3")
 
     return nil unless storage_url
 

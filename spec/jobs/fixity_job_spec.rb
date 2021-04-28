@@ -28,9 +28,9 @@ describe 'FixityJob' do
 
   describe 'run' do
     it "should set create a FixityCheck for a collection\'s objects" do
-      report = FixityReport.create(collection_id: @collection_id)
-      expect{ FixityJob.perform(report.id, @collection_id, @collection.id) }.to change(FixityCheck, :count).by(1)
-      expect(FixityCheck.find_by(object_id: @object.id).verified).to be true
+      report = FixityReport.create(collection_id: @collection.alternate_id)
+      expect{ FixityJob.perform(report.id, @collection.alternate_id, @collection.alternate_id) }.to change(FixityCheck, :count).by(1)
+      expect(FixityCheck.find_by(object_id: @object.alternate_id).verified).to be true
     end
   end
 end

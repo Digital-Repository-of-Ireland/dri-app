@@ -1,5 +1,6 @@
 class PublishJob
   include Resque::Plugins::Status
+  include DRI::Versionable
 
   def queue
     :publish
@@ -11,20 +12,23 @@ class PublishJob
 
   def perform
     collection_id = options['collection_id']
+    user_id = options['user_id']
+    user = UserGroup::User.find(user_id)
 
     Rails.logger.info "Publishing collection #{collection_id}"
     set_status(collection_id: collection_id)
 
     # query for reviewed objects within this collection
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-    q_str += " AND #{ActiveFedora.index_field_mapper.solr_name('status', :stored_searchable, type: :symbol)}:reviewed"
+    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str += " AND status_ssi:reviewed"
 
     # excluding sub-collections
-    f_query = "#{Solrizer.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "is_collection_ssi:false"
 
-    completed, failed = set_as_published(collection_id, q_str, f_query)
+    completed, failed = set_as_published(collection_id, user, q_str, f_query)
 
-    collection = ActiveFedora::Base.find(collection_id, cast: true)
+    ident = DRI::Identifier.find_by!(alternate_id: collection_id)
+    collection = ident.identifiable
 
     # if already published skip
     return if collection.status == 'published'
@@ -38,9 +42,11 @@ class PublishJob
     if collection.save
       mint_doi(collection)
 
+      record_version_committer(collection, user)
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve
     else
       failed += 1
     end
@@ -48,8 +54,8 @@ class PublishJob
     completed(completed: completed, failed: failed)
   end
 
-  def set_as_published(collection_id, q_str, f_query)
-    total_objects = ActiveFedora::SolrService.count(q_str, { fq: f_query })
+  def set_as_published(collection_id, user, q_str, f_query)
+    total_objects = Solr::Query.new(q_str, 100, { fq: f_query }).count
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
 
@@ -60,7 +66,7 @@ class PublishJob
       collection_objects = query.pop
 
       collection_objects.each do |object|
-        o = ActiveFedora::Base.find(object['id'], { cast: true })
+        o = DRI::DigitalObject.find_by_alternate_id(object['alternate_id'])
 
         next unless o.status == 'reviewed'
         o.status = 'published'
@@ -68,9 +74,11 @@ class PublishJob
         o.increment_version
 
         if o.save
-          # Do the preservation actions
+          record_version_committer(o, user)
+
+	  # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
-          preservation.preserve(false, false, ['properties'])
+          preservation.preserve
 
           completed += 1
           mint_doi(o)
@@ -91,17 +99,8 @@ class PublishJob
   def mint_doi(obj)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    if obj.descMetadata.has_versions?
-      DataciteDoi.create(
-        object_id: obj.id,
-        modified: 'DOI created',
-        mod_version: obj.descMetadata.versions.last.uri
-      )
-    else
-      DataciteDoi.create(object_id: obj.id, modified: 'DOI created')
-    end
-
-    DRI.queue.push(MintDoiJob.new(obj.id))
+    DataciteDoi.create(object_id: obj.alternate_id, modified: 'DOI created')
+    DRI.queue.push(MintDoiJob.new(obj.alternate_id))
   rescue Exception => e
     Rails.logger.error "Unable to submit mint doi job: #{e.message}"
   end

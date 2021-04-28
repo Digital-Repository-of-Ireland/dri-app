@@ -55,7 +55,7 @@ class LicencesController < ApplicationController
   private
 
     def admin?
-      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
     end
 
     def create_or_modify_licence

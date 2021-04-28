@@ -44,11 +44,11 @@ describe ObjectsController do
       collection.governed_items << object
 
       expect {
-        delete :destroy, params: { id: object.id }
-      }.to change { ActiveFedora::Base.exists?(object.id) }.from(true).to(false)
+        delete :destroy, params: { id: object.alternate_id }
+      }.to change { DRI::Identifier.object_exists?(object.alternate_id) }.from(true).to(false)
 
       collection.reload
-      collection.delete
+      collection.destroy
     end
 
     it 'should not delete a published object for non-admin' do
@@ -65,12 +65,12 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy, params: { id: @object.id }
+      delete :destroy, params: { id: @object.alternate_id }
 
-      expect(ActiveFedora::Base.exists?(@object.id)).to be true
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be true
 
       @collection.reload
-      @collection.delete
+      @collection.destroy
     end
 
     it 'should delete a published object for an admin' do
@@ -86,43 +86,13 @@ describe ObjectsController do
 
       @collection.governed_items << @object
 
-      delete :destroy,  params: { id: @object.id }
+      delete :destroy,  params: { id: @object.alternate_id }
 
-      expect(ActiveFedora::Base.exists?(@object.id)).to be false
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
 
       @collection.reload
-      @collection.delete
+      @collection.destroy
     end
-
-    it 'should delete an incomplete object' do
-      collection = FactoryBot.create(:collection)
-      collection.depositor = User.find_by_email(@login_user.email).to_s
-      collection.manager_users_string=User.find_by_email(@login_user.email).to_s
-      collection.discover_groups_string="public"
-      collection.read_groups_string="registered"
-      collection.creator = [@login_user.email]
-
-      object = FactoryBot.create(:sound)
-      object[:status] = "draft"
-      object.depositor=User.find_by_email(@login_user.email).to_s
-      object.manager_users_string=User.find_by_email(@login_user.email).to_s
-      object.creator = [@login_user.email]
-
-      object.save
-
-      collection.governed_items << object
-
-      FileUtils.rm_rf aip_dir(object.id)
-      allow_any_instance_of(ObjectsController).to receive(:retrieve_object).and_raise(Ldp::HttpError)
-
-      delete :destroy, params: { id: object.id }
-
-      expect(ActiveFedora::SolrService.count("id:#{object.id}")).to be 0
-
-      collection.reload
-      collection.delete
-    end
-
   end
 
   describe 'create' do
@@ -134,7 +104,7 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @collection.destroy if DRI::Identifier.object_exists?(@collection)
       @login_user.delete
     end
 
@@ -149,7 +119,8 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
@@ -165,13 +136,13 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
 
   end
-
 
   describe 'status' do
 
@@ -233,20 +204,19 @@ describe ObjectsController do
     end
 
     after(:each) do
-      @object2.delete
-      @object.delete if ActiveFedora::Base.exists?(@object.id)
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
       @login_user.delete
     end
 
     it 'should set an object status' do
-      post :status, params: { id: @object.id, status: "reviewed" }
+      post :status, params: { id: @object.alternate_id, status: "reviewed" }
+
 
       @object.reload
 
       expect(@object.status).to eql("reviewed")
 
-      post :status, params: { id: @object.id, status: "draft" }
+      post :status, params: { id: @object.alternate_id, status: "draft" }
 
       @object.reload
 
@@ -254,7 +224,7 @@ describe ObjectsController do
     end
 
     it 'should set a parent subcollection to reviewed' do
-      post :status, params: { id: @object4.id, status: "reviewed" }
+      post :status, params: { id: @object4.alternate_id, status: "reviewed" }
 
       @object4.reload
       expect(@object4.status).to eql("reviewed")
@@ -276,8 +246,7 @@ describe ObjectsController do
       @object.status = "published"
       @object.save
 
-      post :status, params: { id: @object.id, status: "draft" }
-
+      post :status, params: { id: @object.alternate_id, status: "draft" }
       @object.reload
 
       expect(@object.status).to eql("published")
@@ -298,17 +267,17 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.alternate_id)
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["A modified title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, params: { id: @object.id, batch: params[:batch] }
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -327,17 +296,17 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.id)
+      DataciteDoi.create(object_id: @object.alternate_id)
 
       expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["An Audio Title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, params: { id: @object.id, batch: params[:batch] }
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["An Audio Title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
 
-      DataciteDoi.where(object_id: @object.id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).first.delete
       Settings.doi.enable = false
     end
 
@@ -361,7 +330,7 @@ describe ObjectsController do
       end
 
       after(:each) do
-        @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+        @collection.destroy if DRI::Identifier.object_exists?(@collection.id)
         @login_user.delete
 
         FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -380,17 +349,18 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
+        post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+
         expect(flash[:error]).to be_present
       end
 
       it 'should not allow object updates' do
         params = {}
-        params[:batch] = {}
-        params[:batch][:title] = ["An Audio Title"]
-        params[:batch][:read_users_string] = "public"
-        params[:batch][:edit_users_string] = @login_user.email
-        put :update, params: { id: @object.id, batch: params[:batch] }
+        params[:digital_object] = {}
+        params[:digital_object][:title] = ["An Audio Title"]
+        params[:digital_object][:read_users_string] = "public"
+        params[:digital_object][:edit_users_string] = @login_user.email
+        put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
 
         expect(flash[:error]).to be_present
       end
@@ -398,19 +368,20 @@ describe ObjectsController do
   end
 
   describe "collection is locked" do
+
     before(:each) do
       @login_user = FactoryBot.create(:admin)
       sign_in @login_user
       @collection = FactoryBot.create(:collection)
       @object = FactoryBot.create(:sound)
-      CollectionLock.create(collection_id: @collection.id)
+      CollectionLock.create(collection_id: @collection.alternate_id)
 
-      request.env["HTTP_REFERER"] = my_collections_path(@collection.id)
+      request.env["HTTP_REFERER"] = my_collections_path(@collection.alternate_id)
     end
 
     after(:each) do
-      CollectionLock.where(collection_id: @collection.id).delete_all
-      @collection.delete if ActiveFedora::Base.exists?(@collection.id)
+      CollectionLock.where(collection_id: @collection.alternate_id).delete_all
+      @collection.delete if DRI::Identifier.object_exists?(@collection.alternate_id)
       @login_user.delete
     end
 
@@ -424,7 +395,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { batch: { governing_collection: @collection.id }, metadata_file: @file }
+      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 
@@ -433,11 +404,11 @@ describe ObjectsController do
       @object.save
 
       params = {}
-      params[:batch] = {}
-      params[:batch][:title] = ["An Audio Title"]
-      params[:batch][:read_users_string] = "public"
-      params[:batch][:edit_users_string] = @login_user.email
-      put :update, params: { id: @object.id, batch: params[:batch] }
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["An Audio Title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
     end

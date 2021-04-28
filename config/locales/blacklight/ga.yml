@@ -143,7 +143,7 @@ ga:
           licence_sim: Ceadúnas
           person_sim: Ainmneacha
           placename_field_sim: Áiteanna
-          root_collection_id_sim: Bailiúchán
+          root_collection_id_ssi: Bailiúchán
           subject_sim: Ábhair
           temporal_coverage_sim: "Ábhar (Ré)"
         label:

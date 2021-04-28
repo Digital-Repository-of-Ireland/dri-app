@@ -5,11 +5,11 @@ module CollectionHelper
   # @return [FedoraObject] collection
   def get_collection(pid = nil)
     # override pid with collection id if pid is nil and collection.id exists
-    pid ||= @collection&.id
+    pid ||= @collection&.alternate_id
     if pid == 'the saved pid'
       pid = @collection_pid ? @collection_pid : @pid
     end
-    ActiveFedora::Base.find(pid, cast: true)
+    DRI::DigitalObject.find_by_alternate_id(pid)
   end
 end
 World(CollectionHelper)
@@ -18,7 +18,7 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   pid = @random_pid if (pid.nil? || pid == "random")
   @pid = pid
 
-  @collection = DRI::Batch.with_standard(:qdc, {:id => pid})
+  @collection = DRI::QualifiedDublinCore.new(alternate_id: pid)
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]
   @collection.rights = [SecureRandom.hex(20)]
@@ -49,8 +49,8 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
 
   expect(@collection.governed_items.count).to be == 0
 
-  group = UserGroup::Group.new(name: @collection.id,
-                               description: "Default Reader group for collection #{@collection.id}")
+  group = UserGroup::Group.new(name: @collection.alternate_id,
+                               description: "Default Reader group for collection #{@collection.alternate_id}")
   group.save
 end
 
@@ -77,14 +77,15 @@ end
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
+    @digital_object = DRI::QualifiedDublinCore.create(alternate_id: pid)
     # TODO: add similar guard clause to build_hash_dir ?
     err_msg = 'A pid must be at least 6 characters long. '\
     'Otherwise methods will break, for example '\
     'preservation_helpers.rb#build_hash_dir assumes pid.length >= 6'
     raise ArgumentError, err_msg if pid.length < 6
-    @digital_object = DRI::Batch.with_standard(:qdc, { id: pid })
+    @digital_object = DRI::DigitalObject.with_standard(:qdc, { alternate_id: pid })
   else
-    @digital_object = DRI::Batch.with_standard(:qdc)
+    @digital_object = DRI::DigitalObject.with_standard(:qdc)
   end
 
   @digital_object.title = title ? [title] : ["Test Object"]
@@ -106,52 +107,32 @@ Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(
   @digital_object.creation_date = ["2000-01-01"]
   @digital_object.status = 'draft'
 
-  coll ||= @collection.id unless @collection.nil?
+  coll ||= @collection.alternate_id unless @collection.nil?
 
-  @digital_object.governing_collection = ActiveFedora::Base.find(coll, cast: true) if coll
+  @digital_object.governing_collection = DRI::Identifier.retrieve_object(coll) if coll
 
   checksum_metadata(@digital_object)
   @digital_object.save!
 
   preservation = Preservation::Preservator.new(@digital_object)
-  preservation.preserve(false, false, ['descMetadata','properties'])
-end
-
-Given /^a Digital Object of type "(.*?)" with pid "(.*?)" and title "(.*?)"(?: created by "(.*?)")?/ do |type, pid, title, user|
-  pid = "o" + @random_pid if (pid == "@random")
-  case type
-   when 'Audio'
-    digital_object = DRI::Model::Audio.new(pid: pid)
-   when 'Pdf'
-    digital_object = DRI::Model::Pdfdoc.new(pid: pid)
-  end
-
-  digital_object.title = [title]
-  if user
-    digital_object.depositor = User.find_by_email(user).to_s
-    digital_object.manager_users_string=User.find_by_email(user).to_s
-    #digital_object.edit_groups_string="registered"
-  end
-  digital_object.date = ["2000-01-01"]
-  digital_object.rights = ["This is a statement of rights"]
-  digital_object.save
+  preservation.preserve(['descMetadata'])
 end
 
 Given /^the collection with pid "([^\"]+)" is in the collection with pid "([^\"]+)"$/ do |subcolid, colid|
-  subcollection = ActiveFedora::Base.find(subcolid, {:cast => true})
-  subcollection.governing_collection_id = colid
+  subcollection = DRI::DigitalObject.find_by_alternate_id(subcolid)
+  subcollection.governing_collection = DRI::DigitalObject.find_by_alternate_id(colid)
   subcollection.save
 end
 
 Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)")?$/ do |objid, colid|
   if objid
-    object = ActiveFedora::Base.find(objid, {:cast => true})
+    object = DRI::Identifier.retrieve_object(objid)
   else
     object = @digital_object
   end
-  colid = @collection.id unless colid
+  colid = @collection.alternate_id unless colid
 
-  collection = ActiveFedora::Base.find(colid, {:cast => true})
+  collection = DRI::Identifier.retrieve_object(colid)
   object.governing_collection = collection
   checksum_metadata(object)
   object.update_index
@@ -159,7 +140,7 @@ Given /^the object(?: with pid "(.*?)")? is in the collection(?: with pid "(.*?)
   collection.save
 end
 
-Given /^the collection(?: with pid "(.*?)")? is published$/ do |colid|
+Given /^the collection(?: with pid "(.*?)")? is published?$/ do |colid|
   collection = get_collection(colid)
   collection.governed_items.each do |o|
     o.status = 'published'
@@ -195,7 +176,7 @@ end
 # Given /^the object with pid "([^\"]+) is reviewed"$/ do |pid|
 Given /^the (object|collection)(?: with pid "([^\"]+)")? is reviewed$/ do |_, objid|
   if objid
-    object = ActiveFedora::Base.find(objid, cast: true)
+    object = DRI::DigitalObject.find_by_alternate_id(objid)
   else
     object = @digital_object
   end
@@ -215,40 +196,40 @@ end
 When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "batch_title][" with "#{title}"
-    And I fill in "batch_description][" with "Test description"
-    And I fill in "batch_rights][" with "Test rights"
-    And I fill in "batch_creator][" with "test@test.com"
-    And I fill in "batch_creation_date][" with "2000-01-01"
+    When I fill in "digital_object_title][" with "#{title}"
+    And I fill in "digital_object_description][" with "Test description"
+    And I fill in "digital_object_rights][" with "Test rights"
+    And I fill in "digital_object_creator][" with "test@test.com"
+    And I fill in "digital_object_creation_date][" with "2000-01-01"
   }
 end
 
 When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "batch_title][" with "#{title}"
-    And I fill in "batch_description][" with "Test description"
-    And I fill in "batch_creation_date][" with "2000-01-01"
-    And I fill in "batch_rights][" with ""
+    When I fill in "digital_object_title][" with "#{title}"
+    And I fill in "digital_object_description][" with "Test description"
+    And I fill in "digital_object_creation_date][" with "2000-01-01"
+    And I fill in "digital_object_rights][" with ""
   }
 end
 
 When /^I enter valid permissions for a collection$/ do
   steps %{
-    When choose "batch_read_groups_string_radio_public"
+    When choose "digital_object_read_groups_string_radio_public"
   }
 end
 
 When /^I enter invalid permissions for a collection$/ do
   steps %{
-    And I fill in "batch_manager_users_string" with ""
-    And I fill in "batch_edit_users_string" with ""
+    And I fill in "digital_object_manager_users_string" with ""
+    And I fill in "digital_object_edit_users_string" with ""
   }
 end
 
 When /^I add the Digital Object "(.*?)" to the collection "(.*?)" as type "(.*?)"$/ do |object_pid,collection_pid,type|
-  object = DRI::Batch.find(object_pid)
-  collection = DRI::Batch.find(collection_pid)
+  object = DRI::Identifier.retrieve_object(object_pid)
+  collection = DRI::Identifier.retrieve_object(collection_pid)
   case type
     when "governing"
       object.title = [SecureRandom.hex(5)]
@@ -267,8 +248,8 @@ When /^I (click|press) the edit collection button with text "(.*?)"$/ do |_, but
 end
 
 Then /^the collection "(.*?)" should contain the Digital Object "(.*?)"(?: as type "(.*?)")?$/ do |collection_pid,object_pid,*type|
-  object = ActiveFedora::Base.find(object_pid, {:cast => true})
-  collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
+  object = DRI::Identifier.retrieve_object(object_pid)
+  collection = DRI::Identifier.retrieve_object(collection_pid)
   case type
     when "governing"
       collection.governed_items.length.should == 1
@@ -289,12 +270,12 @@ Then /^I should be given a choice of using the existing object or creating a new
 end
 
 Then /^I should see the Digital Object "(.*?)" as part of the collection$/ do |object_pid|
-  object = DRI::Batch.find(object_pid)
+  object = DRI::Identifier.retrieve_object(object_pid)
   page.should have_content object.title
 end
 
 Then /^the collection "(.*?)" should contain the new digital object$/ do |collection_pid|
-  collection = ActiveFedora::Base.find(collection_pid, {:cast => true})
+  collection = DRI::Identifier.retrieve_object(collection_pid)
   collection.governed_items.count.should == 1
   collection.governed_items[0].title.should == ["SAMPLE AUDIO TITLE"]
 end

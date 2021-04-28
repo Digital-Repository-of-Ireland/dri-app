@@ -13,6 +13,7 @@
     <field name="_version_" type="long" indexed="true" stored="true"/> 
   
     <field name="id" type="string" stored="true" indexed="true" multiValued="false" required="true"/>
+    <field name="alternate_id" type="string" stored="true" indexed="true" multiValued="false"/>
     <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
     <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>   
  
@@ -214,8 +215,6 @@
    <copyField source="placename_field_tesim" dest="spell"/>
    <copyField source="geographical_coverage_eng_tesim" dest="spell" />
 
-   <defaultSearchField>text</defaultSearchField>
-
    <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>    
@@ -344,7 +343,6 @@
     <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100" >
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
       </analyzer>

@@ -29,6 +29,7 @@ I want to be able to use the faceted search interface
 # Note that facets do not appear on the main page
 # Thus we need to perform an empty search first
 # This is probably a bug, need confirmation of what should appear on main page
+@test
 Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
   Given a collection with pid "collection" and title "Test collection" created by "admin"
   And an object in collection "collection" with metadata from file "SAMPLEA.xml"
@@ -46,7 +47,7 @@ Scenario Outline: Faceted Search for a normal end-user (anonymous or registered)
     | Places     | blacklight-placename_field_sim       | sample country  | SAMPLE AUDIO TITLE |
     | Names      | blacklight-person_sim                | collins         | SAMPLE AUDIO TITLE |
     | Language   | blacklight-language_sim              | English         | SAMPLE AUDIO TITLE |
-    | Collection | blacklight-root_collection_id_sim    | Test collection | SAMPLE AUDIO TITLE |
+    | Collection | blacklight-root_collection_id_ssi    | Test collection | SAMPLE AUDIO TITLE |
     #| Institute  | blacklight-institute_sim             | Test Institute  | SAMPLE AUDIO TITLE |
 
 Scenario: Case Insensitive Facets

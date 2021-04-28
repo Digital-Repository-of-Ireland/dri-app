@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   include Blacklight::Controller
 
   # Adds Hydra behaviors into the application controller
-  include Hydra::Controller::ControllerBehavior
+  #include Hydra::Controller::ControllerBehavior
 
   include DRI::Exceptions
 
@@ -29,13 +29,13 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery prepend: true
 
-  rescue_from Hydra::AccessDenied, with: :render_access_denied
+  rescue_from Blacklight::AccessControls::AccessDenied, with: :render_access_denied
   rescue_from DRI::Exceptions::InternalError, with: :render_internal_error
   rescue_from DRI::Exceptions::BadRequest, with: :render_bad_request
   rescue_from DRI::Exceptions::NotFound, with: :render_not_found
   rescue_from DRI::Exceptions::NotImplemented, with: :render_not_implemented
   rescue_from DRI::Exceptions::Unauthorized, with: :render_unauthorised
-  
+
   rescue_from DRI::Exceptions::InvalidXML do |exception|
     flash[:error] = t('dri.flash.alert.invalid_xml', error: exception)
     render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
@@ -79,19 +79,17 @@ class ApplicationController < ActionController::Base
     user_group.new_user_session_url
   end
 
-  # Retrieves a Fedora Digital Object by ID
+  # Retrieves a Digital Object by ID
   def retrieve_object(id)
-    ActiveFedora::Base.find(id, cast: true)
+    ident = DRI::Identifier.find_by(alternate_id: id)
+    return nil unless ident
+    ident.identifiable
   end
 
   def retrieve_object!(id)
-    begin
-      objs = ActiveFedora::Base.find(id, cast: true)
-    rescue Ldp::HttpError
-      raise DRI::Exceptions::InternalError
-    end
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if objs.nil?
-    objs
+    ident = DRI::Identifier.find_by(alternate_id: id)
+    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if ident.nil?
+    ident.identifiable
   end
 
   # Return a list of all supported licences (for populating select dropdowns)
@@ -137,7 +135,7 @@ class ApplicationController < ActionController::Base
         if request.env["HTTP_REFERER"].present?
           redirect_back(fallback_location: root_path)
         else
-          raise Hydra::AccessDenied.new(t('dri.flash.alert.create_permission'))
+          raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.create_permission'))
         end
       end
     end
@@ -156,8 +154,7 @@ class ApplicationController < ActionController::Base
 
     def locked(id)
       obj = SolrDocument.find(id)
-
-      return unless CollectionLock.exists?(collection_id: obj.root_collection_id)
+      return unless CollectionLock.exists?(collection_id: obj.root_collection.alternate_id)
 
       respond_to do |format|
         format.json { head :forbidden }

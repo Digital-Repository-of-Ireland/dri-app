@@ -41,16 +41,16 @@ describe "PublishCollectionJob" do
   end
 
   after(:each) do
-    @collection.delete
+    @collection.destroy
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
-  
+
   describe "perform" do
     it "should trigger jobs for subcollections" do
       expect(PublishJob).to receive(:create).exactly(3).times
-      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
     end
 
@@ -59,7 +59,7 @@ describe "PublishCollectionJob" do
       @subcollection.save
 
       expect(PublishJob).to receive(:create).exactly(3).times
-      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
     end
 
@@ -68,7 +68,7 @@ describe "PublishCollectionJob" do
       @subcollection.save
 
       expect(PublishJob).to receive(:create).exactly(2).times
-      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
     end
 

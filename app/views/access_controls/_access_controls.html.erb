@@ -6,14 +6,14 @@
     var manager_user_textbox;
 
     $('#dri_access_control_fields').ready(function () {
-        read_user_textbox = new ImprovedTextBox('#batch_read_users_string');
-        read_group_textbox = new ImprovedTextBox('#batch_read_groups_string');
+        read_user_textbox = new ImprovedTextBox('#digital_object_read_users_string');
+        read_group_textbox = new ImprovedTextBox('#digital_object_read_groups_string');
         init_read_access();
 
-        edit_user_textbox = new ImprovedTextBox('#batch_edit_users_string');
+        edit_user_textbox = new ImprovedTextBox('#digital_object_edit_users_string');
         init_edit_access();
 
-        manager_user_textbox = new ImprovedTextBox('#batch_manager_users_string');
+        manager_user_textbox = new ImprovedTextBox('#digital_object_manager_users_string');
         init_manager_access();
     });
 
@@ -24,16 +24,16 @@
 
         if (typeof original_value_user != "undefined" && original_value_user!=""){
             //Know its restricted without checking for public/registered
-            $('#batch_read_groups_string_radio_restricted').attr('checked', true);
+            $('#digital_object_read_groups_string_radio_restricted').attr('checked', true);
         }else{
             if((original_value_group=="") && (!inherit_disabled)){
-                $('#batch_read_groups_string_radio_inherit').attr('checked', true);
+                $('#digital_object_read_groups_string_radio_inherit').attr('checked', true);
             }else if(original_value_group=="public"){
-                $('#batch_read_groups_string_radio_public').attr('checked',true);
+                $('#digital_object_read_groups_string_radio_public').attr('checked',true);
             }else if(original_value_group=="registered"){
-                $('#batch_read_groups_string_radio_logged').attr('checked', true);
+                $('#digital_object_read_groups_string_radio_logged').attr('checked', true);
             }else{
-                $('#batch_read_groups_string_radio_restricted').attr('checked', true);
+                $('#digital_object_read_groups_string_radio_restricted').attr('checked', true);
             }
         }
     }
@@ -43,11 +43,11 @@
         var original_value_user = edit_user_textbox.value();
 
         if(original_value_user!="" || inherit_disabled){
-            $('#batch_edit_users_string_radio_restricted').attr('checked', true);
+            $('#digital_object_edit_users_string_radio_restricted').attr('checked', true);
             edit_toggle_show_textboxes(true);
         }else{
             edit_toggle_show_textboxes(false);
-            $('#batch_edit_users_string_radio_inherit').attr('checked', true);
+            $('#digital_object_edit_users_string_radio_inherit').attr('checked', true);
         }
     }
 
@@ -55,19 +55,19 @@
         var inherit_disabled = $('#dri_access_control_fields').data('inherit-disabled');
         var original_value_user = manager_user_textbox.value();
 
-        if (typeof(batch_manager_users_string_radio_restricted)!='undefined'){
+        if (typeof(digital_object_manager_users_string_radio_restricted)!='undefined'){
             if(original_value_user!="" || inherit_disabled){
-                $('#batch_manager_users_string_radio_restricted').attr('checked', true);
+                $('#digital_object_manager_users_string_radio_restricted').attr('checked', true);
                 manager_toggle_show_textboxes(true);
             }else{
                 manager_toggle_show_textboxes(false);
-                $('#batch_manager_users_string_radio_inherit').attr('checked', true);
+                $('#digital_object_manager_users_string_radio_inherit').attr('checked', true);
             }
         }
     }
 
     function read_field_toggle(gid){
-        var val = $('input[name="batch[read_groups_string]"]:checked').val();
+        var val = $('input[name="digital_object[read_groups_string]"]:checked').val();
         if(val=="radio_inherit"){
             read_group_textbox.val("");
             read_user_textbox.val("");
@@ -105,7 +105,7 @@
     }
 
     function edit_field_toggle(){
-        var val = $('input[name="batch[edit_users_string]"]:checked').val();
+        var val = $('input[name="digital_object[edit_users_string]"]:checked').val();
         if(val=="radio_inherit"){
             edit_user_textbox.val("");
             edit_toggle_show_textboxes(false);
@@ -118,7 +118,7 @@
     }
 
     function manager_field_toggle(){
-        var val = $('input[name="batch[manager_users_string]"]:checked').val();
+        var val = $('input[name="digital_object[manager_users_string]"]:checked').val();
         if(val=="radio_inherit"){
             manager_user_textbox.val("");
             manager_toggle_show_textboxes(false);
@@ -162,19 +162,19 @@
       manager_field_toggle();
     });
 
-    $( "#batch_read_groups_string" ).keyup(function() {
+    $( "#digital_object_read_groups_string" ).keyup(function() {
       read_group_textbox.catch_tb_value();
     });
 
-    $( "#batch_read_users_string" ).keyup(function() {
+    $( "#digital_object_read_users_string" ).keyup(function() {
       read_user_textbox.catch_tb_value();
     });
 
-    $( "#batch_edit_users_string" ).keyup(function() {
+    $( "#digital_object_edit_users_string" ).keyup(function() {
       edit_user_textbox.catch_tb_value();
     });
 
-    $( "#batch_manager_users_string" ).keyup(function() {
+    $( "#digital_object_manager_users_string" ).keyup(function() {
       manager_user_textbox.catch_tb_value();
     });
 </script>

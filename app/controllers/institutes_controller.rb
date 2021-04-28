@@ -57,7 +57,7 @@ class InstitutesController < ApplicationController
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @object = ActiveFedora::Base.find(params[:object], cast: true) if params[:object]
+    @object = retrieve_object!(params[:object]) if params[:object]
 
     respond_to do |format|
       format.html { redirect_to organisations_url }
@@ -124,19 +124,19 @@ class InstitutesController < ApplicationController
 
     @collection.increment_version
 
-    updated = @collection.save
-
-    if updated
+    if @collection.save
       # Do the preservation actions
+      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.alternate_id, committer_login: current_user.to_s)
+
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve
     else
       raise DRI::Exceptions::InternalError
     end
 
     respond_to do |format|
       flash[:notice] = t('dri.flash.notice.organisations_set')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.id }
+      format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.alternate_id }
     end
   end
 
@@ -159,7 +159,7 @@ class InstitutesController < ApplicationController
 
     def manage_association
       # save the institute name to the properties datastream
-      @collection = ActiveFedora::Base.find(params[:object], cast: true)
+      @collection = retrieve_object(params[:object])
       raise DRI::Exceptions::NotFound unless @collection
 
       @collection.increment_version
@@ -169,18 +169,19 @@ class InstitutesController < ApplicationController
       @collection_institutes = Institute.where(name: @collection.institute.flatten).to_a
       @depositing_institute = @collection.depositing_institute.present? ? Institute.find_by(name: @collection.depositing_institute) : nil
 
+      VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.alternate_id, committer_login: current_user.to_s)
+
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@collection)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve
 
       respond_to do |format|
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.id }
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @collection.alternate_id }
       end
     end
 
     def add_association
       institute_name = params[:institute_name]
-
       if params[:type].present? && params[:type] == 'depositing'
         @collection.depositing_institute = institute_name
       else
@@ -198,14 +199,13 @@ class InstitutesController < ApplicationController
     def delete_association
       institute_name = params[:institute_name]
       @collection.institute = @collection.institute - [institute_name]
-
       raise DRI::Exceptions::InternalError unless @collection.save
 
       flash[:notice] = "#{institute_name} #{t('dri.flash.notice.organisation_removed')}"
     end
 
     def admin?
-      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
     end
 
     def update_params

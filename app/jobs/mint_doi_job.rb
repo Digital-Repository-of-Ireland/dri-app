@@ -1,6 +1,6 @@
 require 'doi/datacite'
 
-class MintDoiJob < ActiveFedoraIdBasedJob
+class MintDoiJob < IdBasedJob
 
   def queue_name
     :doi
@@ -22,7 +22,7 @@ class MintDoiJob < ActiveFedoraIdBasedJob
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(object)
-      preservation.preserve(false, false, ['properties'])
+      preservation.preserve
     end
   end
 

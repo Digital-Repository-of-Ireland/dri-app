@@ -9,9 +9,9 @@ class CatalogController < ApplicationController
       # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
       # support wildcards in advanced search
       query_parser: 'edismax',
-      url_key: 'advanced'
+      url_key: 'advanced',
     }
-
+    #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
 
     config.show.route = { controller: 'catalog' }
@@ -27,12 +27,12 @@ class CatalogController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.title_field = solr_name('title', :stored_searchable, type: :string)
-    config.index.record_tsim_type = solr_name('has_model', :stored_searchable, type: :symbol)
+    config.index.title_field = Solrizer.solr_name('title', :stored_searchable, type: :string)
+    config.index.record_tsim_type = Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)
 
     # solr field configuration for document/show views
-    config.show.title_field = solr_name('title', :stored_searchable, type: :string)
-    config.show.display_type_field = solr_name('file_type', :stored_searchable, type: :string)
+    config.show.title_field = Solrizer.solr_name('title', :stored_searchable, type: :string)
+    config.show.display_type_field = Solrizer.solr_name('file_type', :stored_searchable, type: :string)
 
     config.show.document_actions.delete(:email)
     config.show.document_actions.delete(:sms)
@@ -48,62 +48,61 @@ class CatalogController < ApplicationController
     config.add_facet_field 'pdate_range_start_isi', show: false
     config.add_facet_field 'date_range_start_isi', show: false
 
-    config.add_facet_field solr_name('licence', :facetable), label: 'Licence', limit: 20
-    config.add_facet_field solr_name('subject', :facetable), limit: 20
-    config.add_facet_field solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
-    config.add_facet_field solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
-    config.add_facet_field solr_name('placename_field', :facetable), show: true, limit: 20
-    config.add_facet_field solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
-    config.add_facet_field solr_name('creator', :facetable), label: 'creators', show: false
-    config.add_facet_field solr_name('contributor', :facetable), label: 'contributors', show: false
-    config.add_facet_field solr_name('person', :facetable), limit: 20, helper_method: :parse_orcid
-    config.add_facet_field solr_name('language', :facetable), helper_method: :label_language, limit: true
-    config.add_facet_field solr_name('file_type_display', :facetable)
-    config.add_facet_field solr_name('institute', :facetable), limit: 10
-    config.add_facet_field solr_name('root_collection_id', :facetable), helper_method: :collection_title, limit: 10
+    config.add_facet_field Solrizer.solr_name('licence', :facetable), label: 'Licence', limit: 20
+    config.add_facet_field Solrizer.solr_name('subject', :facetable), limit: 20
+    config.add_facet_field Solrizer.solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
+    config.add_facet_field Solrizer.solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
+    config.add_facet_field Solrizer.solr_name('placename_field', :facetable), show: true, limit: 20
+    config.add_facet_field Solrizer.solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
+    config.add_facet_field Solrizer.solr_name('creator', :facetable), label: 'creators', show: false
+    config.add_facet_field Solrizer.solr_name('contributor', :facetable), label: 'contributors', show: false
+    config.add_facet_field Solrizer.solr_name('person', :facetable), limit: 20, helper_method: :parse_orcid
+    config.add_facet_field Solrizer.solr_name('language', :facetable), helper_method: :label_language, limit: true
+    config.add_facet_field Solrizer.solr_name('file_type_display', :facetable)
+    config.add_facet_field Solrizer.solr_name('institute', :facetable), limit: 10
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
 
     # Added to test sub-collection belonging objects filter in object results view
-    config.add_facet_field solr_name('ancestor_id', :facetable), label: 'ancestor_id', helper_method: :collection_title, show: false
-    config.add_facet_field solr_name('is_collection', :facetable), label: 'is_collection', helper_method: :is_collection, show: false
+    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
+    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
 
     config.add_facet_fields_to_solr_request!
 
     # Solr fields to be displayed in the index (search results) view
     # The ordering of the field names is the order of the display
-    config.add_index_field solr_name('title', :stored_searchable, type: :string), label: 'title'
-    config.add_index_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
-    config.add_index_field solr_name('creator', :stored_searchable, type: :string), label: 'creators'
-    config.add_index_field solr_name('format', :stored_searchable), label: 'format'
-    config.add_index_field solr_name('file_type_display', :stored_searchable, type: :string), label: 'Mediatype'
-    config.add_index_field solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
-    config.add_index_field solr_name('published', :stored_searchable, type: :string), label: 'Published:'
+    config.add_index_field Solrizer.solr_name('title', :stored_searchable, type: :string), label: 'title'
+    config.add_index_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
+    config.add_index_field Solrizer.solr_name('creator', :stored_searchable, type: :string), label: 'creators'
+    config.add_index_field Solrizer.solr_name('format', :stored_searchable), label: 'format'
+    config.add_index_field Solrizer.solr_name('file_type_display', :stored_searchable, type: :string), label: 'Mediatype'
+    config.add_index_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
+    config.add_index_field Solrizer.solr_name('published', :stored_searchable, type: :string), label: 'Published:'
 
     # solr fields to be displayed in the show (single result) view
     # The ordering of the field names is the order of the display
-    config.add_show_field solr_name('title', :stored_searchable, type: :string), label: 'title'
-    config.add_show_field solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
-    config.add_show_field solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
-    config.add_show_field solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
-    config.add_show_field solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
-    config.add_show_field solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
+    config.add_show_field Solrizer.solr_name('title', :stored_searchable, type: :string), label: 'title'
+    config.add_show_field Solrizer.solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
+    config.add_show_field Solrizer.solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
+    config.add_show_field Solrizer.solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
+    config.add_show_field Solrizer.solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
+    config.add_show_field Solrizer.solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
     DRI::Vocabulary.marc_relators.each do |role|
-      config.add_show_field solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
+      config.add_show_field Solrizer.solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
     end
-    config.add_show_field solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
-    config.add_show_field solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
-    config.add_show_field solr_name('publisher', :stored_searchable), label: 'publishers'
-    config.add_show_field solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
-    config.add_show_field solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
-    config.add_show_field solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
-    config.add_show_field solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
-    config.add_show_field solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
-    config.add_show_field solr_name('name_coverage', :stored_searchable, type: :string), label: 'name_coverage'
-    config.add_show_field solr_name('format', :stored_searchable), label: 'format'
-    config.add_show_field solr_name('type', :stored_searchable, type: :string), label: 'type'
-    config.add_show_field solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
-    config.add_show_field solr_name('source', :stored_searchable, type: :string), label: 'sources'
-    config.add_show_field solr_name('rights', :stored_searchable, type: :string), label: 'rights'
-    config.add_show_field solr_name('properties_status', :stored_searchable, type: :string), label: 'status'
+    config.add_show_field Solrizer.solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
+    config.add_show_field Solrizer.solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
+    config.add_show_field Solrizer.solr_name('publisher', :stored_searchable), label: 'publishers'
+    config.add_show_field Solrizer.solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
+    config.add_show_field Solrizer.solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
+    config.add_show_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
+    config.add_show_field Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
+    config.add_show_field Solrizer.solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
+    config.add_show_field Solrizer.solr_name('name_coverage', :stored_searchable, type: :string), label: 'name_coverage'
+    config.add_show_field Solrizer.solr_name('format', :stored_searchable), label: 'format'
+    config.add_show_field Solrizer.solr_name('type', :stored_searchable, type: :string), label: 'type'
+    config.add_show_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
+    config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
+    config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
 
     config.add_search_field 'all_fields', label: 'All Fields'
 
@@ -116,11 +115,21 @@ class CatalogController < ApplicationController
       title subject description creator contributor publisher person place
     ]
 
+    config.add_search_field(:title) do |field|
+      field.solr_parameters = {
+        qf: "title_unstem_search^50000 title_tesim^5000",
+        pf: "title_unstem_search^500000 title_tesim^50000"
+      }
+      field.label = self.solr_field_to_label(:title)
+    end
+
     config.dri_all_search_fields.each do |field_name|
+      next if field_name == :title
+
       config.add_search_field(field_name) do |field|
-        field.solr_local_parameters = {
-          qf: "$#{field_name}_qf",
-          pf: "$#{field_name}_pf"
+        field.solr_parameters = {
+          qf: "#{field_name}_unstem_search^125 #{field_name}_tesim^50",
+          pf: "#{field_name}_unstem_search^1250 #{field_name}_tesim^1000"
         }
         field.label = self.solr_field_to_label(field_name)
       end
@@ -163,7 +172,7 @@ class CatalogController < ApplicationController
         limit: 100,            # number of records returned with each request, default: 15
         set_model: DRI::OaiProvider::AncestorSet,
         set_fields: [        # ability to define ListSets, optional, default: nil
-          { label: 'collection', solr_field: 'ancestor_id_sim' }
+          { label: 'collection', solr_field: 'ancestor_id_ssim' }
         ]
       }
     }
@@ -215,18 +224,21 @@ class CatalogController < ApplicationController
       format.json do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
+        options[:with_metadata] = true
         formatter = DRI::Formatters::Json.new(self, @document, options)
         render json: formatter.format(func: :as_json)
       end
       format.ttl do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
+        options[:with_metadata] = true
         formatter = DRI::Formatters::Rdf.new(self, @document, options)
         render plain: formatter.format({format: :ttl})
       end
       format.rdf do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
+        options[:with_metadata] = true
         formatter = DRI::Formatters::Rdf.new(self, @document, options)
         render plain: formatter.format({format: :xml})
       end

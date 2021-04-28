@@ -16,8 +16,8 @@ class WorkspaceController < ApplicationController
   end
 
   def readers
-    query = "(_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
-    fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
+    query = "(_query_:\"{!join from=alternate_id to=ancestor_id_ssim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
+    fq = ["+is_collection_ssi:true"]
     fq << '+read_access_group_ssim:[* TO *]'
     fq << '-read_access_group_ssim:public'
 
@@ -25,7 +25,7 @@ class WorkspaceController < ApplicationController
     manage_collections = query.to_a
 
     group_memberships = manage_collections.map do |collection|
-      group = UserGroup::Group.find_by(name: collection.id)
+      group = UserGroup::Group.find_by(name: collection.alternate_id)
       next unless group
 
       pending_memberships = group.pending_memberships
@@ -41,8 +41,8 @@ class WorkspaceController < ApplicationController
   private
 
     def manage_or_edit_collections_count(type: nil)
-      manage_query = "(_query_:\"{!join from=id to=ancestor_id_sim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
-      edit_query = "(_query_:\"{!join from=id to=ancestor_id_sim}edit_access_person_ssim:#{current_user.email}\" OR edit_access_person_ssim:#{current_user.email})"
+      manage_query = "(_query_:\"{!join from=alternate_id to=ancestor_id_ssim}manager_access_person_ssim:#{current_user.email}\" OR manager_access_person_ssim:#{current_user.email})"
+      edit_query = "(_query_:\"{!join from=alternate_id to=ancestor_id_ssim}edit_access_person_ssim:#{current_user.email}\" OR edit_access_person_ssim:#{current_user.email})"
 
       query = case type
               when :manage
@@ -52,8 +52,8 @@ class WorkspaceController < ApplicationController
               else
                 "#{manage_query} OR #{edit_query}"
               end
-      fq = ["+#{ActiveFedora.index_field_mapper.solr_name('is_collection', :facetable, type: :string)}:true"]
+      fq = ["+is_collection_ssi:true"]
 
-      ActiveFedora::SolrService.count(query, fq: fq)
+      Solr::Query.new(query, 100, fq: fq).count
     end
 end

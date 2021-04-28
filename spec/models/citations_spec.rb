@@ -2,18 +2,18 @@ require 'rails_helper'
 
 describe "Object citations" do
   it "should correctly format a citation" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A test of citations"]
     @t.creator = ["A. Tester"]
     @t.rights = ["Rights"]
     @t.creation_date = ["2015-05-12"]
     @t.type = ["Text"]
 
-    (@t.export_as_dri_citation).should eq("A. Tester. A test of citations, Digital Repository of Ireland [Distributor]")
+    expect(@t.export_as_dri_citation).to eq("A. Tester. A test of citations, Digital Repository of Ireland [Distributor]")
   end
 
   it "should add the published year" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A test of citations"]
     @t.creator = ["A. Tester"]
     @t.rights = ["Rights"]
@@ -25,11 +25,11 @@ describe "Object citations" do
 
     @t.type = ["Text"]
 
-    (@t.export_as_dri_citation).should eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor]")
+    expect(@t.export_as_dri_citation).to eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor]")
   end
 
   it "should add the depositing institute" do
-    @t = DRI::Batch.with_standard :qdc
+    @t = DRI::DigitalObject.with_standard :qdc
     @t.title = ["A test of citations"]
     @t.creator = ["A. Tester"]
     @t.rights = ["Rights"]
@@ -41,7 +41,7 @@ describe "Object citations" do
 
     @t.type = ["Text"]
 
-    @c = DRI::Batch.with_standard :qdc
+    @c = DRI::DigitalObject.with_standard :qdc
     @c.type = ["Collection"]
     @c.creator = ["A. Collection"] 
     @c.rights = ["Rights"]
@@ -50,7 +50,7 @@ describe "Object citations" do
 
     @t.governing_collection = @c
 
-    (@t.export_as_dri_citation).should eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor], Depositing Institute [Depositing Institution]")
+    expect(@t.export_as_dri_citation).to eq("A. Tester. (#{year}) A test of citations, Digital Repository of Ireland [Distributor], Depositing Institute [Depositing Institution]")
   end
 
 end

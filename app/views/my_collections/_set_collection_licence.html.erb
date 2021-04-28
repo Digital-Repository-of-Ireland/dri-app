@@ -1,4 +1,4 @@
-<%= form_for @document, as: :batch, html: { id: 'choose_licence' }, :url => {:controller=>"collections", :action=>"set_licence"}, :method=>"put" do |f| %>
+<%= form_for @document, as: :digital_object, html: { id: 'choose_licence' }, :url => {:controller=>"collections", :action=>"set_licence"}, :method=>"put" do |f| %>
 
 <%= render partial: 'shared/form_licence', locals: { f: f } %>
 

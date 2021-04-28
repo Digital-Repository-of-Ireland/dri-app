@@ -5,7 +5,6 @@ module DRI::Readable
   def governing_reader_group(collection_id)
     doc = SolrDocument.find(collection_id)
     read_groups = doc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
-
     if read_groups && read_groups.include?(collection_id)
       return UserGroup::Group.find_by(name: collection_id)
     end
@@ -17,11 +16,10 @@ module DRI::Readable
   # Attempt to find a read group set on an ancestor collection
   def inherited_read_group(doc)
     read_group = nil
-
-    return read_group unless doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].present?
+    return read_group unless doc['ancestor_id_ssim'].present?
     ancestor_docs = doc.ancestor_docs
 
-    doc[Solrizer.solr_name('ancestor_id', :stored_searchable, type: :text)].reverse_each do |ancestor_id|
+    doc['ancestor_id_ssim'].reverse_each do |ancestor_id|
       ancestordoc = ancestor_docs[ancestor_id]
       read_groups = ancestordoc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
       if read_groups.present? && read_groups.include?(ancestor_id)

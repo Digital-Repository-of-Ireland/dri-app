@@ -86,7 +86,7 @@ describe "My Collections API" do
       response "401", "Must be signed in to access this route" do
         let(:user_token) { nil }
         let(:user_email) { nil }
-        let(:id) { @collections.first.id }
+        let(:id) { @collections.first.alternate_id }
 
         it_behaves_like 'a pretty json response'
         include_context 'rswag_include_json_spec_output' do
@@ -112,7 +112,7 @@ describe "My Collections API" do
         let(:user_email) { CGI.escape(@example_user.to_s) }
 
         context 'Collection' do
-          let(:id) { @collections.first.id }
+          let(:id) { @collections.first.alternate_id }
           # collections should not display licence info tracker #1857
           it_behaves_like 'a pretty json response'
           it_behaves_like 'it has no json licence information'
@@ -121,7 +121,7 @@ describe "My Collections API" do
           end
         end
         context 'Object' do
-          let(:id) { @collections.first.governed_items.first.id }
+          let(:id) { @collections.first.governed_items.first.alternate_id }
           it_behaves_like 'it has json licence information'
           include_context 'rswag_include_json_spec_output', 'Found Object' do
             it_behaves_like 'it has json doi information'

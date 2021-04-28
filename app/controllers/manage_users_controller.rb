@@ -4,7 +4,7 @@ class ManageUsersController < ApplicationController
 
   def new
     unless current_user.is_admin? || current_user.is_om?
-      raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied'))
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied'))
     end
 
     respond_to do |format|

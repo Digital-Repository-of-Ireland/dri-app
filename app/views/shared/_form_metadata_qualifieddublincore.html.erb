@@ -71,7 +71,7 @@
 	      <% people.each do |key, value_array| %>
 			    <% value_array.each do |value| %>
 			      <div>
-				      <select id="batch_roles][type][" name="batch[roles][type][]">
+				      <select id="digital_object_roles][type][" name="digital_object[roles][type][]">
 	                    <%= grouped_options_for_select(@qdc_people_select_list, key) %>
 				      </select>
 				      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield" %>
@@ -83,7 +83,7 @@
 
 	    <%# doesn't match add_text_field partial structure %>
 		<p class="add-person-fields">
-		  <i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
+		  <i class="fa fa-plus">&nbsp;</i><a model-name="digital_object" title="Add Role"><%= t('dri.views.objects.forms.add_role') %></a>
 		</p>
 	</fieldset>
 
@@ -257,7 +257,7 @@
 		<%# title and action don't match so can't use current button partial %>
 		<p class="add-text-field">
 			<i class="fa fa-plus">&nbsp;</i>
-			<a model-name="batch" title="Add Subject (Era)">
+			<a model-name="digital_object" title="Add Subject (Era)">
 				<%= t('dri.views.objects.forms.add_temporal_coverage') %>
 			</a>
 		</p>
@@ -283,7 +283,7 @@
 		  </div>
 		<% end %>
 		<p class="add-text-field">
-			<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Identifier"><%= t('dri.views.objects.forms.add_identifier') %></a>
+			<i class="fa fa-plus">&nbsp;</i><a model-name="digital_object" title="Add Identifier"><%= t('dri.views.objects.forms.add_identifier') %></a>
 		</p>
 	</fieldset>
 
@@ -297,7 +297,7 @@
 			  </div>
 			<% end %>
 			<p class="add-text-field">
-				<i class="fa fa-plus">&nbsp;</i><a model-name="batch" title="Add Format"><%= t('dri.views.objects.forms.add_format') %></a>
+				<i class="fa fa-plus">&nbsp;</i><a model-name="digital_object" title="Add Format"><%= t('dri.views.objects.forms.add_format') %></a>
 			</p>
 		</fieldset>
   <% end %>

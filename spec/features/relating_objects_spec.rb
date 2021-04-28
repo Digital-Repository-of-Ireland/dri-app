@@ -54,15 +54,12 @@ feature 'Relating objects' do
       collection_b.governed_items << object_b
       collection_b.save
 
-      related = DRI::Related.new
-      related.related = [collection_a, collection_b]
+      related = collection_b.collection_relationships.build(collection_relative_id: collection_a.id)
       related.save
-
-      collection_b.relations = [related]
-      collection_b.save
-
-      visit(my_collections_path(object_b.id))
-      expect(page).to have_link(href: my_collections_path(object_a.id))
+      collection_b.reload
+      collection_b.update_index
+      visit(my_collections_path(object_b.alternate_id))
+      expect(page).to have_link(href: my_collections_path(object_a.alternate_id))
 
       collection_a.delete
       collection_b.delete
@@ -94,8 +91,8 @@ feature 'Relating objects' do
       collection_a.governed_items << object_b
       collection_a.save
 
-      visit(my_collections_path(object_b.id))
-      expect(page).to have_link(href: my_collections_path(object_a.id))
+      visit(my_collections_path(object_b.alternate_id))
+      expect(page).to have_link(href: my_collections_path(object_a.alternate_id))
 
       collection_a.delete
     end

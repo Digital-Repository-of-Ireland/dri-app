@@ -11,7 +11,7 @@ class DataciteDoi < ActiveRecord::Base
   before_create :set_metadata
 
   def object
-    object ||= ActiveFedora::Base.find(object_id, cast: true)
+    object ||= retrieve_object
   end
 
   def update_metadata(params)
@@ -24,6 +24,11 @@ class DataciteDoi < ActiveRecord::Base
 
   def changed?
     update_type == 'mandatory' || update_type == 'required'
+  end
+
+  def retrieve_object
+    ident = DRI::Identifier.find_by(alternate_id: object_id)
+    ident.identifiable if ident
   end
 
   def clear_changed
@@ -73,7 +78,7 @@ class DataciteDoi < ActiveRecord::Base
 
       people = []
       DRI::Vocabulary.marc_relators.each do |r|
-        role = ActiveFedora.index_field_mapper.solr_name("role_#{r}", :stored_searchable, type: :string)
+        role = Solr::SchemaFields.searchable_string("role_#{r}")
         people << doc[role] if doc.key?(role)
       end
 
@@ -83,7 +88,7 @@ class DataciteDoi < ActiveRecord::Base
     def creator_solr
       doc = solr_document
 
-      key = ActiveFedora.index_field_mapper.solr_name('creator', :stored_searchable, type: :string)
+      key = Solr::SchemaFields.searchable_string('creator')
 
       doc.key?(key) ? doc[key] : nil
     end
@@ -101,8 +106,7 @@ class DataciteDoi < ActiveRecord::Base
     end
 
     def solr_document
-      result = ActiveFedora::SolrService.query("id:#{object_id}")
-      SolrDocument.new(result.first)
+      SolrDocument.find(object_id)
     end
 
     def set_version

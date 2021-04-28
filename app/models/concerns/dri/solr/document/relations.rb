@@ -9,7 +9,7 @@ module DRI::Solr::Document::Relations
 
     if solr_fields_array
       solr_fields_array.each do |elem|
-        key = ActiveFedora.index_field_mapper.solr_name(elem, :stored_searchable, type: :string)
+        key = Solr::SchemaFields.searchable_string(elem)
 
         url_array = url_array.to_a.push(*self[key]) if self[key].present?
       end
@@ -25,21 +25,16 @@ module DRI::Solr::Document::Relations
   def object_relationships
     relationships_hash = {}
 
-    begin
-      if active_fedora_model == 'DRI::Documentation'
-        documentation = documentation_for
+    if active_fedora_model == 'DRI::Documentation'
+      documentation = documentation_for
 
-        if documentation
-          link_text = documentation[ActiveFedora.index_field_mapper.solr_name('title')].first
-          relationships_hash['Is Documentation For'] = [[link_text, documentation]]
-        end
-      else
-        relationships_hash.merge!(relationships_for_display) unless active_fedora_model == 'DRI::EncodedArchivalDescription'
-        relationships_hash.merge!(documentation_for_display)
+      if documentation
+        link_text = documentation['title_tesim'].first
+        relationships_hash['Is Documentation For'] = [[link_text, documentation]]
       end
-
-    rescue ActiveFedora::ObjectNotFoundError
-      Rails.logger.error("Object not found")
+    else
+      relationships_hash.merge!(relationships_for_display) unless %w(DRI::EadComponent DRI::EadCollection).include?(active_fedora_model)
+      relationships_hash.merge!(documentation_for_display)
     end
 
     relationships_hash
@@ -74,16 +69,10 @@ module DRI::Solr::Document::Relations
 
       documentation_ids = documentation_object_ids
       documentation_ids.each do |id|
-        solr_doc = SolrDocument.find(id)
+        solr_doc = SolrDocument.find_by_alternate_id(id)
         next if solr_doc.nil?
 
-        link_text = solr_doc[
-                      ActiveFedora.index_field_mapper.solr_name(
-                        'title',
-                        :stored_searchable,
-                        type: :string
-                      )
-                    ].first
+        link_text = solr_doc['title_tesim'].first
         doc_array.to_a.push [link_text, solr_doc]
       end
       docs['Has Documentation'] = doc_array unless doc_array.empty?
@@ -99,13 +88,7 @@ module DRI::Solr::Document::Relations
         item_array = []
 
         docs.each do |rel_obj_doc|
-          link_text = rel_obj_doc[
-                        ActiveFedora.index_field_mapper.solr_name(
-                          'title',
-                          :stored_searchable,
-                          type: :string
-                        )
-                      ].first
+          link_text = rel_obj_doc['title_tesim'].first
           item_array.to_a.push [link_text, rel_obj_doc]
         end
 
@@ -137,29 +120,27 @@ module DRI::Solr::Document::Relations
 
       # Get Root collection of current object.
       root = root_collection
-      relatives_ids = [root.relatives << root.id].uniq
+      relatives_ids = [root.relatives << root.alternate_id].uniq
 
       unless root
-        Rails.logger.error("Root collection ID for object with PID #{id} not found in Solr")
+        Rails.logger.error("Root collection ID for object with PID #{alternate_id} not found in Solr")
         return records
       end
 
       solr_query = "#{solr_id_field}:(#{relations_array.map { |r| "\"#{r}\"" }.join(' OR ')})"
-      solr_query << " AND #{ActiveFedora.index_field_mapper.solr_name('root_collection_id', :facetable)}:(\"#{relatives_ids}\")"
+      solr_query << " AND root_collection_id_ssi:(\"#{relatives_ids}\")"
 
-      solr_results = ActiveFedora::SolrService.query(
-                       solr_query,
-                       rows: relations_array.length,
-                       defType: 'edismax'
-                     )
+      response = Solr::Query.new(
+                  solr_query,
+                  100,
+                  { rows: relations_array.length }
+                ).get
 
-      if solr_results.present?
-        solr_documents = solr_results.map { |item| SolrDocument.new(item) }
-      else
-        Rails.logger.error("Relationship target objects not found in Solr for object #{id}")
+      unless response.documents.present?
+        Rails.logger.error("Relationship target objects not found in Solr for object #{alternate_id}")
       end
 
-      solr_documents
+      response.documents
     end
 
     def external_relationships_solr_fields

@@ -5,7 +5,7 @@ require 'solr/query'
 RSpec.configure { |c| c.filter_run_excluding(slow: true) }
 
 describe 'PublishJob' do
-  
+
   before do
     allow_any_instance_of(PublishJob).to receive(:completed)
     allow_any_instance_of(PublishJob).to receive(:set_status)
@@ -31,16 +31,15 @@ describe 'PublishJob' do
   end
 
   after(:each) do
-    @object.delete
-    @collection.delete
-   
+    @collection.destroy
+
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
       allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
@@ -64,16 +63,16 @@ describe 'PublishJob' do
       @collection.save
 
       allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
       @subcollection.reload
       @reviewed.reload
 
-      expect(@collection.status).to eql('published')
-      expect(@subcollection.status).to eql('draft')
-      expect(@reviewed.status).to eql('reviewed')
+      expect(@collection.status).to eq('published')
+      expect(@subcollection.status).to eq('draft')
+      expect(@reviewed.status).to eq('reviewed')
     end
 
     it "should not set a collection\'s draft objects to published" do
@@ -84,36 +83,36 @@ describe 'PublishJob' do
       @collection.governed_items << @draft
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
       @collection.reload
       @draft.reload
 
-      expect(@draft.status).to eql('draft')
+      expect(@draft.status).to eq('draft')
 
       @draft.delete
     end
 
     it 'should queue a doi job when publishing an object' do
         stub_const("DoiConfig", OpenStruct.new(
-        username: 'user', 
-        password: 'password', 
-        prefix: '10.5072', 
-        base_url: 'http://www.dri.ie/repository', 
+        username: 'user',
+        password: 'password',
+        prefix: '10.5072',
+        base_url: 'http://www.dri.ie/repository',
         publisher: 'Digital Repository of Ireland'))
       Settings.doi.enable = true
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
-      
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
+
       expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
       job.perform
 
       @collection.reload
       @object.reload
 
-      expect(@collection.status).to eql('published')
-      expect(@object.status).to eql('published')
+      expect(@collection.status).to eq('published')
+      expect(@object.status).to eq('published')
 
       Settings.doi.enable = false
     end
@@ -130,11 +129,11 @@ describe 'PublishJob' do
 
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.id, 'user_id' => @login_user.id })
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
-      q = "collection_id_sim:\"#{@collection.id}\" AND status_ssim:published"
-      expect(ActiveFedora::SolrService.count(q)).to eq(21)
+      q = "collection_id_sim:\"#{@collection.alternate_id}\" AND status_ssi:published"
+      expect(SolrQuery.new(q).count).to eq(21)
     end
   end
 end

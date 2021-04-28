@@ -9,16 +9,16 @@ gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
-gem 'hydra-head', '10.6.2'
-gem 'active-fedora', '~> 12.2'
+gem 'hydra-derivatives', '3.5.0'
+gem 'om', '3.2.0'
 gem 'solrizer'
 
 gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v3.2.9'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v1.4.2'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.0.0'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.0.0'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail', '~> 4'
@@ -42,6 +42,7 @@ gem 'oauth'
 
 # Storage-related gems
 gem 'moab-versioning'
+gem 'valkyrie', '~> 2.1'
 gem 'bagit'
 
 # File processing gems

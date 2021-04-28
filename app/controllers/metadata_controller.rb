@@ -28,7 +28,7 @@ class MetadataController < ApplicationController
       @object = retrieve_object! params[:id]
     rescue DRI::Exceptions::InternalError
       @title = status_to_message(:internal_server_error)
-    rescue ActiveFedora::ObjectNotFoundError
+    rescue DRI::Exceptions::BadRequest
       render xml: { error: 'Not found' }, status: 404
       return
     end
@@ -48,12 +48,12 @@ class MetadataController < ApplicationController
 
     respond_to do |format|
       format.xml do
-        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].content
+        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].datastream_content
                  @object.attached_files[:fullMetadata].content
                else
                  @object.attached_files[:descMetadata].content
                end
-        send_data(data, filename: "#{@object.id}.xml")
+        send_data(data, filename: "#{@object.alternate_id}.xml")
         return
       end
       format.js do
@@ -89,7 +89,7 @@ class MetadataController < ApplicationController
     @errors = nil
 
     unless can? :update, @object
-      raise Hydra::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
+      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.edit_permission'), :edit, '')
     end
 
     @object.update_metadata(xml_ds.xml)
@@ -98,7 +98,6 @@ class MetadataController < ApplicationController
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
 
-      @object.object_version ||= '1'
       @object.increment_version
 
       begin
@@ -110,11 +109,11 @@ class MetadataController < ApplicationController
         retrieve_linked_data if AuthoritiesConfig
 
         preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(false, false, ['descMetadata', 'properties'])
+        preservation.preserve(['descMetadata'])
 
         flash[:notice] = t('dri.flash.notice.metadata_updated')
       rescue RuntimeError => e
-        logger.error "Could not save object #{@object.id}: #{e.message}"
+        logger.error "Could not save object #{@object.alternate_id}: #{e.message}"
         raise DRI::Exceptions::InternalError
       end
     else
@@ -150,7 +149,7 @@ class MetadataController < ApplicationController
     end
 
     def update_or_mint_doi
-      doi = DataciteDoi.find_by(object_id: @object.id)
+      doi = DataciteDoi.find_by(object_id: @object.alternate_id)
       return unless doi
 
       doi_metadata_fields = {}
@@ -162,7 +161,7 @@ class MetadataController < ApplicationController
     end
 
     def retrieve_linked_data
-      DRI.queue.push(LinkedDataJob.new(@object.id)) if @object.geographical_coverage.present? || @object.coverage.present?
+      DRI.queue.push(LinkedDataJob.new(@object.alternate_id)) if @object.geographical_coverage.present? || @object.coverage.present?
     rescue Exception => e
       Rails.logger.error "Unable to submit linked data job: #{e.message}"
     end

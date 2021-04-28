@@ -7,10 +7,9 @@ class FixityJob
     Rails.logger.info "Verifying collection #{collection_id}"
 
     # query for objects within this collection
-    q_str = "#{ActiveFedora.index_field_mapper.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
-
+    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
     # excluding sub-collections
-    f_query = "#{ActiveFedora.index_field_mapper.solr_name('is_collection', :stored_searchable, type: :string)}:false"
+    f_query = "is_collection_ssi:false"
 
     fixity_check(report_id, root_collection_id, collection_id, q_str, f_query)
   end
@@ -18,17 +17,13 @@ class FixityJob
   def self.fixity_check(report_id, root_collection_id, collection_id, q_str, f_query)
     query = Solr::Query.new(q_str, 100, fq: f_query)
     query.each do |o|
-      begin
-        object = DRI::Batch.find(o.id)
-        result = Preservation::Preservator.new(object).verify
-      rescue Ldp::HttpError => e
-        result = { verified: false, output: e.message }
-      end
+      object = DRI::DigitalObject.find_by_alternate_id(o.alternate_id)
+      result = Preservation::Preservator.new(object).verify
 
       FixityCheck.create(
         fixity_report_id: report_id,
         collection_id: root_collection_id,
-        object_id: o.id,
+        object_id: o.alternate_id,
         verified: result[:verified],
         result: result.to_json
       )
