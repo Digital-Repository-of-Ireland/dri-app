@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: a4059d253ce0c911f8b1c9e1789dcb55aa958dad
-  branch: develop
+  revision: 1e4b0fd795448f18e20c3f3d50bdb976d1bd5ba9
+  tag: v4.0.0
   specs:
     dri_data_models (4.0.0)
       hydra-derivatives
@@ -71,8 +71,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: ea1235e1f081aab65314823986044f5396ff559a
-  branch: develop
+  revision: 1b330fae547057d6485a584defdbe0a0b726b1dc
+  tag: v2.0.0
   specs:
     user_group (2.0.0)
       blacklight-access_controls
@@ -81,7 +81,7 @@ GIT
       devise-i18n-views
       fastimage
       kaminari
-      omniauth
+      omniauth (~> 1.9.1)
       omniauth-shibboleth
       paper_trail
       rails (~> 5)
@@ -341,7 +341,7 @@ GEM
     dry-equalizer (0.3.0)
     dry-inflector (0.2.0)
     dry-initializer (3.0.4)
-    dry-logic (1.1.1)
+    dry-logic (1.2.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5)
     dry-schema (1.5.6)
