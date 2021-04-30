@@ -54,13 +54,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-<<<<<<< HEAD
-  revision: 384d0cfc1e41e6e9c3a6e72410b80bb5407116f0
-  tag: v3.2.9
-=======
   revision: 1e4b0fd795448f18e20c3f3d50bdb976d1bd5ba9
   tag: v4.0.0
->>>>>>> release-21.04.0
   specs:
     dri_data_models (4.0.0)
       hydra-derivatives
@@ -76,13 +71,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-<<<<<<< HEAD
-  revision: 5d242d1dd6b0242042dcad77d8f63865c06e371f
-  tag: v1.4.2
-=======
   revision: 1b330fae547057d6485a584defdbe0a0b726b1dc
   tag: v2.0.0
->>>>>>> release-21.04.0
   specs:
     user_group (2.0.0)
       blacklight-access_controls
@@ -169,11 +159,7 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
-<<<<<<< HEAD
-    ast (2.4.0)
-=======
     ast (2.4.1)
->>>>>>> release-21.04.0
     autoprefixer-rails (10.2.4.0)
       execjs
     aws-eventstream (1.1.0)
@@ -196,15 +182,10 @@ GEM
     bagit (0.4.4)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
-<<<<<<< HEAD
-    bcrypt (3.1.16)
-    better_errors (2.5.1)
-=======
     bcp47 (0.3.3)
       i18n
     bcrypt (3.1.16)
     better_errors (2.9.1)
->>>>>>> release-21.04.0
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
