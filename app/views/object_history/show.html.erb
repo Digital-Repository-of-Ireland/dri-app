@@ -88,23 +88,6 @@
         <tr><td><%= t('dri.reports.assets.checksum_orig') %></td><td><%= file.original_checksum.join(' : ') %></td></tr>
         <tr><td><%= t('dri.reports.assets.file_info_link') %></td><td><%= link_to(object_file_path(@object.alternate_id, file.alternate_id), object_file_path(@object.alternate_id, file.alternate_id)) %></td></tr>
         <tr><td><%= t('dri.reports.assets.file_download_link') %></td><td><%= link_to(file_download_path(@object.alternate_id, file.alternate_id), file_download_path(@object.alternate_id, file.alternate_id)) %></td></tr>
-
-        <% versions = @asset_info[file.alternate_id][:versions] %>
-        <tr><td><%= t('dri.reports.assets.version') %></td><td><%= versions.size - 1 %></td></tr>
-
-        <% if versions.size > 0 %>
-
-          <tr><td><%= t('dri.reports.assets.previous_versions') %></td><td>
-            <ul>
-              <% versions.pop %>
-              <% versions.each do |f| %>
-              <li><%= link_to(file_download_path(@object.alternate_id, file.alternate_id, version: f.version),
-                              file_download_path(@object.alternate_id, file.alternate_id, version: f.version)) %></li>
-              <% end %>
-            </ul>
-          </td></tr>
-        <% end %>
-
         <tr><td><%= t('dri.reports.assets.surrogates') %></td><td>
           <% @asset_info[file.alternate_id][:surrogates].each do |key,value| %>
             <table class="table">

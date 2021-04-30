@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git
-  revision: 32d43322d976413e5e54b34f73358802b2062fc4
-  tag: v1.0.6
+  revision: d464d74404115099b2ed9c8c1a68c9d59ee782f7
+  tag: v1.1.0
   specs:
     dri_batch_ingest (1.0.6)
       filesize
@@ -635,7 +635,7 @@ GEM
     mime-types-data (3.2021.0225)
     mini_magick (4.11.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.4)
     moab-versioning (4.2.2)
       confstruct
@@ -981,7 +981,7 @@ GEM
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
     slop (4.8.2)
-    solr_wrapper (3.0.2)
+    solr_wrapper (3.1.2)
       http
       retriable
       ruby-progressbar
