@@ -77,7 +77,7 @@ gem 'resque-status', '0.5.0'
 gem 'nest'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'execjs'
+gem 'execjs', '2.7.0'
 
 gem 'uglifier', '>= 1.0.3'
 
