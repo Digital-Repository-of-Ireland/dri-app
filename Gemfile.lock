@@ -341,7 +341,7 @@ GEM
     dry-equalizer (0.3.0)
     dry-inflector (0.2.0)
     dry-initializer (3.0.4)
-    dry-logic (1.1.1)
+    dry-logic (1.2.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 0.5, >= 0.5)
     dry-schema (1.5.6)
@@ -1024,7 +1024,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (1.7.0)
     validatable (1.6.7)
-    valkyrie (2.1.2)
+    valkyrie (2.2.0)
       activemodel
       activesupport
       disposable (~> 0.4.5)
@@ -1167,7 +1167,7 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicode
   user_group!
-  valkyrie (~> 2.1)
+  valkyrie (~> 2.2)
   webdrivers
   yard
 

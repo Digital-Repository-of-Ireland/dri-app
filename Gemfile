@@ -42,7 +42,7 @@ gem 'oauth'
 
 # Storage-related gems
 gem 'moab-versioning'
-gem 'valkyrie', '~> 2.1'
+gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 
 # File processing gems
