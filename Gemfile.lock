@@ -1086,7 +1086,7 @@ DEPENDENCIES
   devise (>= 4.7.1)
   dri_batch_ingest!
   dri_data_models!
-  execjs
+  execjs (= 2.7.0)
   factory_bot_rails
   fcrepo_wrapper (= 0.9.0)
   ffaker
