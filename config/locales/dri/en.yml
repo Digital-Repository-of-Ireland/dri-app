@@ -212,6 +212,7 @@ en:
         street: 19 Dawson Street
         zip: Dublin 2
     headerlinks:
+      news_events: "News & Events"
       about: About
       about_dri: About DRI
       about_api: About the API
@@ -219,7 +220,9 @@ en:
       admin: Admin
       batch_ingest: Batch Ingest
       blog: Blog
-      browse: Discover
+      browse: Browse Repository
+      browse_collections: Browse by Data & Collections
+      browse_organisations: Browse by Organisation
       collection: Collection
       collections: Collections
       deposit_guide: Guide to Deposit
@@ -234,9 +237,9 @@ en:
       manage: Manage
       manage_users: Assign Collection Manager
       manage_om_users: Assign Manager
-      membership: Membership
-      member_benefits: Member Benefits
-      membership_fees: Membership Fees
+      desposit: Deposit
+      membership: DRI Membership
+      community_archive: Community Archive Scheme
       heritage_week_2020: HeritageWeek2020
       my_collections: My Collections
       search_my_collections: Search My Collections
@@ -258,10 +261,15 @@ en:
       team: Team
       usergroups: 'Users & Groups'
       vacancies: Vacancies
-      why_join_dri: 'Why Join DRI?'
+      how_to_deposit: 'How to Deposit'
       workspace: Workspace
       find_us: 'Find Us'
-      research_data: Research Data and DRI
+      research_data: Research Data Management
+      training: Training & Education
+      user_guides: User Guides
+      early_career: DRI Early Career Research Award
+      networks: International Networks
+      advocacy: Advocacy
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
