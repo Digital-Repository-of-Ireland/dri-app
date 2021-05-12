@@ -218,6 +218,7 @@ class AccessControlsController < ApplicationController
         :read_users_string,
         :master_file_access,
         :edit_users_string,
+        :manager_users_string,
         :object_version
       )
     end
