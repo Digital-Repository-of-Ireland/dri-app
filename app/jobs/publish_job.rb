@@ -76,7 +76,7 @@ class PublishJob
         if o.save
           record_version_committer(o, user)
 
-	  # Do the preservation actions
+          # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
           preservation.preserve
 
@@ -99,7 +99,7 @@ class PublishJob
   def mint_doi(obj)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    DataciteDoi.create(object_id: obj.alternate_id, modified: 'DOI created')
+    DataciteDoi.create(object_id: obj.alternate_id, modified: 'DOI created', mod_version: obj.object_version)
     DRI.queue.push(MintDoiJob.new(obj.alternate_id))
   rescue Exception => e
     Rails.logger.error "Unable to submit mint doi job: #{e.message}"
