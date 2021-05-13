@@ -1,5 +1,6 @@
 module DRI::Noid
   class Ndlib
+    include ::Preservation::PreservationHelpers
 
     def initialize
       @client ||= RestClient::Resource.new(Settings.noid.endpoint)
@@ -10,7 +11,7 @@ module DRI::Noid
       Mutex.new.synchronize do
         while true
           pid = next_id
-          return pid unless DRI::Identifier.exists?(alternate_id: pid)
+          return pid unless DRI::Identifier.exists?(alternate_id: pid) || Dir.exist?(aip_dir(pid))
         end
       end
     end
