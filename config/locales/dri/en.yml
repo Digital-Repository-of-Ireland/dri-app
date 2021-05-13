@@ -269,7 +269,23 @@ en:
       user_guides: User Guides
       early_career: DRI Early Career Research Award
       networks: International Networks
-      advocacy: Advocacy
+      themes: Themes
+      digipres: Digital Preservation
+      standards: Standards Adoption
+      fair: FAIR and Open Science
+      culturalheritage: Digital Cultural Heritage
+      dpassh: DPASSH
+      rda: Research Data Alliance
+      amplifying_change: Amplifying Change
+      archiving_reproductive_health: Archiving Reproductive Health
+      inspiring_ireland: Inspiring Ireland
+      projects_archive: Projects Archive
+      allea: ALLEA
+      oecd: OECD
+      dpc: DPC
+      norf: NORF
+      europeana: Europeana
+      committees: Conferences & Committees
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information

@@ -1,17 +1,28 @@
 <li class="dropdown dri_dropdown">
   <a href="http://www.dri.ie/#" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.our_work') %> <span class="caret"></span></a>
+
   <ul class="dropdown-menu" role="menu">
 
-    <li role="presentation">
-      <%= link_to t('dri.headerlinks.projects'), "http://www.dri.ie/" %>
+
+    <li class="dropdown dri_dropdown">
+      <a href="https://www.dri.ie/THEMES" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.themes') %> <span class="caret"></span></a>
+      <ul class="submenu dropdown-menu dropdown" role="menu">
+        <%= render 'shared/header_sub_themes_dropdown' %>
+      </ul>
     </li>
 
-    <li role="presentation">
-      <%= link_to t('dri.headerlinks.networks'), "https://dri.ie/" %>
+    <li class="dropdown dri_dropdown">
+      <a href="https://www.dri.ie/projects" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.projects') %> <span class="caret"></span></a>
+      <ul class="submenu dropdown-menu" role="menu">
+        <%= render 'shared/header_sub_projects_dropdown' %>
+      </ul>
     </li>
 
-    <li role="presentation">
-      <%= link_to t('dri.headerlinks.advocacy'), "https://www.dri.ie/" %>
+    <li class="dropdown dri_dropdown">
+      <a href="https://www.dri.ie/international-network" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.networks') %> <span class="caret"></span></a>
+      <ul class="submenu dropdown-menu" role="menu">
+        <%= render 'shared/header_sub_collaborations_dropdown' %>
+      </ul>
     </li>
 
   </ul>
