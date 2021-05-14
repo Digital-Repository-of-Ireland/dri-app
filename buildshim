@@ -36,7 +36,7 @@ cp config/database.yml.sample config/database.yml
 cp config/redis.yml.sample config/redis.yml
 cp config/blacklight.yml.sample config/blacklight.yml
 
-cat > config/environments/test.yml << __EOF__
+cat > config/settings/test.yml << __EOF__
 interface:
   languages: [en, ga]
 dri:
