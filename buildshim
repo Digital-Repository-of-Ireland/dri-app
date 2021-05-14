@@ -44,13 +44,17 @@ dri:
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
-  server: http://127.0.0.1:8081
-  access_key_id: anykey
-  secret_access_key: anykey
+  server: http://127.0.0.1:4566
+  access_key_id: test
+  secret_access_key: test
   bucket_prefix: buildbot
 doi:
   enable: false
 __EOF__
+
+    source /home/jenkins/localstack/bin/activate
+    SERVICES=s3 localstack start &>/dev/null &
+    echo $! > localstack.pid
 
     bundle install --without production
     
@@ -62,10 +66,6 @@ __EOF__
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake db:environment:set RAILS_ENV=test
-    
-    source /home/jenkins/localstack/bin/activate
-    SERVICES=s3:8081 localstack start --host &>/dev/null &
-    echo $! > localstack.pid
     ;;
 rspec)
     bundle exec rake rspec RUN_COVERAGE=on
