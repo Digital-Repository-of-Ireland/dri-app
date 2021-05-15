@@ -53,15 +53,8 @@ doi:
 __EOF__
 
     source /home/jenkins/localstack/bin/activate
-    SERVICES=s3 localstack start &>localstack.log &
+    SERVICES=s3 localstack start --host &>/dev/null &
     echo $! > localstack.pid
-
-    echo "Waiting for S3 at address http://localhost:4566/health, attempting every 5s"
-    until $(curl --silent --fail http://localhost:4566/health | grep "\"s3\": \"running\"" > /dev/null); do
-      printf '.'
-      sleep 5
-    done
-    echo ' Success: Reached S3'
 
     bundle install --without production
     
