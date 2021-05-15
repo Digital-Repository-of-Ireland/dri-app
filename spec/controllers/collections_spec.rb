@@ -298,9 +298,10 @@ describe CollectionsController do
   describe "read only is set" do
 
     before(:each) do
-      Settings.reload_from_files(
+      Settings.add_source!(
         Rails.root.join(fixture_path, "settings-ro.yml").to_s
       )
+      Settings.reload!
       @tmp_assets_dir = Dir.mktmpdir
       Settings.dri.files = @tmp_assets_dir
 
@@ -315,9 +316,7 @@ describe CollectionsController do
       @collection.delete if DRI::Identifier.object_exists?(@collection.alternate_id)
       @login_user.delete
 
-      Settings.reload_from_files(
-        Rails.root.join("config", "settings.yml").to_s
-      )
+      Settings.reload_from_files(Config.setting_files(File.join(Rails.root, 'config'), Rails.env))
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
 
