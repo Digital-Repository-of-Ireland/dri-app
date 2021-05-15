@@ -53,7 +53,7 @@ doi:
 __EOF__
 
     source /home/jenkins/localstack/bin/activate
-    SERVICES=s3 localstack start &>/dev/null &
+    SERVICES=s3 localstack start &>localstack.log &
     echo $! > localstack.pid
 
     echo "Waiting for S3 at address http://localhost:4566/health, attempting every 5s"
