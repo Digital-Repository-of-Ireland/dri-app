@@ -44,7 +44,7 @@ dri:
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
-  server: http://127.0.0.1:4566
+  server: http://localhost:4566
   access_key_id: test
   secret_access_key: test
   bucket_prefix: buildbot
@@ -55,6 +55,13 @@ __EOF__
     source /home/jenkins/localstack/bin/activate
     SERVICES=s3 localstack start &>/dev/null &
     echo $! > localstack.pid
+
+    echo "Waiting for S3 at address http://localhost:4566/health, attempting every 5s"
+    until $(curl --silent --fail http://localhost:4566/health | grep "\"s3\": \"running\"" > /dev/null); do
+      printf '.'
+      sleep 5
+    done
+    echo ' Success: Reached S3'
 
     bundle install --without production
     
