@@ -44,7 +44,7 @@ dri:
 plugins:
   ffmpeg_path: /usr/bin/ffmpeg
 S3:
-  server: http://localhost:4566
+  server: http://localstack:4566
   access_key_id: test
   secret_access_key: test
   bucket_prefix: buildbot
@@ -52,9 +52,9 @@ doi:
   enable: false
 __EOF__
 
-    source /home/jenkins/localstack/bin/activate
-    SERVICES=s3 localstack start --host &>/dev/null &
-    echo $! > localstack.pid
+    #source /home/jenkins/localstack/bin/activate
+    #SERVICES=s3 localstack start --host &>/dev/null &
+    #echo $! > localstack.pid
 
     bundle install --without production
     
@@ -109,6 +109,6 @@ compile_extra)
 
     ;;
 uninstall_deps)
-    kill -TERM $(cat localstack.pid) || true
+    #kill -TERM $(cat localstack.pid) || true
     ;;
 esac
