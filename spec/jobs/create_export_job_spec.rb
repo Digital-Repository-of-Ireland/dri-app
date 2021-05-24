@@ -4,9 +4,9 @@ require 'csv'
 describe ExportsController, type: :controller do
 
   before(:each) do
-    Settings.reload_from_files(
-      Rails.root.join(fixture_path, "settings-fs.yml").to_s
-    )
+    Settings.add_source!(Rails.root.join(fixture_path, "settings-fs.yml").to_s)
+    Settings.reload!
+
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
     Settings.filesystem.directory = @tmp_assets_dir
@@ -35,9 +35,7 @@ describe ExportsController, type: :controller do
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
-    Settings.reload_from_files(
-      Rails.root.join("config", "settings.yml").to_s
-    )
+    Settings.reload_from_files(Config.setting_files(File.join(Rails.root, 'config'), Rails.env))
   end
 
   describe "run" do
