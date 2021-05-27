@@ -9,7 +9,7 @@ gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
-gem 'hydra-derivatives', '3.5.0'
+gem 'hydra-derivatives', '~> 3.5'
 gem 'om', '3.2.0'
 gem 'solrizer'
 
