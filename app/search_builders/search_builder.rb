@@ -56,7 +56,7 @@ class SearchBuilder < Blacklight::SearchBuilder
   end
 
   def order_subcollections(solr_parameters)
-    return unless subcollections_tab_active(blacklight_params) && blacklight_params.dig(:f, :root_collection_id_sim).present?
+    return unless subcollections_tab_active(blacklight_params) && blacklight_params.dig(:f, :root_collection_id_ssi).present?
     solr_parameters[:sort] = 'system_create_dtsi asc' unless blacklight_params.key?(:sort)
   end
 
