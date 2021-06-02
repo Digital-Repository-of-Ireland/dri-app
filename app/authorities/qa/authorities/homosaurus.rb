@@ -3,7 +3,6 @@ module Qa::Authorities
     def search(q)
       url = "https://homosaurus.org/search/v2.jsonld?q=#{q}*"
       response = HTTParty.get(url, verify: false)
-      puts response.inspect
       json_response = JSON.parse(response.body)
       return {} unless json_response.key?('@graph')
 
