@@ -9,13 +9,13 @@ module Storage
   def bucket_exists?(bucket)
     Dir.exists?(bucket_path(bucket))
   end
-      
+
   # Create bucket
   def create_bucket(bucket)
     bucket_name = hash_dir(bucket)
     FileUtils.mkdir_p(bucket_name)
   end
-  
+
   def delete_bucket(bucket)
     bucket_to_delete = bucket_path(bucket)
     FileUtils.remove_entry_secure(bucket_to_delete, true) unless bucket_to_delete.nil?
@@ -24,7 +24,7 @@ module Storage
   def delete_surrogates(bucket, key)
     FileUtils.rm_f Dir.glob(File.join(hash_dir(bucket), "#{key}_*"))
   end
-  
+
   def get_surrogates(object, file, expire=nil)
     bucket = object.respond_to?(:id) ? object.id : object
     key = file.respond_to?(:id) ? file.id : file
@@ -32,7 +32,7 @@ module Storage
     surrogate_file_names = list_files(bucket)
 
     @surrogates_hash = {}
-    
+
     surrogate_file_names.each do |filename|
       begin
         if match = filename_match?(filename, key)
@@ -43,16 +43,20 @@ module Storage
         Rails.logger.debug "Problem getting url for file #{file} : #{e.to_s}"
       end
     end
-    
+
     @surrogates_hash
+  end
+
+  def list_surrogates(bucket)
+    list_files(bucket)
   end
 
   def surrogate_exists?(bucket, key)
     files = list_files(bucket)
     surrogate = files.find { |e| /#{key}/ =~ e }
-    
+
     return nil unless surrogate.present?
-    
+
     File.exists?(surrogate) ? true : nil
   end
 
@@ -86,9 +90,9 @@ module Storage
   def surrogate_url(bucket, key, expire=nil)
     files = list_files(bucket)
     surrogate = files.find { |e| /#{key}/ =~ e }
-    
+
     return nil unless surrogate.present?
-    
+
     File.exists?(surrogate) ? surrogate : nil
   end
 
@@ -99,10 +103,10 @@ module Storage
   def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype=nil)
     file_path = File.join(hash_dir(bucket), surrogate_key)
     FileUtils.copy(surrogate_file, file_path)
-    
+
     File.exists?(file_path)
   end
-    
+
   def store_file(bucket, file, file_key, mimetype=nil)
     store_surrogate(bucket, file, file_key, mimetype)
   end
@@ -111,7 +115,7 @@ module Storage
 
   def bucket_path(bucket)
     hashed_bucket = hash_dir(bucket)
-    
+
     return hashed_bucket
   end
 
@@ -135,7 +139,7 @@ module Storage
 
     File.join(@dir, sub_dir, bucket)
   end
-  
+
   def list_files(bucket)
     Dir.glob("#{bucket_path(bucket)}/*").select{ |f| File.file? f }
   end

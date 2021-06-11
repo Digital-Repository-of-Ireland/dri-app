@@ -57,6 +57,8 @@ module DRI::Solr::Document::File
   end
 
   def read_master?
+    return @read_master if @read_master
+
     master_file_key = 'master_file_access_ssi'
     return true if self[master_file_key] == 'public'
     return false if self[master_file_key] == 'private'
@@ -70,11 +72,17 @@ module DRI::Solr::Document::File
       break
     end
 
-    result
+    @read_master = result
+    @read_master
   end
 
   def surrogates(file_id, timeout = nil)
-    storage_service.get_surrogates(self, file_id, timeout)
+    @cache ||= {}
+    @cache[file_id] ||= storage_service.get_surrogates(self, file_id, timeout)
+  end
+
+  def surrogates_list(object_id)
+    @surrogates_list ||= storage_service.list_surrogates(object_id)
   end
 
   def storage_service

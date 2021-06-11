@@ -14,16 +14,8 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
-      <div class="item dri_asset_carousel_item dri_bottom_stack active">
-        <%= render partial: "shared/object_show_surrogate", locals: {document: document, generic_file: displayfiles.first, first: true} %>
-        <%= render partial: "shared/object_show_download", locals: {document: document, generic_file: displayfiles.first, index: 1, displayfiles_count: displayfiles.size } %>
-      </div>
-      <% displayfiles[1..-1].each_with_index do |file,i| %>
-        <div class="item dri_asset_carousel_item dri_bottom_stack">
-          <%= render partial: "shared/object_show_surrogate", locals: { document: document, generic_file: file, first: false } %>
-          <%= render partial: "shared/object_show_download", locals: { document: document, generic_file: file, index: i + 2, displayfiles_count: displayfiles.size } %>
-        </div>
-      <% end %>
+      <%= render partial: "shared/carousel_item", locals: { document: document, generic_file: displayfiles.first, displayfiles_count: displayfiles.size, first: true } %>
+      <%= render partial: "shared/carousel_item", collection: displayfiles[1..-1], as: :generic_file, locals: { document: document, displayfiles_count: displayfiles.size, first: false } %>
     </div>
 
     <% if (displayfiles.size > 1) %>
