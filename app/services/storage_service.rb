@@ -30,6 +30,10 @@ class StorageService
     @driver.get_surrogates(object, file, expire)
   end
 
+  def list_surrogates(object)
+    @driver.list_surrogates(object)
+  end
+
   def surrogate_exists?(bucket, key)
     @driver.surrogate_exists?(bucket, key)
   end
@@ -48,5 +52,5 @@ class StorageService
 
   def store_file(bucket, file, file_key, mimetype=nil)
     @driver.store_file(bucket, file, file_key, mimetype)
-  end      
+  end
 end
