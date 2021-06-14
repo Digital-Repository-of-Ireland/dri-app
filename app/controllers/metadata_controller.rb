@@ -48,7 +48,7 @@ class MetadataController < ApplicationController
 
     respond_to do |format|
       format.xml do
-        data = if @object.attached_files.key?(:fullMetadata) && @object.attached_files[:fullMetadata].datastream_content
+        data = if full_metadata_has_content?
                  @object.attached_files[:fullMetadata].content
                else
                  @object.attached_files[:descMetadata].content
@@ -137,6 +137,12 @@ class MetadataController < ApplicationController
   end
 
   private
+
+    def full_metadata_has_content?
+      return false unless @object.attached_files.key?(:fullMetadata)
+
+      @object.attached_files[:fullMetadata]&.ng_xml.present? && @object.attached_files[:fullMetadata].ng_xml.root.children.present?
+    end
 
     def object_with_metadata
       @object && @object.attached_files.key?(:descMetadata)

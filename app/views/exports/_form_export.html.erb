@@ -6,7 +6,7 @@
       <%= check_box_tag 'toggle-boxes' %>
       <%= label_tag "#{t('dri.views.fields.toggle')}" %>
     </div><br/>
-    <%= form_tag({controller: "exports", action: "create", id: @collection.id}, method: "post", id: 'export_form', class: 'form-vertical') do %>
+    <%= form_tag({controller: "exports", action: "create", id: @collection.alternate_id}, method: "post", id: 'export_form', class: 'form-vertical') do %>
     <div>
       <%= check_box_tag 'fields[title]', "#{t('dri.views.fields.title')}"%>
       <%= label_tag "#{t('dri.views.fields.title')}"%>

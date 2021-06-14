@@ -74,6 +74,10 @@ module Storage
       surrogates_hash
     end
 
+    def list_surrogates(object)
+      @surrogate_list ||= list_files(object)
+    end
+
      # Get url for a specific surrogate
     def surrogate_exists?(bucket, key)
       return nil unless bucket_exists?(bucket)

@@ -39,6 +39,7 @@ class LinkedDataJob < IdBasedJob
               ?resource rdfs:seeAlso ?recon }"
     client = DRI::Sparql::Client.new AuthoritiesConfig['data.dri.ie']['endpoint']
     results = client.query select
+    return [] if results.blank?
 
     uris = []
     results.each_solution do |s|

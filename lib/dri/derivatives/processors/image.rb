@@ -4,8 +4,10 @@ module DRI::Derivatives::Processors
     def create_resized_image
       create_image do |xfrm|
         if size
-          xfrm.flatten
-          xfrm.resize(size)
+          xfrm.combine_options do |i|
+            i.flatten
+            i.resize(size)
+          end
         end
       end
     end

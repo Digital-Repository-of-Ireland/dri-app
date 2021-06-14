@@ -229,7 +229,7 @@ class ObjectsController < BaseObjectsController
 
   def retrieve
     id = params[:id]
-    object = retrieve_object!(id)
+    object = SolrDocument.find(id)
 
     if object.present?
       if can?(:read, object)
@@ -243,7 +243,7 @@ class ObjectsController < BaseObjectsController
                 url_based_filename: true
 
           if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection.first, "Download", object.alternate_id, 1, true)
+            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection_id, "Download", object.alternate_id, 1, true)
           end
           file_sent = true
         else

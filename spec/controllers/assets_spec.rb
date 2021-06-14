@@ -246,9 +246,10 @@ describe AssetsController do
   describe 'read only' do
 
     before(:each) do
-        Settings.reload_from_files(
+        Settings.add_source!(
           Rails.root.join(fixture_path, "settings-ro.yml").to_s
-        )
+	)
+	Settings.reload!
         @tmp_assets_dir = Dir.mktmpdir
         Settings.dri.files = @tmp_assets_dir
 
@@ -264,9 +265,7 @@ describe AssetsController do
         @login_user.delete
 
         FileUtils.remove_dir(@tmp_assets_dir, force: true)
-        Settings.reload_from_files(
-          Rails.root.join("config", "settings.yml").to_s
-        )
+        Settings.reload_from_files(Config.setting_files(File.join(Rails.root, 'config'), Rails.env))
       end
 
     describe 'create' do

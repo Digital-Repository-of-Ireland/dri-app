@@ -13,7 +13,7 @@ module DRI::Solr::Document::Documentation
       key = Solr::SchemaFields.searchable_symbol('isDescriptionOf')
       return nil unless self[key].present?
 
-      SolrDocument.find(key)
+      SolrDocument.find(self[key].first)
     end
 
     def retrieve_document_ids

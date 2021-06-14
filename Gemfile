@@ -9,7 +9,7 @@ gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
-gem 'hydra-derivatives', '3.5.0'
+gem 'hydra-derivatives', '~> 3.5'
 gem 'om', '3.2.0'
 gem 'solrizer'
 
@@ -42,7 +42,7 @@ gem 'oauth'
 
 # Storage-related gems
 gem 'moab-versioning'
-gem 'valkyrie', '~> 2.1'
+gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 
 # File processing gems
@@ -77,7 +77,7 @@ gem 'resque-status', '0.5.0'
 gem 'nest'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'execjs'
+gem 'execjs', '2.7.0'
 
 gem 'uglifier', '>= 1.0.3'
 
