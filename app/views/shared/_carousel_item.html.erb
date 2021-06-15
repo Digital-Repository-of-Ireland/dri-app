@@ -1,4 +1,4 @@
-<% if first %>
+<% if generic_file_counter.zero? %>
   <div class="item dri_asset_carousel_item dri_bottom_stack active">
 <% else %>
   <div class="item dri_asset_carousel_item dri_bottom_stack">
@@ -28,7 +28,7 @@
             <% @surrogate_thumb = @presenter.surrogate_url(generic_file.id, "thumbnail_large") %>
 
             <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
-              <% if first %>
+              <% if generic_file_counter.zero? %>
                 <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
               <% else %>
                 <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
@@ -60,7 +60,7 @@
               <% end %>
             <% else %>
                <%= link_to @surrogate, class: 'dri_gallery group1' do %>
-                  <% if first %>
+                  <% if generic_file_counter.zero? %>
                     <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
                   <% else %>
                     <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
