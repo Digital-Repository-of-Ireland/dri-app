@@ -155,16 +155,22 @@ module DRI::IIIFViewable
 
   def attached_images(solr_id = nil)
     solr_id ||= @document.id
-    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{solr_id}"
-    files_query += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
 
+    files_query = "isPartOf_ssim:#{solr_id}"
+
+    fq = [
+           "active_fedora_model_ssi:\"DRI::GenericFile\"",
+           "file_type_sim:\"image\"",
+           "-preservation_only_ssi:true",
+           "#{WIDTH_SOLR_FIELD}:[* TO *]",
+           "#{HEIGHT_SOLR_FIELD}:[* TO *]"
+         ]
     files = []
 
-    query = Solr::Query.new(files_query)
-    files = query.reject { |file_doc| file_doc.preservation_only? }
+    query = Solr::Query.new(files_query, 1000, {fq: fq})
+    files = query.to_a
 
-    files.sort_by{ |f| f[Solrizer.solr_name('label')] }
+    files.sort_by{ |f| f['label_tesim'] }
   end
 
   def base_manifest(manifest)
@@ -209,7 +215,7 @@ module DRI::IIIFViewable
     canvas['@id'] = "#{iiif_base_url}/canvas/#{file.id}"
     canvas.width = file[WIDTH_SOLR_FIELD]
     canvas.height = file[HEIGHT_SOLR_FIELD]
-    canvas.label = file[Solrizer.solr_name('label')].first
+    canvas.label = file['label_tesim'].first
 
     base_uri = Settings.iiif.server + '/' + solr_id + ':' + file.id
     image_url =  base_uri + '/full/full/0/default.jpg'
