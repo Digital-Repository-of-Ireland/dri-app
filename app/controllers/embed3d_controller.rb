@@ -12,7 +12,7 @@ class Embed3dController < ApplicationController
 
     file = @assets.find { |asset| asset.key? 'id' and asset.id == params[:id] }
 
-    raise DRI::Exceptions::NotFound unless file['file_type_tesim'].include? '3d'
+    raise DRI::Exceptions::NotFound unless has_3d_type?(file)
     raise DRI::Exceptions::NotFound if file.preservation_only?
 
     @generic_file = file
@@ -32,4 +32,7 @@ class Embed3dController < ApplicationController
       (can?(:read, @document.id) && @document.read_master?) || can?(:edit, @document)
     end
 
+    def has_3d_type?(file)
+      file.fetch('file_type_tesim',[]).include?('3d')
+    end
 end
