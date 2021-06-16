@@ -2,17 +2,20 @@ module DRI::Solr::Document::File
 
   def assets(with_preservation: false, ordered: false)
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{alternate_id}\""
-    query = ::Solr::Query.new(files_query)
-    assets = query.reject { |sd| with_preservation == false && sd.preservation_only? }
+    files_query += " AND isPartOf_ssim:\"#{alternate_id}\""
+
+    fq = with_preservation ? {} : { fq: ["-preservation_only_ssi:true"] }
+
+    query = ::Solr::Query.new(files_query, 100, fq)
+    assets = query.to_a
     ordered ? sort_assets(assets) : assets
   end
 
   def characterized?
     # not characterized if all empty
-    return false unless self.key?(Solrizer.solr_name('characterization__mime_type'))
+    return false unless self.key?('mime_type_tesim')
 
-    !self[Solrizer.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+    self['mime_type_tesim'].any? { |m| m.present? }
   end
 
   def sort_assets(assets)
