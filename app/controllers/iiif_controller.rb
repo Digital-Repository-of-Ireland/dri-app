@@ -55,6 +55,7 @@ class IiifController < ApplicationController
 
     def permitted?(method, id)
       object_doc = SolrDocument.find(id)
+      return false if object_doc.nil?
       return true if object_doc.collection?
 
       if method == 'show'
