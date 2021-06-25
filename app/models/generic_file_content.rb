@@ -25,6 +25,13 @@ class GenericFileContent
     generic_file.title = [filename]
   end
 
+  def save_and_characterize
+    return false unless generic_file.save
+    push_characterize_job
+
+    true
+  end
+
   private
 
   def existing_moab_path(file_category, filename, filepath)
@@ -77,13 +84,6 @@ class GenericFileContent
 
     preservation = Preservation::Preservator.new(object)
     preservation.preserve_assets(changes)
-  end
-
-  def save_and_characterize
-    return false unless generic_file.save
-    push_characterize_job
-
-    true
   end
 
   def push_characterize_job
