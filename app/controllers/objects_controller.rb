@@ -97,7 +97,6 @@ class ObjectsController < BaseObjectsController
       @object.governing_collection = collection
     end
 
-    @object.increment_version
     @object.assign_attributes(update_params)
 
     unless @object.valid?
@@ -106,24 +105,31 @@ class ObjectsController < BaseObjectsController
       return
     end
 
-    doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) }) if doi
+    DRI::DigitalObject.transaction do
+      @object.increment_version
 
-    respond_to do |format|
-      checksum_metadata(@object)
-
-      unless @object.save
-        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-        format.html { render action: 'edit' }
-        return
+      if doi
+        doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
+        new_doi_if_required(@object, doi, 'metadata updated')
       end
 
-      post_save do
-        update_doi(@object, doi, 'metadata update') if doi && doi.changed?
-      end
+      respond_to do |format|
+        checksum_metadata(@object)
 
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-      format.json { render json: @object }
+        unless @object.save
+          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+          format.html { render action: 'edit' }
+          raise ActiveRecord::Rollback, @object.errors.full_messages.inspect
+        end
+
+        post_save do
+          mint_or_update_doi(@object, doi) if doi
+        end
+
+        flash[:notice] = t('dri.flash.notice.metadata_updated')
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
+        format.json { render json: @object }
+      end
     end
   end
 

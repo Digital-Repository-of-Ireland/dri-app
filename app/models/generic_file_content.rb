@@ -1,5 +1,6 @@
 class GenericFileContent
   include ActiveModel::Model
+  include DRI::Citable
 
   attr_accessor :object, :generic_file, :user
 
@@ -9,19 +10,6 @@ class GenericFileContent
 
   def update_content(file_upload, path='content')
     preserve_file(file_upload, path, true)
-  end
-
-  def save_object
-    # Update object version
-    object.object_version ||= 1
-    object.increment_version
-
-    begin
-      object.save!
-    rescue ActiveRecord::RecordNotSaved
-      logger.error "Could not update object version number for #{object.alternate_id} to version #{object.object_version}"
-      raise Exceptions::InternalError
-    end
   end
 
   def set_content(file, filename, mime_type, version, path='content', moab_path=nil)
@@ -61,10 +49,6 @@ class GenericFileContent
     if moab_path && filedata[:filename] == generic_file.label
       raise DRI::Exceptions::MoabError, "File already preserved"
     end
-
-    #save_object
-    object.object_version ||= 1
-    object.increment_version
 
     set_content(
       filedata[:file_upload],
