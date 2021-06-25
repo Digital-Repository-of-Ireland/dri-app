@@ -78,19 +78,29 @@ class AssetsController < ApplicationController
       raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
 
-    object.increment_version
-    object.save
-    record_version_committer(object, current_user)
+    begin
+      DRI::GenericFile.transaction do
+        object.increment_version
+        new_doi(object, 'asset modified') if object.status == "published"
+        object.save!
 
-    delfiles = ["#{generic_file.alternate_id}_#{generic_file.label}"]
-    delete_surrogates(params[:object_id], generic_file.alternate_id)
-    generic_file.delete
+        record_version_committer(object, current_user)
 
-    # Do the preservation actions
-    preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets({ deleted: { 'content' => delfiles }})
+        delete_surrogates(params[:object_id], generic_file.alternate_id)
+        generic_file.destroy!
+      end
+      mint_or_update_doi(object) if object.status == 'published'
 
-    flash[:notice] = t('dri.flash.notice.asset_deleted')
+      # Do the preservation actions
+      delfiles = ["#{generic_file.alternate_id}_#{generic_file.label}"]
+      preservation = Preservation::Preservator.new(object)
+      preservation.preserve_assets({ deleted: { 'content' => delfiles }})
+
+      flash[:notice] = t('dri.flash.notice.asset_deleted')
+    rescue RuntimeError => e
+      logger.error "Could not delete file #{generic_file.alternate_id}: #{e.message}"
+      flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
+    end
 
     respond_to do |format|
       format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
@@ -107,14 +117,21 @@ class AssetsController < ApplicationController
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
     begin
-      if file_content.update_content(file_upload)
-        flash[:notice] = t('dri.flash.notice.file_uploaded')
-        record_version_committer(@object, current_user)
-        mint_doi(@object, 'asset modified') if @object.status == 'published'
-      else
-        message = @generic_file.errors.full_messages.join(', ')
-        flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
-        logger.error "Error saving file: #{message}"
+      @object.increment_version
+
+      DRI::GenericFile.transaction do
+        new_doi(@object, 'asset modified') if @object.status == "published"
+
+        if file_content.update_content(file_upload)
+          flash[:notice] = t('dri.flash.notice.file_uploaded')
+          record_version_committer(@object, current_user)
+          mint_or_update_doi(@object) if @object.status == 'published'
+        else
+          @new_doi.destroy if @new_doi
+          message = @generic_file.errors.full_messages.join(', ')
+          flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
+          logger.error "Error saving file: #{message}"
+        end
       end
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
@@ -150,15 +167,21 @@ class AssetsController < ApplicationController
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
     begin
-      if file_content.add_content(file_upload)
-        flash[:notice] = t('dri.flash.notice.file_uploaded')
-        record_version_committer(@object, current_user)
-        mint_doi(@object, 'asset added') if @object.status == 'published'
-      else
-        message = @generic_file.errors.full_messages.join(', ')
-        flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
-        @warnings = t('dri.flash.alert.error_saving_file', error: message)
-        logger.error "Error saving file: #{message}"
+      @object.increment_version
+      DRI::GenericFile.transaction do
+        new_doi(@object, 'asset modified') if @object.status == "published"
+
+        if file_content.add_content(file_upload)
+          flash[:notice] = t('dri.flash.notice.file_uploaded')
+          record_version_committer(@object, current_user)
+          mint_or_update_doi(@object) if @object.status == 'published'
+        else
+          @new_doi.destroy if @new_doi
+          message = @generic_file.errors.full_messages.join(', ')
+          flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
+          @warnings = t('dri.flash.alert.error_saving_file', error: message)
+          logger.error "Error saving file: #{message}"
+        end
       end
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)

@@ -56,13 +56,8 @@ describe "MintDoiJob" do
       expect_any_instance_of(DOI::Datacite).to receive(:mint)
       expect_any_instance_of(DOI::Datacite).to receive(:metadata)
 
-      DataciteDoi.create(object_id: @object.alternate_id)
-      job = MintDoiJob.new(@object.alternate_id)
-      job.run
-
-      @object.reload
-
-      expect(@object.doi).to eql("10.5072/DRI.#{@object.alternate_id}")
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+      MintDoiJob.perform(doi.id)
     end
   end
 end
