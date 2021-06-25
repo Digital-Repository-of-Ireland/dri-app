@@ -1,29 +1,17 @@
 require 'doi/datacite'
 
-class MintDoiJob < IdBasedJob
+class MintDoiJob
+  @queue = :doi
 
-  def queue_name
-    :doi
+  def self.perform(doi_id)
+    return unless Settings.doi.enable == true && DoiConfig
+
+    doi = DataciteDoi.find(doi_id)
+    return if doi.nil?
+
+    Rails.logger.info "Mint DOI for #{doi.object_id}"
+    client = DOI::Datacite.new(doi)
+    client.metadata
+    client.mint
   end
-
-  def run
-    if Settings.doi.enable == true && DoiConfig
-      Rails.logger.info "Mint DOI for #{id}"
-
-      doi = DataciteDoi.where(object_id: id).current
-
-      client = DOI::Datacite.new(doi)
-      client.metadata
-      client.mint
-      object.doi = doi.doi
-
-      object.increment_version
-      object.save
-
-      # Do the preservation actions
-      preservation = Preservation::Preservator.new(object)
-      preservation.preserve
-    end
-  end
-
 end

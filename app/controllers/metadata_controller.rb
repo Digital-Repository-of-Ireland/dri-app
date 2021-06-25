@@ -98,14 +98,15 @@ class MetadataController < ApplicationController
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
 
-      @object.increment_version
-
       begin
-        raise DRI::Exceptions::InternalError unless @object.save
+        DRI::DigitalObject.transaction do
+          @object.increment_version
+          update_or_mint_doi
+          raise DRI::Exceptions::InternalError unless @object.save
 
-        record_version_committer(@object, current_user)
-        update_or_mint_doi
-
+          record_version_committer(@object, current_user)
+        end
+        mint_or_update_doi(@object, @doi) if @doi
         retrieve_linked_data if AuthoritiesConfig
 
         preservation = Preservation::Preservator.new(@object)
@@ -155,15 +156,15 @@ class MetadataController < ApplicationController
     end
 
     def update_or_mint_doi
-      doi = DataciteDoi.find_by(object_id: @object.alternate_id)
-      return unless doi
+      @doi = DataciteDoi.find_by(object_id: @object.alternate_id)
+      return unless @doi
 
       doi_metadata_fields = {}
-      doi.metadata_fields.each do |field|
+      @doi.metadata_fields.each do |field|
         doi_metadata_fields[field] = @object.send(field.to_sym)
       end
-      doi.update_metadata(doi_metadata_fields)
-      update_doi(@object, doi, 'metadata update') if doi.changed?
+      @doi.update_metadata(doi_metadata_fields)
+      new_doi_if_required(@object, @doi, 'metadata updated')
     end
 
     def retrieve_linked_data

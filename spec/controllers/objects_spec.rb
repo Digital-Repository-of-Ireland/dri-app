@@ -267,17 +267,19 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.alternate_id)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Resque).to receive(:enqueue).once
       params = {}
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A modified title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
+      expect {
+        put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
+      }.to change{ DataciteDoi.count }.by(1)
 
-      DataciteDoi.where(object_id: @object.alternate_id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
 
@@ -296,17 +298,51 @@ describe ObjectsController do
 
       @object.status = "published"
       @object.save
-      DataciteDoi.create(object_id: @object.alternate_id)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
 
-      expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
+      expect(Resque).to_not receive(:enqueue)
       params = {}
       params[:digital_object] = {}
       params[:digital_object][:title] = ["An Audio Title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
+      expect {
+        put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
+      }.to change{ DataciteDoi.count }.by(0)
 
-      DataciteDoi.where(object_id: @object.alternate_id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).destroy_all
+      Settings.doi.enable = false
+    end
+
+    it 'should rollback DOI changes when an update fails' do
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
+      Settings.doi.enable = true
+
+      @object.status = "published"
+      @object.save
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+
+      expect_any_instance_of(DRI::DigitalObject)
+        .to receive(:save).and_return(false)
+      params = {}
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+      expect {
+        put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
+      }.to change{ DataciteDoi.count }.by(0)
+
+      DataciteDoi.where(object_id: @object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
 
@@ -316,7 +352,7 @@ describe ObjectsController do
 
       before(:each) do
         Settings.add_source!(Rails.root.join(fixture_path, "settings-ro.yml").to_s)
-	Settings.reload!
+	      Settings.reload!
 
         @tmp_assets_dir = Dir.mktmpdir
         Settings.dri.files = @tmp_assets_dir

@@ -16,6 +16,8 @@ DRI::ModelSupport::EadSupport.module_eval do
 
     return false unless pass_validation
 
+    self.increment_version
+
     generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
     generic_file.digital_object = self
     filename = "#{generic_file.alternate_id}_#{original_file_name}"
