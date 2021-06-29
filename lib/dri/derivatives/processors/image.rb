@@ -7,8 +7,9 @@ module DRI::Derivatives::Processors
 
     def create_image
       image = selected_layers(load_image_transformer)
+      intermediate_path = image.path if directives.key?(:format)
+      image.format(directives.fetch(:format))
       image.combine_options do |xfrm|
-        image.format(directives.fetch(:format))
         xfrm.gravity(gravity) if gravity.present?
         xfrm.crop(crop.to_s) if crop
         if size.present?
@@ -22,6 +23,7 @@ module DRI::Derivatives::Processors
         xfrm.quality(quality.to_s) if quality
       end
       write_image(image)
+      FileUtils.rm_f(intermediate_path) if intermediate_path
     end
 
     private
