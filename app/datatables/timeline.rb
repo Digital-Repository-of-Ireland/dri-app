@@ -35,7 +35,7 @@ class Timeline
     event[:start_date] = { year: start.year, month: start.month, day: start.day }
     event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
     event[:text][:headline] = link_to(document[TITLE_KEY].first, url_for_document(document[:id]))
-    event[:text][:text] = document[DESCRIPTION_KEY].first.truncate(60, separator: ' ')
+    event[:text][:text] = document[DESCRIPTION_KEY].first.truncate(60, separator: ' ') if document.key?(DESCRIPTION_KEY)
     event[:media] = {}
     event[:media][:url] = image(document)
     event[:media][:thumbnail] = image(document)
