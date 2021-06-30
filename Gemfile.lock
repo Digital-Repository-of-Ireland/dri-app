@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 1e4b0fd795448f18e20c3f3d50bdb976d1bd5ba9
-  tag: v4.0.0
+  revision: b354766cbda2437787bcc023ab6604358c677c9b
+  branch: develop
   specs:
-    dri_data_models (4.0.0)
+    dri_data_models (4.0.1)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -340,7 +340,7 @@ GEM
     dry-core (0.6.0)
       concurrent-ruby (~> 1.0)
     dry-equalizer (0.3.0)
-    dry-inflector (0.2.0)
+    dry-inflector (0.2.1)
     dry-initializer (3.0.4)
     dry-logic (1.2.0)
       concurrent-ruby (~> 1.0)
@@ -1048,7 +1048,7 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
-    websocket-driver (0.7.4)
+    websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xml-simple (1.1.8)
