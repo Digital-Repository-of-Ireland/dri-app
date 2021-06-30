@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: b354766cbda2437787bcc023ab6604358c677c9b
-  branch: develop
+  revision: 4057a942f56f33ce92ebcfc3cea3a459b8a96026
+  tag: v4.0.1
   specs:
     dri_data_models (4.0.1)
       hydra-derivatives
