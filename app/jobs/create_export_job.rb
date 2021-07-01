@@ -7,12 +7,16 @@ class CreateExportJob
   def self.perform(base_url, object_id, fields, email)
     @first_pass = Tempfile.new("#{object_id}_export_first")
 
+    options = {}
+    fields ||= {}
+
     assets = fields.delete('assets')
-    options = { fields: fields.keys }
+    options[:fields] = fields.keys
 
     @max_headers = {}
 
-    titles = ['Id'].concat(fields.values)
+    titles = ['Id']
+    titles = titles.concat(fields.values) if fields.present?
     titles << 'Licence'
     if assets.present?
       options[:with_assets] = true
@@ -68,7 +72,6 @@ class CreateExportJob
 
       CSV.foreach(@first_pass.path, headers: true) do |row|
         output_row = []
-
         row.each do |header,value|
           if value.present?
             split_col = value.split('|')
