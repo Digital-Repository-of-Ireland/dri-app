@@ -29,7 +29,7 @@ module DRI::Exporters
     }
 
     def initialize(base_url, object_doc, options = {})
-      fields = options[:fields].presence
+      fields = options.dig(:fields)
       @with_assets = options[:with_assets].presence
       @request_fields = fields || METADATA_FIELDS_MAP.keys
       @base_url = base_url
