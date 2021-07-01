@@ -3,68 +3,68 @@
     <h4><%= t('dri.views.export.headers.export_all_metadata') %></h4>
     <p><%= t('dri.views.export.legends.export_all_metadata') %></p>
      <div>
-      <%= check_box_tag 'toggle-boxes' %>
+      <%= check_box_tag 'toggle-boxes', 'yes', true %>
       <%= label_tag "#{t('dri.views.fields.toggle')}" %>
     </div><br/>
     <%= form_tag({controller: "exports", action: "create", id: @collection.alternate_id}, method: "post", id: 'export_form', class: 'form-vertical') do %>
     <div>
-      <%= check_box_tag 'fields[title]', "#{t('dri.views.fields.title')}"%>
+      <%= check_box_tag 'fields[title]', "#{t('dri.views.fields.title')}", true%>
       <%= label_tag "#{t('dri.views.fields.title')}"%>
     </div>
     <div>
-      <%= check_box_tag 'fields[creator]', "#{t('dri.views.fields.creator')}" %>
+      <%= check_box_tag 'fields[creator]', "#{t('dri.views.fields.creator')}", true %>
       <%= label_tag "#{t('dri.views.fields.creator')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[contributor]', "#{t('dri.views.fields.contributor')}" %>
+      <%= check_box_tag 'fields[contributor]', "#{t('dri.views.fields.contributor')}", true %>
       <%= label_tag "#{t('dri.views.fields.contributor')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[publisher]', "#{t('dri.views.fields.publisher')}" %>
+      <%= check_box_tag 'fields[publisher]', "#{t('dri.views.fields.publisher')}", true %>
       <%= label_tag "#{t('dri.views.fields.publisher')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[description]', "#{t('dri.views.fields.description')}" %>
+      <%= check_box_tag 'fields[description]', "#{t('dri.views.fields.description')}", true %>
       <%= label_tag "#{t('dri.views.fields.description')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[creation_date]', "#{t('dri.views.fields.creation_date')}" %>
+      <%= check_box_tag 'fields[creation_date]', "#{t('dri.views.fields.creation_date')}", true %>
       <%= label_tag "#{t('dri.views.fields.creation_date')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[published_date]', "#{t('dri.views.fields.published_date')}" %>
+      <%= check_box_tag 'fields[published_date]', "#{t('dri.views.fields.published_date')}", true %>
       <%= label_tag "#{t('dri.views.fields.published_date')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[date]', "#{t('dri.views.fields.date')}" %>
+      <%= check_box_tag 'fields[date]', "#{t('dri.views.fields.date')}", true %>
       <%= label_tag "#{t('dri.views.fields.date')}" %>
     </div>
      <div>
-      <%= check_box_tag 'fields[identifiers]', "#{t('dri.views.fields.identifiers')}" %>
+      <%= check_box_tag 'fields[identifiers]', "#{t('dri.views.fields.identifiers')}", true %>
       <%= label_tag "#{t('dri.views.fields.identifiers')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[subject]', "#{t('dri.views.fields.subjects')}" %>
+      <%= check_box_tag 'fields[subject]', "#{t('dri.views.fields.subjects')}", true %>
       <%= label_tag "#{t('dri.views.fields.subjects')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[temporal_coverage]', "#{t('dri.views.fields.temporal_coverages')}" %>
+      <%= check_box_tag 'fields[temporal_coverage]', "#{t('dri.views.fields.temporal_coverages')}", true %>
       <%= label_tag "#{t('dri.views.fields.temporal_coverages')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[geographical_coverage]', "#{t('dri.views.fields.geographical_coverages')}" %>
+      <%= check_box_tag 'fields[geographical_coverage]', "#{t('dri.views.fields.geographical_coverages')}", true %>
       <%= label_tag "#{t('dri.views.fields.geographical_coverages')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[rights]', "#{t('dri.views.fields.rights')}" %>
+      <%= check_box_tag 'fields[rights]', "#{t('dri.views.fields.rights')}", true %>
       <%= label_tag "#{t('dri.views.fields.rights')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[status]', "#{t('dri.views.fields.status')}" %>
+      <%= check_box_tag 'fields[status]', "#{t('dri.views.fields.status')}", true %>
       <%= label_tag "#{t('dri.views.fields.status')}" %>
     </div>
     <div>
-      <%= check_box_tag 'fields[assets]' %>
+      <%= check_box_tag 'fields[assets]', 'true', true %>
       <%= label_tag "#{t('dri.views.fields.assets')}" %>
     </div>
     <%= submit_tag "#{t('dri.views.catalog.buttons.submit')}", class: "btn btn-primary" %>
