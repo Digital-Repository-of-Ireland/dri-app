@@ -17,7 +17,7 @@ class ProcessBatchIngest
 
     rc, object = if metadata_info['object_id'].present?
                    # metadata ingest was successful so only ingest missing assets
-                   [0, DRI::DigitalObject.find_by_alternate_id(metadata_info['object_id'], cast: true)]
+                   [0, DRI::DigitalObject.find_by_alternate_id(metadata_info['object_id'])]
                  else
                    metadata = retrieve_files(download_path, [metadata_info])[0]
                    ingest_metadata(collection_id, user, metadata)
