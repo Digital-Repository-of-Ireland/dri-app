@@ -84,8 +84,8 @@ module DRI::Solr::Document::File
     @cache[file_id] ||= storage_service.get_surrogates(self, file_id, timeout)
   end
 
-  def surrogates_list(object_id)
-    @surrogates_list ||= storage_service.list_surrogates(object_id)
+  def surrogates_list
+    @surrogates_list ||= storage_service.list_surrogates(alternate_id)
   end
 
   def storage_service

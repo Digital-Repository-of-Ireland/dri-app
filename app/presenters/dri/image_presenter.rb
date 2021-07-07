@@ -12,16 +12,16 @@ module DRI
     end
 
     def file_type_key
-      @file_type_key ||= Solrizer.solr_name('file_type', :stored_searchable, type: :string)
+      'file_type_tesim'
     end
 
     # Called from grid/list/saved object snippet view
     def image_for_search
-      files = document.assets
       file_types = document[file_type_key]
-
       return default_image(file_types) unless can?(:read, document[:id])
+
       image = nil
+      files = document.assets
 
       files.each do |file|
         image = search_image(file)
@@ -62,7 +62,7 @@ module DRI
 
       path = if solr_doc[cover_key].present? && solr_doc[cover_key].first
                cover_image_path(solr_doc)
-             elsif document[Solrizer.solr_name('root_collection', :stored_searchable, type: :string).to_sym].present?
+             elsif document[:root_collection_tesim].present?
                collection = solr_doc.root_collection
 
                if collection[cover_key].present? && collection[cover_key].first
@@ -88,7 +88,7 @@ module DRI
     private
 
     def search_image_path(file_doc_id, name)
-      return nil unless StorageService.new.surrogate_exists?(document[:id], "#{file_doc_id}_#{name}")
+      return nil unless document.surrogates_list.any? { |s| s.include?("#{file_doc_id}_#{name}") }
 
       object_file_path(
         object_id: document[:id],
