@@ -6,7 +6,7 @@
       <% end %>
       <% if document.key?(:description_tesim) %>
         <p class="dri_list_description">
-          <%= truncate_description(document[:description_tesim][0], 280).html_safe %>
+          <%= truncate_description(document[:description_tesim][0], 280) %>
         </p>
       <% end %>
       <p class="dri_list_subject">
@@ -21,7 +21,7 @@
       </div>
       <!-- close dri_icon -->
     </div>
-    <%  %>
+
     <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
@@ -31,7 +31,7 @@
     <% end %>
 
     <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-        <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, id: 'remove_bookmark' %>
+      <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, id: 'remove_bookmark' %>
     <% end %>
   </div>
   <!-- close content_block -->

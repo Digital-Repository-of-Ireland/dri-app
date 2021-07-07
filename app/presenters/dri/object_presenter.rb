@@ -65,7 +65,7 @@ module DRI
     end
 
     def surrogate_url(file_id, name)
-      return nil unless surrogate_exists?(document.id, name)
+      return nil unless surrogate_exists?(name)
 
       object_file_url(
         object_id: document.id,
@@ -74,8 +74,8 @@ module DRI
       )
     end
 
-    def surrogate_exists?(object_id, name)
-      document.surrogates_list(object_id).any? { |s| s.include?(name) }
+    def surrogate_exists?(name)
+      document.surrogates_list.any? { |s| s.include?(name) }
     end
 
     private
