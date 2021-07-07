@@ -90,7 +90,7 @@ class Timeline
     solr_doc = SolrDocument.new(document)
     files = solr_doc.assets
 
-    presenter = DRI::ImagePresenter.new(document, @view)
+    presenter = DRI::ImagePresenter.new(solr_doc, @view)
     file_types = document[presenter.file_type_key]
 
     return presenter.default_image(file_types) unless can?(:read, document[:id])
