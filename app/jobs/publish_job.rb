@@ -40,7 +40,8 @@ class PublishJob
     collection.increment_version
 
     if collection.save
-      mint_doi(collection)
+      doi = create_doi(collection)
+      mint_doi(doi)
 
       record_version_committer(collection, user)
 
