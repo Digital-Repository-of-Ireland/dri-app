@@ -16,12 +16,12 @@ module DRI
     end
 
     # Called from grid/list/saved object snippet view
-    def image_for_search
+    def image_for_search(assets = nil)
       file_types = document[file_type_key]
       return default_image(file_types) unless can?(:read, document[:id])
 
       image = nil
-      files = document.assets
+      files = assets ? assets : document.assets
 
       files.each do |file|
         image = search_image(file)

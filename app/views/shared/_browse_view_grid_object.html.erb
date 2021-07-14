@@ -8,10 +8,14 @@
     <% end %>
 
     <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
-        <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+        <h1><%= document['title_tesim'][0] %></h1>
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
-            <%= image_tag images.image_for_search, width: "200" %>
+            <% if @assets && @assets.key?(document.id) %>
+              <%= image_tag images.image_for_search(@assets[document.id]), width: "200" %>
+            <% else %>
+              <%= image_tag images.image_for_search, width: "200" %>
+            <% end %>
           <% end %>
         </div><!-- close image -->
     <% end %>

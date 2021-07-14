@@ -68,6 +68,25 @@ module DRI::Catalog
       available_timelines
     end
 
+    def load_assets_for_document_list
+      return {} if @document_list.blank?
+
+      ids_query = Solr::Query.construct_query_for_ids(
+                        @document_list.map(&:id),
+                        'isPartOf_ssim'
+                      )
+      fq = ["active_fedora_model_ssi:\"DRI::GenericFile\""]
+      fq << "-preservation_only_ssi:true"
+      query = Solr::Query.new(ids_query, 100, { fq: fq })
+      @assets = {}
+      query.each do |file|
+        object_id = file['isPartOf_ssim'].first
+        files = @assets.key?(object_id) ? @assets[object_id] : []
+        files << file
+        @assets[object_id] = files
+      end
+    end
+
     def timeline_data
       tl_field = params[:tl_field].presence || 'sdate'
 
