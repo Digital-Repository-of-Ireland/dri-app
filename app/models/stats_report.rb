@@ -1,11 +1,13 @@
 class StatsReport
   include ActiveModel::Model
 
+  SUMMARISE = %w(jpeg jpg tiff png mp4 mpeg mp3 x-wav x-matroska x-msvideo quicktime)
+
   def self.file_type_counts
     type_counts = {}
 
     result = Solr::Query.new(
-               'has_model_ssim:"DRI::DigitalObject"',
+               'has_model_ssim:"DRI::GenericFile"',
                100,
                { facet: true,
                  'facet.query' => [
@@ -60,11 +62,15 @@ class StatsReport
       next if type.blank?
 
       common_type = type.split('(')[0].strip
-      format_summary[common_type] = if format_summary.key?(common_type)
-                                      format_summary[common_type] + count
-                                    else
-                                      count
-                                    end
+      if SUMMARISE.include?(common_type)
+        format_summary[common_type] = if format_summary.key?(common_type)
+                                        format_summary[common_type] + count
+                                      else
+                                        count
+                                      end
+      else
+        format_summary[type] = count
+      end
     end
 
     format_summary

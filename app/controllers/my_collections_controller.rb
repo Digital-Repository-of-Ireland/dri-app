@@ -191,6 +191,7 @@ class MyCollectionsController < ApplicationController
   def index
     params[:q] = params.delete(:q_ws)
     (@response, @document_list) = search_results(params)
+    load_assets_for_document_list
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
