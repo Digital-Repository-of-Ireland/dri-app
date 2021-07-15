@@ -87,6 +87,7 @@ class GenericFileContent
   end
 
   def push_characterize_job
+    generic_file.reload
     DRI.queue.push(CharacterizeJob.new(generic_file.alternate_id))
   end
 end
