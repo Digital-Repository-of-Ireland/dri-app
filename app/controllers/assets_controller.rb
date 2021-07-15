@@ -56,7 +56,7 @@ class AssetsController < ApplicationController
       if File.file?(@generic_file.path)
         response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
         send_file @generic_file.path,
-              type: @generic_file.mime_type,
+              type: @generic_file.mime_type || 'application/octet-stream',
               stream: true,
               buffer: 4096,
               disposition: "attachment; filename=\"#{@generic_file.filename.first}\";",
