@@ -56,7 +56,7 @@ class AssetsController < ApplicationController
       if File.file?(@generic_file.path)
         response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
         send_file @generic_file.path,
-              type: @generic_file.mime_type,
+              type: @generic_file.mime_type || 'application/octet-stream',
               stream: true,
               buffer: 4096,
               disposition: "attachment; filename=\"#{@generic_file.filename.first}\";",
@@ -135,7 +135,7 @@ class AssetsController < ApplicationController
       end
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
-      @warnings = t('dri.flash.alert.error_saving_file', error: message)
+      @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
       logger.error "Error saving file: #{e.message}"
     end
 
