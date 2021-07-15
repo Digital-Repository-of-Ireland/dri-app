@@ -135,7 +135,7 @@ class AssetsController < ApplicationController
       end
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
-      @warnings = t('dri.flash.alert.error_saving_file', error: message)
+      @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
       logger.error "Error saving file: #{e.message}"
     end
 
