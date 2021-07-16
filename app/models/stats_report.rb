@@ -32,7 +32,14 @@ class StatsReport
 
     result = Solr::Query.new(
                'has_model_ssim:"DRI::DigitalObject"',
-               100, { facet: true, 'facet.field' => 'mime_type_sim' }
+               100,
+               {
+                 facet: true,
+                 'facet.field' => 'mime_type_sim',
+                 'facet.limit' => '-1',
+                 'facet.mincount' => '1',
+                 'facet.sort' => 'count'
+               }
              ).get
 
     facet = result['facet_counts']['facet_fields']['mime_type_sim']
@@ -50,7 +57,13 @@ class StatsReport
     result = Solr::Query.new(
                'has_model_ssim:"DRI::GenericFile"',
                100,
-               { facet: true, 'facet.field' => 'file_format_sim' }
+               {
+                 facet: true,
+                 'facet.field' => 'file_format_sim',
+                 'facet.limit' => '-1',
+                 'facet.mincount' => '1',
+                 'facet.sort' => 'count'
+               }
              ).get
 
     facet = result['facet_counts']['facet_fields']['file_format_sim']
