@@ -46,7 +46,7 @@ module DRI::Solr::Document::File
   end
 
   def file_size
-    self['file_size_isi'].present? ? self['file_size_isi'] : nil
+    self['file_size_ltsi'].present? ? self['file_size_ltsi'] : nil
   end
 
   def file_types

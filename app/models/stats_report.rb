@@ -105,10 +105,10 @@ class StatsReport
     stats = Solr::Query.new(
               '*:*',
               100,
-              { stats: true, 'stats.field' => 'file_size_isi' }
+              { stats: true, 'stats.field' => 'file_size_ltsi' }
             ).get
-    if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_isi'].present?
-      stats['stats']['stats_fields']['file_size_isi']['sum']
+    if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_ltsi'].present?
+      stats['stats']['stats_fields']['file_size_ltsi']['sum']
     else
       0
     end
