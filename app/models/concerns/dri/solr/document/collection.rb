@@ -23,9 +23,9 @@ module DRI::Solr::Document::Collection
   end
 
   def collection_contains_published_images?
-    contains_images_query = status_query('published')
-    contains_images_query += " AND file_type_tesim:image"
-    Solr::Query.new(contains_images_query).count.positive?
+    fq = status_query_filters('published')
+    fq << 'file_type_tesim:image'
+    Solr::Query.new("ancestor_id_ssim:#{self.alternate_id}", 100, { fq: fq }).count.positive?
   end
 
   def cover_image
@@ -133,9 +133,10 @@ module DRI::Solr::Document::Collection
                  "\" AND " +
                  "#{Solr::SchemaFields.searchable_string('file_type_display')}:"+ type
     if published_only
-      solr_query += " AND status_ssi:published"
+      Solr::Query.new(solr_query, 100, { fq: 'status_ssi:published' }).count
+    else
+      Solr::Query.new(solr_query).count
     end
-    Solr::Query.new(solr_query).count
   end
 
   private
@@ -147,18 +148,22 @@ module DRI::Solr::Document::Collection
     # @param [String] status
     # @param [Boolean] subcoll
     # @return [String] solr query for children of self (id) with given status
-    def status_query(status, subcoll = false)
-      query = "ancestor_id_ssim:#{self.alternate_id}"
-      query += " AND status_ssi:#{status}" unless status.nil?
-      query += " AND is_collection_ssi:#{subcoll}"
-      query
+    def status_query_filters(status, subcoll = false)
+      fq = []
+      fq << "status_ssi:#{status}" unless status.nil?
+      fq << "is_collection_ssi:#{subcoll}"
+      fq
     end
 
     # @param [String] status
     # @param [Boolean] subcoll
     # @return [Integer]
     def status_count(status, subcoll = false)
-      Solr::Query.new(status_query(status, subcoll)).count
+      Solr::Query.new(
+        "ancestor_id_ssim:#{self.alternate_id}",
+        100,
+        { fq: status_query_filters(status, subcoll)}
+      ).count
     end
 
     def status_counts
@@ -201,14 +206,22 @@ module DRI::Solr::Document::Collection
     # @param [Boolean] subcoll
     # @return [Solr::Query]
     def status_objects(status, subcoll = false)
-      Solr::Query.new(status_query(status, subcoll))
+      Solr::Query.new(
+        "ancestor_id_ssim:#{self.alternate_id}",
+        100,
+        { fq: status_query_filters(status, subcoll)}
+      )
     end
 
     # @param [String] status
     # @param [Boolean] subcoll
     # @return [Array] List of IDs
     def status_ids(status, subcoll = false)
-      Solr::Query.new(status_query(status, subcoll)).map(&:alternate_id)
+      Solr::Query.new(
+        "ancestor_id_ssim:#{self.alternate_id}",
+        100,
+        { fq: status_query_filters(status, subcoll)}
+      ).map(&:alternate_id)
     end
 
     def duplicate_query
@@ -220,6 +233,7 @@ module DRI::Solr::Document::Collection
         "facet.pivot" => "#{metadata_field},alternate_id",
         facet: true,
         "facet.mincount" => 2,
+        "facet.limit" => -1,
         "facet.field" => "#{metadata_field}"
       }
 
