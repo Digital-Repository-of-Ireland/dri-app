@@ -119,7 +119,7 @@
    <div>
      <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile') do %>
        <i class="fa fa-download"></i>
-     <% file_size = number_to_human_size(generic_file['file_size_lts']) %>
+     <% file_size = number_to_human_size(generic_file['file_size_ltsi']) %>
      <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
      <% end %>
     </div>
