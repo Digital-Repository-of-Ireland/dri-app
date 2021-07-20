@@ -32,7 +32,14 @@ class StatsReport
 
     result = Solr::Query.new(
                'has_model_ssim:"DRI::DigitalObject"',
-               100, { facet: true, 'facet.field' => 'mime_type_sim' }
+               100,
+               {
+                 facet: true,
+                 'facet.field' => 'mime_type_sim',
+                 'facet.limit' => '-1',
+                 'facet.mincount' => '1',
+                 'facet.sort' => 'count'
+               }
              ).get
 
     facet = result['facet_counts']['facet_fields']['mime_type_sim']
@@ -50,7 +57,13 @@ class StatsReport
     result = Solr::Query.new(
                'has_model_ssim:"DRI::GenericFile"',
                100,
-               { facet: true, 'facet.field' => 'file_format_sim' }
+               {
+                 facet: true,
+                 'facet.field' => 'file_format_sim',
+                 'facet.limit' => '-1',
+                 'facet.mincount' => '1',
+                 'facet.sort' => 'count'
+               }
              ).get
 
     facet = result['facet_counts']['facet_fields']['file_format_sim']
@@ -78,7 +91,11 @@ class StatsReport
 
 
   def self.summary
-    total_objects = Solr::Query.new('has_model_ssim:"DRI::DigitalObject" and is_collection_ssi:false').count
+    total_objects = Solr::Query.new(
+                      'has_model_ssim:"DRI::DigitalObject"',
+                      100,
+                      { fq: 'is_collection_ssi:false' }
+                    ).count
     total_assets = Solr::Query.new('has_model_ssim:"DRI::GenericFile"').count
 
     { total_objects: total_objects, total_assets: total_assets }
@@ -88,10 +105,10 @@ class StatsReport
     stats = Solr::Query.new(
               '*:*',
               100,
-              { stats: true, 'stats.field' => 'file_size_isi' }
+              { stats: true, 'stats.field' => 'file_size_ltsi' }
             ).get
-    if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_isi'].present?
-      stats['stats']['stats_fields']['file_size_isi']['sum']
+    if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_ltsi'].present?
+      stats['stats']['stats_fields']['file_size_ltsi']['sum']
     else
       0
     end

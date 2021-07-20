@@ -35,11 +35,11 @@ private
     stats = Solr::Query.new(
               "{!join from=id to=isPartOf_ssim}root_collection_id_ssi:#{collection.id} && is_collection_ssi:false",
               100,
-              { stats: true, 'stats.field' => 'file_size_isi' }
+              { stats: true, 'stats.field' => 'file_size_ltsi' }
             ).get
 
-    if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_isi'].present?
-      total = stats['stats']['stats_fields']['file_size_isi']['sum']
+    if stats.present? && stats['stats']['stats_fields'].present? && stats['stats']['stats_fields']['file_size_ltsi'].present?
+      total = stats['stats']['stats_fields']['file_size_ltsi']['sum']
     else
       total = 0
     end
