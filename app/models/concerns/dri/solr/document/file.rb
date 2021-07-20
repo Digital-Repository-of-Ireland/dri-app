@@ -1,12 +1,12 @@
 module DRI::Solr::Document::File
 
   def assets(with_preservation: false, ordered: false)
-    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND isPartOf_ssim:\"#{alternate_id}\""
+    files_query = "isPartOf_ssim:\"#{alternate_id}\""
 
-    fq = with_preservation ? {} : { fq: ["-preservation_only_ssi:true"] }
+    fq = 'active_fedora_model_ssi:"DRI::GenericFile"'
+    fq << '-preservation_only_ssi:true' unless with_preservation
 
-    query = ::Solr::Query.new(files_query, 100, fq)
+    query = ::Solr::Query.new(files_query, 100, { fq: fq })
     assets = query.to_a
     ordered ? sort_assets(assets) : assets
   end
@@ -46,7 +46,7 @@ module DRI::Solr::Document::File
   end
 
   def file_size
-    self['file_size_isi'].present? ? self['file_size_isi'] : nil
+    self['file_size_ltsi'].present? ? self['file_size_ltsi'] : nil
   end
 
   def file_types
