@@ -1,5 +1,8 @@
 <li class="dropdown dri_dropdown">
-  <a href="http://www.dri.ie/" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.browse') %> <span class="caret"></span></a>
+
+  <% browselink = main_app.search_catalog_path(mode: 'collections', search_field: 'all_fields') %>
+
+  <a href="<%= browselink %>" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.browse') %> <span class="caret"></span></a>
   <ul class="dropdown-menu" role="menu">
 
 
@@ -9,7 +12,7 @@
     <li>
 <% end %>
 
-<%= link_to t('dri.headerlinks.browse_collections'), main_app.search_catalog_path(mode: 'collections', search_field: 'all_fields'), id: 'browse' %>
+<%= link_to t('dri.headerlinks.browse_collections'), browselink, id: 'browse' %>
 </li>
 
 <% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>

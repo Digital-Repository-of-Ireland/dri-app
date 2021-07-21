@@ -212,6 +212,7 @@ en:
         street: 19 Dawson Street
         zip: Dublin 2
     headerlinks:
+      newsletter: Newsletter
       news_events: "News & Events"
       about: About
       about_dri: About DRI
@@ -258,7 +259,7 @@ en:
       resources: Resources
       resque: Resque Server
       sub_collections: Sub-Collections
-      team: Team
+      team: People
       usergroups: 'Users & Groups'
       vacancies: Vacancies
       how_to_deposit: 'How to Deposit'
@@ -268,7 +269,7 @@ en:
       training: Training & Education
       user_guides: User Guides
       early_career: DRI Early Career Research Award
-      networks: International Networks
+      networks: Collaborations & Networks
       themes: Themes
       digipres: Digital Preservation
       standards: Standards Adoption
