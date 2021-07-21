@@ -1,23 +1,33 @@
 module DRI::Citable
   extend ActiveSupport::Concern
 
-  def update_doi(object, doi, modified)
+  def new_doi_if_required(object, doi, modified)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    if doi.changed? && object.status == "published"
-      doi.mandatory_update? ? mint_doi(object, modified) : doi_metadata_update(object)
+    return unless (doi.changed? && doi.mandatory_update?) && object.status == "published"
+
+    new_doi(object, modified)
+  end
+
+  def mint_or_update_doi(object, doi = nil)
+    return if Settings.doi.enable != true || DoiConfig.nil?
+
+    if @new_doi
+      Resque.enqueue(MintDoiJob, @new_doi.id)
+    elsif doi && doi.changed?
       doi.clear_changed
+      Resque.enqueue(UpdateDoiJob, doi.id)
     end
   end
 
-  def mint_doi(object, modified)
+  def new_doi(object, modified)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    DataciteDoi.create(object_id: object.alternate_id, modified: modified, mod_version: object.object_version)
-    DRI.queue.push(MintDoiJob.new(object.alternate_id))
-  end
-
-  def doi_metadata_update(object)
-    DRI.queue.push(UpdateDoiJob.new(object.alternate_id))
+    @new_doi = DataciteDoi.create(
+      object_id: object.alternate_id,
+      modified: modified,
+      mod_version: object.object_version
+    )
+    object.doi = @new_doi.doi
   end
 end

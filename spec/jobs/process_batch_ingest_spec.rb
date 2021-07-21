@@ -4,7 +4,6 @@ describe 'ProcessBatchIngest' do
 
   before(:each) do
     allow_any_instance_of(DRI::GenericFile).to receive(:apply_depositor_metadata)
-    allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
   end
 
   before(:each) do
@@ -56,7 +55,7 @@ describe 'ProcessBatchIngest' do
                   }
         }
       ]
-
+      expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
       ProcessBatchIngest.perform(@login_user.id, @collection.alternate_id, ingest_message.to_json)
 
       master_file.reload
@@ -111,6 +110,7 @@ describe 'ProcessBatchIngest' do
       object.increment_version
       object.save
 
+      expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
       ProcessBatchIngest.ingest_assets(@login_user, object, assets)
 
       master_file.reload
@@ -124,6 +124,7 @@ describe 'ProcessBatchIngest' do
       object.increment_version
       object.save
 
+      expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).once
       ProcessBatchIngest.ingest_assets(@login_user, object, assets)
 
       master_file.reload

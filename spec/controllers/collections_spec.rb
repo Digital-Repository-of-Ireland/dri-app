@@ -220,14 +220,14 @@ describe CollectionsController do
 
       DataciteDoi.create(object_id: @collection.alternate_id)
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Resque).to receive(:enqueue).once
       params = {}
 
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A modified title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
+      expect { put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] } }.to change{ DataciteDoi.count }.by(1)
 
       DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       Settings.doi.enable = false
@@ -263,13 +263,13 @@ describe CollectionsController do
 
       DataciteDoi.create(object_id: @collection.alternate_id)
 
-      expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
+      expect(Resque).to_not receive(:enqueue)
       params = {}
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A collection"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
-      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
+      expect { put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] } }.to change{ DataciteDoi.count }.by(0)
 
       DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       Settings.doi.enable = false

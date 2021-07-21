@@ -1,18 +1,13 @@
 require 'doi/datacite'
 
-class UpdateDoiJob < IdBasedJob
+class UpdateDoiJob
+  @queue = :doi
 
-  def queue_name
-    :doi
-  end
-
-  def run
-    Rails.logger.info "Update DOI metadata for #{id}"
-
-    doi = DataciteDoi.where(object_id: id).current
+  def self.perform(doi_id)
+    doi = DataciteDoi.find(doi_id)
+    return if doi.nil?
 
     client = DOI::Datacite.new(doi)
     client.metadata
   end
-
 end

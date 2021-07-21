@@ -124,7 +124,10 @@ class CollectionsController < BaseObjectsController
 
     supported_licences
 
-    doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) }) if doi
+    if doi
+      doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) })
+      new_doi_if_required(@object, doi, 'metadata updated')
+    end
 
     @object.increment_version
     updated = @object.update_attributes(update_params)
@@ -145,7 +148,7 @@ class CollectionsController < BaseObjectsController
     respond_to do |format|
       if updated
         record_version_committer(@object, current_user)
-        update_doi(@object, doi, "metadata update") if doi && doi.changed?
+        mint_or_update_doi(@object, doi) if doi
 
         flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
         format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }

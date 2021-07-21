@@ -51,7 +51,7 @@ class SolrDocument
   end
 
   def active_fedora_model
-    self[Solrizer.solr_name('active_fedora_model', :stored_sortable, type: :string)]
+    self['active_fedora_model_ssi']
   end
 
   def ancestor_docs
@@ -108,8 +108,8 @@ class SolrDocument
 
   def contains_images?
     files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{Solrizer.solr_name('isPartOf', :symbol)}:#{alternate_id}"
-    files_query += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
+    files_query += " AND isPartOf_ssim:#{alternate_id}"
+    files_query += " AND file_type_sim:\"image\""
 
     Solr::Query.new(files_query).count > 0
   end
@@ -137,9 +137,7 @@ class SolrDocument
   end
 
   def has_geocode?
-    geojson_key = Solrizer.solr_name('geojson', :stored_searchable, type: :symbol).to_sym
-
-    self[geojson_key].present?
+    self['geojson_ssim'].present?
   end
 
   # @param [String] field_name
@@ -185,14 +183,14 @@ class SolrDocument
   end
 
   def institutes
-    institute_names = ancestor_field(Solrizer.solr_name('institute', :stored_searchable, type: :string))
+    institute_names = ancestor_field('institute_tesim')
     institutes = Institute.where(name: institute_names)
 
     institutes.to_a
   end
 
   def licence
-    licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
+    licence_key = 'licence_tesim'.freeze
     if self[licence_key].present?
       Licence.where(name: self[licence_key]).first || self[licence_key]
     else
@@ -201,7 +199,7 @@ class SolrDocument
   end
 
   def object_profile
-    key = Solrizer.solr_name('object_profile', :displayable)
+    key = 'object_profile_ssm'.freeze
 
     self[key].present? ? JSON.parse(self[key].first) : {}
   end
@@ -219,7 +217,7 @@ class SolrDocument
   end
 
   def relatives
-    relatives_key = Solrizer.solr_name('isMemberOf', :symbol)
+    relatives_key = 'isMemberOf_ssim'.freeze
     return [] unless self[relatives_key].present?
 
     self[relatives_key]
@@ -259,8 +257,8 @@ class SolrDocument
   end
 
   def public_read?
-    read_access_groups_key = Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)
-    groups = get_permission_key(self.id, read_access_groups_key)
+    read_access_groups_key = 'read_access_group_ssim'
+    groups = ancestor_field(read_access_groups_key)
     return false if groups.nil? #groups could be nil if read access set to restricted
 
     groups.include?(SETTING_GROUP_PUBLIC)

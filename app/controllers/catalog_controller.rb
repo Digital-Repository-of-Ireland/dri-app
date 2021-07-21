@@ -15,7 +15,7 @@ class CatalogController < ApplicationController
     config.search_builder_class = ::CatalogSearchBuilder
 
     config.show.route = { controller: 'catalog' }
-    config.per_page = [12, 24, 36, 48, 72, 96]
+    config.per_page = [12, 24, 36, 48]
     config.default_per_page = 12
     config.metadata_lang = ['all', 'gle', 'enl']
     config.default_metadata_lang = 'all'
@@ -27,12 +27,12 @@ class CatalogController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.title_field = Solrizer.solr_name('title', :stored_searchable, type: :string)
-    config.index.record_tsim_type = Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)
+    config.index.title_field = 'title_tesim'
+    config.index.record_tsim_type = 'has_model_ssim'
 
     # solr field configuration for document/show views
-    config.show.title_field = Solrizer.solr_name('title', :stored_searchable, type: :string)
-    config.show.display_type_field = Solrizer.solr_name('file_type', :stored_searchable, type: :string)
+    config.show.title_field = 'title_tesim'
+    config.show.display_type_field = 'file_type_tesim'
 
     config.show.document_actions.delete(:email)
     config.show.document_actions.delete(:sms)
@@ -48,18 +48,18 @@ class CatalogController < ApplicationController
     config.add_facet_field 'pdate_range_start_isi', show: false
     config.add_facet_field 'date_range_start_isi', show: false
 
-    config.add_facet_field Solrizer.solr_name('licence', :facetable), label: 'Licence', limit: 20
-    config.add_facet_field Solrizer.solr_name('subject', :facetable), limit: 20
-    config.add_facet_field Solrizer.solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, show: true
-    config.add_facet_field Solrizer.solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false
-    config.add_facet_field Solrizer.solr_name('placename_field', :facetable), show: true, limit: 20
-    config.add_facet_field Solrizer.solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
-    config.add_facet_field Solrizer.solr_name('creator', :facetable), label: 'creators', show: false
-    config.add_facet_field Solrizer.solr_name('contributor', :facetable), label: 'contributors', show: false
-    config.add_facet_field Solrizer.solr_name('person', :facetable), limit: 20, helper_method: :parse_orcid
-    config.add_facet_field Solrizer.solr_name('language', :facetable), helper_method: :label_language, limit: true
-    config.add_facet_field Solrizer.solr_name('file_type_display', :facetable)
-    config.add_facet_field Solrizer.solr_name('institute', :facetable), limit: 10
+    config.add_facet_field 'licence_sim', label: 'Licence', limit: 20
+    config.add_facet_field 'subject_sim', limit: 20
+    config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true
+    config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false
+    config.add_facet_field 'placename_field_sim', show: true, limit: 20
+    config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
+    config.add_facet_field 'creator_sim', label: 'creators', show: false
+    config.add_facet_field 'contributor_sim', label: 'contributors', show: false
+    config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid
+    config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
+    config.add_facet_field 'file_type_display_sim'
+    config.add_facet_field 'institute_sim', limit: 10
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
 
     # Added to test sub-collection belonging objects filter in object results view
@@ -70,13 +70,13 @@ class CatalogController < ApplicationController
 
     # Solr fields to be displayed in the index (search results) view
     # The ordering of the field names is the order of the display
-    config.add_index_field Solrizer.solr_name('title', :stored_searchable, type: :string), label: 'title'
-    config.add_index_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
-    config.add_index_field Solrizer.solr_name('creator', :stored_searchable, type: :string), label: 'creators'
-    config.add_index_field Solrizer.solr_name('format', :stored_searchable), label: 'format'
-    config.add_index_field Solrizer.solr_name('file_type_display', :stored_searchable, type: :string), label: 'Mediatype'
-    config.add_index_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
-    config.add_index_field Solrizer.solr_name('published', :stored_searchable, type: :string), label: 'Published:'
+    config.add_index_field 'title_tesim', label: 'title'
+    config.add_index_field 'subject_tesim', label: 'subjects'
+    config.add_index_field 'creator_tesim', label: 'creators'
+    config.add_index_field 'format_tesim', label: 'format'
+    config.add_index_field 'file_type_display_tesim', label: 'Mediatype'
+    config.add_index_field 'language_tesim', label: 'language', helper_method: :label_language
+    config.add_index_field 'published_tesim', label: 'Published:'
 
     # solr fields to be displayed in the show (single result) view
     # The ordering of the field names is the order of the display
@@ -184,6 +184,7 @@ class CatalogController < ApplicationController
     params.delete(:q_ws)
 
     (@response, @document_list) = search_results(params)
+    load_assets_for_document_list
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
@@ -247,5 +248,4 @@ class CatalogController < ApplicationController
       additional_export_formats(@document, format)
     end
   end
-
 end

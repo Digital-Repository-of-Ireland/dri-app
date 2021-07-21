@@ -42,8 +42,12 @@ class DoiController < ApplicationController
 
     @object = retrieve_object!(params[:object_id])
 
-    mint_doi(@object, params[:modified]) if @object.status == 'published'
-    flash[:notice] = t('dri.flash.notice.collection_doi_request')
+    if @object.status == 'published'
+      new_doi(@object, params[:modified])
+      mint_or_update_doi(@object)
+
+      flash[:notice] = t('dri.flash.notice.collection_doi_request')
+    end
 
     respond_to do |format|
       format.html { redirect_to controller: 'catalog', action: 'show', id: @object.alternate_id }

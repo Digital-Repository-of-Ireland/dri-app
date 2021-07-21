@@ -19,7 +19,7 @@ class PublishJob
     set_status(collection_id: collection_id)
 
     # query for reviewed objects within this collection
-    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str = "collection_id_sim:\"#{collection_id}\""
     q_str += " AND status_ssi:reviewed"
 
     # excluding sub-collections
@@ -40,7 +40,8 @@ class PublishJob
     collection.increment_version
 
     if collection.save
-      mint_doi(collection)
+      doi = create_doi(collection)
+      mint_doi(doi)
 
       record_version_committer(collection, user)
 
@@ -73,6 +74,9 @@ class PublishJob
         o.object_version ||= '1'
         o.increment_version
 
+        doi = create_doi(o)
+        o.doi = doi.doi if doi
+
         if o.save
           record_version_committer(o, user)
 
@@ -81,8 +85,9 @@ class PublishJob
           preservation.preserve
 
           completed += 1
-          mint_doi(o)
+          mint_doi(doi) if doi
         else
+          doi.destroy if doi
           failed += 1
         end
       end
@@ -96,11 +101,20 @@ class PublishJob
     return completed, failed
   end
 
-  def mint_doi(obj)
+  def create_doi(obj)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    DataciteDoi.create(object_id: obj.alternate_id, modified: 'DOI created', mod_version: obj.object_version)
-    DRI.queue.push(MintDoiJob.new(obj.alternate_id))
+    DataciteDoi.find_or_create_by(
+      object_id: obj.alternate_id,
+      modified: 'DOI created',
+      mod_version: obj.object_version
+    )
+  end
+
+  def mint_doi(doi)
+    return if Settings.doi.enable != true || DoiConfig.nil?
+
+    Resque.enqueue(MintDoiJob, doi.id)
   rescue Exception => e
     Rails.logger.error "Unable to submit mint doi job: #{e.message}"
   end

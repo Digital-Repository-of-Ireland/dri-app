@@ -1,18 +1,21 @@
 module DRI::Solr::Document::File
 
   def assets(with_preservation: false, ordered: false)
-    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND #{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{alternate_id}\""
-    query = ::Solr::Query.new(files_query)
-    assets = query.reject { |sd| with_preservation == false && sd.preservation_only? }
+    files_query = "isPartOf_ssim:\"#{alternate_id}\""
+
+    fq = 'active_fedora_model_ssi:"DRI::GenericFile"'
+    fq << '-preservation_only_ssi:true' unless with_preservation
+
+    query = ::Solr::Query.new(files_query, 100, { fq: fq })
+    assets = query.to_a
     ordered ? sort_assets(assets) : assets
   end
 
   def characterized?
     # not characterized if all empty
-    return false unless self.key?(Solrizer.solr_name('characterization__mime_type'))
+    return false unless self.key?('mime_type_tesim')
 
-    !self[Solrizer.solr_name('characterization__mime_type')].all? { |m| m.empty? }
+    self['mime_type_tesim'].any? { |m| m.present? }
   end
 
   def sort_assets(assets)
@@ -43,7 +46,7 @@ module DRI::Solr::Document::File
   end
 
   def file_size
-    self['file_size_isi'].present? ? self['file_size_isi'] : nil
+    self['file_size_ltsi'].present? ? self['file_size_ltsi'] : nil
   end
 
   def file_types
@@ -81,8 +84,8 @@ module DRI::Solr::Document::File
     @cache[file_id] ||= storage_service.get_surrogates(self, file_id, timeout)
   end
 
-  def surrogates_list(object_id)
-    @surrogates_list ||= storage_service.list_surrogates(object_id)
+  def surrogates_list
+    @surrogates_list ||= storage_service.list_surrogates(alternate_id)
   end
 
   def storage_service

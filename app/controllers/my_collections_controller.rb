@@ -80,7 +80,6 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field Solrizer.solr_name('sample_rate', :facetable, type: :integer), label: 'Sample Rate'
     config.add_facet_field Solrizer.solr_name('bit_depth', :facetable, type: :integer), label: 'Bit Depth'
     config.add_facet_field Solrizer.solr_name('file_count', :stored_sortable, type: :integer), label: 'Number of Files'
-    config.add_facet_field Solrizer.solr_name('file_size_total', :stored_sortable, type: :integer), label: 'Total File Size'
     config.add_facet_field Solrizer.solr_name('mime_type', :facetable), label: 'MIME Type'
     config.add_facet_field Solrizer.solr_name('file_format', :facetable), label: 'File Format'
     config.add_facet_field Solrizer.solr_name('file_type_display', :facetable)
@@ -191,6 +190,7 @@ class MyCollectionsController < ApplicationController
   def index
     params[:q] = params.delete(:q_ws)
     (@response, @document_list) = search_results(params)
+    load_assets_for_document_list
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')

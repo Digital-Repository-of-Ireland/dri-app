@@ -9,7 +9,7 @@ class SurrogatesController < ApplicationController
   def index
     raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!("show_digital_object", params[:id])
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :read, params[:id]
+    raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :read, params[:id]
 
     @surrogates = {}
 
@@ -26,7 +26,7 @@ class SurrogatesController < ApplicationController
   def show
     raise DRI::Exceptions::BadRequest unless params[:object_id].present?
     enforce_permissions!("show_digital_object", params[:object_id])
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
+    raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
     file = file_path(params[:object_id], params[:id], params[:surrogate])
     raise DRI::Exceptions::NotFound unless file
@@ -47,7 +47,7 @@ class SurrogatesController < ApplicationController
   def download
     raise DRI::Exceptions::BadRequest unless params[:object_id].present?
     enforce_permissions!("show_digital_object", params[:object_id])
-    raise Hydra::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
+    raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
     @generic_file = retrieve_object! params[:id]
     if @generic_file

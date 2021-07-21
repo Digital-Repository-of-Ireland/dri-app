@@ -75,7 +75,7 @@ describe MetadataController do
       @object.save
       DataciteDoi.create(object_id: @object.alternate_id)
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Resque).to receive(:enqueue).once
       request.env["HTTP_ACCEPT"] = 'application/json'
       @request.env["CONTENT_TYPE"] = "multipart/form-data"
 
@@ -86,9 +86,11 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.alternate_id, metadata_file: @file }
+      expect {
+        put :update, params: { id: @object.alternate_id, metadata_file: @file }
+      }.to change{ DataciteDoi.count }.by(1)
 
-      DataciteDoi.where(object_id: @object.alternate_id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
 
@@ -110,7 +112,7 @@ describe MetadataController do
       @object.save
       DataciteDoi.create(object_id: @object.alternate_id)
 
-      expect(DRI.queue).to_not receive(:push).with(an_instance_of(MintDoiJob))
+      expect(Resque).to receive(:enqueue)
       request.env["HTTP_ACCEPT"] = 'application/json'
       @request.env["CONTENT_TYPE"] = "multipart/form-data"
 
@@ -121,9 +123,48 @@ describe MetadataController do
         attr_reader :tempfile
       end
 
-      put :update, params: { id: @object.alternate_id, metadata_file: @file }
+      expect {
+        put :update, params: { id: @object.alternate_id, metadata_file: @file }
+      }.to change{ DataciteDoi.count }.by(0)
 
-      DataciteDoi.where(object_id: @object.alternate_id).first.delete
+      DataciteDoi.where(object_id: @object.alternate_id).destroy_all
+      Settings.doi.enable = false
+    end
+
+    it 'should rollback doi if an update of mandatory fields fails' do
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { :username => "user",
+            :password => "password",
+            :prefix => '10.5072',
+            :base_url => "http://repository.dri.ie",
+            :publisher => "Digital Repository of Ireland" }
+            )
+        )
+      Settings.doi.enable = true
+
+      @object.status = "published"
+      @object.save
+      DataciteDoi.create(object_id: @object.alternate_id)
+
+      expect_any_instance_of(DRI::DigitalObject).to receive(:save).and_return(false)
+
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      expect {
+        put :update, params: { id: @object.alternate_id, metadata_file: @file }
+      }.to change{ DataciteDoi.count }.by(0)
+
+      DataciteDoi.where(object_id: @object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
 

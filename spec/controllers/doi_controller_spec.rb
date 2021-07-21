@@ -73,8 +73,10 @@ describe DoiController do
       @collection.save
       DataciteDoi.create(object_id: @collection.alternate_id)
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, params: { object_id: @collection.alternate_id, modified: 'objects added' }
+      expect(Resque).to receive(:enqueue).once
+      expect {
+        put :update, params: { object_id: @collection.alternate_id, modified: 'objects added' }
+      }.to change{ DataciteDoi.count }.by(1)
 
       DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       @collection.delete

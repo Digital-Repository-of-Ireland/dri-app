@@ -21,8 +21,9 @@ module Api
       assets = doc.assets(with_preservation: true, ordered: false)
 
       mainfile = DRI::Formatters::EDM.mainfile_for_type(type, assets)
+      raise DRI::Exceptions::NotFound if mainfile.nil?
 
-      if mainfile['file_type_tesim'].include? "3d"
+      if has_3d_type?(mainfile)
         embed_url = embed3d_display_url(doc.id, mainfile.id)
       end
 
@@ -61,6 +62,10 @@ module Api
     private
       def can_view?(doc)
         (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
+      end
+
+      def has_3d_type?(file)
+        file.fetch('file_type_tesim',[]).include?('3d')
       end
 
       def set_headers

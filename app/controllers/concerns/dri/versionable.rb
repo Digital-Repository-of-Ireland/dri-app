@@ -3,7 +3,7 @@ module DRI
     extend ActiveSupport::Concern
 
     def record_version_committer(object, user)
-      VersionCommitter.create(version_id: version_id(object), obj_id: object.id, committer_login: user.to_s)
+      VersionCommitter.create(version_id: version_id(object), obj_id: object.alternate_id, committer_login: user.to_s)
     end
 
     private

@@ -38,7 +38,7 @@ describe 'PublishJob' do
 
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
-      allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
+      allow(Resque).to receive(:enqueue)
       job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
@@ -62,7 +62,7 @@ describe 'PublishJob' do
       @collection.governed_items << @subcollection
       @collection.save
 
-      allow(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob))
+      allow(Resque).to receive(:enqueue)
       job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
       job.perform
 
@@ -105,7 +105,7 @@ describe 'PublishJob' do
 
       job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).twice
+      expect(Resque).to receive(:enqueue).twice
       job.perform
 
       @collection.reload

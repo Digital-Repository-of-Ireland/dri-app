@@ -1,4 +1,4 @@
-<% if has_browse_params? && current_user && (params[:controller] == 'catalog' && params[:action] == 'index') %>
+<% if has_browse_params? && session[:history].present? && current_user && (params[:controller] == 'catalog' && params[:action] == 'index') %>
     <div id="dri_search_save_input_id" class="dri_sort_nav">
       <%= button_to(t('dri.views.objects.buttons.save_current_search'), blacklight.save_search_path(session[:history].first), method: :put, class: "dri_search_save_submit_button", id: 'save_search')%>
     </div>

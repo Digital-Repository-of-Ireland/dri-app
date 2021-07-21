@@ -83,11 +83,42 @@ describe AssetsController do
 
       expect_any_instance_of(GenericFileContent).to receive(:push_characterize_job).and_return(true)
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
+      expect(Resque).to receive(:enqueue).once
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      expect { post :create, params: { object_id: object.alternate_id, Filedata: uploaded } }.to change{ DataciteDoi.count }.by(1)
 
-      DataciteDoi.where(object_id: object.alternate_id).first.delete
+      DataciteDoi.where(object_id: object.alternate_id).destroy_all
+      Settings.doi.enable = false
+    end
+
+    it 'should not mint a doi when there is a failure adding an asset to a published object' do
+      object.status = "published"
+      object.depositor = 'test'
+      object.save
+      object.reload
+
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { username: "user",
+            password: "password",
+            prefix: '10.5072',
+            base_url: "http://repository.dri.ie",
+            publisher: "Digital Repository of Ireland" }
+        )
+      )
+      Settings.doi.enable = true
+
+      DataciteDoi.create(object_id: object.alternate_id)
+
+      expect_any_instance_of(GenericFileContent).to receive(:add_content).and_return(false)
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      expect {
+        post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      }.to change{ DataciteDoi.count }.by(0)
+
+      DataciteDoi.where(object_id: object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
    end
@@ -180,10 +211,52 @@ describe AssetsController do
       object.save
       DataciteDoi.create(object_id: object.alternate_id)
 
-      expect(DRI.queue).to receive(:push).with(an_instance_of(MintDoiJob)).once
-      put :update, params: { object_id: object.alternate_id, id: file_id, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" }
+      expect(Resque).to receive(:enqueue).once
+      expect { put :update, params: { object_id: object.alternate_id, id: file_id, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" } }.to change{ DataciteDoi.count }.by(1)
 
-      DataciteDoi.where(object_id: object.alternate_id).each { |d| d.delete }
+      DataciteDoi.where(object_id: object.alternate_id).destroy_all
+      Settings.doi.enable = false
+    end
+
+    it 'should not mint a doi when an asset modification fails' do
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job).and_return(true)
+
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { username: "user",
+            password: "password",
+            prefix: '10.5072',
+            base_url: "http://repository.dri.ie",
+            publisher: "Digital Repository of Ireland" }
+        )
+      )
+      Settings.doi.enable = true
+
+      FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA.mp3"))
+
+      generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
+      generic_file.digital_object = object
+      generic_file.apply_depositor_metadata('test@test.com')
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+
+      generic_file.add_file File.new(File.join(tmp_upload_dir, "SAMPLEA.mp3")), options
+      generic_file.save
+      file_id = generic_file.alternate_id
+
+      object.status = "published"
+      object.save
+      DataciteDoi.create(object_id: object.alternate_id)
+
+      expect_any_instance_of(GenericFileContent)
+        .to receive(:update_content).and_return(false)
+      expect {
+        put :update, params: { object_id: object.alternate_id, id: file_id, local_file: "SAMPLEA.mp3", file_name: "SAMPLEA.mp3" }
+      }.to change{ DataciteDoi.count }.by(0)
+
+      DataciteDoi.where(object_id: object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
   end
@@ -208,7 +281,46 @@ describe AssetsController do
       expect {
         delete :destroy, params: { object_id: object.alternate_id, id: file_id }
       }.to change { DRI::Identifier.object_exists?(file_id) }.from(true).to(false)
+    end
 
+    it 'should mint a doi when an asset is deleted' do
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job).and_return(true)
+
+      stub_const(
+        'DoiConfig',
+        OpenStruct.new(
+          { username: "user",
+            password: "password",
+            prefix: '10.5072',
+            base_url: "http://repository.dri.ie",
+            publisher: "Digital Repository of Ireland" }
+        )
+      )
+      Settings.doi.enable = true
+
+      generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)
+      generic_file.digital_object = object
+      generic_file.apply_depositor_metadata('test@test.com')
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      generic_file.add_file uploaded, options
+      generic_file.save
+      file_id = generic_file.alternate_id
+
+      object.status = "published"
+      object.save
+      DataciteDoi.create(object_id: object.alternate_id)
+
+      expect(Resque).to receive(:enqueue).once
+      expect {
+        delete :destroy, params: { object_id: object.alternate_id, id: file_id }
+      }.to change{ DataciteDoi.count }.by(1)
+
+      DataciteDoi.where(object_id: object.alternate_id).destroy_all
+      Settings.doi.enable = false
     end
   end
 

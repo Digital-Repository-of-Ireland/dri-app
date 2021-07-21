@@ -14,8 +14,7 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
       <!--First item set to active-->
-      <%= render partial: "shared/carousel_item", locals: { document: document, generic_file: displayfiles.first, displayfiles_count: displayfiles.size, first: true } %>
-      <%= render partial: "shared/carousel_item", collection: displayfiles[1..-1], as: :generic_file, locals: { document: document, displayfiles_count: displayfiles.size, first: false } %>
+      <%= render partial: "shared/carousel_item", collection: displayfiles, as: :generic_file, locals: { document: document, displayfiles_count: displayfiles.size } %>
     </div>
 
     <% if (displayfiles.size > 1) %>
