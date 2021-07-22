@@ -12,7 +12,7 @@ describe CollectionsController do
   end
 
   after(:each) do
-    @login_user.delete
+    @login_user.destroy
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end
 
@@ -52,7 +52,7 @@ describe CollectionsController do
 
       expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
 
-      delete :destroy, params: { :id => @collection.alternate_id }
+      delete :destroy, params: { id: @collection.alternate_id }
     end
 
   end
@@ -107,7 +107,8 @@ describe CollectionsController do
     end
 
     after(:each) do
-      @collection.delete
+      @collection.send(:delete_bucket)
+      @collection.destroy
     end
 
     it 'should return not-found for no cover image' do
@@ -187,7 +188,7 @@ describe CollectionsController do
       @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
 
-      @collection.delete
+      @collection.destroy
     end
 
     it 'should mint a doi for an update of mandatory fields' do
@@ -313,8 +314,8 @@ describe CollectionsController do
     end
 
     after(:each) do
-      @collection.delete if DRI::Identifier.object_exists?(@collection.alternate_id)
-      @login_user.delete
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.destroy
 
       Settings.reload_from_files(Config.setting_files(File.join(Rails.root, 'config'), Rails.env))
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -347,7 +348,6 @@ describe CollectionsController do
 
   end
 
-
   describe "collection is locked" do
 
     before(:each) do
@@ -365,9 +365,8 @@ describe CollectionsController do
 
     after(:each) do
       CollectionLock.where(collection_id: @collection.alternate_id).delete_all
-      @collection.delete if DRI::DigitalObject.exists?(@collection.alternate_id)
-
-      @login_user.delete
+      @collection.destroy if DRI::DigitalObject.exists?(@collection.alternate_id)
+      @login_user.destroy
 
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
