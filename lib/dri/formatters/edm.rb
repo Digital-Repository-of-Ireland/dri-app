@@ -239,7 +239,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Get the asset files
-      assets = clean_assets(record.assets(with_preservation: true, ordered: false))
+      assets = clean_assets(record.assets(with_preservation: false, ordered: false))
       landing_page = doi_url(record.doi) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
