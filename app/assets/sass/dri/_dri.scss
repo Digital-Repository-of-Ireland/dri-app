@@ -140,6 +140,12 @@ a.carousel-control {
     background-color: $dri_green;
     background-image: none;
 }
+.submenu{ 
+	display: none;
+	position: absolute;
+	left:100%; top:0px;
+}
+
 /* breadcrumbs */
 
 .breadcrumb > li + li:before {
