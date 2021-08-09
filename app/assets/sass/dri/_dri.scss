@@ -513,7 +513,7 @@ a .dri_signin_edugate {
 // Web and Mobile Version - clean up
 .dri_main_nav_new {
     border-top: 1px solid $dri_thingrey;
-    font-size: 115%;
+    font-size: 1.15em;
     font-weight: bold;
     background-color: $dri_white;
     margin-bottom: 10px;
@@ -1029,7 +1029,7 @@ ol.breadcrumb {
             border-top-left-radius: 3px;
             border-bottom: none;
             display: block;
-            font-size: 115%;
+            font-size: 1.15em;
         }
         a:hover {
             background-color: $dri_extralightgrey;
@@ -1117,7 +1117,7 @@ h4.suggest {
     border: 1px solid $dri_lightgrey;
     float: left;
     .dri_alert_text {
-        font-size: 115%;
+        font-size: 1.15em;
         color: $dri_darkgrey;
         float: left;
         font-weight: normal;
