@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: ad84c082a4d1b9c69e4a8e84d5b7affc44ea6c02
+  revision: 10869c0da246a14ff81edb021c7aa1ddb31ec370
   branch: develop
   specs:
-    dri_data_models (4.1.0)
+    dri_data_models (4.1.1)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -129,7 +129,7 @@ GEM
       activesupport (>= 3.0.0)
       rdf (>= 2.0.2, < 4.0)
       rdf-vocab (>= 2.0, < 4.0)
-    active_encode (0.7.0)
+    active_encode (0.8.1)
       rails
       sprockets (< 4)
     activejob (5.2.6)
@@ -408,8 +408,8 @@ GEM
     gabba (1.0.1)
     geocoder (1.6.4)
     gherkin (5.1.0)
-    globalid (0.4.2)
-      activesupport (>= 4.2.0)
+    globalid (0.5.2)
+      activesupport (>= 5.0)
     google-analytics-rails (1.1.0)
     google-api-client (0.32.1)
       addressable (~> 2.5, >= 2.5.1)
@@ -604,7 +604,7 @@ GEM
     listen (3.3.3)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.10.0)
+    loofah (2.11.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -617,7 +617,7 @@ GEM
     mime-types-data (3.2021.0704)
     mini_magick (4.11.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.3)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
     moab-versioning (4.2.2)
       confstruct
@@ -639,13 +639,13 @@ GEM
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
     netrc (0.11.0)
-    nio4r (2.5.7)
+    nio4r (2.5.8)
     noid (0.9.0)
     noid-rails (3.0.3)
       actionpack (>= 5.0.0, < 7)
       noid (~> 0.9)
-    nokogiri (1.11.7)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.12.2)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
@@ -802,7 +802,7 @@ GEM
       rdf (~> 3.0)
     redic (1.5.3)
       hiredis
-    redis (4.3.1)
+    redis (4.4.0)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     reform (2.5.0)
