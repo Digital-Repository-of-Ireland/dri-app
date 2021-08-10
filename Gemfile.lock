@@ -54,8 +54,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 10869c0da246a14ff81edb021c7aa1ddb31ec370
-  branch: develop
+  revision: 8cceb3334aac726e63c502c479817441adedb1ba
+  tag: v4.1.1
   specs:
     dri_data_models (4.1.1)
       hydra-derivatives
@@ -71,8 +71,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: ea1235e1f081aab65314823986044f5396ff559a
-  branch: develop
+  revision: 1b330fae547057d6485a584defdbe0a0b726b1dc
+  tag: v2.0.0
   specs:
     user_group (2.0.0)
       blacklight-access_controls
@@ -81,7 +81,7 @@ GIT
       devise-i18n-views
       fastimage
       kaminari
-      omniauth
+      omniauth (~> 1.9.1)
       omniauth-shibboleth
       paper_trail
       rails (~> 5)
@@ -160,8 +160,8 @@ GEM
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     ast (2.4.1)
-    autoprefixer-rails (10.2.4.0)
-      execjs
+    autoprefixer-rails (10.3.1.0)
+      execjs (~> 2)
     aws-eventstream (1.1.0)
     aws-partitions (1.402.0)
     aws-sdk-core (3.110.0)
@@ -299,7 +299,7 @@ GEM
     deep_merge (1.2.1)
     deprecation (1.1.0)
       activesupport
-    devise (4.7.3)
+    devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -391,11 +391,11 @@ GEM
       faraday
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.2.3)
+    fastimage (2.2.5)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.17.0)
-    ffi (1.15.0)
+    ffi (1.15.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
