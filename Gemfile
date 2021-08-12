@@ -21,6 +21,8 @@ gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-mode
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 gem "devise", ">= 4.7.1"
 
+gem 'nokogiri', '~> 1.11.7'
+
 gem 'paper_trail', '~> 4'
 
 gem 'linkeddata'
