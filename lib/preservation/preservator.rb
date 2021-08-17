@@ -53,7 +53,7 @@ module Preservation
     end
 
     # moabify_datastream
-    # Takes two paramenters
+    # Takes two parameters
     # - name (datastream and file name)
     # - datastream (the value for that key from the datastreams hash
     def moabify_datastream(name, datastream)

@@ -191,6 +191,32 @@ describe CollectionsController do
       @collection.destroy
     end
 
+    it 'should rollback changes when an update fails' do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string=@login_user.email
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="registered"
+      @collection.creator = [@login_user.email]
+      @collection.save
+
+      title = @collection.title
+
+      expect_any_instance_of(DRI::DigitalObject)
+        .to receive(:update_index).and_return(false)
+      params = {}
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
+
+      @collection.reload
+      expect(@collection.title).to eq(title)
+      @collection.destroy
+    end
+
     it 'should mint a doi for an update of mandatory fields' do
       @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
