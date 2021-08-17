@@ -105,24 +105,27 @@ class ProcessBatchIngest
     end
 
     begin
-      update = if object.save!
-                 create_reader_group(object) if object.collection?
+      rc, update = DRI::DigitalObject.transaction do
+        object.index_needs_update = false
+        if object.save! && object.update_index
+          create_reader_group(object) if object.collection?
 
-                 preservation = Preservation::Preservator.new(object)
-                 preservation.preserve(['descMetadata'])
+          preservation = Preservation::Preservator.new(object)
+          preservation.preserve(['descMetadata'])
 
-                 rc = 0
-                 { status_code: 'COMPLETED',
-                   file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
-               else
-                 rc = -1
-                 { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
-               end
-    rescue ActiveRecord::RecordNotSaved => e
+          [
+            0,
+            { status_code: 'COMPLETED',
+              file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
+          ]
+        else
+          raise DRI::Exceptions::InternalError
+        end
+      end
+    rescue ActiveRecord::RecordNotSaved, RSolr::Error::Http, DRI::Exceptions::InternalError => e
       update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. #{e.message}" }
       rc = -1
     end
-
     update_master_file(metadata[:master_file_id], update)
     FileUtils.rm_f(metadata[:path])
 
