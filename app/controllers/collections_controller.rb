@@ -124,36 +124,46 @@ class CollectionsController < BaseObjectsController
 
     supported_licences
 
-    if doi
-      doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) })
-      new_doi_if_required(@object, doi, 'metadata updated')
+    @object.assign_attributes(update_params)
+    unless @object.valid?
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      render :edit
+      return
     end
 
-    @object.increment_version
-    updated = @object.update_attributes(update_params)
-
-    if updated
-      if cover_image.present?
-        flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
+    DRI::DigitalObject.transaction do
+      @object.increment_version
+      if doi
+        doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) })
+        new_doi_if_required(@object, doi, 'metadata updated')
       end
 
-      # Do the preservation actions
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(['descMetadata'])
+      respond_to do |format|
+        begin
+          @object.index_needs_update = false
 
-    else
-      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-    end
+          if @object.save && @object.update_index
+            if cover_image.present?
+              flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
+            end
 
-    respond_to do |format|
-      if updated
-        record_version_committer(@object, current_user)
-        mint_or_update_doi(@object, doi) if doi
+             # Do the preservation actions
+            preservation = Preservation::Preservator.new(@object)
+            preservation.preserve(['descMetadata'])
 
-        flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-        format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-      else
-        format.html  { render action: 'edit' }
+            record_version_committer(@object, current_user)
+            mint_or_update_doi(@object, doi) if doi
+
+            flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
+            format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
+          else
+            after_update_failure
+            raise ActiveRecord::Rollback
+          end
+        rescue RSolr::Error::Http
+          after_update_failure
+          raise ActiveRecord::Rollback
+        end
       end
     end
   end
@@ -234,8 +244,34 @@ class CollectionsController < BaseObjectsController
   #
   def create
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
+    unless created
+      if params[:metadata_file].present?
+        after_create_failure(DRI::Exceptions::BadRequest)
+      else
+        render :new
+        return
+      end
+    end
 
-    if created && (@object.valid? && @object.save)
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:digital_object]&.delete(:cover_image)
+
+    unless @object.valid?
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      if params[:metadata_file].present?
+        after_create_failure(DRI::Exceptions::BadRequest)
+      else
+        render :new
+        return
+      end
+    end
+
+    if @object.save
+      if cover_image.present?
+        unless Storage::CoverImages.validate_and_store(cover_image, @object)
+          flash[:error] = t('dri.flash.error.cover_image_not_saved')
+        end
+      end
       # We have to create a default reader group
       create_reader_group
 
@@ -264,18 +300,14 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       format.html do
-        unless @object.nil? || @object.valid?
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-        end
-        raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
+        flash[:alert] = t('dri.flash.error.unable_to_persist')
+        render :new
+        return
       end
       format.json do
-        unless @object.nil? || @object.valid?
-          @error = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-        end
         response = {}
-        response[:error] = @error
-        render json: response, status: :bad_request
+        response[:error] = t('dri.flash.error.unable_to_persist')
+        render json: response, status: 500
       end
     end
   end
@@ -353,14 +385,29 @@ class CollectionsController < BaseObjectsController
 
   private
 
+    def after_update_exception(exception)
+      respond_with_exception(exception)
+    end
+
+    def after_update_failure
+      flash[:alert] = t('dri.flash.error.unable_to_persist')
+      render :new
+    end
+
+    def respond_with_exception(exception)
+      respond_to do |format|
+        format.html do
+          raise exception
+        end
+        format.json do
+          raise exception
+        end
+      end
+    end
+
     # Create a collection with the web form
     #
     def create_from_form
-      unless valid_root_permissions?
-        flash[:alert] = t('dri.flash.error.not_created')
-        return false
-      end
-
       @object = DRI::DigitalObject.with_standard :qdc
 
       @object.type = ['Collection'] if @object.type.nil?
@@ -368,21 +415,14 @@ class CollectionsController < BaseObjectsController
 
       supported_licences
 
-      # If a cover image was uploaded, remove it from the params hash
-      cover_image = params[:digital_object].delete(:cover_image)
-
-      @object.update_attributes(create_params)
+      @object.assign_attributes(create_params)
 
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s
 
-      # We need to save to get a pid at this point
-      if @object.save
-        if cover_image.present?
-          unless Storage::CoverImages.validate_and_store(cover_image, @object)
-            flash[:error] = t('dri.flash.error.cover_image_not_saved')
-          end
-        end
+      unless valid_root_permissions?
+        flash[:alert] = t('dri.flash.error.not_created')
+        return false
       end
 
       true

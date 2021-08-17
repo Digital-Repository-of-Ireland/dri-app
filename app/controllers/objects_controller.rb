@@ -89,7 +89,6 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('edit', params[:id])
 
     supported_licences
-
     @object = retrieve_object!(params[:id])
 
     if params[:digital_object][:governing_collection_id].present?
@@ -116,19 +115,27 @@ class ObjectsController < BaseObjectsController
       respond_to do |format|
         checksum_metadata(@object)
 
-        unless @object.save
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          format.html { render action: 'edit' }
-          raise ActiveRecord::Rollback, @object.errors.full_messages.inspect
-        end
+        begin
+          @object.index_needs_update = false
 
-        post_save do
-          mint_or_update_doi(@object, doi) if doi
-        end
+          if @object.save && @object.update_index
+            post_save do
+              mint_or_update_doi(@object, doi) if doi
+            end
 
-        flash[:notice] = t('dri.flash.notice.metadata_updated')
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-        format.json { render json: @object }
+            flash[:notice] = t('dri.flash.notice.metadata_updated')
+            format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
+            format.json { render json: @object }
+          else
+            flash[:alert] = t('dri.flash.error.unable_to_persist')
+            render :edit
+            raise ActiveRecord::Rollback
+          end
+        rescue RSolr::Error::Http
+          flash[:alert] = t('dri.flash.error.unable_to_persist')
+          render :edit
+          raise ActiveRecord::Rollback
+        end
       end
     end
   end
@@ -142,12 +149,7 @@ class ObjectsController < BaseObjectsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    if params[:digital_object][:read_users_string].present?
-      params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
-    end
-    if params[:digital_object][:edit_users_string].present?
-      params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
-    end
+    downcase_permissions_params
 
     if params[:digital_object][:governing_collection].present?
       params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
@@ -168,35 +170,42 @@ class ObjectsController < BaseObjectsController
       create_from_form
     end
 
+    unless @object.valid?
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      if params[:metadata_file].present?
+        after_create_failure(DRI::Exceptions::BadRequest)
+      else
+        render :new
+        return
+      end
+    end
+
     checksum_metadata(@object)
     supported_licences
 
-    if @object.valid? && @object.save
-      post_save do
-        create_reader_group if @object.collection?
-      end
+    DRI::DigitalObject.transaction do
+      @object.index_needs_update = false
 
-      respond_to do |format|
-        format.html do
-          flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id
-        end
-        format.json do
-          response = { pid: @object.alternate_id }
-          response[:warning] = @warnings if @warnings
+      begin
+        if @object.save && @object.update_index
+          post_save do
+            create_reader_group if @object.collection?
+          end
 
-          render json: response, location: my_collections_url(@object.alternate_id), status: :created
+          after_create_success(@object, @warnings)
+        else
+          after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
+
+          flash[:alert] = t('dri.flash.error.unable_to_persist')
+          render :new
+          raise ActiveRecord::Rollback
         end
-      end
-    else
-      respond_to do |format|
-        format.html do
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-        end
-        format.json do
-          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-        end
+      rescue RSolr::Error::Http
+        after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
+
+        flash[:alert] = t('dri.flash.error.unable_to_persist')
+        render :new
+        raise ActiveRecord::Rollback
       end
     end
   end
@@ -224,7 +233,7 @@ class ObjectsController < BaseObjectsController
         }
     )
     collection_id = @object.governing_collection.alternate_id
-    @object.delete
+    @object.destroy
 
     flash[:notice] = t('dri.flash.notice.object_deleted')
 
@@ -309,6 +318,32 @@ class ObjectsController < BaseObjectsController
 
   private
 
+    def after_create_failure(exception)
+      respond_to do |format|
+        format.html do
+          raise exception
+        end
+        format.json do
+          raise exception
+        end
+      end
+    end
+
+    def after_create_success(object, warnings)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = t('dri.flash.notice.digital_object_ingested')
+          redirect_to controller: 'my_collections', action: 'show', id: object.alternate_id
+        end
+        format.json do
+          response = { pid: object.alternate_id }
+          response[:warning] = warnings if warnings
+
+          render json: response, location: my_collections_url(object.alternate_id), status: :created
+        end
+      end
+    end
+
     def create_from_upload
       xml_ds = XmlDatastream.new
       xml = xml_ds.load_xml(params[:metadata_file])
@@ -340,6 +375,15 @@ class ObjectsController < BaseObjectsController
       )
       group.reader_group = true
       group.save
+    end
+
+    def downcase_permissions_params
+      if params[:digital_object][:read_users_string].present?
+        params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+      end
+      if params[:digital_object][:edit_users_string].present?
+        params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+      end
     end
 
     def metadata_standard
