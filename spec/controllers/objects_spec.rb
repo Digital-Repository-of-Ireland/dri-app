@@ -93,6 +93,39 @@ describe ObjectsController do
       @collection.reload
       @collection.destroy
     end
+
+    it 'should delete from Solr if object does not exist' do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = User.find_by_email(@login_user.email).to_s
+      @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="registered"
+      @collection.creator = [@login_user.email]
+      @collection.save
+
+      @object = DRI::QualifiedDublinCore.new(alternate_id: DRI::Noid::Service.new.mint)
+      @object[:title] = ["An Audio Title"]
+      @object[:rights] = ["This is a statement about the rights associated with this object"]
+      @object[:role_hst] = ["Collins, Michael"]
+      @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
+      @object[:language] = ["ga"]
+      @object[:description] = ["This is an Audio file"]
+      @object[:published_date] = ["1916-04-01"]
+      @object[:creation_date] = ["1916-01-01"]
+      @object[:source] = ["CD nnn nuig"]
+      @object[:geographical_coverage] = ["Dublin"]
+      @object[:temporal_coverage] = ["1900s"]
+      @object[:subject] = ["Ireland","something else"]
+      @object[:resource_type] = ["Sound"]
+      @object.edit_users_string = @login_user.email
+      @object.governing_collection = @collection
+      @object.update_index
+
+      delete :destroy, params: { id: @object.alternate_id }
+      expect(SolrDocument.find(@object.alternate_id)).to be nil
+
+      @collection.destroy
+    end
   end
 
   describe 'create' do

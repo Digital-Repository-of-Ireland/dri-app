@@ -88,8 +88,10 @@ class ApplicationController < ActionController::Base
 
   def retrieve_object!(id)
     ident = DRI::Identifier.find_by(alternate_id: id)
-    raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if ident.nil?
-    ident.identifiable
+    raise DRI::Exceptions::NotFound, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if ident.nil?
+    object = ident.identifiable
+    raise DRI::Exceptions::NotFound, t('dri.views.exceptions.unknown_object') + " ID: #{id}" if object.nil?
+    object
   end
 
   # Return a list of all supported licences (for populating select dropdowns)
