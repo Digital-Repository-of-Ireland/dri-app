@@ -14,8 +14,7 @@ module DRI::Solr::Document::File
   def characterized?
     # not characterized if all empty
     return false unless self.key?('file_size_ltsi')
-
-    self['file_size_ltsi'] == 0
+    self['file_size_ltsi'] > 0
   end
 
   def sort_assets(assets)
