@@ -54,10 +54,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 43c3eaebb615ded0a84c6a0000f94661f8c60ff4
+  revision: 897660d85f15177009c90252e832e35a80bfc8f7
   branch: develop
   specs:
-    dri_data_models (4.2.1)
+    dri_data_models (4.2.2)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -729,7 +729,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.3.0)
+    rails-html-sanitizer (1.4.1)
       loofah (~> 2.3)
     rails-i18n (5.1.3)
       i18n (>= 0.7, < 2)
