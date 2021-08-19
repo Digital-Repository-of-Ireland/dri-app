@@ -213,27 +213,38 @@ class ObjectsController < BaseObjectsController
   def destroy
     enforce_permissions!('edit', params[:id])
 
-    @object = retrieve_object!(params[:id])
+    @object = retrieve_object(params[:id])
 
-    if @object.status == 'published' && !current_user.is_admin?
-      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+    if @object.nil?
+      solr_object = SolrDocument.find(params[:id])
+      raise DRI::Exceptions::NotFound, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" unless solr_object
+      collection_id = solr_object.collection_id
+      SolrDocument.delete(params[:id])
+    else
+
+      if @object.status == 'published' && !current_user.is_admin?
+        raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      end
+
+      # Do the preservation actions
+      @object.increment_version
+
+      assets = []
+      @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
+
+      preservation = Preservation::Preservator.new(@object)
+      preservation.update_manifests(
+        deleted: {
+          'content' => assets,
+          'metadata' => ['descMetadata.xml']
+          }
+      )
+
+      record_version_committer(@object, current_user)
+
+      collection_id = @object.governing_collection.alternate_id
+      @object.destroy
     end
-
-    # Do the preservation actions
-    @object.increment_version
-
-    assets = []
-    @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
-
-    preservation = Preservation::Preservator.new(@object)
-    preservation.update_manifests(
-      deleted: {
-        'content' => assets,
-        'metadata' => ['descMetadata.xml']
-        }
-    )
-    collection_id = @object.governing_collection.alternate_id
-    @object.destroy
 
     flash[:notice] = t('dri.flash.notice.object_deleted')
 
