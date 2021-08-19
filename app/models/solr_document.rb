@@ -46,6 +46,10 @@ class SolrDocument
     Solr::Query.find_by_alternate_id(id)
   end
 
+  def self.delete(id)
+    Valkyrie::MetadataAdapter.find(:index_solr).persister.connection.delete_by_id(id, params: { 'softCommit' => true })
+  end
+
   def alternate_id
     self['alternate_id']
   end
