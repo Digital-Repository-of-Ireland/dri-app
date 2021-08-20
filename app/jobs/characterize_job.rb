@@ -11,8 +11,8 @@ class CharacterizeJob < IdBasedJob
     with_status_update('characterize') do
       status_for_type('preservation') if generic_file.preservation?
 
-      # characterize calls save
       generic_file.characterize
+      generic_file.save
 
       after_characterize
     end
