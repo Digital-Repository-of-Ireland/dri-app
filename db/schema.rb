@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_19_120327) do
+ActiveRecord::Schema.define(version: 2021_08_20_113436) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_120327) do
     t.datetime "updated_at"
     t.string "update_type"
     t.integer "version"
+    t.string "status"
   end
 
   create_table "doi_metadata", force: :cascade do |t|

@@ -220,6 +220,11 @@ class CatalogController < ApplicationController
     supported_licences
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
+    if @document.doi
+      doi = DataciteDoi.where(object_id: @document.id).current
+      @doi = doi.doi if doi.present? #&& doi.minted?
+    end
+
     if @document.published?
       Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "View",  @document.id, 1, true)
     end
