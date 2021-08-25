@@ -132,7 +132,7 @@ class SurrogatesController < ApplicationController
 
     def generate_surrogates(object_id)
       enforce_permissions!('edit', object_id)
-      query = Solr::Query.new("#{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{object_id}\" AND NOT #{Solr::SchemaFields.searchable_string('preservation_only')}:true")
+      query = Solr::Query.new("isPartOf_ssim:\"#{object_id}\"", 500, { fq: ["-preservation_only_ssi:true"] })
       query.each do |file_doc|
         begin
           # only characterize if necessary
