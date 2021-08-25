@@ -17,7 +17,7 @@ gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.2.2'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.2.3'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.0.0'
 gem "devise", ">= 4.7.1"
 
@@ -169,10 +169,8 @@ gem 'openlayers-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'clipboard-rails'
 
-gem 'blacklight-maps'
-gem 'leaflet-rails', '1.0.0'
-gem 'rails-assets-leaflet', '1.3.4', source: 'https://rails-assets.org'
-gem 'rails-assets-leaflet.markercluster', '1.4.1', source: 'https://rails-assets.org'
+gem 'blacklight-maps', '0.5.0'
+gem 'leaflet-rails', '1.4.0'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'

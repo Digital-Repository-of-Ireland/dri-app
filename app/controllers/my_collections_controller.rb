@@ -227,6 +227,11 @@ class MyCollectionsController < ApplicationController
     @file_display_type_count = @document.file_display_type_count
     @reader_group = find_reader_group(@document)
 
+    if @document.doi
+      doi = DataciteDoi.where(object_id: @document.id).current
+      @doi = doi.doi if doi.present? #&& doi.minted?
+    end
+
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
 
     supported_licences

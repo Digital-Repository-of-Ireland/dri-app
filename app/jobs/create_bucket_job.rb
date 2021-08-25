@@ -11,7 +11,12 @@ class CreateBucketJob < IdBasedJob
       Rails.logger.info "Creating bucket for object #{bucket_id}"
 
       storage = StorageService.new
-      created = storage.create_bucket(bucket_id)
+
+      created = if storage.bucket_exists?(bucket_id)
+                  true
+                else
+                  storage.create_bucket(bucket_id)
+                end
 
       raise "Unable to create storage bucket" unless created
 
