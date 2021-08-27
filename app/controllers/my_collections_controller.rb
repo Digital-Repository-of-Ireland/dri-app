@@ -229,7 +229,7 @@ class MyCollectionsController < ApplicationController
 
     if @document.doi
       doi = DataciteDoi.where(object_id: @document.id).current
-      @doi = doi.doi if doi.present? #&& doi.minted?
+      @doi = doi.doi if doi.present? && doi.minted?
     end
 
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)

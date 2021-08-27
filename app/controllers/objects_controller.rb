@@ -144,6 +144,10 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('show_digital_object', params[:id])
 
     @object = retrieve_object!(params[:id])
+    if @object.doi.present?
+      doi = DataciteDoi.where(object_id: @object.alternate_id).current
+      @doi = doi.doi if doi.present? && doi.minted?
+    end
   end
 
   # Creates a new model using the parameters passed in the request.
