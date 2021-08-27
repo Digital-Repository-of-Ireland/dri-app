@@ -222,7 +222,7 @@ class CatalogController < ApplicationController
 
     if @document.doi
       doi = DataciteDoi.where(object_id: @document.id).current
-      @doi = doi.doi if doi.present? #&& doi.minted?
+      @doi = doi.doi if doi.present? && doi.minted?
     end
 
     if @document.published?
