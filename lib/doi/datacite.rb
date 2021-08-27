@@ -39,6 +39,8 @@ module DOI
       response = @service["doi/#{@doi.doi}"].head
       return true if response.code == 200
       false
+    rescue RestClient::NotFound
+      false
     end
   end
 end
