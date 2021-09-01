@@ -19,3 +19,9 @@ Hydra::Derivatives::DocumentDerivatives.class_eval do
     DRI::Derivatives::Processors::Document
   end
 end
+
+Hydra::Derivatives::Logger.class_eval do
+  def logger
+    Rails.logger || ::Logger.new(STDOUT)
+  end
+end
