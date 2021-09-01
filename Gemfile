@@ -9,7 +9,7 @@ gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
-gem 'hydra-derivatives', '~> 3.5'
+gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
 gem 'solrizer'
 
