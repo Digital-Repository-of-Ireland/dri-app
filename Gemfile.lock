@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git
-  revision: 626bd4584127e309ff8b2e20024b662e51912444
+  revision: e1786eaca82977362d1589556df7ed10ac71438c
   branch: main
   specs:
     hydra-derivatives (3.6.0)
@@ -605,7 +605,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0704)
+    mime-types-data (3.2021.0901)
     mini_magick (4.11.0)
     mini_mime (1.1.1)
     mini_portile2 (2.6.1)
