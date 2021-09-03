@@ -102,6 +102,19 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def track_download(object)
+    tracker do |t|
+      t.google_analytics :send,
+                         {
+                            type: 'event',
+                            category: object.root_collection_id,
+                            action: 'Download',
+                            label: object.alternate_id,
+                            value: 1
+                         }
+    end
+  end
+
   private
 
     def after_sign_in_path_for(resource)

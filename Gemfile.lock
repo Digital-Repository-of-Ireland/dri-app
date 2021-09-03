@@ -410,12 +410,10 @@ GEM
     fuelux-rails-sass (3.14.2)
       railties (>= 3.1)
       sass-rails
-    gabba (1.0.1)
     geocoder (1.6.7)
     gherkin (5.1.0)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    google-analytics-rails (1.1.0)
     google-api-client (0.32.1)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (>= 0.5, < 0.10.0)
@@ -694,6 +692,10 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
+    rack-tracker (1.13.0)
+      activesupport (>= 3.0)
+      rack (>= 1.4)
+      tilt (>= 1.4)
     railroady (1.6.0)
     rails (5.2.6)
       actioncable (= 5.2.6)
@@ -1093,8 +1095,6 @@ DEPENDENCIES
   fcrepo_wrapper (= 0.9.0)
   ffaker
   font-awesome-rails
-  gabba
-  google-analytics-rails (= 1.1.0)
   google-oauth2-installed
   high_voltage (~> 3.1)
   honeybadger
@@ -1133,6 +1133,7 @@ DEPENDENCIES
   paper_trail (~> 4)
   parallel_tests (~> 2.23)
   qa (~> 5.1)
+  rack-tracker
   railroady
   rails (~> 5.2.0)
   rails-controller-testing

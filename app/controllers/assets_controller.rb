@@ -43,15 +43,7 @@ class AssetsController < ApplicationController
 
       can_view?
 
-      if @document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(
-          @document.root_collection_id,
-          'Download',
-          @document.id,
-          1,
-          true
-        )
-      end
+      track_download(@document) if @document.published?
 
       if File.file?(@generic_file.path)
         response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
