@@ -67,7 +67,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 28a4b51804a96b0c8ffd47cc7d75a15aa60b9f9f
+  revision: f5b0018502e9ec9cf87deb9994396ec615241c21
   branch: develop
   specs:
     dri_data_models (4.2.3)
@@ -1055,7 +1055,8 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xml-simple (1.1.8)
+    xml-simple (1.1.9)
+      rexml
     xpath (3.2.0)
       nokogiri (~> 1.8)
     ya2yaml (0.31)

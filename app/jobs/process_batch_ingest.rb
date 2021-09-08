@@ -135,20 +135,23 @@ class ProcessBatchIngest
   def self.ingest_file(user, file_path, object, datastream, filename)
     mime_type = Validators.file_type(file_path)
 
-    begin
-      file_content = GenericFileContent.new(
+    file_content = GenericFileContent.new(
                        user: user,
                        object: object,
                        generic_file: @generic_file
-                     )
-      file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
-      file_content.save_and_characterize
-    rescue StandardError => e
-      Rails.logger.error "Could not save the asset file #{file_path} for #{object.alternate_id} to #{datastream}: #{e.message}"
+                   )
+    file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
+    saved = file_content.save_and_characterize
+    unless saved
+      generic_file.delete_file
       return nil
     end
+
     FileUtils.rm_f(file_path)
     @generic_file.path
+  rescue StandardError => e
+    Rails.logger.error "Could not save the asset file #{file_path} for #{object.alternate_id} to #{datastream}: #{e.message}"
+    nil
   end
 
   def self.build_generic_file(object:, user:, preservation: false)

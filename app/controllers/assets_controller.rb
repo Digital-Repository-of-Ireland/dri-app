@@ -121,8 +121,10 @@ class AssetsController < ApplicationController
         else
           @new_doi.destroy if @new_doi
           message = @generic_file.errors.full_messages.join(', ')
+          @generic_file.delete_file
           flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
           logger.error "Error saving file: #{message}"
+          raise ActiveRecord::Rollback
         end
       end
     rescue DRI::Exceptions::MoabError => e
@@ -170,9 +172,11 @@ class AssetsController < ApplicationController
         else
           @new_doi.destroy if @new_doi
           message = @generic_file.errors.full_messages.join(', ')
+          @generic_file.delete_file
           flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
           @warnings = t('dri.flash.alert.error_saving_file', error: message)
           logger.error "Error saving file: #{message}"
+          raise ActiveRecord::Rollback
         end
       end
     rescue DRI::Exceptions::MoabError => e

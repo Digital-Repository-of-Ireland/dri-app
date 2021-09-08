@@ -23,13 +23,16 @@ class GenericFileContent
     generic_file.add_file(file, options)
     generic_file.label = filename
     generic_file.title = [filename]
+    generic_file.index_needs_update = false
   end
 
   def save_and_characterize
-    return false unless generic_file.save
+    return false unless (generic_file.save && generic_file.update_index)
     push_characterize_job
 
     true
+  rescue RSolr::Error::Http
+    false
   end
 
   private
@@ -66,7 +69,7 @@ class GenericFileContent
       moab_path
     )
 
-    save_and_characterize
+    return false unless save_and_characterize
 
     changes = {}
     # Do the preservation actions
