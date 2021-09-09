@@ -141,11 +141,7 @@ class ProcessBatchIngest
                        generic_file: @generic_file
                    )
     file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
-    saved = file_content.save_and_characterize
-    unless saved
-      generic_file.delete_file
-      return nil
-    end
+    return nil unless file_content.save_and_characterize
 
     FileUtils.rm_f(file_path)
     @generic_file.path
