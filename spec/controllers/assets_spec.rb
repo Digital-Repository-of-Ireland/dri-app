@@ -69,7 +69,7 @@ describe AssetsController do
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
 
-      expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).to be_empty
+      expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3").reject { |f| f.include?('bin') }).to be_empty
     end
 
     it 'rollback an an asset save if indexing fails' do
@@ -274,8 +274,8 @@ describe AssetsController do
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
       put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
 
-      expect(Dir.glob("#{tmp_assets_dir}/**/data/content/#{file_id}_sample_image.jpeg")).to be_empty
-      expect(Dir.glob("#{tmp_assets_dir}/**/#{file_id}_SAMPLEA.mp3")).not_to be_empty
+      expect(Dir.glob("#{tmp_assets_dir}/**/data/content/#{file_id}_sample_image.jpeg").reject { |f| f.include?('bin') }).to be_empty
+      expect(Dir.glob("#{tmp_assets_dir}/**/#{file_id}_SAMPLEA.mp3").reject { |f| f.include?('bin') }).not_to be_empty
     end
 
     it 'should raise an error if file is replaced with same contents' do

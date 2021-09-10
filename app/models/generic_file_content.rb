@@ -26,13 +26,21 @@ class GenericFileContent
     generic_file.index_needs_update = false
   end
 
-  def save_and_characterize
-    return false unless (generic_file.save && generic_file.update_index)
-    push_characterize_job
+  def has_content?
+    @has_content ||= false
+  end
 
+  def save_and_index
+    return false unless (generic_file.save && generic_file.update_index)
+
+    @has_content = true
     true
   rescue RSolr::Error::Http
     false
+  end
+
+  def characterize
+    push_characterize_job
   end
 
   private
@@ -70,7 +78,7 @@ class GenericFileContent
       existing_moab_path
     )
 
-    unless save_and_characterize
+    unless save_and_index
       generic_file.delete_file if existing_moab_path.nil? && (generic_file.path != current_path)
       return false
     end
@@ -94,7 +102,6 @@ class GenericFileContent
   end
 
   def push_characterize_job
-    generic_file.reload
     DRI.queue.push(CharacterizeJob.new(generic_file.alternate_id))
   end
 end

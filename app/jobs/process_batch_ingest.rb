@@ -141,7 +141,8 @@ class ProcessBatchIngest
                        generic_file: @generic_file
                    )
     file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
-    return nil unless file_content.save_and_characterize
+    return nil unless file_content.save_and_index
+    file_content.characterize if file_content.has_content?
 
     FileUtils.rm_f(file_path)
     @generic_file.path

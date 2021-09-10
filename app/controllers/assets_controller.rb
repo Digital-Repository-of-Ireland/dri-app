@@ -126,6 +126,8 @@ class AssetsController < ApplicationController
           raise ActiveRecord::Rollback
         end
       end
+
+      file_content.characterize if file_content.has_content?
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
@@ -177,6 +179,8 @@ class AssetsController < ApplicationController
           raise ActiveRecord::Rollback
         end
       end
+
+      file_content.characterize if file_content.has_content?
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
