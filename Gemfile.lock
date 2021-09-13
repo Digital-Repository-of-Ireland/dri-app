@@ -67,8 +67,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 5a554fedfed767c617fc4d9a2250e078d7dec64a
-  branch: develop
+  revision: 5e2097a14c41bb3c03c41e42317d5b36ccb888ea
+  tag: v4.2.4
   specs:
     dri_data_models (4.2.4)
       hydra-derivatives
@@ -85,8 +85,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 0231cf782d499f2f271605efaf8471eef6199147
-  branch: develop
+  revision: 1b330fae547057d6485a584defdbe0a0b726b1dc
+  tag: v2.0.0
   specs:
     user_group (2.0.0)
       blacklight-access_controls
@@ -159,7 +159,7 @@ GEM
     amazing_print (1.3.0)
     arel (9.0.0)
     ast (2.4.2)
-    autoprefixer-rails (10.3.1.0)
+    autoprefixer-rails (10.3.3.0)
       execjs (~> 2)
     aws-eventstream (1.1.1)
     aws-partitions (1.493.0)
@@ -400,7 +400,7 @@ GEM
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.19.0)
-    ffi (1.15.3)
+    ffi (1.15.4)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
