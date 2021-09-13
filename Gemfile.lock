@@ -85,10 +85,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 1b330fae547057d6485a584defdbe0a0b726b1dc
-  tag: v2.0.0
+  revision: 0e5b4fc57a0cbd156339cfc2e39ede6cc03fd6a4
+  tag: v2.0.1
   specs:
-    user_group (2.0.0)
+    user_group (2.0.1)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
