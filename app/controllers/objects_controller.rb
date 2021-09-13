@@ -272,9 +272,7 @@ class ObjectsController < BaseObjectsController
                 disposition: "attachment; filename=\"#{id}.zip\";",
                 url_based_filename: true
 
-          if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection_id, "Download", object.alternate_id, 1, true)
-          end
+          track_download(object) if object.published?
           file_sent = true
         else
           flash[:error] = t('dri.flash.error.download_no_file')

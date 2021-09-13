@@ -9,7 +9,7 @@ gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
-gem 'hydra-derivatives', '~> 3.5'
+gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
 gem 'solrizer'
 
@@ -17,11 +17,9 @@ gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.2.3'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.2.4'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.0.0'
 gem "devise", ">= 4.7.1"
-
-gem 'nokogiri', '~> 1.11.7'
 
 gem 'paper_trail', '~> 4'
 
@@ -154,10 +152,9 @@ group :translations do
 end
 
 # analytics
-gem 'google-analytics-rails', '1.1.0'
-gem 'gabba'
 gem 'legato'
 gem 'google-oauth2-installed'
+gem 'rack-tracker'
 
 gem 'rvm'
 

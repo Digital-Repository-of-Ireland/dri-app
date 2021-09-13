@@ -43,15 +43,7 @@ class AssetsController < ApplicationController
 
       can_view?
 
-      if @document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(
-          @document.root_collection_id,
-          'Download',
-          @document.id,
-          1,
-          true
-        )
-      end
+      track_download(@document) if @document.published?
 
       if File.file?(@generic_file.path)
         response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
@@ -131,8 +123,11 @@ class AssetsController < ApplicationController
           message = @generic_file.errors.full_messages.join(', ')
           flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
           logger.error "Error saving file: #{message}"
+          raise ActiveRecord::Rollback
         end
       end
+
+      file_content.characterize if file_content.has_content?
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
@@ -181,8 +176,11 @@ class AssetsController < ApplicationController
           flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
           @warnings = t('dri.flash.alert.error_saving_file', error: message)
           logger.error "Error saving file: #{message}"
+          raise ActiveRecord::Rollback
         end
       end
+
+      file_content.characterize if file_content.has_content?
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: e.message)

@@ -23,13 +23,24 @@ class GenericFileContent
     generic_file.add_file(file, options)
     generic_file.label = filename
     generic_file.title = [filename]
+    generic_file.index_needs_update = false
   end
 
-  def save_and_characterize
-    return false unless generic_file.save
-    push_characterize_job
+  def has_content?
+    @has_content ||= false
+  end
 
+  def save_and_index
+    return false unless (generic_file.save && generic_file.update_index)
+
+    @has_content = true
     true
+  rescue RSolr::Error::Http
+    false
+  end
+
+  def characterize
+    push_characterize_job
   end
 
   private
@@ -46,16 +57,17 @@ class GenericFileContent
   def preserve_file(filedata, datastream, update=false)
     filename = "#{generic_file.alternate_id}_#{filedata[:filename]}"
 
-    moab_path = existing_moab_path(
+    existing_moab_path = existing_moab_path(
                                     datastream,
                                     filedata[:filename],
                                     filedata[:file_upload].path
                                   )
 
     # attempting to replace existing file with duplicate
-    if moab_path && filedata[:filename] == generic_file.label
+    if existing_moab_path && filedata[:filename] == generic_file.label
       raise DRI::Exceptions::MoabError, "File already preserved"
     end
+    current_path = generic_file.path
 
     set_content(
       filedata[:file_upload],
@@ -63,10 +75,13 @@ class GenericFileContent
       filedata[:mime_type],
       object.object_version,
       datastream,
-      moab_path
+      existing_moab_path
     )
 
-    save_and_characterize
+    unless save_and_index
+      generic_file.delete_file if existing_moab_path.nil? && (generic_file.path != current_path)
+      return false
+    end
 
     changes = {}
     # Do the preservation actions
@@ -87,7 +102,6 @@ class GenericFileContent
   end
 
   def push_characterize_job
-    generic_file.reload
     DRI.queue.push(CharacterizeJob.new(generic_file.alternate_id))
   end
 end

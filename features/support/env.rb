@@ -8,7 +8,6 @@ if ENV['RUN_COVERAGE']
   SimpleCov.start 'rails'
 end
 
-require 'active_fedora/cleaner'
 require 'rubygems'
 require 'i18n'
 require 'capybara/cucumber'

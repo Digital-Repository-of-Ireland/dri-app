@@ -56,9 +56,7 @@ class SurrogatesController < ApplicationController
       file = file_path(params[:object_id], params[:id], surrogate_type_name)
       raise DRI::Exceptions::NotFound unless file
 
-      if @object_document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download",  @object_document.id, 1, true)
-      end
+      track_download(@object_document) if @object_document.published?
 
       type, ext = mime_type(file)
       name = "#{params[:id]}#{ext}"

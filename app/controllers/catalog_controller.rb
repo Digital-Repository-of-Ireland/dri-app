@@ -226,7 +226,11 @@ class CatalogController < ApplicationController
     end
 
     if @document.published?
-      Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "View",  @document.id, 1, true)
+      tracker do |t|
+        dimensions = { dimension1: @document.root_collection_id, dimension3: @document.id }
+        dimensions[:dimension2] = @document.depositing_institute.name if @document.depositing_institute.present?
+        t.google_analytics :parameter, dimensions
+      end
     end
 
     respond_to do |format|
