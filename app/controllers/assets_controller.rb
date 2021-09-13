@@ -110,12 +110,14 @@ class AssetsController < ApplicationController
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
     begin
       @object.increment_version
-
       DRI::GenericFile.transaction do
         new_doi(@object, 'asset modified') if @object.status == "published"
 
         if file_content.update_content(file_upload)
           flash[:notice] = t('dri.flash.notice.file_uploaded')
+          @object.index_needs_update = false
+          @object.save! && @object.update_index
+
           record_version_committer(@object, current_user)
           mint_or_update_doi(@object) if @object.status == 'published'
         else
@@ -126,7 +128,6 @@ class AssetsController < ApplicationController
           raise ActiveRecord::Rollback
         end
       end
-
       file_content.characterize if file_content.has_content?
     rescue DRI::Exceptions::MoabError => e
       flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
