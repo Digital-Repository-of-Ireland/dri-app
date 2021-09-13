@@ -85,10 +85,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 0231cf782d499f2f271605efaf8471eef6199147
+  revision: 0e5b4fc57a0cbd156339cfc2e39ede6cc03fd6a4
   branch: develop
   specs:
-    user_group (2.0.0)
+    user_group (2.0.1)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -159,7 +159,7 @@ GEM
     amazing_print (1.3.0)
     arel (9.0.0)
     ast (2.4.2)
-    autoprefixer-rails (10.3.1.0)
+    autoprefixer-rails (10.3.3.0)
       execjs (~> 2)
     aws-eventstream (1.1.1)
     aws-partitions (1.493.0)
@@ -400,7 +400,7 @@ GEM
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.19.0)
-    ffi (1.15.3)
+    ffi (1.15.4)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
