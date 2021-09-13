@@ -275,7 +275,7 @@ module Preservation
                        )
                      )
 
-        attributes['alternate_indentifier'] = object.alternate_id
+        attributes['alternate_identifier'] = object.alternate_id
         if object.governing_collection
           attributes['governing_collection_alternate_identifier'] = object.governing_collection.alternate_id
         end

@@ -61,6 +61,18 @@ describe AssetsController do
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
 
+    it 'should update the object version' do
+      version = object.object_version
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+
+      expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
+      object.reload
+      expect(object.object_version).to be > version
+    end
+
     it 'should remove the upload if save fails' do
       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
       expect_any_instance_of(DRI::GenericFile)
@@ -164,6 +176,28 @@ describe AssetsController do
       put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
+    end
+
+    it 'should update the object version' do
+      version = object.object_version
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
+
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+      generic_file.digital_object = object
+      generic_file.apply_depositor_metadata('test@test.com')
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "#{generic_file.alternate_id}_SAMPLEA.mp3"
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      generic_file.add_file uploaded, options
+      generic_file.save
+      file_id = generic_file.alternate_id
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      object.reload
+      expect(object.object_version).to be > version
     end
 
     it 'should create a valid aip' do
