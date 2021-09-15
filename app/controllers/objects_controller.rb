@@ -104,38 +104,22 @@ class ObjectsController < BaseObjectsController
       return
     end
 
-    DRI::DigitalObject.transaction do
-      @object.increment_version
+    @object.increment_version
 
-      if doi
-        doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
-        new_doi_if_required(@object, doi, 'metadata updated')
-      end
+    respond_to do |format|
+      checksum_metadata(@object)
 
-      respond_to do |format|
-        checksum_metadata(@object)
-
-        begin
-          @object.index_needs_update = false
-
-          if @object.save && @object.update_index
-            post_save do
-              mint_or_update_doi(@object, doi) if doi
-            end
-
-            flash[:notice] = t('dri.flash.notice.metadata_updated')
-            format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-            format.json { render json: @object }
-          else
-            flash[:alert] = t('dri.flash.error.unable_to_persist')
-            render :edit
-            raise ActiveRecord::Rollback
-          end
-        rescue RSolr::Error::Http
-          flash[:alert] = t('dri.flash.error.unable_to_persist')
-          render :edit
-          raise ActiveRecord::Rollback
+      if save_and_index
+        post_save do
+          mint_or_update_doi(@object, doi) if doi
         end
+
+        flash[:notice] = t('dri.flash.notice.metadata_updated')
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
+        format.json { render json: @object }
+      else
+        flash[:alert] = t('dri.flash.error.unable_to_persist')
+        format.html { render action: 'edit' }
       end
     end
   end
@@ -157,16 +141,13 @@ class ObjectsController < BaseObjectsController
 
     if params[:digital_object][:governing_collection].present?
       params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
-      # governing_collection present and also whether this is a documentation object?
-      if params[:digital_object][:documentation_for].present?
-        params[:digital_object][:documentation_for] = retrieve_object(params[:digital_object][:documentation_for])
-      end
     end
 
     enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].alternate_id)
     locked(params[:digital_object][:governing_collection].alternate_id); return if performed?
 
     if params[:digital_object][:documentation_for].present?
+      params[:digital_object][:documentation_for] = retrieve_object(params[:digital_object][:documentation_for])
       create_from_form :documentation
     elsif params[:metadata_file].present?
       create_from_upload
@@ -187,30 +168,17 @@ class ObjectsController < BaseObjectsController
     checksum_metadata(@object)
     supported_licences
 
-    DRI::DigitalObject.transaction do
-      @object.index_needs_update = false
-
-      begin
-        if @object.save && @object.update_index
-          post_save do
-            create_reader_group if @object.collection?
-          end
-
-          after_create_success(@object, @warnings)
-        else
-          after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
-
-          flash[:alert] = t('dri.flash.error.unable_to_persist')
-          render :new
-          raise ActiveRecord::Rollback
-        end
-      rescue RSolr::Error::Http
-        after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
-
-        flash[:alert] = t('dri.flash.error.unable_to_persist')
-        render :new
-        raise ActiveRecord::Rollback
+    if save_and_index
+      post_save do
+        create_reader_group if @object.collection?
       end
+
+      after_create_success(@object, @warnings)
+    else
+      after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
+
+      flash[:alert] = t('dri.flash.error.unable_to_persist')
+      render :new
     end
   end
 
@@ -403,6 +371,27 @@ class ObjectsController < BaseObjectsController
       standard = @object.descMetadata.class.to_s.downcase.split('::').last
 
       standard == 'documentation' ? 'qualifieddublincore' : standard
+    end
+
+    def save_and_index
+      @object.index_needs_update = false
+
+      DRI::DigitalObject.transaction do
+        if doi
+          doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
+          new_doi_if_required(@object, doi, 'metadata updated')
+        end
+
+        begin
+          raise ActiveRecord::Rollback unless @object.save && @object.update_index
+
+          return true
+        rescue RSolr::Error::Http
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      false
     end
 
     def post_save

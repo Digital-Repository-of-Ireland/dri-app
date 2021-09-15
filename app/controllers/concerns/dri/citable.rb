@@ -12,7 +12,7 @@ module DRI::Citable
   def mint_or_update_doi(object, doi = nil)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
-    if @new_doi
+    if @new_doi && @new_doi.persisted?
       Resque.enqueue(MintDoiJob, @new_doi.id)
     elsif doi && doi.changed?
       doi.clear_changed
@@ -22,7 +22,6 @@ module DRI::Citable
 
   def new_doi(object, modified)
     return if Settings.doi.enable != true || DoiConfig.nil?
-
     @new_doi = DataciteDoi.create(
       object_id: object.alternate_id,
       modified: modified,
