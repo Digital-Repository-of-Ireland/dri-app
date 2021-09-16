@@ -98,25 +98,23 @@ class MetadataController < ApplicationController
       checksum_metadata(@object)
       warn_if_has_duplicates(@object)
 
-      begin
-        DRI::DigitalObject.transaction do
-          @object.increment_version
-          update_or_mint_doi
-          raise DRI::Exceptions::InternalError unless @object.save
+      @object.increment_version
 
-          record_version_committer(@object, current_user)
-        end
-        mint_or_update_doi(@object, @doi) if @doi
-        retrieve_linked_data if AuthoritiesConfig
-
-        preservation = Preservation::Preservator.new(@object)
-        preservation.preserve(['descMetadata'])
-
-        flash[:notice] = t('dri.flash.notice.metadata_updated')
-      rescue RuntimeError => e
-        logger.error "Could not save object #{@object.alternate_id}: #{e.message}"
+      unless save_and_index
+        logger.error "Could not save object #{@object.alternate_id}"
         raise DRI::Exceptions::InternalError
       end
+
+      record_version_committer(@object, current_user)
+      flash[:notice] = t('dri.flash.notice.metadata_updated')
+
+      update_or_mint_doi
+      mint_or_update_doi(@object, @doi) if @doi
+
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(['descMetadata'])
+
+      retrieve_linked_data if AuthoritiesConfig
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
@@ -171,5 +169,21 @@ class MetadataController < ApplicationController
       DRI.queue.push(LinkedDataJob.new(@object.alternate_id)) if @object.geographical_coverage.present? || @object.coverage.present?
     rescue Exception => e
       Rails.logger.error "Unable to submit linked data job: #{e.message}"
+    end
+
+    def save_and_index
+      @object.index_needs_update = false
+
+      DRI::DigitalObject.transaction do
+        begin
+          raise ActiveRecord::Rollback unless @object.save && @object.update_index
+
+          return true
+        rescue RSolr::Error::Http
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      false
     end
 end
