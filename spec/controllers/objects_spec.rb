@@ -152,7 +152,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+      post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
@@ -169,7 +169,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+      post :create, params: {  digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
@@ -189,7 +189,7 @@ describe ObjectsController do
       expect_any_instance_of(DRI::DigitalObject)
         .to receive(:update_index).and_return(false)
       expect {
-        post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+        post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
       }.to change{ DRI::DigitalObject.count }.by(0)
     end
   end
@@ -517,7 +517,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+      post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 

@@ -139,21 +139,24 @@ class ObjectsController < BaseObjectsController
   def create
     downcase_permissions_params
 
-    if params[:digital_object][:governing_collection].present?
-      params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
+    if params[:governing_collection_id].present?
+      @governing_collection = retrieve_object!(params[:governing_collection_id])
+    else
+      after_create_failure(DRI::Exceptions::BadRequest)
     end
 
-    enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].alternate_id)
-    locked(params[:digital_object][:governing_collection].alternate_id); return if performed?
+    enforce_permissions!('create_digital_object', @governing_collection)
+    locked(@governing_collection.alternate_id); return if performed?
 
-    if params[:digital_object][:documentation_for].present?
-      params[:digital_object][:documentation_for] = retrieve_object(params[:digital_object][:documentation_for])
+    if params[:documentation_for].present?
       create_from_form :documentation
     elsif params[:metadata_file].present?
       create_from_upload
     else
       create_from_form
     end
+
+    @object.governing_collection = @governing_collection
 
     unless @object.valid?
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -330,21 +333,23 @@ class ObjectsController < BaseObjectsController
       xml = xml_ds.load_xml(params[:metadata_file])
 
       @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
+
       @object.depositor = current_user.to_s
       @object.assign_attributes create_params
-
       @object.update_metadata xml
     end
 
     # If no standard parameter then default to :qdc
     # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
     #
-    def create_from_form(standard = nil)
-      @object = if standard
-                  DRI::DigitalObject.with_standard(standard)
-                else
-                  DRI::DigitalObject.with_standard(:qdc)
-                end
+    def create_from_form(standard = :qdc)
+      @object = DRI::DigitalObject.with_standard(standard)
+
+      if standard == :documentation
+        @documented = retrieve_object(params[:documentation_for])
+        @object.documentation_for = @documented if @documented
+      end
+
       @object.depositor = current_user.to_s
       @object.assign_attributes create_params
     end
@@ -359,6 +364,8 @@ class ObjectsController < BaseObjectsController
     end
 
     def downcase_permissions_params
+      return unless params[:digital_object].present?
+
       if params[:digital_object][:read_users_string].present?
         params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
       end
@@ -386,7 +393,7 @@ class ObjectsController < BaseObjectsController
           raise ActiveRecord::Rollback unless @object.save && @object.update_index
 
           return true
-        rescue RSolr::Error::Http
+        rescue RSolr::Error::Http => e
           raise ActiveRecord::Rollback
         end
       end

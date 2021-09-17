@@ -3,12 +3,12 @@
         <form id="metadata_uploader" action="<%= url_for(action: "create", controller: "objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
 
             <div>
-                <a class='btn btn-default' href='javascript:;'> 
+                <a class='btn btn-default' href='javascript:;'>
                     <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= t('dri.views.ingest.steps.upload') %></h5>
-                    <input type="file" id="metadata_file" name="metadata_file" accept="application/xml" required onchange='fileUploadHelper($(this));'> 
+                    <input type="file" id="metadata_file" name="metadata_file" accept="application/xml" required onchange='fileUploadHelper($(this));'>
                     <h5 id="file_name">No File</h5></a>
             </div>
-            <input type="hidden" name="digital_object[governing_collection]" value="<%= @collection %>">
+            <input type="hidden" name="governing_collection_id" value="<%= @collection %>">
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
             <input type="hidden" name="digital_object[read_groups_string]" value="public" />
             <input type="hidden" name="digital_object[discover_groups_string]" value="public" />
