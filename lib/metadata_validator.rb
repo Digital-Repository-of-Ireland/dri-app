@@ -52,7 +52,7 @@ module MetadataValidator
 
       # Then, find all elements that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
       # No xsi:schemaLocation
-      return result, I18n.t('dri.flash.error.schema_location_missing') if xml.xpath('//*[@xsi:schemaLocation]').empty?
+      return result, I18n.t('dri.flash.error.schema_location_missing') if !namespace.key?('xmlns:xsi') || xml.xpath('//*[@xsi:schemaLocation]').empty?
 
       xml.xpath('//*[@xsi:schemaLocation]').each do |node|
         schema_location = node.attr('xsi:schemaLocation')
@@ -109,7 +109,7 @@ module MetadataValidator
       is_schema_valid?(xml, EAD_NS_PREFIX, EAD_NS_URI)
     end
   end # is_valid_ead?
-  
+
   # Validates an XML file against DTD
   # @param [Nokogiri::XML::Document] xml the XML file to validate
   # @param [String] dtd_name the name of the DTD
@@ -132,7 +132,7 @@ module MetadataValidator
     options = Nokogiri::XML::ParseOptions::DEFAULT_XML | Nokogiri::XML::ParseOptions::DTDLOAD
     # No url and encoding parameters needed
     doc = Nokogiri::XML::Document.parse(new_xml, nil, nil, options)
-      
+
     # Validate against the DTD, if it has one
     validate_errors = doc.external_subset.nil? ? ["Could not load document DTD (#{dtd_name})"] : doc.external_subset.validate(doc)
     if validate_errors.nil? || validate_errors.size == 0
@@ -140,7 +140,7 @@ module MetadataValidator
     else
       @msg = validate_errors.join('<br/>').html_safe
     end
-      
+
     return result, @msg
   end # is_dtd_valid?
 
@@ -150,10 +150,10 @@ module MetadataValidator
   #
   def self.map_to_localfile(uri)
     return nil unless uri
-    
+
     filename = URI.parse(uri).path[%r{[^/]+\z}]
     file = Rails.root.join('config').join('schemas', filename)
-    
+
     Pathname.new(file).exist? ? filename : uri
   end # map_to_localfile
 end # MetadataValidator

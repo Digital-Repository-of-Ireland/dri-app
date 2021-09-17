@@ -91,15 +91,15 @@ describe ReadersController do
       description: "Default Reader group for collection #{@subcollection.alternate_id}")
       subgroup.reader_group = true
       subgroup.save
+      subgroup.reload
 
       @subcollection.read_groups_string = "#{@subcollection.alternate_id}"
       @subcollection.save
 
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.alternate_id}"
 
-      group = UserGroup::Group.find_by(name: @subcollection.alternate_id)
-      expect(@login_user.member?(group.id)).to be_falsey
-      expect(@login_user.pending_member?(group.id)).not_to be true
+      expect(@login_user.member?(subgroup.id)).to be_falsey
+      expect(@login_user.pending_member?(subgroup.id)).not_to be true
 
       expect {
         post :create, params: { id: @subcollection.alternate_id }
