@@ -30,12 +30,21 @@ class GenericFileContent
     @has_content ||= false
   end
 
-  def save_and_index
-    return false unless (generic_file.save && generic_file.update_index)
+  def save_and_index(update = false)
+    DRI::GenericFile.transaction do
+      begin
+        raise ActiveRecord::Rollback unless (generic_file.save && generic_file.update_index)
 
-    @has_content = true
-    true
-  rescue RSolr::Error::Http
+        reason = update ? 'asset modified' : 'asset added'
+        new_doi(object, reason) if object.status == "published"
+        mint_or_update_doi(object) if object.status == 'published'
+        @has_content = true
+        return true
+      rescue RSolr::Error::Http
+        raise ActiveRecord::Rollback
+      end
+    end
+
     false
   end
 
@@ -78,7 +87,7 @@ class GenericFileContent
       existing_moab_path
     )
 
-    unless save_and_index
+    unless save_and_index(update)
       generic_file.delete_file if existing_moab_path.nil? && (generic_file.path != current_path)
       return false
     end

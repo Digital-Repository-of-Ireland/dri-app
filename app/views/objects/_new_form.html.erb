@@ -1,12 +1,12 @@
 
-<%= form_for @object, :as => :digital_object, :url => {:controller=>"objects", :action=>"create"}, :method=>"post", :html => {:class => 'form-vertical'} do |f| %>
-  <%= f.hidden_field :governing_collection, {:value => @collection} %>
+<%= form_for @object, as: :digital_object, url: { controller: "objects", action: "create"}, method: "post", html: { class: 'form-vertical' } do |f| %>
+  <%= hidden_field_tag :governing_collection_id, @collection %>
   <% if params[:is_documentation].present? && params[:is_documentation] == 'true' %>
-  <%= f.hidden_field :documentation_for, {:value => @collection} %>
+  <%= hidden_field_tag :documentation_for, @collection %>
   <%end%>
 
-  <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "create" } %>
-  <%= render :partial => "shared/form_default_permissions", :locals => {:f => f,:record => @object } %>
+  <%= render partial: "shared/form_metadata_qualifieddublincore", locals: { f: f, action: "create" } %>
+  <%= render partial: "shared/form_default_permissions", locals: { f: f, record: @object } %>
 
-  <%= f.submit t('dri.views.ingest.buttons.continue'), :class => "btn-primary btn-large", :id => "continue" %>
+  <%= f.submit t('dri.views.ingest.buttons.continue'), class: "btn-primary btn-large", id: "continue" %>
 <% end %>

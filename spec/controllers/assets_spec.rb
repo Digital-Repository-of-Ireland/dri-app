@@ -194,7 +194,7 @@ describe AssetsController do
       generic_file.save
       file_id = generic_file.alternate_id
 
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
       put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
       object.reload
       expect(object.object_version).to be > version
@@ -432,6 +432,27 @@ describe AssetsController do
       expect {
         delete :destroy, params: { object_id: object.alternate_id, id: file_id }
       }.to change { DRI::Identifier.object_exists?(file_id) }.from(true).to(false)
+    end
+
+    it 'should update the object version' do
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
+
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+      generic_file.digital_object = object
+      generic_file.apply_depositor_metadata('test@test.com')
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      generic_file.add_file uploaded, options
+      generic_file.save
+      file_id = generic_file.alternate_id
+
+      version = object.object_version
+      delete :destroy, params: { object_id: object.alternate_id, id: file_id }
+      object.reload
+      expect(object.object_version).to be > version
     end
 
     it 'should mint a doi when an asset is deleted' do

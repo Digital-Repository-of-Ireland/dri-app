@@ -10,7 +10,7 @@ class BaseObjectsController < CatalogController
   protected
 
     def create_params
-      params.require(:digital_object).permit!
+      params.fetch(:digital_object, {}).permit!
     end
 
     def update_params
