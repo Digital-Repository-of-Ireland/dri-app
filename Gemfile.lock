@@ -67,10 +67,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 5e2097a14c41bb3c03c41e42317d5b36ccb888ea
-  tag: v4.2.4
+  revision: e7ca2bf4f05b52f2d447bfad9d0424a20738b8a7
+  tag: v4.2.5
   specs:
-    dri_data_models (4.2.4)
+    dri_data_models (4.2.5)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -127,7 +127,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_encode (0.8.1)
+    active_encode (0.8.2)
       rails
       sprockets (< 4)
     activejob (5.2.6)
@@ -512,7 +512,7 @@ GEM
       railties (>= 3.1)
     json (2.5.1)
     json-canonicalization (0.2.1)
-    json-ld (3.1.9)
+    json-ld (3.1.10)
       htmlentities (~> 4.3)
       json-canonicalization (~> 0.2)
       link_header (~> 0.0, >= 0.0.8)
@@ -598,7 +598,7 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.7.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.1)
+    marcel (1.0.2)
     memoist (0.16.2)
     method_source (1.0.0)
     mime-types (3.3.1)
