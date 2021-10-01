@@ -131,39 +131,24 @@ class CollectionsController < BaseObjectsController
       return
     end
 
-    DRI::DigitalObject.transaction do
-      @object.increment_version
-      if doi
-        doi.update_metadata(params[:digital_object].select { |key, _value| doi.metadata_fields.include?(key) })
-        new_doi_if_required(@object, doi, 'metadata updated')
-      end
+    @object.increment_version
 
-      respond_to do |format|
-        begin
-          @object.index_needs_update = false
-
-          if @object.save && @object.update_index
-            if cover_image.present?
-              flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
-            end
-
-             # Do the preservation actions
-            preservation = Preservation::Preservator.new(@object)
-            preservation.preserve(['descMetadata'])
-
-            record_version_committer(@object, current_user)
-            mint_or_update_doi(@object, doi) if doi
-
-            flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
-            format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-          else
-            after_update_failure
-            raise ActiveRecord::Rollback
-          end
-        rescue RSolr::Error::Http
-          after_update_failure
-          raise ActiveRecord::Rollback
+    respond_to do |format|
+      if save_and_index
+        if cover_image.present?
+          flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
         end
+
+        post_save do
+          mint_or_update_doi(@object, doi) if doi
+        end
+
+        flash[:notice] = t('dri.flash.notice.updated')
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
+        format.json { render json: @object }
+      else
+        flash[:alert] = t('dri.flash.error.unable_to_persist')
+        format.html { render action: 'edit' }
       end
     end
   end
@@ -385,24 +370,14 @@ class CollectionsController < BaseObjectsController
 
   private
 
-    def after_update_exception(exception)
-      respond_with_exception(exception)
-    end
+    def post_save
+      record_version_committer(@object, current_user)
 
-    def after_update_failure
-      flash[:alert] = t('dri.flash.error.unable_to_persist')
-      render :new
-    end
+      yield
 
-    def respond_with_exception(exception)
-      respond_to do |format|
-        format.html do
-          raise exception
-        end
-        format.json do
-          raise exception
-        end
-      end
+      # Do the preservation actions
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve(['descMetadata'])
     end
 
     # Create a collection with the web form
