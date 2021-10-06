@@ -23,6 +23,27 @@ class BaseObjectsController < CatalogController
       ).permit!
     end
 
+    def save_and_index
+      @object.index_needs_update = false
+
+      DRI::DigitalObject.transaction do
+        if doi
+          doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
+          new_doi_if_required(@object, doi, 'metadata updated')
+        end
+
+        begin
+          raise ActiveRecord::Rollback unless @object.save && @object.update_index
+
+          return true
+        rescue RSolr::Error::Http => e
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      false
+    end
+
     # Updates the licence.
     #
     def set_licence

@@ -108,28 +108,28 @@
   </div>
   <% if @surrogate %>
     <div>
-       <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate') do %>
-       <i class="fa fa-download"></i>
-     <%= label_tag(:surrogate, t('dri.views.catalog.forms.download_surrogate')) %>
+      <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate'), id: 'download_surrogate', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
+        <i class="fa fa-download"></i>
+        <%= label_tag(:surrogate, t('dri.views.catalog.forms.download_surrogate')) %>
      <% end %>
     </div>
   <% end %>
 
    <% if @document.read_master? || (can? :edit, @document) %>
    <div>
-     <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile') do %>
+     <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile'), id: 'download_master', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
        <i class="fa fa-download"></i>
-     <% file_size = number_to_human_size(generic_file['file_size_ltsi']) %>
-     <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
+       <% file_size = number_to_human_size(generic_file['file_size_ltsi']) %>
+       <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
      <% end %>
     </div>
   <% end %>
 
   <% if current_user %>
     <div>
-      <%= link_to object_path(@document, format: 'zip') do %>
+      <%= link_to object_path(@document, format: 'zip'), id: 'download_archive', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
         <i class="fa fa-download"></i>
-      <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: displayfiles_count)) %>
+        <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: displayfiles_count)) %>
       <% end %>
       <div> (<%= t('dri.views.catalog.forms.download_archive_explanation') %>)</div>
     </div>

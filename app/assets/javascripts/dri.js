@@ -163,3 +163,41 @@ function togglePanel (){
 
  togglePanel();
  });
+
+$(document).on("click", "#download_surrogate", function () {
+     var rootCollection = $(this).data('root-collection');
+     var object = $(this).data('object');
+     var track = $(this).data('track-download');
+
+     trackDownload(track, rootCollection, object);
+});
+
+$(document).on("click", "#download_master", function () {
+     var rootCollection = $(this).data('root-collection');
+     var object = $(this).data('object');
+     var track = $(this).data('track-download');
+
+     trackDownload(track, rootCollection, object);
+});
+
+$(document).on("click", "#download_archive", function () {
+     var rootCollection = $(this).data('root-collection');
+     var object = $(this).data('object');
+     var track = $(this).data('track-download');
+
+     trackDownload(track, rootCollection, object);
+});
+
+function trackDownload(track, rootCollection, object) {
+  if (track===true) {
+    ga("send",
+      {
+        "hitType":"event",
+        "eventCategory":rootCollection,
+        "eventAction":"Download",
+        "eventLabel":object,
+        "eventValue":"1"
+      }
+    );
+  }
+}

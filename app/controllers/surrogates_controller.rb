@@ -56,8 +56,6 @@ class SurrogatesController < ApplicationController
       file = file_path(params[:object_id], params[:id], surrogate_type_name)
       raise DRI::Exceptions::NotFound unless file
 
-      track_download(@object_document) if @object_document.published?
-
       type, ext = mime_type(file)
       name = "#{params[:id]}#{ext}"
 

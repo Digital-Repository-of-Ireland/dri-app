@@ -43,8 +43,6 @@ class AssetsController < ApplicationController
 
       can_view?
 
-      track_download(@document) if @document.published?
-
       if File.file?(@generic_file.path)
         response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
         send_file @generic_file.path,
