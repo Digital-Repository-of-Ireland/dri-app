@@ -231,6 +231,7 @@ class CatalogController < ApplicationController
         dimensions[:dimension2] = @document.depositing_institute.name if @document.depositing_institute.present?
         t.google_analytics :parameter, dimensions
       end
+      @track_download = true
     end
 
     respond_to do |format|

@@ -233,6 +233,7 @@ class MyCollectionsController < ApplicationController
     end
 
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
+    @track_download = false
 
     supported_licences
 
