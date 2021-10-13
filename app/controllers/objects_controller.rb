@@ -89,7 +89,6 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('edit', params[:id])
 
     supported_licences
-
     @object = retrieve_object!(params[:id])
 
     if params[:digital_object][:governing_collection_id].present?
@@ -105,23 +104,12 @@ class ObjectsController < BaseObjectsController
       return
     end
 
-    DRI::DigitalObject.transaction do
-      @object.increment_version
+    @object.increment_version
 
-      if doi
-        doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
-        new_doi_if_required(@object, doi, 'metadata updated')
-      end
+    respond_to do |format|
+      checksum_metadata(@object)
 
-      respond_to do |format|
-        checksum_metadata(@object)
-
-        unless @object.save
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          format.html { render action: 'edit' }
-          raise ActiveRecord::Rollback, @object.errors.full_messages.inspect
-        end
-
+      if save_and_index
         post_save do
           mint_or_update_doi(@object, doi) if doi
         end
@@ -129,6 +117,9 @@ class ObjectsController < BaseObjectsController
         flash[:notice] = t('dri.flash.notice.metadata_updated')
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
         format.json { render json: @object }
+      else
+        flash[:alert] = t('dri.flash.error.unable_to_persist')
+        format.html { render action: 'edit' }
       end
     end
   end
@@ -137,30 +128,27 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('show_digital_object', params[:id])
 
     @object = retrieve_object!(params[:id])
+    if @object.doi.present?
+      doi = DataciteDoi.where(object_id: @object.alternate_id).current
+      @doi = doi.doi if doi.present? && doi.minted?
+    end
   end
 
   # Creates a new model using the parameters passed in the request.
   #
   def create
-    if params[:digital_object][:read_users_string].present?
-      params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
-    end
-    if params[:digital_object][:edit_users_string].present?
-      params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
-    end
+    downcase_permissions_params
 
-    if params[:digital_object][:governing_collection].present?
-      params[:digital_object][:governing_collection] = retrieve_object(params[:digital_object][:governing_collection])
-      # governing_collection present and also whether this is a documentation object?
-      if params[:digital_object][:documentation_for].present?
-        params[:digital_object][:documentation_for] = retrieve_object(params[:digital_object][:documentation_for])
-      end
+    if params[:governing_collection_id].present?
+      @governing_collection = retrieve_object!(params[:governing_collection_id])
+    else
+      after_create_failure(DRI::Exceptions::BadRequest)
     end
 
-    enforce_permissions!('create_digital_object', params[:digital_object][:governing_collection].alternate_id)
-    locked(params[:digital_object][:governing_collection].alternate_id); return if performed?
+    enforce_permissions!('create_digital_object', @governing_collection)
+    locked(@governing_collection.alternate_id); return if performed?
 
-    if params[:digital_object][:documentation_for].present?
+    if params[:documentation_for].present?
       create_from_form :documentation
     elsif params[:metadata_file].present?
       create_from_upload
@@ -168,63 +156,70 @@ class ObjectsController < BaseObjectsController
       create_from_form
     end
 
+    @object.governing_collection = @governing_collection
+
+    unless @object.valid?
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+      if params[:metadata_file].present?
+        after_create_failure(DRI::Exceptions::BadRequest)
+      else
+        render :new
+        return
+      end
+    end
+
     checksum_metadata(@object)
     supported_licences
 
-    if @object.valid? && @object.save
+    if save_and_index
       post_save do
         create_reader_group if @object.collection?
       end
 
-      respond_to do |format|
-        format.html do
-          flash[:notice] = t('dri.flash.notice.digital_object_ingested')
-          redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id
-        end
-        format.json do
-          response = { pid: @object.alternate_id }
-          response[:warning] = @warnings if @warnings
-
-          render json: response, location: my_collections_url(@object.alternate_id), status: :created
-        end
-      end
+      after_create_success(@object, @warnings)
     else
-      respond_to do |format|
-        format.html do
-          flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-        end
-        format.json do
-          raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_metadata_input')
-        end
-      end
+      after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
+
+      flash[:alert] = t('dri.flash.error.unable_to_persist')
+      render :new
     end
   end
 
   def destroy
     enforce_permissions!('edit', params[:id])
 
-    @object = retrieve_object!(params[:id])
+    @object = retrieve_object(params[:id])
 
-    if @object.status == 'published' && !current_user.is_admin?
-      raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+    if @object.nil?
+      solr_object = SolrDocument.find(params[:id])
+      raise DRI::Exceptions::NotFound, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" unless solr_object
+      collection_id = solr_object.collection_id
+      SolrDocument.delete(params[:id])
+    else
+
+      if @object.status == 'published' && !current_user.is_admin?
+        raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
+      end
+
+      # Do the preservation actions
+      @object.increment_version
+
+      assets = []
+      @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
+
+      preservation = Preservation::Preservator.new(@object)
+      preservation.update_manifests(
+        deleted: {
+          'content' => assets,
+          'metadata' => ['descMetadata.xml']
+          }
+      )
+
+      record_version_committer(@object, current_user)
+
+      collection_id = @object.governing_collection.alternate_id
+      @object.destroy
     end
-
-    # Do the preservation actions
-    @object.increment_version
-
-    assets = []
-    @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
-
-    preservation = Preservation::Preservator.new(@object)
-    preservation.update_manifests(
-      deleted: {
-        'content' => assets,
-        'metadata' => ['descMetadata.xml']
-        }
-    )
-    collection_id = @object.governing_collection.alternate_id
-    @object.delete
 
     flash[:notice] = t('dri.flash.notice.object_deleted')
 
@@ -248,9 +243,6 @@ class ObjectsController < BaseObjectsController
                 disposition: "attachment; filename=\"#{id}.zip\";",
                 url_based_filename: true
 
-          if object.published?
-            Gabba::Gabba.new(GA.tracker, request.host).event(object.root_collection_id, "Download", object.alternate_id, 1, true)
-          end
           file_sent = true
         else
           flash[:error] = t('dri.flash.error.download_no_file')
@@ -309,26 +301,54 @@ class ObjectsController < BaseObjectsController
 
   private
 
+    def after_create_failure(exception)
+      respond_to do |format|
+        format.html do
+          raise exception
+        end
+        format.json do
+          raise exception
+        end
+      end
+    end
+
+    def after_create_success(object, warnings)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = t('dri.flash.notice.digital_object_ingested')
+          redirect_to controller: 'my_collections', action: 'show', id: object.alternate_id
+        end
+        format.json do
+          response = { pid: object.alternate_id }
+          response[:warning] = warnings if warnings
+
+          render json: response, location: my_collections_url(object.alternate_id), status: :created
+        end
+      end
+    end
+
     def create_from_upload
       xml_ds = XmlDatastream.new
       xml = xml_ds.load_xml(params[:metadata_file])
 
       @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
+
       @object.depositor = current_user.to_s
       @object.assign_attributes create_params
-
       @object.update_metadata xml
     end
 
     # If no standard parameter then default to :qdc
     # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
     #
-    def create_from_form(standard = nil)
-      @object = if standard
-                  DRI::DigitalObject.with_standard(standard)
-                else
-                  DRI::DigitalObject.with_standard(:qdc)
-                end
+    def create_from_form(standard = :qdc)
+      @object = DRI::DigitalObject.with_standard(standard)
+
+      if standard == :documentation
+        @documented = retrieve_object(params[:documentation_for])
+        @object.documentation_for = @documented if @documented
+      end
+
       @object.depositor = current_user.to_s
       @object.assign_attributes create_params
     end
@@ -342,10 +362,42 @@ class ObjectsController < BaseObjectsController
       group.save
     end
 
+    def downcase_permissions_params
+      return unless params[:digital_object].present?
+
+      if params[:digital_object][:read_users_string].present?
+        params[:digital_object][:read_users_string] = params[:digital_object][:read_users_string].to_s.downcase
+      end
+      if params[:digital_object][:edit_users_string].present?
+        params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
+      end
+    end
+
     def metadata_standard
       standard = @object.descMetadata.class.to_s.downcase.split('::').last
 
       standard == 'documentation' ? 'qualifieddublincore' : standard
+    end
+
+    def save_and_index
+      @object.index_needs_update = false
+
+      DRI::DigitalObject.transaction do
+        if doi
+          doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
+          new_doi_if_required(@object, doi, 'metadata updated')
+        end
+
+        begin
+          raise ActiveRecord::Rollback unless @object.save && @object.update_index
+
+          return true
+        rescue RSolr::Error::Http => e
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      false
     end
 
     def post_save

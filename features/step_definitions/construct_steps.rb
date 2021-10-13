@@ -1,7 +1,3 @@
-#Given /^a Digital Object$/ do
-#  @digital_object = DRI::Batch.with_standard(:qdc, {id: ActiveFedora::Noid::Service.new.mint })
-#end
-
 When /^I commit the Digital Object$/ do
   @digital_object.save
 end

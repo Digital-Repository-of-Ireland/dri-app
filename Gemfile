@@ -9,7 +9,7 @@ gem 'blacklight', '~> 6'
 gem 'blacklight_advanced_search', '~> 6'
 gem 'blacklight_oai_provider', '~> 6'
 
-gem 'hydra-derivatives', '~> 3.5'
+gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
 gem 'solrizer'
 
@@ -152,10 +152,9 @@ group :translations do
 end
 
 # analytics
-gem 'google-analytics-rails', '1.1.0'
-gem 'gabba'
 gem 'legato'
 gem 'google-oauth2-installed'
+gem 'rack-tracker'
 
 gem 'rvm'
 
@@ -167,10 +166,8 @@ gem 'openlayers-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'clipboard-rails'
 
-gem 'blacklight-maps'
-gem 'leaflet-rails', '1.0.0'
-gem 'rails-assets-leaflet', '1.3.4', source: 'https://rails-assets.org'
-gem 'rails-assets-leaflet.markercluster', '1.4.1', source: 'https://rails-assets.org'
+gem 'blacklight-maps', '0.5.0'
+gem 'leaflet-rails', '1.4.0'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'

@@ -65,8 +65,8 @@ module Storage
     # file = SolrDocument or GenericFile ID
     def get_surrogates(object, file, expire = nil)
       expire = Settings.S3.expiry unless !expire.nil? && numeric?(expire)
-      bucket = object.respond_to?(:id) ? object.id : object
-      generic_file_id = file.respond_to?(:id) ? file.id : file
+      bucket = object.respond_to?(:alternate_id) ? object.alternate_id : object
+      generic_file_id = file.respond_to?(:alternate_id) ? file.alternate_id : file
 
       surrogate_file_names = list_files(bucket, generic_file_id)
       surrogates_hash = {}
@@ -205,9 +205,16 @@ module Storage
       options[:prefix] = file_prefix if file_prefix
 
       files = []
+      response = nil
       begin
-        response = @client.list_objects(options)
-        files = response.contents.map(&:key)
+        loop do
+          if response && response[:next_continuation_token].present?
+            options[:continuation_token] = response[:next_continuation_token]
+          end
+          response = @client.list_objects_v2(options)
+          files.concat(response.contents.map(&:key))
+          break if response[:is_truncated] == false
+        end
       rescue
         Rails.logger.debug "Problem listing files in bucket #{bucket}"
       end

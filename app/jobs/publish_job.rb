@@ -38,10 +38,11 @@ class PublishJob
     collection.published_at = Time.now.utc.iso8601
     collection.object_version ||= '1'
     collection.increment_version
+    doi = create_doi(collection)
+    collection.doi = doi.doi if doi
 
     if collection.save
-      doi = create_doi(collection)
-      mint_doi(doi)
+      mint_doi(doi) if doi
 
       record_version_committer(collection, user)
 
@@ -49,6 +50,7 @@ class PublishJob
       preservation = Preservation::Preservator.new(collection)
       preservation.preserve
     else
+      doi.destroy if doi
       failed += 1
     end
 

@@ -3,7 +3,7 @@
   <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
 </div>
 <div class="modal-body">
-    <textarea id="citation-text" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly"><%= @object.export_as_dri_citation %></textarea>
+    <textarea id="citation-text" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly"><%= @object.export_as_dri_citation %><% if @doi.present? %><%= ", https://doi.org/#{@doi}" %><% end %></textarea>
 </div>
 <div class="modal-footer">
   <button class="btn btn-default clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#citation-text" data-container="body">

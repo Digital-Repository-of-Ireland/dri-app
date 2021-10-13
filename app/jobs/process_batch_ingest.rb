@@ -72,6 +72,8 @@ class ProcessBatchIngest
 
     preservation = Preservation::Preservator.new(object)
     preservation.preserve_assets({ added: { 'content' => filenames }})
+
+    assets.reject { |asset| asset[:path].start_with?('error:') }.each { |asset| FileUtils.rm_f(asset[:path]) }
   end
 
   def self.ingest_metadata(collection_id, user, metadata)
@@ -105,24 +107,27 @@ class ProcessBatchIngest
     end
 
     begin
-      update = if object.save!
-                 create_reader_group(object) if object.collection?
+      rc, update = DRI::DigitalObject.transaction do
+        object.index_needs_update = false
+        if object.save! && object.update_index
+          create_reader_group(object) if object.collection?
 
-                 preservation = Preservation::Preservator.new(object)
-                 preservation.preserve(['descMetadata'])
+          preservation = Preservation::Preservator.new(object)
+          preservation.preserve(['descMetadata'])
 
-                 rc = 0
-                 { status_code: 'COMPLETED',
-                   file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
-               else
-                 rc = -1
-                 { status_code: 'FAILED', file_location: "error: invalid metadata: #{object.errors.full_messages.join(', ')}" }
-               end
-    rescue ActiveRecord::RecordNotSaved => e
+          [
+            0,
+            { status_code: 'COMPLETED',
+              file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
+          ]
+        else
+          raise DRI::Exceptions::InternalError
+        end
+      end
+    rescue ActiveRecord::RecordNotSaved, RSolr::Error::Http, DRI::Exceptions::InternalError => e
       update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. #{e.message}" }
       rc = -1
     end
-
     update_master_file(metadata[:master_file_id], update)
     FileUtils.rm_f(metadata[:path])
 
@@ -131,21 +136,28 @@ class ProcessBatchIngest
 
   def self.ingest_file(user, file_path, object, datastream, filename)
     mime_type = Validators.file_type(file_path)
-
-    begin
-      file_content = GenericFileContent.new(
+    file_content = GenericFileContent.new(
                        user: user,
                        object: object,
                        generic_file: @generic_file
-                     )
-      file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
-      file_content.save_and_characterize
-    rescue StandardError => e
-      Rails.logger.error "Could not save the asset file #{file_path} for #{object.alternate_id} to #{datastream}: #{e.message}"
-      return nil
+                   )
+
+    existing_content = DRI::GenericFile.where(label: filename)
+    if !existing_content.empty?
+      if Checksum.md5(existing_content[0].path) == Checksum.md5(file_path)
+        preservation = Preservation::Preservator.new(object)
+        moab_path = existing_content[0].path.split(preservation.aip_dir(object.alternate_id))[1]
+      end
     end
-    FileUtils.rm_f(file_path)
+
+    file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream, moab_path)
+    return nil unless file_content.save_and_index
+    file_content.characterize if file_content.has_content?
+
     @generic_file.path
+  rescue StandardError => e
+    Rails.logger.error "Could not save the asset file #{file_path} for #{object.alternate_id} to #{datastream}: #{e.message}"
+    nil
   end
 
   def self.build_generic_file(object:, user:, preservation: false)
@@ -194,6 +206,7 @@ class ProcessBatchIngest
 
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
+      next if File.exist?(download_location)
       downloaded = 0
 
       begin

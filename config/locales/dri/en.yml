@@ -165,6 +165,7 @@ en:
         schema_location_missing: The metadata file is missing the XML SchemaLocation declaration
         schema_location_parse: Unable to parse XML schemaLocation declaration
         submitting_read_request: 'Unable to submit read access request: %{error}'
+        unable_to_persist: 'Internal Error: unable to save object'
         validation_errors: 'Validation Errors: %{error}'
       notice:
         access_controls_updated: Access controls updated.

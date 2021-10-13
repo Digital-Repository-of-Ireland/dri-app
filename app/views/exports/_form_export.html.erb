@@ -56,6 +56,10 @@
       <%= label_tag "#{t('dri.views.fields.geographical_coverages')}" %>
     </div>
     <div>
+      <%= check_box_tag 'fields[relations]', "#{t('dri.views.fields.relations')}", true %>
+      <%= label_tag "#{t('dri.views.fields.relations')}" %>
+    </div>
+    <div>
       <%= check_box_tag 'fields[rights]', "#{t('dri.views.fields.rights')}", true %>
       <%= label_tag "#{t('dri.views.fields.rights')}" %>
     </div>

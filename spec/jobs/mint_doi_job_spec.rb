@@ -53,11 +53,60 @@ describe "MintDoiJob" do
 
   describe "run" do
     it "should mint a doi for an object" do
-      expect_any_instance_of(DOI::Datacite).to receive(:mint)
-      expect_any_instance_of(DOI::Datacite).to receive(:metadata)
+      allow_any_instance_of(DOI::Datacite).to receive(:doi_exists?).and_return(false)
+      expect_any_instance_of(DOI::Datacite).to receive(:mint).and_return(201)
+      expect_any_instance_of(DOI::Datacite).to receive(:metadata).and_return(201)
 
       doi = DataciteDoi.create(object_id: @object.alternate_id)
       MintDoiJob.perform(doi.id)
+    end
+
+    it "should set the status for an unprocessable doi" do
+      allow_any_instance_of(DOI::Datacite).to receive(:metadata).and_return(422)
+      allow_any_instance_of(DOI::Datacite).to receive(:doi_exists?).and_return(false)
+      expect_any_instance_of(DOI::Datacite).not_to receive(:mint)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+      MintDoiJob.perform(doi.id)
+      doi.reload
+      expect(doi.status).to eq 'unprocessable'
+    end
+
+    it "should set the status for failed metadata" do
+      allow_any_instance_of(DOI::Datacite).to receive(:metadata).and_return(404)
+      allow_any_instance_of(DOI::Datacite).to receive(:doi_exists?).and_return(false)
+      expect_any_instance_of(DOI::Datacite).not_to receive(:mint)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+      MintDoiJob.perform(doi.id)
+      doi.reload
+      expect(doi.status).to eq 'failed'
+    end
+
+    it "should set the status for a failed mint" do
+      allow_any_instance_of(DOI::Datacite).to receive(:metadata).and_return(201)
+      allow_any_instance_of(DOI::Datacite).to receive(:doi_exists?).and_return(false)
+      expect_any_instance_of(DOI::Datacite).to receive(:mint).and_return(422)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+      MintDoiJob.perform(doi.id)
+      doi.reload
+      expect(doi.status).to eq 'error'
+    end
+
+    it "should set the status for a success" do
+      allow_any_instance_of(DOI::Datacite).to receive(:metadata).and_return(201)
+      allow_any_instance_of(DOI::Datacite).to receive(:doi_exists?).and_return(false)
+      expect_any_instance_of(DOI::Datacite).to receive(:mint).and_return(201)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+      MintDoiJob.perform(doi.id)
+      doi.reload
+      expect(doi.status).to eq 'minted'
+    end
+
+    it "should set the status for a existing DOI" do
+      allow_any_instance_of(DOI::Datacite).to receive(:doi_exists?).and_return(true)
+      doi = DataciteDoi.create(object_id: @object.alternate_id)
+      MintDoiJob.perform(doi.id)
+      doi.reload
+      expect(doi.status).to eq 'minted'
     end
   end
 end

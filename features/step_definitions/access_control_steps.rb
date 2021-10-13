@@ -3,7 +3,7 @@ Given /^the object with (pid|title) "(.*?)" has "(.*?)" masterfile$/ do |type, p
 
   if type == "title"
     query = "title_tesim:#{URI.encode(pid)}"
-    pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+    pid = Solr::Query.new(query).to_a.first['id']
   else
     pid = "o" + @random_pid if (pid == "@random")
   end
@@ -42,7 +42,7 @@ Given /the masterfile for object with title "(.*?)" is "(.*?)"$/ do |title, perm
   mapping['inherited'] = "inherit"
 
   query = "title_tesim:#{URI.encode(title)}"
-  id = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  id = Solr::Query.new(query).to_a.first['id']
   object = DRI::Identifier.retrieve_object(id)
   object.master_file_access = mapping[permission].to_s
   object.save
@@ -58,7 +58,7 @@ end
 Given /^the object with (pid|title) "(.*?)" has no read access for my user$/ do |type,pid|
   if type == 'title'
     query = "title_tesim:#{URI.encode(pid)}"
-    pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+    pid = Solr::Query.new(query).to_a.first['id']
   end
 
   pid = "o" + @random_pid if (pid == "@random")
@@ -79,7 +79,7 @@ end
 Given /^the object with (pid|title) "(.*?)" is restricted to the reader group$/ do |type,pid|
   if type == "title"
     query = "title_tesim:#{URI.encode(pid)}"
-    pid = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+    pid = Solr::Query.new(query).to_a.first['id']
   else
     pid = "o" + @random_pid if (pid == "@random")
   end
@@ -135,7 +135,7 @@ end
 
 Given /^the (collection|object) with title "(.*?)" has status (.*?)$/ do |type,title,status|
   query = "title_tesim:#{URI.encode(title)}"
-  id = ActiveFedora::SolrService.query(query, :fl => "id").first['id']
+  id = Solr::Query.new(query).to_a.first['id']
   object = DRI::Identifier.retrieve_object(id)
   object.status = status
   object.save

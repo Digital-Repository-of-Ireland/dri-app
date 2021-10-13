@@ -206,6 +206,10 @@ class CatalogController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
+    if @document.generic_file?
+      @document = nil
+      raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
+    end
 
     @children = @document.children(limit: 100).select { |child| child.published? }
 
@@ -216,8 +220,18 @@ class CatalogController < ApplicationController
     supported_licences
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 
+    if @document.doi
+      doi = DataciteDoi.where(object_id: @document.id).current
+      @doi = doi.doi if doi.present? && doi.minted?
+    end
+
     if @document.published?
-      Gabba::Gabba.new(GA.tracker, request.host).event(@document.root_collection_id, "View",  @document.id, 1, true)
+      tracker do |t|
+        dimensions = { dimension1: @document.root_collection_id, dimension3: @document.id }
+        dimensions[:dimension2] = @document.depositing_institute.name if @document.depositing_institute.present?
+        t.google_analytics :parameter, dimensions
+      end
+      @track_download = true
     end
 
     respond_to do |format|

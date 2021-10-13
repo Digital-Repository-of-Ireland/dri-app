@@ -97,13 +97,14 @@ Rails.application.configure do
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  # google analytics
-  # GA.tracker =
-
   Devise.setup do |config|
     config.omniauth_path_prefix = '/users/auth'
   end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.middleware.use(Rack::Tracker) do
+    handler :google_analytics, { tracker: ENV['GA_TRACKER'], anonymize_ip: true, cookie_domain: 'auto' }
+  end
 end

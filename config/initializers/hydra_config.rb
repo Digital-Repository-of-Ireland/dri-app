@@ -6,19 +6,13 @@ Blacklight::AccessControls.configure do |config|
   # You only need to change these values if you've indexed permissions by some means other than the Hydra's built-in tooling.
   # If you change these, you must also update the permissions request handler in your solrconfig.xml to return those values
   #
-  # config.permissions.discover.group       = ActiveFedora::SolrQueryBuilder.solr_name("discover_access_group", :symbol)
-  # config.permissions.discover.individual  = ActiveFedora::SolrQueryBuilder.solr_name("discover_access_person", :symbol)
-  # config.permissions.read.group           = ActiveFedora::SolrQueryBuilder.solr_name("read_access_group", :symbol)
-  # config.permissions.read.individual      = ActiveFedora::SolrQueryBuilder.solr_name("read_access_person", :symbol)
-  # config.permissions.edit.group           = ActiveFedora::SolrQueryBuilder.solr_name("edit_access_group", :symbol)
-  # config.permissions.edit.individual      = ActiveFedora::SolrQueryBuilder.solr_name("edit_access_person", :symbol)
-  config.permissions.manager.group          = Solrizer.solr_name("manager_access_group", :symbol)
-  config.permissions.manager.individual     = Solrizer.solr_name("manager_access_person", :symbol)
+  config.permissions.read.group           = "read_access_group_ssim"
+  config.permissions.read.individual      = "read_access_person_ssim"
+  config.permissions.edit.group           = "edit_access_group_ssim"
+  config.permissions.edit.individual      = "edit_access_person_ssim"
+  config.permissions.manager.group          = "manager_access_group_ssim"
+  config.permissions.manager.individual     = "manager_access_person_ssim"
 
-  # config.permissions.embargo.release_date  = ActiveFedora::SolrQueryBuilder.solr_name("embargo_release_date", :stored_sortable, type: :date)
-  # config.permissions.lease.expiration_date = ActiveFedora::SolrQueryBuilder.solr_name("lease_expiration_date", :stored_sortable, type: :date)
-  #
-  #
   # specify the user model
   config.user_model = 'User'
 end

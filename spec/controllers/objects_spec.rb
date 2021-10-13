@@ -93,6 +93,39 @@ describe ObjectsController do
       @collection.reload
       @collection.destroy
     end
+
+    it 'should delete from Solr if object does not exist' do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = User.find_by_email(@login_user.email).to_s
+      @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="registered"
+      @collection.creator = [@login_user.email]
+      @collection.save
+
+      @object = DRI::QualifiedDublinCore.new(alternate_id: DRI::Noid::Service.new.mint)
+      @object[:title] = ["An Audio Title"]
+      @object[:rights] = ["This is a statement about the rights associated with this object"]
+      @object[:role_hst] = ["Collins, Michael"]
+      @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
+      @object[:language] = ["ga"]
+      @object[:description] = ["This is an Audio file"]
+      @object[:published_date] = ["1916-04-01"]
+      @object[:creation_date] = ["1916-01-01"]
+      @object[:source] = ["CD nnn nuig"]
+      @object[:geographical_coverage] = ["Dublin"]
+      @object[:temporal_coverage] = ["1900s"]
+      @object[:subject] = ["Ireland","something else"]
+      @object[:resource_type] = ["Sound"]
+      @object.edit_users_string = @login_user.email
+      @object.governing_collection = @collection
+      @object.update_index
+
+      delete :destroy, params: { id: @object.alternate_id }
+      expect(SolrDocument.find(@object.alternate_id)).to be nil
+
+      @collection.destroy
+    end
   end
 
   describe 'create' do
@@ -119,7 +152,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+      post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
@@ -136,12 +169,69 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+      post :create, params: {  digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
 
       expect(flash[:error]).to match(/Validation Errors/)
       expect(response.status).to eq(400)
     end
 
+    it 'rollback an object save if indexing fails' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      expect_any_instance_of(DRI::DigitalObject)
+        .to receive(:update_index).and_return(false)
+      expect {
+        post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
+      }.to change{ DRI::DigitalObject.count }.by(0)
+    end
+  end
+
+  describe 'update' do
+    before(:each) do
+      @login_user = FactoryBot.create(:collection_manager)
+      sign_in @login_user
+    end
+
+    after(:each) do
+      @login_user.delete
+    end
+
+    it 'should rollback changes when an update fails' do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string=@login_user.email
+      @collection.discover_groups_string="public"
+      @collection.read_groups_string="registered"
+      @collection.creator = [@login_user.email]
+
+      @object = FactoryBot.create(:sound)
+      @collection.governed_items << @object
+      @collection.save
+
+      title = @object.title
+
+      expect_any_instance_of(DRI::DigitalObject)
+        .to receive(:update_index).and_return(false)
+      params = {}
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified title"]
+      params[:digital_object][:read_users_string] = "public"
+      params[:digital_object][:edit_users_string] = @login_user.email
+
+      put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
+
+      @object.reload
+      expect(@object.title).to eq(title)
+      @collection.destroy
+    end
   end
 
   describe 'status' do
@@ -150,23 +240,23 @@ describe ObjectsController do
       @login_user = FactoryBot.create(:collection_manager)
       sign_in @login_user
       @collection = FactoryBot.create(:collection)
-      @collection.depositor = User.find_by_email(@login_user.email).to_s
-      @collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string=@login_user.email
       @collection.discover_groups_string="public"
       @collection.read_groups_string="registered"
       @collection.creator = [@login_user.email]
 
       @subcollection = FactoryBot.create(:collection)
-      @subcollection.depositor = User.find_by_email(@login_user.email).to_s
-      @subcollection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @subcollection.depositor = @login_user.email
+      @subcollection.manager_users_string=@login_user.email
       @subcollection.discover_groups_string="public"
       @subcollection.read_groups_string="registered"
       @subcollection.creator = [@login_user.email]
       @subcollection.status = 'draft'
 
       @subsubcollection = FactoryBot.create(:collection)
-      @subsubcollection.depositor = User.find_by_email(@login_user.email).to_s
-      @subsubcollection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      @subsubcollection.depositor = @login_user.email
+      @subsubcollection.manager_users_string=@login_user.email
       @subsubcollection.discover_groups_string="public"
       @subsubcollection.read_groups_string="registered"
       @subsubcollection.creator = [@login_user.email]
@@ -210,8 +300,6 @@ describe ObjectsController do
 
     it 'should set an object status' do
       post :status, params: { id: @object.alternate_id, status: "reviewed" }
-
-
       @object.reload
 
       expect(@object.status).to eql("reviewed")
@@ -429,7 +517,7 @@ describe ObjectsController do
         attr_reader :tempfile
       end
 
-      post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+      post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
       expect(flash[:error]).to be_present
     end
 

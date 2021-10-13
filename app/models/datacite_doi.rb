@@ -39,6 +39,10 @@ class DataciteDoi < ActiveRecord::Base
     update_type == 'mandatory'
   end
 
+  def minted?
+    status == 'minted'
+  end
+
   def doi
     doi = "DRI.#{object_id}"
     doi = "#{doi}-#{version}" if version && version > 0

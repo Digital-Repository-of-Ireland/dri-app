@@ -6,11 +6,13 @@ class CharacterizeJob < IdBasedJob
   end
 
   def run
+    raise "No file found for id #{id}" if generic_file.nil?
+
     with_status_update('characterize') do
       status_for_type('preservation') if generic_file.preservation?
 
-      # characterize calls save
       generic_file.characterize
+      generic_file.save
 
       after_characterize
     end

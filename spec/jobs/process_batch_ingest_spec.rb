@@ -134,6 +134,25 @@ describe 'ProcessBatchIngest' do
       expect(master_file.status_code).to eq 'COMPLETED'
     end
 
+    it "should not error if preservation asset and asset are the same file" do
+      tmp_file = Tempfile.new(['sample_image', '.jpeg'])
+      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      pres_master_file = DriBatchIngest::MasterFile.create
+      assets = [{ master_file_id: master_file.id, path: tmp_file.path }, { label: 'preservation', master_file_id: pres_master_file.id, path: tmp_file.path }]
+      object.increment_version
+      object.save
+
+      expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).twice
+      ProcessBatchIngest.ingest_assets(@login_user, object, assets)
+
+      pres_master_file.reload
+      id = pres_master_file.file_location.split('/').last
+
+      expect(DRI::GenericFile.find_by_alternate_id(id).preservation?).to be true
+      expect(pres_master_file.status_code).to eq 'COMPLETED'
+      expect(aip_valid?(object.alternate_id, 2)).to be true
+    end
+
   end
 
   context "ingest errors" do
@@ -156,7 +175,22 @@ describe 'ProcessBatchIngest' do
       expect(master_file.status_code).to eq 'FAILED'
     end
 
-     it "should rescue errors saving metadata with missing required fields" do
+    it "should rollback object save if Solr error saving metadata" do
+      allow_any_instance_of(DRI::DigitalObject).to receive(:update_index).and_return(false)
+
+      tmp_file = Tempfile.new(['metadata', '.xml'])
+      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      metadata = { master_file_id: master_file.id, path: tmp_file.path }
+      rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
+
+      master_file.reload
+
+      expect(rc).to eq -1
+      expect(object.persisted?).to be false
+      expect(master_file.status_code).to eq 'FAILED'
+    end
+
+    it "should rescue errors saving metadata with missing required fields" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
       FileUtils.cp(File.join(fixture_path, 'metadata_no_rights.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }

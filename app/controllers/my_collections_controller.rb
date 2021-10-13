@@ -214,6 +214,10 @@ class MyCollectionsController < ApplicationController
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
     @response, @document = fetch params[:id]
+    if @document.generic_file?
+      @document = nil
+      raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
+    end
 
     # published subcollections unless admin or edit permission
     @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
@@ -223,7 +227,13 @@ class MyCollectionsController < ApplicationController
     @file_display_type_count = @document.file_display_type_count
     @reader_group = find_reader_group(@document)
 
+    if @document.doi
+      doi = DataciteDoi.where(object_id: @document.id).current
+      @doi = doi.doi if doi.present? && doi.minted?
+    end
+
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
+    @track_download = false
 
     supported_licences
 

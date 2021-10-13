@@ -56,10 +56,6 @@ class SurrogatesController < ApplicationController
       file = file_path(params[:object_id], params[:id], surrogate_type_name)
       raise DRI::Exceptions::NotFound unless file
 
-      if @object_document.published?
-        Gabba::Gabba.new(GA.tracker, request.host).event(@object_document.root_collection_id, "Download",  @object_document.id, 1, true)
-      end
-
       type, ext = mime_type(file)
       name = "#{params[:id]}#{ext}"
 
@@ -132,7 +128,7 @@ class SurrogatesController < ApplicationController
 
     def generate_surrogates(object_id)
       enforce_permissions!('edit', object_id)
-      query = Solr::Query.new("#{Solr::SchemaFields.searchable_symbol('isPartOf')}:\"#{object_id}\" AND NOT #{Solr::SchemaFields.searchable_string('preservation_only')}:true")
+      query = Solr::Query.new("isPartOf_ssim:\"#{object_id}\"", 500, { fq: ["-preservation_only_ssi:true"] })
       query.each do |file_doc|
         begin
           # only characterize if necessary

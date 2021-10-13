@@ -1,6 +1,6 @@
-<% if @document.doi.present? %>
+<% if @doi.present? %>
   <dt class="dri_doi"><%= t('dri.views.fields.doi') %></dd>
   <dd class="dri_doi">
-    <%= "#{@document.doi}" %>
+    <%= "#{@doi}" %>
   </dd>
 <% end %>

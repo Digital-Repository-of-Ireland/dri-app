@@ -33,7 +33,7 @@ module Preservation
       )
     end
 
-    def existing_filepath(moab_path, filename, file_path)
+    def existing_filepath(filename, file_path)
       file_signature = ::Moab::FileSignature.from_file(Pathname.new(file_path))
 
       signature_catalog.catalog_filepath(file_signature)
@@ -53,7 +53,7 @@ module Preservation
     end
 
     # moabify_datastream
-    # Takes two paramenters
+    # Takes two parameters
     # - name (datastream and file name)
     # - datastream (the value for that key from the datastreams hash
     def moabify_datastream(name, datastream)
@@ -275,7 +275,7 @@ module Preservation
                        )
                      )
 
-        attributes['alternate_indentifier'] = object.alternate_id
+        attributes['alternate_identifier'] = object.alternate_id
         if object.governing_collection
           attributes['governing_collection_alternate_identifier'] = object.governing_collection.alternate_id
         end

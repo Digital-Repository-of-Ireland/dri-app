@@ -25,7 +25,8 @@ module DRI::Exporters
      'geographical_coverage' => 'Subjects (Places)',
      'temporal_coverage' => 'Subjects (Temporal)',
      'institute' => 'Organisation',
-     'identifiers' => 'Identifiers'
+     'identifiers' => 'Identifiers',
+     'relations' => 'Relations'
     }
 
     def initialize(base_url, object_doc, options = {})
@@ -34,6 +35,7 @@ module DRI::Exporters
       @request_fields = fields || METADATA_FIELDS_MAP.keys
       @base_url = base_url
       @object_doc = object_doc
+      @object = DRI::DigitalObject.find_by_alternate_id(object_doc['id'])
     end
 
     def format
@@ -53,6 +55,8 @@ module DRI::Exporters
                     @object_doc.identifier
                   elsif key == 'status'
                     @object_doc.status
+                  elsif key == 'relations'
+                    relation
                   else
                     @object_doc[Solrizer.solr_name(key, :stored_searchable, type: :string)]
                   end
@@ -62,7 +66,6 @@ module DRI::Exporters
         row << licence
         row << assets if @with_assets.present?
         row << url
-
         csv << row
       end
 
@@ -95,6 +98,11 @@ module DRI::Exporters
       return '' unless @object_doc.identifier
 
       @object_doc.identifier.join('|')
+    end
+
+    def relation
+      return nil unless @object.relation.present?
+      @object.relation.join('|')
     end
 
     def url
