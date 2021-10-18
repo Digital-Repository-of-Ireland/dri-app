@@ -222,7 +222,7 @@ en:
       admin: Admin
       batch_ingest: Batch Ingest
       blog: Blog
-      browse: Browse Repository
+      browse: Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
       collection: Collection
@@ -268,7 +268,7 @@ en:
       find_us: 'Contact'
       research_data: Research Data Management
       training: Training & Education
-      user_guides: User Guides
+      user_guides: DRI User Guides
       early_career: DRI Early Career Research Award
       networks: Collaborations & Networks
       themes: Themes

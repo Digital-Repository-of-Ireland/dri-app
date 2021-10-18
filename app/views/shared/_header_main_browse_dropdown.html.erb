@@ -1,12 +1,13 @@
-<li class="dropdown dri_dropdown">
-
+<% if browse_active? %>
+    <li class="dropdown dri_dropdown active">
+<% else %>
+    <li class="dropdown dri_dropdown">
+<% end %>
   <% browselink = main_app.search_catalog_path(mode: 'collections', search_field: 'all_fields') %>
-
   <a href="<%= browselink %>" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.browse') %> <span class="caret"></span></a>
   <ul class="dropdown-menu" role="menu">
 
-
-<% if ((controller_name == 'catalog') && (controller.action_name != 'index')  || (request.path.include? "/catalog") ) %>
+<% if catalog_active? %>
     <li class="active">
 <% else %>
     <li>
@@ -15,7 +16,7 @@
 <%= link_to t('dri.headerlinks.browse_collections'), browselink, id: 'browse' %>
 </li>
 
-<% if (controller.controller_name == 'institutes' && controller.action_name == 'index') %>
+<% if organisations_active? %>
     <li class="active">
 <% else %>
     <li>
