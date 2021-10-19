@@ -134,6 +134,25 @@ describe 'ProcessBatchIngest' do
       expect(master_file.status_code).to eq 'COMPLETED'
     end
 
+    it "should not error if preservation asset and asset are the same file" do
+      tmp_file = Tempfile.new(['sample_image', '.jpeg'])
+      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      pres_master_file = DriBatchIngest::MasterFile.create
+      assets = [{ master_file_id: master_file.id, path: tmp_file.path }, { label: 'preservation', master_file_id: pres_master_file.id, path: tmp_file.path }]
+      object.increment_version
+      object.save
+
+      expect(DRI.queue).to receive(:push).with(an_instance_of(CharacterizeJob)).twice
+      ProcessBatchIngest.ingest_assets(@login_user, object, assets)
+
+      pres_master_file.reload
+      id = pres_master_file.file_location.split('/').last
+
+      expect(DRI::GenericFile.find_by_alternate_id(id).preservation?).to be true
+      expect(pres_master_file.status_code).to eq 'COMPLETED'
+      expect(aip_valid?(object.alternate_id, 2)).to be true
+    end
+
   end
 
   context "ingest errors" do

@@ -13,7 +13,7 @@ module Qa::Authorities
         }
       end
     rescue StandardError => e
-      puts e
+      Rails.logger.error "Homosaurus Authority: #{e.message}"
     end
   end
 end
