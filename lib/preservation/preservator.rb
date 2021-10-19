@@ -33,7 +33,7 @@ module Preservation
       )
     end
 
-    def existing_filepath(moab_path, filename, file_path)
+    def existing_filepath(filename, file_path)
       file_signature = ::Moab::FileSignature.from_file(Pathname.new(file_path))
 
       signature_catalog.catalog_filepath(file_signature)

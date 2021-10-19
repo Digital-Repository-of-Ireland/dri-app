@@ -72,6 +72,8 @@ class ProcessBatchIngest
 
     preservation = Preservation::Preservator.new(object)
     preservation.preserve_assets({ added: { 'content' => filenames }})
+
+    assets.reject { |asset| asset[:path].start_with?('error:') }.each { |asset| FileUtils.rm_f(asset[:path]) }
   end
 
   def self.ingest_metadata(collection_id, user, metadata)
@@ -134,17 +136,24 @@ class ProcessBatchIngest
 
   def self.ingest_file(user, file_path, object, datastream, filename)
     mime_type = Validators.file_type(file_path)
-
     file_content = GenericFileContent.new(
                        user: user,
                        object: object,
                        generic_file: @generic_file
                    )
-    file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream)
+
+    existing_content = DRI::GenericFile.where(label: filename)
+    if !existing_content.empty?
+      if Checksum.md5(existing_content[0].path) == Checksum.md5(file_path)
+        preservation = Preservation::Preservator.new(object)
+        moab_path = existing_content[0].path.split(preservation.aip_dir(object.alternate_id))[1]
+      end
+    end
+
+    file_content.set_content(File.new(file_path), filename, mime_type, object.object_version, datastream, moab_path)
     return nil unless file_content.save_and_index
     file_content.characterize if file_content.has_content?
 
-    FileUtils.rm_f(file_path)
     @generic_file.path
   rescue StandardError => e
     Rails.logger.error "Could not save the asset file #{file_path} for #{object.alternate_id} to #{datastream}: #{e.message}"
@@ -197,6 +206,7 @@ class ProcessBatchIngest
 
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
+      next if File.exist?(download_location)
       downloaded = 0
 
       begin
