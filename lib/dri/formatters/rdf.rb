@@ -158,9 +158,9 @@ module DRI::Formatters
           when 'isGovernedBy'
             graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::URI("#{base_uri}/catalog/#{value}#id")]
           when 'geographical_coverage'
-            add_geographical_coverage(field, value)
+            add_geographical_coverage(id, field, value)
           when 'temporal_coverage'
-            add_temporal_coverage(field, value)
+            add_temporal_coverage(id, field, value)
           when 'institute'
             graph << [RDF::URI.new(id), METADATA_FIELDS_MAP[field], value['name']]
           else
@@ -186,7 +186,7 @@ module DRI::Formatters
       end
     end
 
-    def add_geographical_coverage(field, value)
+    def add_geographical_coverage(id, field, value)
       name = extract_name(value)
       subject = sparql_subject(name)
 
@@ -205,7 +205,7 @@ module DRI::Formatters
                end
     end
 
-    def add_temporal_coverage(field, value)
+    def add_temporal_coverage(id, field, value)
       graph << if DRI::Metadata::Transformations.dcmi_period?(value)
                  [RDF::URI.new(id), METADATA_FIELDS_MAP[field], RDF::Literal.new(value, datatype: RDF::Vocab::DC.Period)]
                else
