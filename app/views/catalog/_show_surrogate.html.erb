@@ -1,7 +1,6 @@
 <% if can? :read, @document %>
     <%= render partial: 'shared/surrogate' %>
 <% else %>
-
     <h2 class="dri_restrict_title"><%= t('dri.views.catalog.forms.restricted_asset') %></h2>
     <p class="dri_restrict_message" id="asset_no_permission"><%= t('dri.views.catalog.legends.no_permission') %></p>
     <% if current_user %>

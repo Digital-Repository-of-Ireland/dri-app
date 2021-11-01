@@ -205,7 +205,7 @@
 
         <div>
             <% if record.collection? %>
-              <%= f.radio_button :read_groups_string, "radio_restricted", data: { object_id: record.id }, class: 'read_access_toggle' %>
+              <%= f.radio_button :read_groups_string, "radio_restricted", data: { object_id: record.alternate_id }, class: 'read_access_toggle' %>
             <% else %>
               <%= f.radio_button :read_groups_string, "radio_restricted", class: 'read_access_toggle' %>
             <% end %>
