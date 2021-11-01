@@ -4,7 +4,7 @@ AllCops:
   DisplayCopNames: true
   Exclude:
     - 'bin/*'
-    - 'db/schema.rb'
+    - 'db/**/*'
     - 'vendor/**/*'
     - 'gemfiles/vendor/**/*'
     - 'spec/**/*'

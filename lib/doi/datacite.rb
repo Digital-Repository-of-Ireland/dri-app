@@ -1,9 +1,9 @@
+# frozen_string_literal: true
 require 'rest_client'
 require 'uri'
 
 module DOI
   class Datacite
-
     def initialize(doi)
       @doi = doi
       @url = DoiConfig.base_url
@@ -17,7 +17,7 @@ module DOI
 
     def mint
       path = @doi.doi.split('/')[1].split('.')[1]
-      url = URI.join(@url, 'objects/', "#{@doi.object_id}/", 'doi/', "#{path}")
+      url = URI.join(@url, 'objects/', "#{@doi.object_id}/", 'doi/', path.to_s)
 
       payload = "doi=#{@doi.doi}\nurl=#{url}"
       response = @service["doi/#{@doi.doi}"].put(payload, content_type: 'text/plain;charset=UTF-8')

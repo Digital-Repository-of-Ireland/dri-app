@@ -1,14 +1,10 @@
+# frozen_string_literal: true
 require 'dri/sparql'
 
 module DRI::Sparql
   module Provider
     class Sparql
-
       attr_accessor :endpoint
-
-      def endpoint=(endpoint)
-        @endpoint = endpoint
-      end
 
       def retrieve_data(triple)
         subject = triple[0] ? "<#{triple[0]}>" : '?s'
@@ -21,10 +17,9 @@ module DRI::Sparql
         client = DRI::Sparql::Client.new @endpoint
         results = client.query select
 
+        return [] if results.nil?
         output = []
-        return output if results.nil?
-
-        results.each_triple do |s,p,o|
+        results.each_triple do |s, p, o|
           output << [s, p, o]
         end
         output

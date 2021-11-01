@@ -1,7 +1,7 @@
+# frozen_string_literal: true
 require 'solr_wrapper'
 
 namespace :server do
-
   task(:config).clear
 
   desc 'Starts configured solr instances for local development and testing'
@@ -25,7 +25,7 @@ namespace :server do
     begin
       update_core('development')
       update_core('test')
-    rescue Exception => e
+    rescue StandardError => e
       puts e
     end
   end
@@ -44,7 +44,7 @@ namespace :server do
   # @param [String] env_name
   # for env, create new core with latest config if core doesn't exist
   # if core does exist, copy config
-  def update_core(env_name='development')
+  def update_core(env_name = 'development')
     client = SolrWrapper::Client.new(solr.url)
     if client.exists?(env_name)
       config_update(env_name)
@@ -54,7 +54,7 @@ namespace :server do
   end
 
   # @param [String] env_name
-  def config_diff(env_name='development')
+  def config_diff(env_name = 'development')
     solr_config_files.each do |cf|
       rf = "#{solr.instance_dir}/server/solr/#{env_name}/conf/#{File.basename(cf)}"
       system("diff #{cf} #{rf}")
@@ -62,10 +62,10 @@ namespace :server do
   end
 
   # @param [String] env_name
-  def config_update(env_name='development')
+  def config_update(env_name = 'development')
     solr_config_files.each do |cf|
       cp(
-        "#{cf}",
+        cf,
         "#{solr.instance_dir}/server/solr/#{env_name}/conf/",
         verbose: true
       )
@@ -77,7 +77,7 @@ namespace :server do
   end
 
   def solr_config
-    File.join(Rails.root, 'solr', 'config')
+    Rails.root.join('solr', 'config')
   end
 
   def solr
@@ -89,7 +89,7 @@ namespace :localstack do
   desc 'Start LocalStack'
   task start: :environment do
     s3_dir = 'tmp/s3/'
-    FileUtils.mkdir_p(s3_dir) unless Dir.exists?(s3_dir)
+    FileUtils.mkdir_p(s3_dir) unless Dir.exist?(s3_dir)
     system("SERVICES=s3:8081 DATA_DIR=#{s3_dir} localstack start")
   end
 end

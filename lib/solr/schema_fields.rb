@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 module Solr::SchemaFields
-
   def self.facet(field)
     Solrizer.solr_name(field, :facetable)
   end

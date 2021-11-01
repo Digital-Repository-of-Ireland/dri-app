@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DRI::Derivatives::Services
   class LocalFileSourceFile
     # Retrieves the source
@@ -5,7 +6,7 @@ module DRI::Derivatives::Services
     # @param [Hash] options
     # @option options [Symbol] :source a method that can be called on the object to retrieve the source file
     # @yield [Tempfile] a temporary source file that has a lifetime of the block
-    def self.call(file, options, &block)
+    def self.call(file, _options, &block)
       local_file = DRI::GenericFile.find(file.id)
 
       yield(local_file)

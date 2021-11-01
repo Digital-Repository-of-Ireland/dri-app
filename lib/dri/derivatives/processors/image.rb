@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module DRI::Derivatives::Processors
   class Image < Hydra::Derivatives::Processors::Image
-
     def create_resized_image
       create_image do |xfrm|
         if size
@@ -18,19 +18,23 @@ module DRI::Derivatives::Processors
       intermediate_path = image.path if directives.key?(:format)
       image.format(directives.fetch(:format))
       image.combine_options do |xfrm|
-        xfrm.gravity(gravity) if gravity.present?
-        xfrm.crop(crop.to_s) if crop
-        if trim.present?
-          xfrm.trim
-          xfrm.repage('0x0+0+0')
-        end
-        xfrm.quality(quality.to_s) if quality
+        combine_options(xfrm)
       end
       write_image(image)
       FileUtils.rm_f(intermediate_path) if intermediate_path
     end
 
     private
+
+    def combine_options(xfrm)
+      xfrm.gravity(gravity) if gravity.present?
+      xfrm.crop(crop.to_s) if crop
+      if trim.present?
+        xfrm.trim
+        xfrm.repage('0x0+0+0')
+      end
+      xfrm.quality(quality.to_s) if quality
+    end
 
     def crop
       directives.fetch(:crop, nil)

@@ -1,29 +1,30 @@
+# frozen_string_literal: true
 module DRI::Formatters
   class Json
     include ActionController::UrlFor
     include Rails.application.routes.url_helpers
 
     METADATA_FIELDS_MAP = {
-     'title' => 'Title',
-     'subject' => 'Subject',
-     'creation_date' => 'Creation Date',
-     'published_date' => 'Issued Date',
-     'type' => 'Type',
-     'rights' => 'Rights',
-     'language' => 'Language',
-     'description' => 'Description',
-     'creator' => 'Creator',
-     'contributor' => 'Contributor',
-     'publisher' => 'Publisher',
-     'date' => 'Date',
-     'format' => 'Format',
-     'source' => 'Source',
-     'isGovernedBy' => 'Collection',
-     'role_dnr' => 'Donor',
-     'geographical_coverage' => 'Subject (Place)',
-     'temporal_coverage' => 'Subject (Temporal)',
-     'institute' => 'Organisation'
-    }
+      'title' => 'Title',
+      'subject' => 'Subject',
+      'creation_date' => 'Creation Date',
+      'published_date' => 'Issued Date',
+      'type' => 'Type',
+      'rights' => 'Rights',
+      'language' => 'Language',
+      'description' => 'Description',
+      'creator' => 'Creator',
+      'contributor' => 'Contributor',
+      'publisher' => 'Publisher',
+      'date' => 'Date',
+      'format' => 'Format',
+      'source' => 'Source',
+      'isGovernedBy' => 'Collection',
+      'role_dnr' => 'Donor',
+      'geographical_coverage' => 'Subject (Place)',
+      'temporal_coverage' => 'Subject (Temporal)',
+      'institute' => 'Organisation'
+    }.freeze
 
     delegate :env, :request, to: :controller
 
@@ -41,9 +42,22 @@ module DRI::Formatters
     # @param func [Symbol]     default :to_json, allows for :as_json as needed
     # @return [String(json) | Hash] (Could be any type depending on :func)
     #     String | Hash are the expected outputs
-    def format(options = {}, func: :to_json)
+    def format(_options = {}, func: :to_json)
+      @formatted_hash = { 'Id' => @object_hash['pid'] }
+      @formatted_hash.merge!(translated_hash)
+
+      identifier = @object_doc.identifier
+      @formatted_hash['Identifier'] = identifier if identifier
+      @formatted_hash['Licence'] = self.class.licence(@object_doc)
+      @formatted_hash['Doi'] = self.class.dois(@object_doc)
+      @formatted_hash['RelatedObjects'] = @object_doc.object_relationships_as_json
+      @formatted_hash['Assets'] = assets if @with_assets
+      @formatted_hash.send(func)
+    end
+
+    def translated_hash
       metadata_hash = @object_hash['metadata']
-      translated_hash = metadata_hash.map do |k, v|
+      metadata_hash.map do |k, v|
         case k
         when 'institute'
           value = v.blank? ? v : v.map(&:name)
@@ -52,16 +66,6 @@ module DRI::Formatters
           [METADATA_FIELDS_MAP[k], v]
         end
       end.to_h
-      @formatted_hash = { 'Id' => @object_hash['pid'] }
-      @formatted_hash.merge!(translated_hash)
-
-      identifier = @object_doc.identifier
-      @formatted_hash['Identifier'] = identifier if identifier
-      @formatted_hash['Licence'] = self.class::licence(@object_doc)
-      @formatted_hash['Doi'] = self.class::dois(@object_doc)
-      @formatted_hash['RelatedObjects'] = @object_doc.object_relationships_as_json
-      @formatted_hash['Assets'] = assets if @with_assets
-      @formatted_hash.send(func)
     end
 
     # @param [SolrDocument] solr_doc

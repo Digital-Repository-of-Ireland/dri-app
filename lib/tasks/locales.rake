@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Bundler.require :translations
 
 namespace :locales do
@@ -7,9 +8,9 @@ namespace :locales do
       puts "You must specify a file to merge or run localefiles:mergeall"
       exit
     end
-    masterfile = Pathname.new(masterfile).realpath unless (Pathname.new(masterfile)).absolute?
+    masterfile = Pathname.new(masterfile).realpath unless Pathname.new(masterfile).absolute?
     puts "Merging #{masterfile}"
-    %x{i18s #{masterfile}}
+    `i18s #{masterfile}`
   end
 
   task :mergeall do

@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module Preservation
   module PreservationHelpers
-
     def local_storage_dir
       Rails.root.join(Settings.dri.files)
     end
@@ -33,11 +33,19 @@ module Preservation
       File.join(version_path(object_id, version), "manifests")
     end
 
+    def path_for_type(type, object_id, version)
+      if type == 'content'
+        content_path(object_id, version)
+      elsif type == 'metadata'
+        metadata_path(object_id, version)
+      end
+    end
+
     # Return formatted version number for the file path
     # versions start at 0, but MOAB expects v0001 as first version
     # output: incremented & formatted version number String of format vxxxx
     def version_string(version)
-      'v%04d' % version
+      format('v%04d', version)
     end
 
     # Return the hash part of the file path
@@ -47,13 +55,24 @@ module Preservation
       dir = ""
       index = 0
 
-      4.times {
-        dir = File.join(dir, object_id[index..index+1])
+      4.times do
+        dir = File.join(dir, object_id[index..index + 1])
         index += 2
-      }
+      end
 
       File.join(dir, object_id)
     end
 
+    def make_dir(paths)
+      FileUtils.mkdir_p(paths)
+    rescue StandardError => e
+      Rails.logger.error "Unable to create MOAB directory #{paths}. Error: #{e.message}"
+      raise DRI::Exceptions::InternalError
+    end
+
+    def attached_file_match?(file, md5)
+      (Checksum.md5_string(file.content) == md5) ||
+        (Checksum.md5_string(file.to_xml) == md5)
+    end
   end
 end

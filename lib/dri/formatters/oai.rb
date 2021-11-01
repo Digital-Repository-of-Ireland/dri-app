@@ -24,7 +24,7 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       type: 'type_tesim',
       language: 'language_tesim',
       format: 'file_type_tesim',
-      rights: 'rights_tesim',
+      rights: 'rights_tesim'
     },
     dcterms: {
       isPartOf: "collection_id_tesim",
@@ -32,13 +32,13 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       temporal: "temporal_coverage_tesim",
       license: lambda do |record|
         licence = record.licence
-        licence.present? ? [ licence.url || licence.name ] : [nil]
+        licence.present? ? [licence.url || licence.name] : [nil]
       end
     },
     edm: {
       provider: lambda { |record| ["Digital Repository of Ireland"] },
-      dataProvider: lambda { |record| [record.depositing_institute.try(:name)] },
-    },
+      dataProvider: lambda { |record| [record.depositing_institute.try(:name)] }
+    }
   }.freeze
 
   def header_specification
@@ -47,12 +47,12 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       "xmlns:dcterms" => "http://purl.org/dc/terms/",
       "xmlns:edm" => "http://www.europeana.eu/schemas/edm/",
       "xmlns:oai_dc" => "http://www.openarchives.org/OAI/2.0/oai_dc/",
-      "xmlns:oai_dri" =>  "https://repository.dri.ie/oai_dri/",
+      "xmlns:oai_dri" => "https://repository.dri.ie/oai_dri/",
       "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
       "xsi:schemaLocation" => %(
         https://repository.dri.ie/oai_dri/
         https://repository.dri.ie/oai_dri/oai_dri.xsd
-      ).gsub(/\s+/, " "),
+      ).gsub(/\s+/, " ")
     }
   end
 
@@ -64,11 +64,7 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     xml.tag!("#{prefix}:#{element_namespace}", header_specification) do
       PREFIXES.each do |pref, fields|
         fields.each do |k, v|
-          values = if v.class == Proc
-                     v.call(record)
-                   else
-                     value_for(v, record.to_h, {})
-                   end
+          values = v.class == Proc ? v.call(record) : value_for(v, record.to_h, {})
 
           values.each do |value|
             xml.tag! "#{pref}:#{k}", value unless value.nil?
