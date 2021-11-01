@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module DRI::Formatters
   class Preservation < DRI::Formatters::Rdf
+    delegate :version_id, to: :version
 
-    def initialize(object_doc, options = {})
-      fields = options[:fields].presence
+    def initialize(object_doc, _options = {})
       @object_doc = object_doc
 
       build_graph
@@ -34,7 +35,7 @@ module DRI::Formatters
       graph << [RDF::URI.new(id), RDF::DC.contributor, RDF::Literal.new(committer)]
       graph << [RDF::URI.new(id), RDF::DC.created, RDF::Literal.new(@object_doc['system_create_dtsi'])]
       graph << [RDF::URI.new(id), RDF::DC.modified, RDF::Literal.new(modified_at)]
-      graph << [RDF::URI.new(id), RDF::DC.identifier, RDF::Literal.new('v%04d' % version_id)]
+      graph << [RDF::URI.new(id), RDF::DC.identifier, RDF::Literal.new(format('v%04d', version_id))]
     end
 
     def add_assets
@@ -58,10 +59,6 @@ module DRI::Formatters
 
     def modified_at
       version.created_at.iso8601
-    end
-
-    def version_id
-      version.version_id
     end
   end
 end

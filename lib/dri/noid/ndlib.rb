@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DRI::Noid
   class Ndlib
     include ::Preservation::PreservationHelpers
@@ -9,7 +10,7 @@ module DRI::Noid
 
     def mint
       Mutex.new.synchronize do
-        while true
+        loop do
           pid = next_id
           return pid unless DRI::Identifier.exists?(alternate_id: pid) || Dir.exist?(aip_dir(pid))
         end
@@ -19,7 +20,7 @@ module DRI::Noid
     protected
 
     def next_id
-      response = @client["pools/#{@pool}/mint"].post({n: 1}, {accept: :json})
+      response = @client["pools/#{@pool}/mint"].post({ n: 1 }, { accept: :json })
       JSON.parse(response).first
     end
   end

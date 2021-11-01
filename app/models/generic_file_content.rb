@@ -56,10 +56,7 @@ class GenericFileContent
 
   def existing_moab_path(filename, filepath)
     preservation = Preservation::Preservator.new(object)
-    preservation.existing_filepath(
-                                    "#{generic_file.alternate_id}_#{filename}",
-                                    filepath
-                                  )
+    preservation.existing_filepath(filepath)
   end
 
   def preserve_file(filedata, datastream, update=false)

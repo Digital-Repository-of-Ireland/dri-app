@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module BackgroundTasks
   module Status
-
     def status
       @status ||= IngestStatus.find_or_create_by(asset_id: generic_file_id) do |ingest_status|
         ingest_status.batch_id = generic_file.digital_object.alternate_id
@@ -9,12 +9,12 @@ module BackgroundTasks
 
       if @status.status == 'success'
         @status.status = 'processing'
-        @status.job_status.each { |j| j.delete }
+        @status.job_status.each(&:delete)
         @status.save
       end
 
       @status
-    end 
+    end
 
     def with_status_update(job)
       create_job_status(job)

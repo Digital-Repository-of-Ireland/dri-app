@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DRI::Derivatives::Processors
   class Document < Hydra::Derivatives::Processors::Document
     def self.encode(path, format, outdir)

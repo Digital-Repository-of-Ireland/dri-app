@@ -89,8 +89,7 @@ end
 
 group :development, :test do
   gem 'thin'
-  gem 'rubocop'
-  gem 'rubocop-rspec'
+  gem 'bixby', '~> 3'
   gem 'rspec-rails'
   gem 'rails-controller-testing'
   gem 'rswag-specs'

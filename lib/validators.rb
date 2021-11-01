@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Validators
   # Contains File validator methods for uploaded files
 
@@ -6,7 +7,7 @@ module Validators
   # Takes an uploaded file (ActionDispatch::Http::UploadedFile),
   # or a path to a localfile, and calls the required validations.
   #
-  def self.validate_file(file, mime_type=nil)
+  def self.validate_file(file, mime_type = nil)
     virus_scan(file)
     valid_file_type?(file, mime_type)
   end
@@ -25,7 +26,7 @@ module Validators
   # a class variable for the object type (e.g. in DRI:Model:Audio)
   #
   def self.valid_file_type?(file, mime_type)
-    path, extension = file_path(file)
+    _path, extension = file_path(file)
 
     # MimeMagic could return null if it can't find a match. If so raise UnknownMimeType error
     raise DRI::Exceptions::UnknownMimeType unless mime_type
@@ -34,22 +35,15 @@ module Validators
     raise DRI::Exceptions::WrongExtension unless extension_matches?(extension, mime_type)
 
     lc_mime_type = mime_type.to_s.downcase
-    unless (Settings.restrict.mime_types.image.include? lc_mime_type or
-           Settings.restrict.mime_types.text.include? lc_mime_type or
-           Settings.restrict.mime_types.pdf.include? lc_mime_type or
-           Settings.restrict.mime_types.audio.include? lc_mime_type or
-           Settings.restrict.mime_types.video.include? lc_mime_type)
-      raise DRI::Exceptions::InappropriateFileType
-    end
+    raise DRI::Exceptions::InappropriateFileType unless restricted_types.include?(lc_mime_type)
 
     # If we haven't encountered a problem we return true
     true
-  end  # End validate_file_type method
-
+  end # End validate_file_type method
 
   def self.extension_matches?(extension, mime_type)
     mime_types = MIME::Types.type_for(extension)
-    mime_types.include?(mime_type) || mime_types.any? { | extension_mime | mime_type.include? extension_mime.sub_type }
+    mime_types.include?(mime_type) || mime_types.any? { |extension_mime| mime_type.include? extension_mime.sub_type }
   end
 
   # Returns a MimeMagic or Mime::Types object
@@ -58,7 +52,7 @@ module Validators
 
     path, extension = file_path(file)
     mime_type = Marcel::MimeType.for File.open(path)
-    return mime_type unless mime_type.blank?
+    return mime_type if mime_type.present?
 
     # If we can't determine from file structure, then determine by extension
     extension_results = MIME::Types.type_for(extension)
@@ -74,7 +68,7 @@ module Validators
 
     path, extension = file_path(file)
     mime_type = Marcel::MimeType.for File.open(path)
-    return mime_type.split('/', 2)[0] unless mime_type.blank?
+    return mime_type.split('/', 2)[0] if mime_type.present?
 
     # If we can't determine from file structure, then determine by extension
     extension_results = MIME::Types.type_for(extension)
@@ -91,13 +85,11 @@ module Validators
     if defined? Clamby
       Rails.logger.info 'Performing virus scan.'
       result = Clamby.safe?(file.respond_to?(:path) ? file.path : file)
-      raise DRI::Exceptions::VirusDetected.new unless result
+      raise DRI::Exceptions::VirusDetected unless result
     else
       Rails.logger.warn 'Virus scanning is disabled.'
     end
   end
-
-  private
 
   #
   # Add additional mime types
@@ -105,6 +97,14 @@ module Validators
   def self.init_types
     Marcel::Magic.add('audio/mpeg', { magic: [[0, "\377\372"], [0, "\377\373"], [0, "\377\362"], [0, "\377\363"]] })
     Marcel::Magic.add('audio/mp2', { extensions: 'mp2, mpeg', magic: [[0, '\377\364'], [0, '\377\365'], [0, '\377\374'], [0, '\377\375']] })
+  end
+
+  def self.restricted_types
+    Settings.restrict.mime_types.image
+            .concat(Settings.restrict.mime_types.text)
+            .concat(Settings.restrict.mime_types.pdf)
+            .concat(Settings.restrict.mime_types.audio)
+            .concat(Settings.restrict.mime_types.video)
   end
 
   def self.file_path(file)
@@ -119,6 +119,6 @@ module Validators
       extension = file.split('.').last
     end
 
-    return path, extension
+    [path, extension]
   end
-end  # End Validators module
+end

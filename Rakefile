@@ -12,7 +12,7 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'bundler'
 require 'dri/rake_support'
-
+require 'rubocop/rake_task'
 require 'ci/reporter/rake/rspec'
 
 begin
@@ -42,6 +42,12 @@ end
 
 RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
+end
+
+desc 'Run RuboCop style checker'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.requires << 'rubocop-rspec'
+  task.fail_on_error = true
 end
 
 desc "Run Continuous Integration"

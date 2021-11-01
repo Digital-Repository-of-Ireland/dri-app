@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module DRI::OaiProvider
   class SolrDocumentProvider < ::BlacklightOaiProvider::SolrDocumentProvider
-
     def initialize(controller, options = {})
       options[:provider] ||= {}
       options[:document] ||= {}
