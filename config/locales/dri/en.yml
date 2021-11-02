@@ -60,6 +60,14 @@ en:
         Title: Media Types
         Unknown: Unknown
         all: All
+      primary_type:
+        Image: Image
+        MovingImage: Video
+        Sound: Audio
+        Text: Text
+        3D: 3D
+        Dataset: Dataset
+        Software: Software
     datatables:
       activity:
         committer: Committer
@@ -368,6 +376,8 @@ en:
         title_text: A name given to the resource.
         types: Types
         types_text: The nature or genre of the resource.
+        primary_type: Primary Type
+        primary_type_text: The primary nature or genre of the resource.
       no_results_found: No search results found
       no_results_message: or refine your search terms. e.g. try removing a search term or using OR to broaden your search
       q: Type a search term and press Enter. Use AND and OR to narrow or broaden your search
@@ -638,6 +648,7 @@ en:
         total_assets: Total number of assets
         type: Types
         types: Types
+        primary_type: Primary Type
         doi: DOI
       ingest:
         buttons:
@@ -741,6 +752,7 @@ en:
           add_temporal_coverage: Add Temporal Coverage
           add_title: Add Title
           add_type: Add Type
+          add_primary_type: Add Primary Type
           delete: Remove
         legends:
           access_control: Access Controls

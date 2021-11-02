@@ -166,12 +166,22 @@
 	</fieldset>
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
+
 	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
 	  <%= render "shared/form_fieldset_label", f:f, source:'types' %>
 		<% if @object.type.size == 0%>
-		  <div><%= f.text_field "type][", value:'', class: "edit span6 dri-textfield", required: "true"  %>
-			  <%= render "shared/form_remove_field_button" %>
-		  </div>
+
+		<select id="digital_object_type][" name="digital_object[type][]" style="width: 200px; background-color: white" onkeydown="fnKeyDownHandler_A(this, event);" onkeyup="fnKeyUpHandler_A(this, event); return false;" onkeypress="return fnKeyPressHandler_A(this, event);" onchange="fnChangeHandler_A(this);" onfocus="fnFocusHandler_A(this);">
+			<option value="" style="color:grey;">Select/Enter Object Type</option>
+      <option value="Image">Image</option>
+      <option value="Moving Image">Moving Image</option>
+      <option value="Sound">Sound</option>
+      <option value="Text">Text</option>
+      <option value="3D">3D</option>
+      <option value="Dataset">Dataset</option>
+      <option value="Software">Software</option>
+    </select>
+
 		<% end %>
 		<% @object.type.each do |i| %>
 		  <div><%= f.text_field "type][", value:i, class: "edit span6 dri-textfield", required: "true"  %>
@@ -302,3 +312,262 @@
 		</fieldset>
   <% end %>
 <% end %>
+
+<script language="JavaScript"> 
+  function fnLeftToRight(getdropdown)
+  {
+    getdropdown.style.direction = "ltr";
+  }
+
+  function fnRightToLeft(getdropdown)
+  {
+    getdropdown.style.direction = "rtl";
+  }
+
+  function FindKeyCode(e)
+  {
+    if(e.which)
+    {
+    keycode=e.which;
+    }
+    else
+    {
+    keycode=e.keyCode;
+    }
+    return keycode;
+  }
+
+  function FindKeyChar(e)
+  {
+    keycode = FindKeyCode(e);
+    if((keycode==8)||(keycode==127))
+    {
+    character="backspace"
+    }
+    else if((keycode==46))
+    {
+    character="delete"
+    }
+    else
+    {
+    character=String.fromCharCode(keycode);
+    }
+    return character;
+  }
+
+</script>
+
+<script language="JavaScript"> 
+
+  var vEditableOptionIndex_A = 0;
+  var vEditableOptionText_A = "Select an option / Enter Object Type";
+  var vUseActualTexbox_A = "no";
+  var vPreviousSelectIndex_A = 0;
+  var vSelectIndex_A = 0;
+  var vSelectChange_A = 'MANUAL_CLICK';
+
+  function fnSanityCheck_A(getdropdown)
+  {
+    if(vEditableOptionIndex_A>(getdropdown.options.length-1))
+    {
+    alert("PROGRAMMING ERROR: The value of variable vEditableOptionIndex_... cannot be greater than (length of dropdown - 1)");
+    return false;
+    }
+  }
+
+  function fnKeyDownHandler_A(getdropdown, e)
+  {
+    fnSanityCheck_A(getdropdown);
+    var vEventKeyCode = FindKeyCode(e);
+    if(vEventKeyCode == 37)
+    {
+      fnLeftToRight(getdropdown);
+    }
+    if(vEventKeyCode == 39)
+    {
+      fnRightToLeft(getdropdown);
+    }
+    if(vEventKeyCode == 46)
+    {
+      if(getdropdown.options.length != 0)
+      {
+        if (getdropdown.options.selectedIndex == vEditableOptionIndex_A)
+        {
+          getdropdown.options[getdropdown.options.selectedIndex].text = '';
+          getdropdown.options[getdropdown.options.selectedIndex].value = '';
+        }
+      }
+    }
+    if(vEventKeyCode == 8 || vEventKeyCode == 127)
+    {
+      if(getdropdown.options.length != 0)
+      {
+        if (getdropdown.options.selectedIndex == vEditableOptionIndex_A)
+        {
+           if ((getdropdown[vEditableOptionIndex_A].text == vEditableOptionText_A)||(getdropdown[vEditableOptionIndex_A].value == vEditableOptionText_A))
+           {
+             getdropdown.options[getdropdown.options.selectedIndex].text = '';
+             getdropdown.options[getdropdown.options.selectedIndex].value = '';
+           }
+           else
+           {
+             getdropdown.options[getdropdown.options.selectedIndex].text = getdropdown.options[getdropdown.options.selectedIndex].text.slice(0,-1);
+             getdropdown.options[getdropdown.options.selectedIndex].value = getdropdown.options[getdropdown.options.selectedIndex].value.slice(0,-1);
+           }
+        }
+      }
+      if(e.which) 
+      {
+        e.which = '';
+      }
+      else
+      {
+        e.keyCode = '';
+      }
+      if (e.cancelBubble)
+      {
+        e.cancelBubble = true;
+        e.returnValue = false;
+      }
+      if (e.stopPropagation)
+      {
+          e.stopPropagation();
+      }
+      if (e.preventDefault)
+      {
+      	e.preventDefault();
+      }
+    }
+  }
+
+  function fnFocusHandler_A(getdropdown)
+  {
+    if ( (navigator.userAgent.toLowerCase().search(/android|ipad|iphone|ipod/) > -1) || (vUseActualTexbox_A == 'yes') )
+    {
+      if (getdropdown[(vEditableOptionIndex_A)].selected == true)
+      {
+        document.getElementById('textboxoption_A').style.visibility='';
+        document.getElementById('textboxoption_A').style.display='';
+      }
+      else
+      {
+        document.getElementById('textboxoption_A').style.visibility='hidden';
+        document.getElementById('textboxoption_A').style.display='none';
+      }
+    }
+  }
+
+  function fnChangeHandler_A(getdropdown)
+  {
+    fnSanityCheck_A(getdropdown);
+
+    vPreviousSelectIndex_A = vSelectIndex_A;
+
+    vSelectIndex_A = getdropdown.options.selectedIndex;
+
+    if ((vPreviousSelectIndex_A == (vEditableOptionIndex_A)) && (vSelectIndex_A != (vEditableOptionIndex_A))&&(vSelectChange_A != 'MANUAL_CLICK'))
+    {
+      getdropdown[(vEditableOptionIndex_A)].selected=true;
+      vPreviousSelectIndex_A = vSelectIndex_A;
+      vSelectIndex_A = getdropdown.options.selectedIndex;
+      vSelectChange_A = 'MANUAL_CLICK';
+    }
+
+    if ( (navigator.userAgent.toLowerCase().search(/android|ipad|iphone|ipod/) > -1) || (vUseActualTexbox_A == 'yes') )
+    {
+      fnFocusHandler_A(getdropdown);
+    }
+  }
+
+  function fnKeyPressHandler_A(getdropdown, e)
+  {
+    fnSanityCheck_A(getdropdown);
+
+    keycode = FindKeyCode(e);
+    keychar = FindKeyChar(e);
+    if ((keycode>47 && keycode<59)||(keycode>62 && keycode<127) ||(keycode==32))
+    {
+      var vAllowableCharacter = "yes";
+    }
+    else
+    {
+      var vAllowableCharacter = "no";
+    }
+
+    if(getdropdown.options.length != 0)
+      if (getdropdown.options.selectedIndex == (vEditableOptionIndex_A))
+      {
+        var vEditString = getdropdown[vEditableOptionIndex_A].value;
+        if(vAllowableCharacter == "yes")
+        {
+          if ((getdropdown[vEditableOptionIndex_A].text == vEditableOptionText_A)||(getdropdown[vEditableOptionIndex_A].value == vEditableOptionText_A))
+            vEditString = "";
+        }
+
+        if (vAllowableCharacter == "yes")
+        {
+          vEditString+=String.fromCharCode(keycode);
+          var i=0;
+          var vEnteredChar = String.fromCharCode(keycode);
+          var vUpperCaseEnteredChar = vEnteredChar;
+          var vLowerCaseEnteredChar = vEnteredChar;
+
+          if(((keycode)>=97)&&((keycode)<=122))
+            vUpperCaseEnteredChar = String.fromCharCode(keycode - 32);
+          if(((keycode)>=65)&&((keycode)<=90))
+            vLowerCaseEnteredChar = String.fromCharCode(keycode + 32);
+          if(e.which)
+          {
+            for (i=0;i<=(getdropdown.options.length-1);i++)
+            {
+              if(i!=vEditableOptionIndex_A)
+              {
+                var vEnteredDigitNumber = getdropdown[vEditableOptionIndex_A].text.length;
+                var vFirstReadOnlyChar = getdropdown[i].text.substring(0,1);
+                var vEquivalentReadOnlyChar = getdropdown[i].text.substring(vEnteredDigitNumber,vEnteredDigitNumber+1);
+                if (vEnteredDigitNumber >= getdropdown[i].text.length)
+                {
+                    vEquivalentReadOnlyChar = vFirstReadOnlyChar;
+                }
+                if( (vEquivalentReadOnlyChar == vUpperCaseEnteredChar)||(vEquivalentReadOnlyChar == vLowerCaseEnteredChar)
+                  ||(vFirstReadOnlyChar == vUpperCaseEnteredChar)||(vFirstReadOnlyChar == vLowerCaseEnteredChar) )
+                {
+                  vSelectChange_A = 'AUTO_SYSTEM';
+                  break;
+                }
+                else
+                {
+                  vSelectChange_A = 'MANUAL_CLICK';
+                }
+              }
+            }
+          }
+        }
+        getdropdown.options[vEditableOptionIndex_A].text = vEditString;
+        getdropdown.options[vEditableOptionIndex_A].value = vEditString;
+
+        return false;
+      }
+    return true;
+  }
+
+  function fnKeyUpHandler_A(getdropdown, e)
+  {
+    fnSanityCheck_A(getdropdown);
+
+    if(e.which)
+    {
+      if(vSelectChange_A == 'AUTO_SYSTEM')
+      {
+        getdropdown[(vEditableOptionIndex_A)].selected=true;
+        vSelectChange_A = 'MANUAL_CLICK';
+      }
+
+      var vEventKeyCode = FindKeyCode(e);
+      if((vEventKeyCode == 37)||(vEventKeyCode == 39))
+      {
+        getdropdown[vEditableOptionIndex_A].selected=true;
+      }
+    }
+  }
+</script>
