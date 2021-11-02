@@ -261,15 +261,14 @@ class ObjectsController < BaseObjectsController
 
   def status
     enforce_permissions!('edit', params[:id])
-
+    return if request.get?
     @object = retrieve_object!(params[:id])
 
-    return if request.get?
-
-    raise DRI::Exceptions::BadRequest if @object.collection?
+    raise DRI::Exceptions::BadRequest if @object.collection? || params[:status].blank?
 
     if @object.status != 'published' || current_user.is_admin?
-      @object.status = params[:status] if params[:status].present?
+      @object.status = params[:status]
+      @object.published_at = Time.now.utc.iso8601 if @object.published_at.nil? && params[:status] == 'published'
       @object.increment_version
       @object.save
 

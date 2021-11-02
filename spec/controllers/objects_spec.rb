@@ -311,6 +311,15 @@ describe ObjectsController do
       expect(@object.status).to eql("draft")
     end
 
+    it 'should set an objects published_at' do
+      post :status, params: { id: @object.alternate_id, status: "published" }
+
+      @object.reload
+
+      expect(@object.status).to eql("published")
+      expect(@object.published_at).to_not be nil
+    end
+
     it 'should set a parent subcollection to reviewed' do
       post :status, params: { id: @object4.alternate_id, status: "reviewed" }
 

@@ -73,6 +73,7 @@ class PublishJob
 
         next unless o.status == 'reviewed'
         o.status = 'published'
+        o.published_at = Time.now.utc.iso8601
         o.object_version ||= '1'
         o.increment_version
 
