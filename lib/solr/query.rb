@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 module Solr
   class Query
     include Enumerable
 
-    def initialize(query, chunk=1000, args = {})
+    def initialize(query, chunk = 1000, args = {})
       @query = query
       @chunk = chunk
       @args = args
@@ -32,21 +33,20 @@ module Solr
     def query
       sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
       query_args = if @args[:rows].present?
-                     @args.merge({sort: sort})
-                   else
-                     @args.merge({raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark})
-                   end
-
+                        @args.merge({ sort: sort })
+                      else
+                        @args.merge({ raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark })
+                      end
       params = { q: @query }.merge(query_args)
       response = solr_index.search(params)
 
       if response['response']['numFound'].to_i < query_args[:rows].to_i
         @has_more = false
       elsif response['nextCursorMark'].present?
-        nextCursorMark = response['nextCursorMark']
-        @has_more = false if @cursor_mark == nextCursorMark
+        next_cursor_mark = response['nextCursorMark']
+        @has_more = false if @cursor_mark == next_cursor_mark
 
-        @cursor_mark = nextCursorMark
+        @cursor_mark = next_cursor_mark
       else
         @has_more = false
       end
@@ -62,10 +62,10 @@ module Solr
     end
 
     def pop
-      self.query
+      query
     end
 
-    def each(&block)
+    def each
       while has_more?
         objects = pop
 
@@ -100,7 +100,7 @@ module Solr
         blacklight_config.repository_class.new(blacklight_config)
       end
 
-      def construct_query_for_ids(id_array, id_field='id')
+      def construct_query_for_ids(id_array, id_field = 'id')
         ids = id_array.reject(&:blank?)
         return "#{id_field}:NEVER_USE_THIS_ID" if ids.empty?
         "{!terms f=#{id_field}}#{ids.join(',')}"

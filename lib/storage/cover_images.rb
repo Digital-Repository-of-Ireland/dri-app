@@ -1,17 +1,17 @@
+# frozen_string_literal: true
 require "image_processing/mini_magick"
 
 module Storage
   module CoverImages
-
     def self.validate_and_store(cover_image, collection)
-      return unless cover_image.present?
+      return if cover_image.blank?
 
-      return false unless %w(image/jpeg image/png image/gif).include?(Validators.file_type(cover_image))
-      return false if self.virus?(cover_image)
+      return false unless %w[image/jpeg image/png image/gif].include?(Validators.file_type(cover_image))
+      return false if virus?(cover_image)
 
       processed = ImageProcessing::MiniMagick.source(cover_image.path)
                                              .resize_and_pad!(228, 128)
-      url = self.store_cover(processed, cover_image.original_filename, collection)
+      url = store_cover(processed, cover_image.original_filename, collection)
       unless url
         Rails.logger.error "Unable to save cover image."
         return false
@@ -22,8 +22,6 @@ module Storage
       true
     end
 
-    private
-
     def self.virus?(cover_image)
       Validators.virus_scan(cover_image)
       false
@@ -33,21 +31,12 @@ module Storage
     end
 
     def self.store_cover(cover_image, filename, collection)
-      url = nil
       storage = StorageService.new
       storage.create_bucket(collection.alternate_id)
 
-      cover_filename = "#{collection.id}.#{filename.split(".").last}"
-      if (
-        storage.store_file(
-          collection.alternate_id,
-          cover_image.path,
-          cover_filename)
-        )
-        url = storage.file_url(collection.alternate_id, cover_filename)
-      end
-
-      url
+      cover_filename = "#{collection.id}.#{filename.split('.').last}"
+      return unless storage.store_file(collection.alternate_id, cover_image.path, cover_filename)
+      storage.file_url(collection.alternate_id, cover_filename)
     end
   end
 end

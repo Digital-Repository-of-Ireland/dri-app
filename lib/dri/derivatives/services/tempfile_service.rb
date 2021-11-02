@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DRI::Derivatives::Services
   class TempfileService < Hydra::Derivatives::TempfileService
     def tempfile(&block)
@@ -20,9 +21,9 @@ module DRI::Derivatives::Services
       extension = registered_mime_type ? ".#{registered_mime_type.extensions.first}" : ''
 
       extension = '.mp3' if extension == '.mp2'
-      version_id = 1 # TODO fixme
+      version_id = 1
 
-      ["#{source_file.original_filename}-#{version_id}", "#{extension}"]
+      ["#{source_file.original_filename}-#{version_id}", extension]
     end
   end
 end

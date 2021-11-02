@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'csv'
 
 module DRI::Exporters
@@ -5,29 +6,29 @@ module DRI::Exporters
     include Rails.application.routes.url_helpers
 
     METADATA_FIELDS_MAP = {
-     'title' => 'Title',
-     'subject' => 'Subjects',
-     'creation_date' => 'Creation Date',
-     'published_date' => 'Published Date',
-     'type' => 'Type',
-     'rights' => 'Rights',
-     'language' => 'Language',
-     'description' => 'Description',
-     'creator' => 'Creator',
-     'contributor' => 'Contributor',
-     'publisher' => 'Publisher',
-     'date' => 'Date',
-     'format' => 'Format',
-     'source' => 'Source',
-     'status' => 'Status',
-     'isGovernedBy' => 'Collection',
-     'role_dnr' => 'Donor',
-     'geographical_coverage' => 'Subjects (Places)',
-     'temporal_coverage' => 'Subjects (Temporal)',
-     'institute' => 'Organisation',
-     'identifiers' => 'Identifiers',
-     'relations' => 'Relations'
-    }
+      'title' => 'Title',
+      'subject' => 'Subjects',
+      'creation_date' => 'Creation Date',
+      'published_date' => 'Published Date',
+      'type' => 'Type',
+      'rights' => 'Rights',
+      'language' => 'Language',
+      'description' => 'Description',
+      'creator' => 'Creator',
+      'contributor' => 'Contributor',
+      'publisher' => 'Publisher',
+      'date' => 'Date',
+      'format' => 'Format',
+      'source' => 'Source',
+      'status' => 'Status',
+      'isGovernedBy' => 'Collection',
+      'role_dnr' => 'Donor',
+      'geographical_coverage' => 'Subjects (Places)',
+      'temporal_coverage' => 'Subjects (Temporal)',
+      'institute' => 'Organisation',
+      'identifiers' => 'Identifiers',
+      'relations' => 'Relations'
+    }.freeze
 
     def initialize(base_url, object_doc, options = {})
       fields = options.dig(:fields)
@@ -39,37 +40,49 @@ module DRI::Exporters
     end
 
     def format
+      titles = title_row
+
+      csv_string = CSV.generate do |csv|
+        csv << titles
+        csv << object_row
+      end
+
+      csv_string
+    end
+
+    def title_row
       titles = ['Id']
       @request_fields.each { |k| titles << METADATA_FIELDS_MAP[k] }
       titles << 'Licence'
       titles << 'Assets' if @with_assets.present?
       titles << 'Url'
 
-      csv_string = CSV.generate do |csv|
-        csv << titles
+      titles
+    end
 
-        row = []
-        row << @object_doc['id']
-        @request_fields.each do |key|
-          field = if key == 'identifiers'
-                    @object_doc.identifier
-                  elsif key == 'status'
-                    @object_doc.status
-                  elsif key == 'relations'
-                    relation
-                  else
-                    @object_doc[Solrizer.solr_name(key, :stored_searchable, type: :string)]
-                  end
-          value = field.kind_of?(Array) ? field.join('|') : field
-          row << value || ''
-        end
-        row << licence
-        row << assets if @with_assets.present?
-        row << url
-        csv << row
+    def object_row
+      row = [@object_doc['id']]
+      @request_fields.each do |key|
+        field = map_field(key)
+        value = field.is_a?(Array) ? field.join('|') : field
+        row << value || ''
       end
+      row << licence
+      row << assets if @with_assets.present?
+      row << url
+      row
+    end
 
-      csv_string
+    def map_field(key)
+      if key == 'identifiers'
+        @object_doc.identifier
+      elsif key == 'status'
+        @object_doc.status
+      elsif key == 'relations'
+        relation
+      else
+        @object_doc[Solrizer.solr_name(key, :stored_searchable, type: :string)]
+      end
     end
 
     def assets
@@ -83,7 +96,7 @@ module DRI::Exporters
       File.join(@base_url, file_download_path(
         id: file_id,
         object_id: @object_doc['id'],
-        type: 'surrogate',
+        type: 'surrogate'
       ))
     end
 
@@ -91,7 +104,7 @@ module DRI::Exporters
       licence = @object_doc.licence
       return '' if licence.nil?
 
-      (licence.name == 'All Rights Reserved') ? licence.name : licence.url
+      licence.name == 'All Rights Reserved' ? licence.name : licence.url
     end
 
     def identifier
@@ -101,7 +114,7 @@ module DRI::Exporters
     end
 
     def relation
-      return nil unless @object.relation.present?
+      return nil if @object.relation.blank?
       @object.relation.join('|')
     end
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module DRI
   module Exceptions
     include Rack::Utils
@@ -45,18 +46,17 @@ module DRI
     end
 
     class Unauthorized < StandardError
-    end 
-
+    end
 
     def render_unauthorised(exception)
       render_exception(:unauthorized, exception.message)
-    end  
+    end
 
-    def  render_not_implemented(exception)
-     render_exception(:not_implemented, exception.message)
-    end  
+    def render_not_implemented(exception)
+      render_exception(:not_implemented, exception.message)
+    end
 
-    def render_internal_error(exception)
+    def render_internal_error(_exception)
       render_exception(:internal_server_error, t('dri.views.exceptions.internal_error'))
     end
 
@@ -72,7 +72,7 @@ module DRI
       render_exception(:not_found, exception.message)
     end
 
-    def render_resque_error(exception)
+    def render_resque_error(_exception)
       render_exception(:internal_server_error, t('dri.views.exceptions.resque_error'))
     end
 
@@ -88,34 +88,33 @@ module DRI
           )
         end
         format.json do
-          code = "#{status_code(status_type)}"
+          code = status_code(status_type)
           render(
             json: { errors: [{ status: code, detail: message }] },
             content_type: 'application/json',
             status: code
           )
         end
-        format.all  { render nothing: true, status: status_type}
+        format.all { render nothing: true, status: status_type }
       end
       true
     end
 
     def render_404(e)
       respond_to do |format|
-        format.html  {
-          render file: "#{Rails.root}/public/404.html",
-          layout: false,
-          status: 404
-        }
-        format.json {
-          render json: {errors: [{status: "404", detail: "#{e}"}] },
-          content_type: 'application/json', status: 404
-        }
+        format.html do
+          render file: Rails.root.join('public', '404.html'),
+                 layout: false,
+                 status: 404
+        end
+        format.json do
+          render json: { errors: [{ status: "404", detail: e.to_s }] },
+                 content_type: 'application/json', status: 404
+        end
       end
     end
 
     # 401 handled by CustomDeviseFailureApp
-
     def status_to_message(status)
       HTTP_STATUS_CODES[status_code(status)]
     end

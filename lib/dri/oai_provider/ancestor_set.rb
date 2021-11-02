@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module DRI::OaiProvider
   class AncestorSet < BlacklightOaiProvider::SolrSet
-
     def description
       collection_document['description_tesim'].present? ? collection_document['description_tesim'].join(" ") : ""
     end
@@ -31,6 +31,5 @@ module DRI::OaiProvider
     def load_collection_document
       ::SolrDocument.find(value)
     end
-
   end
 end

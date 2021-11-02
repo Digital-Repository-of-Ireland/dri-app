@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 module DRI::Noid
   class Service
-
     def initialize
       if Settings.noid
         case Settings.noid.service

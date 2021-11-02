@@ -3,7 +3,7 @@ require 'solr/query'
 
 RSpec.configure do |c|
   # declare an exclusion filter
-  c.filter_run_excluding :slow => true
+  #c.filter_run_excluding slow: true
 end
 
 describe "Query" do
