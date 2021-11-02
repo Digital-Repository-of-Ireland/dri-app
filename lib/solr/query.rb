@@ -31,6 +31,12 @@ module Solr
     end
 
     def query
+      sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
+      query_args = if @args[:rows].present?
+                        @args.merge({ sort: sort })
+                      else
+                        @args.merge({ raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark })
+                      end
       params = { q: @query }.merge(query_args)
       response = solr_index.search(params)
 
@@ -45,15 +51,6 @@ module Solr
         @has_more = false
       end
       response.documents
-    end
-
-    def query_args
-      sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
-      @query_args ||= if @args[:rows].present?
-                        @args.merge({ sort: sort })
-                      else
-                        @args.merge({ raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark })
-                      end
     end
 
     def solr_index
