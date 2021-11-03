@@ -49,6 +49,21 @@ describe 'PublishJob' do
       expect(@object.status).to eql('published')
     end
 
+    it 'should set published_at' do
+      allow(Resque).to receive(:enqueue)
+      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
+      job.perform
+
+      @collection.reload
+      @object.reload
+
+      expect(@collection.status).to eql('published')
+      expect(@object.status).to eql('published')
+
+      expect(@collection.published_at).to_not be nil
+      expect(@object.published_at).to_not be nil
+    end
+
     it 'should not set an object to published if within an unreviewed sub-collection' do
       @reviewed = FactoryBot.create(:collection)
       @reviewed[:status] = 'reviewed'
