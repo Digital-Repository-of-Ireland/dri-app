@@ -129,7 +129,7 @@ class ObjectsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
     document = SolrDocument.find(@object.alternate_id)
-    @depositing_institute = document.depositing_institute
+    @depositing_institute = document.depositing_institute&.name
 
     if @object.doi.present?
       doi = DataciteDoi.where(object_id: @object.alternate_id).current
