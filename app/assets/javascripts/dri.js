@@ -102,7 +102,6 @@ $(document).ready(function() {
 
 $(document).ready(function() {
   // Tooltip
-
   $('.clipboard-btn').tooltip({
     trigger: 'click',
     placement: 'bottom'
