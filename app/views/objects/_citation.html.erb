@@ -6,7 +6,7 @@
 	<textarea id="citation-text-apa" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none"><%= export_as_apa_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
     <textarea id="citation-text-chicago" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none"><%= export_as_chicago_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
     <textarea id="citation-text-mla" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none"><%= export_as_mla_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
-    <textarea id="citation-text-dri" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly"><%= object.export_as_dri_citation %><% if @doi.present? %><%= ", https://doi.org/#{@doi}" %><% end %></textarea>
+    <textarea id="citation-text-dri" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly"><%= @object.export_as_dri_citation %><% if @doi.present? %><%= ", https://doi.org/#{@doi}" %><% end %></textarea>
 </div>
 <div class="modal-footer">
   <b><%= t('dri.views.catalog.legends.citation_style') %>:&nbsp;</b>
