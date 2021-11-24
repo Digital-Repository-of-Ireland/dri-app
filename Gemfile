@@ -54,6 +54,11 @@ gem 'it'
 gem 'i18n-tasks'
 gem 'i18n-js'
 
+# Citations
+gem 'citeproc-ruby'
+gem 'csl-styles'
+gem 'gender_detector'
+
 # logging
 gem 'syslog-logger'
 
