@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_113436) do
+ActiveRecord::Schema.define(version: 2021_10_21_130654) do
+
+  create_table "aggregations", force: :cascade do |t|
+    t.string "collection_id"
+    t.string "aggregation_id"
+    t.boolean "doi_from_metadata"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
