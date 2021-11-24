@@ -240,7 +240,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Get the asset files
       assets = clean_assets(record.assets(with_preservation: false, ordered: false))
-      landing_page = doi_url(record.doi) || catalog_url(record.id)
+      landing_page = doi_url(record) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
@@ -390,9 +390,22 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     return "INVALID"
   end
 
-  def doi_url(doi)
-    return nil if doi.blank?
-    doi = doi.first if doi.is_a? Array
+  def doi_url(record)
+    # Check whether we are supposed to use the provider's DOI
+    aggregation = Aggregation.where(collection_id: record.governing_collection['resource_id_isi']).first
+    if (aggregation.doi_from_metadata?)
+      if record['source_tesim']
+        record['source_tesim'].find { |e| /(https:\/\/doi\.org.*\/.*)/ =~ e }
+        return $1 unless $1.blank?
+      end
+      if record['qdc_id_tesim']
+        record['qdc_id_tesim'].find { |e| /(https:\/\/doi\.org.*\/.*)/ =~ e }
+        return $1 unless $1.blank?
+      end
+    end
+
+    return nil if record.doi.blank?
+    doi = record.doi.first if record.doi.is_a? Array
     "https://doi.org/#{doi}"
   end
 
