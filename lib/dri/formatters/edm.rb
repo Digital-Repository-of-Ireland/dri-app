@@ -392,7 +392,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
   def doi_url(record)
     # Check whether we are supposed to use the provider's DOI
-    aggregation = Aggregation.where(collection_id: record.governing_collection['resource_id_isi']).first
+    aggregation = Aggregation.where(collection_id: record.root_collection_id).first
     if (aggregation.present? && aggregation.doi_from_metadata?)
       if record['source_tesim']
         record['source_tesim'].find { |e| /(https:\/\/doi\.org.*\/.*)/ =~ e }
