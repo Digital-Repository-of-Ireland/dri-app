@@ -115,10 +115,7 @@ class InstitutesController < ApplicationController
     @collection = retrieve_object!(params[:id])
 
     @collection.institute = params[:institutes].select { |i| i.is_a? String } if params[:institutes].present?
-
-    if params[:depositing_organisation].present?
-      @collection.depositing_institute = params[:depositing_organisation] unless params[:depositing_organisation] == 'not_set'
-    end
+    @collection.depositing_institute = params[:depositing_organisation] if params[:depositing_organisation].present? && params[:depositing_organisation] != 'not_set'
     @collection.increment_version
 
     raise DRI::Exceptions::InternalError unless @collection.save
@@ -169,18 +166,16 @@ class InstitutesController < ApplicationController
 
   def add_association
     institute_name = params[:institute_name]
-    if params[:type].present? && params[:type] == 'depositing'
-      @collection.depositing_institute = institute_name
-    else
-      @collection.institute = @collection.institute.push(institute_name)
-    end
+    notice = if params[:type].present? && params[:type] == 'depositing'
+               @collection.depositing_institute = institute_name
+               "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
+             else
+               @collection.institute = @collection.institute.push(institute_name)
+               "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
+             end
     raise DRI::Exceptions::InternalError unless @collection.save
 
-    flash[:notice] = if params[:type].present? && params[:type] == 'depositing'
-                       "#{institute_name} #{t('dri.flash.notice.organisation_depositor')}"
-                     else
-                       "#{institute_name} #{t('dri.flash.notice.organisation_added')}"
-                     end
+    flash[:notice] = notice
   end
 
   def delete_association

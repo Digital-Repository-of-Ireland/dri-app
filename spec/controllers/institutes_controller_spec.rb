@@ -64,6 +64,41 @@ describe InstitutesController do
     end
   end
 
+  describe "set" do
+    it "should set a collections organisations" do
+      institute_b = Institute.new
+      institute_b.name = "Test B Institute"
+      institute_b.url = "http://www.test.ie"
+      institute_b.save
+      post :set, params: { id: @collection.alternate_id, depositing_organisation: @institute.name, institutes: [@institute.name, institute_b.name] }
+
+      @collection.reload
+      expect(@collection.institute).to match_array([@institute.name, institute_b.name])
+      expect(@collection.depositing_institute).to eq("Test Institute")
+      institute_b.destroy
+    end
+  end
+
+  describe "create" do
+    it "should create an organisation" do
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_logo.png"), "image/png")
+
+      expect do
+        post :create, params: { institute: { url: 'http://test.create', name: 'Test Create', logo: uploaded } }
+      end.to change(Institute, :count).by(1)
+    end
+  end
+
+  describe "update" do
+    it "should update an organisation" do
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_logo.png"), "image/png")
+
+      expect do
+        post :update, params: { id: @institute.id, institute: { url: 'http://test.create', name: 'Test Create', logo: uploaded } }
+      end.to change{ @institute.reload.url }.to 'http://test.create'
+    end
+  end
+
   describe "destroy" do
     it "should not delete an organisation with collections" do
       @collection.institute = @collection.institute.push(@institute.name)
