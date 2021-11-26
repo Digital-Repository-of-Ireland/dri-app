@@ -49,13 +49,12 @@ describe InstitutesController do
       expect(Dir.entries(aip_dir(@collection.alternate_id)).size - 2).to eq(2)
       expect(aip_valid?(@collection.alternate_id, 2)).to be true
     end
-
   end
 
   describe "disassociate" do
 
     it "should remove an association" do
-      @collection.institute = @collection.institute.push( @institute.name )
+      @collection.institute = @collection.institute.push(@institute.name)
       @collection.save
 
       delete :disassociate, params: { object: @collection.alternate_id, institute_name: @institute.name }
@@ -63,7 +62,22 @@ describe InstitutesController do
       @collection.reload
       expect(@collection.institute).to eq []
     end
-
   end
 
+  describe "destroy" do
+    it "should not delete an organisation with collections" do
+      @collection.institute = @collection.institute.push(@institute.name)
+      @collection.save
+
+      delete :destroy, params: { id: @institute.id }
+
+      expect { @institute.reload }.to_not raise_error
+    end
+
+    it "should delete an organisation without collections" do
+      delete :destroy, params: { id: @institute.id }
+
+      expect { @institute.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
 end
