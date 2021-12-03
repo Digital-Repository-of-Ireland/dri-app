@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class FixityJob
   extend Preservation::PreservationHelpers
 
@@ -7,14 +8,14 @@ class FixityJob
     Rails.logger.info "Verifying collection #{collection_id}"
 
     # query for objects within this collection
-    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str = "collection_id_sim:\"#{collection_id}\""
     # excluding sub-collections
     f_query = "is_collection_ssi:false"
 
-    fixity_check(report_id, root_collection_id, collection_id, q_str, f_query)
+    fixity_check(report_id, root_collection_id, q_str, f_query)
   end
 
-  def self.fixity_check(report_id, root_collection_id, collection_id, q_str, f_query)
+  def self.fixity_check(report_id, root_collection_id, q_str, f_query)
     query = Solr::Query.new(q_str, 100, fq: f_query)
     query.each do |o|
       object = DRI::DigitalObject.find_by_alternate_id(o.alternate_id)

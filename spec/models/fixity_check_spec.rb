@@ -20,4 +20,9 @@ describe FixityCheck do
     expect(failed.first.created_at.to_s).to eq('2018-03-29 10:51:27 UTC')
   end
 
+  it 'should geneate premis XML' do
+    check = FixityCheck.first
+    check.result = "{}"
+    expect(Nokogiri::XML(check.to_premis).errors).to be_empty
+  end
 end
