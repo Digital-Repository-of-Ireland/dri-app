@@ -62,12 +62,12 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
     xml = Builder::XmlMarkup.new
 
     xml.tag!("#{prefix}:#{element_namespace}", header_specification) do
-      PREFIXES.each do |pref, fields|
+      PREFIXES.each do |prefix, fields|
         fields.each do |k, v|
           values = v.class == Proc ? v.call(record) : value_for(v, record.to_h, {})
 
           values.each do |value|
-            xml.tag! "#{pref}:#{k}", value unless value.nil?
+            xml.tag! "#{prefix}:#{k}", value unless value.nil?
           end
         end
       end

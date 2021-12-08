@@ -1,9 +1,9 @@
+# frozen_string_literal: true
 require 'moab'
 
 class FixityController < ApplicationController
-
   def update
-    raise DRI::Exceptions::BadRequest unless params[:id].present?
+    raise DRI::Exceptions::BadRequest if params[:id].blank?
     enforce_permissions!('edit', params[:id])
 
     object = DRI::DigitalObject.find_by_alternate_id(params[:id])
@@ -19,22 +19,21 @@ class FixityController < ApplicationController
   private
 
   def fixity(object)
-    if object.collection?
-      fixity_collection(object)
-    else
-      fixity_object(object)
-    end
+    object.collection? ? fixity_collection(object) : fixity_object(object)
   end
 
   def fixity_object(object)
     result = Preservation::Preservator.new(object).verify
+    root_collection_id = object.to_solr['root_collection_id_ssi']
+    report = FixityReport.create(collection_id: root_collection_id)
 
     FixityCheck.create(
-          collection_id: object.to_solr['root_collection_ssi'],
+          fixity_report_id: report.id,
+          collection_id: object.to_solr['root_collection_id_ssi'],
           object_id: object.alternate_id,
           verified: result[:verified],
           result: result.to_json
-    )
+        )
     flash[:notice] = t('dri.flash.notice.fixity_check_completed')
   end
 
@@ -42,7 +41,7 @@ class FixityController < ApplicationController
     report = FixityReport.create(collection_id: collection.alternate_id)
     Resque.enqueue(FixityCollectionJob, report.id, collection.alternate_id, current_user.id)
     flash[:notice] = t('dri.flash.notice.fixity_check_running')
-  rescue Exception => e
+  rescue Redis::CannotConnectError => e
     logger.error "Unable to submit fixity job: #{e.message}"
     flash[:alert] = t('dri.flash.alert.error_fixity_collection', error: e.message)
   end

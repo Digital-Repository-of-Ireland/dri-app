@@ -441,6 +441,7 @@ en:
           related_materials: Related Materials
           sub_collections: Sub-collections
         legends:
+          citation_style: Citation Style 
           doi_deleted: 'This object is no longer available. You can contact dri@ria.ie for more information, quoting the object ID %{id}.'
           doi_not_available: This object is currently unavailable as it has been locked for editing.
           file_status: 'Status: %{status}'
@@ -778,6 +779,7 @@ en:
     reports:
       headings:
         access_controls: Access Controls Report
+        download: Download
         fixity: Fixity Check
         fixity_status: Result
         fixity_failures: Failures
@@ -791,3 +793,5 @@ en:
          fixity_report: Collection Fixity
          stats: Repository Usage
          user_activity_report: User Activity
+      object:
+         metadata_md5: Metadata Checksum
