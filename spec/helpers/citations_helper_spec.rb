@@ -41,7 +41,7 @@ describe CitationsHelper, testing: true do
       object.rights = ["Rights"]
       object.creation_date = ["2015-05-12"]
 
-      published = Time.now.utc.iso8601
+      published = "2021-11-24T15:00:00Z"
       year = Time.new(published).year
       object.published_at = published
       object.type = ["Text"]

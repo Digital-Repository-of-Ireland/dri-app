@@ -441,6 +441,7 @@ en:
           related_materials: Related Materials
           sub_collections: Sub-collections
         legends:
+          citation_style: Citation Style 
           doi_deleted: 'This object is no longer available. You can contact dri@ria.ie for more information, quoting the object ID %{id}.'
           doi_not_available: This object is currently unavailable as it has been locked for editing.
           file_status: 'Status: %{status}'
