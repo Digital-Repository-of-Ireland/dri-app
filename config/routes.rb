@@ -118,6 +118,7 @@ Rails.application.routes.draw do
     put 'objects/:id/metadata' => 'metadata#update'
     get 'objects/:id/citation' => 'objects#citation', as: :citation_object
     get 'objects/:id/history' => 'object_history#show', as: :object_history
+    get 'objects/:id/versions/:version_id' => 'object_history#download_version', as: :object_version 
 
     get 'objects/:object_id/files/:id/download', to: 'surrogates#download', constraints: { query_string: /type=surrogate/ }
     get 'objects/:object_id/files/:id/download', to: 'assets#download', as: :file_download
