@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'moab'
 require 'preservation/preservation_helpers'
 
@@ -7,76 +8,25 @@ class ObjectHistory
 
   attr_accessor :object
 
-  # Get the earliest ancestor for any inherited attribute
-  def governing_attribute(attribute, parent = nil)
-    current_object = parent || object
-    begin
-      value = current_object.send(attribute)
-      return value if value.present?
-      return nil if current_object.governing_collection.nil?
-    rescue NoMethodError
-      return nil
-    end
-    governing_attribute(attribute, current_object.governing_collection)
-  end
-
   # Get the institute manager for any collection or object
   def institute_manager
-    parent = object.governing_collection
-    return object.try(:depositor) if parent.nil?
-
-    while !parent.nil?
-      current = parent
-      parent = current.governing_collection
-    end
-
-    current.try(:depositor)
-  end
-
-  def read_users_by_group(parent = nil)
-    current_object = parent || object
-    users = []
-    if current_object.read_groups.present?
-      current_object.read_groups.each do |group_name|
-        next if %w(public registered).include?(group_name)
-
-        group = UserGroup::Group.where(name: group_name)
-        group.first.users.each do |user|
-          users << [user.first_name, user.second_name, user.email]
-        end
-      end
-
-      users
-    elsif current_object.governing_collection.nil?
-      []
-    else
-      read_users_by_group(current_object.governing_collection)
-    end
+    object.root_collection['depositor_ss']
   end
 
   def audit_trail
-    versions = []
+    object_versions = moab_versions
+    db_versions = version_committers
+    object_versions.map do |version|
+      trail = { version_id: version.version_name }
 
-    committed_versions = VersionCommitter.where(obj_id: object.alternate_id).order('created_at asc')
-    committed_versions.each do |version|
-      versions << { version_id: version.version_id,
-                    created: version.created_at,
-                    committer: version.committer_login
-                  }
+      if db_versions.key?(version.version_name)
+        trail[:created] = db_versions[version.version_name][:created].iso8601
+        trail[:committer] = db_versions[version.version_name][:committer]
+      else
+        trail[:created] = File::Stat.new(version.version_pathname).ctime.utc.iso8601
+      end
+      trail
     end
-
-    versions
-  end
-
-  def asset_info
-    asset_info = {}
-
-    object.generic_files.each do |file|
-      asset_info[file.alternate_id] = {}
-      asset_info[file.alternate_id][:surrogates] = surrogate_info(file.alternate_id)
-    end
-
-    asset_info
   end
 
   def fixity
@@ -84,11 +34,7 @@ class ObjectHistory
   end
 
   def fixity_check_collection
-    fixity_check = {}
-    fixity_check[:time] = Time.now.to_s
-    fixity_check[:verified] = 'unknown'
-    fixity_check[:result] = []
-
+    fixity_check = { time: Time.now.to_s, verified: 'unknown', result: [] }
     return fixity_check unless FixityReport.exists?(collection_id: object.alternate_id)
 
     fixity_report = FixityReport.where(collection_id: object.alternate_id).latest
@@ -99,8 +45,8 @@ class ObjectHistory
       fixity_check[:verified] = 'failed'
       fixity_check[:result].push(*failures.to_a.map(&:object_id))
       fixity_check[:failures] = failures.length
-    else
-      fixity_check[:verified] = 'passed' if fixity_check[:verified] == 'unknown'
+    elsif fixity_check[:verified] == 'unknown'
+      fixity_check[:verified] = 'passed'
     end
 
     fixity_check
@@ -119,27 +65,21 @@ class ObjectHistory
     fixity_check
   end
 
-  def object_versions
-    storage_object = Moab::StorageObject.new(object.alternate_id, base_path(object.alternate_id))
-    storage_object.versions
+  def moab_versions
+    storage_object = Moab::StorageObject.new(object.alternate_id, aip_dir(object.alternate_id))
+    storage_object.versions.map
   end
 
-  def licence
-    governing_attribute('licence')
-  end
-
-  def permission_info
-    {
-      institute_manager: institute_manager,
-      read_groups: governing_attribute('read_groups_string'),
-      read_users: read_users_by_group,
-      edit_users: governing_attribute('edit_users_string'),
-      manager_users: governing_attribute('manager_users_string')
-    }
-  end
-
-  def surrogate_info(file_id)
-    storage = StorageService.new
-    storage.surrogate_info(object.alternate_id, file_id)
+  def version_committers
+    committed_versions = VersionCommitter.where(obj_id: object.alternate_id).order('created_at asc')
+    version_hash = {}
+    committed_versions.each do |version|
+      version_hash[version.version_id] = {
+        version_id: version.version_id,
+        created: version.created_at,
+        committer: version.committer_login
+      }
+    end
+    version_hash
   end
 end

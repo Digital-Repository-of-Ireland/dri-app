@@ -167,6 +167,19 @@ module Preservation
       { verified: false, output: e.message }
     end
 
+    def file_inventory_from_path(version_id, manifest_path)
+      version_inventory = Moab::FileInventory.new(type: 'version', version_id: version_id, digital_object_id: object.alternate_id)
+      version_inventory.parse(Pathname.new(File.join(manifest_path, 'versionInventory.xml')).read)
+
+      version_inventory
+    end
+
+    def signature_catalog_from_path(manifest_path)
+      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.alternate_id)
+      signature_catalog.parse(Pathname.new(File.join(manifest_path, 'signatureCatalog.xml')).read)
+      signature_catalog
+    end
+
     private
 
     def content_file_inventory(version_id)
@@ -183,19 +196,6 @@ module Preservation
       manifest_inventory = Moab::FileInventory.new(type: 'manifests', digital_object_id: object.alternate_id, version_id: version_id)
       manifest_inventory.groups << Moab::FileGroup.new(group_id: 'manifests').group_from_directory(manifest_path(object.alternate_id, version_id), false)
       manifest_inventory
-    end
-
-    def file_inventory_from_path(version_id, manifest_path)
-      version_inventory = Moab::FileInventory.new(type: 'version', version_id: version_id, digital_object_id: object.alternate_id)
-      version_inventory.parse(Pathname.new(File.join(manifest_path, 'versionInventory.xml')).read)
-
-      version_inventory
-    end
-
-    def signature_catalog_from_path(manifest_path)
-      signature_catalog = Moab::SignatureCatalog.new(digital_object_id: object.alternate_id)
-      signature_catalog.parse(Pathname.new(File.join(manifest_path, 'signatureCatalog.xml')).read)
-      signature_catalog
     end
 
     def find_previous_manifest_path(current_version_id)

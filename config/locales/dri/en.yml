@@ -778,6 +778,7 @@ en:
     reports:
       headings:
         access_controls: Access Controls Report
+        download: Download
         fixity: Fixity Check
         fixity_status: Result
         fixity_failures: Failures
@@ -791,3 +792,5 @@ en:
          fixity_report: Collection Fixity
          stats: Repository Usage
          user_activity_report: User Activity
+      object:
+         metadata_md5: Metadata Checksum

@@ -41,7 +41,7 @@ gem 'oauth'
 #gem 'feedjira'
 
 # Storage-related gems
-gem 'moab-versioning'
+gem 'moab-versioning', '~> 4.4'
 gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 

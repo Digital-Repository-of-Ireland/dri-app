@@ -50,7 +50,7 @@ describe ObjectHistory  do
     @collection.governed_items << @object
     @collection.save
 
-    @object_history = ObjectHistory.new(object: @object)
+    @object_history = ObjectHistory.new(object: SolrDocument.find(@object.alternate_id))
   end
 
   after do
@@ -61,30 +61,9 @@ describe ObjectHistory  do
     expect(@object_history.institute_manager).to be == 'instmgr@dri.ie'
   end
 
-  it 'should get the collection edit user' do
-    expect(@object_history.governing_attribute('edit_users_string')).to be == "edituser@dri.ie, anotheruser@dri.ie"
-  end
-
-  it 'should get the collection manager user' do
-    expect(@object_history.governing_attribute('manager_users_string')).to be == "manageruser@dri.ie"
-  end
-
-  it 'should get the collection read groups' do
-    expect(@object_history.governing_attribute('read_groups_string')).to be == "test"
-  end
-
-  it 'should get the collection read users via groups' do
-    expect(@object_history.read_users_by_group).to be == [['fname','sname','user@dri.ie']]
-  end
-
   it 'should get versions' do
     versions = @object_history.audit_trail
     expect(versions.first[:version_id]).to eq 'v0001'
-  end
-
-  it 'should get asset information' do
-    asset_info = @object_history.asset_info
-    expect(asset_info.keys).to include(@generic_file.alternate_id)
   end
 
   it 'should call fixity check info for a collection' do
