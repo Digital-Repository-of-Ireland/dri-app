@@ -4,60 +4,29 @@ class FixityCheck < ActiveRecord::Base
 
   belongs_to :fixity_report
 
-  def header_specification
-    {
-      "version" => "3.0",
-      "xmlns:premis" => "http://www.loc.gov/premis/v3",
-      "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation" => %(
-        http://www.loc.gov/premis/v3
-        http://www.loc.gov/standards/premis/v3/premis-v3-0.xsd
-      ).gsub(/\s+/, " ")
-    }
-  end
-
   def to_premis
     xml = ::Builder::XmlMarkup.new
-    xml.instruct!
-    xml.tag!("premis:event", header_specification) do
-      premis_event_identifier(xml)
+    xml.tag!("premis:event") do
+      DRI::Premis.event_identifier(xml, 'local', object_id + ':' + id.to_s)
       xml.tag!("premis:eventType", "fixity check")
       xml.tag!("premis:eventDateTime", created_at.iso8601)
-      premis_event_outcome(xml)
-      premis_linking_agent(xml)
-      premis_linking_object(xml)
+
+      outcome = verified ? 'pass' : 'fail'
+      DRI::Premis.event_outcome(xml, outcome, result)
+      premis_event_linking_agent_identifier(xml)
+      DRI::Premis.linking_object(xml, 'local', object_id)
     end
   end
 
-  def premis_event_identifier(xml)
-    xml.tag!("premis:eventIdentifier") do
-      xml.tag!("premis:eventIdentifierType", "local")
-      xml.tag!("premis:eventIdentifierValue", object_id + ':' + id.to_s)
-    end
-  end
-
-  def premis_event_outcome(xml)
-    xml.tag!("premis:eventOutcomeInformation") do
-      xml.tag!("premis:eventOutcome", verified ? 'pass' : 'fail')
-      if result
-        xml.tag!("premis:eventOutcomeDetail") do
-          xml.tag!("premis:eventOutcomeDetailNote", xml.cdata!(result))
-        end
-      end
-    end
-  end
-
-  def premis_linking_agent(xml)
-    xml.tag!("premis:linkingAgentIdentifier") do
-      xml.tag!("premis:linkingAgentIdentifierType", "preservation system")
-      xml.tag!("premis:linkingAgentIdentifierValue", "moab-versioning v" + moab_gem_version)
-    end
-  end
-
-  def premis_linking_object(xml)
-    xml.tag!("premis:linkingObjectIdentifier") do
-      xml.tag!("premis:linkingObjectIdentifierType", "local")
-      xml.tag!("premis:linkingObjectIdentifierValue", object_id)
+  def premis_event_linking_agent_identifier(xml)
+    DRI::Premis.linking_agent(xml, 'preservation_system', "moab-versioning v" + moab_gem_version) do |premis_xml|
+      premis_xml.tag!("premis:linkingAgentRole",
+              {
+                "authority" => "eventRelatedAgentRole",
+                "authorityURI" => "http://id.loc.gov/vocabulary/preservation/eventRelatedAgentRole",
+                "valueURI" => "http://id.loc.gov/vocabulary/preservation/eventRelatedAgentRole/exe"
+              },
+             "executing program")
     end
   end
 

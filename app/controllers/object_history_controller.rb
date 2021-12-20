@@ -20,6 +20,7 @@ class ObjectHistoryController < ApplicationController
 
     respond_to do |format|
       format.html
+      format.xml { render xml: object_history.to_premis, content_type: 'text/xml' }
     end
   end
 

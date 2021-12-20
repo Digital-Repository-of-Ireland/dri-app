@@ -20,9 +20,14 @@ describe FixityCheck do
     expect(failed.first.created_at.to_s).to eq('2018-03-29 10:51:27 UTC')
   end
 
-  it 'should geneate premis XML' do
+  it 'should generate premis XML' do
     check = FixityCheck.first
     check.result = "{}"
-    expect(Nokogiri::XML(check.to_premis).errors).to be_empty
+    xml = '<premis:premis
+           xmlns:premis="http://www.loc.gov/premis/v3"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.loc.gov/premis/v3 https://www.loc.gov/standards/premis/premis.xsd"
+           version="3.0">' + check.to_premis + '</premis:premis>'
+    expect(Nokogiri::XML(xml).errors).to be_empty
   end
 end
