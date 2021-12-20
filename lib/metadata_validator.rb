@@ -43,7 +43,6 @@ module MetadataValidator
     # We have to extract all the schemata from the XML Document in order to validate correctly
     # Firstly, if the root schema has no namespace prefix AND no default namespace, retrieve it from xsi:noNamespaceSchemaLocation
     schema_imports = no_namespace_schema_location(xml, namespace)
-
     # Then, find all elements that have the "xsi:schemaLocation" attribute and retrieve their namespace and schemaLocation
     # No xsi:schemaLocation
     return false, I18n.t('dri.flash.error.schema_location_missing') if schema_location_missing?(namespace, xml)
@@ -53,10 +52,8 @@ module MetadataValidator
       schemata_by_ns = Hash[schema_location.scan(/(\S+)\s+(\S+)/)]
 
       return false, "#{I18n.t('dri.flash.error.schema_location_parse')}: #{schema_location}" if schemata_by_ns.empty?
-
       schema_imports |= schema_imports_local(schemata_by_ns)
     end
-
     return [false, ''] if schema_imports.empty?
 
     # When parsing the schema, the local directory needs to point to the schema folder
@@ -124,7 +121,6 @@ module MetadataValidator
       loc = map_to_localfile(loc)
       schema_imports |= ["<xs:import namespace=\"" + ns + "\" schemaLocation=\"" + loc + "\"/>\n"]
     end
-
     schema_imports
   end
 
@@ -151,6 +147,6 @@ module MetadataValidator
     return [] unless xml.root.namespace.nil? && !namespace.key?('xmlns')
 
     no_ns_schema_location = map_to_localfile(xml.root.attr('xsi:noNamespaceSchemaLocation'))
-    ["<xs:include schemaLocation=\"" + no_ns_schema_location + "\"/>\n"] if no_ns_schema_location.present?
+    no_ns_schema_location.present? ? ["<xs:include schemaLocation=\"" + no_ns_schema_location + "\"/>\n"] : []
   end
 end
