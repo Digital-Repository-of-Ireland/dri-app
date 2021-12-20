@@ -82,4 +82,46 @@ class ObjectHistory
     end
     version_hash
   end
+
+  def to_premis
+    DRI::Premis.new.to_premis do |xml|
+      xml.tag!("premis:object", { "xsi:type" => "premis:representation" }) do
+        DRI::Premis.object_identifier(xml, object)
+      end
+      premis_version_events(xml)
+      premis_fixity_events(xml)
+    end
+  end
+
+  def premis_version_events(xml)
+    version_committers.each do |version_id, version|
+      xml.tag!("premis:event") do
+        DRI::Premis.event_identifier(xml, 'local', object.alternate_id + '-' + version_id)
+        xml.tag!("premis:eventType", "modification")
+        xml.tag!("premis:eventDateTime", version[:created])
+        premis_event_linking_agent_identifier(xml, version[:committer]) if version[:committer].present?
+        DRI::Premis.linking_object(xml, 'local', object.alternate_id)
+      end
+    end
+  end
+
+  def premis_fixity_events(xml)
+    checks = FixityCheck.where(object_id: object.alternate_id)
+    return unless checks
+
+    checks.each do |check|
+      xml.target! << check.to_premis
+    end
+  end
+
+  def premis_event_linking_agent_identifier(xml, agent)
+    DRI::Premis.linking_agent(xml, 'local', agent) do |premis_xml|
+      premis_xml.tag!("premis:linkingAgentRole",
+                {
+                  "authority" => "eventRelatedAgentRole",
+                  "authorityURI" => "http://id.loc.gov/vocabulary/preservation/eventRelatedAgentRole",
+                  "valueURI" => "http://id.loc.gov/vocabulary/preservation/eventRelatedAgentRole/imp"
+                }, "implementor")
+    end
+  end
 end

@@ -1,7 +1,7 @@
 <div class="dri_report_container">
 
   <h3><%= t('dri.reports.headings.object') %></h3>
-  <table>
+  <table class="table">
     <tr><td> <%= t('dri.reports.object.object_id') %> </td><td> <%= @object.alternate_id %> </td></tr>
     <tr><td> <%= t('dri.reports.object.title') %> </td><td> <%= @object.title.join(' : ') %> </td></tr>
     <tr><td> <%= t('dri.reports.object.depositor') %> </td><td> <%= @object.depositor %> </td></tr>
@@ -54,4 +54,6 @@
     <% end %>
     </table>
   <% end %>
+
+  <%= link_to 'PREMIS XML', object_history_path(@object.alternate_id, format: :xml) %>
 </div>

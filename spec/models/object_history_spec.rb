@@ -101,4 +101,11 @@ describe ObjectHistory  do
     expect(fixity[:verified]).to eq('passed')
     expect(fixity[:result]).to eq('test')
   end
+
+  it 'should generate premis XML' do
+    report = FixityReport.create(collection_id: @collection.alternate_id)
+    FixityCheck.create(fixity_report_id: report.id, collection_id: @collection.alternate_id, object_id: @object.alternate_id, verified: true, result: 'test')
+    fixity = @object_history.fixity_check_object
+    expect(Nokogiri::XML(@object_history.to_premis).errors).to be_empty
+  end
 end
