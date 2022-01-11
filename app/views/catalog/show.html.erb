@@ -1,6 +1,5 @@
 <% @page_title = t('blacklight.search.show.title', document_title: document_show_html_title, application_name: application_name) %>
 
-<%= render partial: 'shared/paginate_compact', object: @response %>
 <div class="dri_object_container" id="object_container">
   <%= render_document_partial @document, :show %>
 </div>

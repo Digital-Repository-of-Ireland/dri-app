@@ -23,7 +23,7 @@ Feature: Bookmarks Feature
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
-    Given I check "toggle_bookmark_bookcoll"
+    Given I check "toggle-bookmark_bookcoll"
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
 
@@ -33,7 +33,7 @@ Feature: Bookmarks Feature
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
-    Given I check "toggle_bookmark_bookcoll"
+    Given I check "toggle-bookmark_bookcoll"
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I click the link to remove bookmark
@@ -45,7 +45,7 @@ Feature: Bookmarks Feature
     And I follow the link to browse
     And I follow "Bookmark Test Collection" within "div.dri_result_container"
     Then I should see "Manage Your Bookmarks"
-    Given I check "toggle_bookmark_bookcoll"
+    Given I check "toggle-bookmark_bookcoll"
     And I follow the link to manage bookmark
     Then I should see "Bookmark Test Collection"
     Given I choose to clear all bookmarks

@@ -33,7 +33,7 @@ module DRI::Catalog
 
     # need rescue_from here to ensure that errors thrown by before_action
     # below are caught and handled properly
-    rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
+    rescue_from Blacklight::Exceptions::RecordNotFound, with: :render_404
     # These before_filters apply the hydra access controls
     before_action :enforce_search_for_show_permissions, only: :show
     extend(ClassMethods)

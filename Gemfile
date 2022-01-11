@@ -5,9 +5,11 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.0'
 
-gem 'blacklight', '~> 6'
-gem 'blacklight_advanced_search', '~> 6'
-gem 'blacklight_oai_provider', '~> 6'
+gem 'blacklight', '~> 7'
+gem 'blacklight_advanced_search', '~> 7'
+gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider' #'~> 6'
+gem 'rsolr'
+gem 'kaminari', '1.1.1'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
@@ -18,7 +20,7 @@ gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'blacklight7'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail', '~> 4'
@@ -26,7 +28,7 @@ gem 'paper_trail', '~> 4'
 gem 'linkeddata'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.1.0'
+#gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.1.0'
 gem 'browse-everything', '1.0.0'
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'

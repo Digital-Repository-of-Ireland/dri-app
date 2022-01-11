@@ -33,7 +33,6 @@
 
 //
 // Required by Blacklight-Maps
-//= require blacklight/core
 //= require leaflet
 //= require leaflet.markercluster
 //= require blacklight-maps/blacklight-maps-browse
@@ -42,6 +41,7 @@
 //= require js.cookie
 //= require jquery.validate
 //= require jquery.validate-additional-methods
+//= require bootstrap
 //= require bootstrap/affix
 //= require bootstrap/carousel
 //= require bootstrap/tooltip
@@ -57,7 +57,6 @@
 //= require openseadragon
 //= require spin
 //= require timelineJS3
-//= require dri_batch_ingest
 //= slick-scroller
 //= require dri/timeline
 //= require dri/forms

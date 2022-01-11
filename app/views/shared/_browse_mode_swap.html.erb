@@ -12,12 +12,12 @@
 				collections_class += ' selected' if params[:mode] == 'collections'
 				subcollections_class += ' selected' if params[:show_subs] == 'true'
 
-				# Use whitelist instead of blacklist (params.merge xss issue)
+                # Use whitelist instead of blacklist (params.merge xss issue)
 				param_modes = %w[collections subcollections objects].map do |mode|
 					{
 						mode: mode.include?('collections') ? 'collections' : 'objects',
 						show_subs: mode == 'subcollections' ? 'true' : 'false',
-					}.merge(search_state.to_h.except(*[:mode, :show_subs]))
+					}.merge(search_state.to_h.except(*['mode', 'show_subs']))
 				end
 
 				collections_params, subcollections_params, objects_params = param_modes

@@ -63,6 +63,7 @@ class SearchBuilder < Blacklight::SearchBuilder
   # If querying geographical_coverage, then query the Solr geospatial field
   #
   def subject_place_filter(solr_parameters)
+    return if solr_parameters[:fq].blank?
     # Find index of the facet geographical_coverage_sim
     geographical_idx = nil
     solr_parameters[:fq].each.with_index do |f_elem, idx|

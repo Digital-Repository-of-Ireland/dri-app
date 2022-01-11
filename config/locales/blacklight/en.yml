@@ -116,6 +116,10 @@ en:
       title: "Saved Searches"
     search: 
       atom_feed: "Atom for results"
+      bookmarks:
+        present: ""
+        absent: ""
+        inprogress: ""
       documents: 
         counter: "%{counter}. "
       entry_pagination_info: 

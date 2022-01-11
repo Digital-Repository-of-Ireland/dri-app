@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   include UserGroup::PermissionsCheck
   include UserGroup::Helpers
 
-  skip_after_action :discard_flash_if_xhr
+  #skip_after_action :discard_flash_if_xhr
 
   layout 'application'
 
@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
     render_bad_request(DRI::Exceptions::BadRequest.new(t('dri.views.exceptions.invalid_metadata')))
   end
   rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
-  rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
+  rescue_from Blacklight::Exceptions::RecordNotFound, with: :render_404
 
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)
