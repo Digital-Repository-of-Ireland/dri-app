@@ -115,6 +115,7 @@ group :development, :test do
   #gem 'i18n-debug', '~> 1.2'
   gem 'yard'
   gem 'listen'
+  gem 'sane_patch', '~> 1.0'
 end
 
 group :test do

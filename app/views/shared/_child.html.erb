@@ -1,13 +1,13 @@
 <article class="">
-		<%= link_to url_for_document(child.id) do %>
+		<%= link_to search_state.url_for_document(child.id) do %>
       <div class="dri_content_block">
 			  <h1><%= child.link_text %></h1>
         <div class="dri_collection_image">
           <% image = child.cover %>
           <% if image %>
-              <%= image_tag cover_image_path(child.id), :width=>"228" %>
+              <%= image_tag cover_image_path(child.id), width: "228" %>
           <% else %>
-              <%= image_tag "no_image.png", :width=>"228" %>
+              <%= image_tag "no_image.png", width: "228" %>
           <% end %>
         </div>
         <div class="dri_icon">

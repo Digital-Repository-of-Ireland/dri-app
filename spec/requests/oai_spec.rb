@@ -19,7 +19,6 @@ RSpec.describe "Oai requests", type: :request do
   end
 
   after do
-    #object.delete
     collection.destroy
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
   end

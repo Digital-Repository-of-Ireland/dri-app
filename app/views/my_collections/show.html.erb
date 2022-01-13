@@ -1,4 +1,4 @@
-<% @page_title = t('blacklight.search.show.title', document_title: document_show_html_title, application_name: application_name) %>
+<% @page_title = t('blacklight.search.show.title', document_title: document_presenter(@document).html_title, application_name: application_name) %>
 
 <div class="dri_object_container" id="object_container">
   <%= render_document_partial @document, :show %>

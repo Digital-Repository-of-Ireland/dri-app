@@ -1,5 +1,7 @@
-class OaiPmhController < CatalogController
+class OaiPmhController < ApplicationController
+  include DRI::Catalog
   include BlacklightOaiProvider::Controller
+  copy_blacklight_config_from(CatalogController)
 
   DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::EDM.instance)
   DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::OAI.instance)

@@ -78,7 +78,6 @@ module FieldRenderHelper
   # allowing DRI to customise how metadata fields are rendered.
   def render_document_show_field_value(args)
     value = args[:value]
-
     if args[:field] && blacklight_config.show_fields[args[:field]]
       field_config = blacklight_config.show_fields[args[:field]]
       value ||= send(blacklight_config.show_fields[args[:field]][:helper_method], args) if field_config.helper_method
