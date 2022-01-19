@@ -190,8 +190,6 @@ class MyCollectionsController < ApplicationController
   end
 
   def index
-    params[:q] = params.delete(:q_ws)
-    #(@response, @document_list) = search_results(params)
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list
@@ -201,7 +199,7 @@ class MyCollectionsController < ApplicationController
       @timeline_data = timeline_data
     end
 
-    params[:q_ws] = params.delete(:q)
+    #params[:q_ws] = params.delete(:q)
 
     respond_to do |format|
       format.html { store_preferred_view }
@@ -294,7 +292,7 @@ class MyCollectionsController < ApplicationController
     def search_service
       search_service_class.new(
         config: blacklight_config,
-        user_params: search_state.to_h,
+        user_params: search_state.to_h.merge({"q" => params[:q_ws]}),
         current_ability: current_ability
       )
     end

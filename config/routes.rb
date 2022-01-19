@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images', as: 'riiif'
-    #mount DriBatchIngest::Engine => '/ingest'
+    mount DriBatchIngest::Engine => '/ingest'
 
     mount Blacklight::Engine => '/'
     mount BlacklightAdvancedSearch::Engine => '/'
