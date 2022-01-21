@@ -29,7 +29,7 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
-gem 'browse-everything', '~> 1.0'
+gem 'browse-everything', '1.0.0' 
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
@@ -151,6 +151,7 @@ gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '~> 3.4.1'
+#gem 'bootstrap', "~> 4.0"
 gem 'bootstrap-glyphicons'
 gem 'sassc-rails', '>= 2.1.0'
 gem 'sass-rails', '5.1.0'
