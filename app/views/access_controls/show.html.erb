@@ -1,6 +1,17 @@
 <div class="dri_report_container">
 <h3><%= "#{t('dri.reports.headings.access_controls')}: #{@title}" %></h3>
 
+<div id="collectionPermissionsSelectable">
+</div>
 
+<script>
+   var collections = JSON.parse('<%= raw escape_javascript(@access_controls.to_json) %>');
+   $("#collectionPermissionsSelectable").jstree({
+        'core' : {
+          'data' : collections,
+          'multiple' : false
+        }
+   })
+</script>
 
 </div>

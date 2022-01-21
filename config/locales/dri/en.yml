@@ -704,7 +704,7 @@ en:
           report:
             public: Public access to
             restricted: Approved users have access to
-            logged-in: Logged-in users have access to
+            logged_in: Logged-in users have access to
           restricted: Restrict access to users who I approve
         buttons:
           cancel: Cancel
