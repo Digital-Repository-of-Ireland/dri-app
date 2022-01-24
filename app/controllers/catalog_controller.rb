@@ -242,7 +242,7 @@ class CatalogController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { setup_next_and_previous_documents }
+      format.html { @search_context = setup_next_and_previous_documents }
       format.json do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
