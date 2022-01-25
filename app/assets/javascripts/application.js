@@ -57,7 +57,7 @@
 //= require spin
 //= require timelineJS3
 //= require dri_batch_ingest
-//= slick-scroller
+//= require slick-scroller
 //= require dri/timeline
 //= require dri/forms
 //= require dri/spinner
