@@ -36,7 +36,6 @@ gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 
 gem 'config'
 gem 'sqlite3'
-
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-shibboleth'
 gem 'oauth'
@@ -175,8 +174,7 @@ gem 'openlayers-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'clipboard-rails'
 
-gem 'blacklight-maps', '0.5.0'
-gem 'leaflet-rails', '1.4.0'
+gem 'blacklight-maps', '> 0.5'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'

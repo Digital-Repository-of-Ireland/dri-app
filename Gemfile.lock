@@ -223,12 +223,9 @@ GEM
       blacklight (> 6.0, < 8)
       cancancan (~> 1.8)
       deprecation (~> 1.0)
-    blacklight-maps (0.5.0)
-      blacklight (>= 6.1.0)
-      bootstrap-sass (~> 3.2)
-      leaflet-markercluster-rails
-      leaflet-rails
-      rails
+    blacklight-maps (1.1.0)
+      blacklight (>= 7.8.0, < 8)
+      rails (>= 5.1, < 7)
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
@@ -573,10 +570,6 @@ GEM
       nokogiri (~> 1.8)
       parslet
       rdf (~> 3.0)
-    leaflet-markercluster-rails (0.7.0)
-      railties (>= 3.1)
-    leaflet-rails (1.4.0)
-      rails (>= 4.2.0)
     legato (0.7.0)
       multi_json
     link_header (0.0.8)
@@ -1103,7 +1096,7 @@ DEPENDENCIES
   binding_of_caller
   bixby (~> 3)
   blacklight (~> 7)
-  blacklight-maps (= 0.5.0)
+  blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider!
   bootstrap-glyphicons
@@ -1155,7 +1148,6 @@ DEPENDENCIES
   jwt (= 1.5.2)
   kaminari (= 1.1.1)
   launchy
-  leaflet-rails (= 1.4.0)
   legato
   linkeddata
   listen

@@ -14,7 +14,7 @@ Blacklight::BlacklightMapsHelperBehavior.module_eval do
     if params[:f] && params[:f][field] && params[:f][field].include?(field_value)
       new_params = params.permit!
     else
-      new_params = add_facet_params(field, field_value)
+      new_params = search_state.add_facet_params(field, field_value)
     end
     new_params[:view] = default_document_index_view_type
 
