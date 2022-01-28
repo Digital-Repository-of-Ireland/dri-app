@@ -1,16 +1,14 @@
-<div class="modal-header">
-  <button type="button" class="ajax-modal-close close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3 class="modal-title"><%= facet_field_label(@facet.field) %></h3>
-</div>
-<div class="modal-body">
-  <div class="facet_extended_list">
-  <%= render_facet_limit(@display_facet, layout: false) %>
-  </div>
-</div>
-  
-<div class="modal-footer">
+<%= render Blacklight::System::ModalComponent.new do |component| %>
+  <% component.title { facet_field_label(@facet.key) } %>
+  <%= render partial: 'facet_index_navigation' if @facet.index_range && @display_facet.index? %>
 
-  <div class="facet_pagination bottom">
-    <%= render :partial=>'facet_pagination' %>
+  <div class="facet-extended-list">
+    <%= render_facet_limit(@display_facet, layout: false) %>
   </div>
-</div>
+
+  <% component.footer do %>
+    <div class="facet-pagination bottom row justify-content-between">
+      <%= render :partial=>'facet_pagination' %>
+    </div>
+  <% end %>
+<% end %>

@@ -200,3 +200,11 @@ function trackDownload(track, rootCollection, object) {
     );
   }
 }
+
+Blacklight.modal.hide = function(el) {
+  $(el || Blacklight.modal.modalSelector).modal('hide');
+}
+
+Blacklight.modal.show = function(el) {
+ $(el || Blacklight.modal.modalSelector).modal('show');
+}
