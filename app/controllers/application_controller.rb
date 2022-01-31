@@ -156,6 +156,7 @@ class ApplicationController < ActionController::Base
 
     def locked(id)
       obj = SolrDocument.find(id)
+      return if obj.nil?
       return unless CollectionLock.exists?(collection_id: obj.root_collection.alternate_id)
 
       respond_to do |format|
