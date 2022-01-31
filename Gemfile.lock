@@ -81,10 +81,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 556689dd277494a9ba9c3e5932b53a6733483284
+  revision: 5ba73a9d2475f8b4824aebf9bd226e3cfb1c1d94
   branch: develop
   specs:
-    dri_data_models (4.2.6)
+    dri_data_models (4.2.7)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -99,10 +99,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 00d3e32b75633f59268580ee4a46712588d11a99
+  revision: a49ceeaae5fd5e6b4c0bf69cd6a826a5083baf20
   branch: develop
   specs:
-    user_group (2.0.1)
+    user_group (2.1.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
