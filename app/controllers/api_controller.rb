@@ -82,7 +82,7 @@ class ApiController < CatalogController
 
     if params[:object].present?
       solr_query = Solr::Query.construct_query_for_ids([params[:object]])
-      result = repository.connection.get(
+      result = Solr::Query.repository.connection.get(
         'select',
         params: {
           q: solr_query, qt: 'standard',
