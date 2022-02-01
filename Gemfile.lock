@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 5ba73a9d2475f8b4824aebf9bd226e3cfb1c1d94
-  branch: develop
+  revision: 711706fe2cd9ab6ba04f3557588dd295e47836fb
+  tag: v4.2.7
   specs:
     dri_data_models (4.2.7)
       hydra-derivatives
@@ -100,7 +100,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: a49ceeaae5fd5e6b4c0bf69cd6a826a5083baf20
-  branch: develop
+  tag: v2.1.0
   specs:
     user_group (2.1.0)
       blacklight-access_controls
