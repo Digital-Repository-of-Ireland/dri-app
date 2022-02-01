@@ -1,18 +1,18 @@
   <%= form_tag main_app.search_catalog_path, method: :get, id: 'mobile_searchform', class: 'dri_search_term_input_form' do %>
-    <% if search_fields.length > 1 %>
+    <% if search_fields_from_config.length > 1 %>
       <%= select_tag(:search_field,
-                     options_for_select(search_fields, h(params[:search_field])),
+                     options_for_select(search_fields_from_config, h(params[:search_field])),
                      title: t('blacklight.search.form.search_field.title'),
                      id: "search_field",
                      class: "custom-select search-field") %>
-    <% elsif search_fields.length == 1 %>
-      <%= hidden_field_tag :search_field, search_fields.first.last %>
+    <% elsif search_fields_from_config.length == 1 %>
+      <%= hidden_field_tag :search_field, search_fields_from_config.first.last %>
     <% end %>
     <% if (params[:mode].blank?) %>
         <%= hidden_field_tag 'mode', 'objects' %>
     <% end %>
 
-    <%= render_hash_as_hidden_fields(search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)).html_safe %>
+    <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
     <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.q'), id: "mobile_q", class: "dri_search_term_text_input dri_no_clear dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "bottom" %>
 
     <%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',

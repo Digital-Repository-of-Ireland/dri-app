@@ -1961,18 +1961,19 @@ ul.dri_view_collection {
             //display: none;
         }
         span.dri_bookmark_object_label {
-            display: inline;
-            margin-right: 10px;
+            //display: inline;
+            //margin-right: 10px;
             cursor: pointer;
             font-weight: normal;
         }
         form {
+            margin: 0 0 -10px 0;
             .checkbox {
-                margin: 0px;
+                margin: 0 0 0 -10px;
             }
             input[type="checkbox"] {
                 margin-top: 0px;
-                margin-left: 10px;
+                //margin-left: 10px;
             }
             /*** custom checkboxes ***/
 
@@ -1993,7 +1994,7 @@ ul.dri_view_collection {
             /* unchecked icon */
 
             input[type=checkbox] + span:after {
-                letter-spacing: 10px;
+                //letter-spacing: 10px;
             }
             /* space between checkbox and label */
 
@@ -2005,13 +2006,12 @@ ul.dri_view_collection {
             /* checked icon */
 
             input[type=checkbox]:checked + span:after {
-                letter-spacing: 5px;
+                //letter-spacing: 5px;
             }
             /* allow space for check mark */
         }
     }
 }
-
 /*-------------- publishing institute  --------------*/
 
 .dri_publishing_institute_title {
@@ -2658,4 +2658,10 @@ ul.dri_collection_institutes_list {
 .dri_licence_logo {
     height: 2em;
     vertical-align: bottom;
+}
+
+#blacklight-modal {
+  .modal-title {
+	  float: left;
+  }
 }

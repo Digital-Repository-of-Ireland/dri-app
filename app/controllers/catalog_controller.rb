@@ -2,6 +2,7 @@
 class CatalogController < ApplicationController
   include DRI::Catalog
   include BlacklightAdvancedSearch::Controller
+  self.search_service_class = ::SearchService
 
   configure_blacklight do |config|
 
@@ -10,6 +11,7 @@ class CatalogController < ApplicationController
       # support wildcards in advanced search
       query_parser: 'edismax',
       url_key: 'advanced',
+      form_solr_parameters: {}
     }
     #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
@@ -37,6 +39,7 @@ class CatalogController < ApplicationController
     config.show.document_actions.delete(:email)
     config.show.document_actions.delete(:sms)
     config.show.document_actions.delete(:citation)
+    config.add_show_tools_partial(:bookmark, partial: 'catalog/bookmark_control')
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
@@ -183,7 +186,9 @@ class CatalogController < ApplicationController
   def index
     params.delete(:q_ws)
 
-    (@response, @document_list) = search_results(params)
+    #(@response, @document_list) = search_results(params)
+    @response = search_service.search_results.first
+    @document_list = @response.documents
     load_assets_for_document_list
 
     @available_timelines = available_timelines_from_facets
@@ -205,7 +210,9 @@ class CatalogController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    @response, @document = fetch params[:id]
+    #@response, @document = fetch params[:id]
+    @response = search_service.fetch(params[:id]).first
+    @document = @response.documents.first
     if @document.generic_file?
       @document = nil
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
@@ -235,7 +242,7 @@ class CatalogController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { setup_next_and_previous_documents }
+      format.html { @search_context = setup_next_and_previous_documents }
       format.json do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
@@ -261,5 +268,15 @@ class CatalogController < ApplicationController
 
       additional_export_formats(@document, format)
     end
+  end
+
+  private
+
+  def search_service
+    search_service_class.new(
+      config: blacklight_config,
+      user_params: search_state.to_h,
+      current_ability: current_ability
+    )
   end
 end

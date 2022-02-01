@@ -70,7 +70,7 @@ class AccessControlsController < ApplicationController
         entries << {
                      id: id,
                      type: 'folder',
-                     name: title,
+                     text: title,
                      dataAttributes: {
                                       'data-read' => permissions[:read_access],
                                       'data-assets' => permissions[:assets]
@@ -83,10 +83,8 @@ class AccessControlsController < ApplicationController
           entries << {
                        id: "#{id}-inherit",
                        type: 'item',
-                       name: t('dri.views.objects.access_controls.inherit_objects', count: inherit_objects),
-                       attr: {
-                        "data-icon": "glyphicon glyphicon-info-sign"
-                       },
+                       text: t('dri.views.objects.access_controls.inherit_objects', count: inherit_objects),
+                       icon: "glyphicon glyphicon-info-sign",
                        parent_id: document.id
                      }
         end
@@ -97,10 +95,8 @@ class AccessControlsController < ApplicationController
           entries << {
                        id: "#{id}-custom",
                        type: 'folder',
-                       name: t('dri.views.objects.access_controls.custom_objects', count: objects.size),
-                       attr: {
-                        "data-icon": "glyphicon glyphicon-info-sign"
-                       },
+                       text: t('dri.views.objects.access_controls.custom_objects', count: objects.size),
+                       icon: "glyphicon glyphicon-info-sign",
                        parent_id: id
                      }
         end
@@ -110,10 +106,8 @@ class AccessControlsController < ApplicationController
           entries << {
                        id: "#{object.id}",
                        type: 'item',
-                       name: "#{object['title_tesim'].first}: #{object_permissions[:read_label]} #{object_permissions[:assets_label]}",
-                       attr: {
-                        "data-icon": "glyphicon glyphicon-file"
-                       },
+                       text: "#{object['title_tesim'].first}: #{object_permissions[:read_label]} #{object_permissions[:assets_label]}",
+                       icon: "glyphicon glyphicon-file",
                        dataAttributes: {
                                       'data-read' => object_permissions[:read_access],
                                       'data-assets' => object_permissions[:assets]

@@ -8,6 +8,8 @@ class MyCollectionsController < ApplicationController
   include DRI::MyCollectionsSearchExtension
   before_action :authenticate_user!
 
+  self.search_service_class = ::SearchService
+
   configure_blacklight do |config|
 
     config.advanced_search = {
@@ -188,8 +190,8 @@ class MyCollectionsController < ApplicationController
   end
 
   def index
-    params[:q] = params.delete(:q_ws)
-    (@response, @document_list) = search_results(params)
+    @response = search_service.search_results.first
+    @document_list = @response.documents
     load_assets_for_document_list
 
     @available_timelines = available_timelines_from_facets
@@ -197,7 +199,7 @@ class MyCollectionsController < ApplicationController
       @timeline_data = timeline_data
     end
 
-    params[:q_ws] = params.delete(:q)
+    #params[:q_ws] = params.delete(:q)
 
     respond_to do |format|
       format.html { store_preferred_view }
@@ -213,7 +215,9 @@ class MyCollectionsController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    @response, @document = fetch params[:id]
+    #@response, @document = fetch params[:id]
+    @response = search_service.fetch(params[:id]).first
+    @document = @response.documents.first
     if @document.generic_file?
       @document = nil
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
@@ -238,7 +242,7 @@ class MyCollectionsController < ApplicationController
     supported_licences
 
     respond_to do |format|
-      format.html { setup_next_and_previous_documents }
+      format.html { @search_context = setup_next_and_previous_documents }
       format.json do
         options = {}
         options[:with_assets] = true if can?(:read, @document)
@@ -283,5 +287,13 @@ class MyCollectionsController < ApplicationController
       if read_groups.present? && read_groups.include?(document.alternate_id)
         UserGroup::Group.find_by(name: document.alternate_id)
       end
+    end
+
+    def search_service
+      search_service_class.new(
+        config: blacklight_config,
+        user_params: search_state.to_h.merge({"q" => params[:q_ws]}),
+        current_ability: current_ability
+      )
     end
 end

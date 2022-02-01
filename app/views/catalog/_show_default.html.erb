@@ -11,7 +11,7 @@
         <%= render partial: 'shared/show_doi' %>
 
 		<% document_show_fields.each do |solr_fname, field| -%>
-		  <% if should_render_show_field? document, field %>
+          <% if should_render_show_field? document, field %>
 		    <dt class="blacklight-<%= solr_fname.parameterize %>">
 			    <%= render_document_show_field_label field: solr_fname %>
 		    </dt>

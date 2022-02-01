@@ -1,16 +1,16 @@
-<% if @previous_document || @next_document %>
+<% @component = Blacklight::SearchContextComponent.new(search_context: @search_context, search_session: search_session) %>
 
-<div id="dri_pagination_nav_id" class="dri_doc_pagination">
-	<span class="dri_pagination_label"><%= t('dri.views.pagination.label') %></span>
-	<div class="dri_doc_pagination_links">
-		<%if @previous_document %>
-		  <span aria-label="Previous" class="previous"><%= link_to_previous_document @previous_document %></span>
-		<% end %>
-		<span class="position" aria-label="Position">&nbsp;<%= item_page_entry_info %>&nbsp;</span>
-		<%if @next_document %>
-		  <span aria-label="Next" class="next"><%= link_to_next_document @next_document %></span>
-		<% end %>
+<% if @component.render? %>
+	<div id="dri_pagination_nav_id" class="dri_doc_pagination">
+		<span class="dri_pagination_label"><%= t('dri.views.pagination.label') %></span>
+		<div class="dri_doc_pagination_links">
+			<%if @search_context[:prev] %>
+			  <span aria-label="Previous" class="previous"><%= link_to_previous_document(@search_context[:prev]) %></span>
+			<% end %>
+			<span class="position" aria-label="Position">&nbsp;<%= item_page_entry_info %>&nbsp;</span>
+			<%if @search_context[:next] %>
+			  <span aria-label="Next" class="next"><%= link_to_next_document(@search_context[:next]) %></span>
+			<% end %>
+		</div>
 	</div>
-</div>
-
 <% end %>

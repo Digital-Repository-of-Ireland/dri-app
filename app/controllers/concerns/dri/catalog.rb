@@ -33,7 +33,7 @@ module DRI::Catalog
 
     # need rescue_from here to ensure that errors thrown by before_action
     # below are caught and handled properly
-    rescue_from Blacklight::Exceptions::InvalidSolrID, with: :render_404
+    rescue_from Blacklight::Exceptions::RecordNotFound, with: :render_404
     # These before_filters apply the hydra access controls
     before_action :enforce_search_for_show_permissions, only: :show
     extend(ClassMethods)
@@ -41,12 +41,8 @@ module DRI::Catalog
 
   # override this method to change the JSON response from #index
   def render_search_results_as_json
-    @presenter = Blacklight::JsonPresenter.new(@response,
-                                               @document_list,
-                                               facets_from_request,
-                                               blacklight_config)
-
-    {response: {docs: @document_list, facets: @presenter.search_facets_as_json, pages: @presenter.pagination_info}}
+    @presenter = Blacklight::JsonPresenter.new(@response, blacklight_config)
+    { response: { docs: @document_list, facets: @presenter.search_facets, pages: @presenter.pagination_info } }
   end
 
   private

@@ -9,7 +9,6 @@
     options[:escape_value] = true unless options.has_key?(:escape_value)
 
     advanced_hash = search_fields_for_advanced_search.select { |k, v| v.label == label }
-
     unless advanced_hash.empty?
       advanced_key = advanced_hash.keys.first
       change_hash = Rack::Utils.parse_query(URI(options[:remove]).query)

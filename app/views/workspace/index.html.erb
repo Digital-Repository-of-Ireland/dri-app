@@ -12,19 +12,16 @@
         <p>
           <%= link_to t('dri.headerlinks.search_my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'search_my_collections' %>
         </p>
-
         <p>
           <%= link_to t('dri.headerlinks.my_collections'), workspace_collections_path, id: 'my_collections' %>
         </p>
-      <% end %>
-
-      <p>
-        <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>
-      </p>
-
-      <p>
-        <%= link_to t('blacklight.header_links.saved_searches'), blacklight.saved_searches_path, id: 'saved_search' %>
-      </p>
+     <% end %>
+     <p>
+       <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>
+     </p>
+     <p>
+       <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path, id: 'saved_search' %>
+     </p>
   </div>
 </div>
 
@@ -37,7 +34,6 @@
           <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
         </p>
       <% end %>
-
       <p>
         <%= link_to t('dri.headerlinks.batch_ingest'), dri_batch_ingest.new_batch_path %>
       </p>

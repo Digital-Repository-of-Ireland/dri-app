@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
-require "#{Blacklight.root}/app/controllers/saved_searches_controller"
-
 class SavedSearchesController < ApplicationController
+  include Blacklight::SavedSearches
+
   def index
     @searches = current_user.searches.order('created_at DESC')
     @search_info = retrieve_search_info

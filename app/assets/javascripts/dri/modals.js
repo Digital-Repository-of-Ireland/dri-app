@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$('#dri_citation_modal_id').ready(function() {
   // bind change event to select
   $('#dri_citation_options_id').bind('change', function () {
     var style = $(this).val(); // get selected value

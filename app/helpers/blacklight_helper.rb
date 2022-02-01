@@ -73,27 +73,29 @@ module BlacklightHelper
   # @param [Blacklight::Solr::Configuration::SolrField] solr_field
   # @return [Boolean]
   def should_render_show_field?(document, solr_field)
-    if solr_field.field.include?('description')
-      field_no_tesim = solr_field.field.gsub('_tesim', '')
-      split_fields = field_no_tesim.split(/\s*_\s*/)
-      if ISO_639.find(split_fields[-1]).nil?
-        if (!document[split_fields.join('_') << '_gle_tesim'].nil?)
-          return false
-        else
-          super(document, solr_field)
-        end
-      elsif ISO_639.find(split_fields[-1]).include?('eng')
-        split_fields.pop
-        if !document[split_fields.join('_') << '_gle_tesim'].nil?
-          super(document, solr_field)
-        else
-          return false
-        end
+    field_presenter = Blacklight::FieldPresenter.new(self, document, solr_field)
+
+    unless solr_field.field.include?('description')
+      return field_presenter.render_field? && field_presenter.any?
+    end
+
+    field_no_tesim = solr_field.field.gsub('_tesim', '')
+    split_fields = field_no_tesim.split(/\s*_\s*/)
+    if ISO_639.find(split_fields[-1]).nil?
+      if (!document[split_fields.join('_') << '_gle_tesim'].nil?)
+        return false
       else
-        super(document, solr_field)
+        field_presenter.render_field? && field_presenter.any?
+      end
+    elsif ISO_639.find(split_fields[-1]).include?('eng')
+      split_fields.pop
+      if !document[split_fields.join('_') << '_gle_tesim'].nil?
+        field_presenter.render_field? && field_presenter.any?
+      else
+        return false
       end
     else
-      super(document, solr_field)
+      field_presenter.render_field? && field_presenter.any?
     end
   end
 
@@ -116,9 +118,15 @@ module BlacklightHelper
     )
   end
 
+  def search_fields_from_config
+    @search_fields_from_config ||= blacklight_config.search_fields.values
+                                        .select { |field_def| should_render_field?(field_def) }
+                                        .collect { |field_def| [label_for_search_field(field_def.key), field_def.key] }
+  end
+
   # @param [Array<Array>] fields
   # @return [Array] blacklight search fields which can be displayed
-  def display_search_fields(fields = search_fields)
+  def display_search_fields(fields = search_fields_from_config)
     fields.select do |(label, value)|
       blacklight_config.dri_display_search_fields.include?(value.to_sym)
     end
@@ -126,7 +134,7 @@ module BlacklightHelper
 
   # @param [Array<Array>] fields
   # @return [Array] translated fields
-  def translated_search_fields(fields = search_fields)
+  def translated_search_fields(fields = search_fields_from_config)
     fields.map do |(label, value)|
       # if translation doesn't exist, fall back to blacklight label
       [t("blacklight.search.fields.label.#{value.pluralize}", default: label), value]

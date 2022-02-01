@@ -7,7 +7,7 @@
         <% end %>
       <% end %>
       <%= link_to(
-            url_for_document(document),
+            search_state.url_for_document(document),
             document_link_params(document, { counter: document_counter_with_offset(document_counter) })
           ) do %>
       <div>

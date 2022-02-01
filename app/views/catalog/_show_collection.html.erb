@@ -1,15 +1,15 @@
 <div class="dri_object_first_block">
   <div class="dri_object_title_top">
-    <%= document_heading %>
+    <%= document_presenter(document).html_title %>
   </div>
   <div class="dri_border_bottom">
     &nbsp;
   </div>
-  
+
   <dl class="dri_object_metadata_readview">
     <%= render partial: 'shared/show_doi' %>
 
-    <% document_show_fields.each do |solr_fname, field| -%>
+    <% blacklight_config.show_fields.each do |solr_fname, field| -%>
       <% if should_render_show_field? document, field %>
         <dt class="blacklight-<%= solr_fname.parameterize %>">
           <%= render_document_show_field_label field: solr_fname %>
@@ -19,9 +19,9 @@
         </dd>
       <% end -%>
     <% end -%>
-   
+
     <%= render partial: 'shared/display_licence' %>
- 
+
     <dt class="blacklight-depositing_institute">
       <%= t('dri.views.fields.depositing_institute') %>
     </dt>

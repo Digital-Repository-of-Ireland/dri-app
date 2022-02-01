@@ -11,6 +11,7 @@ module DRI::OaiProvider
       options[:repository_url] ||= controller.view_context.send(:oai_catalog_url)
 
       options[:provider].each do |k, v|
+        v = v.call(controller) if v.is_a?(Proc)
         self.class.send k, v
       end
     end

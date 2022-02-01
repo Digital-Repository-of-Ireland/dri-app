@@ -1,4 +1,4 @@
-<% if @response.total <= spell_check_max and @response.spelling.words.size > 0 %>
+<% if @response.total <= blacklight_config.spell_max and @response.spelling.words.size > 0 %>
     <div id="spell">
       <h4 class="suggest">
         <i>

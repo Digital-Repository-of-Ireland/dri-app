@@ -7,7 +7,7 @@
       <% end %>
     <% end %>
 
-    <%= link_to(url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
+    <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
         <h1><%= document['title_tesim'][0] %></h1>
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>

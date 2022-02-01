@@ -5,9 +5,11 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.0'
 
-gem 'blacklight', '~> 6'
-gem 'blacklight_advanced_search', '~> 6'
-gem 'blacklight_oai_provider', '~> 6'
+gem 'blacklight', '~> 7'
+gem 'blacklight_advanced_search', '~> 7'
+gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider' #'~> 6'
+gem 'rsolr'
+gem 'kaminari', '1.1.1'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
@@ -17,8 +19,8 @@ gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.2.6'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.0.1'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.2.7'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.1.0'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail', '~> 4'
@@ -26,14 +28,14 @@ gem 'paper_trail', '~> 4'
 gem 'linkeddata'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest.git', tag: 'v1.1.0'
-gem 'browse-everything', '1.0.0'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
+gem 'browse-everything', '1.0.0' 
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
+gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 
 gem 'config'
 gem 'sqlite3'
-
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-shibboleth'
 gem 'oauth'
@@ -113,6 +115,7 @@ group :development, :test do
   #gem 'i18n-debug', '~> 1.2'
   gem 'yard'
   gem 'listen'
+  gem 'sane_patch', '~> 1.0'
 end
 
 group :test do
@@ -147,6 +150,7 @@ gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '~> 3.4.1'
+#gem 'bootstrap', "~> 4.0"
 gem 'bootstrap-glyphicons'
 gem 'sassc-rails', '>= 2.1.0'
 gem 'sass-rails', '5.1.0'
@@ -170,8 +174,7 @@ gem 'openlayers-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'clipboard-rails'
 
-gem 'blacklight-maps', '0.5.0'
-gem 'leaflet-rails', '1.4.0'
+gem 'blacklight-maps', '> 0.5'
 
 gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'
