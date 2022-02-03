@@ -89,6 +89,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field Solrizer.solr_name('depositor', :facetable), label: 'Depositor'
     config.add_facet_field Solrizer.solr_name('institute', :facetable)
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title
+    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
 
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
 
@@ -198,8 +199,6 @@ class MyCollectionsController < ApplicationController
     if params[:view].present? && params[:view].include?('timeline')
       @timeline_data = timeline_data
     end
-
-    #params[:q_ws] = params.delete(:q)
 
     respond_to do |format|
       format.html { store_preferred_view }
