@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
-  revision: 0545d495bc53c9986ce4d1c51ecce456f7020a42
+  revision: 797797ba53b6ea3acba2710b2ea85e96041987c7
   branch: main
   specs:
     dri_batch_ingest (1.2.0)
@@ -176,17 +176,17 @@ GEM
     autoprefixer-rails (10.4.2.0)
       execjs (~> 2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.549.0)
-    aws-sdk-core (3.125.5)
+    aws-partitions (1.552.0)
+    aws-sdk-core (3.126.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
       aws-sigv4 (~> 1.1)
       jmespath (~> 1.0)
-    aws-sdk-kms (1.53.0)
-      aws-sdk-core (~> 3, >= 3.125.0)
+    aws-sdk-kms (1.54.0)
+      aws-sdk-core (~> 3, >= 3.126.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.111.3)
-      aws-sdk-core (~> 3, >= 3.125.0)
+    aws-sdk-s3 (1.112.0)
+      aws-sdk-core (~> 3, >= 3.126.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.4)
     aws-sigv4 (1.4.0)
@@ -814,7 +814,7 @@ GEM
       rexml (~> 3.2)
     redic (1.5.3)
       hiredis
-    redis (4.5.1)
+    redis (4.6.0)
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     reform (2.5.0)

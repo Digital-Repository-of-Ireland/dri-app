@@ -200,32 +200,33 @@ class ProcessBatchIngest
   end
 
   def self.retrieve_files(download_path, files)
-    retriever = BrowseEverything::Retriever.new
-
     downloaded_files = []
 
     files.each do |file|
       download_location = File.join(download_path, file['download_spec']['file_name'])
-      next if File.exist?(download_location)
-      downloaded = 0
-
-      begin
-        File.open download_location, 'wb' do |dest|
-          # Retrieve the file, yielding each chunk to a block
-          retriever.retrieve(file['download_spec']) do |chunk, retrieved, total|
-            dest.write chunk
-            downloaded = retrieved
-          end
-        end
-      rescue Errno::ENOENT => e
-        download_location = "error: #{e.message}"
-      end
+      download_location = download(download_location, file['download_spec']) unless File.exist?(download_location)
 
       download = { label: file['label'], path: download_location, master_file_id: file['id'] }
       downloaded_files << download
     end
 
     downloaded_files
+  end
+
+  def self.download(download_location, download_spec)
+    downloaded = 0
+    retriever = BrowseEverything::Retriever.new
+    File.open download_location, 'wb' do |dest|
+      # Retrieve the file, yielding each chunk to a block
+      retriever.retrieve(download_spec) do |chunk, retrieved, total|
+        dest.write chunk
+        downloaded = retrieved
+      end
+    end
+
+    download_location
+  rescue Errno::ENOENT => e
+    "error: #{e.message}"
   end
 
   def self.update_master_file(id, update)
