@@ -21,7 +21,7 @@ module DRI
       return default_image(file_types) unless can?(:read, document[:id])
 
       image = nil
-      files = assets ? assets : document.assets
+      files = assets ? DRI::Sorters.sort_by_label_trailing_digits(assets) : document.assets(ordered: true)
 
       files.each do |file|
         image = search_image(file)

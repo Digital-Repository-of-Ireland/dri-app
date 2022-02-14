@@ -106,10 +106,7 @@ module FacetsHelper
   def transform_collection_title(value)
     return 'nil' if value.nil?
 
-    pid = value
-    return value if pid.blank?
-
-    doc = SolrDocument.find(pid)
+    doc = SolrDocument.find(value)
     return 'nil' if doc.nil?
 
     doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
