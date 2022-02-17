@@ -63,7 +63,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
     config.add_facet_field 'file_type_display_sim'
     config.add_facet_field 'institute_sim', limit: 10
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
 
     # Added to test sub-collection belonging objects filter in object results view
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
@@ -186,10 +186,10 @@ class CatalogController < ApplicationController
   def index
     params.delete(:q_ws)
 
-    #(@response, @document_list) = search_results(params)
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list
+    load_collection_titles
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')

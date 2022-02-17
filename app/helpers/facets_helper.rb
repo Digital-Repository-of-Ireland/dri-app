@@ -106,6 +106,10 @@ module FacetsHelper
   def transform_collection_title(value)
     return 'nil' if value.nil?
 
+    if @collection_titles.present? && @collection_titles.key?(value)
+      return @collection_titles[value].first
+    end
+
     doc = SolrDocument.find(value)
     return 'nil' if doc.nil?
 
