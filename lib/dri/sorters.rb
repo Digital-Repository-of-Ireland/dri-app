@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 module DRI::Sorters
+  def self.sort_by_label_trailing_digits(with_labels)
+    with_labels.sort do |a,b|
+      DRI::Sorters.trailing_digits_sort(
+        File.basename(a.label, File.extname(a.label)),
+        File.basename(b.label, File.extname(b.label))
+      )
+    end
+  end
+
   def self.trailing_digits_sort(a, b)
     return 0 if a == b
 

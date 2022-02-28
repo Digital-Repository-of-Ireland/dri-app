@@ -20,6 +20,7 @@
 //= require jquery.ui.resizable
 //= require jquery.ui.autocomplete
 //= require jquery.ui.menu
+//= require jquery.ui.sortable
 //= require jquery.slick
 //= require clipboard
 //= require i18n

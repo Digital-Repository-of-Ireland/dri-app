@@ -83,6 +83,19 @@ module DRI::Catalog
       end
     end
 
+    def load_collection_titles
+      return {} if @document_list.blank?
+      return unless @response['facet_counts']['facet_fields']['root_collection_id_ssi'].present?
+      ids = @response['facet_counts']['facet_fields']['root_collection_id_ssi'].each_slice(2).map(&:first)
+
+      ids_query = Solr::Query.construct_query_for_ids(ids)
+      query = Solr::Query.new(ids_query, ids.length)
+      @collection_titles = {}
+      query.each do |collection|
+        @collection_titles[collection.alternate_id] = collection.title
+      end
+    end
+
     def timeline_data
       tl_field = params[:tl_field].presence || 'sdate'
 

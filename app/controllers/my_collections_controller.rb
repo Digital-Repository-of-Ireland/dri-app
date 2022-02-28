@@ -72,12 +72,9 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field Solrizer.solr_name('width', :facetable, type: :integer), label: 'Image Width'
     config.add_facet_field Solrizer.solr_name('height', :facetable, type: :integer), label: 'Image Height'
     config.add_facet_field Solrizer.solr_name('area', :facetable, type: :integer), label: 'Image Size'
-
     config.add_facet_field Solrizer.solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false
-
     # duration is measured in milliseconds
     config.add_facet_field Solrizer.solr_name('duration_total', :stored_sortable, type: :integer), label: 'Total Duration'
-
     config.add_facet_field Solrizer.solr_name('channels', :facetable, type: :integer), label: 'Audio Channels'
     config.add_facet_field Solrizer.solr_name('sample_rate', :facetable, type: :integer), label: 'Sample Rate'
     config.add_facet_field Solrizer.solr_name('bit_depth', :facetable, type: :integer), label: 'Bit Depth'
@@ -88,15 +85,10 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field Solrizer.solr_name('object_type', :facetable), label: 'Type (from Metadata)'
     config.add_facet_field Solrizer.solr_name('depositor', :facetable), label: 'Depositor'
     config.add_facet_field Solrizer.solr_name('institute', :facetable)
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
-
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
-
-    # Have BL send all facet field names to Solr, which has been the default
-    # previously. Simply remove these lines if you'd rather use Solr request
-    # handler defaults, or have no facets.
-    config.default_solr_params[:'facet.field'] = config.facet_fields.keys
+    config.add_facet_fields_to_solr_request!
 
     # solr fields to be displayed in the index (search results) view
     # The ordering of the field names is the order of the display
@@ -194,6 +186,7 @@ class MyCollectionsController < ApplicationController
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list
+    load_collection_titles
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')

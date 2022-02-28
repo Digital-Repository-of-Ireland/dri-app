@@ -67,7 +67,7 @@ class BaseObjectsController < CatalogController
 
       respond_to do |format|
         if updated
-          flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
+          flash[:notice] = t('dri.flash.notice.licence_updated')
         else
           flash[:error] = t('dri.flash.error.licence_not_updated')
         end

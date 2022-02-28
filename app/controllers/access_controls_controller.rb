@@ -33,7 +33,7 @@ class AccessControlsController < ApplicationController
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve
     else
-      flash[:alert] = t('dri.flash.error.not_updated', item: params[:id])
+      flash[:alert] = t('dri.flash.error.access_controls_not_updated')
     end
 
     respond_to do |format|

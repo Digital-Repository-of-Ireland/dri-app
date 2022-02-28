@@ -8,22 +8,13 @@ module DRI::Solr::Document::File
 
     query = ::Solr::Query.new(files_query, 100, { fq: fq })
     assets = query.to_a
-    ordered ? sort_assets(assets) : assets
+    ordered ? DRI::Sorters.sort_by_label_trailing_digits(assets) : assets
   end
 
   def characterized?
     # not characterized if all empty
     return false unless self.key?('file_size_ltsi')
     self['file_size_ltsi'] > 0
-  end
-
-  def sort_assets(assets)
-    assets.sort do |a,b|
-      DRI::Sorters.trailing_digits_sort(
-        File.basename(a.label, File.extname(a.label)),
-        File.basename(b.label, File.extname(b.label))
-      )
-    end
   end
 
   def preservation_only?

@@ -104,7 +104,7 @@ class CollectionsController < BaseObjectsController
     end
 
     respond_to do |format|
-      flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
+      flash[:notice] = t('dri.flash.notice.updated')
       format.html  { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
     end
   end
@@ -182,7 +182,7 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       if saved
-        flash[:notice] = t('dri.flash.notice.updated', item: params[:id])
+        flash[:notice] = t('dri.flash.notice.updated')
       else
         flash[:error] = t('dri.flash.error.cover_image_not_saved')
       end
