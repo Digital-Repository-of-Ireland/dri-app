@@ -1540,9 +1540,8 @@ p.dri_rss_link a {
     .dri_image {
         padding: 0;
         margin: 0 14px 0 14px;
-        max-height: 113px;
-        min-height: 113px;
-        overflow: hidden;
+        height: 113px;
+	overflow: hidden;
     }
     .dri_collection_image {
         padding: 0;
