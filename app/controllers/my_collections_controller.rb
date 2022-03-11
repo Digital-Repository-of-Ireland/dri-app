@@ -228,6 +228,9 @@ class MyCollectionsController < ApplicationController
       @doi = doi.doi if doi.present? && doi.minted?
     end
 
+    # Get any aggregation config
+    @aggregation = Aggregation.find_or_create_by(collection_id: params[:id])
+
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @track_download = false
 
