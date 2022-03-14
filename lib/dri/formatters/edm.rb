@@ -125,6 +125,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       return ""
     end
 
+    # Fetch the aggregation config
+    aggregation = Aggregation.where(collection_id: record.root_collection_id).first
+
     # Identify the type
     edmtype = self.class::edm_type(record["type_tesim"]);
     contextual_classes = []
@@ -240,11 +243,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Get the asset files
       assets = clean_assets(record.assets(with_preservation: false, ordered: false))
-      landing_page = doi_url(record) || catalog_url(record.id)
+      landing_page = doi_url(record, aggregation.doi_from_metadata?) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
-      mainfile = self.class::mainfile_for_type(edmtype, assets)
+      mainfile = self.class::mainfile_for_type(edmtype, assets, aggregation.iiif_main?)
       imagefile = self.class::mainfile_for_type("IMAGE", assets)
       if mainfile.present?
         thumbnail = thumbnail_url(record, edmtype, mainfile, imagefile)
@@ -274,6 +277,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag!("edm:isShownBy",{"rdf:resource" => is_shown_by}) if is_shown_by
         xml.tag!("edm:isShownAt", {"rdf:resource" => landing_page})
 
+        images = 0
         assets.each do |file|
           if file.id != mainfile.id && file.keys.include?("file_type_tesim")
 
@@ -284,6 +288,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
             elsif file["file_type_tesim"].include? "text"
               url = object_file_url(record.id, file.id, surrogate: 'pdf')
             elsif file["file_type_tesim"].include? "image"
+              next if (images > 0 || (mainfile['file_type_tesim'].include? "image"))
+              images += 1
               url = riiif.image_url("#{record.id}:#{file.id}",size: 'full')
             elsif file["file_type_tesim"].include? "3d"
               url =  object_3d_url(record)  
@@ -390,10 +396,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     return "INVALID"
   end
 
-  def doi_url(record)
+  def doi_url(record, doi_from_metadata=false)
     # Check whether we are supposed to use the provider's DOI
-    aggregation = Aggregation.where(collection_id: record.root_collection_id).first
-    if (aggregation.present? && aggregation.doi_from_metadata?)
+    if (doi_from_metadata)
       if record['source_tesim']
         record['source_tesim'].find { |e| /(https:\/\/doi\.org.*\/.*)/ =~ e }
         return $1 unless $1.blank?
@@ -414,15 +419,19 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
   end
 
   # Get the main file where there is more than one file
-  def self.mainfile_for_type(edmtype, assets)
+  def self.mainfile_for_type(edmtype, assets, iiif_main=false)
     case edmtype
     when "VIDEO"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "video" }
     when "SOUND"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "audio" || "sound" }
     when "TEXT"
-      assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "text" } ||
+      if (iiif_main)
         assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+      else
+        assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "text" } ||
+          assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
+      end
     when "IMAGE"
       assets.find(ifnone = nil) { |obj| obj.key? 'file_type_tesim' and obj['file_type_tesim'].include? "image" }
     when "3D"
@@ -442,7 +451,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         cover_image_url(record.collection_id)
       end
     elsif file['file_type_tesim'].include? "text"
-      object_file_url(record.id, file.id, surrogate: 'lightbox_format')
+      if image.present?
+        riiif.image_url("#{record.id}:#{image.id}", size: '500,')
+      else
+        object_file_url(record.id, file.id, surrogate: 'lightbox_format')
+      end
     elsif file['file_type_tesim'].include? "image"
       riiif.image_url("#{record.id}:#{file.id}", size: '500,')
     elsif file['file_type_tesim'].include? "3d" 

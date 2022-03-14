@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_21_130654) do
+ActiveRecord::Schema.define(version: 2022_03_11_210615) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -18,6 +18,9 @@ ActiveRecord::Schema.define(version: 2021_10_21_130654) do
     t.boolean "doi_from_metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "iiif_main"
+    t.string "comment"
+    t.index ["collection_id"], name: "index_aggregations_on_collection_id", unique: true
   end
 
   create_table "bookmarks", force: :cascade do |t|

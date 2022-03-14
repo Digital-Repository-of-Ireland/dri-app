@@ -1,0 +1,25 @@
+<div id="dri_edm_settings">
+  <%= form_with model: @aggregation, url: save_edm_settings_path, method: :put, html: {id: "configure_edm"} do |f| %>
+
+    <%= f.hidden_field :collection_id, value: params[:id] %>
+    <div>
+      <%= f.label :aggregation_id, t('dri.views.collection.edm.form.aggregation_id') %>
+      <%= f.text_field :aggregation_id %>
+    </div>
+    <div>
+      <%= f.label :doi_from_metadata, t('dri.views.collection.edm.form.doi_from_metadata') %>
+      <%= f.check_box :doi_from_metadata%>
+    </div>
+    <div>
+      <%= f.label :iiif_main, t('dri.views.collection.edm.form.iiif_main') %>
+      <%= f.check_box :iiif_main %>
+    </div>
+    <div>
+      <%= f.label :comment, t('dri.views.collection.edm.form.comment') %>
+      <%= f.text_field :comment %>
+    </div>
+
+  <% end %>
+
+
+</div>

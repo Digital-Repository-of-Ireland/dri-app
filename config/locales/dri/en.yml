@@ -498,6 +498,7 @@ en:
           upload_preservation_file: Upload Preservation-only Asset
           view_assets: View Assets
           embed_data: Embed
+          edm_settings: Configure EDM
         titles:
           editor_tools: Editor Tools
           object_tools: Object Tools
@@ -520,6 +521,14 @@ en:
         doi_modification: DOI change log entry
         duplicates_found: "%{duplicates_count} duplicate objects have been found."
         edit: Edit Collection
+        edm:
+          configure: Configure EDM settings
+          save: Save Settings
+          form:
+            aggregation_id: "Europeana Aggregation ID"
+            doi_from_metadata: "Take DOI from Metadata"
+            iiif_main: "Use IIIF as main resource"
+            comment: "Comments"
         institute:
           add: Add Additional Organisations
           are_you_sure: Are you sure you need a new Organisation?

@@ -167,6 +167,8 @@ Rails.application.routes.draw do
 
     get 'embed3d/:object_id/files/:id/' => 'embed3d#show',  as: :embed3d_display
 
+    get 'aggregations/:id' => 'aggregations#edit', as: :edit_edm_settings
+    put 'aggregations/:id' => 'aggregations#update', as: :save_edm_settings
 
     #API paths
     post 'get_objects' => 'api#objects'

@@ -27,13 +27,25 @@ module DRI::Derivatives::Processors
     private
 
     def combine_options(xfrm)
-      xfrm.gravity(gravity) if gravity.present?
-      xfrm.crop(crop.to_s) if crop
-      if trim.present?
-        xfrm.trim
-        xfrm.repage('0x0+0+0')
+      if resize_and_pad.present?
+        create_resize_and_pad(xfrm)
+      else
+        xfrm.gravity(gravity) if gravity.present?
+        xfrm.crop(crop.to_s) if crop
+
+        if trim.present?
+          xfrm.trim
+          xfrm.repage('0x0+0+0')
+        end
       end
       xfrm.quality(quality.to_s) if quality
+    end
+
+    def create_resize_and_pad(xfrm)
+      xfrm.resize resize_and_pad
+      xfrm.background "rgba(255, 255, 255, 0.0)"
+      xfrm.gravity 'Center'
+      xfrm.extent resize_and_pad
     end
 
     def crop
@@ -46,6 +58,10 @@ module DRI::Derivatives::Processors
 
     def trim
       directives.fetch(:trim, nil)
+    end
+
+    def resize_and_pad
+      directives.fetch(:resize_and_pad, nil)
     end
   end
 end

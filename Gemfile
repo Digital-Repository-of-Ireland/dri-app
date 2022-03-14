@@ -48,7 +48,7 @@ gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 
 # File processing gems
-gem "image_processing", "~> 1.0"
+gem "image_processing", ">= 1.12.2"
 
 # Language and translation related gems
 gem 'http_accept_language'
