@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: c74aa7e1fa58dc550baf4ba35285b3bb799d8188
-  branch: develop
+  revision: d942e7c68d3f617b13019534dd56d5d0da303e52
+  tag: v4.2.8
   specs:
     dri_data_models (4.2.8)
       hydra-derivatives
@@ -100,7 +100,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: a49ceeaae5fd5e6b4c0bf69cd6a826a5083baf20
-  branch: develop
+  tag: v2.1.0
   specs:
     user_group (2.1.0)
       blacklight-access_controls
@@ -210,15 +210,15 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.22.2)
+    blacklight (7.24.0)
       deprecation
       globalid
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 5.1, < 7)
-      view_component (~> 2.42)
+      rails (>= 5.1, < 7.1)
+      view_component (~> 2.43)
     blacklight-access_controls (6.0.0)
       blacklight (> 6.0, < 8)
       cancancan (~> 1.8)
@@ -748,7 +748,7 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.2.5)
+    rdf (3.2.6)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.2.0)
       rdf (~> 3.2)
@@ -1065,7 +1065,7 @@ GEM
       reform-rails
     vegas (0.1.11)
       rack (>= 1.0.0)
-    view_component (2.48.0)
+    view_component (2.50.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
