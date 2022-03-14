@@ -81,10 +81,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 711706fe2cd9ab6ba04f3557588dd295e47836fb
-  tag: v4.2.7
+  revision: d942e7c68d3f617b13019534dd56d5d0da303e52
+  tag: v4.2.8
   specs:
-    dri_data_models (4.2.7)
+    dri_data_models (4.2.8)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -210,7 +210,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.23.0.1)
+    blacklight (7.24.0)
       deprecation
       globalid
       i18n (>= 1.7.0)
@@ -607,7 +607,7 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     logger (1.5.0)
-    loofah (2.14.0)
+    loofah (2.15.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -749,7 +749,7 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.2.5)
+    rdf (3.2.6)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.2.0)
       rdf (~> 3.2)
