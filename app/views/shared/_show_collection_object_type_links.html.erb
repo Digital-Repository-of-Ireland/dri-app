@@ -6,9 +6,9 @@
 
     <!-- If it's a root collection, we show all the objects within it -->
     <% if document.root_collection? %>
-      <% collection_objects_params = { f: {'root_collection_id_ssi'.to_sym => [document['root_collection_id_ssi']]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+      <% collection_objects_params = { f: {'root_collection_id_ssi'.to_sym => [document['root_collection_id_ssi']]}, mode: "objects", search_field: "all_fields", view: "grid", sort: "title_sorted_ssi asc" } %>
     <% else %> <!-- else (sub-collection, we show only the objects that belong to this sub-collection) -->
-      <% collection_objects_params = { f: {'ancestor_id_ssim'.to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
+      <% collection_objects_params = { f: {'ancestor_id_ssim'.to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid", sort: "title_sorted_ssi asc" } %>
     <% end %>
 
     <h5>
@@ -27,7 +27,7 @@
     <% _3d_count   = @file_display_type_count["3d"] %>
 
       <li>
-        <%= link_to search_catalog_path(collection_objects_params), id: 'collection_s_object' do %>
+        <%= link_to(search_catalog_path(collection_objects_params), id: 'collection_s_object') do %>
           <%= t("dri.data.types.all") %>
           <span class="dri_stat_num"><%= objects_count %></span>
         <% end %>
@@ -35,7 +35,7 @@
 
       <% if (image_count) %>
           <li>
-            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "image")) do %>
+            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "image").merge(sort: "title_sorted_ssi asc")) do %>
                 <%= t("dri.data.types.Image") %>
                 <span class="dri_stat_num"><%= image_count %></span>
             <% end %>
@@ -44,7 +44,7 @@
 
       <% if (audio_count) %>
           <li>
-            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "audio")) do %>
+            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "audio").merge(sort: "title_sorted_ssi asc")) do %>
                 <%= t("dri.data.types.Sound") %>
                 <span class="dri_stat_num"><%= audio_count %></span>
             <% end %>
@@ -53,7 +53,7 @@
 
       <% if (video_count) %>
           <li>
-            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "video")) do %>
+            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "video").merge(sort: "title_sorted_ssi asc")) do %>
                 <%= t("dri.data.types.MovingImage") %>
                 <span class="dri_stat_num"><%= video_count %></span>
             <% end %>
@@ -62,7 +62,7 @@
 
       <% if (text_count) %>
           <li>
-            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "text")) do %>
+            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "text").merge(sort: "title_sorted_ssi asc")) do %>
                 <%= t("dri.data.types.Text") %>
                 <span class="dri_stat_num"><%= text_count %></span>
             <% end %>
@@ -71,7 +71,7 @@
 
       <%if(_3d_count) %>
        <li>
-           <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "3d")) do %>
+           <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "3d").merge(sort: "title_sorted_ssi asc")) do %>
              <%= t("dri.data.types.3D")%>
              <span class = "dri_stat_num"><%=_3d_count%> </span>
            <%end%>
@@ -79,7 +79,7 @@
       <%end%>
       <% if (mixed_count) %>
           <li>
-            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "mixed_types")) do %>
+            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "mixed_types").merge(sort: "title_sorted_ssi asc")) do %>
                 <%= t("dri.data.types.MixedType") %>
                 <span class="dri_stat_num"><%= mixed_count %></span>
             <% end %>
