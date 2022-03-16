@@ -9,7 +9,7 @@ gem 'blacklight', '~> 7'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider' #'~> 6'
 gem 'rsolr'
-gem 'kaminari', '1.1.1'
+gem 'kaminari', '>= 1.2.1'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
