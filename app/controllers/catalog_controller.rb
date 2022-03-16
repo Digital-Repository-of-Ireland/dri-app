@@ -139,7 +139,7 @@ class CatalogController < ApplicationController
     end
 
     # "sort results by" options
-    config.add_sort_field "score desc, timestamp desc", label: "relevance \u25BC"
+    config.add_sort_field "score desc, title_sorted_ssi asc", label: "relevance \u25BC"
     config.add_sort_field "title_sorted_ssi asc", label: "title (A-Z)"
     config.add_sort_field "title_sorted_ssi desc", label: "title (Z-A)"
     config.add_sort_field "system_create_dtsi desc", label: "date created \u25BC"
