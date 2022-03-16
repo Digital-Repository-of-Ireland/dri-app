@@ -546,18 +546,18 @@ GEM
     jsonpath (1.1.0)
       multi_json
     jwt (1.5.2)
-    kaminari (1.1.1)
+    kaminari (1.2.2)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.1.1)
-      kaminari-activerecord (= 1.1.1)
-      kaminari-core (= 1.1.1)
-    kaminari-actionview (1.1.1)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
       actionview
-      kaminari-core (= 1.1.1)
-    kaminari-activerecord (1.1.1)
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
       activerecord
-      kaminari-core (= 1.1.1)
-    kaminari-core (1.1.1)
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     launchy (2.5.0)
       addressable (~> 2.7)
     ld-patch (3.2.0)
@@ -1065,7 +1065,7 @@ GEM
       reform-rails
     vegas (0.1.11)
       rack (>= 1.0.0)
-    view_component (2.48.0)
+    view_component (2.50.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
@@ -1146,7 +1146,7 @@ DEPENDENCIES
   js_cookie_rails
   jstree-rails-4!
   jwt (= 1.5.2)
-  kaminari (= 1.1.1)
+  kaminari (>= 1.2.1)
   launchy
   legato
   linkeddata
