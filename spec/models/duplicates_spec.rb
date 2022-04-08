@@ -38,7 +38,7 @@ describe 'DRI::Solr::Document::Collection' do
     end
 
     after(:each) do
-      @collection.delete
+      @collection.destroy
     end
 
     it 'should return a count of duplicates' do
@@ -49,7 +49,6 @@ describe 'DRI::Solr::Document::Collection' do
 
     it 'should get the solr documents of duplicates' do
       doc = SolrDocument.new(@collection.to_solr)
-
       duplicates = doc.duplicates[1]
       ids = duplicates.map(&:id)
 
@@ -103,11 +102,11 @@ describe 'DRI::Solr::Document::Collection' do
 
       duplicates = doc.duplicates[1]
       titles = duplicates.map(&:title)
-      expect([@object.title, @object2.title, @object.title, @object2.title]).to eq titles
+      expect(titles).to eq [@object.title, @object2.title, @object.title, @object2.title]
 
       duplicates = doc.duplicates('title_sorted_ssi asc')[1]
       titles = duplicates.map(&:title)
-      expect([@object.title, @object.title, @object2.title, @object2.title]).to eq titles
+      expect(titles).to eq [@object.title, @object.title, @object2.title, @object2.title]
     end
   end
 end
