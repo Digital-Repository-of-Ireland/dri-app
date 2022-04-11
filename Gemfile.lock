@@ -81,7 +81,7 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 1803e9462c0f9870ed0658598823a518784ea311
+  revision: b618ab70003d250c954e0664b91c1fbad1e45435
   branch: develop
   specs:
     dri_data_models (4.2.8)
@@ -95,6 +95,7 @@ GIT
       om
       rails (~> 5.2)
       resque
+      rsolr
       valkyrie (~> 2.1)
 
 GIT
