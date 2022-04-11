@@ -185,7 +185,7 @@ class MyCollectionsController < ApplicationController
   def index
     @response = search_service.search_results.first
     @document_list = @response.documents
-    load_assets_for_document_list
+    load_assets_for_document_list if params[:mode].presence == 'objects'
     load_collection_titles
 
     @available_timelines = available_timelines_from_facets
