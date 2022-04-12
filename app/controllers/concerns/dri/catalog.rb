@@ -65,6 +65,7 @@ module DRI::Catalog
     end
 
     def load_assets_for_document_list
+      puts "Loading asset list"
       return {} if @document_list.blank?
 
       ids_query = Solr::Query.construct_query_for_ids(
@@ -81,6 +82,7 @@ module DRI::Catalog
         files << file
         @assets[object_id] = files
       end
+      puts @assets.inspect
     end
 
     def load_collection_titles

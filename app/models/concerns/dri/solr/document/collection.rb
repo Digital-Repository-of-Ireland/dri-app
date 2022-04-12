@@ -76,30 +76,28 @@ module DRI::Solr::Document::Collection
   end
 
   def duplicate_total
-    response = duplicate_query
-
-    duplicates = response['facet_counts']['facet_pivot']['metadata_checksum_ssi,alternate_id'].select { |value| value['count'] > 1 && value['pivot'].present? }
     total = 0
-    duplicates.each { |duplicate| total += duplicate['count'] }
+    duplicate_metadata_hashes.each { |_hash, count| total += count }
 
     total
   end
 
   def duplicates(sort=nil)
-    response = duplicate_query
+    total = 0
+    duplicates = duplicate_metadata_hashes
+    duplicates.each { |_hash, count| total += count }
 
-    ids = []
-    duplicates = response['facet_counts']['facet_pivot']["#{metadata_field},alternate_id"].select { |f| f['count'] > 1 }
-    duplicates.each do |duplicate|
-      pivot = duplicate["pivot"]
-      next unless pivot
-      pivot.each { |p| ids << p['value'] }
-    end
+    hashes = duplicates.keys
 
-    query = Solr::Query.construct_query_for_ids(ids)
-    response = Solr::Query.new(query, 100, { sort: sort, rows: ids.size }).get
+    query = Solr::Query.construct_query_for_ids(hashes, 'metadata_checksum_ssi')
+    response = Solr::Query.new(query, 100, { sort: sort, rows: total }).get
 
     return Blacklight::Solr::Response.new(response.response, response.header), response.docs
+  end
+
+  def duplicate_metadata_hashes
+    ids = descendants.map { |descendant| descendant['resource_id_isi']} << self['resource_id_isi']
+    DRI::DigitalObject.where(governing_collection_id: ids).group(:metadata_checksum).having('count_metadata_checksum > 1').count(:metadata_checksum)
   end
 
   def file_display_type_count(published_only: false)
@@ -141,102 +139,86 @@ module DRI::Solr::Document::Collection
 
   private
 
-    def metadata_field
-      'metadata_checksum_ssi'
-    end
+  def metadata_field
+    'metadata_checksum_ssi'
+  end
 
-    # @param [String] status
-    # @param [Boolean] subcoll
-    # @return [String] solr query for children of self (id) with given status
-    def status_query_filters(status, subcoll = false)
-      fq = []
-      fq << "status_ssi:#{status}" unless status.nil?
-      fq << "is_collection_ssi:#{subcoll}"
-      fq
-    end
+  # @param [String] status
+  # @param [Boolean] subcoll
+  # @return [String] solr query for children of self (id) with given status
+  def status_query_filters(status, subcoll = false)
+    fq = []
+    fq << "status_ssi:#{status}" unless status.nil?
+    fq << "is_collection_ssi:#{subcoll}"
+    fq
+  end
 
-    # @param [String] status
-    # @param [Boolean] subcoll
-    # @return [Integer]
-    def status_count(status, subcoll = false)
-      Solr::Query.new(
-        "ancestor_id_ssim:#{self.alternate_id}",
-        100,
-        { fq: status_query_filters(status, subcoll)}
-      ).count
-    end
+  # @param [String] status
+  # @param [Boolean] subcoll
+  # @return [Integer]
+  def status_count(status, subcoll = false)
+    Solr::Query.new(
+      "ancestor_id_ssim:#{self.alternate_id}",
+      100,
+      { fq: status_query_filters(status, subcoll)}
+    ).count
+  end
 
-    def status_counts
-      return @status_counts unless @status_counts.blank?
+  def status_counts
+    return @status_counts unless @status_counts.blank?
 
-      fq = [
-          "+ancestor_id_ssim:#{self.alternate_id}",
-        ]
+    fq = [
+        "+ancestor_id_ssim:#{self.alternate_id}",
+      ]
 
-      query_params = {
-        fq: fq,
-        facet: true,
-        "facet.mincount" => 1,
-        "facet.query" => [
-                          "status_ssi:published AND is_collection_ssi:false",
-                          "status_ssi:draft AND is_collection_ssi:false",
-                          "status_ssi:reviewed AND is_collection_ssi:false",
-                          "status_ssi:reviewed AND is_collection_ssi:true",
-                          "status_ssi:draft AND is_collection_ssi:true",
-                          "status_ssi:published AND is_collection_ssi:true",
-                          "is_collection_ssi:false"
-                        ]
-      }
-      response = Solr::Query.new('*:*', 100, query_params).get
-      counts = response['facet_counts']['facet_queries']
+    query_params = {
+      fq: fq,
+      facet: true,
+      "facet.mincount" => 1,
+      "facet.query" => [
+                        "status_ssi:published AND is_collection_ssi:false",
+                        "status_ssi:draft AND is_collection_ssi:false",
+                        "status_ssi:reviewed AND is_collection_ssi:false",
+                        "status_ssi:reviewed AND is_collection_ssi:true",
+                        "status_ssi:draft AND is_collection_ssi:true",
+                        "status_ssi:published AND is_collection_ssi:true",
+                        "is_collection_ssi:false"
+                      ]
+    }
+    response = Solr::Query.new('*:*', 100, query_params).get
+    counts = response['facet_counts']['facet_queries']
 
-      @status_counts = {}
-      @status_counts[:published_objects] = counts['status_ssi:published AND is_collection_ssi:false']
-      @status_counts[:reviewed_objects] = counts['status_ssi:reviewed AND is_collection_ssi:false']
-      @status_counts[:draft_objects] = counts['status_ssi:draft AND is_collection_ssi:false']
-      @status_counts[:published_collections] = counts['status_ssi:published AND is_collection_ssi:true']
-      @status_counts[:reviewed_collections] = counts['status_ssi:reviewed AND is_collection_ssi:true']
-      @status_counts[:draft_collections] = counts['status_ssi:draft AND is_collection_ssi:true']
-      @status_counts[:total_objects] = @status_counts[:published_objects] + @status_counts[:reviewed_objects] + @status_counts[:draft_objects]
+    @status_counts = {}
+    @status_counts[:published_objects] = counts['status_ssi:published AND is_collection_ssi:false']
+    @status_counts[:reviewed_objects] = counts['status_ssi:reviewed AND is_collection_ssi:false']
+    @status_counts[:draft_objects] = counts['status_ssi:draft AND is_collection_ssi:false']
+    @status_counts[:published_collections] = counts['status_ssi:published AND is_collection_ssi:true']
+    @status_counts[:reviewed_collections] = counts['status_ssi:reviewed AND is_collection_ssi:true']
+    @status_counts[:draft_collections] = counts['status_ssi:draft AND is_collection_ssi:true']
+    @status_counts[:total_objects] = @status_counts[:published_objects] + @status_counts[:reviewed_objects] + @status_counts[:draft_objects]
 
-      @status_counts
-    end
+    @status_counts
+  end
 
-    # @param [String] status
-    # @param [Boolean] subcoll
-    # @return [Solr::Query]
-    def status_objects(status, subcoll = false)
-      Solr::Query.new(
-        "ancestor_id_ssim:#{self.alternate_id}",
-        100,
-        { fq: status_query_filters(status, subcoll)}
-      )
-    end
+  # @param [String] status
+  # @param [Boolean] subcoll
+  # @return [Solr::Query]
+  def status_objects(status, subcoll = false)
+    Solr::Query.new(
+      "ancestor_id_ssim:#{self.alternate_id}",
+      100,
+      { fq: status_query_filters(status, subcoll)}
+    )
+  end
 
-    # @param [String] status
-    # @param [Boolean] subcoll
-    # @return [Array] List of IDs
-    def status_ids(status, subcoll = false)
-      Solr::Query.new(
-        "ancestor_id_ssim:#{self.alternate_id}",
-        100,
-        { fq: status_query_filters(status, subcoll)}
-      ).map(&:alternate_id)
-    end
-
-    def duplicate_query
-      query_params = {
-        fq: [
-          "+ancestor_id_ssim:#{alternate_id}",
-          "+has_model_ssim:\"DRI::DigitalObject\"", "+is_collection_ssi:false"
-        ],
-        "facet.pivot" => "#{metadata_field},alternate_id",
-        facet: true,
-        "facet.mincount" => 2,
-        "facet.limit" => -1,
-        "facet.field" => "#{metadata_field}"
-      }
-
-      Solr::Query.new('*:*', 100, query_params).get
-    end
+  # @param [String] status
+  # @param [Boolean] subcoll
+  # @return [Array] List of IDs
+  def status_ids(status, subcoll = false)
+    Solr::Query.new(
+      "ancestor_id_ssim:#{self.alternate_id}",
+      100,
+      { fq: status_query_filters(status, subcoll)}
+    ).map(&:alternate_id)
+  end
 end
