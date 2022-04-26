@@ -13,7 +13,8 @@
     <% end %>
 
     <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
-    <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.q'), id: "mobile_q", class: "dri_search_term_text_input dri_no_clear dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "bottom" %>
+    <label for="mobile_q" class="sr-only"><%= t('blacklight.search.form.search.label') %></label>
+    <%= text_field_tag :q, params[:q], id: "mobile_q", class: "dri_search_term_text_input dri_no_clear dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "bottom" %>
 
     <%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',
         :'data-target' => '#dri_advanced_search_modal_id',
