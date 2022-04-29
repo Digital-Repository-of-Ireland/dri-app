@@ -1185,6 +1185,8 @@ h4.suggest {
 .dri_head_title {
     color: $dri_darkgrey;
     font-weight: bold;
+    font-size: 100%;
+    line-height: 100%;
     a {
         color: $dri_darkgrey;
     }
@@ -1193,7 +1195,8 @@ h4.suggest {
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        padding: 15px 0 15px 20px;
+        padding: 0 0 0 20px;
+	margin-top: 15px;
         // leave some space for the border
         min-width: $dri_facet_min_width - 2;
     }
@@ -1217,7 +1220,8 @@ h4.suggest {
             .panel-heading {
                 background-color: $dri_white;
                 width: 100%;
-                h5 {
+                h4 {
+		    font-size: 14px;
                     margin: 0;
                     margin-left: 6px;
                     padding: 0;
@@ -1230,7 +1234,7 @@ h4.suggest {
                 }
             }
             .collapsed {
-                h5 {
+                h4 {
                     background: image-url("dri/arrow_up.png") no-repeat right;
                 }
             }
