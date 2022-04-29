@@ -42,6 +42,8 @@ module DRI::Formatters
       'Source' => RDF::Vocab::DC.source,
       'Has Documentation' => RDF::Vocab::DC.requires,
       'Is Documentation For' => RDF::Vocab::DC.isRequiredBy
+      'Replaces' => RDF::Vocab::DC.replaces
+      'Is Replaced By' => RDF::Vocab::DC.isReplacedBy
     }.freeze
 
     delegate :env, :request, to: :controller
