@@ -4,26 +4,35 @@ class="dri_social_media_container">
 	<nav id="dri_social_media_nav_id" class="dri_social_media_nav" >
 		<ul id="dri_social_media_links_id" class="dri_social_media_links" data-content="<%= t('dri.help.social_media_links') %>"  data-original-title="<%= t('dri.help.social_media_links_title')%>" data-trigger="hover" data-placement="right">
 			<%= link_to "https://twitter.com/dri_ireland", :id => "follow_twitter", :target => "_blank" do %>
-			<li> 
+			<li>
 				<i class="fa fa-twitter fa-lg"></i>
+				<span class="sr-only">twitter</span>
 			</li>
 			<% end %>
 			<%= link_to "https://www.facebook.com/digitalrepositoryireland", :id => "follow_facebook", :target => "_blank" do %>
 			<li>
 				<i class="fa fa-facebook-official fa-lg"></i>
+				<span class="sr-only">facebook</span>
 			</li>
 			<% end %>
 			<%= link_to "https://vimeo.com/digitalrepositoryireland", :id => "follow_vimeo", :target => "_blank" do %>
 			<li>
 				<i class="fa fa-vimeo-square fa-lg"></i>
+				<span class="sr-only">vimeo</span>
 			</li>
 			<% end %>
-			<%= link_to "http://www.slideshare.net/dri_ireland", :id => "http://www.slideshare.net/dri_ireland", :target => "_blank" do %>
+			<%= link_to "https://www.slideshare.net/dri_ireland", :id => "https://www.slideshare.net/dri_ireland", :target => "_blank" do %>
 			<li>
 				<i class="fa fa-slideshare"></i>
-			</li>
+				<span class="sr-only">slideshare</span>
+            </li>
+            <% end %>
+            <%= link_to "https://instagram.com/dri_ireland", :id => "https://instagram.com/dri_ireland", :target => "_blank" do %>
+            <li>
+              <i class="fa fa-instagram fa-lg"></i>
+              <span class="sr-only">instagram</span>
+            </li>
 			<% end %>
 		</ul>
 	</nav>
 </div>
-<!-- search term input block (including any required hidden fields) to allow user to input a search term(s)  -->

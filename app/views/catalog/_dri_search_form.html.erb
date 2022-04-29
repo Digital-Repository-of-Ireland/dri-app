@@ -1,5 +1,6 @@
   <%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form' do %>
     <% translated_fields = translated_search_fields(display_search_fields) %>
+    <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
     <%= select_tag(:search_field,
                    options_for_select(translated_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
@@ -13,7 +14,8 @@
 
     <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
     <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
-    <%= text_field_tag :q, params[:q], placeholder: t('blacklight.search.form.q'), id: "q", class: "dri_search_term_text_input dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
+    <label for="q" class="sr-only"><%= t('blacklight.search.form.search') %></label>
+    <%= text_field_tag :q, params[:q], id: "q", class: "dri_search_term_text_input dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
     <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
       <%=t('blacklight.search.form.submit')%>
     </button>
