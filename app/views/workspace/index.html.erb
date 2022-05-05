@@ -1,102 +1,106 @@
 <% @page_title = 'Workspace' %>
 <div class="dri_workspace_menu_block dri_clearfix">
-  <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.workspace') %></h4>
+  <h1 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.workspace') %></h1>
   <div class="dri_workspace_menu_block_info">
-      <p>
+    <ul>
+      <li>
         <%= link_to user_group.user_path(current_user) do %>
           <i class="fa fa-user"></i>&nbsp;<%= current_user[:first_name].to_s %>
         <% end %>
-      </p>
+      </li>
 
       <% if @collection_count > 0 || current_user.is_admin? %>
-        <p>
+        <li>
           <%= link_to t('dri.headerlinks.search_my_collections'), my_collections_index_path(mode: 'collections', search_field: 'all_fields'), id: 'search_my_collections' %>
-        </p>
-        <p>
+        </li>
+        <li>
           <%= link_to t('dri.headerlinks.my_collections'), workspace_collections_path, id: 'my_collections' %>
-        </p>
+        </li>
      <% end %>
-     <p>
+     <li>
        <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>
-     </p>
-     <p>
+     </li>
+     <li>
        <%= link_to t('blacklight.header_links.saved_searches'), saved_searches_path, id: 'saved_search' %>
-     </p>
+     </li>
+   </ul>
   </div>
 </div>
 
 <% if @collection_count > 0 || (current_user.is_cm? || current_user.is_om? || current_user.is_admin?) %>
   <div class="dri_workspace_menu_block dri_clearfix">
-    <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.ingest') %></h4>
+    <h2 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.ingest') %></h2>
     <div class="dri_workspace_menu_block_info">
-      <% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
-        <p>
-          <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
-        </p>
-      <% end %>
-      <p>
-        <%= link_to t('dri.headerlinks.batch_ingest'), dri_batch_ingest.new_batch_path %>
-      </p>
+      <ul>
+        <% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
+          <li>
+            <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
+          </li>
+        <% end %>
+        <li>
+          <%= link_to t('dri.headerlinks.batch_ingest'), dri_batch_ingest.new_batch_path %>
+        </li>
+      </ul>
     </div>
   </div>
 <% end %>
 
 <% if @manage_collections_count > 0 || (current_user.is_cm? || current_user.is_om? || current_user.is_admin?) %>
   <div class="dri_workspace_menu_block dri_clearfix">
-    <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.manage') %></h4>
+    <h2 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.manage') %></h2>
     <div class="dri_workspace_menu_block_info">
+    <ul>
+      <li>
+        <%= link_to t('dri.headerlinks.new_organisation'), new_organisation_path %>
+      </li>
 
-    <p>
-      <%= link_to t('dri.headerlinks.new_organisation'), new_organisation_path %>
-    </p>
+      <% if current_user.is_om? %>
+        <li>
+          <%= link_to t('dri.headerlinks.manage_users'), main_app.manage_users_path %>
+        </li>
+      <% end %>
 
-    <% if current_user.is_om? %>
-      <p>
-        <%= link_to t('dri.headerlinks.manage_users'), main_app.manage_users_path %>
-      </p>
-    <% end %>
+      <% if @manage_collections_count > 0 %>
+        <li>
+          <%= link_to t('dri.views.collection.manage_read_requests'), manage_access_requests_path, id: 'manage_readers' %>
+        </li>
+      <% end %>
 
-    <% if @manage_collections_count > 0 %>
-      <p>
-        <%= link_to t('dri.views.collection.manage_read_requests'), manage_access_requests_path, id: 'manage_readers' %>
-      </p>
-    <% end %>
+      <li>
+        <%= link_to t('dri.datatables.analytics.header'), analytics_path %>
+      </li>
 
-    <p>
-      <%= link_to t('dri.datatables.analytics.header'), analytics_path %>
-    </p>
-
-     <% if @tasks_count > 0 %>
-       <p>
-         <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: 'tasks' %>
-       </p>
-     <% end %>
+      <% if @tasks_count > 0 %>
+        <li>
+          <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: 'tasks' %>
+        </li>
+      <% end %>
+    </ul>
     </div>
   </div>
-
 <% end %>
 
 <% if current_user.is_admin? %>
   <div class="dri_workspace_menu_block dri_clearfix">
-    <h4 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.admin') %></h4>
+    <h2 class="dri_workspace_menu_block_heading"><%= t('dri.headerlinks.admin') %></h2>
     <div class="dri_workspace_menu_block_info">
-
-      <p>
+    <ul>
+      <li>
         <%= link_to t('dri.views.static.admin.licences'), main_app.licences_path, id: 'licences' %>
-      </p>
+      </li>
 
-      <p>
+      <li>
         <%= link_to t('dri.headerlinks.resque'), main_app.resque_server_path, id: 'resque' %>
-      </p>
+      </li>
 
-      <p>
+      <li>
         <%= link_to t('user_groups.views.header.admin'), user_group.admin_path %>
-      </p>
+      </li>
 
-      <p>
+      <li>
         <%= link_to t('dri.headerlinks.reports'), main_app.page_path('reports') %>
-      </p>
-
+      </li>
+    </ul>
     </div>
   </div>
 <% end %>

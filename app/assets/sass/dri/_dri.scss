@@ -148,7 +148,7 @@ a.carousel-control {
     background-color: $dri_green;
     background-image: none;
 }
-.submenu{ 
+.submenu{
 	display: none;
 	position: absolute;
 	left:100%; top:0px;
@@ -1346,6 +1346,12 @@ h4.suggest {
     .dri_workspace_menu_block_info {
         .dri_workspace_menu_block_info_item {
           @extend .dri_account_block_info_item;
+        }
+        li {
+            color: $dri_midgrey;
+            font-size: 110%;
+            margin-bottom: 10px;
+            list-style-type: none;
           }
     }
 }
@@ -1545,7 +1551,7 @@ p.dri_rss_link a {
         padding: 0;
         margin: 0 14px 0 14px;
         height: 113px;
-	overflow: hidden;
+	    overflow: hidden;
     }
     .dri_collection_image {
         padding: 0;
