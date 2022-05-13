@@ -79,7 +79,7 @@ function addVocabAutocomplete(id) {
 function saveUriInForm(element, vocab_uri, label) {
   var fieldset_id = $(element).parents('fieldset').attr('id');
   var model_name = $('#' + fieldset_id + ' .add-text-field a').attr('model-name');
-  var hidden_uri_id = [model_name, fieldset_id].join('_')+'][';
+  var hidden_uri_id = $(element).attr('id') +'_uri';
   var hidden_uri_name = model_name+'['+fieldset_id+'][]';
   // add a hidden input with the vocab uri as the value
   // use a data attribute to validate that the value in the input

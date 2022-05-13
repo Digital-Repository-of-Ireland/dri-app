@@ -19,32 +19,32 @@ Scenario: Seeing autocomplete vocab dropdown
 Scenario: Seeing autocomplete results
   Then I should see 0 visible elements ".ui-autocomplete"
   When I press the edit collection button with text "Add Place"
-  And I fill in "digital_object_geographical_coverage][" with "dublin"
+  And I fill in "digital_object_geographical_coverage_1" with "dublin"
   Then I should see 1 visible element ".ui-autocomplete"
 
 Scenario: Choosing an autocomplete result
   When I press the edit collection button with text "Add Temporal Coverage"
-  And I fill in "digital_object_temporal_coverage][" with "20th century"
-  Then the text in "digital_object_temporal_coverage][" should not have link styling
+  And I fill in "digital_object_temporal_coverage_1" with "20th century"
+  Then the text in "digital_object_temporal_coverage_1" should not have link styling
   And I should see 1 visible element ".ui-autocomplete"
   And I click the first autocomplete result
-  Then the text in "digital_object_temporal_coverage][" should have link styling
+  Then the text in "digital_object_temporal_coverage_1" should have link styling
 
 Scenario: Choosing an autocomplete result should save the label text and hidden URL of the subject
   When I press the edit collection button with text "Add Subject"
-  And I fill in "digital_object_subject][" with "Dublin"
+  And I fill in "digital_object_subject_1" with "Dublin"
   And I click the first autocomplete result
-  Then the hidden "digital_object_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
+  Then the hidden "digital_object_subject_1_uri" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
 
 Scenario: Choosing an autocomplete result, then changing your mind
   When I press the edit collection button with text "Add Subject"
-  And I fill in "digital_object_subject][" with "Dublin"
+  And I fill in "digital_object_subject_1" with "Dublin"
   And I click the first autocomplete result
-  Then the hidden "digital_object_subject][" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
-  And the text in "digital_object_subject][" should have link styling
-  When I fill in "digital_object_subject][" with "asdf"
-  Then I should not see a hidden "input#digital_object_subject][" within "fieldset#subject"
-  Then the text in "digital_object_subject][" should not have link styling
+  Then the hidden "digital_object_subject_1_uri" field within "fieldset#subject" should contain "http:\/\/example\.com\/"
+  And the text in "digital_object_subject_1" should have link styling
+  When I fill in "digital_object_subject_1" with "asdf"
+  Then I should not see a hidden "input#digital_object_subject_1_uri" within "fieldset#subject"
+  Then the text in "digital_object_subject_1" should not have link styling
 
 @wip
 Scenario: Submitting a collection with autocomplete results

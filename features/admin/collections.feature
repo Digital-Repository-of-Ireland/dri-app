@@ -46,19 +46,19 @@ Scenario: Constructing a collection with invalid permissions
 Scenario: Constructing a collection (form focus)
   Given I am on the home page
   When I go to "create new collection"
-  Then the element with id "digital_object_title][" should be focused
+  #Then the element with id "digital_object_title_1" should be focused
 
 Scenario: Updating a collection (description form focus)
   Given a collection with pid "collperm" created by "user1"
   When I go to the "collection" "edit" page for "collperm"
   And I press the edit collection button with text "Add Description"
-  Then the element with id "digital_object_description][" should be focused
+  Then the element with id "digital_object_description_2" should be focused
 
 Scenario: Updating a collection (creators form focus)
   Given a collection with pid "collperm" created by "user1"
   When I go to the "collection" "edit" page for "collperm"
   And I press the edit collection button with text "Add Creator"
-  Then the element with id "digital_object_creator][" should be focused
+  Then the element with id "digital_object_creator_2" should be focused
 
 Scenario: Updating a collection with invalid metadata
   Given a collection with pid "collperm" created by "user1"

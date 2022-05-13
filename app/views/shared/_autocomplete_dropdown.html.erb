@@ -4,7 +4,8 @@
     # if no default is set, use the first label
     default ||= vocabs[0][:name]
   %>
-  <select class='vocab-dropdown'>
+  <label for="vocab-dropdown-<%= source %>" class="sr-only">Select controlled vocabulary for autocomplete</label>
+  <select class='vocab-dropdown' id="vocab-dropdown-<%= source %>">
     <% vocabs.each do |vocab_hash| %>
       <option <%= selected='selected' if vocab_hash[:name] == default %>
               value="<%=vocab_hash[:endpoint]%>">

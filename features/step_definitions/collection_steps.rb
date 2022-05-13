@@ -196,21 +196,21 @@ end
 When /^I enter valid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "digital_object_title][" with "#{title}"
-    And I fill in "digital_object_description][" with "Test description"
-    And I fill in "digital_object_rights][" with "Test rights"
-    And I fill in "digital_object_creator][" with "test@test.com"
-    And I fill in "digital_object_creation_date][" with "2000-01-01"
+    When I fill in "digital_object_title_1" with "#{title}"
+    And I fill in "digital_object_description_1" with "Test description"
+    And I fill in "digital_object_rights_1" with "Test rights"
+    And I fill in "digital_object_creator_1" with "test@test.com"
+    And I fill in "digital_object_creation_date_1" with "2000-01-01"
   }
 end
 
 When /^I enter invalid metadata for a collection(?: with title (.*?))?$/ do |title|
     title ||= "Test collection"
   steps %{
-    When I fill in "digital_object_title][" with "#{title}"
-    And I fill in "digital_object_description][" with "Test description"
-    And I fill in "digital_object_creation_date][" with "2000-01-01"
-    And I fill in "digital_object_rights][" with ""
+    When I fill in "digital_object_title_1" with "#{title}"
+    And I fill in "digital_object_description_1" with "Test description"
+    And I fill in "digital_object_creation_date_1" with "2000-01-01"
+    And I fill in "digital_object_rights_1" with ""
   }
 end
 
