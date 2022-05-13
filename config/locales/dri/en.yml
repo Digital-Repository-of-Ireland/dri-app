@@ -25,6 +25,7 @@ en:
       terms:
         accept: I agree
         deposit_agreement: I agree to the terms of Deposit Agreement
+        deposit_agreement_form: Accept Deposit Agreement
         deposit_header: The Digital Repository of Ireland Terms and Conditions of Deposit.
         header: The Digital Repository of Ireland End User Agreement.
         message: "By ticking &quot;I agree&quot; below you are agreeing to the use of cookies and to the terms and conditions of use as outlined above. These are also available <a href='%{url}'>here</a> For more information see our <a href='https://dri.ie/dri-privacy-statement'>Privacy Policy</a>."
@@ -689,6 +690,7 @@ en:
           description: Here you can set access permissions for your collections and objects.
           edit_collection: Who can edit in this collection / sub-collection?
           edit_desc: Enter the email addresses of Edit Users below. An Edit User is an authorised user who can ingest content into collections to which they have access. These permissions will not be applied until these email addresses have been registered for DRI accounts.
+          edit_users_string: Edit users email addresses
           edit_object: Who can edit this object
           inherit: Inherit this setting from the parent collection
           inherit_objects:
@@ -703,6 +705,8 @@ en:
           inherited_setting: 'Currently set to %{inherited_setting}'
           manage: Who can manage this collection?
           manager_desc: Enter the email addresses of Collection Managers below. A Collection Manager is an authorised user who can create and edit collections which are assigned to them by Organisational Manager. These permissions will not be applied until these email addresses have been registered for DRI accounts.
+          manager_users_string: Manage users email addresses
+          read_users_string: Read users email addresses
           master_file: Which asset files can they access?
           metadata: 'Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. '
           private: Private
@@ -745,7 +749,7 @@ en:
           add_published_date: Add Published Date
           add_relation: Add Relation
           add_rights: Add Rights
-          add_role: Add Role
+          add_role: Add Contributor
           add_source: Add Source
           add_subject: Add Subject
           add_temporal_coverage: Add Temporal Coverage

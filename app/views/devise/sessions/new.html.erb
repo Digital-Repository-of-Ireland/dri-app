@@ -1,13 +1,13 @@
 <div id="dri_login_form_container_id" class="dri_login_form_container">
   <div id="dri_login_form_block_id" class="dri_login_form_block">
-    <%= form_for(resource, :as => resource_name, :url => user_group.new_user_session_path) do |f| %>
+    <%= form_for(resource, as: resource_name, url: user_group.new_user_session_path) do |f| %>
         <%= devise_error_messages! %>
         <h1>
           <%= t('dri.sign_in.title') %>
         </h1>
         <div>
           <%= f.label :email, (t :'user_groups.views.shared.email') %>
-          <%= f.email_field :email, :autofocus => "true" %>
+          <%= f.email_field :email %>
         </div>
         <div>
           <%= f.label :password, (t :'user_groups.views.shared.password') %>

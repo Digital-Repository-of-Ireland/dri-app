@@ -6,68 +6,68 @@ module Interface
 
     def enter_valid_metadata(title)
       within_fieldset('title') do
-        fill_in("digital_object_title][", :with => title)
+        fill_in("digital_object_title_1", :with => title)
       end
       within_fieldset('description') do
-        fill_in("digital_object_description][", :with => "Created using the web form")
+        fill_in("digital_object_description_1", :with => "Created using the web form")
       end
       within_fieldset('creation_date') do
-        if (!page.has_field?("digital_object_creation_date]["))
+        if (!page.has_field?("digital_object_creation_date_1"))
           click_link("Add Creation Date")
-          page.should have_field("digital_object_creation_date][")
+          page.should have_field("digital_object_creation_date_1")
         end
-        fill_in("digital_object_creation_date][", :with => "2013-01-16")
+        fill_in("digital_object_creation_date_1", :with => "2013-01-16")
       end
       within_fieldset('creator') do
-        fill_in("digital_object_creator][", :with => "test@test.com")
+        fill_in("digital_object_creator_1", :with => "test@test.com")
       end
       within_fieldset('rights') do
-        fill_in("digital_object_rights][", :with => "This is a statement of rights")
+        fill_in("digital_object_rights_1", :with => "This is a statement of rights")
       end
       within_fieldset('type') do
-        fill_in("digital_object_type][", :with => "Sound")
+        fill_in("digital_object_type_1", :with => "Sound")
       end
     end
 
     def enter_invalid_metadata(title)
       within_fieldset('title') do
-        fill_in("digital_object_title][", :with => title)
+        fill_in("digital_object_title_1", :with => title)
       end
       within_fieldset('description') do
-        fill_in("digital_object_description][", :with => "Created using the web form")
+        fill_in("digital_object_description_1", :with => "Created using the web form")
       end
       within_fieldset('creation_date') do
-        if (!page.has_field?("digital_object_creation_date]["))
+        if (!page.has_field?("digital_object_creation_date_1"))
           click_link("Add Creation Date")
-          page.should have_field("digital_object_creation_date][")
+          page.should have_field("digital_object_creation_date_1")
         end
-        fill_in("digital_object_creation_date][", :with => "2013-01-16")
+        fill_in("digital_object_creation_date_1", :with => "2013-01-16")
       end
       within_fieldset('rights') do
-        fill_in("digital_object_rights][", :with => "")
+        fill_in("digital_object_rights_1", :with => "")
       end
       within_fieldset('type') do
-        fill_in("digital_object_type][", :with => "Sound")
+        fill_in("digital_object_type_1", :with => "Sound")
       end
     end
 
     def enter_valid_pdf_metadata(title)
       within_fieldset('title') do
-        fill_in("digital_object_title][", :with => title)
+        fill_in("digital_object_title_1", :with => title)
       end
       within_fieldset('description') do
-        fill_in("digital_object_description][", :with => "Created using the web form")
+        fill_in("digital_object_description_1", :with => "Created using the web form")
       end
       within_fieldset('creation_date') do
         click_link("Add Creation Date")
-        page.document.should have_field("digital_object_creation_date][")
-        fill_in("digital_object_creation_date][", :with => "2013-01-16")
+        page.document.should have_field("digital_object_creation_date_1")
+        fill_in("digital_object_creation_date", :with => "2013-01-16")
       end
       within_fieldset('rights') do
-        fill_in("digital_object_rights][", :with => "This is a statement of rights")
+        fill_in("digital_object_rights_1", :with => "This is a statement of rights")
       end
       within_fieldset('type') do
-        fill_in("digital_object_type][", :with => "Text")
+        fill_in("digital_object_type_1", :with => "Text")
       end
     end
 
@@ -82,14 +82,14 @@ module Interface
 
     def enter_modified_metadata
       within_fieldset('description') do
-        fill_in("digital_object_description][", :with => "Editing test")
+        fill_in("digital_object_description_1", :with => "Editing test")
       end
       within_fieldset('creation_date') do
-        if (!page.has_field?("digital_object_creation_date]["))
+        if (!page.has_field?("digital_object_creation_date_1"))
           click_link("Add Creation Date")
-          page.should have_field("digital_object_creation_date][")
+          page.should have_field("digital_object_creation_date_1")
         end
-        fill_in("digital_object_creation_date][", :with => "2013-01-01")
+        fill_in("digital_object_creation_date_1", :with => "2013-01-01")
       end
     end
 

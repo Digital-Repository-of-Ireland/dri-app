@@ -5,6 +5,7 @@ $(document).ready(function() {
     e.preventDefault();
     var fieldset_id = $(this).parents('fieldset').attr('id');
 
+    // do not add if current is empty
     if (typeof $("#"+fieldset_id+" > div > .edit").last().val() != 'undefined' &&
         $("#"+fieldset_id+" > div > .edit").last().val().trim() === ''){
       return;
@@ -12,12 +13,13 @@ $(document).ready(function() {
 
     var model_name = $(this).attr('model-name');
     var new_element_type = $(this).data('input-type');
-    var input_id = [model_name, fieldset_id].join('_')+'][';
+    var label = $(this).data('label');
+    var input_id = [model_name, fieldset_id].join('_');
     var input_name = model_name+'['+fieldset_id+'][]';
-
+    var count = $('[name="' + input_name + '"]').length + 1;
     var new_element_html = (new_element_type == 'textarea') ?
-      createTextArea(input_id, input_name) :
-      createTextInput(input_id, input_name);
+      createTextArea(input_id + "_" + count, input_name, label) :
+      createTextInput(input_id + "_" + count, input_name, label);
 
     $(new_element_html).hide().insertBefore(
       $(this).parent()
@@ -86,31 +88,31 @@ $(document).ready(function() {
   });
 
   // ensure at least one date is entered
-  $("#new_batch").validate({
+  $("#new_digital_object").validate({
     rules: {
-      "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[published_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[date][]": { require_from_group: [1, ".date-group"] },
-      "batch[creator][]": "required",
+      "digital_object[creation_date][]": { require_from_group: [1, ".date-group"] },
+      "digital_object[published_date][]": { require_from_group: [1, ".date-group"] },
+      "digital_object[date][]": { require_from_group: [1, ".date-group"] },
+      "digital_object[creator][]": "required",
     },
     tooltip_options: {
-      "batch[creation_date][]": { placement:'top' },
-      "batch[published_date][]": { placement:'top' },
-      "batch[date][]": { placement:'top' },
+      "digital_object[creation_date][]": { placement:'top' },
+      "digital_object[published_date][]": { placement:'top' },
+      "digital_object[date][]": { placement:'top' },
     },
   });
 
-  $("#edit_batch").validate({
+  $("#edit_digital_object").validate({
     rules: {
-      "batch[creation_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[published_date][]": { require_from_group: [1, ".date-group"] },
-      "batch[date][]": { require_from_group: [1, ".date-group"] },
-      "batch[creator][]": "required",
+      "digital_object[creation_date][]": { require_from_group: [1, ".date-group"] },
+      "digital_object[published_date][]": { require_from_group: [1, ".date-group"] },
+      "digital_object[date][]": { require_from_group: [1, ".date-group"] },
+      "digital_object[creator][]": "required",
     },
     tooltip_options: {
-      "batch[creation_date][]": { placement:'top' },
-      "batch[published_date][]": { placement:'top' },
-      "batch[date][]": { placement:'top' },
+      "digital_object[creation_date][]": { placement:'top' },
+      "digital_object[published_date][]": { placement:'top' },
+      "digital_object[date][]": { placement:'top' },
     },
   });
 });
@@ -133,16 +135,18 @@ function createRemoveButton(model) {
           </a>';
 }
 
-function createTextArea(id, name, classes) {
+function createTextArea(id, name, label) {
   return '<div>\
+            <label for="' + id + '" class="sr-only">' + label + '</label>\
             <textarea class="edit span6 dri-textarea " \
               id='+id+' name='+name+'>\
             </textarea>'+createRemoveButton('batch')+
           '</div>';
 }
 
-function createTextInput(id, name, classes) {
+function createTextInput(id, name, label) {
   return '<div>\
+            <label for="' + id + '" class="sr-only">' + label + '</label>\
             <input class="edit span6 dri-textfield " \
               id='+id+' name='+name+' \
               size="30" type="text" value=""/>'+createRemoveButton('batch')+
@@ -158,11 +162,15 @@ function createPersonInput(id, name, previous_select) {
   } else {
     roles_options = previous_select.html();
   }
+  var count = $('[name="' + name + '[' + id + '][type][]"').length + 1;
+
   return '<div>\
-            <select id="'+name+'_'+id+'][type]["'+
-              ' name="'+name+'['+id+'][type][]">'+roles_options+
+            <label class="sr-only" for="'+name+'_'+id+'_type_'+count+'">Role</label> \
+            <select id="'+name+'_'+id+'_type_'+count+
+              '" name="'+name+'['+id+'][type][]">'+roles_options+
             '</select> \
-              <input class="edit span6 dri-textfield " id="'+name+'_'+id+'][name][" name="'
+            <label class="sr-only" for="'+name+'_'+id+'_name_' + count +'">Name</label> \
+              <input class="edit span6 dri-textfield " id="'+name+'_'+id+'_name_' + count +'" name="'
               +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton('batch')+
           '</div>';
 }

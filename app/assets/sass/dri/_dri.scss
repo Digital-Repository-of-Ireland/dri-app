@@ -148,7 +148,7 @@ a.carousel-control {
     background-color: $dri_green;
     background-image: none;
 }
-.submenu{ 
+.submenu{
 	display: none;
 	position: absolute;
 	left:100%; top:0px;
@@ -343,7 +343,7 @@ a {
     label {
         cursor: auto;
     }
-    h2 {
+    h1 {
         margin: 0 0 20px 0;
         padding: 0px;
         font-weight: bold;
@@ -1346,6 +1346,12 @@ h4.suggest {
     .dri_workspace_menu_block_info {
         .dri_workspace_menu_block_info_item {
           @extend .dri_account_block_info_item;
+        }
+        li {
+            color: $dri_midgrey;
+            font-size: 110%;
+            margin-bottom: 10px;
+            list-style-type: none;
           }
     }
 }
@@ -1545,7 +1551,7 @@ p.dri_rss_link a {
         padding: 0;
         margin: 0 14px 0 14px;
         height: 113px;
-	overflow: hidden;
+	    overflow: hidden;
     }
     .dri_collection_image {
         padding: 0;
@@ -2320,6 +2326,18 @@ ul.dri_collection_institutes_list {
 }
 .dri_ingest_form_container {
     padding-top: 10px;
+    h1 {
+          background-color: $dri_darkgrey;
+          color: #FFF;
+          font-size: 110%;
+          padding: 4px 20px 4px 10px;
+          margin: 20px 0 0 0;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          color: $dri_white;
+          width: 73%;
+          font-weight: bold;
+    }
     .dri_ingest_form {
         width: 60%;
         input.btn-primary {
@@ -2352,6 +2370,18 @@ ul.dri_collection_institutes_list {
                 font-size: 100%;
                 border: 1px solid $dri_lightgrey;
             }
+        }
+        h2 {
+            margin: 15px 0 15px 0;
+            padding: 0 0 8px 0;
+            font-size: 120%;
+            font-weight: bold;
+            color: $dri_darkgrey;
+            display: block;
+            width: 100%;
+            line-height: inherit;
+            border: 0;
+            border-bottom: 1px solid #e5e5e5;
         }
         label {
             font-size: 100%;
@@ -2390,7 +2420,17 @@ ul.dri_collection_institutes_list {
                 color: $dri_darkgrey;
                 font-weight: bold;
             }
-            input {
+	        legend {
+                display: inline-block;
+                clear: both;
+                font-size: 100%;
+                color: $dri_darkgrey;
+                font-weight: bold;
+                margin-bottom: 5px;
+                border: 0px;
+                border-style: none;
+	        }
+            input[type="text"] {
                 clear: both;
                 padding-left: 5px;
                 margin-bottom: 5px;
@@ -2434,7 +2474,7 @@ ul.dri_collection_institutes_list {
     }
 }
 .dri_access_controls {
-    legend {
+    h2 {
         margin: 15px 0 15px 0;
         padding: 0 0 8px 0;
         font-size: 120%;
@@ -2491,6 +2531,11 @@ ul.dri_collection_institutes_list {
             }
         }
     }
+    .dri_access_controls_radio_label {
+          display: inline-block !important;
+          font-weight: normal !important;
+          color: $dri_midgrey;
+        }
 }
 .dri_request_access {
   input[type="radio"] {
