@@ -1,4 +1,4 @@
-<% lang_params = {:path => request.fullpath} %>
+<% lang_params = { :path => request.fullpath } %>
 
 <% if I18n.locale == :en %>
     <% lang_params[:id] = 'ga' %>
@@ -7,7 +7,7 @@
       English <i class="fa fa-sml fa-caret-down"></i>
       <% end %>
 
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+      <ul class="dropdown-menu">
         <%= link_to 'Gaeilge', main_app.lang_path(lang_params) %>
       </ul>
     </ul>
@@ -17,7 +17,7 @@
       <%= link_to '#', :"data-toggle" => "dropdown" do %>
       Gaeilge <i class="fa fa-sml fa-caret-down"></i>
       <% end %>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+      <ul class="dropdown-menu">
         <%= link_to 'English', main_app.lang_path(lang_params) %>
       </ul>
     </ul>
