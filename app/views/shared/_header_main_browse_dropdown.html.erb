@@ -9,18 +9,22 @@
   <ul id="dri-browse-menu" class="dropdown-menu collapse">
     <% if catalog_active? %>
       <li class="active">
+        <%= link_to t('dri.headerlinks.browse_collections'), browselink, id: 'browse', 'aria-current': "page" %>
+      </li>
     <% else %>
       <li>
-    <% end %>
         <%= link_to t('dri.headerlinks.browse_collections'), browselink, id: 'browse' %>
       </li>
+    <% end %>
 
     <% if organisations_active? %>
       <li class="active">
+        <%= link_to t('dri.headerlinks.browse_organisations'), main_app.organisations_path, id: 'institutions', 'aria-current': "page" %>
+      </li>
     <% else %>
       <li>
-    <% end %>
         <%= link_to t('dri.headerlinks.browse_organisations'), main_app.organisations_path, id: 'institutions' %>
       </li>
+    <% end %>
   </ul>
 </li>
