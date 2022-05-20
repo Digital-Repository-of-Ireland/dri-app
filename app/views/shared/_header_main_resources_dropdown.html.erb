@@ -1,26 +1,25 @@
 <li class="dropdown dri_dropdown">
-  <a href="https://dri.ie/dri-training-and-education" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.resources') %> <span class="caret"></span></a>
-  <ul class="dropdown-menu" role="menu">
+  <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false" aria-controls="dri-resources-menu"><%= t('dri.headerlinks.resources') %> <span class="caret"></span></a>
+  <ul id="dri-resources-menu" class="dropdown-menu collapse">
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.training'), "https://dri.ie/dri-training-and-education" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.publications'), "https://dri.ie/publications" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.research_data'), "https://dri.ie/research-data-and-dri" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.user_guides'), "https://guides.dri.ie/" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.early_career'), "https://dri.ie/dri-early-career-research-award" %>
     </li>
-
   </ul>
 </li>
