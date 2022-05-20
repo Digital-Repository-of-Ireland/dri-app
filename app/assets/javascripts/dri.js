@@ -93,14 +93,6 @@ $(document).on("click", ".view_pdf", function () {
 });
 
 $(document).ready(function() {
-  $('.dri_main_nav_new ul.nav li.dropdown').hover(function() {
-    $(this).find('.dropdown-menu').first().stop(true, true).delay(100).fadeIn(200);
-  }, function() {
-     $(this).find('.dropdown-menu').first().stop(true, true).delay(100).fadeOut(200);
-  });
-});
-
-$(document).ready(function() {
   // Tooltip
   $('.clipboard-btn').tooltip({
     trigger: 'click',

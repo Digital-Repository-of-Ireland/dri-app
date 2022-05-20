@@ -1,30 +1,29 @@
 <li class="dropdown dri_dropdown">
-  <a href="http://dri.ie/news" class="dropdown-toggle" role="button" aria-expanded="false"><%= t('dri.headerlinks.news_events') %> <span class="caret"></span></a>
-  <ul class="dropdown-menu" role="menu">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-controls="dri-news-menu"><%= t('dri.headerlinks.news_events') %> <span class="caret"></span></a>
+  <ul id="dri-news-menu" class="dropdown-menu collapse">
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.news'), "http://dri.ie/news" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.newsletter'), "https://dri.ie/dri-friends-newsletter-archive" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.events'), "https://dri.ie/events" %>
     </li>
 
-    <li class="dropdown-item" role="presentation">
+    <li class="dropdown-item">
       <%= link_to t('dri.headerlinks.dpassh'), "https://dri.ie/dpassh" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.blog'), "https://dri.ie/blog" %>
     </li>
 
-    <li role="presentation">
+    <li>
       <%= link_to t('dri.headerlinks.vacancies'), "https://dri.ie/vacancies" %>
     </li>
-
   </ul>
 </li>
