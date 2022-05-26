@@ -173,18 +173,23 @@ class ObjectsController < BaseObjectsController
 
     checksum_metadata(@object)
     supported_licences
+    begin
+      if save_and_index
+        post_save do
+          create_reader_group if @object.collection?
+        end
 
-    if save_and_index
-      post_save do
-        create_reader_group if @object.collection?
+        after_create_success(@object, @warnings)
+      else
+        after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
+
+        flash[:alert] = t('dri.flash.error.unable_to_persist')
+        render :new
       end
-
-      after_create_success(@object, @warnings)
-    else
-      after_create_failure(DRI::Exceptions::InternalError) if params[:metadata_file].present?
-
-      flash[:alert] = t('dri.flash.error.unable_to_persist')
-      render :new
+    rescue DRI::SolrBadRequest => e
+      flash[:alert] = t('dri.flash.alert.invalid_object', error: e.details)
+      redirect_back(fallback_location: root_path)
+      return
     end
   end
 
@@ -395,6 +400,9 @@ class ObjectsController < BaseObjectsController
 
           return true
         rescue RSolr::Error::Http => e
+          if e.response[:status] == 400
+            raise DRI::SolrBadRequest.new(e.request, e.response)
+          end
           raise ActiveRecord::Rollback
         end
       end
