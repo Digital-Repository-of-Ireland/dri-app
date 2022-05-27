@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_11_210615) do
+ActiveRecord::Schema.define(version: 2022_05_24_160942) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_210615) do
     t.integer "media_object_id"
     t.string "status_code"
     t.string "file_size"
-    t.string "file_location"
+    t.text "file_location"
     t.boolean "preservation"
     t.text "download_spec"
     t.datetime "created_at", null: false
