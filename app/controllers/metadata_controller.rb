@@ -100,21 +100,26 @@ class MetadataController < ApplicationController
 
       @object.increment_version
 
-      unless save_and_index
-        logger.error "Could not save object #{@object.alternate_id}"
-        raise DRI::Exceptions::InternalError
+      begin
+        unless save_and_index
+          logger.error "Could not save object #{@object.alternate_id}"
+          raise DRI::Exceptions::InternalError
+        end
+
+        record_version_committer(@object, current_user)
+        flash[:notice] = t('dri.flash.notice.metadata_updated')
+
+        update_or_mint_doi
+        mint_or_update_doi(@object, @doi) if @doi
+
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(['descMetadata'])
+
+        retrieve_linked_data if AuthoritiesConfig
+      rescue DRI::SolrBadRequest => e
+        flash[:alert] = t('dri.flash.alert.invalid_object', error: e.details)
+        @errors = e.details
       end
-
-      record_version_committer(@object, current_user)
-      flash[:notice] = t('dri.flash.notice.metadata_updated')
-
-      update_or_mint_doi
-      mint_or_update_doi(@object, @doi) if @doi
-
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(['descMetadata'])
-
-      retrieve_linked_data if AuthoritiesConfig
     else
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       @errors = @object.errors.full_messages.inspect
