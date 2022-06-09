@@ -344,6 +344,8 @@ ga:
       title: Logáil Isteach
       with_another_account: Logáil isteach le Cuntas Eile
     views:
+      advanced_search:
+        header: Cuardach casta
       alt_tags:
         cover_image: Íomhá Chlúdaigh
       assets:

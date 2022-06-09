@@ -390,6 +390,8 @@ en:
       title: Login
       with_another_account: Login with another Account
     views:
+      advanced_search:
+        header: Advanced Search
       alt_tags:
         cover_image: Cover Image
       assets:

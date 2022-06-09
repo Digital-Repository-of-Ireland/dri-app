@@ -1161,6 +1161,13 @@ h4.suggest {
 #dri_advanced_search_modal_id {
     text-align: left;
 }
+
+#dri_advanced_search_modal_id {
+	.query-criteria-heading {
+          font-size: 18px;
+	}
+}
+
 .advanced-submit-buttons {
     margin-right: 15px;
 }
