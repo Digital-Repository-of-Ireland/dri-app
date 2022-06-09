@@ -1,14 +1,14 @@
-<div class="modal fade" id="dri_cookie_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="dri_cookie_modal" tabindex="-1" role="dialog" aria-describedby="dri_end_user_agreement_text" aria-labelledby="dri_cookie_modal_header">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel"><%= t('dri.application.terms.header') %></h4>
+        <h1 class="modal-title" id="dri_cookie_modal_header"><%= t('dri.application.terms.header') %></h1>
       </div>
       <div class="modal-body">
         <div class="dri_cookie_acceptance_text">
            <p><%= render partial: 'shared/terms' %></p>
         </div>
-           <p><%= t('dri.application.terms.message', :url => main_app.page_path('terms') ).html_safe %></p>
+        <p><%= t('dri.application.terms.message', :url => main_app.page_path('terms') ).html_safe %></p>
       </div>
       <div class="modal-footer">
         <button type="button" id="accept_cookies" class="dri_button_green" data-dismiss="modal" onclick="Cookies.set('accept_cookies', 'yes', { path: '/', expires: 10000 });">

@@ -1161,6 +1161,13 @@ h4.suggest {
 #dri_advanced_search_modal_id {
     text-align: left;
 }
+
+#dri_advanced_search_modal_id {
+	.query-criteria-heading {
+          font-size: 18px;
+	}
+}
+
 .advanced-submit-buttons {
     margin-right: 15px;
 }
@@ -2708,8 +2715,12 @@ ul.dri_collection_institutes_list {
     vertical-align: bottom;
 }
 
+.modal-title {
+	font-size: 20px;
+}
+
 #blacklight-modal {
   .modal-title {
-	  float: left;
+    float: left;
   }
 }
