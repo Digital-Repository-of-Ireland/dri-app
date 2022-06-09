@@ -2708,8 +2708,12 @@ ul.dri_collection_institutes_list {
     vertical-align: bottom;
 }
 
+.modal-title {
+	font-size: 20px;
+}
+
 #blacklight-modal {
   .modal-title {
-	  float: left;
+    float: left;
   }
 }
