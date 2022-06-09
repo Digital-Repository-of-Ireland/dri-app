@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 7126a0d228d142acbe6fe05dcf3c5de1a5781411
-  branch: develop
+  revision: 734bf6c3f3ddfcae079810f7ca033966d2a46918
+  tag: v4.2.10
   specs:
     dri_data_models (4.2.10)
       hydra-derivatives
@@ -101,7 +101,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: a49ceeaae5fd5e6b4c0bf69cd6a826a5083baf20
-  branch: develop
+  tag: v2.1.0
   specs:
     user_group (2.1.0)
       blacklight-access_controls
@@ -198,7 +198,7 @@ GEM
       validatable (~> 1.6)
     bcp47 (0.3.3)
       i18n
-    bcrypt (3.1.16)
+    bcrypt (3.1.18)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -211,18 +211,19 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.22.2)
+    blacklight (7.25.3)
       deprecation
       globalid
+      hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 5.1, < 7)
-      view_component (~> 2.42)
-    blacklight-access_controls (6.0.0)
+      rails (>= 5.1, < 7.1)
+      view_component (~> 2.43)
+    blacklight-access_controls (6.0.1)
       blacklight (> 6.0, < 8)
-      cancancan (~> 1.8)
+      cancancan (>= 1.8)
       deprecation (~> 1.0)
     blacklight-maps (1.1.0)
       blacklight (>= 7.8.0, < 8)
@@ -251,7 +252,7 @@ GEM
       typhoeus
     builder (3.2.4)
     byebug (10.0.2)
-    cancancan (1.17.0)
+    cancancan (3.3.0)
     capybara (3.36.0)
       addressable
       matrix
@@ -459,6 +460,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
+    hashdiff (1.0.1)
     hashie (5.0.0)
     high_voltage (3.1.2)
     highline (2.0.3)
@@ -532,7 +534,7 @@ GEM
       railties (>= 3.1)
     json (2.6.2)
     json-canonicalization (0.3.0)
-    json-ld (3.2.0)
+    json-ld (3.2.1)
       htmlentities (~> 4.3)
       json-canonicalization (~> 0.3)
       link_header (~> 0.0, >= 0.0.8)
@@ -633,7 +635,7 @@ GEM
     multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
-    multipart-post (2.1.1)
+    multipart-post (2.2.2)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.3)
@@ -680,7 +682,7 @@ GEM
       rails (> 3.2.0)
     orm_adapter (0.5.0)
     os (1.1.4)
-    ostruct (0.5.3)
+    ostruct (0.5.5)
     paper_trail (4.2.0)
       activerecord (>= 3.0, < 6.0)
       activesupport (>= 3.0, < 6.0)
@@ -702,7 +704,7 @@ GEM
       rails (>= 5.0, < 6.2)
       rdf
     racc (1.6.0)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rack-protection (2.2.0)
       rack
     rack-test (1.1.0)
@@ -749,7 +751,7 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.2.7)
+    rdf (3.2.8)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.2.0)
       rdf (~> 3.2)
@@ -1066,7 +1068,7 @@ GEM
       reform-rails
     vegas (0.1.11)
       rack (>= 1.0.0)
-    view_component (2.50.0)
+    view_component (2.56.2)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
