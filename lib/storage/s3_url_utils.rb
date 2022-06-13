@@ -15,6 +15,8 @@ module Storage
       s3.bucket(bucket).objects.each do |o|
         return o.object.public_url if o.key.eql?(object)
       end
+
+      nil
     end
 
     private
