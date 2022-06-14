@@ -138,6 +138,7 @@ module Storage
       @url_utils.create_url(with_prefix(bucket), key, nil, false)
     rescue Aws::S3::Errors::ServiceError => e
       Rails.logger.error "Problem getting url for file #{bucket} #{key}: #{e}"
+      nil
     end
 
     # Save Surrogate File
