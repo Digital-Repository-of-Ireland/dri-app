@@ -12,10 +12,10 @@ module DRI::Renderers::Json
     end
 
     if options[:callback].present?
-      self.content_type ||= Mime[:js]
+      self.media_type ||= Mime[:js]
       "#{options[:callback]}(#{json})"
     else
-      self.content_type ||= Mime[:json]
+      self.media_type ||= Mime[:json]
       json
     end
   end
