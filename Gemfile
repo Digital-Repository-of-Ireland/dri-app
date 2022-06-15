@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.2.7.1'
+gem 'rails', '~> 6.0'
 
 gem 'blacklight', '~> 7'
 gem 'blacklight_advanced_search', '~> 7'
@@ -23,7 +23,7 @@ gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-mode
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', branch: 'develop'
 gem "devise", ">= 4.7.1"
 
-gem 'paper_trail', '~> 4'
+gem 'paper_trail'
 
 gem 'linkeddata'
 
