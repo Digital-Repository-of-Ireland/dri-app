@@ -5,7 +5,7 @@ describe XmlDatastream do
 describe 'load_xml' do
 
     it 'raises an exception if no schema' do
-      file = fixture_file_upload("/invalid_metadata_noschema.xml", "text/xml")
+      file = fixture_file_upload("invalid_metadata_noschema.xml", "text/xml")
       class << file
         # The reader method is present in a real invocation,
         # but missing from the fixture object for some reason (Rails 3.1.1)

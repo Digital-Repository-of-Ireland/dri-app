@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.0'
+gem 'rails', '~> 6.1'
 
 gem 'blacklight', '~> 7'
 gem 'blacklight_advanced_search', '~> 7'
@@ -29,7 +29,7 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
-gem 'browse-everything', '1.0.0' 
+gem 'browse-everything', '~> 1.1.0' 
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
