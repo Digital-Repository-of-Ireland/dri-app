@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '>= 5.2.7.1'
+gem 'rails', '~> 6.1'
 
 gem 'blacklight', '~> 7'
 gem 'blacklight_advanced_search', '~> 7'
@@ -23,13 +23,13 @@ gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-mode
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.1.0'
 gem "devise", ">= 4.7.1"
 
-gem 'paper_trail', '~> 4'
+gem 'paper_trail'
 
 gem 'linkeddata'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
-gem 'browse-everything', '1.0.0' 
+gem 'browse-everything', '~> 1.1.0' 
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
