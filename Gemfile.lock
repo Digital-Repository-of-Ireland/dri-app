@@ -100,10 +100,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: b86da75f52f66abfe8460b2680fa88fb96d283f7
+  revision: fc96b730ebf6dddbb6731ad9ea5893cb46ee7851
   branch: develop
   specs:
-    user_group (2.2.0)
+    user_group (2.2.1)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -236,7 +236,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.25.3)
+    blacklight (7.26.0)
       deprecation
       globalid
       hashdiff
@@ -669,7 +669,7 @@ GEM
     mini_magick (4.11.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
-    minitest (5.16.0)
+    minitest (5.16.1)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -1113,7 +1113,7 @@ GEM
       reform-rails
     vegas (0.1.11)
       rack (>= 1.0.0)
-    view_component (2.57.0)
+    view_component (2.57.1)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     warden (1.2.9)
