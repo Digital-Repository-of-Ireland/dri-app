@@ -79,5 +79,7 @@ module DriApp
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.active_record.yaml_column_permitted_classes = [ActiveSupport::HashWithIndifferentAccess]
   end
 end
