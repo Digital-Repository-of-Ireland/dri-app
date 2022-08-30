@@ -133,6 +133,7 @@ function vocabIdToUri(vocab, id) {
     "Logainm": function(v) {return v;},
     // will be dereferencable after fct (facet browser) virtuoso add-on
     "Nuts3": function(v) {return v;},
+    "PeriodO": function(v) { return v; },
     "Hasset": function(v) {return v;},
     "Homosaurus": function(v) {return v;}
   };
