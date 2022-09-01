@@ -3,6 +3,7 @@ require 'rdf/rdfxml'
 require 'rdf/vocab/skos'
 
 def add_hasset_authority
+  return if Qa::LocalAuthority.exists?(name: 'hasset')
   # https://www.rubydoc.info/gems/qa/1.2.0#local-sub-authorities
   hasset_graph = RDF::Graph.load(hasset_data_path)
 
@@ -27,8 +28,8 @@ end
 
 def remove_hasset_authority
   hasset_authority = Qa::LocalAuthority.find_by(name: 'hasset')
-  Qa::LocalAuthorityEntry::delete_all(local_authority: hasset_authority)
-  Qa::LocalAuthority.delete_all(name: 'hasset')
+  Qa::LocalAuthorityEntry.where(local_authority: hasset_authority).delete_all
+  Qa::LocalAuthority.where(name: 'hasset').delete_all
 end
 
 def hasset_data_path

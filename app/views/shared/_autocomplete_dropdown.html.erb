@@ -1,6 +1,6 @@
 <div class='choose-vocab-container'>
   <%
-    vocabs = DRI::AuthorityPresenter.viewable_vocabs
+    vocabs = DRI::AuthorityPresenter.viewable_vocabs(source)
     # if no default is set, use the first label
     default ||= vocabs[0][:name]
   %>
