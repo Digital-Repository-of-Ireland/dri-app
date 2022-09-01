@@ -47,6 +47,8 @@ gem 'moab-versioning', '~> 4.4'
 gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 
+gem 'redis', '~> 4'
+
 # File processing gems
 gem "image_processing", ">= 1.12.2"
 
