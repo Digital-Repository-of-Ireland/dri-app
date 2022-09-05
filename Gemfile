@@ -38,6 +38,7 @@ gem 'config'
 gem 'sqlite3'
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-shibboleth'
+gem "omniauth-rails_csrf_protection"
 gem 'oauth'
 
 #gem 'feedjira'

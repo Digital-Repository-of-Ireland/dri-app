@@ -23,10 +23,11 @@
         <div class="dri_submit">
           <%= f.submit t('dri.sign_in.title' , :default => "Login"), id: 'login' %>
         </div>
-        <div class="dri_form_text">
-          <%= render "devise/shared/links" %>
-        </div>
         <!--  close dri_form_text -->
     <% end %>
+
+    <div class="dri_form_text">
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
 </div>
