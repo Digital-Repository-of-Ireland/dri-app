@@ -548,6 +548,7 @@ en:
             logo: Logo
             name: Name
             url: Url
+            manager: Organisation Manager
           manage: Manage Organisations
           move_all_label: Move all
           move_selected_label: Move selected

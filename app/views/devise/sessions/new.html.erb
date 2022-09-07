@@ -7,7 +7,7 @@
         </h1>
         <div>
           <%= f.label :email, (t :'user_groups.views.shared.email') %>
-          <%= f.email_field :email %>
+          <%= f.email_field :email, autocomplete: "email" %>
         </div>
         <div>
           <%= f.label :password, (t :'user_groups.views.shared.password') %>

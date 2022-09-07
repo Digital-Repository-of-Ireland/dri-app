@@ -3,8 +3,32 @@ class Institute < ActiveRecord::Base
   require 'validators'
 
   has_one :brand
+  has_many :organisation_users, dependent: :destroy
+  has_many :users, -> { distinct }, through: :organisation_users, class_name: 'UserGroup::User'
 
   validates_uniqueness_of :name
+
+  attr_accessor :manager
+
+  def manager
+    org_manager
+  end
+
+  def manager=(email)
+    user = UserGroup::User.find_by(email: email)
+    return if user.nil?
+
+    OrganisationUser.create(institute: self, user: user)
+  end
+
+  def org_manager
+    org_user_memberships = UserGroup::Membership.joins(:group).where("user_group_groups.name =
+'om'").where(user_id: users.pluck(:id))
+
+    return if org_user_memberships.empty?
+
+    org_user_memberships.first.user
+  end
 
   def add_logo(upload, opts = {})
     self.name = opts[:name]

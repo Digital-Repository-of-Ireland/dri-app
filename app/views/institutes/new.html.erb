@@ -40,6 +40,8 @@
           <% if current_user.is_admin? %>
             <label><%= t('dri.views.collection.institute.form.depositing') %></label>
             <%= f.check_box :depositing %>
+            <label for="organisation_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
+          <%= f.text_field :manager %>
           <% end %>
           <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green' %>
           <% end %>

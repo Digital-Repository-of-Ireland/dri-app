@@ -50,11 +50,10 @@ class InstitutesController < ApplicationController
     add_logo if params[:institute][:logo].present?
 
     @inst.url = params[:institute][:url]
-    @inst.depositing = if current_user.is_admin?
-                         params[:institute][:depositing]
-                       else
-                         false
-                       end
+    if current_user.is_admin?
+      @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
+      @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+    end
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
@@ -86,6 +85,7 @@ class InstitutesController < ApplicationController
     @inst.url = params[:institute][:url]
     @inst.name = params[:institute][:name]
     @inst.depositing = params[:institute][:depositing]
+    @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
 
     @inst.save
 
@@ -201,6 +201,6 @@ class InstitutesController < ApplicationController
   end
 
   def update_params
-    params.require(:institute).permit(:name, :logo, :url, :depositing)
+    params.require(:institute).permit(:name, :logo, :url, :depositing, :manager)
   end
 end
