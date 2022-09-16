@@ -70,6 +70,7 @@ en:
         type: Type
         updated_at: Updated At
       assets:
+        preservation: Preservation Only
         preview: Preview
         filename: Filename
         status: Status

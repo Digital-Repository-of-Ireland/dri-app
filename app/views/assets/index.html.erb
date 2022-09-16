@@ -8,6 +8,7 @@
 		  <thead>
 		    <tr>
 		      <th><%= t('dri.datatables.assets.filename') %></th>
+		      <th><%= t('dri.datatables.assets.preservation') %></th>
 		      <th><%= t('dri.datatables.assets.status') %></th>
 		      <th><%= t('dri.datatables.assets.details') %></th>
 		      <th><%= t('dri.datatables.assets.download') %></th>
@@ -15,10 +16,11 @@
 		    </tr>
 		  </thead>
 		  <tbody>
-                <% @assets.each_with_index do |file, index| %>
+      <% @assets.each_with_index do |file, index| %>
 		  <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
-            <tr>
-              <td><%= file.label %></td>
+          <tr>
+          <td><%= file.label %></td>
+          <td><%= file.preservation_only? %></td>
 		      <td><%= @status[file.id][:status] %></td>
 		      <td>
                 <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
