@@ -62,7 +62,7 @@ class CreateArchiveJob
     checksums = []
     object.generic_files.each do |gf|
       # exclude preservation files
-      next if gf.preservation_only == 'true'
+      next if gf.preservation_only?
 
       if inherited_masterfile_access(object) == "public"
         bag.add_file(File.join('originals', "#{gf.alternate_id}_#{gf.label}"), gf.path)
