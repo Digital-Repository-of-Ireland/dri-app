@@ -19,7 +19,7 @@ class CharacterizeJob < IdBasedJob
   end
 
   def after_characterize
-    unless generic_file.preservation_only == 'true'
+    unless generic_file.preservation_only?
       DRI.queue.push(CreateBucketJob.new(generic_file_id))
     end
 

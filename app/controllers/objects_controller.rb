@@ -396,18 +396,20 @@ class ObjectsController < BaseObjectsController
         end
 
         begin
-          raise ActiveRecord::Rollback unless @object.save && @object.update_index
-
-          return true
+          unless @object.save && @object.update_index
+            raise ActiveRecord::Rollback
+            false
+          else
+            true
+          end
         rescue RSolr::Error::Http => e
           if e.response[:status] == 400
             raise DRI::SolrBadRequest.new(e.request, e.response)
           end
           raise ActiveRecord::Rollback
+          false
         end
       end
-
-      false
     end
 
     def post_save

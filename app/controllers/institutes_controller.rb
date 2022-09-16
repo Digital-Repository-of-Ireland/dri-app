@@ -33,12 +33,12 @@ class InstitutesController < ApplicationController
   end
 
   def logo
-    @brand = Institute.find(params[:id]).brand
+    brand = Institute.find(params[:id]).brand
 
     send_data(
-      @brand.file_contents,
-      type: @brand.content_type,
-      filename: @brand.filename,
+      brand.file_contents,
+      type: brand.content_type,
+      filename: brand.filename,
       disposition: 'inline'
     )
   end
@@ -47,14 +47,13 @@ class InstitutesController < ApplicationController
   def create
     @inst = Institute.new
 
-    add_logo
+    add_logo if params[:institute][:logo].present?
 
     @inst.url = params[:institute][:url]
-    @inst.depositing = if current_user.is_admin?
-                         params[:institute][:depositing]
-                       else
-                         false
-                       end
+    if current_user.is_admin?
+      @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
+      @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+    end
     @inst.save
     flash[:notice] = t('dri.flash.notice.organisation_created')
 
@@ -82,9 +81,12 @@ class InstitutesController < ApplicationController
   def update
     @inst = Institute.find(params[:id])
 
-    add_logo
-
+    add_logo if params[:institute][:logo].present?
     @inst.url = params[:institute][:url]
+    @inst.name = params[:institute][:name]
+    @inst.depositing = params[:institute][:depositing]
+    @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+
     @inst.save
 
     respond_to do |format|
@@ -199,6 +201,6 @@ class InstitutesController < ApplicationController
   end
 
   def update_params
-    params.require(:institute).permit(:name, :logo, :url)
+    params.require(:institute).permit(:name, :logo, :url, :depositing, :manager)
   end
 end

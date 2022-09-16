@@ -70,6 +70,7 @@ en:
         type: Type
         updated_at: Updated At
       assets:
+        preservation: Preservation Only
         preview: Preview
         filename: Filename
         status: Status
@@ -544,10 +545,11 @@ en:
           depositing_org_text: Your Organisation will have been added when your Organisational Manager Agreement was signed. Use this page to add additional organisations.
           edit: Update Organisation
           form:
-            depositing: This is a depositing institute
+            depositing: This is a depositing organisation
             logo: Logo
             name: Name
             url: Url
+            manager: Organisation Manager
           manage: Manage Organisations
           move_all_label: Move all
           move_selected_label: Move selected

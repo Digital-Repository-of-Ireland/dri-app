@@ -33,19 +33,21 @@ class GenericFileContent
   def save_and_index(update = false)
     DRI::GenericFile.transaction do
       begin
-        raise ActiveRecord::Rollback unless (generic_file.save && generic_file.update_index)
-
-        reason = update ? 'asset modified' : 'asset added'
-        new_doi(object, reason) if object.status == "published"
-        mint_or_update_doi(object) if object.status == 'published'
-        @has_content = true
-        return true
+        if generic_file.save && generic_file.update_index
+          reason = update ? 'asset modified' : 'asset added'
+          new_doi(object, reason) if object.status == "published"
+          mint_or_update_doi(object) if object.status == 'published'
+          @has_content = true
+          true
+        else
+          raise ActiveRecord::Rollback
+          false
+        end
       rescue RSolr::Error::Http
         raise ActiveRecord::Rollback
+        false
       end
     end
-
-    false
   end
 
   def characterize

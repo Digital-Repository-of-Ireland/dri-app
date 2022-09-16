@@ -3,14 +3,12 @@
     <%= link_to t('dri.sign_in.title'), new_session_path(resource_name), :id => "login" %>
 <% end -%>
 
-
 <%= link_to user_group.new_user_path, :id => "signup" do %>
     <span class=""><%= t('dri.sign_in.register') %></span>
 <% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
     <%= link_to (new_password_path(resource_name)), :id => "password_reset" do %>
-
         <span class="text_right"><%= t('dri.sign_in.forgot_password') %></span>
     <% end %>
 <% end -%>
@@ -30,26 +28,10 @@
       <h2><%= t('dri.sign_in.with_another_account') %></h2>
       <% signWith = t('dri.sign_in.sign_in_with') %>
       <%- resource_class.omniauth_providers.each do |provider| %>
-          <%= link_to (send("user_#{provider}_omniauth_authorize_path")) do %>
-              <!-- ><div class="dri_signin_edugate"><%= signWith + provider.to_s.titleize %></div> -->
+          <%= link_to (send("user_#{provider}_omniauth_authorize_path")), method: :post do %>
               <div class="dri_signin_edugate"><%= t('dri.sign_in.sign_in_with_institution') %></div>
           <% end %>
       <% end -%>
-      <!-- 
-      <% comingSoon = t('dri.window.alert.coming_soon') %>
-      <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
-          <div class="dri_signin_google"><%= t('dri.sign_in.sign_in_with') + 'Google' %></div>
-      <% end %>
-
-      <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
-          <div class="dri_signin_facebook"><%= t('dri.sign_in.sign_in_with') + 'Facebook' %></div>
-      <% end %>
-
-      <%= link_to '', onclick: "alert('#{comingSoon}');" do %>
-          <div class="dri_signin_twitter"><%= t('dri.sign_in.sign_in_with') + 'Twitter' %></div>
-      <% end %> -->
-
     </div>
-
 <% end -%>
 

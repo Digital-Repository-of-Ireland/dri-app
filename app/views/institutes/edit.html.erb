@@ -17,20 +17,22 @@
 						<a class='btn btn-default' href='javascript:;'> <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
 						<p>
 							(recommended height 75px)
-						</p> <%= f.file_field :logo, :required=>'required', :accept=>'image/*', :onchange=>'fileUploadHelper($(this));' %> <h5 id="institution_logo">No File</h5> </a>
+						</p> <%= f.file_field :logo, :accept=>'image/*', :onchange=>'fileUploadHelper($(this));' %> <h5 id="institution_logo">No File</h5> </a>
 					</div>
-					<label> <%= t('dri.views.collection.institute.form.name') %></label>
+					<label for="institute_name"> <%= t('dri.views.collection.institute.form.name') %></label>
 					<%= f.text_field :name, :required=>'required' %>
-					<label><%= t('dri.views.collection.institute.form.url') %></label>
+					<label for="institute_url"><%= t('dri.views.collection.institute.form.url') %></label>
 					<%= f.url_field :url, :required=>'required'  %>
-
-					<%= f.submit t('dri.views.collection.institute.edit'), :id => 'edit_institute', :class=>'btn dri_grey_button' %>
+                    <%= f.label :depositing, t('dri.views.collection.institute.form.depositing') %>
+                    <%= f.check_box :depositing %>
+                    <label for="organisation_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
+					<%= f.text_field :manager %>
+                   	<%= f.submit t('dri.views.collection.institute.edit'), :id => 'edit_institute', :class=>'btn dri_grey_button' %>
 					<% end %>
 					<%= form_for(@inst, url: organisation_path) do |f| %>
 					<%= f.submit "Cancel", :class=>'btn dri_green_button' %>
 					<% end %>
 				</div>
-
 			</div>
 		</div>
 	</div>

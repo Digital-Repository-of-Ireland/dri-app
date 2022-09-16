@@ -203,7 +203,11 @@ class ProcessBatchIngest
     downloaded_files = []
 
     files.each do |file|
-      download_location = File.join(download_path, file['download_spec']['file_name'])
+      # using the path of the file in cloud storage to handle case when
+      # preservation asset and display asset have same filename and extension
+      cloud_path = File.dirname(URI::parse(file['download_spec']['url']).path)
+      FileUtils.mkdir_p(File.join(download_path, cloud_path))
+      download_location = File.join(download_path, cloud_path, file['download_spec']['file_name'])
       download_location = download(download_location, file['download_spec'])
 
       download = { label: file['label'], path: download_location, master_file_id: file['id'] }

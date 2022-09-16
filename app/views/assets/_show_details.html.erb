@@ -1,4 +1,6 @@
-<%= render partial: "show_surrogate" %>
+<% unless @generic_file.preservation_only? %>
+  <%= render partial: "show_surrogate" %>
+<% end %>
 
 <div>
 <table>
