@@ -89,6 +89,7 @@ Rails.application.routes.draw do
     put 'objects/:id/access', to: 'access_controls#update'
 
     post 'objects/:id/tp_data', to: 'tp_data#create', as: :tp_data
+    get 'tp_data/:id' => 'tp_data#edit', as: :review_tp_data
 
     get 'iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
     get 'iiif/collection/:id', to: 'iiif#manifest', as: :iiif_collection_manifest

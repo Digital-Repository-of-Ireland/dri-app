@@ -71,6 +71,10 @@
     <% end %>
   <% end %>
 
+  <%= link_to review_tp_data_path(@document), method: :get, id: "review_tp_data" do %>
+    <li><%= t('dri.views.objects.buttons.review_tp_data') %></li>
+  <% end %>
+
   <% if @document.status != 'published' || current_user.is_admin? %>
     <li>
       <%= form_tag status_update_path(@document.id), method: :put do %>
