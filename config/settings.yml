@@ -35,3 +35,7 @@ iiif:
   server: http://localhost:3000/images
 analytics:
   disable: true
+transcribathon:
+  story_endpoint: "https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/stories/"
+  item_endpoint: "https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/"
+

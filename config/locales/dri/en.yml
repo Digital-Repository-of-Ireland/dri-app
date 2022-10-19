@@ -205,6 +205,7 @@ en:
         specify_object_id: Please specify a valid object id.
         specify_valid_file: You must specify a valid file to upload.
         updated: 'Update successful.'
+        tp_request_submitted: Transcribathon data request successfully submitted.
     footer:
       contacts:
         email: Email
@@ -431,6 +432,7 @@ en:
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
           manage_licence: Manage Licence
+          fetch_tp_data: Fetch Transcribathon Data
           map: Map
           metadata: Metadata
           metadata_full: Full Metadata
@@ -734,10 +736,13 @@ en:
           save_current_search: Save Current Search
           upload: Upload
           upload_master: Upload Master Asset
+          fetch_tp_data: Fetch Transcribathon Data 
+          submit: Submit
         confirm:
           delete: This will delete the object and all assets attached to it. Continue?
           surrogates: This will (re)generate surrogates for all assets. Continue?
           doi_published: "Please note that you are editing a published object. Changes that you make will be visible immediately after being saved. Changes to certain fields may result in the creation of a new version of the DOI name associated with this object. Refer to the depositor guide for more information."
+          tp_data: This will fetch Transcribathon data via the TP API. Continue?
         edit:
           title: Edit Object
           title_collection: Edit Collection
