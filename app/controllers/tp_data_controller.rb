@@ -27,10 +27,19 @@ class TpDataController < ApplicationController
     end
   end
 
-  def show
-  end
+  def edit
+    raise DRI::Exceptions::BadRequest unless params[:id].present?
+    enforce_permissions!('manage_collection', params[:id])
+    raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :manage_collection, params[:id]
 
-  def update
+    # Get all dates for this object id (DRI id)
+    # parse dates and get earliest and latest date
+    # make an array of all other dates
+    # Some initial possible variables below, these to be passed to the view
+    @firstdate = "1890-01-01" # the earliest start date in any of the items
+    @lastdate = "1894-04-20" # the latest end date in any of the items (or lates start date if no end dates
+    @alldates = [["1890-01-01","1890-01-05"], ["1890-03-16", ""], ["1894-02-03", "1894-04-20"]] # a list of all start & end dates across all items
+
   end
 
   private
