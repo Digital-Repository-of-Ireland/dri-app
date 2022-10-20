@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_153809) do
+ActiveRecord::Schema.define(version: 2022_10_19_183308) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -315,6 +315,13 @@ ActiveRecord::Schema.define(version: 2022_09_06_153809) do
     t.datetime "updated_at"
     t.string "user_type"
     t.index ["user_id"], name: "index_searches_on_user_id"
+  end
+
+  create_table "tp_stories", force: :cascade do |t|
+    t.string "story_id"
+    t.string "dri_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "user_background_tasks", force: :cascade do |t|
