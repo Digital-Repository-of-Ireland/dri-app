@@ -1,0 +1,2 @@
+class TpStory < ApplicationRecord
+end
