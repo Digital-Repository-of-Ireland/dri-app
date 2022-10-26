@@ -115,9 +115,8 @@ class CollectionsController < BaseObjectsController
     enforce_permissions!('manage_collection', params[:id])
 
     @object = retrieve_object!(params[:id])
-
     # If a cover image was uploaded, remove it from the params hash
-    cover_image = params[:digital_object].delete(:cover_image)
+    cover_image = params[:digital_object]&.delete(:cover_image)
 
     @institutes = Institute.all
     @inst = Institute.new
@@ -133,12 +132,17 @@ class CollectionsController < BaseObjectsController
 
     @object.increment_version
 
+    if cover_image.present?
+      url = Storage::CoverImages.validate_and_store(cover_image, @object)
+      if url
+        @object.cover_image = url
+      else
+        flash[:error] = t('dri.flash.error.cover_image_not_saved')
+      end
+    end
+
     respond_to do |format|
       if save_and_index
-        if cover_image.present?
-          flash[:error] = t('dri.flash.error.cover_image_not_saved') unless Storage::CoverImages.validate_and_store(cover_image, @object)
-        end
-
         post_save do
           mint_or_update_doi(@object, doi) if doi
         end
@@ -160,32 +164,31 @@ class CollectionsController < BaseObjectsController
 
     @object = retrieve_object!(params[:id])
 
-    if params[:digital_object].present? && [:cover_image].present?
+    if params[:digital_object].present? && params[:digital_object][:cover_image].present?
       cover_image = params[:digital_object][:cover_image]
     else
       raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.file_not_found')
     end
 
     @object.increment_version
+    cover_url = Storage::CoverImages.validate_and_store(cover_image, @object)
 
-    if cover_image.present?
-      saved = Storage::CoverImages.validate_and_store(cover_image, @object)
-    end
+    if cover_url
+      @object.cover_image = cover_url
+      @object.save
 
-    if saved
       record_version_committer(@object, current_user)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve
+
+      flash[:notice] = t('dri.flash.notice.updated')
+    else
+      flash[:error] = t('dri.flash.error.cover_image_not_saved')
     end
 
     respond_to do |format|
-      if saved
-        flash[:notice] = t('dri.flash.notice.updated')
-      else
-        flash[:error] = t('dri.flash.error.cover_image_not_saved')
-      end
       format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
     end
   end
@@ -228,6 +231,9 @@ class CollectionsController < BaseObjectsController
   # Creates a new model using the parameters passed in the request.
   #
   def create
+    # If a cover image was uploaded, remove it from the params hash
+    cover_image = params[:digital_object]&.delete(:cover_image)
+
     created = params[:metadata_file].present? ? create_from_xml : create_from_form
     unless created
       if params[:metadata_file].present?
@@ -237,10 +243,7 @@ class CollectionsController < BaseObjectsController
         return
       end
     end
-
-    # If a cover image was uploaded, remove it from the params hash
-    cover_image = params[:digital_object]&.delete(:cover_image)
-
+   
     unless @object.valid?
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       if params[:metadata_file].present?
@@ -253,10 +256,15 @@ class CollectionsController < BaseObjectsController
 
     if @object.save
       if cover_image.present?
-        unless Storage::CoverImages.validate_and_store(cover_image, @object)
+        url = Storage::CoverImages.validate_and_store(cover_image, @object)
+        if url
+          @object.cover_image = url
+          @object.save
+        else
           flash[:error] = t('dri.flash.error.cover_image_not_saved')
         end
       end
+
       # We have to create a default reader group
       create_reader_group
 

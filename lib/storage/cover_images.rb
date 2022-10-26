@@ -5,21 +5,18 @@ module Storage
   module CoverImages
     def self.validate_and_store(cover_image, collection)
       return if cover_image.blank?
-      return false unless %w[image/jpeg image/png image/gif].include?(Validators.file_type(cover_image))
-      return false if virus?(cover_image)
+      return nil unless %w[image/jpeg image/png image/gif].include?(Validators.file_type(cover_image))
+      return nil if virus?(cover_image)
 
       processed = ImageProcessing::MiniMagick.source(cover_image.path)
                                              .resize_and_pad!(228, 128)      
       url = store_cover(processed, cover_image.original_filename, collection)
       unless url_valid?(url)
         Rails.logger.error "Unable to save cover image."
-        return false
+        return nil
       end
       
-      collection.cover_image = url
-      collection.save
-
-      true
+      url
     end
 
     def self.virus?(cover_image)
