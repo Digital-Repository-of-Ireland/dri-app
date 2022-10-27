@@ -35,13 +35,12 @@ class BaseObjectsController < CatalogController
         begin
           raise ActiveRecord::Rollback unless @object.save && @object.update_index
 
-          return true
+          true
         rescue RSolr::Error::Http => e
           raise ActiveRecord::Rollback
+          false
         end
       end
-
-      false
     end
 
     # Updates the licence.
