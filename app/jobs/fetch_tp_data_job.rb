@@ -34,14 +34,36 @@ class FetchTpDataJob
 
     response = conn.get()
     json_input = response.body # to be parsed, just printing here to show we got it!
-    parse_data = JSON.parse(json_input)
-    print(parse_data)
-    dri_record_id = parse_data['ExternalRecordId']
-    story_id = parse_data['StoryId']
-    print(dri_record_id + '\n')
-    print(story_id +'\n')
+    
+    dri_record_id = json_input[0]['ExternalRecordId']
+    story_id = json_input[0]['StoryId']
+    x = json_input[0]['Items'].count
+    y = 0
+    item_input = []
+    item_id = []
+    
+    json_input[0]['Items'].each do |item|
+    item_input.push(item)
+    end
+    
+    while y >= x
+    	item_input[y]['ItemId'] do |itemid|
+    	item_id.push(itemid)
+    	print("test")
+    	y = y+1
+    	end
+    end
     
     
+    
+    
+    #item_id = []
+    #x =0
+    #json_input[x]['items'].each do |item|
+    #	item_id.push json_input[x]['items']
+    #	x+=1
+    #	print item_id
+    #end
 
 
       # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
