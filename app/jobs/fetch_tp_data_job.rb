@@ -1,6 +1,7 @@
 class FetchTpDataJob
   require 'faraday'
   require 'faraday_middleware'
+  require 'json'
 
   @queue = :fetch_tp_data
 
@@ -32,7 +33,15 @@ class FetchTpDataJob
     end
 
     response = conn.get()
-    print(response.body) # to be parsed, just printing here to show we got it!
+    json_input = response.body # to be parsed, just printing here to show we got it!
+    parse_data = JSON.parse(json_input)
+    print(parse_data)
+    dri_record_id = parse_data['ExternalRecordId']
+    story_id = parse_data['StoryId']
+    print(dri_record_id + '\n')
+    print(story_id +'\n')
+    
+    
 
 
       # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
