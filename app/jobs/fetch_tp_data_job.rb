@@ -40,30 +40,17 @@ class FetchTpDataJob
     x = json_input[0]['Items'].count
     y = 0
     item_input = []
-    item_id = []
     
     json_input[0]['Items'].each do |item|
     item_input.push(item)
     end
     
-    while y >= x
-    	item_input[y]['ItemId'] do |itemid|
-    	item_id.push(itemid)
-    	print("test")
-    	y = y+1
-    	end
-    end
-    
-    
-    
-    
-    #item_id = []
-    #x =0
-    #json_input[x]['items'].each do |item|
-    #	item_id.push json_input[x]['items']
-    #	x+=1
-    #	print item_id
-    #end
+    item_id = item_input.map{|i| i["ItemId"]}
+    start_date = item_input.map{|i| i["DateStart"]}
+    end_date = item_input.map{|i| i["DateEnd"]}
+    item_link = item_input.map{|i| i["ImageLink"].gsub('\\', '')}
+    print(item_link)
+
 
 
       # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
