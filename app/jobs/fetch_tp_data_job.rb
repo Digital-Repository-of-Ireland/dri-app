@@ -34,22 +34,46 @@ class FetchTpDataJob
 
     response = conn.get()
     json_input = response.body # to be parsed, just printing here to show we got it!
-    
+
     dri_record_id = json_input[0]['ExternalRecordId']
     story_id = json_input[0]['StoryId']
     x = json_input[0]['Items'].count
     y = 0
     item_input = []
-    
-    json_input[0]['Items'].each do |item|
-    item_input.push(item)
-    end
-    
-    item_id = item_input.map{|i| i["ItemId"]}
-    start_date = item_input.map{|i| i["DateStart"]}
-    end_date = item_input.map{|i| i["DateEnd"]}
-    item_link = item_input.map{|i| i["ImageLink"].gsub('\\', '')}
-    print(item_link)
+
+    # json_input[0]['Items'].each do |item|
+    #   print("\n ITEM: #{y} --> \n")
+    #   print("Item_id: #{item['ItemId']} \n")        #Working
+    #   print("Date_start: #{item['DateStart']} \n")
+    #   print("Date_end: #{item['DateEnd']} \n")
+    #   print("Image_link: #{item['ImageLink']} \n")
+    #   y+=1
+    # end
+    # item_id = item_input.map{|i| i["ItemId"]}
+    # start_date = item_input.map{|i| i["DateStart"]}
+    # end_date = item_input.map{|i| i["DateEnd"]}
+    # item_link = item_input.map{|i| i["ImageLink"].gsub('\\', '')}
+
+    # json_input[0]['Items'].map{|item| print("Item Id: #{item['ItemId']} \n")}
+
+
+    #Mapping items and indexing as Arrays with [ItemId,DataStart,DataEnd,ImageLink]
+    #Note: Image link is extracted from String
+    mappedItems = json_input[0]['Items'].map{
+      |item|
+      [item['ItemId'],
+      item['DateStart'],
+      item['DateEnd'],
+      item['ImageLink'][item['ImageLink'].index("https://"),item['ImageLink'].index("@type")-11]]
+    }
+
+    # mappedItems.each do |k|
+    #   print("#{k} \n")
+    # end
+
+    # print("#{item_id}")
+
+
 
 
 
