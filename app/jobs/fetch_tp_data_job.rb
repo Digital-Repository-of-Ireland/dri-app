@@ -38,11 +38,7 @@ class FetchTpDataJob
     story = TpStory.new(story_id: json_input[0]['StoryId'], dri_id: json_input[0]['ExternalRecordId'])
     story.save
     
-    x = json_input[0]['Items'].count
-
-    #Mapping items and indexing as Arrays with [ItemId,DataStart,DataEnd,ImageLink]
-    #Note: Image link is extracted from String
-    
+    x = json_input[0]['Items'].count    
     
     json_input[0]['Items'].map{
       |item|
