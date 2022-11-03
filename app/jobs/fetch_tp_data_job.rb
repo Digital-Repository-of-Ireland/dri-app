@@ -34,16 +34,33 @@ class FetchTpDataJob
 
     response = conn.get()
     json_input = response.body # to be parsed, just printing here to show we got it!
-     
+
     story = TpStory.new(story_id: json_input[0]['StoryId'], dri_id: json_input[0]['ExternalRecordId'])
     story.save
-    
-    x = json_input[0]['Items'].count    
-    
+
+    x = json_input[0]['Items'].count
+
     json_input[0]['Items'].map{
-      |item|
-      item = TpItem.new(story_id: json_input[0]['StoryId'], item_id: item['ItemId'], start_date: item['DateStart'], end_date: item['DateEnd'], item_link: item['ImageLink'][item['ImageLink'].index("https://"),item['ImageLink'].index("@type")-11])
+      |single_item|
+
+      item = TpItem.new(story_id: json_input[0]['StoryId'],item_id: single_item['ItemId'],start_date: single_item['DateStart'],end_date: single_item['DateEnd'],item_link: single_item['ImageLink'][single_item['ImageLink'].index("https://"),single_item['ImageLink'].index("@type")-11])
       item.save
+
+      place = TpPlace.new(item_id: single_item['ItemId'],place_id: single_item['Places'][0]['PlaceId'],place_name: single_item['Places'][0]['Name'],latitude: single_item['Places'][0]['Latitude'],longitude: single_item['Places'][0]['Longitude'],wikidata_id: single_item['Places'][0]['WikidataId'],wikidata_name: single_item['Places'][0]['WikidataName'])
+      place.save
+
+      #
+      # person = TpPerson.new(
+      #   item_id: ,
+      #   person_id: ,
+      #   first_name: ,
+      #   last_name: ,
+      #   birth_place: ,
+      #   birth_date: ,
+      #   death_place: ,
+      #   death_date: ,
+      #   person_description:
+      # )
     }
 
 
