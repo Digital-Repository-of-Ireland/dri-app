@@ -326,9 +326,8 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tp_people", force: :cascade do |t|
+  create_table "tp_people", primary_key: "person_id", id: :string, force: :cascade do |t|
     t.string "item_id"
-    t.string "person_id"
     t.string "first_name"
     t.string "last_name"
     t.string "birth_place"
@@ -340,9 +339,8 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tp_places", force: :cascade do |t|
+  create_table "tp_places", primary_key: "place_id", id: :string, force: :cascade do |t|
     t.string "item_id"
-    t.string "place_id"
     t.string "place_name"
     t.float "latitude"
     t.float "longitude"
@@ -447,4 +445,7 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
   add_foreign_key "dri_batch_ingest_user_ingests", "user_group_users", column: "user_id"
   add_foreign_key "fixity_checks", "fixity_reports"
   add_foreign_key "qa_local_authority_entries", "qa_local_authorities", column: "local_authority_id"
+  add_foreign_key "tp_items", "tp_stories", column: "story_id", primary_key: "story_id"
+  add_foreign_key "tp_people", "tp_items", column: "item_id", primary_key: "item_id"
+  add_foreign_key "tp_places", "tp_items", column: "item_id", primary_key: "item_id"
 end
