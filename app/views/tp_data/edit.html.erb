@@ -1,12 +1,137 @@
-<div id="content" class="span9 show-document">
-  <div id="document">
-    <div class="document">
-      <span><%= @firstdate %></span>
-      <span><%= @lastdate %></span>
+<div class="dri_main_content_container">
+		 <h3>Review Transcribathon Enrichments</h3>
 
-      <p>See more?</p>
-      <span><%= @alldates %></span>
 
+
+<div class="dri_section_block">
+    <div class="dri_object_title_top"><%= @document.title.join  %></div>
+    <div class="dri_border_bottom">
+       &nbsp;
     </div>
-  </div>
+
+    <%= render partial: 'shared/surrogate' %>
+
+    <h4>Original object metadata</h4>
+    <dl class="dri_object_metadata_readview">
+      <dt>Type</dt>
+      <dd>
+        <% @document.type.each do |field| %>
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Creators and Contributors</dt>
+      <dd>
+        <% @document['person_tesim'].each do |field| %>
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Subjects</dt>
+      <dd>
+        <% @document['subject_tesim'].each do |field| %>
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Dates</dt>
+      <dd>
+        <% @document.date.each do |field| %> 
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Creation Dates</dt>
+      <dd>
+        <% @document.creation_date.each do |field| %>
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Published Dates</dt>
+      <dd>
+        <% @document.published_date.each do |field| %> 
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Temporal Coverage</dt>
+      <dd>
+        <% @document['temporal_coverage_tesim'].each do |field| %> 
+          <%= field %><br/>
+        <% end %>
+      </dd>
+      <dt>Geographical Coverage</dt>
+      <dd>
+        <% @document['geographical_coverage_tesim'].each do |field| %>
+          <%= field %><br/>
+        <% end %>
+      </dd>
+    </dl>
+
+</div> 
+
+
+<div class="dri_section_block">
+  <h4>Metadata Enrichments</h4>
+
+  <h5>Overall Start and End dates</h5>
+  <dl>
+    <dt>Start Date</dt>
+    <dd> <%= @earliest_item.start_date %> </dd>
+    <dt>Appears on the following page(s)</dt>
+    <dd> <% @early_items.each do |item| %>
+          <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
+         <% end %>
+    </dd>
+
+    <dt>End Date</dt>
+    <dd> <%= @latest_item.end_date %> </dd>
+    <dt>Appears on the following page(s)</dt>
+    <dd> <% @late_items.each do |item| %>
+          <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
+         <% end %>
+    </dd>
+  </dl>
+
+  <p>
+    <%= check_box_tag(:accept_start_end_dates) %>
+    <%= label_tag(:pet_cat, "Accept these dates and add to authoritative metadata?") %>
+  </p>
+
+
+  <p>See more?</p>
+
+  <% page = 1 %>
+  <span><% @items.each do |item| %>
+          <% if item.start_date or item.end_date %>
+            <ul class="tpItem list-unstyled">
+              <li>
+                <%= "#{item.start_date} - #{item.end_date}:" %>
+                <%= link_to "Page #{page}: #{item.item_id}", item.item_link, :target => "_blank" %>
+                <%= check_box_tag(:accept_start_end_dates) %>
+                <%= label_tag(:accept_start_end_dates, "Accept these dates and add to authoritative metadata?") %>
+              </li>
+            </ul>
+          <% end %>
+          <% page += 1 %>
+        <% end %>
+  </span>
+
+<input type="submit" name="commit" value="Save Changes" class="btn-primary btn-large" id="save_edit" data-disable-with="Save Changes">
 </div>
+
+<%
+=begin
+%>
+<div class="dri_section_block">
+<% page = 1 %>
+<% @items.each do |item| %>
+  <ul class="tpItem list-unstyled">
+    <li>
+      <%= link_to "Page #{page}: #{item.item_id}", item.item_link, :target => "_blank" %>
+    </li>
+  </ul>
+  <% page += 1 %>
+<% end %>
+</div>
+<%
+=end
+%>
+ 
+</div>
+

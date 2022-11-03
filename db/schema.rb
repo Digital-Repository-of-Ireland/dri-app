@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_19_183308) do
+ActiveRecord::Schema.define(version: 2022_10_20_143340) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -315,6 +315,42 @@ ActiveRecord::Schema.define(version: 2022_10_19_183308) do
     t.datetime "updated_at"
     t.string "user_type"
     t.index ["user_id"], name: "index_searches_on_user_id"
+  end
+
+  create_table "tp_items", force: :cascade do |t|
+    t.string "story_id"
+    t.string "item_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "item_link"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_people", force: :cascade do |t|
+    t.string "item_id"
+    t.string "person_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "birth_place"
+    t.date "birth_date"
+    t.string "death_place"
+    t.date "death_date"
+    t.string "person_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_places", force: :cascade do |t|
+    t.string "item_id"
+    t.string "place_id"
+    t.string "place_name"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "wikidata_id"
+    t.string "wikidata_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tp_stories", force: :cascade do |t|

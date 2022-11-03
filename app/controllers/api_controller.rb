@@ -5,9 +5,9 @@ require 'solr/query'
 class ApiController < CatalogController
   include Blacklight::AccessControls::Catalog
 
-  before_action :authenticate_user_from_token!
-  before_action :authenticate_user!
-  before_action :add_cors_to_json, only: :assets
+#  before_action :authenticate_user_from_token!
+#  before_action :authenticate_user!
+#  before_action :add_cors_to_json, only: :assets
 
   def objects
     @list = []
@@ -109,6 +109,34 @@ class ApiController < CatalogController
 
     respond_to do |format|
       format.json {}
+    end
+  end
+
+  def enrichments
+    if params[:recordId].present?
+      print("+++++++++++++++++++got recordid")
+      document = SolrDocument.find(params[:recordId])
+      # may need object
+      # get Europeana ID for the collection
+      # parse out dri id from recordId
+      # get object / solr doc
+      # get story 
+      # parse out the Transcribathon ID
+      # create TpStory object 
+      if document.present?
+        # sdf
+      else
+        raise DRI::Exceptions::NotFound
+      end
+    else
+      print("++++++++++++++++++ no recordid")
+      err_msg = 'No record id in params'
+      logger.error "#{err_msg} #{params.inspect}"
+      raise DRI::Exceptions::BadRequest
+    end
+
+    respond_to do |format|
+      format.all { render :nothing => true}
     end
   end
 

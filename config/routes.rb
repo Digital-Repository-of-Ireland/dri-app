@@ -178,6 +178,7 @@ Rails.application.routes.draw do
     get 'related' => 'api#related'
     post 'get_assets' => 'api#assets', as: :list_assets
     match '*get_assets', via: :options, to:  lambda {|_| [204, {'Access-Control-Allow-Headers' => "Origin, Content-Type, Accept, Authorization, Token", 'Access-Control-Allow-Origin' => "*", 'Content-Type' => 'text/plain'}, []]}
+    post 'enrichments' => 'api#enrichments'
 
     resque_web_constraint = lambda do |request|
       current_user = request.env['warden'].user
