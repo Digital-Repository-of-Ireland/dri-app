@@ -1,8 +1,8 @@
 class CreateTpItems < ActiveRecord::Migration[6.1]
   def change
-    create_table :tp_items do |t|
+    create_table :tp_items, id: false do |t|
       t.string :story_id
-      t.string :item_id
+      t.string :item_id, null: false, primary_key: true
       t.date :start_date
       t.date :end_date
       t.string :item_link

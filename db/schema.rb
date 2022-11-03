@@ -317,9 +317,8 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
-  create_table "tp_items", force: :cascade do |t|
+  create_table "tp_items", primary_key: "item_id", id: :string, force: :cascade do |t|
     t.string "story_id"
-    t.string "item_id"
     t.date "start_date"
     t.date "end_date"
     t.string "item_link"
@@ -353,8 +352,7 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tp_stories", force: :cascade do |t|
-    t.string "story_id"
+  create_table "tp_stories", primary_key: "story_id", id: :string, force: :cascade do |t|
     t.string "dri_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
