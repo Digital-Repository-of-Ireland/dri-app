@@ -1,3 +1,3 @@
 class TpPlace < ApplicationRecord
-has_many :item_id, class_name: 'TpItem', foreign_key:'item_id'
+belongs_to :place, class_name: 'TpItem'
 end

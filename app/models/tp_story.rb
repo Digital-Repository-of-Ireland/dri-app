@@ -1,3 +1,3 @@
 class TpStory < ApplicationRecord
-belongs_to :story_id, class_name: 'TpItem'
+has_many :story, class_name: 'TpItem', foreign_key:'story_id'
 end

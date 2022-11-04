@@ -41,12 +41,12 @@ class FetchTpDataJob
     x = json_input[0]['Items'].count
 
     json_input[0]['Items'].map{
-      |single_item|
+      |item|
 
-      item = TpItem.new(story_id: json_input[0]['StoryId'],item_id: single_item['ItemId'],start_date: single_item['DateStart'],end_date: single_item['DateEnd'],item_link: single_item['ImageLink'][single_item['ImageLink'].index("https://"),single_item['ImageLink'].index("@type")-11])
+      item = TpItem.new(story_id: json_input[0]['StoryId'], item_id: item['ItemId'], start_date: item['DateStart'], end_date: item['DateEnd'], item_link: item['ImageLink'][item['ImageLink'].index("https://"),item['ImageLink'].index("@type")-11])
       item.save
 
-      place = TpPlace.new(item_id: single_item['ItemId'],place_id: single_item['Places'][0]['PlaceId'],place_name: single_item['Places'][0]['Name'],latitude: single_item['Places'][0]['Latitude'],longitude: single_item['Places'][0]['Longitude'],wikidata_id: single_item['Places'][0]['WikidataId'],wikidata_name: single_item['Places'][0]['WikidataName'])
+      place = TpPlace.new(item_id: item['ItemId'], place_id: item['Places'][0]['PlaceId'], place_name: item['Places'][0]['Name'], latitude: item['Places'][0]['Latitude'], longitude: item['Places'][0]['Longitude'], wikidata_id: item['Places'][0]['WikidataId'], wikidata_name: item['Places'][0]['WikidataName'])
       place.save
 
       #
