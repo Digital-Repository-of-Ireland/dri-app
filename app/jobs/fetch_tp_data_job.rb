@@ -36,81 +36,49 @@ class FetchTpDataJob
     json_input = response.body
 
     story = TpStory.new(story_id: json_input[0]['StoryId'], dri_id: json_input[0]['ExternalRecordId'])
+
     #check if StoryId in database before saving
     if !TpStory.exists?(json_input[0]['StoryId'])
-      print("Saving Story id: #{json_input[0]['StoryId']} \n")
       story.save
     end
-
-    print("Already saved Story id: #{json_input[0]['StoryId']} \n")
 
     x = json_input[0]['Items'].count
 
     json_input[0]['Items'].map{
-      |single_item|
+      |i|
 
       item = TpItem.new(
         story_id: json_input[0]['StoryId'],
-        item_id: single_item['ItemId'],
-        start_date: single_item['DateStart'],
-        end_date: single_item['DateEnd'],
-        item_link: single_item['ImageLink'][single_item['ImageLink'].index("https://"),single_item['ImageLink'].index("@type")-11]
+        item_id: i['ItemId'],
+        start_date: i['DateStart'],
+        end_date: i['DateEnd'],
+        item_link: i['ImageLink'][i['ImageLink'].index("https://"),i['ImageLink'].index("@type")-11]
       )
 
-      if !TpItem.exists?(single_item['ItemId'])
+      if !TpItem.exists?(i['ItemId'])
         item.save
-        print("--> Saving Item Id: #{single_item['ItemId']} \n")
       end
-
-      if !single_item['Places'].empty?
-        single_item['Places'].map{
-          |single_place|
-           place = TpPlace.new(
-             item_id: single_item['ItemId'],
-             place_id: single_place['PlaceId'],
-             place_name: single_place['Name'],
-             latitude: single_place['Latitude'],
-             longitude: single_place['Longitude'],
-             wikidata_id: single_place['WikidataId'],
-             wikidata_name: single_place['WikidataName']
-           )
-
-           place.save
-
-           #temp print
-           print("------>Item_id:#{single_item['ItemId']} \n")
-           print("----->Place_id:#{single_place['PlaceId']} \n")
-           print("    Place Name:#{single_place['Name']} \n")
-           print("      Latitude:#{single_place['Latitude']} \n")
-           print("     Longitude:#{single_place['Longitude']} \n")
-           print("    WikidataId:#{single_place['WikidataId']} \n")
-           print("  WikidataName:#{single_place['WikidataName']} \n\n")
-
-         }
-       end
-
-
-      # place = TpPlace.new(item_id: item['ItemId'], place_id: item['Places'][0]['PlaceId'], place_name: item['Places'][0]['Name'], latitude: item['Places'][0]['Latitude'], longitude: item['Places'][0]['Longitude'], wikidata_id: item['Places'][0]['WikidataId'], wikidata_name: item['Places'][0]['WikidataName'])
-      # place.save
-
-      # print("------------------->TEST<------------------- \n")
-      # print(" Item Id: #{single_item['ItemId']} \n")
-      # print("Place ??: #{!single_item['Places'].empty?} \n")
-      # print("Place Id: #{single_item['Places']} \n")
-
-      #
-      # person = TpPerson.new(
-      #   item_id: ,
-      #   person_id: ,
-      #   first_name: ,
-      #   last_name: ,
-      #   birth_place: ,
-      #   birth_date: ,
-      #   death_place: ,
-      #   death_date: ,
-      #   person_description:
-      # )
     }
+
+    json_input[0]['Items'].map {
+      |e|
+      if !e['Places'].empty?
+        e['Places'].map {
+          |p|
+          place = TpPlace.new(
+            item_id: p['ItemId'],
+            place_id: p['PlaceId'],
+            place_name: p['Name'],
+            latitude: p['Latitude'],
+            longitude: p['Longitude'],
+            wikidata_id: p['WikidataId'],
+            wikidata_name: p['WikidataName']
+          )
+          place.save
+        }
+      end
+    }
+
 
 
       # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
