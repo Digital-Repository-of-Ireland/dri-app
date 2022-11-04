@@ -42,8 +42,6 @@ class FetchTpDataJob
       story.save
     end
 
-    x = json_input[0]['Items'].count
-
     json_input[0]['Items'].map{
       |i|
 
@@ -54,32 +52,45 @@ class FetchTpDataJob
         end_date: i['DateEnd'],
         item_link: i['ImageLink'][i['ImageLink'].index("https://"),i['ImageLink'].index("@type")-11]
       )
-
       if !TpItem.exists?(i['ItemId'])
+      print(item)
         item.save
       end
-    }
-
-    json_input[0]['Items'].map {
-      |e|
-      if !e['Places'].empty?
-        e['Places'].map {
-          |p|
-          place = TpPlace.new(
-            item_id: p['ItemId'],
-            place_id: p['PlaceId'],
-            place_name: p['Name'],
-            latitude: p['Latitude'],
-            longitude: p['Longitude'],
-            wikidata_id: p['WikidataId'],
-            wikidata_name: p['WikidataName']
-          )
+      
+      i['Places'].map {
+        |p|
+        place = TpPlace.new(
+          item_id: i['ItemId'],
+          place_id: p['PlaceId'],
+          place_name: p['Name'],
+          latitude: p['Latitude'],
+          longitude: p['Longitude'],
+          wikidata_id: p['WikidataId'],
+          wikidata_name: p['WikidataName']
+        )
+        if !TpPlace.exists?(p['PlaceId'])
           place.save
+        end
         }
-      end
+        
+        i['Persons'].map {
+        |q|
+        person = TpPerson.new(
+          item_id: i['ItemId'],
+          person_id: q['PersonId'],
+          first_name: q['FirstName'],
+          last_name: q['LastName'],
+          birth_place: q['BirthPlace'],
+          birth_date: q['BirthDate'],
+          death_place: q['DeathPlace'],
+          death_date: q['DeathDate'],
+          person_description: q['Description']
+        )
+        if !TpPerson.exists?(p['PersonId'])
+          person.save
+        end
+        }
     }
-
-
 
       # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
       # "#{item_endpoint}#{item_id}"

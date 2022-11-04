@@ -1,3 +1,3 @@
 class TpPerson < ApplicationRecord
-belongs_to :person, class_name: 'TpItem'
+belongs_to :person, class_name: 'TpItem', optional: true
 end
