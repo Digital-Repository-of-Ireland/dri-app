@@ -1151,7 +1151,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 3)
-  blacklight (~> 7)
+  blacklight (= 7.28)
   blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider!
