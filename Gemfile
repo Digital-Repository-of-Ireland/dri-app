@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 6.1'
 
-gem 'blacklight', '~> 7'
+gem 'blacklight', '7.28'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider' #'~> 6'
 gem 'rsolr'
