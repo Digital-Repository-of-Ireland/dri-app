@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_153809) do
+ActiveRecord::Schema.define(version: 2022_10_20_143340) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -317,6 +317,49 @@ ActiveRecord::Schema.define(version: 2022_09_06_153809) do
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
+  create_table "tp_items", force: :cascade do |t|
+    t.string "story_id"
+    t.string "item_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "item_link"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_people", force: :cascade do |t|
+    t.string "item_id"
+    t.string "person_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "birth_place"
+    t.date "birth_date"
+    t.string "death_place"
+    t.date "death_date"
+    t.string "person_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_places", force: :cascade do |t|
+    t.string "item_id"
+    t.string "place_id"
+    t.string "place_name"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "wikidata_id"
+    t.string "wikidata_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_stories", force: :cascade do |t|
+    t.string "story_id"
+    t.string "dri_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_background_tasks", force: :cascade do |t|
     t.integer "user_id"
     t.string "job"
@@ -401,4 +444,9 @@ ActiveRecord::Schema.define(version: 2022_09_06_153809) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "dri_batch_ingest_master_files", "dri_batch_ingest_media_objects", column: "media_object_id"
+  add_foreign_key "dri_batch_ingest_media_objects", "dri_batch_ingest_ingest_batches", column: "ingest_batch_id"
+  add_foreign_key "dri_batch_ingest_user_ingests", "user_group_users", column: "user_id"
+  add_foreign_key "fixity_checks", "fixity_reports"
+  add_foreign_key "qa_local_authority_entries", "qa_local_authorities", column: "local_authority_id"
 end

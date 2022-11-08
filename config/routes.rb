@@ -88,6 +88,9 @@ Rails.application.routes.draw do
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
 
+    post 'objects/:id/tp_data', to: 'tp_data#create', as: :tp_data
+    get 'tp_data/:id' => 'tp_data#edit', as: :review_tp_data
+
     get 'iiif/:id/manifest', to: 'iiif#manifest', as: :iiif_manifest
     get 'iiif/collection/:id', to: 'iiif#manifest', as: :iiif_collection_manifest
     get 'iiif/:id/sequence', to: 'iiif#sequence', as: :iiif_collection_sequence
@@ -175,6 +178,7 @@ Rails.application.routes.draw do
     get 'related' => 'api#related'
     post 'get_assets' => 'api#assets', as: :list_assets
     match '*get_assets', via: :options, to:  lambda {|_| [204, {'Access-Control-Allow-Headers' => "Origin, Content-Type, Accept, Authorization, Token", 'Access-Control-Allow-Origin' => "*", 'Content-Type' => 'text/plain'}, []]}
+    post 'enrichments' => 'api#enrichments'
 
     resque_web_constraint = lambda do |request|
       current_user = request.env['warden'].user
