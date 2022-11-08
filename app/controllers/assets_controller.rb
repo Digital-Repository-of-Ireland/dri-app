@@ -271,12 +271,11 @@ class AssetsController < ApplicationController
 
       mime_type = validate_upload(upload)
 
-      file_upload = { file_upload: upload,
-                      mime_type: mime_type,
-                      filename: params[:file_name].presence || upload.original_filename
-                    }
-
-      return file_upload
+      { 
+        file_upload: upload,
+        mime_type: mime_type,
+        filename: params[:file_name].presence || upload.original_filename
+      }
     end
 
     def validate_upload(file_upload)

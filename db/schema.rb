@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_153809) do
+ActiveRecord::Schema.define(version: 2022_10_20_143340) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -317,6 +317,45 @@ ActiveRecord::Schema.define(version: 2022_09_06_153809) do
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
+  create_table "tp_items", primary_key: "item_id", id: :string, force: :cascade do |t|
+    t.string "story_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "item_link"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_people", primary_key: "person_id", id: :string, force: :cascade do |t|
+    t.string "item_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "birth_place"
+    t.date "birth_date"
+    t.string "death_place"
+    t.date "death_date"
+    t.string "person_description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_places", primary_key: "place_id", id: :string, force: :cascade do |t|
+    t.string "item_id"
+    t.string "place_name"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "wikidata_id"
+    t.string "wikidata_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tp_stories", primary_key: "story_id", id: :string, force: :cascade do |t|
+    t.string "dri_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_background_tasks", force: :cascade do |t|
     t.integer "user_id"
     t.string "job"
@@ -401,4 +440,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_153809) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "tp_items", "tp_stories", column: "story_id", primary_key: "story_id"
+  add_foreign_key "tp_people", "tp_items", column: "item_id", primary_key: "item_id"
+  add_foreign_key "tp_places", "tp_items", column: "item_id", primary_key: "item_id"
 end

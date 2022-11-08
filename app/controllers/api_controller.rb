@@ -1,12 +1,15 @@
 # Controller for API
 #
 require 'solr/query'
+require 'faraday'
+require 'faraday_middleware'
+require 'json'
 
 class ApiController < CatalogController
   include Blacklight::AccessControls::Catalog
 
-  before_action :authenticate_user_from_token!
-  before_action :authenticate_user!
+  before_action :authenticate_user_from_token!, except:  [:enrichments]
+  before_action :authenticate_user!, except:  [:enrichments]
   before_action :add_cors_to_json, only: :assets
 
   def objects
@@ -109,6 +112,44 @@ class ApiController < CatalogController
 
     respond_to do |format|
       format.json {}
+    end
+  end
+
+  def enrichments
+    if params[:recordId].present?
+      (europeana_id, dri_id) = params[:recordId].tr('/', '').split("_")
+      document = SolrDocument.find(dri_id)
+      
+      # may need object
+      agg_id = Aggregation.where(collection_id: document['root_collection_id_ssi']).first.aggregation_id
+      if agg_id != europeana_id
+        err_msg = "Aggregation information not found"
+        logger.error "#{err_msg} #{agg_id} #{params.inspect}"
+        raise DRI::Exceptions::NotFound
+      end
+
+      # parse story ID from the request body
+      #json_params = JSON.parse(request.raw_post) 
+      json_params = JSON.parse(request.raw_post)
+      # get story
+
+
+      #story = TpStory.find_or_create_by(dri_id: "mc87pq24j")
+      # parse out the Transcribathon ID
+      # create TpStory object 
+      if document.present?
+        # sdf
+      else
+        raise DRI::Exceptions::NotFound
+      end
+    else
+      err_msg = 'No record id in params'
+      logger.error "#{err_msg} #{params.inspect}"
+      raise DRI::Exceptions::BadRequest
+    end
+
+    respond_to do |format|
+      format.json
     end
   end
 
