@@ -1119,7 +1119,7 @@ GEM
       reform-rails
     vegas (0.1.11)
       rack (>= 1.0.0)
-    view_component (2.75.0)
+    view_component (2.74.1)
       activesupport (>= 5.0.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -1151,7 +1151,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 3)
-  blacklight (= 7.28)
+  blacklight (~> 7)
   blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider!
@@ -1259,6 +1259,7 @@ DEPENDENCIES
   unicode
   user_group!
   valkyrie (~> 2.2)
+  view_component (= 2.74.1)
   webdrivers
   yard
 
