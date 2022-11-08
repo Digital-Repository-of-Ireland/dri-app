@@ -317,9 +317,8 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
 
-  create_table "tp_items", force: :cascade do |t|
+  create_table "tp_items", primary_key: "item_id", id: :string, force: :cascade do |t|
     t.string "story_id"
-    t.string "item_id"
     t.date "start_date"
     t.date "end_date"
     t.string "item_link"
@@ -327,9 +326,8 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tp_people", force: :cascade do |t|
+  create_table "tp_people", primary_key: "person_id", id: :string, force: :cascade do |t|
     t.string "item_id"
-    t.string "person_id"
     t.string "first_name"
     t.string "last_name"
     t.string "birth_place"
@@ -341,9 +339,8 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tp_places", force: :cascade do |t|
+  create_table "tp_places", primary_key: "place_id", id: :string, force: :cascade do |t|
     t.string "item_id"
-    t.string "place_id"
     t.string "place_name"
     t.float "latitude"
     t.float "longitude"
@@ -353,8 +350,7 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "tp_stories", force: :cascade do |t|
-    t.string "story_id"
+  create_table "tp_stories", primary_key: "story_id", id: :string, force: :cascade do |t|
     t.string "dri_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -444,9 +440,7 @@ ActiveRecord::Schema.define(version: 2022_10_20_143340) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "dri_batch_ingest_master_files", "dri_batch_ingest_media_objects", column: "media_object_id"
-  add_foreign_key "dri_batch_ingest_media_objects", "dri_batch_ingest_ingest_batches", column: "ingest_batch_id"
-  add_foreign_key "dri_batch_ingest_user_ingests", "user_group_users", column: "user_id"
-  add_foreign_key "fixity_checks", "fixity_reports"
-  add_foreign_key "qa_local_authority_entries", "qa_local_authorities", column: "local_authority_id"
+  add_foreign_key "tp_items", "tp_stories", column: "story_id", primary_key: "story_id"
+  add_foreign_key "tp_people", "tp_items", column: "item_id", primary_key: "item_id"
+  add_foreign_key "tp_places", "tp_items", column: "item_id", primary_key: "item_id"
 end
