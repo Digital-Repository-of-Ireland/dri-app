@@ -10,7 +10,6 @@ class FetchTpDataJob
     story_endpoint = Settings.transcribathon.story_endpoint
     item_endpoint = Settings.transcribathon.item_endpoint
 
-    # WIP: info here https://docs.google.com/document/d/15XiogCH-aFWGTmGeE5EjdWqlIeo_agu_0t2iEmT3nTk/edit
     # Get the story from tp_api
     # Create an entry in the tp_story table with our object id and the story id
     # for each item id returned by the stories api
@@ -41,6 +40,11 @@ class FetchTpDataJob
     if !TpStory.exists?(json_input[0]['StoryId'])
       story.save
     end
+
+    # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
+    # "#{item_endpoint}#{item_id}"
+    # create the tp_item entry with start and end dates
+    # parse out people and places and populate tp_people and tp_places tables
 
     json_input[0]['Items'].map{
       |i|
@@ -91,11 +95,6 @@ class FetchTpDataJob
         end
         }
     }
-
-      # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
-      # "#{item_endpoint}#{item_id}"
-      # create the tp_item entry with start and end dates
-      # parse out people and places and populate tp_people and tp_places tables
 
   end
 

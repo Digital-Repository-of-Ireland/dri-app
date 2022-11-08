@@ -1,13 +1,16 @@
 # Controller for API
 #
 require 'solr/query'
+require 'faraday'
+require 'faraday_middleware'
+require 'json'
 
 class ApiController < CatalogController
   include Blacklight::AccessControls::Catalog
 
-#  before_action :authenticate_user_from_token!
-#  before_action :authenticate_user!
-#  before_action :add_cors_to_json, only: :assets
+  before_action :authenticate_user_from_token!, except:  [:enrichments]
+  before_action :authenticate_user!, except:  [:enrichments]
+  before_action :add_cors_to_json, only: :assets
 
   def objects
     @list = []
@@ -114,13 +117,24 @@ class ApiController < CatalogController
 
   def enrichments
     if params[:recordId].present?
-      print("+++++++++++++++++++got recordid")
-      document = SolrDocument.find(params[:recordId])
+      (europeana_id, dri_id) = params[:recordId].tr('/', '').split("_")
+      document = SolrDocument.find(dri_id)
+      
       # may need object
-      # get Europeana ID for the collection
-      # parse out dri id from recordId
-      # get object / solr doc
-      # get story 
+      agg_id = Aggregation.where(collection_id: document['root_collection_id_ssi']).first.aggregation_id
+      if not (agg_id == europeana_id)
+        err_msg = "Aggregation information not found"
+        logger.error "#{err_msg} #{agg_id} #{params.inspect}"
+        raise DRI::Exceptions::NotFound
+      end
+
+      # parse story ID from the request body
+      #json_params = JSON.parse(request.raw_post) 
+      json_params = JSON.parse(request.raw_post)
+      # get story
+
+
+      #story = TpStory.find_or_create_by(dri_id: "mc87pq24j")
       # parse out the Transcribathon ID
       # create TpStory object 
       if document.present?
@@ -129,14 +143,13 @@ class ApiController < CatalogController
         raise DRI::Exceptions::NotFound
       end
     else
-      print("++++++++++++++++++ no recordid")
       err_msg = 'No record id in params'
       logger.error "#{err_msg} #{params.inspect}"
       raise DRI::Exceptions::BadRequest
     end
 
     respond_to do |format|
-      format.all { render :nothing => true}
+      format.json
     end
   end
 
