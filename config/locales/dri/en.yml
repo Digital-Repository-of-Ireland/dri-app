@@ -433,6 +433,7 @@ en:
           manage_bookmark: Manage Your Bookmarks
           manage_licence: Manage Licence
           fetch_tp_data: Fetch Transcribathon Data
+          tp_story_id: Story ID
           map: Map
           metadata: Metadata
           metadata_full: Full Metadata

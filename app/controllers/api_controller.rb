@@ -122,7 +122,7 @@ class ApiController < CatalogController
       
       # may need object
       agg_id = Aggregation.where(collection_id: document['root_collection_id_ssi']).first.aggregation_id
-      if not (agg_id == europeana_id)
+      if agg_id != europeana_id
         err_msg = "Aggregation information not found"
         logger.error "#{err_msg} #{agg_id} #{params.inspect}"
         raise DRI::Exceptions::NotFound
