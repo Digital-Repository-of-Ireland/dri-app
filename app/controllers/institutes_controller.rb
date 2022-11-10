@@ -47,7 +47,7 @@ class InstitutesController < ApplicationController
   def create
     @inst = Institute.new
 
-    add_logo if params[:institute][:logo].present?
+    add_logo(params[:institute][:logo]) if params[:institute][:logo].present?
 
     @inst.url = params[:institute][:url]
     if current_user.is_admin?
@@ -81,7 +81,8 @@ class InstitutesController < ApplicationController
   def update
     @inst = Institute.find(params[:id])
 
-    add_logo if params[:institute][:logo].present?
+    add_logo(params[:institute][:logo]) if params[:institute][:logo].present?
+
     @inst.url = params[:institute][:url]
     @inst.name = params[:institute][:name]
     @inst.depositing = params[:institute][:depositing]
@@ -132,19 +133,15 @@ class InstitutesController < ApplicationController
 
   private
 
-  def add_logo
-    file_upload = params[:institute][:logo]
-
-    begin
-      @inst.add_logo(file_upload, { name: params[:institute][:name] })
-    rescue DRI::Exceptions::UnknownMimeType
-      flash[:alert] = t('dri.flash.alert.invalid_file_type')
-    rescue DRI::Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-    rescue DRI::Exceptions::InternalError => e
-      logger.error "Could not save licence: #{e.message}"
-      raise DRI::Exceptions::InternalError
-    end
+  def add_logo(file_upload)
+      @inst.add_logo(file_upload)
+  rescue DRI::Exceptions::UnknownMimeType
+    flash[:alert] = t('dri.flash.alert.invalid_file_type')
+  rescue DRI::Exceptions::VirusDetected => e
+    flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
+  rescue DRI::Exceptions::InternalError => e
+    logger.error "Could not save licence: #{e.message}"
+    raise DRI::Exceptions::InternalError
   end
 
   def manage_association
