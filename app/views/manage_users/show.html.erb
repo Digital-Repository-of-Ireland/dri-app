@@ -1,0 +1,27 @@
+<div class="dri_report_container">
+  <%= link_to t('dri.views.back'), 'javascript:history.back()' %>
+
+  <h1><%= t('dri.application.user_profile.collection_manager') %></h1>
+
+  <dl>
+  	<dt><%= t('dri.application.user_profile.name') %></dt><dd><%= @user_details[:name] %></dd>
+  	<dt><%= t('dri.application.user_profile.email') %></dt><dd><%= @user_details[:email] %></dd>
+  	<dt><%= t('dri.application.user_profile.approved_at') %></dt><%= @user_details[:created_at] %></dd>
+  </dl>
+ 
+  <% if @users_collections.present? %>
+    <h2>Collections</h2>
+    <table class="table">
+        <tr>
+          <th><%= t('dri.views.fields.collection_title') %></th>
+          <th><%= t('dri.views.fields.creation_date') %></th>
+      </tr>
+      <% @users_collections.each do |collection| %>
+        <tr>
+          <td><%= collection.title.first %></td>
+          <td><%= collection[:created_at_dtsi] %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+ </div>

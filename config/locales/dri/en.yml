@@ -38,6 +38,7 @@ en:
         no_results_found: No objects compatible with timeline display found
       user_profile:
         administrator: Administrator
+        approved_at: Approved at
         collection_manager: Collection Manager
         collection_title: Collection Title
         edit: Edit
@@ -401,6 +402,7 @@ en:
           delete: x
         confirm:
           delete: This will delete the asset and all surrogates. Continue?
+      back: "< Back"
       catalog:
         buttons:
           clear_all_bookmarks: Clear All Bookmarks
@@ -685,6 +687,9 @@ en:
           logo: Logo
           name: Name
           url: Url
+      manage_users:
+        headers:
+          my_organisations: My Organisations
       manager_users:
         buttons:
           submit: Create

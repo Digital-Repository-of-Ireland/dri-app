@@ -1,3 +1,18 @@
+<% unless @organisations.blank? %>
+  <h2 style="width:100%"><%= t('dri.views.manage_users.headers.my_organisations') %></h2>
+
+  <% @organisations.each_with_index do |institute, i| %>
+    <% style='not_first' unless i == 0 %>
+    <div class="dri_collection_institutes_pages <%= style %>">
+      <div class="dri_collection_institutes_modal_img">
+        <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
+        <h3 class="dri_collection_institutes_pages_name"><%= institute[:name].to_s.html_safe %></h3>
+          <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(institute) %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
 <h2 style="width:100%"><%= t('dri.headerlinks.manage_users') %></h2>
 <br/>
 <%= form_tag(manage_users_path, method: :post) do %>
