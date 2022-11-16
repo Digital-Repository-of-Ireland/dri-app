@@ -3,7 +3,8 @@ class InstitutesController < ApplicationController
   before_action :authenticate_user_from_token!, except: [:index, :logo]
   before_action :authenticate_user!, except: [:index, :logo]
   before_action :check_for_cancel, only: [:create, :update]
-  before_action :admin?, only: [:edit, :update, :destroy]
+  before_action :admin?, only: [:destroy]
+  before_action :manager?, only: [:edit, :update]
   before_action :read_only, except: [:index, :show, :logo]
 
   # Was this action canceled by the user?
@@ -85,9 +86,11 @@ class InstitutesController < ApplicationController
 
     @inst.url = params[:institute][:url]
     @inst.name = params[:institute][:name]
-    @inst.depositing = params[:institute][:depositing]
-    @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
 
+    if current_user.is_admin?
+      @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
+      @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+    end
     @inst.save
 
     respond_to do |format|
@@ -187,6 +190,14 @@ class InstitutesController < ApplicationController
 
   def admin?
     raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_admin?
+  end
+
+  def manager?
+    return true if current_user.is_admin?
+    raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_om?
+
+    i = Institute.find(params[:id])
+    raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless i&.manager == current_user
   end
 
   def version_and_preserve

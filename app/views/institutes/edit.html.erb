@@ -23,11 +23,14 @@
 					<%= f.text_field :name, :required=>'required' %>
 					<label for="institute_url"><%= t('dri.views.collection.institute.form.url') %></label>
 					<%= f.url_field :url, :required=>'required'  %>
-                    <%= f.label :depositing, t('dri.views.collection.institute.form.depositing') %>
-                    <%= f.check_box :depositing %>
-                    <label for="organisation_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
-					<%= f.text_field :manager %>
-                   	<%= f.submit t('dri.views.collection.institute.edit'), :id => 'edit_institute', :class=>'btn dri_grey_button' %>
+
+					<% if current_user.is_admin? %>
+                      <%= f.label :depositing, t('dri.views.collection.institute.form.depositing') %>
+                      <%= f.check_box :depositing %>
+                      <label for="organisation_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
+					    <%= f.text_field :manager %>
+                   	    <%= f.submit t('dri.views.collection.institute.edit'), :id => 'edit_institute', :class=>'btn dri_grey_button' %>
+					  <% end %>
 					<% end %>
 					<%= form_for(@inst, url: organisation_path) do |f| %>
 					<%= f.submit "Cancel", :class=>'btn dri_green_button' %>
