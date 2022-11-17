@@ -25,6 +25,10 @@ class FetchTpDataJob
     # "#{story_endpoint}#{story_id}"
     # create a tp_story entry
     # parse out list of items
+    
+    # check if TpStory exists
+    # If so then get the story from Transcribathon
+    
 
     conn = Faraday.new(url: "#{story_endpoint}#{story_id}") do |faraday|
       faraday.adapter :httpclient
@@ -34,6 +38,7 @@ class FetchTpDataJob
     response = conn.get()
     json_input = response.body
 
+    # don't create a new story anymore!
     story = TpStory.new(story_id: json_input[0]['StoryId'], dri_id: json_input[0]['ExternalRecordId'])
 
     #check if StoryId in database before saving

@@ -36,6 +36,6 @@ iiif:
 analytics:
   disable: true
 transcribathon:
-  story_endpoint: "https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/stories/"
-  item_endpoint: "https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/"
+  story_endpoint: "https://transcribathon.eu/tp-api/stories"
+  item_endpoint: "https://transcribathon.eu/tp-api/items/"
 

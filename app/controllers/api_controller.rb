@@ -8,8 +8,8 @@ require 'json'
 class ApiController < CatalogController
   include Blacklight::AccessControls::Catalog
 
-  before_action :authenticate_user_from_token!, except:  [:enrichments]
-  before_action :authenticate_user!, except:  [:enrichments]
+  before_action :authenticate_user_from_token!
+  before_action :authenticate_user!
   before_action :add_cors_to_json, only: :assets
 
   def objects
@@ -119,6 +119,7 @@ class ApiController < CatalogController
     if params[:recordId].present?
       (europeana_id, dri_id) = params[:recordId].tr('/', '').split("_")
       document = SolrDocument.find(dri_id)
+      story_endpoint = Settings.transcribathon.story_endpoint
       
       # may need object
       agg_id = Aggregation.where(collection_id: document['root_collection_id_ssi']).first.aggregation_id
@@ -128,20 +129,23 @@ class ApiController < CatalogController
         raise DRI::Exceptions::NotFound
       end
 
-      # parse story ID from the request body
-      #json_params = JSON.parse(request.raw_post) 
-      json_params = JSON.parse(request.raw_post)
       # get story
-
-
-      #story = TpStory.find_or_create_by(dri_id: "mc87pq24j")
-      # parse out the Transcribathon ID
-      # create TpStory object 
-      if document.present?
-        # sdf
-      else
-        raise DRI::Exceptions::NotFound
+      url = "#{story_endpoint}?recordId=#{params[:recordId]}"
+      conn = Faraday.new(url: url) do |faraday|
+        faraday.adapter :httpclient
+        faraday.response :json
       end
+
+      response = conn.get()
+      json_input = response.body
+
+      story = TpStory.new(story_id: json_input[0]['StoryId'], dri_id: json_input[0]['ExternalRecordId'])
+
+      #check if StoryId in database before saving
+      if !TpStory.exists?(json_input[0]['StoryId'])
+        story.save
+      end
+
     else
       err_msg = 'No record id in params'
       logger.error "#{err_msg} #{params.inspect}"
