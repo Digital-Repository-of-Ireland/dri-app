@@ -108,6 +108,7 @@ Rails.application.routes.draw do
     get 'manage_users' => 'manage_users#new', as: :manage_users
     post 'manage_users' => 'manage_users#create', as: :new_manage_user
     get 'manage_users/:user_id', to: 'manage_users#show'
+    delete 'manage_users/:user_id', to: 'manage_users#destroy'
 
     resources :licences
 

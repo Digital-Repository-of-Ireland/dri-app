@@ -40,7 +40,7 @@ FactoryBot.define do
 
   factory :organisation_manager,  parent: :user do |u|
     after(:create) do |user, evaluator|
-      @group = UserGroup::Group.find_or_create_by(name: SETTING_GROUP_OM, description: "organisation manager test group")
+      @group = UserGroup::Group.find_or_create_by(name: SETTING_GROUP_OM, description: "organisational manager test group")
       @membership = user.join_group(@group.id)
       @membership.approved_by = user.id
       @membership.save

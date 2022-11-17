@@ -8,6 +8,9 @@
   	<dt><%= t('dri.application.user_profile.email') %></dt><dd><%= @user_details[:email] %></dd>
   	<dt><%= t('dri.application.user_profile.approved_at') %></dt><%= @user_details[:created_at] %></dd>
   </dl>
+
+  <%= button_to t('dri.views.manager_users.buttons.unassign'), { controller: :manage_users,
+      :action => 'destroy', user_id: @user_details[:id]}, method: :delete, class: 'dri_button_red' %>
  
   <% if @users_collections.present? %>
     <h2>Collections</h2>
@@ -18,7 +21,7 @@
       </tr>
       <% @users_collections.each do |collection| %>
         <tr>
-          <td><%= collection.title.first %></td>
+          <td><%= link_to collection.title.first, my_collections_path(collection.id) %></td>
           <td><%= collection[:created_at_dtsi] %></td>
         </tr>
       <% end %>

@@ -190,6 +190,7 @@ en:
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
         manager_user_created: 'User %{email} successfully granted collection manager permissions.'
+        manager_user_removed: 'User %{email} has had collection manager permissions removed.'
         metadata_updated: Metadata has been successfully updated.
         object_deleted: Object has been deleted.
         organisation_added: Organisation successfully added to collection.
@@ -693,6 +694,7 @@ en:
       manager_users:
         buttons:
           submit: Create
+          unassign: 'Remove collection manager permissions'
         email: 'Enter user''s email:'
       metadata:
         dublin_core: Dublin Core
