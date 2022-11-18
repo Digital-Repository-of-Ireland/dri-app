@@ -8,10 +8,8 @@ class Institute < ActiveRecord::Base
 
   validates_uniqueness_of :name
 
-  attr_accessor :manager
-
   def manager
-    org_manager
+    org_manager&.email
   end
 
   def manager=(user_or_email)

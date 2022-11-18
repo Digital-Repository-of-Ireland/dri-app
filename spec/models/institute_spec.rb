@@ -40,11 +40,11 @@ describe Institute do
     user = FactoryBot.create(:organisation_manager)
     @institute.manager = user.email
 
-    expect(@institute.manager).to eq(user)
+    expect(@institute.org_manager).to eq(user)
 
     @institute.manager = user
 
-    expect(@institute.manager).to eq(user)
+    expect(@institute.org_manager).to eq(user)
   end
 
   it "should not accept a non org manager as manager" do

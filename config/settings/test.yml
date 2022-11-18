@@ -1,0 +1,6 @@
+S3:
+  server: http://localhost:4566
+  use_ssl: false
+  access_key_id: test
+  secret_access_key: test
+  expiry: 604800

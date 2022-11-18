@@ -192,12 +192,13 @@ class InstitutesController < ApplicationController
     raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_admin?
   end
 
+  # User must be the organisation manager assigned to the organisation
   def manager?
     return true if current_user.is_admin?
     raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_om?
 
     i = Institute.find(params[:id])
-    raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless i&.manager == current_user
+    raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless i&.org_manager == current_user
   end
 
   def version_and_preserve
