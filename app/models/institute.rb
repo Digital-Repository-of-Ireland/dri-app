@@ -8,6 +8,8 @@ class Institute < ActiveRecord::Base
 
   validates_uniqueness_of :name
 
+  attr_accessor :manager
+
   def manager
     org_manager
   end
@@ -35,11 +37,10 @@ class Institute < ActiveRecord::Base
   end
 
   def add_logo(upload)
-    if validate_logo upload
-      store_logo(upload)
+    return unless validate_logo(upload)
 
-      save
-    end
+    store_logo(upload)
+    save
   end
 
   # Return all collections for this institute
