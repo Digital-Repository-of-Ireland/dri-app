@@ -49,7 +49,7 @@ class InstitutesController < ApplicationController
     @inst = Institute.new
 
     add_logo(params[:institute][:logo]) if params[:institute][:logo].present?
-
+    @inst.name = params[:institute][:name]
     @inst.url = params[:institute][:url]
     if current_user.is_admin?
       @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?

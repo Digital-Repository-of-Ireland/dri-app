@@ -5,49 +5,23 @@
 </script>
 <h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), '#', :'data-toggle' => 'modal',  :'data-target' => '#dri_organisations_modal_id' %>)</h5>
 <div class="dri_collection_institutes_dropdown">
-  <div class="dri_institutes_title">
-      <div class="dri_add_institute_link">
-        <h5><%= t('dri.views.collection.institute.add') %></h5>
-      </div>
-      <div>
-        <p><%= t('dri.views.collection.institute.depositing_org_text') %></p>
-        <p><%= t('dri.views.collection.institute.what_is_org_text') %></p>
-        <p><%= t('dri.views.collection.institute.associating_text') %></p>
-      </div>
-      <div id="dri_add_institutes_block">
-          <%= form_for(@inst, url: organisations_path) do |f| %>
-          <div class="dri_file_upload">
-            <a class='btn btn-default' href='javascript:;'>
-              <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
-              <p>
-                (recommended height 75px)
-              </p>
-              <%= f.file_field :logo, :required=>'required', :accept=>'image/png,image/jpeg', :onchange=>'fileUploadHelper($(this));' %> 
-              <h5 id="institution_logo">No File</h5>
-            </a>
-          </div>
-          <label> <%= t('dri.views.collection.institute.form.name') %></label>
-          <%= f.text_field :name, list: 'orgs', :required=>'required' %>
-          <datalist id="orgs">
-            <% Institute.all.each do |organisation| %>
-            <option value="<%= organisation.name %>"></option>
-            <% end %>
-          </datalist>
-          <label><%= t('dri.views.collection.institute.form.url') %></label>
-          <%= f.url_field :url, :required=>'required'  %>
-          <% if current_user.is_admin? %>
-            <label for="organisation_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
-            <%= f.text_field :manager %>
-            <label><%= t('dri.views.collection.institute.form.depositing') %></label>
-            <%= f.check_box :depositing %>
-          <% end %>
-          <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green' %>
-          <% end %>
-          <%= form_for(@inst, url: organisations_path) do |f| %>
-          <%= f.submit t('dri.views.objects.links.cancel'), :class=>'btn dri_grey_button' %>
-          <% end %>
-        </div>
-    </div>
+  <div class="dri_add_institute_link">
+    <h5><%= t('dri.views.collection.institute.add') %></h5>
+  </div>
+  <div>
+    <p><%= t('dri.views.collection.institute.depositing_org_text') %></p>
+    <p><%= t('dri.views.collection.institute.what_is_org_text') %></p>
+    <p><%= t('dri.views.collection.institute.associating_text') %></p>
+  </div>
+  <div id="dri_add_institutes_block">
+    <%= form_for(@inst, url: organisations_path) do |f| %>
+      <%= render partial: 'institute_form', locals: { f: f } %>
+      <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green' %>
+    <% end %>
+    <%= form_for(@inst, url: organisations_path) do |f| %>
+      <%= f.submit t('dri.views.objects.links.cancel'), :class=>'btn dri_grey_button' %>
+    <% end %>
+  </div>
 </div>
 
 <div class="modal fade" id="dri_organisations_modal_id">

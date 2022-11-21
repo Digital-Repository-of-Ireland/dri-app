@@ -165,7 +165,7 @@ Given /^I have associated the institute "([^\"]+)" with the collection with pid 
   institute = Institute.new(name: institute_name, url: "http://www.dri.ie")
 
   logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
-  institute.store_logo(logo, institute_name)
+  institute.store_logo(logo)
   institute.save
 
   collection.institute = collection.institute.push(institute_name)
