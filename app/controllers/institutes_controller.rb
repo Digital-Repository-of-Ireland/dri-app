@@ -4,12 +4,18 @@ class InstitutesController < ApplicationController
   before_action :authenticate_user!, except: [:index, :logo]
   before_action :check_for_cancel, only: [:create, :update]
   before_action :admin?, only: [:destroy]
-  before_action :manager?, only: [:edit, :update]
+  before_action :manager?, only: [:edit, :update, :show]
   before_action :read_only, except: [:index, :show, :logo]
 
   # Was this action canceled by the user?
   def check_for_cancel
-    redirect_to organisations_path if params[:commit] == 'Cancel'
+    if params[:commit] == 'Cancel'
+      if current_user.is_admin? || params.dig(:institute, :action) == 'new'
+        redirect_to workspace_url
+      else
+        redirect_to manage_users_url
+      end
+    end
   end
 
   # Get the list of institutes
@@ -61,7 +67,7 @@ class InstitutesController < ApplicationController
     @object = retrieve_object!(params[:object]) if params[:object]
 
     respond_to do |format|
-      format.html { redirect_to organisations_url }
+      format.html { redirect_to organisation_url(@inst) }
     end
   end
 
@@ -94,7 +100,7 @@ class InstitutesController < ApplicationController
     @inst.save
 
     respond_to do |format|
-      format.html { redirect_to organisations_url }
+      format.html { redirect_to organisation_url(@inst) }
     end
   end
 
@@ -210,6 +216,6 @@ class InstitutesController < ApplicationController
   end
 
   def update_params
-    params.require(:institute).permit(:name, :logo, :url, :depositing, :manager)
+    params.require(:institute).permit(:name, :logo, :url, :depositing, :manager, :action)
   end
 end

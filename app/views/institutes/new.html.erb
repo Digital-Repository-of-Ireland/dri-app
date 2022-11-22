@@ -19,6 +19,7 @@
       <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green' %>
     <% end %>
     <%= form_for(@inst, url: organisations_path) do |f| %>
+      <%= f.hidden_field :action, value: 'new' %>
       <%= f.submit t('dri.views.objects.links.cancel'), :class=>'btn dri_grey_button' %>
     <% end %>
   </div>

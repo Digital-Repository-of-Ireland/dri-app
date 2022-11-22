@@ -22,16 +22,11 @@ class Institute < ActiveRecord::Base
 
     raise ArgumentError, "User must be an organisation manager." unless user.is_om?
 
-    OrganisationUser.find_or_create_by(institute: self, user: user)
+    replace_manager(user)
   end
 
   def org_manager
-    org_user_memberships = UserGroup::Membership.joins(:group).where("user_group_groups.name =
-'om'").where(user_id: users.pluck(:id))
-
-    return if org_user_memberships.empty?
-
-    org_user_memberships.first.user
+    OrganisationUser.find_by(institute: self, manager:true)&.user
   end
 
   def add_logo(upload)
@@ -43,6 +38,8 @@ class Institute < ActiveRecord::Base
 
   # Return all collections for this institute
   def collections
+    return [] if name.nil?
+
     query = Solr::Query.new(
       collections_query,
       100,
@@ -85,5 +82,19 @@ class Institute < ActiveRecord::Base
   def collections_query
     "#{Solr::SchemaFields.searchable_string('institute')}:\"" + name.mb_chars.downcase +
       "\" AND " + "#{Solr::SchemaFields.searchable_string('type')}:Collection"
+  end
+
+  def replace_manager(user)
+    current_manager = OrganisationUser.find_by(institute: self, manager: true)
+    return if current_manager&.user == user
+
+    ou = OrganisationUser.find_or_create_by(institute: self, user: user)
+    ou.manager = true
+    ou.save
+
+    if current_manager
+      current_manager.manager = false
+      current_manager.save
+    end
   end
 end

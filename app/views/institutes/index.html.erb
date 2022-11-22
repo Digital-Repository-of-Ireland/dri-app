@@ -13,13 +13,9 @@
       <%= link_to main_app.search_catalog_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
             <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
-            <h6>
+            <p>
               <%= institute[:name].to_s.html_safe %>
-            </h6>
-            <% if signed_in? && current_user.is_admin? %>
-              <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(institute) %>
-              <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(institute), method: :delete %>
-            <% end %>
+            </p>
           </div>
           <div class="dri_collection_institutes_pages_text" >
             <ul>

@@ -95,7 +95,7 @@ class ManageUsersController < ApplicationController
   end
 
   def organisations(user)
-    Institute.joins(:organisation_users).where('organisation_users.user_id = ?', user.id).to_a
+    Institute.joins(:organisation_users).where('organisation_users.manager = 1').where('organisation_users.user_id = ?', user.id).to_a
   end
 
   def om?

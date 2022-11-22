@@ -11,6 +11,7 @@
           <%= f.submit t('dri.views.collection.institute.edit'), :id => 'edit_institute', :class=>'dri_button_green' %>
 		<% end %>
 		<%= form_for(@inst, url: organisation_path) do |f| %>
+		  <%= hidden_field_tag 'action', 'edit' %>
 		  <%= f.submit "Cancel", :class=>'btn dri_grey_button' %>
 		<% end %>
 	</div>
