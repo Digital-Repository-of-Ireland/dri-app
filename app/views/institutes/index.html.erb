@@ -9,7 +9,7 @@
     <% next unless collection_count > 0 %>
     <div class="dri_collection_institutes_pages <%= style %>">
       <% style='not_first'%>
-      <% institute_browse_params[:f] = { Solrizer.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
+      <% institute_browse_params[:f] = { institute_sim: [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
       <%= link_to main_app.search_catalog_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
             <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
