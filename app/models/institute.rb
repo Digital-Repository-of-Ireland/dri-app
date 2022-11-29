@@ -2,53 +2,44 @@ class Institute < ActiveRecord::Base
   require 'storage/s3_interface'
   require 'validators'
 
-  has_one :brand
+  has_one :brand, dependent: :destroy
   has_many :organisation_users, dependent: :destroy
   has_many :users, -> { distinct }, through: :organisation_users, class_name: 'UserGroup::User'
 
   validates_uniqueness_of :name
 
-  attr_accessor :manager
-
   def manager
-    org_manager
+    org_manager&.email
   end
 
-  def manager=(email)
-    user = UserGroup::User.find_by(email: email)
+  def manager=(user_or_email)
+    user = if user_or_email.is_a?(UserGroup::User)
+             user_or_email
+           else
+             UserGroup::User.find_by(email: user_or_email)
+           end
     return if user.nil?
 
-    OrganisationUser.create(institute: self, user: user)
+    raise ArgumentError, "User must be an organisation manager." unless user.is_om?
+
+    replace_manager(user)
   end
 
   def org_manager
-    org_user_memberships = UserGroup::Membership.joins(:group).where("user_group_groups.name =
-'om'").where(user_id: users.pluck(:id))
-
-    return if org_user_memberships.empty?
-
-    org_user_memberships.first.user
+    OrganisationUser.find_by(institute: self, manager:true)&.user
   end
 
-  def add_logo(upload, opts = {})
-    self.name = opts[:name]
-    self.url = opts[:url]
+  def add_logo(upload)
+    return unless validate_logo(upload)
 
-    begin
-      save
-    rescue ActiveRecord::ActiveRecordError, DRI::Exceptions::InstituteError => e
-      logger.error "Could not save institute: #{e.message}"
-      raise DRI::Exceptions::InternalError
-    end
-
-    valid = validate_logo upload
-    store_logo(upload, name) if valid
-
+    store_logo(upload)
     save
   end
 
   # Return all collections for this institute
   def collections
+    return [] if name.nil?
+
     query = Solr::Query.new(
       collections_query,
       100,
@@ -76,8 +67,8 @@ class Institute < ActiveRecord::Base
     valid
   end
 
-  def store_logo(upload, name)
-    b = self.brand || Brand.new
+  def store_logo(upload)
+    b = brand || Brand.new
     b.filename = upload.original_filename
     b.content_type = upload.content_type
     b.file_contents = upload.read
@@ -88,8 +79,22 @@ class Institute < ActiveRecord::Base
 
   private
 
-    def collections_query
-      "#{Solr::SchemaFields.searchable_string('institute')}:\"" + name.mb_chars.downcase +
+  def collections_query
+    "#{Solr::SchemaFields.searchable_string('institute')}:\"" + name.mb_chars.downcase +
       "\" AND " + "#{Solr::SchemaFields.searchable_string('type')}:Collection"
+  end
+
+  def replace_manager(user)
+    current_manager = OrganisationUser.find_by(institute: self, manager: true)
+    return if current_manager&.user == user
+
+    ou = OrganisationUser.find_or_create_by(institute: self, user: user)
+    ou.manager = true
+    ou.save
+
+    if current_manager
+      current_manager.manager = false
+      current_manager.save
     end
+  end
 end

@@ -182,7 +182,6 @@ class CatalogController < ApplicationController
   end
 
   # OVER-RIDDEN from BL
-  # Get Timeline data if view is Timeline
   def index
     params.delete(:q_ws)
 
@@ -191,6 +190,7 @@ class CatalogController < ApplicationController
     load_assets_for_document_list if params[:mode].presence == 'objects'
     load_collection_titles
 
+    # Get Timeline data if view is Timeline
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
       @timeline_data = timeline_data
@@ -210,7 +210,6 @@ class CatalogController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    #@response, @document = fetch params[:id]
     @response = search_service.fetch(params[:id]).first
     @document = @response.documents.first
     if @document.generic_file?

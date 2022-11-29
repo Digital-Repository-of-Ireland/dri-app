@@ -5,21 +5,17 @@
 <p><%= t('dri.views.institutes.orgs_legend', url: 'http://www.dri.ie/membership').html_safe %></p>
 <div class="dri_section_block">
 <% @institutes.each_with_index do |institute, i| %>
-    <% style='not_first' unless i == 0 %>
     <% collection_count = @collections[institute.id].size %>
     <% next unless collection_count > 0 %>
     <div class="dri_collection_institutes_pages <%= style %>">
-      <% institute_browse_params[:f] = { Solrizer.solr_name('institute', :facetable, type: :string).to_sym => [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
+      <% style='not_first'%>
+      <% institute_browse_params[:f] = { institute_sim: [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
       <%= link_to main_app.search_catalog_path(institute_browse_params) do %>
           <div class="dri_collection_institutes_pages_img">
             <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
-            <h6>
+            <p>
               <%= institute[:name].to_s.html_safe %>
-            </h6>
-            <% if signed_in? && current_user.is_admin? %>
-              <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(institute) %>
-              <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(institute), method: :delete %>
-            <% end %>
+            </p>
           </div>
           <div class="dri_collection_institutes_pages_text" >
             <ul>

@@ -1,0 +1,19 @@
+<div class="dri_file_upload">
+  <a class='btn btn-default' href='javascript:;'> <p class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></p>
+  <p>
+  (recommended height 75px)
+  </p> <%= f.file_field :logo, :accept=>'image/*', :onchange=>'fileUploadHelper($(this));' %> <p id="institution_logo">No File</p> </a>
+</div>
+<label for="institute_name"> <%= t('dri.views.collection.institute.form.name') %></label>
+<%= f.text_field :name, :required=>'required' %>
+<label for="institute_url"><%= t('dri.views.collection.institute.form.url') %></label>
+<%= f.url_field :url, :required=>'required'  %>
+<% if current_user.is_admin? %>
+  <label for="institute_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
+  <%= f.text_field :manager %>
+  <div>
+    <%= f.label :depositing do %>
+      <%= f.check_box :depositing %><%=  t('dri.views.collection.institute.form.depositing') %>
+    <% end %>
+  </div>
+<% end %>

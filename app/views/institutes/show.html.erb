@@ -1,14 +1,12 @@
 <div class="dri_collection_institutes_item">
-    <%= @inst.name %>
-    <%= @inst.url %>
-
-   <%if @inst.brand.nil? && @inst.url.blank? %>
-     <%= @inst.name %>
-   <% elsif @inst.brand.nil? && !@inst.url.blank? %>
-     <%= link_to @inst.name, @inst.url, :target => "_blank" %>
-   <% elsif @inst.brand && @inst.url.blank? %>
-     <%= image_tag logo_url(@inst), :height => "75px" %>
-   <% else %>
-     <%= link_to image_tag(logo_url(@inst), :height => "75px"), @inst.url, :target => "_blank" %>
-   <% end %>
+  <div class="dri_collection_institutes_pages">
+    <div class="dri_collection_institutes_modal_img">
+      <%= image_tag logo_url(@inst), alt: @inst[:name].to_s.html_safe if @inst.brand %>
+      <p><%= @inst[:name].to_s.html_safe %></p>
+      <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(@inst) %>
+      <% if current_user.is_admin? %>
+        <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(@inst), method: :delete %>
+    <% end %>
+    </div>
+  </div>
 </div>
