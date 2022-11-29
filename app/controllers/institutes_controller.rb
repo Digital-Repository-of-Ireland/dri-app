@@ -3,12 +3,19 @@ class InstitutesController < ApplicationController
   before_action :authenticate_user_from_token!, except: [:index, :logo]
   before_action :authenticate_user!, except: [:index, :logo]
   before_action :check_for_cancel, only: [:create, :update]
-  before_action :admin?, only: [:edit, :update, :destroy]
+  before_action :admin?, only: [:destroy]
+  before_action :manager?, only: [:edit, :update, :show]
   before_action :read_only, except: [:index, :show, :logo]
 
   # Was this action canceled by the user?
   def check_for_cancel
-    redirect_to organisations_path if params[:commit] == 'Cancel'
+    if params[:commit] == 'Cancel'
+      if current_user.is_admin? || params.dig(:institute, :action) == 'new'
+        redirect_to workspace_url
+      else
+        redirect_to manage_users_url
+      end
+    end
   end
 
   # Get the list of institutes
@@ -47,8 +54,8 @@ class InstitutesController < ApplicationController
   def create
     @inst = Institute.new
 
-    add_logo if params[:institute][:logo].present?
-
+    add_logo(params[:institute][:logo]) if params[:institute][:logo].present?
+    @inst.name = params[:institute][:name]
     @inst.url = params[:institute][:url]
     if current_user.is_admin?
       @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
@@ -60,7 +67,7 @@ class InstitutesController < ApplicationController
     @object = retrieve_object!(params[:object]) if params[:object]
 
     respond_to do |format|
-      format.html { redirect_to organisations_url }
+      format.html { redirect_to organisation_url(@inst) }
     end
   end
 
@@ -81,16 +88,19 @@ class InstitutesController < ApplicationController
   def update
     @inst = Institute.find(params[:id])
 
-    add_logo if params[:institute][:logo].present?
+    add_logo(params[:institute][:logo]) if params[:institute][:logo].present?
+
     @inst.url = params[:institute][:url]
     @inst.name = params[:institute][:name]
-    @inst.depositing = params[:institute][:depositing]
-    @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
 
+    if current_user.is_admin?
+      @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
+      @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+    end
     @inst.save
 
     respond_to do |format|
-      format.html { redirect_to organisations_url }
+      format.html { redirect_to organisation_url(@inst) }
     end
   end
 
@@ -132,19 +142,15 @@ class InstitutesController < ApplicationController
 
   private
 
-  def add_logo
-    file_upload = params[:institute][:logo]
-
-    begin
-      @inst.add_logo(file_upload, { name: params[:institute][:name] })
-    rescue DRI::Exceptions::UnknownMimeType
-      flash[:alert] = t('dri.flash.alert.invalid_file_type')
-    rescue DRI::Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-    rescue DRI::Exceptions::InternalError => e
-      logger.error "Could not save licence: #{e.message}"
-      raise DRI::Exceptions::InternalError
-    end
+  def add_logo(file_upload)
+      @inst.add_logo(file_upload)
+  rescue DRI::Exceptions::UnknownMimeType
+    flash[:alert] = t('dri.flash.alert.invalid_file_type')
+  rescue DRI::Exceptions::VirusDetected => e
+    flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
+  rescue DRI::Exceptions::InternalError => e
+    logger.error "Could not save licence: #{e.message}"
+    raise DRI::Exceptions::InternalError
   end
 
   def manage_association
@@ -192,6 +198,15 @@ class InstitutesController < ApplicationController
     raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_admin?
   end
 
+  # User must be the organisation manager assigned to the organisation
+  def manager?
+    return true if current_user.is_admin?
+    raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_om?
+
+    i = Institute.find(params[:id])
+    raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless i&.org_manager == current_user
+  end
+
   def version_and_preserve
     # Do the preservation actions
     VersionCommitter.create(version_id: @collection.object_version, obj_id: @collection.alternate_id, committer_login: current_user.to_s)
@@ -201,6 +216,6 @@ class InstitutesController < ApplicationController
   end
 
   def update_params
-    params.require(:institute).permit(:name, :logo, :url, :depositing, :manager)
+    params.require(:institute).permit(:name, :logo, :url, :depositing, :manager, :action)
   end
 end

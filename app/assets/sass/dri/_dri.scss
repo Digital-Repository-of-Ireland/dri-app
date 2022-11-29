@@ -2129,6 +2129,9 @@ ul.dri_view_collection {
             }
         }
     }
+    .dri_collection_institutes_pages_name {
+      font-size: 12px;
+    }
 }
 // close static page of institutes
 .dri_collection_institutes_item {
@@ -2570,11 +2573,7 @@ ul.dri_collection_institutes_list {
     clear: both;
     border-top: 1px solid $dri_thingrey;
     margin: 20px 0 0 0;
-    .dri_select_institution {
-        select {
-            width: 410px;
-        }
-    }
+    width: 480px;
     label {
         display: block;
         clear: both;
@@ -2582,7 +2581,7 @@ ul.dri_collection_institutes_list {
         color: $dri_darkgrey;
         font-weight: bold;
     }
-    input {
+    input[type="text"], input[type="url"], input[type="submit"] {
         clear: both;
         padding-left: 5px;
         margin-bottom: 5px;
@@ -2595,6 +2594,11 @@ ul.dri_collection_institutes_list {
     }
     input[type="submit"] {
         color: white;
+    }
+    input[type="checkbox"]
+    {
+      vertical-align: middle;
+      margin-right: 5px;
     }
     select {
         width: 150px;

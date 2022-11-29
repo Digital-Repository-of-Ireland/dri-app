@@ -38,6 +38,7 @@ en:
         no_results_found: No objects compatible with timeline display found
       user_profile:
         administrator: Administrator
+        approved_at: Approved at
         collection_manager: Collection Manager
         collection_title: Collection Title
         edit: Edit
@@ -189,6 +190,7 @@ en:
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
         manager_user_created: 'User %{email} successfully granted collection manager permissions.'
+        manager_user_removed: 'User %{email} has had collection manager permissions removed.'
         metadata_updated: Metadata has been successfully updated.
         object_deleted: Object has been deleted.
         organisation_added: Organisation successfully added to collection.
@@ -401,6 +403,7 @@ en:
           delete: x
         confirm:
           delete: This will delete the asset and all surrogates. Continue?
+      back: "< Back"
       catalog:
         buttons:
           clear_all_bookmarks: Clear All Bookmarks
@@ -685,9 +688,13 @@ en:
           logo: Logo
           name: Name
           url: Url
+      manage_users:
+        headers:
+          my_organisations: My Organisations
       manager_users:
         buttons:
           submit: Create
+          unassign: 'Remove collection manager permissions'
         email: 'Enter user''s email:'
       metadata:
         dublin_core: Dublin Core

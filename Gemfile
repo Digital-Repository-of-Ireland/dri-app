@@ -8,7 +8,7 @@ gem 'rails', '~> 6.1'
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'view_component', '2.74.1'
-gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider' #'~> 6'
+gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider'
 gem 'rsolr'
 gem 'kaminari', '>= 1.2.1'
 
@@ -21,7 +21,7 @@ gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.3.0'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.3.1'
 gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.2.1'
 gem "devise", ">= 4.7.1"
 

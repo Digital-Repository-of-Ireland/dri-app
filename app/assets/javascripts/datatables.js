@@ -125,7 +125,7 @@ $(document).ready(function() {
     } );
 
 
-    $('#datatable_cm_users').DataTable( {
+    var datatableCmUsers = $('#datatable_cm_users').DataTable( {
         "processing": true,
         "serverSide": true,
         "stateSave": true,
@@ -139,9 +139,13 @@ $(document).ready(function() {
         columnDefs: [
           { targets: [0, 6, 7, 8], "visible": false, searchable: false },
           { targets: [1, 3, 4, 5], orderable: true },
-          { targets: '_all', orderable: false }
+          { targets: '_all', orderable: false },
         ]
     } );
+    $('#datatable_cm_users tbody').on('click','tr', function() {
+      var currentRowData = datatableCmUsers.row(this).data();
+      location.href = "manage_users/" + currentRowData[0];
+    });
 
     $('#datatable_my_collections').DataTable( {
         "processing": true,
