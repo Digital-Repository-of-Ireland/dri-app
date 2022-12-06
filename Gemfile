@@ -22,15 +22,12 @@ gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
 gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.3.1'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.2.1'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.2.2'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail'
 
 gem 'linkeddata'
-
-gem 'aws-sdk-core', '3.131.1'
-gem 'aws-sdk-s3', '1.114.0'
 
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
