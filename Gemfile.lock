@@ -101,7 +101,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: 562ec6ec14e201ce32a3e711e478bd8ffddc9d98
-  branch: develop
+  tag: v2.2.2
   specs:
     user_group (2.2.2)
       blacklight-access_controls
