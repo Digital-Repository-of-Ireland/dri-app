@@ -29,9 +29,6 @@ gem 'paper_trail'
 
 gem 'linkeddata'
 
-gem 'aws-sdk-core', '3.131.1'
-gem 'aws-sdk-s3', '1.114.0'
-
 # batch ingest
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
 gem 'browse-everything', '~> 1.1.0' 
