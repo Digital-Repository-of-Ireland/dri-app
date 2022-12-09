@@ -708,7 +708,7 @@ GEM
     noid-rails (3.0.3)
       actionpack (>= 5.0.0, < 7)
       noid (~> 0.9)
-    nokogiri (1.13.9)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
@@ -1222,7 +1222,7 @@ DEPENDENCIES
   moab-versioning (~> 4.4)
   mysql2
   nest
-  nokogiri (>= 1.13.9)
+  nokogiri (>= 1.13.10)
   oauth
   om (= 3.2.0)
   omniauth (~> 1.9.1)
