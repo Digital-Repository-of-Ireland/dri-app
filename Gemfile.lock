@@ -194,13 +194,13 @@ GEM
     autoprefixer-rails (10.4.2.0)
       execjs (~> 2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.670.0)
-    aws-sdk-core (3.168.3)
+    aws-partitions (1.674.0)
+    aws-sdk-core (3.168.4)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.60.0)
+    aws-sdk-kms (1.61.0)
       aws-sdk-core (~> 3, >= 3.165.0)
       aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.117.2)
@@ -345,6 +345,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    date (3.3.1)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     declarative-builder (0.1.0)
@@ -554,7 +555,7 @@ GEM
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     is_it_working-cbeer (1.0.16)
-    iso-639 (0.3.5)
+    iso-639 (0.3.6)
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
@@ -579,7 +580,7 @@ GEM
       railties (>= 3.1.0)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.6.2)
+    json (2.6.3)
     json-canonicalization (0.3.1)
     json-ld (3.2.3)
       htmlentities (~> 4.3)
@@ -672,7 +673,7 @@ GEM
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2022.0105)
-    mini_magick (4.11.0)
+    mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.16.3)
@@ -694,11 +695,12 @@ GEM
       redic
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
-    net-imap (0.3.1)
+    net-imap (0.3.2)
+      date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.0)
+    net-protocol (0.2.1)
       timeout
     net-smtp (0.3.3)
       net-protocol
@@ -708,7 +710,7 @@ GEM
     noid-rails (3.0.3)
       actionpack (>= 5.0.0, < 7)
       noid (~> 0.9)
-    nokogiri (1.13.9)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
@@ -753,7 +755,7 @@ GEM
     parser (3.1.2.0)
       ast (~> 2.4.1)
     parslet (2.0.0)
-    public_suffix (5.0.0)
+    public_suffix (5.0.1)
     qa (5.7.0)
       activerecord-import
       deprecation
@@ -1222,7 +1224,7 @@ DEPENDENCIES
   moab-versioning (~> 4.4)
   mysql2
   nest
-  nokogiri (>= 1.13.9)
+  nokogiri (>= 1.13.10)
   oauth
   om (= 3.2.0)
   omniauth (~> 1.9.1)
