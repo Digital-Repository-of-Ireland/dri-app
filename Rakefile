@@ -13,7 +13,6 @@ require 'rspec/core/rake_task'
 require 'bundler'
 require 'dri/rake_support'
 require 'rubocop/rake_task'
-require 'ci/reporter/rake/rspec'
 
 begin
   require 'rdoc/task'
@@ -40,7 +39,7 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('app/**/*.rb')
 end
 
-RSpec::Core::RakeTask.new(:rspec => ['ci:setup:rspec']) do |rspec|
+RSpec::Core::RakeTask.new(:rspec) do |rspec|
   rspec.pattern = FileList['spec/*_spec.rb']
 end
 

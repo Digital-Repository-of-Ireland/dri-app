@@ -42,7 +42,7 @@ describe CitationsHelper, testing: true do
       object.creation_date = ["2015-05-12"]
 
       published = "2021-11-24T15:00:00Z"
-      year = Time.new(published).year
+      year = Time.parse(published).year
       object.published_at = published
       object.type = ["Text"]
 

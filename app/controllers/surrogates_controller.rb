@@ -59,7 +59,7 @@ class SurrogatesController < ApplicationController
       type, ext = mime_type(file)
       name = "#{params[:id]}#{ext}"
 
-      open(file) do |f|
+      URI.open(file) do |f|
         send_data(
           f.read,
           filename: name,

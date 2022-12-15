@@ -102,7 +102,7 @@ end
 group :development, :test do
   gem 'thin'
   gem 'bixby', '~> 3'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 6'
   gem 'rails-controller-testing'
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
@@ -112,7 +112,7 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'ci_reporter_rspec'
+  #gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '>= 0.3'
   gem 'fcrepo_wrapper', '0.9.0'
   gem 'byebug', '~> 10.0'
