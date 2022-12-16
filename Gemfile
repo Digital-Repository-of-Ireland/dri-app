@@ -21,8 +21,8 @@ gem 'riiif'
 gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.3.1'
-gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.2.2'
+gem 'dri_data_models', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git', tag: 'v4.4.1'
+gem 'user_group', git: 'ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git', tag: 'v2.2.3'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail'
@@ -102,7 +102,7 @@ end
 group :development, :test do
   gem 'thin'
   gem 'bixby', '~> 3'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 6'
   gem 'rails-controller-testing'
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
@@ -112,7 +112,7 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'ci_reporter_rspec'
+  #gem 'ci_reporter_rspec'
   gem 'solr_wrapper', '>= 0.3'
   gem 'fcrepo_wrapper', '0.9.0'
   gem 'byebug', '~> 10.0'

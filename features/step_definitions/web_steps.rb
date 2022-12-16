@@ -107,7 +107,7 @@ end
 
 When /^(?:|I )follow the link to (.+)$/ do |link_name|
   if @javascript_driver
-    element = page.find_link(link_to_id(link_name), { visible: false})
+    element = page.find_link(link_to_id(link_name), visible: false)
     page.execute_script("return arguments[0].click();", element)
   else
     page.find_link(link_to_id(link_name)).click
@@ -119,7 +119,7 @@ end
 # event on the selected element.
 When /^(?:|I )click the link to (.+)$/ do |link_name|
   if @javascript_driver
-    element = page.find_link(link_to_id(link_name), { visible: false})
+    element = page.find_link(link_to_id(link_name), visible: false)
     page.execute_script("return arguments[0].click();", element)
   else
     element = page.find(:id, link_to_id(link_name))
@@ -325,7 +325,7 @@ end
 
 Then /^I check "(.*?)"$/ do |checkbox|
   Capybara.ignore_hidden_elements = false
-  element = page.find_by_id(checkbox, {visible: false}) #.click #trigger('click')
+  element = page.find_by_id(checkbox, visible: false) #.click #trigger('click')
   page.execute_script("return arguments[0].click();", element)
 end
 

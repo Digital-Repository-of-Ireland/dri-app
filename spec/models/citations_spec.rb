@@ -20,7 +20,7 @@ describe "Object citations" do
     @t.creation_date = ["2015-05-12"]
 
     published = Time.now.utc.iso8601
-    year = Time.new(published).year 
+    year = Time.parse(published).year 
     @t.published_at = published
 
     @t.type = ["Text"]
@@ -36,7 +36,7 @@ describe "Object citations" do
     @t.creation_date = ["2015-05-12"]
 
     published = Time.now.utc.iso8601
-    year = Time.new(published).year
+    year = Time.parse(published).year
     @t.published_at = published
 
     @t.type = ["Text"]
