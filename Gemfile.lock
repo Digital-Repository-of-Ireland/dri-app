@@ -101,10 +101,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 4e80f4552365c49a2b4b17f074da646da2696518
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
   branch: develop
   specs:
-    user_group (2.2.2)
+    user_group (2.2.3)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -341,7 +341,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.3.1)
+    date (3.3.2)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     declarative-builder (0.1.0)
