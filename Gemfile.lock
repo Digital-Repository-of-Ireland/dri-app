@@ -84,12 +84,13 @@ GIT
   revision: 644d59860f40ed80496f512cefc19f947ec353a6
   tag: v4.3.1
   specs:
-    dri_data_models (4.3.1)
+    dri_data_models (4.4.1)
       hydra-derivatives
       hydra-file_characterization
       iso-639
       iso8601
       namae
+      net-smtp
       noid-rails
       nokogiri (>= 1.12.5)
       om
@@ -103,14 +104,14 @@ GIT
   revision: 562ec6ec14e201ce32a3e711e478bd8ffddc9d98
   tag: v2.2.2
   specs:
-    user_group (2.2.2)
+    user_group (2.2.3)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
       devise-i18n-views
       fastimage
       kaminari
-      omniauth (~> 1.9.1)
+      omniauth
       omniauth-shibboleth
       paper_trail
       rails (~> 6.0)
@@ -210,7 +211,7 @@ GEM
     aws-sigv4 (1.5.2)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.23.0)
-    bagit (0.4.4)
+    bagit (0.4.5)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
     bcp47 (0.3.3)
@@ -236,7 +237,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.32.0)
+    blacklight (7.33.0)
       deprecation
       globalid
       hashdiff
@@ -287,11 +288,6 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     childprocess (4.1.0)
-    ci_reporter (2.0.0)
-      builder (>= 2.1.2)
-    ci_reporter_rspec (1.0.0)
-      ci_reporter (~> 2.0)
-      rspec (>= 2.14, < 4)
     citeproc (1.0.10)
       namae (~> 1.0)
     citeproc-ruby (2.0.0)
@@ -345,7 +341,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.3.1)
+    date (3.3.2)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     declarative-builder (0.1.0)
@@ -658,7 +654,7 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     logger (1.5.0)
-    loofah (2.19.0)
+    loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.8.0)
@@ -798,8 +794,8 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.3)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.4.4)
+      loofah (~> 2.19, >= 2.19.1)
     rails-i18n (7.0.3)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
@@ -926,27 +922,23 @@ GEM
     rsolr (2.5.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rspec (3.10.0)
-      rspec-core (~> 3.10.0)
-      rspec-expectations (~> 3.10.0)
-      rspec-mocks (~> 3.10.0)
-    rspec-core (3.10.1)
-      rspec-support (~> 3.10.0)
-    rspec-expectations (3.10.2)
+    rspec-core (3.12.0)
+      rspec-support (~> 3.12.0)
+    rspec-expectations (3.12.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.10.0)
-    rspec-mocks (3.10.2)
+      rspec-support (~> 3.12.0)
+    rspec-mocks (3.12.1)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.10.0)
-    rspec-rails (5.0.2)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
-      railties (>= 5.2)
-      rspec-core (~> 3.10)
-      rspec-expectations (~> 3.10)
-      rspec-mocks (~> 3.10)
-      rspec-support (~> 3.10)
-    rspec-support (3.10.3)
+      rspec-support (~> 3.12.0)
+    rspec-rails (6.0.1)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
+      rspec-core (~> 3.11)
+      rspec-expectations (~> 3.11)
+      rspec-mocks (~> 3.11)
+      rspec-support (~> 3.11)
+    rspec-support (3.12.0)
     rspec_junit_formatter (0.5.1)
       rspec-core (>= 2, < 4, != 2.12.0)
     rswag-api (2.5.1)
@@ -1175,7 +1167,6 @@ DEPENDENCIES
   browse-everything (~> 1.1.0)
   byebug (~> 10.0)
   capybara (~> 3.14)
-  ci_reporter_rspec
   citeproc-ruby
   clamby
   clipboard-rails
@@ -1247,7 +1238,7 @@ DEPENDENCIES
   riiif
   roo
   rsolr
-  rspec-rails
+  rspec-rails (~> 6)
   rspec_junit_formatter
   rswag-api (~> 2.0)
   rswag-specs

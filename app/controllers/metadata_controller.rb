@@ -183,12 +183,12 @@ class MetadataController < ApplicationController
         begin
           raise ActiveRecord::Rollback unless @object.save && @object.update_index
 
-          return true
+          true
         rescue RSolr::Error::Http
           raise ActiveRecord::Rollback
+
+          false
         end
       end
-
-      false
     end
 end

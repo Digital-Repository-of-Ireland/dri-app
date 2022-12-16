@@ -15,7 +15,7 @@ class LinkedDataJob < IdBasedJob
     uris = loc_array.select { |g| g.start_with?('http') } | data_dri_uris
     uris.each do |uri|
       begin
-        host = URI(URI.encode(uri.strip)).host
+        host = URI(URI::Parser.new.escape(uri.strip)).host
 
         if AuthoritiesConfig[host].present?
           provider = "DRI::Sparql::Provider::#{AuthoritiesConfig[host]['provider']}".constantize.new
