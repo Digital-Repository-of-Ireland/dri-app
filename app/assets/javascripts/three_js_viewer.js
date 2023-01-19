@@ -8,6 +8,7 @@ $(document).ready(function () {
 
     parentDiv = document.getElementById("dri_threejs_view")
 	parentDiv.appendChild( container );
+
     var width = parentDiv.parentNode.offsetWidth;
     var height = parentDiv.parentNode.offsetHeight;
 
@@ -36,12 +37,9 @@ $(document).ready(function () {
 	// Resize after viewport-size-change
 	window.addEventListener( 'resize', onWindowResize, false);
 
-
     function onWindowResize() {
 		parentDiv = document.getElementById("dri_threejs_view")
 	    parentDiv.appendChild( container );
-        var width = parentDiv.parentNode.offsetWidth;
-        var height = parentDiv.parentNode.offsetHeight;
 
 		camera.aspect = width / height;
 		camera.updateProjectionMatrix();
@@ -60,45 +58,156 @@ $(document).ready(function () {
         flatShading: false, 
         transparent: true,
     });
-    // var isCustomMaterial = false;
 
+    var isCustomMaterial = false;
 	var url = $('#dri_threejs_view').data('url');
+    var extension;
 
-    loadSTL(url);
+    $.ajax({
+        'async': false,
+        type: "HEAD",
+        url: url,
+        success: function(message, text, response) {
+            header = response.getResponseHeader('Content-Disposition');
+            console.log(header);
+            var filename = header.match(/filename="(.+)"/)[1].split( '.' ).pop().toLowerCase();
+            extension = filename;
+            console.log(filename);
+        }
+    });
 
-    function loadSTL (url){
-        var stlLoader = new THREE.STLLoader();
-
-        stlLoader.load( url, function ( geometry ) {
-            var mesh = new THREE.Mesh( geometry, absMaterial);
-            renderObject(mesh);
-            guiInitializer(absMaterial, mesh);
-        },
-        (xhr) => {
-            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-        },
-        (error) => {
-            console.log(error)
-            // loadFBX(url);
-        });
+    switch(extension) {
+        case 'stl':
+            var stlLoader = new THREE.STLLoader();
+            stlLoader.load( url, function ( geometry ) {
+                var mesh = new THREE.Mesh( geometry, absMaterial);
+                renderObject(mesh);
+                guiInitializer(absMaterial, mesh);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            });
+            break;
+    
+        case 'ply':
+            const plyLoader = new THREE.PLYLoader();
+            plyLoader.load( url, function ( ply ) {
+                ply.computeVertexNormals()
+                const mesh = new THREE.Mesh(ply, absMaterial)
+                renderObject(mesh);
+                guiInitializer(absMaterial, mesh);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            } ); 
+            break;
+    
+        case 'glb':
+        case 'gltf':
+            var dracoLoader = new THREE.DRACOLoader();
+            dracoLoader.setDecoderPath('/assets/Three/lib/three/examples/js/libs/draco/')
+            var gltfLoader = new THREE.GLTFLoader();
+            gltfLoader.setDRACOLoader( dracoLoader );
+            gltfLoader.load( url, function (gltf) {
+                materialConfig(gltf.scene);
+                renderObject(gltf.scene);
+                guiInitializer(absMaterial, gltf.scene);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            } );
+            break;
+        
+        case 'fbx':
+            var fbxLoader = new THREE.FBXLoader( );
+            fbxLoader.load( url, function ( fbx ) {
+                materialConfig(fbx);
+                renderObject(fbx);
+                guiInitializer(absMaterial, fbx);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            } );
+            break;
+    
+        case 'obj':
+            if(urlMat == null)
+            {
+                var objLoader = new THREE.OBJLoader( );
+                objLoader.load( url, function (obj) {
+                    materialConfig(obj);
+                    renderObject(obj);
+                    guiInitializer(absMaterial, obj);
+                },
+                (xhr) => {
+                    console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+                },
+                (error) => {
+                    console.log(error);
+                } );
+            } else {
+                const mtlLoader = new THREE.MTLLoader();
+                mtlLoader.load(
+                    urlMat,
+                    (materials) => {
+                        materials.preload();
+                        const objLoader = new THREE.OBJLoader();
+                        objLoader.setMaterials(materials);
+                        objLoader.load(
+                            url,
+                            (objMTL) => {
+                                renderObject(objMTL);
+                                guiInitializer(absMaterial, objMTL);
+                            },
+                            (xhr) => {
+                                console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+                            },
+                            (error) => {
+                                console.log(error);
+                            }
+                        )
+                    },
+                    (xhr) => {
+                        console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            }
+            break;
+    
+        case 'dae':
+            const colladaL = new THREE.ColladaLoader();
+            colladaL.load( url, function(dae){
+                materialConfig(dae.scene);
+                renderObject(dae.scene);
+                guiInitializer(absMaterial, dae.scene);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            } );
+            
+            break;
+    
+        default:
+            alert("Unsupported file type: " + extension);
     }
-
-    // function loadFBX (url){
-    //     var fbxLoader = new THREE.FBXLoader( );
-    //     fbxLoader.load( url, function ( fbx ) {
-    //         materialConfig(fbx);
-    //         renderObject(fbx);
-    //         guiInitializer(absMaterial, fbx);
-    //     },
-    //     (xhr) => {
-    //         console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-    //     },
-    //     (error) => {
-    //         console.log(error)
-    //     } ); 
-    // }
-
-
 
 	function addShadowedLight( x, y, z, color, intensity ) {
 
@@ -119,6 +228,19 @@ $(document).ready(function () {
 
 		directionalLight.shadow.bias = - 0.002;
 	}
+
+    function materialConfig(object){
+        object.traverse( function(child){
+            if(child.isMesh){
+                if(isCustomMaterial == true){
+                    child.material = absMaterial;
+                }
+                child.shadow = true;
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+    }
 
     function renderObject(object){
         scene.add(object);
@@ -185,14 +307,12 @@ $(document).ready(function () {
             transparent: true,
         }
         
-    
         const materialFolder = gui.addFolder('Material Control');
-        // materialFolder.add(material, 'transparent').onChange(() => material.needsUpdate = true);
         materialFolder.add(material, 'opacity', 0, 1, 0.01);
         materialFolder.add(material, 'wireframe').onChange(() => material.needsUpdate = true);
         materialFolder.add(material, 'flatShading').onChange(() => material.needsUpdate = true);
-        // materialFolder.add(object, 'visible');
-    
+        if(isCustomMaterial == false) materialFolder.hide();
+
         const cameraFolder = gui.addFolder('Camera Control');
         cameraFolder.add(object.rotation, 'x', 0, Math.PI * 2);
         cameraFolder.add(object.rotation, 'y', 0, Math.PI * 2);
@@ -200,15 +320,16 @@ $(document).ready(function () {
     
         const colorFolder = gui.addFolder('Color Control');
         colorFolder.addColor(options, 'object').onChange( col => {
-            // isCustomMaterial = true;
+            isCustomMaterial = true;
+            materialFolder.show();
             absMaterial.color = new THREE.Color(col);
-            // if(['fbx', 'glb', 'gltf', 'obj', 'dae' ].includes(extension)) {
-                // object.traverse( function(child){
-                //     if(child.isMesh){
-                //         materialConfig(child);
-                //     }
-                // });
-            // }
+            if(['fbx', 'glb', 'gltf', 'obj', 'dae' ].includes(extension)) {
+                object.traverse( function(child){
+                    if(child.isMesh){
+                        materialConfig(child);
+                    }
+                });
+            }
         });
         colorFolder.addColor(options, 'background').onChange( col => {
             scene.background = new THREE.Color(col);
@@ -219,7 +340,7 @@ $(document).ready(function () {
     }
 
     //recursive function to update scene continuously
-    animate()
+    animate();
     function animate() {
         requestAnimationFrame(animate)
         controls.update()

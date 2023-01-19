@@ -39,9 +39,9 @@
 //= require Three/lib/three/examples/js/loaders/ColladaLoader.js
 //= require Three/lib/three/examples/js/loaders/MTLLoader.js
 //= require Three/lib/three/examples/js/libs/draco/draco_decoder.js
+//= require Three/lib/three/examples/js/libs/draco/draco_wasm_wrapper.js
 //= require Three/lib/dat.gui/build/dat.gui.js
 
-//
 // Required by Blacklight-Maps
 //= require blacklight-maps
 //= require jquery.remotipart
