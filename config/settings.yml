@@ -16,7 +16,7 @@ restrict:
     video: ['application/mp4, video/mp4', 'video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
     _3D: ['application/vnd.ms-pki.stl', 'application/octet-stream', 'text/plain', 'model/gltf-binary', 'model/vnd.collada+xml']
   file_formats:
-    _3D: ['STL (Standard Tessellation Language) Binary', 'FBX (Filmbox) Binary', 'Plain text', 'glTF binary model', 'Plain text, JSON data, JSON', 'COLLADA Digital Asset Exchange (DAE), Extensible Markup Language, COLLADA model, XML document', 'Plain text']
+    _3D: ['Polygon File Format', 'STL (Standard Tessellation Language) Binary', 'FBX (Filmbox) Binary', 'Plain text', 'glTF binary model', 'Plain text, JSON data, JSON', 'COLLADA Digital Asset Exchange (DAE), Extensible Markup Language, COLLADA model, XML document', 'Plain text']
   extensions:
     restricted_text: ['.pts', '.xyz']
 storage:

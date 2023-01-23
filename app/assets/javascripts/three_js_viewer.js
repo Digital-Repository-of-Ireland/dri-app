@@ -75,7 +75,7 @@ $(document).ready(function () {
             console.log(filename);
         }
     });
-
+    
     switch(extension) {
         case 'stl':
             var stlLoader = new THREE.STLLoader();
@@ -95,8 +95,9 @@ $(document).ready(function () {
         case 'ply':
             const plyLoader = new THREE.PLYLoader();
             plyLoader.load( url, function ( ply ) {
-                ply.computeVertexNormals()
-                const mesh = new THREE.Mesh(ply, absMaterial)
+                isCustomMaterial = false;
+                ply.computeVertexNormals();
+                const mesh = new THREE.Mesh(ply, absMaterial);
                 renderObject(mesh);
                 guiInitializer(absMaterial, mesh);
             },
@@ -143,50 +144,18 @@ $(document).ready(function () {
             break;
     
         case 'obj':
-            if(urlMat == null)
-            {
-                var objLoader = new THREE.OBJLoader( );
-                objLoader.load( url, function (obj) {
-                    materialConfig(obj);
-                    renderObject(obj);
-                    guiInitializer(absMaterial, obj);
-                },
-                (xhr) => {
-                    console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-                },
-                (error) => {
-                    console.log(error);
-                } );
-            } else {
-                const mtlLoader = new THREE.MTLLoader();
-                mtlLoader.load(
-                    urlMat,
-                    (materials) => {
-                        materials.preload();
-                        const objLoader = new THREE.OBJLoader();
-                        objLoader.setMaterials(materials);
-                        objLoader.load(
-                            url,
-                            (objMTL) => {
-                                renderObject(objMTL);
-                                guiInitializer(absMaterial, objMTL);
-                            },
-                            (xhr) => {
-                                console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-                            },
-                            (error) => {
-                                console.log(error);
-                            }
-                        )
-                    },
-                    (xhr) => {
-                        console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
-                    },
-                    (error) => {
-                        console.log(error);
-                    }
-                );
-            }
+            var objLoader = new THREE.OBJLoader( );
+            objLoader.load( url, function (obj) {
+                materialConfig(obj);
+                renderObject(obj);
+                guiInitializer(absMaterial, obj);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+            },
+            (error) => {
+                console.log(error);
+            } );            
             break;
     
         case 'dae':
@@ -210,22 +179,17 @@ $(document).ready(function () {
     }
 
 	function addShadowedLight( x, y, z, color, intensity ) {
-
 		var directionalLight = new THREE.DirectionalLight( color, intensity );
 		directionalLight.position.set( x, y, z );
 		scene.add( directionalLight );
-
 		directionalLight.castShadow = true;
-
 		var d = 1;
 		directionalLight.shadow.camera.left = - d;
 		directionalLight.shadow.camera.right = d;
 		directionalLight.shadow.camera.top = d;
 		directionalLight.shadow.camera.bottom = - d;
-
 		directionalLight.shadow.camera.near = 1;
 		directionalLight.shadow.camera.far = 4;
-
 		directionalLight.shadow.bias = - 0.002;
 	}
 
@@ -302,15 +266,22 @@ $(document).ready(function () {
         const options = { 
             wireframe: false,
             object: 0x1111111,
-            background: 0xfffff0,
+            background: 0xd7d7d7,
             lights: true,
-            transparent: true,
+            material: true,
         }
+
+        var refreshMaterial = {
+            reset: function() {
+                location.reload(container.load);
+            }
+        };
         
         const materialFolder = gui.addFolder('Material Control');
         materialFolder.add(material, 'opacity', 0, 1, 0.01);
         materialFolder.add(material, 'wireframe').onChange(() => material.needsUpdate = true);
         materialFolder.add(material, 'flatShading').onChange(() => material.needsUpdate = true);
+        materialFolder.add(refreshMaterial, "reset").name("Reset Material");
         if(isCustomMaterial == false) materialFolder.hide();
 
         const cameraFolder = gui.addFolder('Camera Control');
@@ -334,6 +305,7 @@ $(document).ready(function () {
         colorFolder.addColor(options, 'background').onChange( col => {
             scene.background = new THREE.Color(col);
         });
+
         
         gui.close();
         onWindowResize();
