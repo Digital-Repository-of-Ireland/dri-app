@@ -171,6 +171,8 @@ module DRI::Formatters
         end
       end
 
+      graph << [RDF::URI.new(id), RDF::Vocab::EDM.dataProvider, @object_doc.depositing_institute.try(:name)] unless @object_doc.depositing_institute.blank?
+
       @object_doc.identifier.each { |ident| graph << [RDF::URI.new(id), METADATA_FIELDS_MAP['identifier'], ident] } if @object_doc.identifier.present?
     end
 
