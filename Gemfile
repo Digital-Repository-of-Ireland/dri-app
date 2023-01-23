@@ -76,7 +76,7 @@ gem 'js_cookie_rails'
 # clients
 gem 'rest-client', '~> 2.0'
 gem 'sparql-client'
-gem 'httparty'
+gem 'httparty', '>= 0.21.0'
 
 # static pages
 gem 'high_voltage', '~> 3.1'
