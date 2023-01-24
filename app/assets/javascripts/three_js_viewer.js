@@ -69,13 +69,11 @@ $(document).ready(function () {
         url: url,
         success: function(message, text, response) {
             header = response.getResponseHeader('Content-Disposition');
-            console.log(header);
             var filename = header.match(/filename="(.+)"/)[1].split( '.' ).pop().toLowerCase();
-            extension = filename;
-            console.log(filename);
+            extension = filename
         }
     });
-    
+
     switch(extension) {
         case 'stl':
             var stlLoader = new THREE.STLLoader();
@@ -175,7 +173,7 @@ $(document).ready(function () {
             break;
     
         default:
-            alert("Unsupported file type: " + extension);
+            console.log("Unsupported file type: " + extension);
     }
 
 	function addShadowedLight( x, y, z, color, intensity ) {
