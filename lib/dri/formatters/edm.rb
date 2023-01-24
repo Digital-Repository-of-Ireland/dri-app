@@ -164,7 +164,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
                   if is_valid_point?(dcmi_components)
                   xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
                 elsif valid_url?(value)
-                  host = URI(URI.encode(value.strip)).host
+                  host = URI(Addressable::URI.encode(value.strip)).host
                   if AuthoritiesConfig[host].present?
                     xml.tag! "#{pref}:#{kl}", {"rdf:resource" => value}
                   else
