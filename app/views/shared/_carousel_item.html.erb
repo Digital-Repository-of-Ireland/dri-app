@@ -5,16 +5,7 @@
 <% end %>
 <% @surrogate = nil %>
 <% if generic_file.present? && !generic_file.preservation_only? %>
-  <script>
-    console.log("--> Generic file present");
-    console.log("   IS 3D? --> " + <%= generic_file.threeD?%>);
-    console.log(" IS TEXT? --> " + <%= generic_file.text?%>);
-    console.log("IS AUDIO? --> " + <%= generic_file.audio?%>);
-    console.log("IS VIDEO? --> " + <%= generic_file.video?%>);
-    console.log("  IS PDF? --> " + <%= generic_file.pdf?%>);
-    console.log("IS IMAGE? --> " + <%= generic_file.image?%>);
-  </script>
-    
+
   <% if generic_file.audio? %>
     <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
     <% @surrogate = @surrogate_mp3 %>
@@ -23,14 +14,14 @@
       <%= audio_tag [@surrogate_mp3, @surrogate_ogg], controls: true, autobuffer: true, class: 'dri_audio' %>
       <%= render partial: 'shared/object_show_single_audio_details', locals: { generic_file: generic_file } %>
     <% end %>
-
+  
   <% elsif generic_file.video? %>
     <% @surrogate = @presenter.surrogate_url(generic_file.id, "mp4") %>
     <% if @surrogate %>
       <% @surrogate_webm = @presenter.surrogate_url(generic_file.id, "webm") %>
       <%= video_tag [@surrogate, @surrogate_webm], controls: true, class: "dri_video" %>
     <% end %>
-
+  
   <% elsif generic_file.pdf? %>
     <% @surrogate = @presenter.surrogate_url(generic_file.id, "pdf") %>
     <% @title = generic_file.label %>
@@ -45,10 +36,6 @@
       <% end %>
     <% end %>
 
-  <% elsif generic_file.threeD? %>
-    <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
-    <%= render partial: 'shared/display_3d', locals: { url: @surrogate } %>
-
   <% elsif generic_file.text? %>
     <% @surrogate = @presenter.surrogate_url(generic_file.id, "pdf") %>
     <% @title = generic_file.label %>
@@ -57,8 +44,6 @@
         <%= image_tag('PDF_Logo.png') %>
       <% end %>
     <% end %>
-      
-  
 
   <% elsif generic_file.image? %>
     <% @surrogate = @presenter.surrogate_url(generic_file.id, "full_size_web_format") %>
@@ -67,37 +52,40 @@
       <% content_for :head do %>
         <meta property="og:image" content="<%= @surrogate_thumb %>" />
       <% end %>
-    <% end %>
-  <% end %>
-
-    <% if document.published? && document.public_read? %>
-      <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
-      <%= link_to "#dri_iiif_view", class: 'dri_iiif', data: { viewer_index: @iiif_sources.length - 1 } do %>
-        <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
-      <% end %>
-    <% else %>
-      <%= link_to @surrogate, class: 'dri_gallery group1' do %>
-        <% if generic_file_counter.zero? %>
+      <% if document.published? && document.public_read? %>
+        <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
+          <%= link_to "#dri_iiif_view", class: 'dri_iiif', data: { viewer_index: @iiif_sources.length - 1 } do %>
           <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
-        <% else %>
-          <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
+        <% end %>
+      <% else %>
+        <%= link_to @surrogate, class: 'dri_gallery group1' do %>
+          <% if generic_file_counter.zero? %>
+            <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
+          <% else %>
+            <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
 
-    <% if @surrogate.blank? %>
-      <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
-      <p class="dri_restrict_message" id="asset_not_available">
-      <% if generic_file.supported_type? %>
-        <%= t('dri.views.catalog.legends.surrogate_not_available_why') %>
-      <% else %>
-        <%= t('dri.views.catalog.legends.surrogate_not_supported', mime_type: generic_file.mime_type) %>
-      <% end %>
-      </p>
+  <% elsif generic_file.threeD? %>
+    <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
+    <%= render partial: 'shared/display_3d', locals: { url: @surrogate } %>
+  <% end %>
+
+  <% if @surrogate.blank? %>
+    <h2 class="dri_restrict_title"><%= t('dri.views.catalog.legends.surrogate_not_available') %></h2>
+    <p class="dri_restrict_message" id="asset_not_available">
+    <% if generic_file.supported_type? %>
+      <%= t('dri.views.catalog.legends.surrogate_not_available_why') %>
+    <% else %>
+      <%= t('dri.views.catalog.legends.surrogate_not_supported', mime_type: generic_file.mime_type) %>
     <% end %>
+    </p>
+  <% end %>
 <% end %>
 
- <div class="carousel-caption">
+<div class="carousel-caption">
   <p>
     <% if @surrogate.nil? && !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) %>
       <%= t('dri.views.catalog.links.download_not_available', index: generic_file_counter.ordinalize) %>
@@ -106,7 +94,7 @@
         <%= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %>
       <% end %>
       <%= link_to '#dri_download_modal_id', :'data-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
-          <%= t('dri.views.catalog.links.download') %>
+        <%= t('dri.views.catalog.links.download') %>
       <% end %>
     <% end %>
   </p>
@@ -115,7 +103,7 @@
 <div id="dri_download_assets" class="<%= generic_file.id %>" style="display:none">
   <div>
     <p>
-        <%= t('dri.views.catalog.forms.download_tsandcs_msg', url: main_app.page_path('terms')).html_safe %>
+      <%= t('dri.views.catalog.forms.download_tsandcs_msg', url: main_app.page_path('terms')).html_safe %>
     </p>
   </div>
   <% if @surrogate %>
@@ -126,25 +114,23 @@
      <% end %>
     </div>
   <% end %>
-
-   <% if @document.read_master? || (can? :edit, @document) %>
+  <% if @document.read_master? || (can? :edit, @document) %>
    <div>
-     <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile'), id: 'download_master', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
-       <i class="fa fa-download"></i>
-       <% file_size = number_to_human_size(generic_file['file_size_ltsi']) %>
-       <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
-     <% end %>
+      <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile'), id: 'download_master', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
+        <i class="fa fa-download"></i>
+        <% file_size = number_to_human_size(generic_file['file_size_ltsi']) %>
+        <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
+      <% end %>
     </div>
   <% end %>
-
   <% if current_user %>
     <div>
       <%= link_to object_path(@document, format: 'zip'), id: 'download_archive', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
         <i class="fa fa-download"></i>
         <%= label_tag(:all, t('dri.views.catalog.forms.download_all', count: displayfiles_count)) %>
       <% end %>
-      <div> (<%= t('dri.views.catalog.forms.download_archive_explanation') %>)</div>
+    <div> (<%= t('dri.views.catalog.forms.download_archive_explanation') %>)</div>
     </div>
   <% end %>
-</div>
+  </div>
 </div>

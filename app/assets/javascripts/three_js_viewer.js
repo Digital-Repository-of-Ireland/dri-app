@@ -279,7 +279,7 @@ $(document).ready(function () {
         materialFolder.add(material, 'opacity', 0, 1, 0.01);
         materialFolder.add(material, 'wireframe').onChange(() => material.needsUpdate = true);
         materialFolder.add(material, 'flatShading').onChange(() => material.needsUpdate = true);
-        materialFolder.add(refreshMaterial, "reset").name("Reset Material");
+        materialFolder.add(refreshMaterial, "reset").name("Reset Object");
         if(isCustomMaterial == false) materialFolder.hide();
 
         const cameraFolder = gui.addFolder('Camera Control');
