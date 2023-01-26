@@ -27,7 +27,7 @@ class ExportsController < ApplicationController
     file = storage.file_url(bucket, "#{params[:export_key]}.csv")
     raise DRI::Exceptions::NotFound unless file
 
-    open(file) do |f|
+    URI.open(file) do |f|
       send_data(
         f.read,
         filename: File.basename(file),
