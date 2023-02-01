@@ -76,6 +76,7 @@ $(document).ready(function () {
 
     switch(extension) {
         case 'stl':
+            isCustomMaterial = true;
             var stlLoader = new THREE.STLLoader();
             stlLoader.load( url, function ( geometry ) {
                 var mesh = new THREE.Mesh( geometry, absMaterial);
@@ -91,9 +92,9 @@ $(document).ready(function () {
             break;
     
         case 'ply':
+            isCustomMaterial = true;
             const plyLoader = new THREE.PLYLoader();
             plyLoader.load( url, function ( ply ) {
-                isCustomMaterial = false;
                 ply.computeVertexNormals();
                 const mesh = new THREE.Mesh(ply, absMaterial);
                 renderObject(mesh);
@@ -142,6 +143,7 @@ $(document).ready(function () {
             break;
     
         case 'obj':
+            isCustomMaterial = true;
             var objLoader = new THREE.OBJLoader( );
             objLoader.load( url, function (obj) {
                 materialConfig(obj);
