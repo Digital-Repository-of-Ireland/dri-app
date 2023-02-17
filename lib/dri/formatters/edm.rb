@@ -303,7 +303,26 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag!("edm:object", {"rdf:resource" => thumbnail})
       end
 
+      # If the mainfile is an image, then we create a single webresource and service
+
+      if mainfile["file_type_tesim"].include? "image"
+        image_url = riiif.image_url("#{record.id}:#{mainfile.id}", size: 'full')
+        manifest_url = iiif_manifest_url("#{record.id}", format: :json)
+        base_url = riiif.base_url("#{record.id}:#{mainfile.id}")
+
+        xml.tag!("edm:WebResource", {"rdf:about" => image_url}) do
+          xml.tag!("edm:rights", {"rdf:resource" => licence})
+          xml.tag!("svcs:has_service", {"rdf:resource" => base_url})
+          xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
+        end
+        xml.tag!("svcs:Service",{"rdf:about" => base_url}) do
+          xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image'})
+          xml.tag!("doap:implements", {"rdf:resource" => 'http://iiif.io/api/image/2/level2.json'})
+        end
+      end
+
       # Get urls for each asset file and create a webResource element
+      images = 0
       assets.each do |file|
         if file.keys.include?("file_type_tesim")
           if file['file_type_tesim'].include? "video"
@@ -311,7 +330,9 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           elsif file['file_type_tesim'].include? "audio"||"sound"
             url = object_file_url(record.id, file.id, surrogate: 'mp3')
 
-          elsif file['file_type_tesim'].include? "image"
+          elsif file['file_type_tesim'].include? "image" and ! mainfile['file_type_tesim'].include? "image"
+            next if (images > 0 || (mainfile['file_type_tesim'].include? "image"))
+
             image_url = riiif.image_url("#{record.id}:#{file.id}", size: 'full')
             manifest_url = iiif_manifest_url("#{record.id}", format: :json)
             base_url = riiif.base_url("#{record.id}:#{file.id}")
@@ -325,7 +346,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               xml.tag!("dcterms:conformsTo", {"rdf:resource" => 'http://iiif.io/api/image'})
               xml.tag!("doap:implements", {"rdf:resource" => 'http://iiif.io/api/image/2/level2.json'})
             end
-
+            images+=1
           elsif file['file_type_tesim'].include? "text"
             url = object_file_url(record.id, file.id, surrogate:'pdf')
           elsif file['file_type_tesim'].include? "3d"
