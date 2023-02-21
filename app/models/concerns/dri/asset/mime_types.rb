@@ -4,29 +4,27 @@ module DRI
       extend ActiveSupport::Concern
 
       def pdf?
-        self.class.pdf_mime_types.include? self.mime_type
+        self.class.pdf_mime_types.include? (self.mime_type) && !self.class.restricted_3D_extensions.include?(extension)
       end
 
       def text?
-        self.class.text_mime_types.include?(self.mime_type) &&
-          !self.class.restricted_text_extensions.include?(extension)
+        self.class.text_mime_types.include?(self.mime_type) && self.class.restricted_text_extensions.include?(extension)
       end
 
       def image?
-        self.class.image_mime_types.include? self.mime_type
+        self.class.image_mime_types.include? (self.mime_type) && !self.class.restricted_3D_extensions.include?(extension)
       end
 
       def video?
-        self.class.video_mime_types.include? self.mime_type
+        self.class.video_mime_types.include? (self.mime_type)
       end
 
       def audio?
-        self.class.audio_mime_types.include? self.mime_type
+        self.class.audio_mime_types.include? (self.mime_type)
       end
 
       def threeD?
-        self.class._3D_mime_types.include?(self.mime_type) &&
-          self.class._3D_file_formats.any?{ |f| self.file_format.downcase.include?(f.downcase) }
+        self.class._3D_mime_types.include?(self.mime_type) && self.class._3D_file_formats.any?{ |f| self.file_format.downcase.include?(f.downcase)}
       end
 
       def file_format
@@ -73,6 +71,11 @@ module DRI
         def restricted_text_extensions
           ::Settings.restrict.extensions.restricted_text
         end
+
+        def restricted_3D_extensions
+          ::Settings.restrict.extensions.restricted_3D
+        end
+
       end
     end
   end
