@@ -43,7 +43,9 @@
 //= require Three/lib/dat.gui/build/dat.gui.js
 
 // Required by Blacklight-Maps
-//= require blacklight-maps
+//= require leaflet
+//= require leaflet.markercluster
+//= require blacklight-maps/blacklight-maps-browse
 //= require jquery.remotipart
 //= require js.cookie
 //= require jquery.validate
