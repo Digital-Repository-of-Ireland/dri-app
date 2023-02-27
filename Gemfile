@@ -47,7 +47,6 @@ gem 'oauth'
 
 # Storage-related gems
 gem 'moab-versioning', '~> 4.4'
-gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 
 gem 'redis', '~> 4'
