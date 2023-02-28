@@ -90,8 +90,6 @@ gem 'nest'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs', '2.7.0'
 
-gem 'uglifier', '>= 1.0.3'
-
 group :production do
   gem 'clamby'
   gem 'mysql2' 
