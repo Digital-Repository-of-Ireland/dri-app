@@ -114,7 +114,7 @@ group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
   gem 'fcrepo_wrapper', '0.9.0'
   gem 'byebug', '~> 10.0'
-  gem 'parallel_tests', '~> 2.23'
+  gem 'parallel_tests'
   #gem 'i18n-debug', '~> 1.2'
   gem 'yard'
   gem 'listen'

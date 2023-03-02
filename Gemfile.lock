@@ -710,8 +710,8 @@ GEM
     paper_trail (14.0.0)
       activerecord (>= 6.0)
       request_store (~> 1.4)
-    parallel (1.21.0)
-    parallel_tests (2.32.0)
+    parallel (1.22.1)
+    parallel_tests (4.2.0)
       parallel
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -1189,7 +1189,7 @@ DEPENDENCIES
   openlayers-rails
   openseadragon
   paper_trail
-  parallel_tests (~> 2.23)
+  parallel_tests
   qa (~> 5.1)
   rack-tracker
   railroady
@@ -1233,4 +1233,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.1.4
+   2.4.7
