@@ -189,8 +189,8 @@ ga:
         licence_created: D'éirigh leat an ceadúnas a chruthú.
         licence_updated: D'éirigh leat an ceadúnas a thabhairt cothrom le dáta.
         manager_user_created: 'Tá ceadanna bainisteora bailiúcháin tugtha d''úsáideoir %{email}. '
-        manager_user_removed: 'Baineadh ceadanna bainisteora bailiúcháin d'úsáideoir %{email}.'
         metadata_updated: D'éirigh leat na meiteashonraí a thabhairt cothrom le dáta.
+        manager_user_removed: "Baineadh ceadanna bainisteora bailiúcháin d'úsáideoir %{email}."
         object_deleted: Tá an oibiacht scriosta.
         organisation_added: Cuireadh an eagraíocht leis an mbailiúchán.
         organisation_created: D'éirigh leat an Eagraíocht a chruthú.
@@ -205,7 +205,7 @@ ga:
         specify_file: Ní mór duit comhad a shonrú le huaslódáil.
         specify_object_id: Ní mór duit ID oibiachta bailí a shonrú.
         specify_valid_file: Ní mór duit comhad bailí a shonrú le huaslódáil.
-        updated: 'D'éirigh leis an nuashonrú.'
+        updated: 'Nuashonraithe %{item}'
         tp_request_submitted: D'éirigh le hiarratas sonraí trascribathon a chur isteach.
     footer:
       contacts:
@@ -450,7 +450,7 @@ ga:
           related_materials: Ábhair Ghaolmhara
           sub_collections: Fo-bhailiúcháin
         legends:
-        citation_style: Stíl Lua
+          citation_style: Stíl Lua
           doi_deleted: 'Níl an oibiacht seo ar fáil níos mó. Is féidir teagmháil a dhéanamh le dri@ria.ie chun níos mó eolais a fháil, ag déanamh tagartha de ID na hoibiachta %{id}.'
           doi_not_available: Níl an oibiacht seo ar fáil faoi láthair mar go bhfuil sé faoi glas ag próiseas eagarthóireachta.
           file_status: ' Stádas: %{status}'
