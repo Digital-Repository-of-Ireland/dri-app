@@ -81,8 +81,8 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 45f64cc79d78d456c9aa5802d88d11432e7b6faa
-  branch: develop
+  revision: 0817131f30464853539d341450a5eabbb31896f9
+  tag: v4.5.1
   specs:
     dri_data_models (4.5.1)
       hydra-derivatives
@@ -102,7 +102,7 @@ GIT
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
   revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
-  branch: develop
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
@@ -233,7 +233,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.33.0)
+    blacklight (7.33.1)
       deprecation
       globalid
       hashdiff
@@ -272,7 +272,7 @@ GEM
       typhoeus
     builder (3.2.4)
     byebug (10.0.2)
-    cancancan (3.4.0)
+    cancancan (3.5.0)
     capybara (3.37.1)
       addressable
       matrix
@@ -342,7 +342,7 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.8.1)
+    devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -637,7 +637,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.17.0)
+    minitest (5.18.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -727,7 +727,7 @@ GEM
       rails (>= 5.0, < 6.2)
       rdf
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-protection (3.0.5)
       rack
     rack-test (2.0.2)
@@ -859,9 +859,9 @@ GEM
       uber (< 0.2.0)
     request_store (1.5.1)
       rack (>= 1.4)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
+    responders (3.1.0)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     resque (1.27.4)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
@@ -1141,7 +1141,7 @@ DEPENDENCIES
   cucumber-api-steps
   cucumber-rails
   database_cleaner
-  devise (>= 4.7.1)
+  devise (~> 4.8)
   dri_batch_ingest!
   dri_data_models!
   execjs (= 2.7.0)
