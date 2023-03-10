@@ -47,7 +47,6 @@ gem 'oauth'
 
 # Storage-related gems
 gem 'moab-versioning', '~> 4.4'
-gem 'valkyrie', '~> 2.2'
 gem 'bagit'
 
 gem 'redis', '~> 4'
@@ -90,8 +89,7 @@ gem 'nest'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs', '2.7.0'
-
-gem 'uglifier', '>= 1.0.3'
+gem 'uglifier', '~> 4'
 
 group :production do
   gem 'clamby'
@@ -116,7 +114,7 @@ group :development, :test do
   gem 'solr_wrapper', '>= 0.3'
   gem 'fcrepo_wrapper', '0.9.0'
   gem 'byebug', '~> 10.0'
-  gem 'parallel_tests', '~> 2.23'
+  gem 'parallel_tests'
   #gem 'i18n-debug', '~> 1.2'
   gem 'yard'
   gem 'listen'

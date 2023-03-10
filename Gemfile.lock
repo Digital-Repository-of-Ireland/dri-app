@@ -81,10 +81,10 @@ GIT
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 21c4c915977e94124b11ea16c3075c62adf2cbae
-  tag: v4.4.1
+  revision: 0817131f30464853539d341450a5eabbb31896f9
+  tag: v4.5.1
   specs:
-    dri_data_models (4.4.1)
+    dri_data_models (4.5.1)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -97,7 +97,7 @@ GIT
       rails (~> 6.0)
       resque
       rsolr
-      valkyrie (~> 2.1)
+      valkyrie (~> 3)
 
 GIT
   remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
@@ -166,10 +166,6 @@ GEM
       globalid (>= 0.3.6)
     activemodel (6.1.7.2)
       activesupport (= 6.1.7.2)
-    activemodel-serializers-xml (1.0.2)
-      activemodel (> 5.x)
-      activesupport (> 5.x)
-      builder (~> 3.1)
     activerecord (6.1.7.2)
       activemodel (= 6.1.7.2)
       activesupport (= 6.1.7.2)
@@ -276,7 +272,7 @@ GEM
       typhoeus
     builder (3.2.4)
     byebug (10.0.2)
-    cancancan (3.4.0)
+    cancancan (3.5.0)
     capybara (3.37.1)
       addressable
       matrix
@@ -295,7 +291,7 @@ GEM
     clamby (1.6.8)
     clipboard-rails (1.7.1)
     coderay (1.1.3)
-    concurrent-ruby (1.2.0)
+    concurrent-ruby (1.2.2)
     config (3.1.1)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
@@ -343,13 +339,10 @@ GEM
     date (3.3.3)
     debug_inspector (1.1.0)
     declarative (0.0.20)
-    declarative-builder (0.1.0)
-      declarative-option (< 0.2.0)
-    declarative-option (0.1.0)
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.8.1)
+    devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -359,23 +352,13 @@ GEM
       devise
     devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
-    disposable (0.4.7)
+    disposable (0.6.3)
       declarative (>= 0.0.9, < 1.0.0)
-      declarative-builder (< 0.2.0)
-      declarative-option (< 0.2.0)
-      representable (>= 2.4.0, <= 3.1.0)
-      uber (< 0.2.0)
+      representable (>= 3.1.1, < 4)
     docile (1.4.0)
     docopt (0.5.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    draper (4.0.2)
-      actionpack (>= 5.0)
-      activemodel (>= 5.0)
-      activemodel-serializers-xml (>= 1.0)
-      activesupport (>= 5.0)
-      request_store (>= 1.0)
-      ruby2_keywords
     dropbox_api (0.1.21)
       faraday (< 3.0)
       oauth2 (~> 1.1)
@@ -439,6 +422,8 @@ GEM
       railties (>= 5.0.0)
     faraday (0.17.6)
       multipart-post (>= 1.2, < 3)
+    faraday-multipart (1.0.4)
+      multipart-post (~> 2)
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
     fastimage (2.2.6)
@@ -648,11 +633,11 @@ GEM
     method_source (1.0.0)
     mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2022.0105)
+    mime-types-data (3.2023.0218.1)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.17.0)
+    minitest (5.18.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -725,8 +710,8 @@ GEM
     paper_trail (14.0.0)
       activerecord (>= 6.0)
       request_store (~> 1.4)
-    parallel (1.21.0)
-    parallel_tests (2.32.0)
+    parallel (1.22.1)
+    parallel_tests (4.2.0)
       parallel
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -742,7 +727,7 @@ GEM
       rails (>= 5.0, < 6.2)
       rdf
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.3)
     rack-protection (3.0.5)
       rack
     rack-test (2.0.2)
@@ -859,18 +844,18 @@ GEM
     redis (4.8.1)
     redis-namespace (1.10.0)
       redis (>= 4)
-    reform (2.5.0)
-      disposable (>= 0.4.2, < 0.5.0)
-      representable (>= 2.4.0, < 3.1.0)
+    reform (2.6.2)
+      disposable (>= 0.5.0, < 1.0.0)
+      representable (>= 3.1.1, < 4)
       uber (< 0.2.0)
     reform-rails (0.2.3)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
     regexp_parser (2.5.0)
     remotipart (1.4.4)
-    representable (3.0.4)
+    representable (3.2.0)
       declarative (< 0.1.0)
-      declarative-option (< 0.2.0)
+      trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
     request_store (1.5.1)
       rack (>= 1.4)
@@ -1073,6 +1058,7 @@ GEM
     thor (1.2.1)
     tilt (2.1.0)
     timeout (0.3.2)
+    trailblazer-option (0.1.2)
     typhoeus (1.4.0)
       ethon (>= 0.9.0)
     tzinfo (2.0.6)
@@ -1088,14 +1074,13 @@ GEM
     unicode-display_width (1.8.0)
     unicode-types (1.7.0)
     validatable (1.6.7)
-    valkyrie (2.2.0)
+    valkyrie (3.0.1)
       activemodel
       activesupport
-      disposable (~> 0.4.5)
-      draper
       dry-struct
       dry-types (~> 1.0)
-      faraday (< 1.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
+      faraday-multipart
       json
       json-ld
       railties
@@ -1156,7 +1141,7 @@ DEPENDENCIES
   cucumber-api-steps
   cucumber-rails
   database_cleaner
-  devise (< 4.9)
+  devise (~> 4.8)
   dri_batch_ingest!
   dri_data_models!
   execjs (= 2.7.0)
@@ -1204,7 +1189,7 @@ DEPENDENCIES
   openlayers-rails
   openseadragon
   paper_trail
-  parallel_tests (~> 2.23)
+  parallel_tests
   qa (~> 5.1)
   rack-tracker
   railroady
@@ -1240,13 +1225,12 @@ DEPENDENCIES
   syslog-logger
   thin
   timelineJS3-rails!
-  uglifier (>= 1.0.3)
+  uglifier (~> 4)
   unicode
   user_group!
-  valkyrie (~> 2.2)
   view_component (= 2.74.1)
   webdrivers
   yard
 
 BUNDLED WITH
-   2.1.4
+   2.4.7

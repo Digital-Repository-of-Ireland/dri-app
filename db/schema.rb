@@ -441,6 +441,11 @@ ActiveRecord::Schema.define(version: 2022_11_22_145413) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "dri_batch_ingest_master_files", "dri_batch_ingest_media_objects", column: "media_object_id"
+  add_foreign_key "dri_batch_ingest_media_objects", "dri_batch_ingest_ingest_batches", column: "ingest_batch_id"
+  add_foreign_key "dri_batch_ingest_user_ingests", "user_group_users", column: "user_id"
+  add_foreign_key "fixity_checks", "fixity_reports"
+  add_foreign_key "qa_local_authority_entries", "qa_local_authorities", column: "local_authority_id"
   add_foreign_key "tp_items", "tp_stories", column: "story_id", primary_key: "story_id"
   add_foreign_key "tp_people", "tp_items", column: "item_id", primary_key: "item_id"
   add_foreign_key "tp_places", "tp_items", column: "item_id", primary_key: "item_id"

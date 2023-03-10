@@ -98,7 +98,6 @@ describe DRI::IIIFViewable do
     @generic_file.label = 'sample_image.jpeg'
     @generic_file.append_metadata
     @generic_file.save
-
   end
 
   after(:each) do
@@ -143,9 +142,9 @@ describe DRI::IIIFViewable do
     it 'should add images to objects' do
       manifest = iiif_test.new(SolrDocument.new(@sound.to_solr)).iiif_manifest
 
-      expect(manifest.sequences.length).to be 1
-      expect(manifest.sequences.first.canvases.length).to be 1
-      expect(manifest.sequences.first.canvases.first.images.length).to be 1
+      expect(manifest.sequences.length).to eq 1
+      expect(manifest.sequences.first.canvases.length).to eq 1
+      expect(manifest.sequences.first.canvases.first.images.length).to eq 1
 
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
         "#{@sound.alternate_id}:#{@generic_file.alternate_id}/full/full/0/default.jpg")

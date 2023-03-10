@@ -57,6 +57,7 @@ spec/fixtures/dri_1234.foxml.xml
 libiconv*
 app/assets/stylesheets/dri/*
 fakes3
+fakes
 dump.rdb
 .project
 fcrepo4-test-data/
