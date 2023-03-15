@@ -45,14 +45,6 @@ pipeline {
                 sh './buildshim compile'
             }
         }
-        stage('Update Mirror') {
-            when {
-                branch 'develop'
-            }
-            steps {
-                sh './buildshim push'
-            }
-        }
     }
     post {
         always {
