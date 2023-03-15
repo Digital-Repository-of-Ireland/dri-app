@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 60c2f573b751d7eaeccd155ab721a6e371cd91b7
-  branch: develop
+  revision: 7f60a8418ad0020d14d55c3b0de58c55ac92f418
+  tag: v4.5.2
   specs:
     dri_data_models (4.5.2)
       hydra-derivatives
@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
-  branch: develop
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
