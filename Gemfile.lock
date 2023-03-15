@@ -1,4 +1,42 @@
 GIT
+  remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
+  revision: b6e64a016a5dd3294142a8f55de3f4598d321b00
+  branch: develop
+  specs:
+    dri_data_models (4.5.1)
+      hydra-derivatives
+      hydra-file_characterization
+      iso-639
+      iso8601
+      namae
+      net-smtp
+      noid-rails
+      nokogiri (>= 1.12.5)
+      om
+      rails (~> 6.0)
+      resque
+      rsolr
+      valkyrie (~> 3)
+
+GIT
+  remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
+  revision: be414a89c4347922f187501d37081ca9ee63e8da
+  branch: develop
+  specs:
+    user_group (2.2.3)
+      blacklight-access_controls
+      devise
+      devise-guests (~> 0.3)
+      devise-i18n-views
+      fastimage
+      kaminari
+      omniauth
+      omniauth-shibboleth
+      paper_trail
+      rails (~> 6.0)
+      rb-gravatar
+
+GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
   revision: 4dcb3186ae6a49c0a82b6f8a4e36b593248de629
   branch: main
@@ -79,81 +117,43 @@ GIT
     timelineJS3-rails (1.0.3)
       jquery-rails
 
-GIT
-  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-data-models.git
-  revision: 45f64cc79d78d456c9aa5802d88d11432e7b6faa
-  branch: develop
-  specs:
-    dri_data_models (4.5.1)
-      hydra-derivatives
-      hydra-file_characterization
-      iso-639
-      iso8601
-      namae
-      net-smtp
-      noid-rails
-      nokogiri (>= 1.12.5)
-      om
-      rails (~> 6.0)
-      resque
-      rsolr
-      valkyrie (~> 3)
-
-GIT
-  remote: ssh://git@tracker.dri.ie:2200/drirepo/dri-user-group.git
-  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
-  branch: develop
-  specs:
-    user_group (2.2.3)
-      blacklight-access_controls
-      devise
-      devise-guests (~> 0.3)
-      devise-i18n-views
-      fastimage
-      kaminari
-      omniauth
-      omniauth-shibboleth
-      paper_trail
-      rails (~> 6.0)
-      rb-gravatar
-
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actioncable (6.1.7.3)
+      actionpack (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailbox (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activestorage (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actionmailbox (6.1.7.3)
+      actionpack (= 6.1.7.3)
+      activejob (= 6.1.7.3)
+      activerecord (= 6.1.7.3)
+      activestorage (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       mail (>= 2.7.1)
-    actionmailer (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      actionview (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actionmailer (6.1.7.3)
+      actionpack (= 6.1.7.3)
+      actionview (= 6.1.7.3)
+      activejob (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (6.1.7.2)
-      actionview (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actionpack (6.1.7.3)
+      actionview (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       rack (~> 2.0, >= 2.0.9)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
-    actiontext (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activestorage (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actiontext (6.1.7.3)
+      actionpack (= 6.1.7.3)
+      activerecord (= 6.1.7.3)
+      activestorage (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       nokogiri (>= 1.8.5)
-    actionview (6.1.7.2)
-      activesupport (= 6.1.7.2)
+    actionview (6.1.7.3)
+      activesupport (= 6.1.7.3)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
@@ -161,24 +161,24 @@ GEM
     active_encode (0.8.2)
       rails
       sprockets (< 4)
-    activejob (6.1.7.2)
-      activesupport (= 6.1.7.2)
+    activejob (6.1.7.3)
+      activesupport (= 6.1.7.3)
       globalid (>= 0.3.6)
-    activemodel (6.1.7.2)
-      activesupport (= 6.1.7.2)
-    activerecord (6.1.7.2)
-      activemodel (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    activemodel (6.1.7.3)
+      activesupport (= 6.1.7.3)
+    activerecord (6.1.7.3)
+      activemodel (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
     activerecord-import (1.3.0)
       activerecord (>= 4.2)
-    activestorage (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    activestorage (6.1.7.3)
+      actionpack (= 6.1.7.3)
+      activejob (= 6.1.7.3)
+      activerecord (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       marcel (~> 1.0)
       mini_mime (>= 1.1.0)
-    activesupport (6.1.7.2)
+    activesupport (6.1.7.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
@@ -233,7 +233,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.33.0)
+    blacklight (7.33.1)
       deprecation
       globalid
       hashdiff
@@ -272,7 +272,7 @@ GEM
       typhoeus
     builder (3.2.4)
     byebug (10.0.2)
-    cancancan (3.4.0)
+    cancancan (3.5.0)
     capybara (3.37.1)
       addressable
       matrix
@@ -342,7 +342,7 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.8.1)
+    devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -637,7 +637,7 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    minitest (5.17.0)
+    minitest (5.18.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -727,30 +727,30 @@ GEM
       rails (>= 5.0, < 6.2)
       rdf
     racc (1.6.2)
-    rack (2.2.6.2)
+    rack (2.2.6.4)
     rack-protection (3.0.5)
       rack
-    rack-test (2.0.2)
+    rack-test (2.1.0)
       rack (>= 1.3)
     rack-tracker (1.13.0)
       activesupport (>= 3.0)
       rack (>= 1.4)
       tilt (>= 1.4)
     railroady (1.6.0)
-    rails (6.1.7.2)
-      actioncable (= 6.1.7.2)
-      actionmailbox (= 6.1.7.2)
-      actionmailer (= 6.1.7.2)
-      actionpack (= 6.1.7.2)
-      actiontext (= 6.1.7.2)
-      actionview (= 6.1.7.2)
-      activejob (= 6.1.7.2)
-      activemodel (= 6.1.7.2)
-      activerecord (= 6.1.7.2)
-      activestorage (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    rails (6.1.7.3)
+      actioncable (= 6.1.7.3)
+      actionmailbox (= 6.1.7.3)
+      actionmailer (= 6.1.7.3)
+      actionpack (= 6.1.7.3)
+      actiontext (= 6.1.7.3)
+      actionview (= 6.1.7.3)
+      activejob (= 6.1.7.3)
+      activemodel (= 6.1.7.3)
+      activerecord (= 6.1.7.3)
+      activestorage (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       bundler (>= 1.15.0)
-      railties (= 6.1.7.2)
+      railties (= 6.1.7.3)
       sprockets-rails (>= 2.0.0)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
@@ -764,9 +764,9 @@ GEM
     rails-i18n (7.0.3)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    railties (6.1.7.2)
-      actionpack (= 6.1.7.2)
-      activesupport (= 6.1.7.2)
+    railties (6.1.7.3)
+      actionpack (= 6.1.7.3)
+      activesupport (= 6.1.7.3)
       method_source
       rake (>= 12.2)
       thor (~> 1.0)
@@ -859,9 +859,9 @@ GEM
       uber (< 0.2.0)
     request_store (1.5.1)
       rack (>= 1.4)
-    responders (3.0.1)
-      actionpack (>= 5.0)
-      railties (>= 5.0)
+    responders (3.1.0)
+      actionpack (>= 5.2)
+      railties (>= 5.2)
     resque (1.27.4)
       mono_logger (~> 1.0)
       multi_json (~> 1.0)
