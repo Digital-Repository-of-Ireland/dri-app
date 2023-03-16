@@ -69,7 +69,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-sass-rails'
+gem 'jquery-ui-rails', '~> 6'
 gem 'js_cookie_rails'
 
 # clients
