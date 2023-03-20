@@ -1,4 +1,4 @@
-//= require datatables/jquery.dataTables
+//= require jquery.dataTables
 
 //optional add '=' enable
 // require datatables/extensions/AutoFill/dataTables.autoFill

@@ -155,7 +155,7 @@ gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '~> 3.4.1'
 #gem 'bootstrap', "~> 4.0"
 gem 'bootstrap-glyphicons'
-gem 'sassc-rails', '>= 2.1.0'
+#gem 'sassc-rails', '>= 2.1.0'
 gem 'sass-rails', '5.1.0'
 
 group :translations do
@@ -179,7 +179,7 @@ gem 'clipboard-rails'
 
 gem 'blacklight-maps', '> 0.5'
 
-gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
+#gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'
 gem 'remotipart'
 

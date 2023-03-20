@@ -1,10 +1,12 @@
 
-//@import 'bootstrap/glyphicons';
 @import "bootstrap-sprockets";
 @import "bootstrap";
-/* for bootstrap3 */
 
-//@import "jquery-ui";
+
+@import "jquery-ui/resizable";
+@import "jquery-ui/autocomplete";
+@import "jquery-ui/menu";
+
 @import "slick";
 @import 'slick-theme';
 @import "jquery.colorbox-example1";
@@ -12,9 +14,9 @@
 @import "jquery.xmleditor";
 @import "leaflet";
 @import "openseadragon/openseadragon";
-@import "datatables";
 @import "timelineJS3";
 @import "dri_batch_ingest";
+@import "jquery.dataTables";
 
 /*Import the Zen Grids files*/
 @import "_dri_init";
