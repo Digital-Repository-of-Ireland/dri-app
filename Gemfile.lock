@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 60c2f573b751d7eaeccd155ab721a6e371cd91b7
+  revision: 041b0c554ba61462613dd266d3a76f3045dc0576
   branch: develop
   specs:
     dri_data_models (4.5.2)
