@@ -230,6 +230,12 @@ class MyCollectionsController < ApplicationController
 
     # Get any aggregation config
     @aggregation = Aggregation.find_or_create_by(collection_id: params[:id])
+    tpstory = TpStory.where(dri_id: params[:id])
+    @tp_ready = tpstory.size > 0 ? true : false
+    if @tp_ready 
+      tpitems = TpItem.where(story_id: tpstory.first.story_id).size
+      @tp_fetched = tpitems.size > 0 ? true : false
+    end
 
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @track_download = false

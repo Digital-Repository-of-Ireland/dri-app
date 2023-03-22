@@ -208,6 +208,7 @@ en:
         specify_valid_file: You must specify a valid file to upload.
         updated: 'Update successful.'
         tp_request_submitted: Transcribathon data request successfully submitted.
+        tp_story_error: Transcribathon data not ready
     footer:
       contacts:
         email: Email

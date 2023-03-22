@@ -10,15 +10,23 @@ class TpDataController < ApplicationController
   end
 
   def create
-    raise DRI::Exceptions::BadRequest unless params[:id].present? && params[:story_id].present?
+    raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!('manage_collection', params[:id])
     raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :manage_collection, params[:id]
 
-    # queue FetchTbData background job
-    Resque.enqueue(FetchTpDataJob, params[:id], params[:story_id])
+    # Get the Story_id
+    story = TpStory.where(dri_id: params[:id]).first
 
-    # reload and flash success message
-    flash[:success] = t('dri.flash.notice.tp_request_submitted')
+    if story.present?
+      # queue FetchTbData background job
+      Resque.enqueue(FetchTpDataJob, params[:id], story.story_id)
+
+      # reload and flash success message
+      flash[:success] = t('dri.flash.notice.tp_request_submitted')
+    else
+      flash[:error] = t('dri.flash.notice.tp_story_error')
+    end
+
     respond_to do |format|
       format.html { redirect_back(fallback_location: root_path) }
     end
