@@ -233,7 +233,7 @@ class MyCollectionsController < ApplicationController
     tpstory = TpStory.where(dri_id: params[:id])
     @tp_ready = tpstory.size > 0 ? true : false
     if @tp_ready 
-      tpitems = TpItem.where(story_id: tpstory.first.story_id).size
+      tpitems = TpItem.where(story_id: tpstory.first.story_id)
       @tp_fetched = tpitems.size > 0 ? true : false
     end
 
