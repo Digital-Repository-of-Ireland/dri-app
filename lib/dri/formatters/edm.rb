@@ -469,11 +469,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
   def self.edm_type(types)
     types = types.map(&:upcase)
-    return "3D" if types.include?("3D")
-    return "VIDEO" if types.to_set.intersect?(["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"].to_set)
-    return "SOUND" if types.to_set.intersect?(["SOUND","AUDIO"].to_set)
-    return "TEXT" if types.include?("TEXT")
-    return "IMAGE" if types.to_set.intersect?(["IMAGE", "STILLIMAGE", "STILL IMAGE"].to_set)
+    return "3D" if types.include?(Settings.edm._3d)
+    return "VIDEO" if types.to_set.intersect?(Settings.edm.video .to_set)
+    return "SOUND" if types.to_set.intersect?(Settings.edm.sound.to_set)
+    return "TEXT" if types.include?(Settings.edm.text)
+    return "IMAGE" if types.to_set.intersect?(Settings.edm.image.to_set)
     return "INVALID"
   end
 

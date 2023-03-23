@@ -32,6 +32,12 @@
 			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), id: 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
 		</li>
 
+		<% if @document.has_aggregation_data? && @document.public_read? && !@assets.empty? && @document.valid_edm?%>
+			<li>
+				<%= europeana_url = (link_to t('dri.views.catalog.forms.europeana_link'), Settings.transcribathon.link_item + Aggregation.find_or_create_by(collection_id: @document.root_collection_id).aggregation_id + '/' + @document.id, :target => '_blank') %>
+			</li>
+		<% end %>
+
 		<% if (can? :edit, @document) %>
 		  <li>
 			  <%= link_to t('dri.views.catalog.links.history'), object_history_path(@document.id), id: 'show_object_history_report' %>
