@@ -10,21 +10,8 @@ class FetchTpDataJob
     story_endpoint = Settings.transcribathon.story_endpoint
     item_endpoint = Settings.transcribathon.item_endpoint
 
-    # Get the story from tp_api
-    # Create an entry in the tp_story table with our object id and the story id
-    # for each item id returned by the stories api
-    #  - get the item endpoint for that item id
-    #  - create an entry in the tp_items table with story id, item id, start and end dates
-    #  - for each person create an entry in the tp_persons table
-    #  - for each place create an entry in the tp_places table
-
     print("Fetching Transcribaton data for object #{object_id} #{story_id}\n")
     Rails.logger.info "Fetching Transcribathon data for object #{object_id} #{story_id}"
-
-    # get the story! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/stories/[story_id]
-    # "#{story_endpoint}#{story_id}"
-    # create a tp_story entry
-    # parse out list of items
 
     conn = Faraday.new(url: "#{story_endpoint}#{story_id}") do |faraday|
       faraday.adapter :httpclient
@@ -34,67 +21,59 @@ class FetchTpDataJob
     response = conn.get()
     json_input = response.body
 
-    story = TpStory.new(story_id: json_input[0]['StoryId'], dri_id: json_input[0]['ExternalRecordId'])
+    # Get list of item ids
+    item_ids = json_input[0]['Items'].map{ |i| i['ItemId'] }
+    #conn.close()
 
-    #check if StoryId in database before saving
-    if !TpStory.exists?(json_input[0]['StoryId'])
-      story.save
-    end
+    # Get the Transcribathon Story (should already exist)
+    story = TpStory.where(story_id: story_id)
 
-    # for each item id get the item! endpoint is https://europeana.fresenia-dev.man.poznan.pl/dev/tp-api/items/[item_id]
-    # "#{item_endpoint}#{item_id}"
-    # create the tp_item entry with start and end dates
-    # parse out people and places and populate tp_people and tp_places tables
+    
+    # Get Items from TP-API
+    item_ids.each do |item_id|
 
-    json_input[0]['Items'].map{
-      |i|
-
-      item = TpItem.new(
-        story_id: json_input[0]['StoryId'],
-        item_id: i['ItemId'],
-        start_date: i['DateStart'],
-        end_date: i['DateEnd'],
-        item_link: i['ImageLink'][i['ImageLink'].index("https://"),i['ImageLink'].index("@type")-11]
-      )
-      if !TpItem.exists?(i['ItemId'])
-      print(item)
-        item.save
+      conn = Faraday.new(url: "#{item_endpoint}#{item_id}") do |faraday|
+        faraday.adapter :httpclient
+        faraday.response :json
       end
-      
-      i['Places'].map {
+
+      response = conn.get()
+      json_input = response.body
+
+      # Parse the JSON response and create the item      
+      item = TpItem.where(item_id: item_id).first_or_initialize()
+      item.story_id = story_id
+      item.start_date = json_input['DateStart']
+      item.end_date = json_input['DateEnd']
+      item.save
+
+      # Parse the JSON response and create the items, people and places
+      json_input['Places'].map {
         |p|
-        place = TpPlace.new(
-          item_id: i['ItemId'],
-          place_id: p['PlaceId'],
-          place_name: p['Name'],
-          latitude: p['Latitude'],
-          longitude: p['Longitude'],
-          wikidata_id: p['WikidataId'],
-          wikidata_name: p['WikidataName']
-        )
-        if !TpPlace.exists?(p['PlaceId'])
-          place.save
-        end
-        }
+        place = TpPlace.where(place_id: p['PlaceId']).first_or_initialize()
+        place.item_id = item_id
+        place.place_name = p['Name']
+        place.latitude = p['Latitude']
+        place.longitude = p['Longitude']
+        place.wikidata_id = p['WikidataId']
+        place.wikidata_name = p['WikidataName']
+        place.save
+      }
         
-        i['Persons'].map {
+      json_input['Persons'].map {
         |q|
-        person = TpPerson.new(
-          item_id: i['ItemId'],
-          person_id: q['PersonId'],
-          first_name: q['FirstName'],
-          last_name: q['LastName'],
-          birth_place: q['BirthPlace'],
-          birth_date: q['BirthDate'],
-          death_place: q['DeathPlace'],
-          death_date: q['DeathDate'],
-          person_description: q['Description']
-        )
-        if !TpPerson.exists?(p['PersonId'])
-          person.save
-        end
-        }
-    }
+        person = TpPerson.where(person_id: q['PersonId']).first_or_initialize()
+        person.item_id = item_id
+        person.first_name = q['FirstName']
+        person.last_name = q['LastName']
+        person.birth_place = q['BirthPlace']
+        person.birth_date = q['BirthDate']
+        person.death_place = q['DeathPlace']
+        person.death_date = q['DeathDate']
+        person.person_description = q['Description']
+        person.save
+      }
+    end
 
   end
 
