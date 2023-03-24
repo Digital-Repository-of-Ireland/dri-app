@@ -25,42 +25,54 @@
           <%= field %><br/>
         <% end %>
       </dd>
-      <dt>Subjects</dt>
-      <dd>
-        <% @document['subject_tesim'].each do |field| %>
-          <%= field %><br/>
-        <% end %>
-      </dd>
-      <dt>Dates</dt>
-      <dd>
-        <% @document.date.each do |field| %> 
-          <%= field %><br/>
-        <% end %>
-      </dd>
-      <dt>Creation Dates</dt>
-      <dd>
-        <% @document.creation_date.each do |field| %>
-          <%= field %><br/>
-        <% end %>
-      </dd>
-      <dt>Published Dates</dt>
-      <dd>
-        <% @document.published_date.each do |field| %> 
-          <%= field %><br/>
-        <% end %>
-      </dd>
-      <dt>Temporal Coverage</dt>
-      <dd>
-        <% @document['temporal_coverage_tesim'].each do |field| %> 
-          <%= field %><br/>
-        <% end %>
-      </dd>
-      <dt>Geographical Coverage</dt>
-      <dd>
-        <% @document['geographical_coverage_tesim'].each do |field| %>
-          <%= field %><br/>
-        <% end %>
-      </dd>
+      <% if @document['subject_tesim'].present? %>
+        <dt>Subjects</dt>
+        <dd>
+          <% @document['subject_tesim'].each do |field| %>
+            <%= field %><br/>
+          <% end %>
+        </dd>
+      <% end %>
+      <% if @document.date.present? %>
+        <dt>Dates</dt>
+        <dd>
+          <% @document.date.each do |field| %> 
+            <%= field %><br/>
+          <% end %>
+        </dd>
+      <% end %>
+      <% if @document.creation_date.present? %>
+        <dt>Creation Dates</dt>
+        <dd>
+          <% @document.creation_date.each do |field| %>
+            <%= field %><br/>
+          <% end %>
+        </dd>
+      <% end %>
+      <% if @document.published_date.present? %>
+        <dt>Published Dates</dt>
+        <dd>
+          <% @document.published_date.each do |field| %> 
+            <%= field %><br/>
+          <% end %>
+        </dd>
+      <% end %>
+      <% if @document['temporal_coverage_tesim'].present? %>
+        <dt>Temporal Coverage</dt>
+        <dd>
+          <% @document['temporal_coverage_tesim'].each do |field| %> 
+            <%= field %><br/>
+          <% end %>
+        </dd>
+      <% end %>
+      <% if @document['geographical_coverage_tesim'].present? %>
+        <dt>Geographical Coverage</dt>
+        <dd>
+          <% @document['geographical_coverage_tesim'].each do |field| %>
+            <%= field %><br/>
+          <% end %>
+        </dd>
+      <% end %>
     </dl>
 
 </div> 
@@ -72,20 +84,30 @@
   <h5>Overall Start and End dates</h5>
   <dl>
     <dt>Start Date</dt>
-    <dd> <%= @earliest_item.start_date %> </dd>
-    <dt>Appears on the following page(s)</dt>
-    <dd> <% @early_items.each do |item| %>
-          <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
-         <% end %>
-    </dd>
+    <% if not @earliest_item.present? %>
+      <dd>No start dates entered</dd>
+      <dt></td>
+    <% else %>
+      <dd> <%= @earliest_item.start_date %> </dd>
+      <dt>Appears on the following page(s)</dt>
+      <dd> <% @early_items.each do |item| %>
+           <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
+          <% end %>
+      </dd>
+    <% end %>
 
     <dt>End Date</dt>
-    <dd> <%= @latest_item.end_date %> </dd>
-    <dt>Appears on the following page(s)</dt>
-    <dd> <% @late_items.each do |item| %>
-          <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
-         <% end %>
-    </dd>
+    <% if not @latest_item.present? %>
+      <dd>No end date entered</dd>
+      <dt></dt>
+    <% else %>
+      <dd> <%= @latest_item.end_date %> </dd>
+      <dt>Appears on the following page(s)</dt>
+      <dd> <% @late_items.each do |item| %>
+            <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
+           <% end %>
+      </dd>
+    <% end %>
   </dl>
 
   <p>
