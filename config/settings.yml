@@ -39,3 +39,4 @@ analytics:
 transcribathon:
   story_endpoint: "https://transcribathon.eu/tp-api/stories/"
   item_endpoint: "https://transcribathon.eu/tp-api/items/"
+  wikidata_endpoint: "https://www.wikidata.org/wiki/"
