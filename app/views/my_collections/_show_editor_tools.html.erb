@@ -64,15 +64,19 @@
       <li><%= t('dri.views.catalog.links.fixity_check') %></li>
     <% end %>
 
-    <%= link_to '', id: 'tp_data', :'data-target' => '#dri_tp_data_modal_id', :'data-toggle' => 'modal' do %>
-      <li>
-        <%= t('dri.views.objects.buttons.fetch_tp_data') %>
-      </li>
+    <% if @tp_ready %>
+      <%= link_to '', id: 'tp_data', :'data-target' => '#dri_tp_data_modal_id', :'data-toggle' => 'modal' do %>
+        <li>
+          <%= t('dri.views.objects.buttons.fetch_tp_data') %>
+        </li>
+      <% end %>
     <% end %>
   <% end %>
 
-  <%= link_to review_tp_data_path(@document), method: :get, id: "review_tp_data" do %>
-    <li><%= t('dri.views.objects.buttons.review_tp_data') %></li>
+  <% if @tp_fetched %>
+    <%= link_to review_tp_data_path(@document), method: :get, id: "review_tp_data" do %>
+      <li><%= t('dri.views.objects.buttons.review_tp_data') %></li>
+    <% end %>
   <% end %>
 
   <% if @document.status != 'published' || current_user.is_admin? %>
@@ -243,8 +247,6 @@
 
       <div class="modal-body">
         <%= form_tag (tp_data_path(@document.id)), id: "fetch_tp_data_form", class: 'dri_ingest_form', method: :post, style: "margin:0;padding:0;display:inline;" do %>
-          <%= label_tag  "story_id", "Story ID" %>
-          <%= text_field_tag t('dri.views.catalog.forms.tp_story_id') %>
           <%= submit_tag t('dri.views.objects.buttons.submit'), id: 'submit_tp_fetch', class: "hidden" %>
         <% end %>
         <br/>

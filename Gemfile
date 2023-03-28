@@ -4,6 +4,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 6.1'
+gem 'uri', "0.11.1"
 
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
@@ -38,7 +39,7 @@ gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 
 gem 'config'
 gem 'sqlite3'
-gem 'omniauth', '~> 1.9.1'
+gem 'omniauth', '~> 2'
 gem 'omniauth-shibboleth'
 gem "omniauth-rails_csrf_protection"
 gem 'oauth'
@@ -69,7 +70,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-sass-rails'
+gem 'jquery-ui-rails', '~> 6'
 gem 'js_cookie_rails'
 
 # clients
@@ -153,9 +154,7 @@ gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
 gem 'bootstrap-sass', '~> 3.4.1'
-#gem 'bootstrap', "~> 4.0"
 gem 'bootstrap-glyphicons'
-gem 'sassc-rails', '>= 2.1.0'
 gem 'sass-rails', '5.1.0'
 
 group :translations do
@@ -179,7 +178,7 @@ gem 'clipboard-rails'
 
 gem 'blacklight-maps', '> 0.5'
 
-gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
+#gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'jquery-slick-rails'
 gem 'remotipart'
 

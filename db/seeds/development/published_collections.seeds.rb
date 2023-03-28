@@ -27,7 +27,7 @@ end
 # @return DRI::QualifiedDublicCore
 def create_object(owner, title, access: 'public', type: 'Object')
   # institute = Institute.all.sample.name # random institute
-  institute = Institute.where("depositing = 't'").sample.name
+  institute = Institute.where(depositing: true).sample.name
   object = DRI::DigitalObject.with_standard :qdc
   object.title = [title]
   object.description = ['this is a test']

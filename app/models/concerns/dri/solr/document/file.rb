@@ -87,7 +87,7 @@ module DRI::Solr::Document::File
   end
 
   def text?
-    Settings.restrict.mime_types.text.include? mime_type && !Settings.restrict.extensions.restricted_3D.include?(extension)
+    Settings.restrict.mime_types.text.include? mime_type
   end
 
   def image?
@@ -108,8 +108,8 @@ module DRI::Solr::Document::File
 
   def threeD?
    Settings.restrict.mime_types._3D.include?(mime_type) &&
-     Settings.restrict.file_formats._3D.any?{ |f| file_format.downcase.include?(f.downcase) } && 
-     !Settings.restrict.extensions.restricted_text.include?(extension)
+     Settings.restrict.file_formats._3D.any?{ |f| file_format.downcase.include?(f.downcase) } 
+#     !Settings.restrict.extensions.restricted_text.include?(extension)
   end
 
 end
