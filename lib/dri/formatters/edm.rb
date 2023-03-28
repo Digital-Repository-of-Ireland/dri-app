@@ -131,70 +131,112 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
     # Identify the type
     edmtype = self.class::edm_type(record["type_tesim"]);
     contextual_classes = []
+    ug_date = {}
+    ug_places = []
 
     xml = Builder::XmlMarkup.new
       xml.tag!("rdf:RDF", header_specification) do
         xml.tag!("edm:ProvidedCHO", {"rdf:about" => "##{record.id}"}) do
           ProvidedCHOPREFIXES.each do |pref, fields|
             fields.each do |k, v|
-            values = if v.class == Proc
-                       v.call(record)
-                     else
-                       value_for(v, record.to_h, {})
-                     end
-            if pref.match(/^edm$/) && k.match(/^type$/)
-              xml.tag! "edm:type", edmtype
-              next
-            end
-
-            values.each do |value|
-              if k.match(/(^.*)_(eng|gle)$/)
-                lang = $2
-                kl = $1
-              elsif k.match(/^(type|format|medium)$/)
-                kl = k
-                lang = "eng"
-              else
-                kl = k
-                lang = nil
+              values = if v.class == Proc
+                         v.call(record)
+                       else
+                         value_for(v, record.to_h, {})
+                       end
+              if pref.match(/^edm$/) && k.match(/^type$/)
+                xml.tag! "edm:type", edmtype
+                next
               end
 
-              if kl.match(/^(spatial|coverage).*$/)
-                dcmi_components = dcmi_parse(value)
-                  if is_valid_point?(dcmi_components)
-                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
-                elsif valid_url?(value)
-                  host = URI(Addressable::URI.encode(value.strip)).host
-                  if AuthoritiesConfig[host].present?
-                    xml.tag! "#{pref}:#{kl}", {"rdf:resource" => value}
+              values.each do |value|
+                if k.match(/(^.*)_(eng|gle)$/)
+                  lang = $2
+                  kl = $1
+                elsif k.match(/^(type|format|medium)$/)
+                  kl = k
+                  lang = "eng"
+                else
+                  kl = k
+                  lang = nil
+                end
+
+                if kl.match(/^(spatial|coverage).*$/)
+                  dcmi_components = dcmi_parse(value)
+                    if is_valid_point?(dcmi_components)
+                    xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
+                  elsif valid_url?(value)
+                    host = URI(Addressable::URI.encode(value.strip)).host
+                    if AuthoritiesConfig[host].present?
+                      xml.tag! "#{pref}:#{kl}", {"rdf:resource" => value}
+                    else
+                      xml.tag! "#{pref}:#{kl}", value
+                    end
+                  elsif lang.present?
+                    xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value
                   else
                     xml.tag! "#{pref}:#{kl}", value
                   end
-                elsif lang.present?
-                  xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value
+                elsif kl.match(/^(temporal|created|issued|date|coverage).*$/)
+                  # If it's a dcmi period field then we can parse it
+                  dcmi_components = dcmi_parse(value)
+                  if is_valid_period?(dcmi_components)
+                    contextual_classes.push(dcmi_components)
+                    xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
+                  else
+                    v = dcmi_components["name"] || value
+                    xml.tag! "#{pref}:#{kl}", v unless v.nil?
+                  end
+                elsif kl.match(/^(subject).*$/) && valid_url?(value)
+                    xml.tag! "#{pref}:#{kl}",{"rdf:resource"=> value}
+                elsif lang.nil? || lang.empty? || lang.length == 0
+                  xml.tag! "#{pref}:#{kl}", value unless value.nil?
                 else
-                  xml.tag! "#{pref}:#{kl}", value
+                  xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value unless value.nil?
                 end
-              elsif kl.match(/^(temporal|created|issued|date|coverage).*$/)
-                # If it's a dcmi period field then we can parse it
-                dcmi_components = dcmi_parse(value)
-                if is_valid_period?(dcmi_components)
-                  contextual_classes.push(dcmi_components)
-                  xml.tag! "#{pref}:#{kl}", {"rdf:resource" => "##{dcmi_components['name'].tr(" ", "_")}"}
-                else
-                  v = dcmi_components["name"] || value
-                  xml.tag! "#{pref}:#{kl}", v unless v.nil?
-                end
-              elsif kl.match(/^(subject).*$/) && valid_url?(value)
-                  xml.tag! "#{pref}:#{kl}",{"rdf:resource"=> value}
-              elsif lang.nil? || lang.empty? || lang.length == 0
-                xml.tag! "#{pref}:#{kl}", value unless value.nil?
-              else
-                xml.tag! "#{pref}:#{kl}", {"xml:lang" => lang}, value unless value.nil?
               end
-            end
+            end 
+          end # End metadata fields in edm:ProvidedCHO
+
+          # Add fields from Transcribathon with User provenance
+          tp_story = TpStory.where(dri_id: record.id).first
+          if tp_story.present?
+            tp_story.items.map { |i|
+              if i.start_date || i.end_date
+                datestring = [i.start_date, i.end_date].reject(&:blank?).join(" - ")
+                xml.tag! "dc:date", {"edm:wasGeneratedBy" => "Person"}, datestring
+                ug_date['label'] = datestring 
+                ug_date['start'] = i.start_date ? i.start_date : i.end_date
+                ug_date['end'] = i.end_date ? i.end_date : i.start_date
+              end
+            }
+
+            tp_story.people.map { |i|
+              name = [i.last_name, i.first_name].reject { |s| s == "NULL" || s.blank? }.join(", ")
+              dates = [i.birth_date, i.death_date].join(" - ") unless i.birth_date.blank? && i.death_date.blank?
+              desc = " (#{i.person_description})" unless i.person_description == "NULL" || i.person_description == "NULL"
+              namestring = [name, dates].reject(&:blank?).join(", ") + desc
+              xml.tag! "dc:subject",
+                       {"edm:wasGeneratedBy" => "Person", "xml:lang" => "eng"},
+                       namestring 
+            }
+
+            tp_story.places.map { |i|
+              if i.place_name.present? && i.latitude.present? && i.longitude.present?
+                ug_places.push([i.place_name, i.latitude, i.longitude])
+                xml.tag! "dcterms:spatial", {"rdf:resource" => "##{i.place_name}", "edm:wasGeneratedBy" => "Person"}
+              elsif i.wikidata_id.present?
+                url = Settings.transcribathon.story_endpoint + i.wikidata_id.strip
+                xml.tag! "dcterms:spatial", {"rdf:resource" => "##{url}", "edm:wasGeneratedBy" => "Person"}
+              elsif i.place_name.present?
+                xml.tag! "dcterms:spatial", {"edm:wasGeneratedBy" => "Person", "xml:lang" => "eng"}, i.place_name 
+              end
+              if i.wikidata_name.present? && i.wikidata_name != i.place_name
+                xml.tag! "dcterms:spatial", {"edm:wasGeneratedBy" => "Person", "xml:lang" => "eng"}, i.wikidata_name
+              end
+            }
+
           end
-        end
       end
 
       # If geojson field exists, make it into a contextual class
@@ -240,6 +282,24 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       xml.tag! "cc:Licence", {"rdf:about" => licence} do
         xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
       end
+
+      # Create Contextual classes for user-generated enrichments
+      if ug_date['label'].present?
+        xml.tag! "edm:TimeSpan", {"rdf:about" => "##{ug_date['label'].tr(" ", "_")}"} do
+          xml.tag! "skos:prefLabel", ug_date['label']
+          xml.tag! "edm:begin", ug_date['start']
+          xml.tag! "edm:end", ug_date['end']
+        end
+      end
+
+      ug_places.map { |p|
+        # i.place_name, i.latitude, i.longitude
+        xml.tag! "edm:Place", {"rdf:about" => "##{p[0]}"} do
+          xml.tag! "skos:prefLabel", {"xml:lang" => "en"}, p[0] 
+          xml.tag! "wgs84_pos:lat", p[1]
+          xml.tag! "wgs84_pos:long", p[2]
+        end
+      }
 
       # Get the asset files
       assets = clean_assets(record.assets(with_preservation: false, ordered: false))

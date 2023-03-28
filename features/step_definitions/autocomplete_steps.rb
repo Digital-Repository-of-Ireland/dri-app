@@ -13,7 +13,7 @@ Given /^the local authority "([^\"]+)" is empty$/ do |authority_name|
 end
 
 When /^I click the first autocomplete result$/ do
-  first(".ui-autocomplete li a", visible: true).click
+  first(".ui-autocomplete li div", visible: true).click
 end
 
 When /^I "([^\"]+)" and fill in "([^\"]+)" and choose the first autocomplete result$/ do |add, text|

@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 7f60a8418ad0020d14d55c3b0de58c55ac92f418
-  tag: v4.5.2
+  revision: 041b0c554ba61462613dd266d3a76f3045dc0576
+  branch: develop
   specs:
     dri_data_models (4.5.2)
       hydra-derivatives
@@ -96,12 +96,6 @@ GIT
       iconv
       rails (>= 3.1)
       roo
-
-GIT
-  remote: https://github.com/stkenny/jquery-datatables.git
-  revision: 38b6977f04f96d0ff210d049ed0fac4b0cd99981
-  specs:
-    jquery-datatables (1.10.13)
 
 GIT
   remote: https://github.com/stkenny/jquery-xmleditor-rails.git
@@ -526,19 +520,14 @@ GEM
     jmespath (1.6.2)
     jquery-colorbox-rails (1.7.6)
       railties (>= 3.1)
-    jquery-rails (4.4.0)
+    jquery-rails (4.5.1)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     jquery-slick-rails (1.10.0)
       railties (>= 3.1)
-    jquery-ui-rails (4.0.3)
-      jquery-rails
-      railties (>= 3.1.0)
-    jquery-ui-sass-rails (4.0.3.0)
-      jquery-rails
-      jquery-ui-rails (= 4.0.3)
-      railties (>= 3.1.0)
+    jquery-ui-rails (6.0.1)
+      railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
@@ -692,12 +681,13 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (1.9.2)
+    omniauth (2.1.1)
       hashie (>= 3.4.6)
-      rack (>= 1.6.2, < 3)
-    omniauth-rails_csrf_protection (0.1.2)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
-      omniauth (>= 1.3.1)
+      omniauth (~> 2.0)
     omniauth-shibboleth (1.3.0)
       omniauth (>= 1.0.0)
     openlayers-rails (0.0.4)
@@ -959,12 +949,6 @@ GEM
       tilt (>= 1.1, < 3)
     sassc (2.4.0)
       ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
     scanf (1.0.0)
     seedbank (0.5.0)
       rake (>= 10.0)
@@ -1073,6 +1057,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (1.8.0)
     unicode-types (1.7.0)
+    uri (0.11.1)
     validatable (1.6.7)
     valkyrie (3.0.1)
       activemodel
@@ -1164,10 +1149,9 @@ DEPENDENCIES
   is_it_working-cbeer
   it
   jquery-colorbox-rails
-  jquery-datatables!
   jquery-rails
   jquery-slick-rails
-  jquery-ui-sass-rails
+  jquery-ui-rails (~> 6)
   jquery-xmleditor-rails!
   js_cookie_rails
   jstree-rails-4!
@@ -1183,7 +1167,7 @@ DEPENDENCIES
   nokogiri (>= 1.13.10)
   oauth
   om (= 3.2.0)
-  omniauth (~> 1.9.1)
+  omniauth (~> 2)
   omniauth-rails_csrf_protection
   omniauth-shibboleth
   openlayers-rails
@@ -1211,7 +1195,6 @@ DEPENDENCIES
   rvm
   sane_patch (~> 1.0)
   sass-rails (= 5.1.0)
-  sassc-rails (>= 2.1.0)
   seedbank (~> 0.5.0)
   shoulda (~> 3.6)
   shoulda-matchers
@@ -1227,6 +1210,7 @@ DEPENDENCIES
   timelineJS3-rails!
   uglifier (~> 4)
   unicode
+  uri (= 0.11.1)
   user_group!
   view_component (= 2.74.1)
   webdrivers

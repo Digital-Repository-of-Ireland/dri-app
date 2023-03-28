@@ -11,16 +11,14 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-
 //= require jquery_ujs
 //= require datatables
-//= require jquery.ui.widget
-//= require jquery.ui.mouse
-//= require jquery.ui.draggable
-//= require jquery.ui.resizable
-//= require jquery.ui.autocomplete
-//= require jquery.ui.menu
-//= require jquery.ui.sortable
+//= require jquery-ui/widgets/mouse
+//= require jquery-ui/widgets/draggable
+//= require jquery-ui/widgets/resizable
+//= require jquery-ui/widgets/autocomplete
+//= require jquery-ui/widgets/menu
+//= require jquery-ui/widgets/sortable
 //= require jquery.slick
 //= require clipboard
 //= require i18n

@@ -10,15 +10,23 @@ class TpDataController < ApplicationController
   end
 
   def create
-    raise DRI::Exceptions::BadRequest unless params[:id].present? && params[:story_id].present?
+    raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!('manage_collection', params[:id])
     raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :manage_collection, params[:id]
 
-    # queue FetchTbData background job
-    Resque.enqueue(FetchTpDataJob, params[:id], params[:story_id])
+    # Get the Story_id
+    story = TpStory.where(dri_id: params[:id]).first
 
-    # reload and flash success message
-    flash[:success] = t('dri.flash.notice.tp_request_submitted')
+    if story.present?
+      # queue FetchTbData background job
+      Resque.enqueue(FetchTpDataJob, params[:id], story.story_id)
+
+      # reload and flash success message
+      flash[:success] = t('dri.flash.notice.tp_request_submitted')
+    else
+      flash[:error] = t('dri.flash.notice.tp_story_error')
+    end
+
     respond_to do |format|
       format.html { redirect_back(fallback_location: root_path) }
     end
@@ -34,11 +42,15 @@ class TpDataController < ApplicationController
     @assets = @document.assets(with_preservation: false, ordered: true)
     @story = TpStory.where(dri_id: params[:id]).first
     @items = TpItem.where(story_id: @story.story_id).order(:item_id)
-    @earliest_item = TpItem.where.not(start_date: nil).order(start_date: :asc).first
-    @latest_item = TpItem.where.not(end_date: nil).order(start_date: :desc).first
-    @early_items = TpItem.where(start_date: @earliest_item.start_date)
-    @late_items = TpItem.where(end_date: @latest_item.end_date)
- 
+    @earliest_item = @items.where.not(start_date: nil).order(start_date: :asc).first
+    @latest_item = @items.where.not(end_date: nil).order(start_date: :desc).first
+    if @earliest_item.present?
+      @early_items = @items.where(start_date: @earliest_item.start_date)
+    end
+    if @latest_item.present?
+      @late_items = @items.where(end_date: @latest_item.end_date)
+    end
+
     # Get all dates for this object id (DRI id)
     # parse dates and get earliest and latest date
     # make an array of all other dates
