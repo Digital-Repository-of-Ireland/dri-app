@@ -4,15 +4,15 @@ module DRI
       extend ActiveSupport::Concern
 
       def pdf?
-        self.class.pdf_mime_types.include?(self.mime_type) && !self.class.restricted_3D_extensions.include?(extension)
+        self.class.pdf_mime_types.include?(self.mime_type)
       end
 
       def text?
-        self.class.text_mime_types.include?(self.mime_type) && self.class.restricted_text_extensions.include?(extension)
+        self.class.text_mime_types.include?(self.mime_type)
       end
 
       def image?
-        self.class.image_mime_types.include?(self.mime_type) && !self.class.restricted_3D_extensions.include?(extension)
+        self.class.image_mime_types.include?(self.mime_type)
       end
 
       def video?
