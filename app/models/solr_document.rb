@@ -118,6 +118,14 @@ class SolrDocument
     Solr::Query.new(files_query).count > 0
   end
 
+  def valid_edm?
+    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
+    files_query += " AND isPartOf_ssim:#{alternate_id}"
+    files_query += " AND (file_type_sim:\"3d\" OR file_type_sim:\"video\" OR file_type_sim:\"audio\" OR file_type_sim:\"text\" OR file_type_sim:\"image\")"
+  
+    Solr::Query.new(files_query).count > 0
+  end
+  
   def doi
     self['doi_ss']
   end
@@ -142,6 +150,15 @@ class SolrDocument
 
   def has_geocode?
     self['geojson_ssim'].present?
+  end
+
+  def has_aggregation_data?
+    aggID = Aggregation.find_or_create_by(collection_id: root_collection_id).aggregation_id
+    if (aggID != nil && aggID.length > 0)
+      return true
+    else
+      return false
+    end
   end
 
   # @param [String] field_name

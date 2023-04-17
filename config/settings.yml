@@ -40,3 +40,11 @@ transcribathon:
   story_endpoint: "https://transcribathon.eu/tp-api/stories/"
   item_endpoint: "https://transcribathon.eu/tp-api/items/"
   wikidata_endpoint: "https://www.wikidata.org/wiki/"
+  link_item: "https://www.europeana.eu/en/item/"
+edm:
+  _3d: "3D"
+  video: ["MOVINGIMAGE", "MOVING IMAGE", "VIDEO"]
+  sound: ["SOUND","AUDIO"]
+  text: "TEXT"
+  image: ["IMAGE", "STILLIMAGE", "STILL IMAGE"]
+
