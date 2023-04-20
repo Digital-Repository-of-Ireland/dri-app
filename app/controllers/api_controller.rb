@@ -28,7 +28,9 @@ class ApiController < CatalogController
     results.each do |solr_doc|
       next unless solr_doc.published? || (current_user.is_admin? || can?(:edit, solr_doc))
 
-      item = Rails.cache.fetch("get_objects-#{solr_doc.id}-#{solr_doc['timestamp']}") do
+      cache_key = ["get_objects-#{solr_doc.id}-#{solr_doc['timestamp']}"]
+      cache_key << params[:metadata].sort if params[:metadata].present?
+      item = Rails.cache.fetch(cache_key) do
                solr_doc.extract_metadata(params[:metadata])
              end
 

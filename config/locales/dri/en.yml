@@ -426,6 +426,7 @@ en:
             last_modified: Last Update
           bookmark_collection: Bookmark Collection
           bookmark_object: Bookmark Object
+          europeana_link: Europeana Link
           download: Download
           download_all:
             one: Download entire object including the asset
