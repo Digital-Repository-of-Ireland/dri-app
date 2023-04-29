@@ -201,13 +201,18 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
           # Add fields from Transcribathon with User provenance
           tp_story = TpStory.where(dri_id: record.id).first
           if tp_story.present?
+            tp_processed_dates = []
+            tp_processed_people = []
             tp_story.items.map { |i|
               if i.start_date || i.end_date
                 datestring = [i.start_date, i.end_date].reject(&:blank?).join(" - ")
+                next if tp_processed_dates.include? datestring
+                tp_processed_dates << datestring
                 xml.tag! "dc:date", {"edm:wasGeneratedBy" => "Person"}, datestring
-                ug_date['label'] = datestring 
-                ug_date['start'] = i.start_date ? i.start_date : i.end_date
-                ug_date['end'] = i.end_date ? i.end_date : i.start_date
+                datehash = {}
+                datehash['start'] = i.start_date ? i.start_date : i.end_date
+                datehash['end'] = i.end_date ? i.end_date : i.start_date
+                ug_date[datestring] = datehash
               end
             }
 
@@ -216,6 +221,8 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
               dates = [i.birth_date, i.death_date].join(" - ") unless i.birth_date.blank? && i.death_date.blank?
               desc = " (#{i.person_description})" unless i.person_description == "NULL" || i.person_description == "NULL"
               namestring = [name, dates].reject(&:blank?).join(", ") + desc
+              next if tp_processed_people.include? namestring
+              tp_processed_people << namestring
               xml.tag! "dc:subject",
                        {"edm:wasGeneratedBy" => "Person", "xml:lang" => "eng"},
                        namestring 
@@ -223,16 +230,15 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
             tp_story.places.map { |i|
               if i.place_name.present? && i.latitude.present? && i.longitude.present?
-                ug_places.push([i.place_name, i.latitude, i.longitude])
+                tmp = [i.place_name, i.latitude, i.longitude]
+                next if ug_places.include? tmp
+                ug_places.push(tmp)
                 xml.tag! "dcterms:spatial", {"rdf:resource" => "##{i.place_name}", "edm:wasGeneratedBy" => "Person"}
               elsif i.wikidata_id.present?
-                url = Settings.transcribathon.story_endpoint + i.wikidata_id.strip
+                url = Settings.transcribathon.wikidata_endpoint + i.wikidata_id.strip
                 xml.tag! "dcterms:spatial", {"rdf:resource" => "##{url}", "edm:wasGeneratedBy" => "Person"}
               elsif i.place_name.present?
                 xml.tag! "dcterms:spatial", {"edm:wasGeneratedBy" => "Person", "xml:lang" => "eng"}, i.place_name 
-              end
-              if i.wikidata_name.present? && i.wikidata_name != i.place_name
-                xml.tag! "dcterms:spatial", {"edm:wasGeneratedBy" => "Person", "xml:lang" => "eng"}, i.wikidata_name
               end
             }
 
@@ -284,11 +290,11 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
       end
 
       # Create Contextual classes for user-generated enrichments
-      if ug_date['label'].present?
-        xml.tag! "edm:TimeSpan", {"rdf:about" => "##{ug_date['label'].tr(" ", "_")}"} do
-          xml.tag! "skos:prefLabel", ug_date['label']
-          xml.tag! "edm:begin", ug_date['start']
-          xml.tag! "edm:end", ug_date['end']
+      ug_date.each do |key,value|
+        xml.tag! "edm:TimeSpan", {"rdf:about" => "##{key.tr(" ", "_")}"} do
+          xml.tag! "skos:prefLabel", key
+          xml.tag! "edm:begin", value['start']
+          xml.tag! "edm:end", value['end']
         end
       end
 
