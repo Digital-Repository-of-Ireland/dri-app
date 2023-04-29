@@ -58,6 +58,11 @@ class IiifController < ApplicationController
       return false if object_doc.nil?
       return true if object_doc.collection?
 
+      if params[:user_token].present? && params[:user_email].present?
+        authenticate_user_from_token!
+      end
+      return true if current_user && (current_user.is_admin? || can?(:edit, object_doc))
+
       if method == 'show'
         object_doc.published? && object_doc.public_read?
       elsif method == 'info'
