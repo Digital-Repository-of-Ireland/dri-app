@@ -100,7 +100,7 @@ end
 
 group :development, :test do
   gem 'thin'
-  gem 'bixby', '~> 3'
+  gem 'bixby', '~> 5'
   gem 'rspec-rails', '~> 6'
   gem 'rails-controller-testing'
   gem 'rswag-specs'

@@ -22,7 +22,7 @@ describe Institute do
 
   it "should allow for a logo to be added" do
     uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_logo.png"), "image/png")
-    expect(Institute.new.add_logo(uploaded)).to be true
+    expect(@institute.add_logo(uploaded)).to be true
   end
 
   it "should return the collections it is associated with" do
@@ -39,11 +39,9 @@ describe Institute do
   it "should accept an organisation manager" do
     user = FactoryBot.create(:organisation_manager)
     @institute.manager = user.email
-
     expect(@institute.org_manager).to eq(user)
 
     @institute.manager = user
-
     expect(@institute.org_manager).to eq(user)
   end
 
@@ -51,4 +49,10 @@ describe Institute do
     user = FactoryBot.create(:user)
     expect { @institute.manager = user.email }.to raise_error(ArgumentError)
   end
+
+  it "should not save a manager for an organisation that is not persisted" do
+    i = Institute.new
+    user = FactoryBot.create(:organisation_manager)
+    expect { i.manager = user.email }.not_to change { OrganisationUser.count }
+  end 
 end

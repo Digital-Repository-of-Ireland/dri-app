@@ -169,6 +169,10 @@ en:
         schema_location_parse: Unable to parse XML schemaLocation declaration
         submitting_read_request: 'Unable to submit read access request: %{error}'
         unable_to_persist: 'Internal Error: unable to save object'
+        unable_to_set_manager: 'Unable to set organisation as depositing.'
+        unable_to_save_logo: 'An error occurred saving the organisation logo.'
+        unable_to_save_organisation: 'Unable to save the organisation.'
+        user_must_be_om: 'Manager not set. User must have the Organisational Manager role.'
         validation_errors: 'Validation Errors: %{error}'
       notice:
         access_controls_updated: Access controls updated.
