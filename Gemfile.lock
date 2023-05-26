@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 041b0c554ba61462613dd266d3a76f3045dc0576
-  branch: develop
+  revision: 7f60a8418ad0020d14d55c3b0de58c55ac92f418
+  tag: v4.5.2
   specs:
     dri_data_models (4.5.2)
       hydra-derivatives
@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
-  branch: develop
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
@@ -178,7 +178,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.1)
+    addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
     amazing_print (1.4.0)
     ast (2.4.2)
@@ -336,7 +336,7 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.9.0)
+    devise (4.9.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -420,7 +420,7 @@ GEM
       multipart-post (~> 2)
     faraday_middleware (0.14.0)
       faraday (>= 0.7.4, < 1.0)
-    fastimage (2.2.6)
+    fastimage (2.2.7)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.20.0)
@@ -531,14 +531,14 @@ GEM
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
-    json-canonicalization (0.3.1)
-    json-ld (3.2.3)
+    json-canonicalization (0.3.2)
+    json-ld (3.2.5)
       htmlentities (~> 4.3)
-      json-canonicalization (~> 0.3)
+      json-canonicalization (~> 0.3, >= 0.3.2)
       link_header (~> 0.0, >= 0.0.8)
       multi_json (~> 1.15)
-      rack (~> 2.2)
-      rdf (~> 3.2, >= 3.2.9)
+      rack (>= 2.2, < 4)
+      rdf (~> 3.2, >= 3.2.10)
     json-ld-preloaded (3.2.0)
       json-ld (~> 3.2)
       rdf (~> 3.2)
@@ -608,9 +608,9 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     logger (1.5.0)
-    loofah (2.19.1)
+    loofah (2.21.3)
       crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
+      nokogiri (>= 1.12.0)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -625,14 +625,14 @@ GEM
     mime-types-data (3.2023.0218.1)
     mini_magick (4.12.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
+    mini_portile2 (2.8.2)
     minitest (5.18.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
       nokogiri
       nokogiri-happymapper
-    mono_logger (1.1.1)
+    mono_logger (1.1.2)
     multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -655,13 +655,13 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     netrc (0.11.0)
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     noid (0.9.0)
     noid-rails (3.1.0)
       actionpack (>= 5.0.0, < 7.1)
       noid (~> 0.9)
-    nokogiri (1.14.3)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.15.2)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
       nokogiri (~> 1.5)
@@ -766,7 +766,7 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.2.9)
+    rdf (3.2.10)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.2.0)
       rdf (~> 3.2)
@@ -824,7 +824,7 @@ GEM
     rdf-turtle (3.2.0)
       ebnf (~> 2.3)
       rdf (~> 3.2)
-    rdf-vocab (3.2.3)
+    rdf-vocab (3.2.6)
       rdf (~> 3.2, >= 3.2.4)
     rdf-xsd (3.2.0)
       rdf (~> 3.2)
@@ -838,7 +838,7 @@ GEM
       disposable (>= 0.5.0, < 1.0.0)
       representable (>= 3.1.1, < 4)
       uber (< 0.2.0)
-    reform-rails (0.2.3)
+    reform-rails (0.2.5)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
     regexp_parser (2.8.0)
@@ -990,10 +990,10 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.3)
-    sinatra (3.0.5)
+    sinatra (3.0.6)
       mustermann (~> 3.0)
       rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.0.5)
+      rack-protection (= 3.0.6)
       tilt (~> 2.0)
     smart_properties (1.17.0)
     solr_wrapper (3.1.2)
@@ -1040,7 +1040,7 @@ GEM
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
-    thor (1.2.1)
+    thor (1.2.2)
     tilt (2.1.0)
     timeout (0.3.2)
     trailblazer-option (0.1.2)
@@ -1060,7 +1060,7 @@ GEM
     unicode-types (1.7.0)
     uri (0.12.1)
     validatable (1.6.7)
-    valkyrie (3.0.1)
+    valkyrie (3.0.3)
       activemodel
       activesupport
       dry-struct
