@@ -9,12 +9,12 @@ class InstitutesController < ApplicationController
 
   # Was this action canceled by the user?
   def check_for_cancel
-    if params[:commit] == 'Cancel'
-      if current_user.is_admin? || params.dig(:institute, :action) == 'new'
-        redirect_to workspace_url
-      else
-        redirect_to manage_users_url
-      end
+    return unless params[:commit] == 'Cancel'
+
+    if current_user.is_admin? || params.dig(:institute, :action) == 'new'
+      redirect_to workspace_url
+    else
+      redirect_to manage_users_url
     end
   end
 
@@ -53,21 +53,25 @@ class InstitutesController < ApplicationController
   # Create a new institute entry
   def create
     @inst = Institute.new
-
-    add_logo(params[:institute][:logo]) if params[:institute][:logo].present?
     @inst.name = params[:institute][:name]
     @inst.url = params[:institute][:url]
-    if current_user.is_admin?
-      @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
-      @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
-    end
-    @inst.save
-    flash[:notice] = t('dri.flash.notice.organisation_created')
 
-    @object = retrieve_object!(params[:object]) if params[:object]
+    # we need the model persisted before we set the manager and logo
+    if @inst.save
+      set_manager_settings
 
-    respond_to do |format|
-      format.html { redirect_to organisation_url(@inst) }
+      if params[:institute][:logo].present?
+        add_logo(params[:institute][:logo])
+        flash[:error] = t('dri.flash.error.unable_to_save_logo') unless @inst.save
+      end
+
+      flash[:notice] = t('dri.flash.notice.organisation_created')
+
+      respond_to do |format|
+        format.html { redirect_to organisation_url(@inst) }
+      end
+    else
+      flash[:error] = t('dri.flash.error.unable_to_save_organisation')
     end
   end
 
@@ -143,7 +147,7 @@ class InstitutesController < ApplicationController
   private
 
   def add_logo(file_upload)
-      @inst.add_logo(file_upload)
+    @inst.add_logo(file_upload)
   rescue DRI::Exceptions::UnknownMimeType
     flash[:alert] = t('dri.flash.alert.invalid_file_type')
   rescue DRI::Exceptions::VirusDetected => e
@@ -197,7 +201,7 @@ class InstitutesController < ApplicationController
   def admin?
     raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless current_user.is_admin?
   end
-
+  
   # User must be the organisation manager assigned to the organisation
   def manager?
     return true if current_user.is_admin?
@@ -205,6 +209,24 @@ class InstitutesController < ApplicationController
 
     i = Institute.find(params[:id])
     raise Blacklight::AccessControls::AccessDenied, t('dri.views.exceptions.access_denied') unless i&.org_manager == current_user
+  end
+
+  def om?(user)
+    UserGroup::User.find_by(email: user)&.is_om?
+  end
+  
+  def set_manager_settings
+    return unless current_user.is_admin?
+    return unless params[:institute][:depositing].present? || params[:institute][:manager].present?
+      
+    @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
+    
+    if params[:institute][:manager].present? && om?(params[:institute][:manager])
+      @inst.manager = params[:institute][:manager]
+    else
+      flash[:error] = t('dri.flash.error.user_must_be_om')
+    end
+    flash[:error] = t('dri.flash.error.unable_to_set_manager') unless @inst.save
   end
 
   def version_and_preserve

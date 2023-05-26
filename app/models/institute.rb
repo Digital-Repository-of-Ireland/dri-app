@@ -13,6 +13,8 @@ class Institute < ActiveRecord::Base
   end
 
   def manager=(user_or_email)
+    return nil unless persisted?
+
     user = if user_or_email.is_a?(UserGroup::User)
              user_or_email
            else
@@ -26,11 +28,12 @@ class Institute < ActiveRecord::Base
   end
 
   def org_manager
+    return nil unless persisted?
     OrganisationUser.find_by(institute: self, manager:true)&.user
   end
 
   def add_logo(upload)
-    return unless validate_logo(upload)
+    return unless persisted? && validate_logo(upload)
 
     store_logo(upload)
     save
