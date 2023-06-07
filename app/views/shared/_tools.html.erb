@@ -34,7 +34,7 @@
 
 		<% if @document.has_aggregation_data? && @document.public_read? && !@assets.empty? && @document.valid_edm?%>
 			<li>
-				<%= europeana_url = (link_to t('dri.views.catalog.forms.europeana_link'), Settings.transcribathon.link_item + Aggregation.find_or_create_by(collection_id: @document.root_collection_id).aggregation_id + '/' + @document.id, :target => '_blank') %>
+				<%= europeana_url = (link_to t('dri.views.catalog.forms.europeana_link'), Settings.transcribathon.link_item + Aggregation.find_or_create_by(collection_id: @document.root_collection_id).aggregation_id + '/_' + @document.id, :target => '_blank') %>
 			</li>
 		<% end %>
 
