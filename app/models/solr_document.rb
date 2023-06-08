@@ -153,12 +153,10 @@ class SolrDocument
   end
 
   def has_aggregation_data?
-    aggID = Aggregation.find_or_create_by(collection_id: root_collection_id).aggregation_id
-    if (aggID != nil && aggID.length > 0)
-      return true
-    else
-      return false
-    end
+    aggregation = Aggregation.find_by(collection_id: root_collection_id)
+    return false unless aggregation
+
+    aggregation.aggregation_id.present?
   end
 
   # @param [String] field_name
