@@ -200,11 +200,9 @@
           <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
         <% end %>
 
-
         <%= link_to '', :'data-target' => '#dri_edmsettings_modal_id', :'data-toggle' => 'modal', id: "edm_settings" do %>
          <li><%= t('dri.views.catalog.links.edm_settings') %></li>
        <% end %>
-
 
         <%= link_to oai_pmh_oai_path(verb: "ListRecords", metadataPrefix: "edm", set: "collection:#{@document.id}") do %>
           <li><%= t('dri.views.catalog.links.view_edm_feed') %></li>
@@ -533,7 +531,7 @@
                 <button type="button" class="dri_button_grey" data-dismiss="modal">
                     <%= t('dri.window.modal.close') %>
                 </button>
-                <button id="Save" type="submit" class="dri_button_green" onclick="$('#configure_edm').submit();">
+                <button id="save_edm_settings" type="submit" class="dri_button_green" onclick="$('#configure_edm').submit();">
                     <%= t('dri.views.collection.edm.save') %>
                 </button>
             </div>

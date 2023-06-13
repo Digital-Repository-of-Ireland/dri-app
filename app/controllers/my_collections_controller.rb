@@ -207,7 +207,6 @@ class MyCollectionsController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    #@response, @document = fetch params[:id]
     @response = search_service.fetch(params[:id]).first
     @document = @response.documents.first
     if @document.generic_file?
@@ -229,8 +228,8 @@ class MyCollectionsController < ApplicationController
     end
 
     # Get any aggregation config
-    @aggregation = Aggregation.find_or_create_by(collection_id: params[:id])
-    tpstory = TpStory.where(dri_id: params[:id])
+    @aggregation = (Aggregation.find_by(collection_id: @document.id) || Aggregation.new) if @document.collection?
+    tpstory = TpStory.where(dri_id: @document.id)
     @tp_ready = tpstory.size > 0 ? true : false
     if @tp_ready 
       tpitems = TpItem.where(story_id: tpstory.first.story_id)
