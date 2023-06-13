@@ -228,7 +228,7 @@ class MyCollectionsController < ApplicationController
     end
 
     # Get any aggregation config
-    @aggregation = Aggregation.find_or_create_by(collection_id: @document.id) if @document.collection?
+    @aggregation = (Aggregation.find_by(collection_id: @document.id) || Aggregation.new) if @document.collection?
     tpstory = TpStory.where(dri_id: @document.id)
     @tp_ready = tpstory.size > 0 ? true : false
     if @tp_ready 
