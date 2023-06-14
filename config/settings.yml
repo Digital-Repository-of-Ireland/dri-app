@@ -12,7 +12,7 @@ restrict:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']
     text: ['application/pdf', 'application/x-pdf', 'application/rtf', 'text/plain', 'text/xml', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
     pdf: ['application/pdf', 'application/x-pdf']
-    audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg', 'audio/x-aiff', 'audio/x-ms-wma']
+    audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg', 'audio/x-aiff', 'audio/x-ms-wma', 'audio/x-m4a']
     video: ['application/mp4, video/mp4', 'video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
     _3D: ['application/vnd.ms-pki.stl', 'application/octet-stream', 'model/gltf-binary', 'model/vnd.collada+xml', 'glTF binary model']
   file_formats:
