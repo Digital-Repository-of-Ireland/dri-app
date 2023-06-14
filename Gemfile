@@ -88,6 +88,10 @@ gem 'resque'
 gem 'resque-status', '0.5.0'
 gem 'nest'
 
+group :development, :production do
+  gem 'appsignal'
+end
+
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs', '2.7.0'
 gem 'uglifier', '~> 4'

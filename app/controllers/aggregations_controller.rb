@@ -4,7 +4,7 @@ class AggregationsController < ApplicationController
   before_action :admin?
 
   def update
-    @aggregation = Aggregation.find_or_create_by(collection_id: params[:id])
+    @aggregation = Aggregation.find_by(collection_id: params[:id]) || Aggregation.new
 
     @aggregation.collection_id = params[:aggregation][:collection_id]
     @aggregation.aggregation_id = params[:aggregation][:aggregation_id]
@@ -13,8 +13,8 @@ class AggregationsController < ApplicationController
     @aggregation.comment = params[:aggregation][:comment]
     @aggregation.save
     flash[:notice] = t('dri.flash.notice.updated')
-    redirect_to(my_collections_url(params[:id]))
 
+    redirect_to(my_collections_url(params[:id]))
   end
 
   def edit
