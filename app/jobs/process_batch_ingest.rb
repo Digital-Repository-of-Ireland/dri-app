@@ -5,6 +5,9 @@ class ProcessBatchIngest
   @queue = :process_batch_ingest
 
   def self.perform(user_id, collection_id, ingest_json)
+    # potentially long running job so could lose database connection
+    ActiveRecord::Base.clear_active_connections!
+    
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
@@ -25,7 +28,6 @@ class ProcessBatchIngest
 
     if rc == 0 && object
       assets = retrieve_files(download_path, ingest_batch['files'])
-
       unless assets.empty?
         object.increment_version
         object.save
@@ -138,12 +140,11 @@ class ProcessBatchIngest
     DRI::DigitalObject.transaction do
       begin
         raise ActiveRecord::Rollback unless object.save && object.update_index
-        true
       rescue RSolr::Error::Http => e
         raise ActiveRecord::Rollback
-        false
       end
     end
+    object.persisted?
   end
 
   def self.ingest_file(user, file_path, object, datastream, filename)
