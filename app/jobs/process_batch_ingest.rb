@@ -107,23 +107,21 @@ class ProcessBatchIngest
     end
 
     begin
-      rc, update = DRI::DigitalObject.transaction do
-        object.index_needs_update = false
-        if object.save! && object.update_index
-          create_reader_group(object) if object.collection?
+      object.index_needs_update = false
+      rc, update = if save_and_index(object)
+                    create_reader_group(object) if object.collection?
 
-          preservation = Preservation::Preservator.new(object)
-          preservation.preserve(['descMetadata'])
+                    preservation = Preservation::Preservator.new(object)
+                    preservation.preserve(['descMetadata'])
 
-          [
-            0,
-            { status_code: 'COMPLETED',
-              file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
-          ]
-        else
-          raise DRI::Exceptions::InternalError
-        end
-      end
+                    [
+                      0,
+                      { status_code: 'COMPLETED',
+                        file_location: Rails.application.routes.url_helpers.my_collections_path(object.alternate_id) }
+                    ]
+                  else
+                    raise DRI::Exceptions::InternalError
+                  end
     rescue ActiveRecord::RecordNotSaved, RSolr::Error::Http, DRI::Exceptions::InternalError => e
       update =  { status_code: 'FAILED', file_location: "error: unable to persist object to repository. #{e.message}" }
       rc = -1
@@ -132,6 +130,20 @@ class ProcessBatchIngest
     FileUtils.rm_f(metadata[:path])
 
     return rc, object
+  end
+
+  def self.save_and_index(object)
+    object.index_needs_update = false
+
+    DRI::DigitalObject.transaction do
+      begin
+        raise ActiveRecord::Rollback unless object.save && object.update_index
+        true
+      rescue RSolr::Error::Http => e
+        raise ActiveRecord::Rollback
+        false
+      end
+    end
   end
 
   def self.ingest_file(user, file_path, object, datastream, filename)
