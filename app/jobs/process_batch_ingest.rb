@@ -5,9 +5,6 @@ class ProcessBatchIngest
   @queue = :process_batch_ingest
 
   def self.perform(user_id, collection_id, ingest_json)
-    # potentially long running job so could lose database connection
-    ActiveRecord::Base.clear_active_connections!
-    
     ingest_batch = JSON.parse(ingest_json)
 
     user = UserGroup::User.find(user_id)
@@ -30,6 +27,9 @@ class ProcessBatchIngest
       assets = retrieve_files(download_path, ingest_batch['files'])
       unless assets.empty?
         object.increment_version
+
+        # potentially loses connection during file downloads
+        ActiveRecord::Base.connection.reconnect!
         object.save
 
         ingest_assets(user, object, assets)
