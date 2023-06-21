@@ -8,7 +8,7 @@ module DRI
       end
 
       def text?
-        self.class.text_mime_types.include?(self.mime_type)
+        self.class.text_mime_types.include?(self.mime_type) && !Settings.restrict.extensions.restricted_3D.include?(extension)
       end
 
       def image?
@@ -24,7 +24,7 @@ module DRI
       end
 
       def threeD?
-        self.class._3D_mime_types.include?(self.mime_type) && self.class._3D_file_formats.any?{ |f| self.file_format.downcase.include?(f.downcase)}
+        self.class._3D_mime_types.include?(self.mime_type) && Settings.restrict.extensions.restricted_3D.include?(extension)
       end
 
       def file_format
