@@ -168,7 +168,6 @@ end
 # analytics
 gem 'legato'
 gem 'google-oauth2-installed'
-gem 'rack-tracker'
 
 gem 'rvm'
 
