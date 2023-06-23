@@ -232,8 +232,8 @@ class CatalogController < ApplicationController
     end
 
     if @document.published?
-      dimensions = { dimension1: @document.root_collection_id, dimension3: @document.id }
-      dimensions[:dimension2] = @document.depositing_institute.name if @document.depositing_institute.present?
+      dimensions = { collection: @document.root_collection_id, object: @document.id }
+      dimensions[:organisation] = @document.depositing_institute.name if @document.depositing_institute.present?
       @dimensions = dimensions
       @track_download = true
     end
