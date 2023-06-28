@@ -190,22 +190,32 @@
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
 	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
-	  <%= render "shared/form_fieldset_label", f:f, source:'types' %>
+		<%= render "shared/form_fieldset_label", f:f, source:'types' %>
 		<% if @object.type.size == 0%>
-		  <div>
-		  	  <label for="digital_object_type_1" class="sr-only"><%= t("dri.views.fields.type") %></label>
-		  	  <%= f.text_field "type][", value:'', class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_1"  %>
-			  <%= render "shared/form_remove_field_button" %>
-		  </div>
+			<div>
+				<label for="digital_object_type_1" class="sr-only"><%= t("dri.views.fields.type") %></label>
+				<%= select_tag "digital_object[type][]", 
+				options_for_select([
+					["Select Type", ""], 
+					["Text", "Text"], 
+					["Image", "Image"], 
+					["Still Image", "Still Image"], 
+					["Moving Image", "Moving Image"], 
+					["Video", "Video"], 
+					["Sound", "Sound"], 
+					["Audio", "Audio"]], 
+					selected: ""), 
+				class: "edit span6 dri-textfield", required: true, id: "digital_object_type_1" %>
+			</div>
 		<% end %>
 		<% @object.type.each_with_index do |type, index| %>
-		  <div>
-              <label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
-		  	  <%= f.text_field "type][", value:type, class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_#{index+1}"  %>
-			  <%= render "shared/form_remove_field_button" %>
-		  </div>
+			<div>
+				<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
+				<%= f.text_field "type][", value:type, class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_#{index+1}" %>
+				<%= render "shared/form_remove_field_button" %>
+			</div>
 		<% end %>
-    <%= render "shared/form_add_text_field_button", action:%w(add type), label_string: t("dri.views.fields.type") %>
+		<%= render "shared/form_add_text_field_button", action:%w(add type), label_string: t("dri.views.fields.type") %>
 	</fieldset>
 
 	<fieldset id="language">
