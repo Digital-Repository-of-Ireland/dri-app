@@ -3,12 +3,12 @@ require "rails_helper"
 describe ManageUsersController do
   include Devise::Test::ControllerHelpers
 
-  before(:all) do
+  before(:each) do
     UserGroup::Group.find_or_create_by(name: SETTING_GROUP_CM, description: "collection manager test group")
     UserGroup::Group.find_or_create_by(name: SETTING_GROUP_OM, description: "organisational manager test group")
   end
 
-  after(:all) do
+  after(:each) do
     UserGroup::Group.find_by(name: SETTING_GROUP_CM).delete
     UserGroup::Group.find_by(name: SETTING_GROUP_OM).delete
   end
