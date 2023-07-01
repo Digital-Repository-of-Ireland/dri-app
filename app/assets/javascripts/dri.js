@@ -181,15 +181,12 @@ $(document).on("click", "#download_archive", function () {
 
 function trackDownload(track, rootCollection, object) {
   if (track===true) {
-    ga("send",
-      {
-        "hitType":"event",
-        "eventCategory":rootCollection,
-        "eventAction":"Download",
-        "eventLabel":object,
-        "eventValue":"1"
-      }
-    );
+    console.log("Download");
+    gtag('event', 'asset_download', {
+      'collection':rootCollection,
+      'object':object,
+      'value':'1'
+    });
   }
 }
 
