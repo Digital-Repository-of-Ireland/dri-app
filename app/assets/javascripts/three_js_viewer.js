@@ -96,7 +96,8 @@ $(document).ready(function () {
         case 'glb':
         case 'gltf':
             var dracoLoader = new THREE.DRACOLoader();
-            dracoLoader.setDecoderPath('/assets/Three/lib/three/examples/js/libs/draco/')
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.1/');
+            dracoLoader.setDecoderConfig({ type: 'js' });
             var gltfLoader = new THREE.GLTFLoader();
             gltfLoader.setDRACOLoader( dracoLoader );
             gltfLoader.load( url, function (gltf) {

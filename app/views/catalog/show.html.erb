@@ -20,4 +20,10 @@
     <meta property="og:url"             content="<%= request.original_url %>" />
     <meta property="og:title"           content="<%= @page_title %>" />
     <meta property="og:description"    content="DRI Object" />
+ 
+    <% if @dimensions %>
+      <script>
+        gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
+      </script>
+    <% end %>
 <% end %>
