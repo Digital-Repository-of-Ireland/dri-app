@@ -378,7 +378,7 @@ en:
         title: Title
         title_text: A name given to the resource.
         types: Types
-        types_text: The nature or genre of the resource.
+        types_text: 'The nature or genre of the resource. Note: first field shall contain a valid type.'
       no_results_found: No search results found
       no_results_message: or refine your search terms. e.g. try removing a search term or using OR to broaden your search
       q: Type a search term and press Enter. Use AND and OR to narrow or broaden your search

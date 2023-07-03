@@ -191,30 +191,34 @@
 	<%# we don't want the Collection type to be output as we don't want it modified %>
 	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
 		<%= render "shared/form_fieldset_label", f:f, source:'types' %>
-		<% if @object.type.size == 0%>
+		<% if @object.type.size == 0 %>
 			<div>
-				<label for="digital_object_type_1" class="sr-only"><%= t("dri.views.fields.type") %></label>
-				<%= select_tag "digital_object[type][]", 
-				options_for_select([
-					["Select Primary Type", ""], 
-					["Text", "Text"], 
-					["Image", "Image"], 
-					["Still Image", "Still Image"], 
-					["Moving Image", "Moving Image"], 
-					["3D" , "3D"],
-					["Video", "Video"], 
-					["Sound", "Sound"], 
-					["Audio", "Audio"]], 
-					selected: ""), 
-				class: "edit span6 dri-textfield", required: true, id: "digital_object_type_1" %>
+				<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
 			</div>
 		<% end %>
 		<% @object.type.each_with_index do |type, index| %>
+			<% if index == 0%>
+				<%if ["text", "image", "stillimage", "movingimage", "3d", "video", "sound", "audio"].include?(type.downcase.delete(' '))%>
+					<div>
+						<%= render partial: 'shared/form_object_type.html', locals: { index: index, type: type.downcase.delete(' ')} %>
+					</div>
+				<%else%>
+					<div>
+						<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
+					</div>
+					<div>
+						<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
+						<%= f.text_field "type][", value:type, class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_#{index+1}" %>
+						<%= render "shared/form_remove_field_button" %>
+					</div>
+				<%end%>				
+			<%else%>
 			<div>
 				<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
 				<%= f.text_field "type][", value:type, class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_#{index+1}" %>
 				<%= render "shared/form_remove_field_button" %>
 			</div>
+			<% end %>
 		<% end %>
 		<%= render "shared/form_add_text_field_button", action:%w(add type), label_string: t("dri.views.fields.type") %>
 	</fieldset>
