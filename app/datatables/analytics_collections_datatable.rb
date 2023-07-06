@@ -20,12 +20,12 @@ private
 
   def data
     collections = get_collections
-    collection_hash = get_collection_names(collections)
+    collection_hash = collection_names(collections)
 
     data = display_on_page(collections)
     formatted_data = data.map do |entry|
       [
-       link_to(entry[:title], analytic_path(entry[:dimension1])),
+       link_to(entry[:title], analytic_path(entry[:collection])),
        entry[:users],
        entry[:totalEvents]
       ]
@@ -40,14 +40,16 @@ private
   def fetch_analytics(collections)
     return collections if collections.empty?
 
-    views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).to_a
-    downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).action('Download').to_a
+    analytics = if Settings.analytics.provider == 'ga4'
+                  ga4_analytics(collections)
+                else
+                  ua_analytics(collections)
+                end
 
-    downloads.map{|r| r[:dimension1] = r.delete_field(:eventCategory) }
-    analytics = (views+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension1] }.map{|k,v| v.reduce({}, :merge)}
+    analytics = analytics.map{|a| a.to_h }.group_by{|h| h[:collection] }.map{|k,v| v.reduce({}, :merge)}
 
-    collection_hash = get_collection_names(collections)
-    analytics.map{ |r| r[:title] = collection_hash[r[:dimension1]] }
+    collection_hash = collection_names(collections)
+    analytics.map{ |r| r[:title] = collection_hash[r[:collection]] }
 
     if sort_column == 'title'
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
@@ -57,6 +59,32 @@ private
     analytics.reverse! if sort_direction == 'desc'
 
     analytics
+  end
+
+  def ua_analytics(collections)
+    views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).to_a
+    downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).action('Download').to_a
+
+    downloads.each{|r| r[:collection] = r.delete_field(:eventCategory) }
+    
+    (views+downloads)
+  end
+
+  def ga4_analytics(collections)
+    views = DRI::Analytics.object_events_users(startdate, enddate, collections)
+    downloads = DRI::Analytics.object_events_downloads(startdate, enddate, collections)
+    
+    views.each do |r| 
+      r[:collection] = r.delete('customEvent:collection')
+      r[:users] = r.delete('totalUsers')
+    end
+
+    downloads.each do |r| 
+      r[:collection] = r.delete('customEvent:collection')
+      r[:totalEvents] = r.delete('eventCount')
+    end
+ 
+    (views+downloads)
   end
 
   def display_on_page(collections)
@@ -81,11 +109,11 @@ private
   end
 
   def startdate
-    params[:startdate] || Date.today.at_beginning_of_month()
+    params[:startdate] || Date.today.at_beginning_of_month().strftime('%Y-%m-%d')
   end
 
   def enddate
-    params[:enddate] || Date.today
+    params[:enddate] || Date.today.strftime('%Y-%m-%d')
   end
 
   def get_collections
@@ -113,15 +141,12 @@ private
     collections
   end
 
-  def get_collection_names(collections)
+  def collection_names(collections)
     query = Solr::Query.construct_query_for_ids(collections)
     solr_query = Solr::Query.new(query)
     collection_hash = {}
-    while solr_query.has_more?
-      object_docs = solr_query.pop
-      object_docs.map do |o|
-        collection_hash[o["id"]] = o["#{Solrizer.solr_name('title', :stored_searchable, type: :string)}"].first
-      end
+    solr_query.each do |o|
+      collection_hash[o["id"]] = o["title_tesim"].first
     end
     collection_hash
   end
