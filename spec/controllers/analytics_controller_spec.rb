@@ -3,11 +3,11 @@ require "rails_helper"
 describe AnalyticsController do
   include Devise::Test::ControllerHelpers
 
-  before(:all) do
+  before(:each) do
     UserGroup::Group.find_or_create_by(name: SETTING_GROUP_CM, description: "collection manager test group")
   end
 
-  after(:all) do
+  after(:each) do
     UserGroup::Group.find_by(name: SETTING_GROUP_CM).delete
   end
 

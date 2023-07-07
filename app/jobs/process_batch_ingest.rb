@@ -35,6 +35,7 @@ class ProcessBatchIngest
         ingest_assets(user, object, assets)
       end
 
+      ActiveRecord::Base.connection.reconnect!
       record_committer(object, user)
     end
   end
