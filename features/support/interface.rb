@@ -25,7 +25,11 @@ module Interface
         fill_in("digital_object_rights_1", :with => "This is a statement of rights")
       end
       within_fieldset('type') do
-        fill_in("digital_object_type_1", :with => "Sound")
+        if (page.has_select?("digital_object_type_1"))
+          select "sound", :from => "digital_object_type_1"
+        else
+          fill_in("digital_object_type_1", :with => "sound")
+        end
       end
     end
 
@@ -47,7 +51,11 @@ module Interface
         fill_in("digital_object_rights_1", :with => "")
       end
       within_fieldset('type') do
-        fill_in("digital_object_type_1", :with => "Sound")
+        if (page.has_select?("digital_object_type_1"))
+          select "sound", :from => "digital_object_type_1"
+        else
+          fill_in("digital_object_type_1", :with => "sound")
+        end
       end
     end
 
