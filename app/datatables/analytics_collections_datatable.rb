@@ -49,7 +49,7 @@ private
     analytics = analytics.map{|a| a.to_h }.group_by{|h| h[:collection] }.map{|k,v| v.reduce({}, :merge)}
 
     collection_hash = collection_names(collections)
-    analytics.map{ |r| r[:title] = collection_hash[r[:collection]] }
+    analytics.each{ |r| r[:title] = collection_hash[r[:collection]] }
 
     if sort_column == 'title'
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
