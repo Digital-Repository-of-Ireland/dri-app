@@ -27,15 +27,6 @@ describe WorkspaceController do
     @collection.save
   end
 
-  after(:each) do
-    @login_user.delete
-    @manager_user.delete
-
-    @collection.delete
-    @edit_collection.delete
-    @group.delete
-  end
-
   describe 'GET index request' do
     it "counts the collection types" do
       sign_in @manager_user

@@ -26,9 +26,9 @@ module Interface
       end
       within_fieldset('type') do
         if (page.has_select?("digital_object_type_1"))
-          select "Sound", :from => "digital_object_type_1"
+          select "sound", :from => "digital_object_type_1"
         else
-          fill_in("digital_object_type_1", :with => "Sound")
+          fill_in("digital_object_type_1", :with => "sound")
         end
       end
     end
@@ -52,9 +52,9 @@ module Interface
       end
       within_fieldset('type') do
         if (page.has_select?("digital_object_type_1"))
-          select "Sound", :from => "digital_object_type_1"
+          select "sound", :from => "digital_object_type_1"
         else
-          fill_in("digital_object_type_1", :with => "Sound")
+          fill_in("digital_object_type_1", :with => "sound")
         end
       end
     end

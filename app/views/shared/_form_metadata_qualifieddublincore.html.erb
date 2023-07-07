@@ -189,7 +189,8 @@
 	</fieldset>
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
-	<fieldset id="type" <% if @object.type.first == 'Collection' || params[:is_sub_collection] == 'true' %>class="dri_no_display"<%end%>>
+	<% if !@object.collection? %>
+	<fieldset id="type">
 		<%= render "shared/form_fieldset_label", f:f, source:'types' %>
 		<% if @object.type.size == 0 %>
 			<div>
@@ -222,6 +223,7 @@
 		<% end %>
 		<%= render "shared/form_add_text_field_button", action:%w(add type), label_string: t("dri.views.fields.type") %>
 	</fieldset>
+	<% end %>
 
 	<fieldset id="language">
 	  <%= render "shared/form_fieldset_label",
