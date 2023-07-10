@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 041b0c554ba61462613dd266d3a76f3045dc0576
-  branch: develop
+  revision: 7f60a8418ad0020d14d55c3b0de58c55ac92f418
+  tag: v4.5.2
   specs:
     dri_data_models (4.5.2)
       hydra-derivatives
@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
-  branch: develop
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
@@ -178,7 +178,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.1)
+    addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
     amazing_print (1.4.0)
     appsignal (3.4.4)
@@ -208,7 +208,7 @@ GEM
       validatable (~> 1.6)
     bcp47 (0.3.3)
       i18n
-    bcrypt (3.1.18)
+    bcrypt (3.1.19)
     better_errors (2.9.1)
       coderay (>= 1.0.0)
       erubi (>= 1.0.0)
@@ -338,7 +338,7 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.9.0)
+    devise (4.9.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
@@ -447,7 +447,7 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
-    fastimage (2.2.6)
+    fastimage (2.2.7)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.20.0)
@@ -580,14 +580,14 @@ GEM
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
-    json-canonicalization (0.3.1)
-    json-ld (3.2.3)
+    json-canonicalization (0.3.2)
+    json-ld (3.2.5)
       htmlentities (~> 4.3)
-      json-canonicalization (~> 0.3)
+      json-canonicalization (~> 0.3, >= 0.3.2)
       link_header (~> 0.0, >= 0.0.8)
       multi_json (~> 1.15)
-      rack (~> 2.2)
-      rdf (~> 3.2, >= 3.2.9)
+      rack (>= 2.2, < 4)
+      rdf (~> 3.2, >= 3.2.10)
     json-ld-preloaded (3.2.0)
       json-ld (~> 3.2)
       rdf (~> 3.2)
@@ -681,7 +681,7 @@ GEM
       json
       nokogiri
       nokogiri-happymapper
-    mono_logger (1.1.1)
+    mono_logger (1.1.2)
     multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -709,7 +709,7 @@ GEM
     noid-rails (3.1.0)
       actionpack (>= 5.0.0, < 7.1)
       noid (~> 0.9)
-    nokogiri (1.15.2)
+    nokogiri (1.15.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
@@ -791,8 +791,9 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.0.3)
-      activesupport (>= 4.2.0)
+    rails-dom-testing (2.1.1)
+      activesupport (>= 5.0.0)
+      minitest
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
@@ -812,7 +813,7 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.2.9)
+    rdf (3.2.11)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.2.0)
       rdf (~> 3.2)
@@ -870,7 +871,7 @@ GEM
     rdf-turtle (3.2.0)
       ebnf (~> 2.3)
       rdf (~> 3.2)
-    rdf-vocab (3.2.3)
+    rdf-vocab (3.2.6)
       rdf (~> 3.2, >= 3.2.4)
     rdf-xsd (3.2.0)
       rdf (~> 3.2)
@@ -878,13 +879,13 @@ GEM
     redic (1.5.3)
       hiredis
     redis (4.8.1)
-    redis-namespace (1.10.0)
+    redis-namespace (1.11.0)
       redis (>= 4)
     reform (2.6.2)
       disposable (>= 0.5.0, < 1.0.0)
       representable (>= 3.1.1, < 4)
       uber (< 0.2.0)
-    reform-rails (0.2.3)
+    reform-rails (0.2.5)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
     regexp_parser (2.8.0)
@@ -1087,7 +1088,7 @@ GEM
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
     thor (1.2.2)
-    tilt (2.1.0)
+    tilt (2.2.0)
     timeout (0.4.0)
     trailblazer-option (0.1.2)
     typhoeus (1.4.0)
@@ -1106,7 +1107,7 @@ GEM
     unicode-types (1.7.0)
     uri (0.12.1)
     validatable (1.6.7)
-    valkyrie (3.0.1)
+    valkyrie (3.0.3)
       activemodel
       activesupport
       dry-struct
