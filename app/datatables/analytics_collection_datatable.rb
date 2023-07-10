@@ -22,7 +22,7 @@ private
     data = display_on_page(collection_id)
     formatted_data = data.map do |entry|
       [
-       link_to(entry[:title], solr_document_path(entry[:dimension3])),
+       link_to(entry[:title], solr_document_path(entry[:object])),
        entry[:users],
        entry[:totalHits],
        entry[:totalEvents]
@@ -36,18 +36,16 @@ private
   # if none then just return empty array
   # else get analytics for these collection ids and return analytics
   def fetch_analytics(collection)
-    views = AnalyticsObjectUsers.results(@profile, start_date: startdate, end_date: enddate).collection(collection).to_a
-    downloads = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('Download').to_a
-    hits = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('View').to_a
+    analytics = if Settings.analytics.provider == 'ga4'
+                  ga4_analytics(collection)
+                else
+                  ua_analytics(collection)
+                end
 
-    downloads.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
-    hits.map{|r| r[:dimension3] = r.delete_field(:eventLabel) }
-    hits.map{|r| r[:totalHits] = r.delete_field(:totalEvents) }
+    analytics = analytics.map{|a| a.to_h }.group_by{|h| h[:object] }.map{|k,v| v.reduce({}, :merge)}
 
-    analytics = (views+hits+downloads).map{|a| a.to_h }.group_by{|h| h[:dimension3] }.map{|k,v| v.reduce({}, :merge)}
-
-    object_hash = get_object_names(collection)
-    analytics.map{ |r| r[:title] = object_hash[r[:dimension3]] }
+    object_hash = object_titles(collection)
+    analytics.each{ |r| r[:title] = object_hash[r[:object]] }
 
     if sort_column == 'title'
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
@@ -57,6 +55,43 @@ private
     analytics.reverse! if sort_direction == 'desc'
 
     analytics
+  end
+
+  def ua_analytics(collection)
+    views = AnalyticsObjectUsers.results(@profile, start_date: startdate, end_date: enddate).collection(collection).to_a
+    downloads = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('Download').to_a
+    hits = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('View').to_a
+
+    views.each{|r| r[:object] = r.delete_field(:dimension3) }
+    downloads.each{|r| r[:object] = r.delete_field(:eventLabel) }
+    hits.each do |r|
+      r[:object] = r.delete_field(:eventLabel)
+      r[:totalHits] = r.delete_field(:totalEvents)
+    end
+
+    (views+hits+downloads)
+  end
+
+  def ga4_analytics(collection)
+    views = DRI::Analytics.object_events_users(startdate, enddate, [collection])
+    downloads = DRI::Analytics.object_events_downloads(startdate, enddate, [collection])
+    hits = DRI::Analytics.object_events_hits(startdate, enddate, [collection])
+
+    views.each do |r| 
+      r[:object] = r.delete('customEvent:object')
+      r[:users] = r.delete('totalUsers')
+    end
+
+    downloads.each do |r| 
+      r[:object] = r.delete('customEvent:object')
+      r[:totalEvents] = r.delete('eventCount')
+    end
+    hits.each do |r| 
+      r[:object] = r.delete('customEvent:object')
+      r[:totalHits] = r.delete('eventCount')
+    end
+
+    (views+hits+downloads)
   end
 
   def display_on_page(collection)
@@ -81,11 +116,11 @@ private
   end
 
   def startdate
-    params[:startdate] || Date.today.at_beginning_of_month()
+    params[:startdate] || Date.today.at_beginning_of_month().strftime('%Y-%m-%d')
   end
 
   def enddate
-    params[:enddate] || Date.today
+    params[:enddate] || Date.today.strftime('%Y-%m-%d')
   end
 
   def collection_id
@@ -101,14 +136,12 @@ private
     end
   end
 
-  def get_object_names(collection_id)
-    query = "(id:\"" + collection_id + "\" OR ancestor_id_ssim:\"" + collection_id +
-    "\" OR #{Solrizer.solr_name('is_member_of_collection', :stored_searchable, type: :symbol)}:\"info:fedora/" + collection_id + "\" )"
+  def object_titles(collection_id)
+    query = "(id:\"" + collection_id + "\" OR ancestor_id_ssim:\"" + collection_id + "\")"
     solr_query = Solr::Query.new(query)
     object_hash = {}
-    while solr_query.has_more?
-      objects = solr_query.pop
-      objects.map { |o| object_hash[o["id"]] = o["#{Solrizer.solr_name('title', :stored_searchable, type: :string)}"].first }
+    solr_query.each do |o|
+      object_hash[o["id"]] = o["title_tesim"].first
     end
     object_hash
   end

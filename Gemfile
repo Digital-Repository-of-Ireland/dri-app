@@ -103,6 +103,7 @@ group :production do
 end
 
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'thin'
   gem 'bixby', '~> 5'
   gem 'rspec-rails', '~> 6'
@@ -168,6 +169,9 @@ end
 # analytics
 gem 'legato'
 gem 'google-oauth2-installed'
+gem 'google-analytics-data-v1beta', '~> 0.8.0'
+gem 'faraday'
+gem 'faraday_middleware'
 
 gem 'rvm'
 

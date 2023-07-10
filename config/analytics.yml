@@ -1,0 +1,4 @@
+analytics:
+  ga4:
+    property_id: <%= ENV['GA4_PROPERTY_ID'] %> 
+    json_credentials: <%= ENV['GA4_JSON_CREDENTIALS'] %>

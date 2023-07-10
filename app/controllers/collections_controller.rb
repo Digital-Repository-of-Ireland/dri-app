@@ -393,12 +393,8 @@ class CollectionsController < BaseObjectsController
     def create_from_form
       @object = DRI::DigitalObject.with_standard :qdc
 
-      @object.type = ['Collection'] if @object.type.nil?
-      @object.type.push('Collection') unless @object.type.include?('Collection')
-
       supported_licences
-
-      @object.assign_attributes(create_params)
+      @object.assign_attributes(create_params.merge({type: "Collection"}))
 
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s

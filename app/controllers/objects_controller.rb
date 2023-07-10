@@ -12,6 +12,8 @@ class ObjectsController < BaseObjectsController
   before_action :read_only, except: [:show, :citation, :retrieve]
   before_action ->(id=params[:id]) { locked(id) }, except: [:show, :citation, :new, :create, :retrieve]
 
+  PRIMARY_TYPES = %w(text image stillimage movingimage 3d video sound audio).freeze
+
   # Displays the New Object form
   #
   def new
@@ -40,6 +42,9 @@ class ObjectsController < BaseObjectsController
     @object.creator = [''] unless @object.creator[0]
     @standard = metadata_standard
 
+    # sets the primary type as the first in the array if found elsewhere
+    reorder_types
+    
     # used for crumbtrail
     @document = SolrDocument.new(@object.to_solr)
 
@@ -384,6 +389,18 @@ class ObjectsController < BaseObjectsController
       standard = @object.descMetadata.class.to_s.downcase.split('::').last
 
       standard == 'documentation' ? 'qualifieddublincore' : standard
+    end
+
+    def reorder_types
+      return if PRIMARY_TYPES.include?(@object.type.first)
+        
+      primary_type_index = @object.type.map { |t| PRIMARY_TYPES.index(t.downcase.delete(' ')) }.compact.first
+      return unless primary_type_index
+
+      primary_type = PRIMARY_TYPES[primary_type_index]
+      object_types = @object.type.to_a
+      object_types.delete(primary_type)
+      @object.type = [primary_type] + object_types
     end
 
     def save_and_index

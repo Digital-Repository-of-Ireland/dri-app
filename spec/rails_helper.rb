@@ -43,6 +43,3 @@ RSpec.configure do |config|
   config.include DeviseRequestSpecHelper, type: :request
   config.include PreservationHelper
 end
-
-Rails.application.eager_load!
-
