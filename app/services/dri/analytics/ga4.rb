@@ -153,37 +153,37 @@ module DRI
         end
 
         def run_report(request)
-	      offset = 0
-          results = []
-          request.offset = 0
+  	      offset = 0
+            results = []
+            request.offset = 0
 
-	      loop do
-	        report = auth_client.run_report(request)
-	        
-	        dimension_headers = report.dimension_headers.map(&:name)
-	        metric_headers = report.metric_headers.map(&:name)
+  	      loop do
+  	        report = auth_client.run_report(request)
+  	        
+  	        dimension_headers = report.dimension_headers.map(&:name)
+  	        metric_headers = report.metric_headers.map(&:name)
 
-	        report.rows.each do |row|
-	          dimension_values = row.dimension_values.map(&:value)
-	          metric_values = row.metric_values.map(&:value)
+  	        report.rows.each do |row|
+  	          dimension_values = row.dimension_values.map(&:value)
+  	          metric_values = row.metric_values.map(&:value)
 
-	          result_row = {}
-	          dimension_headers.each_with_index do |header,index|
-	          	result_row[header] = dimension_values[index]
-	          end
-              metric_headers.each_with_index do |header,index|
-	          	result_row[header] = metric_values[index]
-	          end
+  	          result_row = {}
+  	          dimension_headers.each_with_index do |header,index|
+  	          	result_row[header] = dimension_values[index]
+  	          end
+                metric_headers.each_with_index do |header,index|
+  	          	result_row[header] = metric_values[index]
+  	          end
 
-	          results << result_row
-	        end
-	        break if results.size == report.row_count
+  	          results << result_row
+  	        end
+  	        break if results.size == report.row_count
 
-	        offset += LIMIT
-	        request.offset = offset
-	      end
+  	        offset += LIMIT
+  	        request.offset = offset
+  	      end
 
-	      results
+  	      results
         end
       end
 
