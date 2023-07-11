@@ -6,6 +6,7 @@ module DRI
     module NullAnalyticsParser; end
 
     def self.provider_parser
+      return NullAnalyticsParser if Settings&.analytics&.provider.nil?
       "DRI::Analytics::#{Settings.analytics.provider.to_s.capitalize}".constantize
     rescue NameError => err
       Rails.logger.warn("Couldn't find an Analytics provider matching "\
