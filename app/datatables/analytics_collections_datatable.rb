@@ -65,6 +65,7 @@ private
     views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).to_a
     downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).action('Download').to_a
 
+    views.each{|r| r[:collection] = r.delete_field(:dimension1) }
     downloads.each{|r| r[:collection] = r.delete_field(:eventCategory) }
     
     (views+downloads)
@@ -120,7 +121,7 @@ private
     collections = []
 
     query = if current_user.is_admin?
-              "*:*"
+              params[:user].present? ? "manager_access_person_ssim:#{params[:user]}" : "*:*"
             else
               "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
             end

@@ -1105,7 +1105,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (2.4.2)
     unicode-types (1.7.0)
-    uri (0.12.1)
+    uri (0.12.2)
     validatable (1.6.7)
     valkyrie (3.0.3)
       activemodel
@@ -1263,7 +1263,7 @@ DEPENDENCIES
   timelineJS3-rails!
   uglifier (~> 4)
   unicode
-  uri (>= 0.11.1)
+  uri (>= 0.12.2)
   user_group!
   view_component (= 2.74.1)
   webdrivers
