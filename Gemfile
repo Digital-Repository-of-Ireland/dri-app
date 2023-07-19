@@ -4,7 +4,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 6.1'
-gem 'uri', '>= 0.11.1'
+gem 'uri', '>= 0.12.2'
 
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
