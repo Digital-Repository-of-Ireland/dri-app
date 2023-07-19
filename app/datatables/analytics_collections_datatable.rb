@@ -121,7 +121,7 @@ private
     collections = []
 
     query = if current_user.is_admin?
-              params[:user].present? ? "manager_access_person_ssim:#{user}" : "*:*"
+              params[:user].present? ? "manager_access_person_ssim:#{params[:user]}" : "*:*"
             else
               "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
             end
