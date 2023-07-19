@@ -12,6 +12,7 @@ class AnalyticsController < ApplicationController
 
     @startdate = params[:startdate] || Date.today.at_beginning_of_month
     @enddate = params[:enddate] || Date.today
+    @user = params[:user] if current_user.is_admin?
 
     respond_to do |format|
       format.html
