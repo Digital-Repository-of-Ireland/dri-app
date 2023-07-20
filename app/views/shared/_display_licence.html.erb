@@ -17,7 +17,6 @@
         <div><%= t('dri.views.licences.orphan_work') %></div>
         <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
       <% elsif @document.licence.name == "Educational Use" %>
-        <div><%= t('dri.views.licences.unlicenced') %></div>
         <div><%= t('dri.views.licences.educational_use') %></div>
         <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
       <% elsif @document.licence.name == "Open COVID Licence 1.1" %>
