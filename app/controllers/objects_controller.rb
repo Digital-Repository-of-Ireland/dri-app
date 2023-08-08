@@ -18,7 +18,6 @@ class ObjectsController < BaseObjectsController
   #
   def new
     @collection = params[:collection]
-
     locked(@collection); return if performed?
 
     @object = DRI::DigitalObject.with_standard :qdc
