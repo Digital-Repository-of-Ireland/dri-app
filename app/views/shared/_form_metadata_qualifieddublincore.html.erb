@@ -206,7 +206,7 @@
 							</div>
 						<% else %>
 							<div>
-								<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
+								<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>s
 							</div>
 							<div>
 								<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
@@ -225,6 +225,8 @@
 			<% end %>
 			<%= render "shared/form_add_text_field_button", action:%w(add type), label_string: t("dri.views.fields.type") %>
 		</fieldset>
+	<% else %>
+	  <%= f.hidden_field :type, value: "Collection" %>
 	<% end %>
 
 	<fieldset id="language">
