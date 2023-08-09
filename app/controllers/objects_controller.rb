@@ -351,13 +351,13 @@ class ObjectsController < BaseObjectsController
 
     # If no standard parameter then default to :qdc
     # allow to create :documentation and :marc objects (improve merging into marc-nccb branch)
-    #
-    def create_from_form(standard = :qdc)
-      @object = DRI::DigitalObject.with_standard(standard)
-
-      if standard == :documentation
+    def create_from_form(type = :qdc)
+      if type == :documentation
+        @object = DRI::Documentation.new
         @documented = retrieve_object(params[:documentation_for])
         @object.documentation_for = @documented if @documented
+      else
+        @object = DRI::DigitalObject.with_standard(type)
       end
 
       @object.depositor = current_user.to_s
@@ -385,9 +385,7 @@ class ObjectsController < BaseObjectsController
     end
 
     def metadata_standard
-      standard = @object.descMetadata.class.to_s.downcase.split('::').last
-
-      standard == 'documentation' ? 'qualifieddublincore' : standard
+      @object.descMetadata.class.to_s.downcase.split('::').last
     end
 
     def reorder_types

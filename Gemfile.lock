@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 041b0c554ba61462613dd266d3a76f3045dc0576
+  revision: b68be7b57d96a797009345fa7120eb1d5ff71294
   branch: develop
   specs:
     dri_data_models (4.5.2)
@@ -178,7 +178,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.1)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     amazing_print (1.4.0)
     appsignal (3.4.4)
@@ -580,14 +580,14 @@ GEM
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
-    json-canonicalization (0.3.1)
-    json-ld (3.2.3)
+    json-canonicalization (0.3.2)
+    json-ld (3.2.5)
       htmlentities (~> 4.3)
-      json-canonicalization (~> 0.3)
+      json-canonicalization (~> 0.3, >= 0.3.2)
       link_header (~> 0.0, >= 0.0.8)
       multi_json (~> 1.15)
-      rack (~> 2.2)
-      rdf (~> 3.2, >= 3.2.9)
+      rack (>= 2.2, < 4)
+      rdf (~> 3.2, >= 3.2.10)
     json-ld-preloaded (3.2.0)
       json-ld (~> 3.2)
       rdf (~> 3.2)
@@ -669,19 +669,19 @@ GEM
     matrix (0.4.2)
     memoist (0.16.2)
     method_source (1.0.0)
-    mime-types (3.4.1)
+    mime-types (3.5.0)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.0218.1)
+    mime-types-data (3.2023.0808)
     mini_magick (4.12.0)
-    mini_mime (1.1.2)
-    mini_portile2 (2.8.2)
-    minitest (5.18.1)
+    mini_mime (1.1.5)
+    mini_portile2 (2.8.4)
+    minitest (5.19.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
       nokogiri
       nokogiri-happymapper
-    mono_logger (1.1.1)
+    mono_logger (1.1.2)
     multi_json (1.15.0)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -694,7 +694,7 @@ GEM
       redic
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
-    net-imap (0.3.6)
+    net-imap (0.3.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -709,7 +709,7 @@ GEM
     noid-rails (3.1.0)
       actionpack (>= 5.0.0, < 7.1)
       noid (~> 0.9)
-    nokogiri (1.15.2)
+    nokogiri (1.15.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     nokogiri-happymapper (0.8.1)
@@ -755,7 +755,7 @@ GEM
     parser (3.2.2.1)
       ast (~> 2.4.1)
     parslet (2.0.0)
-    public_suffix (5.0.1)
+    public_suffix (5.0.3)
     qa (5.7.0)
       activerecord-import
       deprecation
@@ -766,9 +766,9 @@ GEM
       rails (>= 5.0, < 6.2)
       rdf
     racc (1.7.1)
-    rack (2.2.7)
-    rack-protection (3.0.6)
-      rack
+    rack (2.2.8)
+    rack-protection (3.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-test (2.1.0)
       rack (>= 1.3)
     railroady (1.6.0)
@@ -791,8 +791,9 @@ GEM
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
       activesupport (>= 5.0.1.rc1)
-    rails-dom-testing (2.0.3)
-      activesupport (>= 4.2.0)
+    rails-dom-testing (2.2.0)
+      activesupport (>= 5.0.0)
+      minitest
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
@@ -812,7 +813,7 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.2.9)
+    rdf (3.2.11)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.2.0)
       rdf (~> 3.2)
@@ -870,7 +871,7 @@ GEM
     rdf-turtle (3.2.0)
       ebnf (~> 2.3)
       rdf (~> 3.2)
-    rdf-vocab (3.2.3)
+    rdf-vocab (3.2.7)
       rdf (~> 3.2, >= 3.2.4)
     rdf-xsd (3.2.0)
       rdf (~> 3.2)
@@ -878,13 +879,13 @@ GEM
     redic (1.5.3)
       hiredis
     redis (4.8.1)
-    redis-namespace (1.10.0)
+    redis-namespace (1.11.0)
       redis (>= 4)
     reform (2.6.2)
       disposable (>= 0.5.0, < 1.0.0)
       representable (>= 3.1.1, < 4)
       uber (< 0.2.0)
-    reform-rails (0.2.3)
+    reform-rails (0.2.5)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
     regexp_parser (2.8.0)
@@ -912,7 +913,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.2.5)
+    rexml (3.2.6)
     riiif (2.3.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -1036,10 +1037,10 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.3)
-    sinatra (3.0.6)
+    sinatra (3.1.0)
       mustermann (~> 3.0)
       rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.0.6)
+      rack-protection (= 3.1.0)
       tilt (~> 2.0)
     smart_properties (1.17.0)
     solr_wrapper (3.1.2)
@@ -1087,7 +1088,7 @@ GEM
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
     thor (1.2.2)
-    tilt (2.1.0)
+    tilt (2.2.0)
     timeout (0.4.0)
     trailblazer-option (0.1.2)
     typhoeus (1.4.0)
@@ -1106,7 +1107,7 @@ GEM
     unicode-types (1.7.0)
     uri (0.12.2)
     validatable (1.6.7)
-    valkyrie (3.0.1)
+    valkyrie (3.0.3)
       activemodel
       activesupport
       dry-struct
@@ -1133,7 +1134,7 @@ GEM
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
     webrick (1.7.0)
-    websocket-driver (0.7.5)
+    websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xml-simple (1.1.9)
@@ -1143,7 +1144,7 @@ GEM
     ya2yaml (0.31)
     yard (0.9.27)
       webrick (~> 1.7.0)
-    zeitwerk (2.6.8)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   ruby
