@@ -2,5 +2,5 @@
     <%= javascript_include_tag 'three_js_viewer', async: Rails.env.production? %>
 <% end %>
 
-<%= content_tag('div', id: 'dri_threejs_view', data: { url: url }) do %>
+<%= content_tag('div', class: "dri_threejs_view", id: "dri_threejs_view #{id}" , data: { id: id, url: url, file: generic_file_name}) do %>
 <% end %>

@@ -143,28 +143,25 @@ h2.dri_no_asset_availiable {
         text-align: center;
         float: right;
       }
-  }
+}
 
-#dri_threejs_view {
-  display: block;
-  margin: 0 auto;
-  max-height: 270px;
-  width: auto;
-  height: auto;
-
-  canvas {
+[id^="dri_threejs_view"] {
     display: block;
-  }
-
-  .Embed_3D{
-
-      position: absolute;
-      bottom: 4.3%;
-      left: 20px;
-      text-align: center;
-      z-index: 100;          
-
-  }
+    margin: 0 auto;
+    width: auto;
+    height: auto;
+}
+  
+[id^="dri_threejs_view"] canvas {
+    display: block;
+}
+  
+[id^="dri_threejs_view"] .Embed_3D {
+    position: absolute;
+    bottom: 4.3%;
+    left: 20px;
+    text-align: center;
+    z-index: 100;          
 }
 
 .dri_embed_link {
@@ -246,6 +243,28 @@ h2.dri_no_asset_availiable {
         }
     }
 }
+
+.load_modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); // semi-transparent overlay backdrop
+}
+  
+.load-modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
 /*-------------- Restricted Media asset --------------*/
 
 h2.dri_restrict_title {

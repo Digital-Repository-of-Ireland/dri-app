@@ -6,6 +6,13 @@
 <% @surrogate = nil %>
 <% if generic_file.present? && !generic_file.preservation_only? %>
 
+  <div class="load_modal" id="progress-modal">
+    <div class="load-modal-content">
+      <label for="progress-bar"> Loading... </label>
+      <progress id="progress-bar" value="0" max="100"></progress>
+    </div>
+  </div>
+
   <% if generic_file.audio? %>
     <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
     <% @surrogate = @surrogate_mp3 %>
@@ -56,21 +63,21 @@
         <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
           <%= link_to "#dri_iiif_view", class: 'dri_iiif', data: { viewer_index: @iiif_sources.length - 1 } do %>
           <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
-        <% end %>
-      <% else %>
-        <%= link_to @surrogate, class: 'dri_gallery group1' do %>
-          <% if generic_file_counter.zero? %>
-            <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
-          <% else %>
-            <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
-          <% end %>
+      <% end %>
+    <% else %>
+      <%= link_to @surrogate, class: 'dri_gallery group1' do %>
+        <% if generic_file_counter.zero? %>
+          <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
+        <% else %>
+          <img class="dri_carousel_img" data-src="<%= @surrogate_thumb %>">
         <% end %>
       <% end %>
     <% end %>
+  <% end %>
 
   <% elsif generic_file.threeD? %>
-    <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'masterfile') %>
-    <%= render partial: 'shared/display_3d', locals: { url: @surrogate } %>
+    <% @surrogate = file_download_path(@document.id, generic_file.id, type: '3d') %>
+    <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label } %>
   <% end %>
 
   <% if @surrogate.blank? %>
@@ -91,7 +98,7 @@
       <%= t('dri.views.catalog.links.download_not_available', index: generic_file_counter.ordinalize) %>
     <% elsif document.read_master? || @surrogate && can?(:read, document.id) || can?(:edit, document.id) %>
       <% if generic_file.threeD? %>
-        <%= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %>
+        <%# <#%= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %> <%# Embed link not working for 3D assets %>
       <% end %>
       <%= link_to '#dri_download_modal_id', :'data-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
         <%= t('dri.views.catalog.links.download') %>
