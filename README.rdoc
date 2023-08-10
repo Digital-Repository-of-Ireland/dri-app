@@ -3,13 +3,11 @@
 This repository contains the Digital Repository of Ireland's Samvera based application.
 
 There are a number of other dependencies (see below) but at this point you
-will need to have a functional Rails stack and at least Java version 7. You
-can check your Java version by running 'java -version' anything below 1.7x
-in the output and you should update from https://java.com/en/download/
+will need to have a functional Rails stack and Java.
 
 For testing and development you will need to bootstrap the project
 
-  $ git clone ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git
+  $ git clone https://github.com/Digital-Repository-of-Ireland/dri-app.git
   $ cd dri-app
   $ bundle install --without production
   $ cp config/database.yml.sample config/database.yml (and edit as appropriate)
@@ -66,14 +64,6 @@ To generate the api docs:
 
 == Dependencies
 
-If you are using homebrew on OSX
-
-  $ brew install coreutils libtool libksba libxml2 libxslt automake autoconf openssl curl curl-ca-bundle readline lzlib gettext pkg-config libyaml redis sqlite ffmpeg gource phantomjs fits glib imagemagick ghostscript node
-
-In order to properly ingest videos, please reinstall ffmpeg with all the the supported codecs and encoders available:
-
-  $ brew reinstall ffmpeg --with-fdk-aac --with-ffplay --with-freetype --with-frei0r --with-libass --with-libvo-aacenc --with-libvorbis --with-libvpx --with-opencore-amr --with-openjpeg --with-opus --with-rtmpdump --with-schroedinger --with-speex --with-theora --with-tools
-
 If you are using Ubuntu or another debian linux distribution
 
   $ sudo apt-get install coreutils libtool libksba8 libxml2 libxslt1.1 automake autoconf openssl curl libreadline6 gettext pkg-config libyaml-dev redis sqlite ffmpeg gource phantomjs libgtk2.0-dev imagemagick ghostscript nodejs
@@ -83,10 +73,6 @@ There are a few installation options for fits:
 1. Download fits from the harvard website https://projects.iq.harvard.edu/fits/downloads
 2. Use ant to build from source github https://github.com/harvard-lts/fits/
 3. Install http://linuxbrew.sh/ and brew install fits
-4. Use the ppa
-    $ sudo add-apt-repository ppa:conorsheehan1/fits-ppa
-    $ sudo apt-get update
-    $ sudo apt install fits
 
 You may need to comment out `<tool class="edu.harvard.hul.ois.fits.tools.mediainfo.MediaInfo"` in fits/xml/fits.xml
 as per https://github.com/harvard-lts/fits/issues/160
@@ -101,13 +87,13 @@ Please view and edit this file as needed before deploying the application.
 
 To override settings.yml with local settings please use settings.local.yml.
 
-== Configuation of database.yml, fedora.yml and solr.yml
+== Configuation of database.yml, solr.yml, blacklight.yml
 
 The configuration files for the application
 
 * config/database.yml
 * config/solr.yml
-* config/fedora.yml
+* config/blacklight.yml
 
 are not configured initially. There are some sample configurations in
 the config directory. These configuration files must be created before
@@ -126,7 +112,7 @@ asynchronous processing of background jobs. This introduces the following depend
   * imagemagick (image processing)
   * Clamav (malware scanning) (production only)
 
-For testing, the file processing tools should be installed locally with the hydra-head.
+For testing, the file processing tools should be installed locally.
 See the Dependencies section of this document for more information on installing
 these and other dependencies.
 
@@ -157,7 +143,7 @@ ClamAV is only required to be installed in production, but can be installed loca
 
 To enable virus scanning ClamAV needs to be installed.
 
-  $ sudo port install clamav
+  $ sudo apt install clamav
 
 You will need to create the configuration file freshclam.conf in /opt/local/etc. There is an example
 file in /opt/local/etc/example-freshclam.conf. Set the directory for the database files and the log
@@ -181,7 +167,7 @@ Surrogate files are stored using the S3 interface. To create surrogates
 you will need access to an S3 server. LocalStack can be used for testing purposes. 
 This can be installed using pip:
 
- $ pip install --user localstack
+ $ python3 -m pip install --upgrade localstack
 
 You may need to add the local bin dir to your path, if not previously done:
 
@@ -191,11 +177,6 @@ For tests, where you don't want files to persist, start the server using:
 
  $ SERVICES=s3:8081 localstack start
 
-In development, if you would like the files to persist LocalStack restarts, create a directory for the server
-to use to store files, and then start the server with:
-
- $ SERVICES=s3:8081 DATA_DIR=/path/to/localstack_files localstack start
-
 The settings should then be modified to the following:
 
   S3:
@@ -203,139 +184,6 @@ The settings should then be modified to the following:
     use_ssl: false
     access_key_id: anything
     secret_access_key: anything
-
-== Migrating from sqlite3 to mysql
-
-This paragraph will explain the steps requires to migrate the database configuration from sqlite3 to mysql.
-The first step is to install mysql using homebrew.
-
-  $ brew install mysql
-
-Once the installation is completed start your mysql server and log to it.
-
-  $ mysql.server start
-  $ mysql -u root -p
-
-In the mysql console create the 3 environment databases required by rails.
-
-  mysql> create database dri_development;
-  mysql> grant all privileges on dri_development.* to 'root'@'localhost' identified by 'password';
-  mysql> flush privileges;
-
-  mysql> create database dri_test;
-  mysql> grant all privileges on dri_test.* to 'root'@'localhost' identified by 'password';
-  mysql> flush privileges;
-
-  mysql> create database dri_production;
-  mysql> grant all privileges on dri_production.* to 'root'@'localhost' identified by 'password';
-  mysql> flush privileges;
-
-  mysql> exit
-
-The next step is to change the database configurations in the [yourProjectLocation]/config/database.yml as follows:
-
-  development:
-    adapter: mysql
-    database: dri_development
-    username: root
-    password: yourPWD
-    host: localhost
-
-  test: &test
-    adapter: mysql
-    database: dri_test
-    username: root
-    password: yourPWD
-    host: localhost
-
-  production:
-    adapter: mysql
-    database: dri_production
-    username: root
-    password: yourPWD
-    host: localhost
-
-  cucumber:
-    <<: *test
-
-The last step is to install the mysql and mysql2 gems and to setup your new mysql databases by migrating and seeding them.
-
-  $ gem install mysql
-  $ gem install mysql2
-
-  $ bundle exec rake db:migrate
-  $ bundle exec rake db:seed
-  $ bundle exec rake db:test:prepare
-
-== Configuring Analytics
-
-The application uses Google Analytics to store usage data.
-
-All page views are send to Google Analytics using the google-analytics-rails gem. For published objects the
-object ID, parent collection ID and Depositing Organisation name are also sent.
-
-When an object is viewed, or an asset file is downloaded the server also sends
-the view and download Events to Google Analytics via the Gabba gem.
-
-The Analytics reports (/analytics) use the Legato gem to query the Google
-Analytics API.
-
-In order for this to work a number of configuration changes are required at the
-Google Analytics side.
-
-=== Configure a Google Analytics account for the site
-Create a Google Analytics account for your site and get the Tracking ID number.
-This should be saved in the environments files as GA.tracker
-
-=== Create Custom Dimensions
-The following custom dimensions are required to be configured in the following order
-
-  * Dimension1 'collection'
-  * Dimension2 'organisation'
-  * Dimension3 'object'
-
-This is done via the Admin Menu - Custom Definitions - Custom Dimensions. All three should
-have hit scope.
-
-=== Create a project in the Google API console
-Go to the Google API Console https://console.developers.google.com/ and view the Dashboard.
-You may be prompted to create a project. If not look for the projects list at the top of
-the screen beside the Google APIs logo. Click on this to see your project list and use the +
-button to create a new project.
-
-=== Create credentials for the Google API project
-You will need to create a service account credential. Click on the top menu and navigate
-to IAM & Admin - Service Accounts. Here create a new Service account giving it a role
-of Project - Viewer.
-
-Save the account and download the key file in p12 format. Save this to the config dir
-and update the Settings.yml file with the following information:
-
-==== profile_id
-profile_id should be equal to the part after the p in the url for your analytics page. I.e.
-your analytics page will have an url of the form
-
-https://analytics.google.com/analytics/web/#embed/report-home/a00000000w000000000p1234567890/
-
-The part after the p is the profile id, in this case 1234567890.
-
-==== issuer && sub
-These should both be the service account ID which you will find in the Service Account section
-of the Google API Console https://console.developers.google.com/
-
-==== keyfile
-This should be the name of the p12 keyfile you downloaded from the Google API Console.
-
-==== secret
-This should match the secret that you were shown on downloading the p12 keyfile.
-
-==== other
-Other settings should be as follows
-
-  disable: false
-  token_credential_uri: 'https://accounts.google.com/o/oauth2/token'
-  audience: 'https://accounts.google.com/o/oauth2/token'
-  scope: 'https://www.googleapis.com/auth/analytics.readonly'
 
 == Testing
 
