@@ -72,7 +72,6 @@ There are a few installation options for fits:
 
 1. Download fits from the harvard website https://projects.iq.harvard.edu/fits/downloads
 2. Use ant to build from source github https://github.com/harvard-lts/fits/
-3. Install http://linuxbrew.sh/ and brew install fits
 
 You may need to comment out `<tool class="edu.harvard.hul.ois.fits.tools.mediainfo.MediaInfo"` in fits/xml/fits.xml
 as per https://github.com/harvard-lts/fits/issues/160
