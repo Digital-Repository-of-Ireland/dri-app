@@ -61,7 +61,7 @@ $(document).ready(function () {
         };
 
         var isCustomMaterial = false;
-        let originalMaterial = [];
+        const originalMaterialMap = new Map();
         let cPosition = null;
         let cTarget = null;
         let hasLight = false;
@@ -264,13 +264,11 @@ $(document).ready(function () {
             try {
                 object.traverse(function (child) {
                     if (child.isMesh) {
-                        if (isCustomMaterial) {
-                            child.material = absMaterial;
+                        if (!isCustomMaterial) {
+                            originalMaterialMap.set(child, child.material);
                         } else {
-                            originalMaterial.push(child.material);
                             child.material = normalMaterial;
                         }
-                        child.position.set(0, 0, 0);
                         child.material.needsUpdate = true;
                     }
                     if (child.isCamera) {
@@ -389,23 +387,27 @@ $(document).ready(function () {
 
             const guiParams = {
                 applyNormalMaterial: function() {
-                    for (let i = 0; i < originalMaterial.length; i++) {
-                        object.traverse(function(child) {
-                            if (child.isMesh) {
-                                child.material = normalMaterial;
-                            }
-                        });
-                    }
+                    object.traverse(function(child) {
+                        if (child.isMesh) {
+                            child.material = normalMaterial;
+                        }
+                    });
                 },
                 resetMaterial: function() {
-                    for (let i = 0; i < originalMaterial.length; i++) {
-                        object.traverse(function(child) {
-                            if (child.isMesh) {
-                                child.material = originalMaterial[i];
+                    object.traverse(function(child) {
+                        if (child.isMesh) {
+                            const originalMaterial = originalMaterialMap.get(child);
+                            if (originalMaterial) {
+                                child.material = originalMaterial;
                             }
-                        });
-                    }
+                        }
+                    });
+                },
+                applyCustomColor: function() {
+                    const col = options.object;
+                    applyCustomColor(col);
                 }
+
             };
 
             function closeColorFolder() {
@@ -419,6 +421,16 @@ $(document).ready(function () {
                 cameraFolder.close();
                 }
             };
+
+            function applyCustomColor(color) {
+                absMaterial.color = new THREE.Color(color);
+                isCustomMaterial = true;
+                object.traverse(function(child) {
+                    if (child.isMesh) {
+                        child.material = absMaterial;
+                    }
+                });
+            }
 
             gui.add(config, 'fullScreen').name('Full Screen Mode');
 
@@ -442,14 +454,10 @@ $(document).ready(function () {
             colorFolder.addColor(options, 'background').onChange( col => { 
                 scene.background = new THREE.Color(col); 
             });
-            colorFolder.addColor(options, 'object').onChange(col => {
-                absMaterial.color = new THREE.Color(col);
-                isCustomMaterial = true; 
-                processObject(object);
-            });
+            colorFolder.addColor(options, 'object').onChange(guiParams.applyCustomColor).name('Custom Color');
             colorFolder.add(guiParams, "applyNormalMaterial").name("Normal Material");
-            if(notSkinFormats.indexOf(extension) === -1){
-                colorFolder.add(guiParams, "resetMaterial").name("Original Material");
+            if (notSkinFormats.indexOf(extension) === -1) {
+                colorFolder.add(guiParams, 'resetMaterial').name('Original Material');
             }
             colorFolder.__ul.addEventListener('click', function () {
                 if (colorFolder.open) {
@@ -550,7 +558,6 @@ $(document).ready(function () {
         carouselFragments.forEach((fragment) => {
             const width = displaySize[0].width;
             const height = displaySize[0].height;
-    
             fragment.renderer.setSize(width, height);
             fragment.camera.aspect = width / height;
             fragment.camera.updateProjectionMatrix();
