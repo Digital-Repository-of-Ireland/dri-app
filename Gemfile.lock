@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: cf744377713908a055ea149c676e4c2dc31f4265
-  branch: develop
+  revision: 742c1ec55f42e86ded91d0fa3658ee88f4bd41f4
+  tag: v4.5.3
   specs:
     dri_data_models (4.5.3)
       hydra-derivatives
@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
-  branch: develop
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
@@ -885,7 +885,7 @@ GEM
       disposable (>= 0.5.0, < 1.0.0)
       representable (>= 3.1.1, < 4)
       uber (< 0.2.0)
-    reform-rails (0.2.5)
+    reform-rails (0.2.6)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
     regexp_parser (2.8.0)
