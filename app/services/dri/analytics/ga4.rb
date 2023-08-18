@@ -152,6 +152,70 @@ module DRI
           run_report(request)
         end
 
+        def collection_events_users(start_date, end_date, collections)
+          request = Google::Analytics::Data::V1beta::RunReportRequest.new(
+             property: "properties/#{config.property_id}",
+             dimensions: [Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:collection'),
+                          Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:object'),
+                          Google::Analytics::Data::V1beta::Dimension.new(name: 'eventName')
+                          ],
+             metrics: [
+               Google::Analytics::Data::V1beta::Metric.new(
+                 name: 'totalUsers',
+               )
+             ],
+             date_ranges: [
+               Google::Analytics::Data::V1beta::DateRange.new(
+                 start_date: start_date,
+                 end_date: end_date
+               )
+             ],
+             dimension_filter: { and_group: {
+                                 expressions: [
+                                   { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "object_view" }}},
+                                   { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}
+                                 ]
+                               }
+                               },
+              keep_empty_rows: false,
+              limit: LIMIT
+          )
+
+          run_report(request)
+        end
+
+        def collection_events_downloads(start_date, end_date, collections)
+          request = Google::Analytics::Data::V1beta::RunReportRequest.new(
+             property: "properties/#{config.property_id}",
+             dimensions: [Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:collection'),
+                          Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:object'),
+                          Google::Analytics::Data::V1beta::Dimension.new(name: 'eventName')
+                          ],
+             metrics: [
+               Google::Analytics::Data::V1beta::Metric.new(
+                 name: 'eventCount',
+               )
+             ],
+             date_ranges: [
+               Google::Analytics::Data::V1beta::DateRange.new(
+                 start_date: start_date,
+                 end_date: end_date
+               )
+             ],
+             dimension_filter: { and_group: {
+                                   expressions: [
+                                     { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "asset_download" }}},
+                                     { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}
+                                   ]
+                                 }
+                               },
+              keep_empty_rows: false,
+              limit: LIMIT
+          )
+
+          run_report(request)
+        end
+
         def run_report(request)
   	      offset = 0
             results = []

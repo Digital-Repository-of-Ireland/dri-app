@@ -3,6 +3,6 @@ class AnalyticsObjectUsers
 
     filter :collection, &lambda {|collectionid| matches(:dimension1, collectionid)}
 
-    metrics :users
-    dimensions :dimension3
+    metrics :users, :pageviews
+    dimensions :pagepath#, :dimension3
 end
