@@ -40,17 +40,18 @@ private
   def fetch_analytics(collections)
     return collections if collections.empty?
 
-    analytics = if Settings.analytics.provider == 'ga4'
-                  ga4_analytics(collections)
-                else
-                  ua_analytics(collections)
-                end
-
-    analytics = analytics.map{|a| a.to_h }.group_by{|h| h[:collection] }.map{|k,v| v.reduce({}, :merge)}
+    ga4 = ga4_analytics(collections)
+    ua = ua_analytics(collections)
+    
+    analytics = (ga4+ua).map{|a| a.to_h }.group_by{|h| h[:collection] }.map{|k,v| v.reduce({}, :merge)}
+    analytics.each do |entry|
+      entry[:users] = entry[:users].to_i + entry[:ga4_users].to_i if entry[:ga4_users].present?
+      entry[:totalEvents] = entry[:totalEvents].to_i + entry[:ga4_totalEvents].to_i if entry[:ga4_totalEvents].present?
+    end
 
     collection_hash = collection_names(collections)
     analytics.each{ |r| r[:title] = collection_hash[r[:collection]] }
-
+    
     if sort_column == 'title'
       analytics.sort_by! { |hsh| hsh[sort_column.to_sym] }
     else
@@ -67,22 +68,22 @@ private
 
     views.each{|r| r[:collection] = r.delete_field(:dimension1) }
     downloads.each{|r| r[:collection] = r.delete_field(:eventCategory) }
-    
+  
     (views+downloads)
   end
 
   def ga4_analytics(collections)
-    views = DRI::Analytics.object_events_users(startdate, enddate, collections)
-    downloads = DRI::Analytics.object_events_downloads(startdate, enddate, collections)
+    views = DRI::Analytics.collection_events_users(startdate, enddate, collections)
+    downloads = DRI::Analytics.collection_events_downloads(startdate, enddate, collections)
     
     views.each do |r| 
       r[:collection] = r.delete('customEvent:collection')
-      r[:users] = r.delete('totalUsers')
+      r[:ga4_users] = r.delete('totalUsers')
     end
 
     downloads.each do |r| 
       r[:collection] = r.delete('customEvent:collection')
-      r[:totalEvents] = r.delete('eventCount')
+      r[:ga4_totalEvents] = r.delete('eventCount')
     end
  
     (views+downloads)
@@ -123,7 +124,7 @@ private
     query = if current_user.is_admin?
               params[:user].present? ? "manager_access_person_ssim:#{params[:user]}" : "*:*"
             else
-              "#{Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)}:#{current_user.email}"
+              "manager_access_person_ssim:#{current_user.email}"
             end
     solr_query = Solr::Query.new(
       query,
