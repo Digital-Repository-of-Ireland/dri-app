@@ -36,13 +36,16 @@ private
   # if none then just return empty array
   # else get analytics for these collection ids and return analytics
   def fetch_analytics(collection)
-    analytics = if Settings.analytics.provider == 'ga4'
-                  ga4_analytics(collection)
-                else
-                  ua_analytics(collection)
-                end
-
-    analytics = analytics.map{|a| a.to_h }.group_by{|h| h[:object] }.map{|k,v| v.reduce({}, :merge)}
+    ga4 = ga4_analytics(collection)
+    ua = ua_analytics(collection)
+   
+    analytics = (ga4+ua).map{|a| a.to_h }.group_by{|h| h[:object] }.map{|k,v| v.reduce({}, :merge)}
+    
+    analytics.each do |entry|
+      entry[:users] = entry[:users].to_i + entry[:ga4_users].to_i if entry[:ga4_users].present?
+      entry[:totalEvents] = entry[:totalEvents].to_i + entry[:ga4_totalEvents].to_i if entry[:ga4_totalEvents].present?
+      entry[:totalHits] = entry[:totalHits].to_i + entry[:ga4_totalHits].to_i if entry[:ga4_totalHits].present? 
+    end
 
     object_hash = object_titles(collection)
     analytics.each{ |r| r[:title] = object_hash[r[:object]] }
@@ -60,16 +63,14 @@ private
   def ua_analytics(collection)
     views = AnalyticsObjectUsers.results(@profile, start_date: startdate, end_date: enddate).collection(collection).to_a
     downloads = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('Download').to_a
-    hits = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('View').to_a
-
-    views.each{|r| r[:object] = r.delete_field(:dimension3) }
-    downloads.each{|r| r[:object] = r.delete_field(:eventLabel) }
-    hits.each do |r|
-      r[:object] = r.delete_field(:eventLabel)
-      r[:totalHits] = r.delete_field(:totalEvents)
+    
+    views.each do |r| 
+      r[:object] = URI(r.delete_field(:pagepath)).path.split('/').last
+      r[:totalHits] = r.delete_field(:pageviews)
     end
+    downloads.each {|r| r[:object] = r.delete_field(:eventLabel) }
 
-    (views+hits+downloads)
+    (views+downloads)
   end
 
   def ga4_analytics(collection)
@@ -79,16 +80,16 @@ private
 
     views.each do |r| 
       r[:object] = r.delete('customEvent:object')
-      r[:users] = r.delete('totalUsers')
+      r[:ga4_users] = r.delete('totalUsers')
     end
 
     downloads.each do |r| 
       r[:object] = r.delete('customEvent:object')
-      r[:totalEvents] = r.delete('eventCount')
+      r[:ga4_totalEvents] = r.delete('eventCount')
     end
     hits.each do |r| 
       r[:object] = r.delete('customEvent:object')
-      r[:totalHits] = r.delete('eventCount')
+      r[:ga4_totalHits] = r.delete('eventCount')
     end
 
     (views+hits+downloads)
