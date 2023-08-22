@@ -13,7 +13,7 @@ class ObjectsController < BaseObjectsController
   before_action ->(id=params[:id]) { locked(id) }, except: [:show, :citation, :new, :create, :retrieve]
 
   module PrimaryTypes
-    TYPES = %w(text image movingImage interactiveResources 3D sound software dataset).freeze
+    TYPES = %w(text image movingImage interactiveResource 3D sound software dataset).freeze
   end
 
   # Displays the New Object form
