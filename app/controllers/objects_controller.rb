@@ -12,7 +12,9 @@ class ObjectsController < BaseObjectsController
   before_action :read_only, except: [:show, :citation, :retrieve]
   before_action ->(id=params[:id]) { locked(id) }, except: [:show, :citation, :new, :create, :retrieve]
 
-  PRIMARY_TYPES = %w(text image stillimage movingimage 3d video sound audio).freeze
+  module PrimaryTypes
+    TYPES = %w(text image movingImage interactiveResource 3D sound software dataset).freeze
+  end
 
   # Displays the New Object form
   #
@@ -389,14 +391,21 @@ class ObjectsController < BaseObjectsController
     end
 
     def reorder_types
-      return if PRIMARY_TYPES.include?(@object.type.first)
-        
-      primary_type_index = @object.type.map { |t| PRIMARY_TYPES.index(t.downcase.delete(' ')) }.compact.first
-      return unless primary_type_index
+      return if PrimaryTypes::TYPES.include?(@object.type.first)
+      
+      primary_type_index, object_type_index = nil
+      @object.type.each_with_index do |x, xIndex|
+        if yIndex = PrimaryTypes::TYPES.index { |y| y.downcase == x.downcase.delete(' ') }
+          primary_type_index = yIndex
+          object_type_index = xIndex
+          break
+        end
+      end
 
-      primary_type = PRIMARY_TYPES[primary_type_index]
+      return unless primary_type_index && object_type_index
+      primary_type = PrimaryTypes::TYPES[primary_type_index]
       object_types = @object.type.to_a
-      object_types.delete(primary_type)
+      object_types.delete_at(object_type_index)
       @object.type = [primary_type] + object_types
     end
 
