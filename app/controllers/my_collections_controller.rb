@@ -88,6 +88,9 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
+
+    config.add_facet_field 'visibility_ssi', label: 'Visibility'
+
     config.add_facet_fields_to_solr_request!
 
     # solr fields to be displayed in the index (search results) view
@@ -272,7 +275,6 @@ class MyCollectionsController < ApplicationController
 
     @object = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @object.nil?
-
 
     params[:per_page] ||= blacklight_config.default_per_page
     @response, document_list = @object.duplicates(params[:sort])

@@ -64,6 +64,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'file_type_display_sim'
     config.add_facet_field 'institute_sim', limit: 10
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
+    config.add_facet_field 'visibility_ssi', label: 'Visibility'
 
     # Added to test sub-collection belonging objects filter in object results view
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
