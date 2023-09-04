@@ -83,13 +83,13 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field Solrizer.solr_name('file_format', :facetable), label: 'File Format'
     config.add_facet_field Solrizer.solr_name('file_type_display', :facetable)
     config.add_facet_field Solrizer.solr_name('object_type', :facetable), label: 'Type (from Metadata)'
-    config.add_facet_field Solrizer.solr_name('depositor', :facetable), label: 'Depositor'
+    config.add_facet_field Solrizer.solr_name('depositor', :facetable)
     config.add_facet_field Solrizer.solr_name('institute', :facetable)
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
 
-    config.add_facet_field 'visibility_ssi', label: 'Visibility'
+    config.add_facet_field 'visibility_ssi'
 
     config.add_facet_fields_to_solr_request!
 
