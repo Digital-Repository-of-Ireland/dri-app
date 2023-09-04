@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_22_145413) do
+ActiveRecord::Schema.define(version: 2023_09_01_175105) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2022_11_22_145413) do
     t.datetime "updated_at", null: false
     t.string "digital_object_type"
     t.integer "digital_object_id"
+    t.string "visibility"
     t.index ["digital_object_type", "digital_object_id"], name: "do_acl_idx"
   end
 

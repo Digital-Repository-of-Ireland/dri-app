@@ -139,7 +139,10 @@ en:
         title: "Refine your search"
       fields:
         default: Keyword
-        facet: 
+        facet:
+          cdate_year_iim: "Creation Date"
+          pdate_year_iim: "Published Date"
+          depositor_sim: "Depositor" 
           file_type_display_sim: Mediatype
           geographical_coverage_sim: Places
           institute_sim: Organisation
@@ -150,6 +153,7 @@ en:
           root_collection_id_ssi: Collection
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
+          visibility_ssi: "Data Access"
         label:
           all_fields: All Fields
           contributors: Contributors

@@ -197,16 +197,16 @@
 					<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
 				</div>
 			<% else %>
-			  <% primary_types = %w(text image stillimage movingimage 3d video sound audio) %> 
+			  <% primary_types = %w(text image movingImage interactiveResources 3D sound software dataset) %> 
 				<% @object.type.each_with_index do |type, index| %>
 					<% if index == 0 %>
-						<% if primary_types.include?(type.downcase.delete(' '))%>
+						<% if ObjectsController::PrimaryTypes::TYPES.include?(type)%>
 							<div>
-								<%= render partial: 'shared/form_object_type.html', locals: { index: index, type: type.downcase.delete(' ') } %>
+								<%= render partial: 'shared/form_object_type.html', locals: { index: index, type: type } %>
 							</div>
 						<% else %>
 							<div>
-								<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>s
+								<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
 							</div>
 							<div>
 								<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>

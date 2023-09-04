@@ -21,7 +21,7 @@ class AccessControlsController < ApplicationController
     params[:digital_object][:edit_users_string] = params[:digital_object][:edit_users_string].to_s.downcase
     params[:digital_object][:manager_users_string] = params[:digital_object][:manager_users_string].to_s.downcase if params[:digital_object][:manager_users_string].present?
     params[:digital_object][:object_version] = @object.increment_version
-
+    
     updated = @object.update(update_params) unless @object.collection? && !valid_permissions?
 
     if updated
@@ -32,6 +32,8 @@ class AccessControlsController < ApplicationController
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve
+
+      Resque.enqueue(VisibilityJob, @object.alternate_id)
     else
       flash[:alert] = t('dri.flash.error.access_controls_not_updated')
     end
@@ -174,7 +176,7 @@ class AccessControlsController < ApplicationController
         permissions[:read_access] = 'public'
         permissions[:read_label] = t("dri.views.objects.access_controls.report.public")
       else
-        permissions[:read_access] = 'approved'
+        permissions[:read_access] = 'restricted'
         permissions[:read_label] = t("dri.views.objects.access_controls.report.restricted")
       end
 
@@ -213,7 +215,7 @@ class AccessControlsController < ApplicationController
         :master_file_access,
         :edit_users_string,
         :manager_users_string,
-        :object_version
+        :object_version,
       )
     end
 

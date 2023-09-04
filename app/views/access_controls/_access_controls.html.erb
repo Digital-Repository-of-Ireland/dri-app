@@ -254,7 +254,7 @@
         <% unless inherit_disabled %>
           <div>
             <%= f.radio_button :edit_users_string, "radio_inherit", class: 'edit_access_toggle' %>
-	        <label for="digital_object_edit_users_string_radio_inherit dri_access_controls_radio_label" class="radio-inline dri_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
+	        <label for="digital_object_edit_users_string_radio_inherit dri_access_controls_radio_label" class="radio-inline dri_radio_label dri_access_controls_radio_label"><%= t('dri.views.objects.access_controls.inherit') %></label>
           </div>
           <div>
             <%= f.radio_button :edit_users_string, "radio_restricted", class: 'edit_access_toggle' %>

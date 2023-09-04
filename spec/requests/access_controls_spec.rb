@@ -27,6 +27,7 @@ describe AccessControlsController, type: :request do
   describe 'update' do
 
     it 'should update valid permissions' do
+      expect(Resque).to receive(:enqueue).once
       put "/objects/#{@collection.alternate_id}/access", params: { digital_object: { read_groups_string: @collection.alternate_id.to_s, manager_users_string: @login_user.to_s } }
       @collection.reload
 
@@ -91,7 +92,7 @@ describe AccessControlsController, type: :request do
 
       expect(csv[1][0]).to eql(@collection.title.first)
       expect(csv[1][1]).to eql(object2.title.first)
-      expect(csv[1][2]).to eq 'approved'
+      expect(csv[1][2]).to eq 'restricted'
       expect(csv[1][3]).to eq 'surrogates and uploaded originals'
     end
 

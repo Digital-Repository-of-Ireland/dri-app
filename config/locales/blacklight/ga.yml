@@ -136,6 +136,9 @@ ga:
       fields: 
         default: Eochairfhocal
         facet: 
+          cdate_year_iim: "Dáta Cruthaithe"
+          pdate_year_iim: "Dáta Foilsithe"
+          depositor_sim: "Taisceoir"
           file_type_display_sim: "Cineál meán"
           geographical_coverage_sim: Áiteanna
           institute_sim: Institúid
@@ -146,6 +149,7 @@ ga:
           root_collection_id_ssi: Bailiúchán
           subject_sim: Ábhair
           temporal_coverage_sim: "Ábhar (Ré)"
+          visibility_ssi: "Rochtain ar Shonraí"
         label:
           all_fields: Gach réimse
           contributors: Rannpháirtithe
