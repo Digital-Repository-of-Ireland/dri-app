@@ -396,6 +396,8 @@ class CollectionsController < BaseObjectsController
       supported_licences
       @object.assign_attributes(create_params.merge({type: "Collection"}))
 
+      @object.visibility = visibility_label(@object.read_groups_string)
+
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s
 
@@ -456,6 +458,7 @@ class CollectionsController < BaseObjectsController
       @object.manager_users_string = current_user.to_s
       @object.discover_groups_string = 'public'
       @object.read_groups_string = 'public'
+      @object.visibility = 'public'
       @object.master_file_access = 'private'
 
       @object.ingest_files_from_metadata = params[:ingest_files] if params[:ingest_files].present?

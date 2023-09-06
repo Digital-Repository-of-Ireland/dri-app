@@ -189,7 +189,8 @@ class ProcessBatchIngest
     object.depositor = user.to_s
     object.status = 'draft'
     object.object_version = 1
-
+    object.visibility = object.governing_collection.visibility
+    
     object.update_metadata(xml_ds.xml)
     checksum_metadata(object)
 

@@ -166,7 +166,13 @@ class ObjectsController < BaseObjectsController
     end
 
     @object.governing_collection = @governing_collection
-
+    @object.visibility = if @object.read_groups_string.present?
+                           visibility_label(@object.read_groups_string)
+                         else
+                           cdoc = SolrDocument.find(@governing_collection.alternate_id)
+                           cdoc.ancestor_field('visibility_ssi')
+                         end
+      
     unless @object.valid?
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
       if params[:metadata_file].present?
