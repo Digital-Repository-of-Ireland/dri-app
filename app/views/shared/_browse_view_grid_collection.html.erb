@@ -45,9 +45,11 @@
     <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
         <div class="dri_num_objects">
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (#{object_count})" %></span>
-          <% unless document.public_read? %>
-            <span class="dri_object_text_num pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
-          <% end %>
+          <% if document.visibility == "restricted" %>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+            <% elsif document.visibility == "logged-in" %>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+            <% end %>
         </div>
     <% end %> <!-- close dri_num_objects -->
   </div>
