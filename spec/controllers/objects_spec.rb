@@ -141,6 +141,43 @@ describe ObjectsController do
       @login_user.delete
     end
 
+    it 'should create an object' do
+        request.env["HTTP_ACCEPT"] = 'application/json'
+        @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+        @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+        class << @file
+          # The reader method is present in a real invocation,
+          # but missing from the fixture object for some reason (Rails 3.1.1)
+          attr_reader :tempfile
+        end
+
+        post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
+        expect(response).to be_successful
+    end
+
+    it 'should set an objects visibility' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/valid_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      @collection.read_groups_string = 'registered'
+      @collection.visibility = 'logged-in'
+      @collection.save
+
+      post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
+      expect(response).to be_successful
+
+      o = DRI::DigitalObject.find_by_alternate_id(response.parsed_body['pid'])
+      expect(o.visibility).to eq 'logged-in'
+    end
+
     it 'returns a bad request if no schema' do
       request.env["HTTP_ACCEPT"] = 'application/json'
       @request.env["CONTENT_TYPE"] = "multipart/form-data"
@@ -480,7 +517,7 @@ describe ObjectsController do
           attr_reader :tempfile
         end
 
-        post :create, params: { digital_object: { governing_collection: @collection.alternate_id }, metadata_file: @file }
+        post :create, params: { digital_object: {}, governing_collection_id: @collection.alternate_id, metadata_file: @file }
 
         expect(flash[:error]).to be_present
       end
@@ -491,7 +528,7 @@ describe ObjectsController do
         params[:digital_object][:title] = ["An Audio Title"]
         params[:digital_object][:read_users_string] = "public"
         params[:digital_object][:edit_users_string] = @login_user.email
-        put :update, params: { :id => @object.alternate_id, :digital_object => params[:digital_object] }
+        put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
 
         expect(flash[:error]).to be_present
       end

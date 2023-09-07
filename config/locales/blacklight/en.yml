@@ -206,6 +206,12 @@ en:
         order/sequence: Order/sequence
         relevance: Relevance
         title: Title
+        title_A-Z: Title (A-Z)
+        title_Z-A: Title (Z-A)
+        timestamp_desc: "Date modified \u25BC"
+        timestamp_asc: "Date modified \u25B2"
+        created_desc: "Date created \u25BC"
+        created_asc: "Date created \u25B2"
         submit: "sort results"
       start_over: "Start Over"
       title: "%{application_name} Search Results"

@@ -110,7 +110,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rswag-specs'
   gem 'rspec_junit_formatter'
-  gem 'webdrivers'
+  gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'railroady'
   gem 'show_me_the_cookies'

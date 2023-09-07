@@ -73,4 +73,15 @@ class BaseObjectsController < CatalogController
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
       end
     end
+
+    def visibility_label field
+      case field
+      when 'registered'
+        'logged-in'
+      when 'public'
+        'public'
+      else
+        'restricted'
+      end
+    end
 end

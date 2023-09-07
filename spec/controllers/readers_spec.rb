@@ -115,7 +115,7 @@ describe ReadersController do
     it "approves a pending membership" do
       sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.alternate_id}"
-      group = UserGroup::Group.find_by(name: @collection.alternate_id)
+      group = UserGroup::Group.find_or_create_by(name: @collection.alternate_id, reader_group: true)
 
       membership = @login_user.join_group(group.id)
       post :update, params: { id: @collection.alternate_id, user_id: @login_user.id }
@@ -129,7 +129,7 @@ describe ReadersController do
     it "approves a pending membership" do
       sign_in @manager_user
       @request.env['HTTP_REFERER'] = "/catalog/#{@object.alternate_id}"
-      group = UserGroup::Group.find_by(name: @collection.alternate_id)
+      group = UserGroup::Group.find_or_create_by(name: @collection.alternate_id, reader_group: true)
 
       membership = @login_user.join_group(group.id)
       membership.approve_membership(@manager_user.id)
