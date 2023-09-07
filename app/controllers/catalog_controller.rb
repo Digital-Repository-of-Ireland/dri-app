@@ -140,14 +140,11 @@ class CatalogController < ApplicationController
     end
 
     # "sort results by" options
-    config.add_sort_field "score desc, title_sorted_ssi asc", label: "relevance \u25BC"
-    config.add_sort_field "title_sorted_ssi asc", label: "title (A-Z)"
-    config.add_sort_field "title_sorted_ssi desc", label: "title (Z-A)"
-    config.add_sort_field "system_create_dtsi desc", label: "date created \u25BC"
-    config.add_sort_field "system_create_dtsi asc", label: "date created \u25B2"
-    config.add_sort_field "timestamp desc", label: "date modified \u25BC"
-    config.add_sort_field "timestamp asc", label: "date modified \u25B2"
+    config.add_sort_field "published_at_dttsi desc", label: "newest"
+    config.add_sort_field "title_sorted_ssi asc", label: "title_A-Z"
+    config.add_sort_field "title_sorted_ssi desc", label: "title_Z-A"
     config.add_sort_field "id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
+    config.add_sort_field "score desc, title_sorted_ssi asc", label: "relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.

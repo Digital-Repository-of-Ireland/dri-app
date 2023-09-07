@@ -320,6 +320,24 @@ describe CollectionsController do
       post :create, params: { metadata_file: @file }
       expect(response).to be_successful
     end
+
+    it 'should set visibility' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      @file = fixture_file_upload("/collection_metadata.xml", "text/xml")
+      class << @file
+        # The reader method is present in a real invocation,
+        # but missing from the fixture object for some reason (Rails 3.1.1)
+        attr_reader :tempfile
+      end
+
+      post :create, params: { metadata_file: @file }
+      expect(response).to be_successful
+
+      c = DRI::DigitalObject.find_by_alternate_id(response.parsed_body['id'])
+      expect(c.visibility).to eq 'public'
+    end
   end
 
   describe "read only is set" do
