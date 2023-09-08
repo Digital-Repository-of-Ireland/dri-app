@@ -311,6 +311,7 @@ en:
         title: Autocompelete source
         content: This dropdown sets the autocomplete source for the inputs below. Start typing in an input to get suggestions, or select disable to turn this feature off.
       dri_browse_collection_restricted: This collection may contain some objects with restricted assets
+      dri_browse_collection_registered: This collection may contain some objects with assets only viewable by signed in users
       dri_browse_sort_tabs_collections: Use this tab to search for Collections
       dri_browse_sort_tabs_collections_title: Collections Search
       dri_browse_sort_tabs_objects: Use this tab to search for Objects
@@ -447,6 +448,7 @@ en:
           metadata: Metadata
           metadata_full: Full Metadata
           objects_in_collection: Objects
+          registered_asset: Register and sign in to view asset
           restricted_asset: Restricted Asset
           restricted_data_request: Restricted data access request form
           copy_to_clipboard: Copy to Clipboard 
