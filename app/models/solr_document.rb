@@ -283,6 +283,16 @@ class SolrDocument
     groups.include?(SETTING_GROUP_PUBLIC)
   end
 
+  def visibility
+    read_access_groups_key = 'read_access_group_ssim'
+    groups = ancestor_field(read_access_groups_key)
+
+    return "public" if groups.include?(SETTING_GROUP_PUBLIC)
+    return "logged-in" if groups.include?(SETTING_GROUP_DEFAULT)
+
+    "restricted"
+  end
+
   def permissions_doc(id)
     get_permissions_solr_response_for_doc_id(id)
   end
