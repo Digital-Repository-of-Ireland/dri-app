@@ -24,6 +24,7 @@ module BackgroundTasks
       begin
         yield
 
+        ActiveRecord::Base.clear_active_connections!
         success
       rescue => e
         Rails.logger.error "Error in #{job} background task for #{generic_file_id}: #{e.message}"
