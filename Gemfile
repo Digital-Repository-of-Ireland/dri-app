@@ -59,7 +59,7 @@ gem "image_processing", ">= 1.12.2"
 gem 'http_accept_language'
 gem 'it'
 gem 'i18n-tasks'
-gem 'i18n-js'
+gem 'i18n-js', '< 4'
 
 # Citations
 gem 'citeproc-ruby'
