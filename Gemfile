@@ -19,7 +19,7 @@ gem 'solrizer'
 gem 'nokogiri', '>= 1.14.3'
 
 gem 'riiif'
-gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
+gem 'iiif-presentation'
 gem 'openseadragon'
 
 gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'

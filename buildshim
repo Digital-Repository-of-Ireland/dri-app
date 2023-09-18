@@ -58,14 +58,14 @@ __EOF__
 
     bundle install --without production
     
-    bundle exec rake server:start
-    bundle exec rake server:config
+    bundle exec rails server:start
+    bundle exec rails server:config
 
-    bundle exec rake db:migrate
-    bundle exec rake db:seed
-    bundle exec rake db:migrate
-    bundle exec rake db:test:prepare
-    bundle exec rake db:environment:set RAILS_ENV=test
+    bundle exec rails db:migrate
+    bundle exec rails db:seed
+    bundle exec rails db:migrate
+    bundle exec rails db:test:prepare
+    bundle exec rails db:environment:set RAILS_ENV=test
     ;;
 rspec)
     bundle exec rake rspec RUN_COVERAGE=on

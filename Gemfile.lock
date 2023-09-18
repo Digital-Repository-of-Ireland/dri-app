@@ -66,15 +66,6 @@ GIT
       mini_magick (>= 3.2, < 5)
 
 GIT
-  remote: https://github.com/IIIF/osullivan.git
-  revision: 1f3c9fd96d34fc67405bd412f6470bef8ca3a455
-  specs:
-    iiif-presentation (0.2.0)
-      activesupport (>= 3.2.18)
-      faraday (>= 0.9)
-      json
-
-GIT
   remote: https://github.com/kesha-antonov/jstree-rails-4
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
@@ -546,6 +537,10 @@ GEM
     iconv (1.0.8)
     iiif-image-api (0.2.0)
       activesupport
+    iiif-presentation (1.1.0)
+      activesupport (>= 3.2.18)
+      faraday (>= 0.9)
+      json
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -1205,7 +1200,7 @@ DEPENDENCIES
   i18n-js (< 4)
   i18n-tasks
   i18n_sync
-  iiif-presentation!
+  iiif-presentation
   image_processing (>= 1.12.2)
   is_it_working-cbeer
   it
