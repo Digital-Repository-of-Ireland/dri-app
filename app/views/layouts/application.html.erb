@@ -9,7 +9,7 @@
       <% solrResponse = @response.present? ? @response : "No response available" %>
 
       <%if solrResponse == "No response available" %>
-        <meta name="description" content="The FAIR Signposting data requested content was not found on our website.">
+        <meta name="description" content="The FAIR Signposting data requested content was not found.">
 
       <%else%>
         <link rel="Raw response" href="<%= solrResponse %>">
@@ -28,23 +28,11 @@
           <% docs = response["docs"][num] %>
           <% types = docs["resource_type_tesim"] %>
 
-          <%schema_hash_links = {
-            'text' => 'https://schema.org/Text',
-            'image' => 'https://schema.org/image',
-            'movingimage' => 'https://schema.org/Movie',
-            'interactiveresource' => 'https://schema.org/interactivityType',
-            '3d' => 'https://schema.org/3DModel',
-            'sound' => 'https://schema.org/audio',
-            'software' => 'https://schema.org/SoftwareApplication',
-            'dataset' => 'https://schema.org/Dataset',
-            'collection' => 'https://schema.org/Collection'
-          }%>
-
           <!-- Type -->
           <% types.each do |t| %>
             <% type = t.downcase.delete(' ') %>
-            <%if schema_hash_links.include?(type)%>
-              <link rel="type" href="<%= schema_hash_links[type] %>">
+            <%if DRI::Catalog::SCHEMA_HASH_LINKS::SCHEMA_TYPES.include?(type)%>
+              <link rel="type" href="<%= DRI::Catalog::SCHEMA_HASH_LINKS::SCHEMA_TYPES[type] %>">
             <%end%>
           <%end%>
 
@@ -56,14 +44,14 @@
         <%end%>
 
         <!-- License -->
-        <link rel="license" href="<%= @document.licence.url%>">
+        <link rel="license" href="<%= @document.licence.url%>">  
 
         <!-- Item - Working -->
         <%assets = @assets.present? ? @assets : "No assets in the object" %>
         <%if assets != "No assets in the object"%>
           <%assets.each do |a|%>
-            <link rel="item" type="<%=a["mime_type_tesim"]%>" href="https://repository.dri.ie/objects/object\_<%=a["isPartOf_ssim"][0]%>/files/file\_<%=a["id"]%>/download?type=surrogate">
-          <%end%>
+            <link rel="item" type="<%=a["mime_type_tesim"]%>" href="https://repository.dri.ie/objects/<%=a["isPartOf_ssim"][0]%>/files/<%=a["id"]%>/download?type=masterfile">
+          <%end%> 
         <%end%>
       <%end%>
     <%end%>

@@ -19,6 +19,20 @@ module DRI::Catalog
         person: 'Names', place: 'Places'
   }.freeze
 
+  module SCHEMA_HASH_LINKS
+    SCHEMA_TYPES = {
+      'text' => 'https://schema.org/Text',
+      'image' => 'https://schema.org/image',
+      'movingimage' => 'https://schema.org/Movie',
+      'interactiveresource' => 'https://schema.org/interactivityType',
+      '3d' => 'https://schema.org/3DModel',
+      'sound' => 'https://schema.org/audio',
+      'software' => 'https://schema.org/SoftwareApplication',
+      'dataset' => 'https://schema.org/Dataset',
+      'collection' => 'https://schema.org/Collection'
+    }
+  end
+
   module ClassMethods
     # @param [Symbol] solr_field
     # @return [String]
