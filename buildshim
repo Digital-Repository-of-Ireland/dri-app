@@ -56,28 +56,28 @@ __EOF__
     #SERVICES=s3 localstack start --host &>/dev/null &
     #echo $! > localstack.pid
 
-    bin/bundle install --without production
+    bundle install --without production
     
-    bin/bundle exec bin/rails server:start
-    bin/bundle exec bin/rails server:config
+    bundle exec rails server:start
+    bundle exec rails server:config
 
-    bin/bundle exec bin/rails db:migrate
-    bin/bundle exec bin/rails db:seed
-    bin/bundle exec bin/rails db:migrate
-    bin/bundle exec bin/rails db:test:prepare
-    bin/bundle exec bin/rails db:environment:set RAILS_ENV=test
+    bundle exec rails db:migrate
+    bundle exec rails db:seed
+    bundle exec rails db:migrate
+    bundle exec rails db:test:prepare
+    bundle exec rails db:environment:set RAILS_ENV=test
     ;;
 rspec)
-    bin/bundle exec bin/rails rspec RUN_COVERAGE=on
+    bundle exec rails rspec RUN_COVERAGE=on
     ;;
 cucumber)
-    bin/bundle exec bin/rails cucumber_ci
+    bundle exec rails cucumber_ci
     ;;
 api)
-   bin/bundle exec bin/rails api:docs:generate
+   bundle exec rails api:docs:generate
    ;; 
 compile)
-    bin/bundle exec bin/rails assets:precompile
+    bundle exec rails assets:precompile
     ;;
 push)
     rm -rf dri-app-mirror
