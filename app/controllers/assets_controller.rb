@@ -10,6 +10,7 @@ class AssetsController < ApplicationController
 
   include DRI::Citable
   include DRI::Versionable
+  include DRI::Asset::MimeTypes
 
   def index
     enforce_permissions!('edit', params[:object_id])
@@ -194,7 +195,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && @document.read_master? && @document.published?) && !can?(:edit, @document))
+      if (!(can?(:read, params[:object_id]) && (@document.read_master? || @generic_file.threeD?) && @document.published?) && !can?(:edit, @document)) # Change conditions when 3D surrogate is available
         raise Blacklight::AccessControls::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
