@@ -1,0 +1,60 @@
+<%# FAIR Signposting - https://signposting.org/FAIR/#level1  %>
+<%if request.path =~ %r{^/my_collections/|^/catalog/} %>
+    <% solrResponse = @response.present? ? @response : "No response available" %>
+
+    <%if solrResponse == "No response available" %>
+    <meta name="description" content="The FAIR Signposting data requested content was not found.">
+
+    <%else%>
+        <link rel="Raw response" href="<%= solrResponse %>">
+        <% response = solrResponse["response"] %>
+        <% num = response["numFound"] %>
+        
+        <%# Cite-as - DOI or current link %>
+        <%if @doi.present?%>
+          <link rel="cite-as" href= <%=@doi%> >
+        <%else%>
+          <link rel="cite-as" href= <%="https://repository.dri.ie#{request.path}"%> >
+        <%end%>
+
+        <%while num > 0 %>
+          <% num -= 1%>
+          <% docs = response["docs"][num] %>
+          <% types = docs["resource_type_tesim"] %>
+
+          <%# Type %>
+          <% types.each do |t| %>
+            <% type = t.downcase.delete(' ') %>
+            <%if DRI::Catalog::SCHEMA_HASH_LINKS::SCHEMA_TYPES.include?(type)%>
+              <link rel="type" href="<%= DRI::Catalog::SCHEMA_HASH_LINKS::SCHEMA_TYPES[type] %>">
+              <%break%>
+            <%end%>
+          <%end%>
+
+          <%# Author - Working  %>
+          <link rel="author" 	href="<ORCID Link>">
+
+          <%# Describedby %>
+          <link rel="describedby" type="application/xml" href="https://repository.dri.ie/objects/<%=docs["id"]%>/metadata" >
+        <%end%>
+
+        <%# License %>
+        <link rel="license" href="<%= @document.licence.url%>">
+
+        <%# Item - Working %>
+        <!-- Item - Working -->
+        <%assets = @assets.present? ? @assets : "No assets in the object" %>
+        <%if assets != "No assets in the object"%>
+          <%assets.each do |a|%>
+            <link rel="item" type="<%=a["mime_type_tesim"]%>" href="https://repository.dri.ie/objects/<%=a["isPartOf_ssim"][0]%>/files/<%=a["id"]%>/download?type=masterfile">
+          <%end%> 
+        <%end%>
+        
+        <%if @status_counts%>
+            <p><%=@status_counts%></p>
+        <%else%>
+            <p><%="None"%></p>
+        <%end%>
+
+    <%end%>
+<%end%>
