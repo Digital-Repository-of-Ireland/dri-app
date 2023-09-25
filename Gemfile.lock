@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 1b03a8208cdac703a924128de3e4b2eb962bce21
+  revision: 9f604ff72dd7cc132365ac8a328a36d0dff825ea
   branch: develop
   specs:
-    dri_data_models (4.5.5)
+    dri_data_models (4.5.6)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -688,7 +688,7 @@ GEM
       net-protocol
     net-protocol (0.2.1)
       timeout
-    net-smtp (0.3.3)
+    net-smtp (0.4.0)
       net-protocol
     netrc (0.11.0)
     nio4r (2.5.9)
@@ -1147,7 +1147,7 @@ GEM
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
     yard (0.9.34)
-    zeitwerk (2.6.11)
+    zeitwerk (2.6.12)
 
 PLATFORMS
   x86_64-linux
