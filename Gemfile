@@ -19,7 +19,7 @@ gem 'solrizer'
 gem 'nokogiri', '>= 1.14.3'
 
 gem 'riiif'
-gem 'iiif-presentation', git: 'https://github.com/IIIF/osullivan.git'
+gem 'iiif-presentation'
 gem 'openseadragon'
 
 gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.5.5'
@@ -59,7 +59,7 @@ gem "image_processing", ">= 1.12.2"
 gem 'http_accept_language'
 gem 'it'
 gem 'i18n-tasks'
-gem 'i18n-js'
+gem 'i18n-js', '< 4'
 
 # Citations
 gem 'citeproc-ruby'
