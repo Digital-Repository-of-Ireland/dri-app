@@ -54,7 +54,7 @@ describe CitationsHelper, testing: true do
     end
 
     it "renders an MLA citation" do
-      expect(helper.export_as_mla_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. “A Test of Citations.” Digital Repository of Ireland, Depositing Institute, 24 Nov. 2021, doi:10.7486/DRI.XXXXX.")
+      expect(helper.export_as_mla_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. “A Test of Citations.” Digital Repository of Ireland, Depositing Institute, 24 Nov. 2021, https://doi.org/10.7486/DRI.XXXXX.")
     end
 
     it "renders a Chicago citation" do

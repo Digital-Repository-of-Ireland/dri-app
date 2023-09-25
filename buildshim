@@ -26,8 +26,8 @@ install_deps)
     ;;
 configure)
 
-rvm --force gemset empty ruby-$ruby_version@$branch || exit 100
-gem install bundler
+#rvm --force gemset empty ruby-$ruby_version@$branch || exit 100
+#gem install bundler
 
 rm -rf dri_files/*
 

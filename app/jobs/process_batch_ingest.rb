@@ -29,13 +29,13 @@ class ProcessBatchIngest
         object.increment_version
 
         # potentially loses connection during file downloads
-        ActiveRecord::Base.connection.reconnect!
+         ActiveRecord::Base.clear_active_connections!
         object.save
 
         ingest_assets(user, object, assets)
       end
 
-      ActiveRecord::Base.connection.reconnect!
+       ActiveRecord::Base.clear_active_connections!
       record_committer(object, user)
     end
   end

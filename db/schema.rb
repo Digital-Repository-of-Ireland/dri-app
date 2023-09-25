@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_01_175105) do
+ActiveRecord::Schema.define(version: 2023_09_25_143940) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 2023_09_01_175105) do
     t.string "verified"
     t.string "doi"
     t.string "cover_image"
-    t.string "institute"
+    t.text "institute"
     t.string "depositing_institute"
     t.string "licence"
     t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
