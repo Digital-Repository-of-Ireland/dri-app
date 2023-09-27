@@ -77,7 +77,9 @@
 
   <% elsif generic_file.threeD? %>
     <% @surrogate = file_download_path(@document.id, generic_file.id, type: '3d') %>
-    <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label } %>
+    <%if @surrogate%>
+      <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
+    <% end %>
   <% end %>
 
   <% if @surrogate.blank? %>
@@ -94,12 +96,12 @@
 
 <div class="carousel-caption">
   <p>
-    <% if @surrogate.nil? && !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) %>
+    <% if (@surrogate.nil? || generic_file.threeD?) && !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) && (generic_file.threeD? || !document.read_master?) %> <%# Change conditions when 3D surrogate is available%>
       <%= t('dri.views.catalog.links.download_not_available', index: generic_file_counter.ordinalize) %>
     <% elsif document.read_master? || @surrogate && can?(:read, document.id) || can?(:edit, document.id) %>
-      <% if generic_file.threeD? %>
-        <%# <#%= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %> <%# Embed link not working for 3D assets %>
-      <% end %>
+      <%# if generic_file.threeD? %>
+        <%#= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %> <%# Embed link not working for 3D assets %>
+      <%# end %>
       <%= link_to '#dri_download_modal_id', :'data-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
         <%= t('dri.views.catalog.links.download') %>
       <% end %>
@@ -112,8 +114,8 @@
     <p>
       <%= t('dri.views.catalog.forms.download_tsandcs_msg', url: main_app.page_path('terms')).html_safe %>
     </p>
-  </div>
-  <% if @surrogate %>
+  </div>  
+  <% if @surrogate && !generic_file.threeD?%> <%# Change conditions when 3D surrogate is available%>
     <div>
       <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate'), id: 'download_surrogate', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
         <i class="fa fa-download"></i>
