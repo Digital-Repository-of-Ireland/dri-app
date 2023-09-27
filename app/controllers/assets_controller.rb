@@ -195,7 +195,7 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && (@document.read_master? || @generic_file.threeD?) && @document.published?) && !can?(:edit, @document)) # Change conditions when 3D surrogate is available
+      if (!(can?(:read, params[:object_id]) && (@document.read_master? || (@generic_file && @generic_file.threeD?)) && @document.published?) && !can?(:edit, @document)) # Change conditions when 3D surrogate is available
         raise Blacklight::AccessControls::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
