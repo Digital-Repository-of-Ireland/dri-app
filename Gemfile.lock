@@ -72,15 +72,6 @@ GIT
     jstree-rails-4 (3.3.9)
 
 GIT
-  remote: https://github.com/projectblacklight/blacklight_oai_provider.git
-  revision: 69795b06cc37150386b6d9732be027d200412598
-  specs:
-    blacklight_oai_provider (7.0.2)
-      blacklight (>= 7.0, < 9)
-      oai (~> 1.2)
-      rexml
-
-GIT
   remote: https://github.com/stkenny/avalon_ingest
   revision: 14ef32f5c00b0097de54c823151c6c06871ba1a0
   specs:
@@ -178,8 +169,8 @@ GEM
     autoprefixer-rails (10.4.15.0)
       execjs (~> 2)
     aws-eventstream (1.2.0)
-    aws-partitions (1.827.0)
-    aws-sdk-core (3.183.0)
+    aws-partitions (1.828.0)
+    aws-sdk-core (3.183.1)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.5)
@@ -187,7 +178,7 @@ GEM
     aws-sdk-kms (1.71.0)
       aws-sdk-core (~> 3, >= 3.177.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.135.0)
+    aws-sdk-s3 (1.136.0)
       aws-sdk-core (~> 3, >= 3.181.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.6)
@@ -238,6 +229,10 @@ GEM
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
+    blacklight_oai_provider (7.0.2)
+      blacklight (~> 7.0)
+      oai (~> 1.2)
+      rexml
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
       sass (>= 3.2)
@@ -272,7 +267,7 @@ GEM
     citeproc-ruby (2.0.0)
       citeproc (~> 1.0, >= 1.0.9)
       csl (~> 2.0)
-    clamby (1.6.8)
+    clamby (1.6.10)
     clipboard-rails (1.7.1)
     concurrent-ruby (1.2.2)
     config (4.2.1)
@@ -433,8 +428,8 @@ GEM
     fastimage (2.2.7)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
-    ffaker (2.22.0)
-    ffi (1.16.1)
+    ffaker (2.23.0)
+    ffi (1.16.2)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -476,7 +471,7 @@ GEM
       google-protobuf (~> 3.14)
       googleapis-common-protos-types (~> 1.2)
       grpc (~> 1.27)
-    googleapis-common-protos-types (1.8.0)
+    googleapis-common-protos-types (1.9.0)
       google-protobuf (~> 3.18)
     googleauth (1.8.1)
       faraday (>= 0.17.3, < 3.a)
@@ -487,7 +482,7 @@ GEM
     grpc (1.58.0-x86_64-linux)
       google-protobuf (~> 3.23)
       googleapis-common-protos-types (~> 1.0)
-    haml (6.1.2)
+    haml (6.2.0)
       temple (>= 0.8.2)
       thor
       tilt
@@ -579,7 +574,7 @@ GEM
       rdf (~> 3.3)
     json-schema (3.0.0)
       addressable (>= 2.8)
-    jsonpath (1.1.3)
+    jsonpath (1.1.4)
       multi_json
     jwt (1.5.2)
     kaminari (1.2.2)
@@ -997,7 +992,7 @@ GEM
     scanf (1.0.0)
     seedbank (0.5.0)
       rake (>= 10.0)
-    selenium-webdriver (4.12.0)
+    selenium-webdriver (4.13.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -1132,7 +1127,7 @@ GEM
     warden (1.2.9)
       rack (>= 2.0.9)
     webrick (1.8.1)
-    websocket (1.2.9)
+    websocket (1.2.10)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -1162,7 +1157,7 @@ DEPENDENCIES
   blacklight (~> 7)
   blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
-  blacklight_oai_provider!
+  blacklight_oai_provider (~> 7.0, >= 7.0.2)
   bootstrap-glyphicons
   bootstrap-sass (~> 3.4.1)
   bootstrap-switch-rails
