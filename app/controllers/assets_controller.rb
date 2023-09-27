@@ -18,7 +18,7 @@ class AssetsController < ApplicationController
     @document = SolrDocument.find(params[:object_id])
     @assets = @document.assets(with_preservation: true, ordered: true)
 
-    @status = status_info(@assets)
+    @status = @document.assets_status_info(@assets)
   end
 
   def show
@@ -28,7 +28,7 @@ class AssetsController < ApplicationController
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @generic_file = retrieve_object! params[:id]
 
-    @status = status(@generic_file.alternate_id)
+    @status = @document.ingest_status_info(@generic_file.alternate_id)
 
     respond_to do |format|
       format.html
@@ -195,13 +195,22 @@ class AssetsController < ApplicationController
     end
 
     def can_view?
-      if (!(can?(:read, params[:object_id]) && (@document.read_master? || (@generic_file && @generic_file.threeD?)) && @document.published?) && !can?(:edit, @document)) # Change conditions when 3D surrogate is available
+      if (!viewable? && !editor?)
         raise Blacklight::AccessControls::AccessDenied.new(
           t('dri.views.exceptions.view_permission'),
           :read_master,
           params[:object_id]
         )
       end
+    end
+
+    def viewable?
+      # Change conditions when 3D surrogate is available
+      can?(:read, params[:object_id]) && (@document.read_master? || (@generic_file && @generic_file.threeD?)) && @document.published?
+    end
+
+    def editor?
+      can?(:edit, @document)
     end
 
     def delete_surrogates(bucket_name, file_prefix)
@@ -212,49 +221,6 @@ class AssetsController < ApplicationController
     def local_file_ingest(name)
       upload_dir = Rails.root.join(Settings.dri.uploads)
       File.new(File.join(upload_dir, name))
-    end
-
-    def status_info(files)
-      statuses = {}
-
-      files.each do |file|
-        statuses[file.id] = file_status(file.id)
-      end
-
-      statuses
-    end
-
-    def file_status(file_id)
-      ingest_status = status(file_id)
-      if ingest_status.present?
-        { status: ingest_status[:status] }
-      else
-        { status: 'unknown' }
-      end
-    end
-
-    def status(file_id)
-      ingest_status = IngestStatus.find_by(asset_id: file_id)
-
-      status_info = {}
-      if ingest_status
-        status_info[:status] = ingest_status.completed_status
-
-        status_info[:jobs] = {}
-        ingest_status.job_status.each do |job|
-          status_info[:jobs][job.job] = { status: job.status, message: job.message }
-        end
-      end
-
-      status_info
-    end
-
-    def surrogates_with_url(file_id, surrogates)
-      surrogates.each do |key, _path|
-        surrogates[key] = url_for(object_file_url(
-                            object_id: @document.id, id: file_id, surrogate: key
-                          ))
-      end
     end
 
     def upload_from_params
