@@ -66,6 +66,13 @@ GIT
       mini_magick (>= 3.2, < 5)
 
 GIT
+  remote: https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails
+  revision: 81555b2f5b24a590ecf14015e7eb0b40bf077a62
+  specs:
+    jquery-ui-rails (7.0.0)
+      railties (>= 3.2.16)
+
+GIT
   remote: https://github.com/kesha-antonov/jstree-rails-4
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
@@ -556,8 +563,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-slick-rails (1.10.0)
       railties (>= 3.1)
-    jquery-ui-rails (6.0.1)
-      railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
     json (2.6.3)
@@ -1202,7 +1207,7 @@ DEPENDENCIES
   jquery-colorbox-rails
   jquery-rails
   jquery-slick-rails
-  jquery-ui-rails (~> 6)
+  jquery-ui-rails!
   jquery-xmleditor-rails!
   js_cookie_rails
   jstree-rails-4!

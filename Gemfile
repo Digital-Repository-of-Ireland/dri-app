@@ -44,8 +44,6 @@ gem 'omniauth-shibboleth'
 gem "omniauth-rails_csrf_protection"
 gem 'oauth'
 
-#gem 'feedjira'
-
 # Storage-related gems
 gem 'moab-versioning', '~> 4.4'
 gem 'bagit'
@@ -70,7 +68,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails', '~> 6'
+gem 'jquery-ui-rails', git: 'https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails'
 gem 'js_cookie_rails'
 
 # clients
