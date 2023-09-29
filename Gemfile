@@ -9,7 +9,7 @@ gem 'uri', '>= 0.12.2'
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'view_component', '2.74.1'
-gem 'blacklight_oai_provider', github: 'projectblacklight/blacklight_oai_provider'
+gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'rsolr'
 gem 'kaminari', '>= 1.2.1'
 
@@ -44,8 +44,6 @@ gem 'omniauth-shibboleth'
 gem "omniauth-rails_csrf_protection"
 gem 'oauth'
 
-#gem 'feedjira'
-
 # Storage-related gems
 gem 'moab-versioning', '~> 4.4'
 gem 'bagit'
@@ -70,7 +68,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails', '~> 6'
+gem 'jquery-ui-rails', git: 'https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails'
 gem 'js_cookie_rails'
 
 # clients
