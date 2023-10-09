@@ -156,7 +156,7 @@ end
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
-gem 'bootstrap-sass', '~> 3.4.1'
+gem 'bootstrap', '~> 5.3.1'
 gem 'bootstrap-glyphicons'
 gem 'sass-rails', '5.1.0'
 

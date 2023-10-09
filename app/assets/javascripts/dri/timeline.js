@@ -56,7 +56,7 @@ $('#dri_timeline_id').ready(function() {
     }
   });
 
-  $(window).load(function() {
+  $(window).on('load', function() {
     direction = getUrlEncodedKey("direction");
     if ( direction == "forward") {
       $( ".tl-slidenav-previous" ).trigger("click");
