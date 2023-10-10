@@ -1,7 +1,6 @@
 <% content_for :head do %>
-    <% javascript_include_tag 'webarchive/ui.js', async: Rails.env.production? %>
- <% end %>
-
- <%= <replay-web-page source="https://replayweb.page/docs/assets/tweet-example.wacz" url="https://oembed.link/https://twitter.com/webrecorder_io/status/1565881026215219200"></replay-web-page>%>
-
- <%= <p> "Test" </p> %>
+    <% javascript_include_tag 'replay/ui.js', async: Rails.env.production? %>
+<% end %>
+<%= content_tag('div', data: { url: url, file: generic_file_name}) do %>
+<replay-web-page replayBase= '/replay/' source= <%= url %> view="pages" access-control-allow-headers= range/>
+<% end %>

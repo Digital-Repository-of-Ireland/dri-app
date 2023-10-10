@@ -795,6 +795,8 @@ GEM
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
+    rails-static-router (1.0.6)
+      railties (>= 5.0, < 7.1)
     railties (6.1.7.6)
       actionpack (= 6.1.7.6)
       activesupport (= 6.1.7.6)
@@ -1234,6 +1236,7 @@ DEPENDENCIES
   railroady
   rails (~> 6.1)
   rails-controller-testing
+  rails-static-router
   redis (~> 4)
   remotipart
   resque

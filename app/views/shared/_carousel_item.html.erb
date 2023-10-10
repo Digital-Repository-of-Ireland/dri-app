@@ -80,17 +80,13 @@
     <%if @surrogate%>
       <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
     <% end %>
-  <% end %>
   
   <% elsif generic_file.interactiveResource? %>
-  <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'interactiveResource') %>
-  <div>
-    <%if @surrogate %>
-       <%= render partial: 'shared/display_webarchive'%>
-    <% else %>
-      <%= t('dri.views.catalog.legends.interactive_resource_alert_2', mime_type: generic_file.mime_type) %>
+    <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'interactiveResource') %>
+    <% if @surrogate %>
+      <%= render partial: 'shared/display_webarchive', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
+      <%= %>
     <% end %>
-  </div>
   <% end %>
 
   <% if @surrogate.blank? %>
