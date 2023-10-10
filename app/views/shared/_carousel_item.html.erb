@@ -28,19 +28,6 @@
       <% @surrogate_webm = @presenter.surrogate_url(generic_file.id, "webm") %>
       <%= video_tag [@surrogate, @surrogate_webm], controls: true, class: "dri_video" %>
     <% end %>
-
-      
-  <% elsif generic_file.interactiveResource? %>
-  <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'interactiveResource') %>
-  <div>
-    <%if @surrogate %>
-       <%= render partial: 'shared/display_webarchive'%>
-    <% else %>
-      <%= t('dri.views.catalog.legends.interactive_resource_alert_2', mime_type: generic_file.mime_type) %>
-    <% end %>
-  </div>
-  <% end %>
-
   
   <% elsif generic_file.pdf? %>
     <% @surrogate = @presenter.surrogate_url(generic_file.id, "pdf") %>
@@ -93,6 +80,17 @@
     <%if @surrogate%>
       <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
     <% end %>
+  <% end %>
+  
+  <% elsif generic_file.interactiveResource? %>
+  <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'interactiveResource') %>
+  <div>
+    <%if @surrogate %>
+       <%= render partial: 'shared/display_webarchive'%>
+    <% else %>
+      <%= t('dri.views.catalog.legends.interactive_resource_alert_2', mime_type: generic_file.mime_type) %>
+    <% end %>
+  </div>
   <% end %>
 
   <% if @surrogate.blank? %>
