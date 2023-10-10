@@ -1217,7 +1217,7 @@ DEPENDENCIES
   legato
   linkeddata
   listen
-  moab-versioning (~> 4.4)
+  moab-versioning (~> 4.4, >= 4.4.2)
   mysql2
   nest
   nokogiri (>= 1.14.3)

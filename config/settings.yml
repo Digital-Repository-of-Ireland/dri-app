@@ -6,7 +6,7 @@ dri:
   uploads: dri_files/uploads
   downloads: dri_files/downloads
 plugins:
-  fits_path: /opt/local/fits/fits.sh
+  fits_path: /home/psinghvi/projects/fits-1.5.1/fits.sh
 restrict:
   mime_types:
     image: ['image/png','image/jpeg', 'image/jpg', 'image/jp2', 'image/bmp', 'image/gif', 'image/tiff']
@@ -15,11 +15,14 @@ restrict:
     audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg', 'audio/x-aiff', 'audio/x-ms-wma', 'audio/x-m4a']
     video: ['application/mp4', 'video/mp4', 'video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
     _3D: ['application/vnd.ms-pki.stl','application/vnd.wavefront.obj', 'application/sla', 'application/octet-stream','application/vnd.ms-pki.stl','application/vnd.ms-pki.stlprinter', 'model/vnd.collada+xml','application/xml', 'text/xml', 'glTF binary model', 'model/gltf+json', 'application/json', 'model/gltf-binary', 'application/x-fbx', 'text/plain']
+    interactiveResource: ['application/warc', 'application/zip', 'application/warc.gz', 'application/har', 'application/cdx', 'application/cdxj', 'text/html', 'application/json']
   file_formats:
     _3D: ['Polygon File Format', 'STL (Standard Tessellation Language) Binary', 'FBX (Filmbox) Binary', 'glTF binary model', 'JSON data', 'JSON', 'COLLADA Digital Asset Exchange (DAE)', 'Extensible Markup Language', 'COLLADA model', 'XML document']
+    interactiveResource: ['WARC', 'HAR', 'CDX', 'WACZ', 'HTML', 'html (Hypertext Markup Language, JSON text data, JSON)', 'ZIP', 'html (Hypertext Markup Language, WARC Archive version 1.0, WARC)']
   extensions:
     restricted_text: ['.pts', '.xyz']
     restricted_3D: ['.glb', '.ply', '.dae', '.gltf', '.obj', '.fbx', '.stl']
+    restricted_interactiveResource: ['.warc', '.warc.gz', '.har', 'a.cdx', '.cdxj', '.wacz']
 storage:
   driver: s3_interface
 downloads:

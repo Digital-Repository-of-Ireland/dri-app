@@ -10,6 +10,7 @@ module DRI
       'video' => 'MovingImage',
       'text' => 'Text',
       '3d' => '3D',
+      'interactiveResource' => 'InteractiveResource',
       'mixed_types' => 'MixedType'
     }
 

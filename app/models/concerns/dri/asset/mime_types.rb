@@ -27,6 +27,10 @@ module DRI
         self.class._3D_mime_types.include?(self.mime_type) && Settings.restrict.extensions.restricted_3D.include?(extension)
       end
 
+      def interactiveResource?
+        self.class.interactiveResource_mime_types.include?(self.mime_type) && Settings.restrict.extensions.restricted_interactiveResource.include?(extension)
+      end
+
       def file_format
         return nil if self.mime_type.blank? && self.format_label.blank?
         return self.mime_type.split('/')[1] + " (" + self.format_label.join(", ") + ")" unless self.mime_type.blank? || self.format_label.blank?
@@ -63,9 +67,18 @@ module DRI
           Settings.restrict.mime_types._3D
         end
 
+        def interactiveResource_mime_types
+          Settings.restrict.mime_types.interactiveResource
+        end
+
         # Restrict mimetypes for 3D
         def _3D_file_formats
           ::Settings.restrict.file_formats._3D
+        end
+
+        # Restrict mimetypes for Web Archive
+        def interactiveResource_file_formats
+          ::Settings.restrict.file_formats.interactiveResource
         end
 
         def restricted_text_extensions
@@ -74,6 +87,10 @@ module DRI
 
         def restricted_3D_extensions
           ::Settings.restrict.extensions.restricted_3D
+        end
+
+        def restricted_interactiveResource_extensions
+          ::Settings.restrict.extensions.restricted_interactiveResource
         end
 
       end

@@ -30,6 +30,8 @@
     <% video_count = @file_display_type_count["video"] %>
     <% mixed_count = @file_display_type_count["mixed_types"] %>
     <% _3d_count   = @file_display_type_count["3d"] %>
+    <% interactiveResource_count = @file_display_type_count["interactiveResource"] %>
+
 
       <li>
         <%= link_to main_app.my_collections_index_path(collection_objects_params), id: 'collection_s_object' do %>
@@ -82,6 +84,15 @@
            <%end%>
       </li>
       <%end%>
+
+      <% if (interactiveResource_count) %>
+          <li>
+            <%= link_to main_app.search_catalog_path(collection_media_type_params(document, document[:id], "interactiveResource")) do %>
+                <%= t("dri.data.types.InteractiveResource") %>
+                <span class="dri_stat_num"><%= interactiveResource_count %></span>
+            <% end %>
+          </li>
+      <% end %>
 
       <% if (mixed_count) %>
           <li>
