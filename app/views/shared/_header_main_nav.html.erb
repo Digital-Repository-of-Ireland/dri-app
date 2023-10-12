@@ -1,28 +1,22 @@
-<nav id="dri_main_nav_id" class="dri_main_nav_new navbar navbar-default navbar-fixed-top" style="z-index: 1000;">
+<nav id="dri_main_nav_id" class="dri_main_nav_new navbar navbar-default navbar-expand-lg navbar-fixed-top" style="z-index: 1000;">
 	<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dri-navbar-collapse">
-				<span class="sr-only"><%= t('dri.nav.main_nav.toggle_navigation') %></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-
-			</button>
-		</div>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#dri-navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="<%= t('dri.application.nav.main_nav.toggle_navigation') %>">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="dri-navbar-collapse">
-			<ul class="nav navbar-nav dri_uppercase">
+			<ul class="nav navbar-nav me-auto mb-2 mb-lg-0 dri_uppercase">
 			  <%= render 'shared/header_main_common_nav' %>
 			  <%= render 'shared/header_main_nav_lang' %>
 
 		      <% unless current_user %>
-		        <li class="hidden-sm hidden-md hidden-lg">
+		        <li class="d-sm-none">
 		          <%= link_to "Sign Up", user_group.new_user_path %>
 		        </li>
 		      <% end %>
-		      <li class="hidden-sm hidden-md hidden-lg">
+		      <li class="d-sm-none">
 		        <% if current_user %>
 		            <%= link_to t('blacklight.header_links.logout'), user_group.destroy_user_session_path, method: :delete %>
 		        <% else %>

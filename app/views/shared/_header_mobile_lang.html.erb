@@ -3,7 +3,7 @@
 <% if I18n.locale == :en %>
     <% lang_params[:id] = 'ga' %>
     <ul class="dropdown dri_language_links">
-      <%= link_to '#',:"data-toggle" => "dropdown" do %>
+      <%= link_to '#',:"data-bs-toggle" => "dropdown" do %>
       English <i class="fa fa-sml fa-caret-down"></i>
       <% end %>
 
@@ -14,7 +14,7 @@
 <% else %>
     <% lang_params[:id] = 'en' %>
     <ul class="dropdown dri_language_links">
-      <%= link_to '#', :"data-toggle" => "dropdown" do %>
+      <%= link_to '#', :"data-bs-toggle" => "dropdown" do %>
       Gaeilge <i class="fa fa-sml fa-caret-down"></i>
       <% end %>
       <ul class="dropdown-menu">

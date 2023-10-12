@@ -34,7 +34,7 @@
     <% @title = generic_file.label %>
     <% if @surrogate %>
       <% @surrogate_thumb = @presenter.surrogate_url(generic_file.id, "thumbnail_large") %>
-      <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
+      <%= link_to '#dri_pdf_viewer_modal_id', :'data-bs-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
         <% if generic_file_counter.zero? %>
           <img class="dri_carousel_img" src="<%= @surrogate_thumb %>">
         <% else %>
@@ -47,7 +47,7 @@
     <% @surrogate = @presenter.surrogate_url(generic_file.id, "pdf") %>
     <% @title = generic_file.label %>
     <% if @surrogate %>
-      <%= link_to '#dri_pdf_viewer_modal_id', :'data-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
+      <%= link_to '#dri_pdf_viewer_modal_id', :'data-bs-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
         <%= image_tag('PDF_Logo.png') %>
       <% end %>
     <% end %>
@@ -102,7 +102,7 @@
       <%# if generic_file.threeD? %>
         <%#= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %> <%# Embed link not working for 3D assets %>
       <%# end %>
-      <%= link_to '#dri_download_modal_id', :'data-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
+      <%= link_to '#dri_download_modal_id', :'data-bs-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
         <%= t('dri.views.catalog.links.download') %>
       <% end %>
     <% end %>

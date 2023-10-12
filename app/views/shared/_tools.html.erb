@@ -16,12 +16,12 @@
 
 		<% if @document.has_geocode? %>
 		  <li>
-			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id, request_controller: controller_name), id: "logainm_map", :'data-toggle' => 'modal',  :'data-target' => '#dri_map_modal_id' %>
+			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id, request_controller: controller_name), id: "logainm_map", :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_map_modal_id' %>
 		  </li>
 		<% end %>
 
 		<li>
-			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_metadata_modal_id' %>
+			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_metadata_modal_id' %>
 		</li>
 
 		<li>
@@ -29,7 +29,7 @@
 		</li>
 
 		<li>
-			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), id: 'show_citation', :'data-toggle' => 'modal',  :'data-target' => '#dri_citation_modal_id' %>
+			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), id: 'show_citation', remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_citation_modal_id' %>
 		</li>
 
 		<% if @document.has_aggregation_data? && @document.public_read? && !@assets.empty? && @document.valid_edm? %>
@@ -109,7 +109,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
 				<h4 class="modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h4>

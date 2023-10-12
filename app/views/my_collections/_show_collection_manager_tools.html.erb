@@ -59,13 +59,13 @@
                       type="button"
                       class="<%= review_button_class %>"
                       <% if review_disabled %>
-                        data-content="<%= t('dri.help.dri_review_unavailable') %>"
-                        data-original-title="<%= t('dri.help.dri_review_unavailable_title') %>"
-                        data-trigger="hover"
-                        data-placement="left"
+                        data-bs-content="<%= t('dri.help.dri_review_unavailable') %>"
+                        title="<%= t('dri.help.dri_review_unavailable_title') %>"
+                        data-bs-trigger="hover"
+                        data-bs-placement="left"
                       <% else %>
-                        data-toggle="modal"
-                        data-target="#dri_review_modal_id"
+                        data-bs-toggle="modal"
+                        data-bs-target="#dri_review_modal_id"
                       <% end %>
                       id="all_objects_reviewed"
                     >
@@ -106,14 +106,14 @@
                     class="<%= publish_button_class %>"
                     <% if pub_disabled_warnings.empty? %>
                       <%# if there are no warnings, show the modal when clicked %>
-                      data-toggle="modal"
-                      data-target="#dri_publish_modal_id"
+                      data-bs-toggle="modal"
+                      data-bs-target="#dri_publish_modal_id"
                     <% else %>
                       <%# if there are warnings, disable the button and display all the apllicable warnings in the popover %>
-                      data-content="<%= pub_disabled_warnings.map {|v| t(v)}.join('. ') %>"
-                      data-original-title="<%= t('dri.help.dri_publish_unavailable_title') %>"
-                      data-trigger="hover"
-                      data-placement="left"
+                      data-bs-content="<%= pub_disabled_warnings.map {|v| t(v)}.join('. ') %>"
+                      title="<%= t('dri.help.dri_publish_unavailable_title') %>"
+                      data-bs-trigger="hover"
+                      data-bs-placement="left"
                       <%#
                         Bootstrap tooltips don't display on disabled buttons.
                         i.e. the user won't see why they can't publish the collection.
@@ -156,7 +156,7 @@
     </li>
 
     <!-- Add documentation should be available to any collection (MARC, MODS, QDC and EAD) -->
-    <li class="dri_help_popover" data-content="<%= t('dri.help.add_documentation_help_text') %>" data-original-title="<%= t('dri.help.add_documentation_help_title') %>" data-trigger="hover" data-placement="left">
+    <li class="dri_help_popover" data-bs-content="<%= t('dri.help.add_documentation_help_text') %>" title="<%= t('dri.help.add_documentation_help_title') %>" data-bs-trigger="hover" data-bs-placement="left">
       <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
     </li>
 
@@ -190,7 +190,7 @@
       <% end %>
 
       <% if @document.published? && @document.doi %>
-         <%= link_to '', :'data-target' => '#dri_doi_modal_id', :'data-toggle' => 'modal', id: "request_doi" do %>
+         <%= link_to '', :'data-bs-target' => '#dri_doi_modal_id', :'data-bs-toggle' => 'modal', id: "request_doi" do %>
 	         <li><%= t('dri.views.catalog.links.request_doi') %></li>
 	       <% end %>
       <% end %>
@@ -200,7 +200,7 @@
           <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
         <% end %>
 
-        <%= link_to '', :'data-target' => '#dri_edmsettings_modal_id', :'data-toggle' => 'modal', id: "edm_settings" do %>
+        <%= link_to '', :'data-bs-target' => '#dri_edmsettings_modal_id', :'data-bs-toggle' => 'modal', id: "edm_settings" do %>
          <li><%= t('dri.views.catalog.links.edm_settings') %></li>
        <% end %>
 
@@ -214,7 +214,7 @@
           <% end %>
         <% end %>
       <% end %>
-       <%= link_to '', :'data-target' => '#dri_organisation_modal_id', :'data-toggle' => 'modal', id: "manage_organisations" do %>
+       <%= link_to '', :'data-bs-target' => '#dri_organisation_modal_id', :'data-bs-toggle' => 'modal', id: "manage_organisations" do %>
          <li><%= t('dri.views.collection.institute.manage') %></li>
        <% end %>
 
@@ -222,7 +222,7 @@
     <!-- If (root collection OR not EAD collection) enable delete collection link -->
     <!-- This is to allow to delete any sub-collection except for EAD -->
     <% if (!@document.published? || current_user.is_admin?) && (@document.root_collection? || @document.editable?) %>
-      <%= link_to '', :'data-target' => '#dri_delete_modal_id', :'data-toggle' => 'modal', id: 'delete_object' do %>
+      <%= link_to '', :'data-bs-target' => '#dri_delete_modal_id', :'data-bs-toggle' => 'modal', id: 'delete_object' do %>
         <li>
           <%= t('dri.views.collection.buttons.delete_collection') %>
         </li>
@@ -232,7 +232,7 @@
     <li>
   	  <div class="accordion" id="dri_edit_record_tools_id">
   	    <div class="accordion-group">
-  	        <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
+  	        <a class="accordion-toggle" id="edit_menu" data-bs-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
   	          <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.collection.edit') %>
   	        </a>
 
@@ -253,10 +253,10 @@
           <% end %>
 
   		    <li>
-  		      <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-toggle' => 'modal', :'data-target' => '#dri_access_controls_modal_id' %>
+  		      <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-bs-toggle' => 'modal', :'data-bs-target' => '#dri_access_controls_modal_id' %>
   		    </li>
 
-  			  <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', id: "manage_licence" do %>
+  			  <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence" do %>
   			    <li class="dri_subnav_edit_list_last"><%= t('dri.views.catalog.buttons.set_licence') %></li>
   			  <% end %>
   			  </ul>
@@ -283,7 +283,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
 				<h4 class="modal-title"><%= t('dri.views.collection.buttons.delete_collection') %> - <%= @document.title.first %></h4>
@@ -299,7 +299,7 @@
 			</div>
 
 			<div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
           <%= t('dri.window.modal.cancel') %>
         </button>
         <%= button_tag t('dri.views.collection.buttons.delete_collection'), :class => "dri_button_red", :id => "delete_collection_#{@document.id}", onclick: "confirmDelete();" %>
@@ -313,7 +313,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
 				<h4 class="modal-title"><%= t('dri.views.catalog.links.review_collection') %></h4>
@@ -335,7 +335,7 @@
 				<% end %>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="dri_button" data-dismiss="modal">
+				<button type="button" class="dri_button" data-bs-dismiss="modal">
 						<%= t('dri.window.modal.close') %>
 					</button>
 					<%= button_to review_path(:apply_all => 'yes'), :class =>"dri_button_green", form: { style: 'display:inline-block;', id: 'review_collection' }, :id => "all_objects_reviewed", :method => :put do %>
@@ -353,7 +353,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
           &times;
         </button>
         <h4 class="modal-title"><%= t('dri.views.catalog.links.publish_reviewed') %></h4>
@@ -367,7 +367,7 @@
         <br />
       </div>
       <div class="modal-footer">
-        <button type="button" class="dri_button" data-dismiss="modal">
+        <button type="button" class="dri_button" data-bs-dismiss="modal">
           <%= t('dri.window.modal.close') %>
         </button>
         <%= button_to publish_path(@document), class: "dri_button_green", form: {style: 'display:inline-block;', id: 'publish_collection'}, id: "publish", method: :put do %>
@@ -384,7 +384,7 @@
   	<div class="modal-dialog">
   		<div class="modal-content">
   			<div class="modal-header">
-  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+  				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
   					&times;
   				</button>
   				<h4 class="modal-title"><%= t('dri.views.catalog.links.request_doi') %></h4>
@@ -398,7 +398,7 @@
           <% end %>
   			</div>
   			<div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">
   					<%= t('dri.window.modal.close') %>
   				</button>
   			</div>
@@ -412,7 +412,7 @@
   	<div class="modal-dialog">
   		<div class="modal-content">
   			<div class="modal-header">
-  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+  				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
   					&times;
   				</button>
   				<h4 class="modal-title"><%= t('dri.views.collection.institute.manage') %></h4>
@@ -422,7 +422,7 @@
   			  <%= render partial: "manage_organisations" %>
   			</div>
   			<div class="modal-footer">
-                <button type="button" class="dri_button_grey" data-dismiss="modal">
+                <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
   					<%= t('dri.window.modal.close') %>
   				</button>
   				<button id="associate_inst" type="submit" class="dri_button_green" onclick="$('#associate_institute').submit();">
@@ -439,7 +439,7 @@
   	<div class="modal-dialog">
   		<div class="modal-content">
   			<div class="modal-header">
-  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+  				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
   					&times;
   				</button>
   				<h4 class="modal-title"><%= t('dri.views.collection.manage_cover_image') %></h4>
@@ -449,7 +449,7 @@
   			  <%= render partial: "add_cover_image" %>
   			</div>
   			<div class="modal-footer">
-          <button type="button" class="dri_button_grey" data-dismiss="modal">
+          <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
   					<%= t('dri.window.modal.close') %>
   				</button>
   				<button id="add_cover_image" type="submit" class="dri_button_green" onclick="$('#choose_cover_image').submit();">
@@ -465,7 +465,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
 					&times;
 				</button>
 				<h4 class="modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h4>
@@ -475,7 +475,7 @@
 			  <%= render partial: "set_collection_licence" %>
 			</div>
 			<div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
 				</button>
 				<button id="set_licence" type="submit" class="dri_button_green" onclick="$('#choose_licence').submit();">
@@ -490,7 +490,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
           &times;
         </button>
         <h4 class="modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h4>
@@ -502,7 +502,7 @@
       </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
 	      <%= t('dri.window.modal.close') %>
 		  </button>
 		  <button id="save_access_controls" type="submit" class="dri_button_green" onclick="$('#set_access_controls').submit();">
@@ -518,7 +518,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
                 <h4 class="modal-title"><%= t('dri.views.collection.edm.configure') %></h4>
@@ -528,7 +528,7 @@
               <%= render partial: "configure_edm" %>
             </div>
             <div class="modal-footer">
-                <button type="button" class="dri_button_grey" data-dismiss="modal">
+                <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
                     <%= t('dri.window.modal.close') %>
                 </button>
                 <button id="save_edm_settings" type="submit" class="dri_button_green" onclick="$('#configure_edm').submit();">

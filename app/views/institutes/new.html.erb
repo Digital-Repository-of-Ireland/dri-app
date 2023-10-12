@@ -3,7 +3,7 @@
         $("#institution_logo").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
   }
 </script>
-<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), '#', :'data-toggle' => 'modal',  :'data-target' => '#dri_organisations_modal_id' %>)</h5>
+<h5><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), '#', :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_organisations_modal_id' %>)</h5>
 <div class="dri_collection_institutes_dropdown">
   <div class="dri_add_institute_link">
     <h5><%= t('dri.views.collection.institute.add') %></h5>
@@ -29,7 +29,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
           &times;
         </button>
         <h4 class="modal-title"><%= t('dri.headerlinks.institutions') %></h4>
@@ -51,7 +51,7 @@
         <% end %>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
           <%= t('dri.window.modal.close') %>
         </button>
       </div>

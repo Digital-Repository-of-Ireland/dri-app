@@ -6,7 +6,7 @@
     <%- alert_class = type %>
     <% if flash[type] %>
     <div class="alert alert-<%=alert_class%> alert-dismissible dri_<%=alert_class%>_message" role="alert">
-      <button type="button" class="dri_close close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <button type="button" class="dri_close close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
       <span class="dri_alert_text"><%= flash[type] %></span>
     </div>
 	    <% end %>

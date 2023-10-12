@@ -3,10 +3,10 @@
        class="dri_facet_restrictions_container dri_clearfix">
     <ul id="dri_facet_restrictions_links_id"
         class="dri_facet_restrictions_links"
-        data-content="<%= t('dri.help.dri_facet_restrictions_links') %>"
-        data-original-title="<%= t('dri.help.dri_facet_restrictions_links_title')%>"
-        data-trigger="hover"
-        data-placement="top">
+        data-bs-content="<%= t('dri.help.dri_facet_restrictions_links') %>"
+        title="<%= t('dri.help.dri_facet_restrictions_links_title')%>"
+        data-bs-trigger="hover"
+        data-bs-placement="top">
 
       <%= render_constraints(params) %>
       <% copyParams = search_state.to_h.clone %>
