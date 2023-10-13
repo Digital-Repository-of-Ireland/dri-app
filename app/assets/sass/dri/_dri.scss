@@ -553,12 +553,7 @@ a .dri_signin_edugate {
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
-            background-color: $dri_extralightgrey;
             color: $dri_darkgrey;
-            a {
-                padding-top: 12px;
-                background-color: $dri_white;
-            }
         }
     }
 }
@@ -570,17 +565,11 @@ a .dri_signin_edugate {
         padding-top: 0;
         li {
             border-top: 1px solid $dri_thingrey;
-
-            a {
-                padding-top: 12px;
-                padding-bottom: 8px;
-            }
         }
 
         li.active {
             a {
 
-                padding-top: 12px;
                 padding-bottom: 8px;
                 color: $dri_green;
             }
@@ -1266,8 +1255,6 @@ h4.suggest {
                 display: block;
                 background-color: $dri_extralightgrey;
                 border-bottom: 1px solid $dri_white;
-                margin-left: -15px;
-                margin-right: -15px;
                 padding: 10px 5px 10px 20px;
                 &.selected {
                   background-color: $dri_thingrey;
