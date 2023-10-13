@@ -38,9 +38,9 @@
               <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ") " %>
             </span>
             <% if document.visibility == "restricted" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
             <% elsif document.visibility == "logged-in" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
             <% end %>
           </div>
       <% end %> <!-- close dri_num_objects -->

@@ -1,7 +1,7 @@
 <% if browse_active? %>
-  <li class="dropdown dri_dropdown active">
+  <li class="nav-item dropdown dri_dropdown active">
 <% else %>
-  <li class="dropdown dri_dropdown">
+  <li class="nav-item dropdown dri_dropdown">
 <% end %>
 
   <% browselink = main_app.search_catalog_path(mode: 'collections', search_field: 'all_fields') %>

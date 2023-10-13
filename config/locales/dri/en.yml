@@ -51,6 +51,9 @@ en:
         token_params: Add the following parameters to authenticate a request
         user_type: User Type
         your_collection_details: Your Collection Details
+      nav:
+        main_nav:
+          toggle_navigation: Toggle navigation
     data:
       types:
         Image: Image
@@ -232,7 +235,7 @@ en:
       admin: Admin
       batch_ingest: Batch Ingest
       blog: Blog
-      browse: Repository
+      browse: DRI Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
       collection: Collection
@@ -241,7 +244,7 @@ en:
       end_user_agreement: End User Agreement
       events: Events
       help: FAQ
-      home: Home
+      home: DRI Website
       ingest: Ingest
       institutions: Organisations
       language: Language

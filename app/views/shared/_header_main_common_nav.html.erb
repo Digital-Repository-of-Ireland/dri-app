@@ -1,7 +1,7 @@
 <% if root? %>
-    <li class="active">
+    <li class="nav-item active">
 <% else %>
-    <li>
+    <li class="nav-item">
 <% end %>
 <%= link_to t('dri.headerlinks.home'), 'http://www.dri.ie/', id: 'dri_home_id' %>
 </li>
@@ -10,9 +10,9 @@
 <%= render 'shared/header_main_deposit_dropdown' %>
 
 <% if workspace_active? %>
-    <li class="active">
+    <li class="nav-item active">
 <% else %>
-    <li>
+    <li class="nav-item">
 <% end %>
 <%= link_to t('dri.headerlinks.workspace'), main_app.workspace_path, id: 'workspace' %>
 </li>
