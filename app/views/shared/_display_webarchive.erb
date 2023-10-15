@@ -1,6 +1,6 @@
 <% content_for :head do %>
-    <% javascript_include_tag 'replay/ui.js', async: Rails.env.production? %>
+    <% javascript_include_tag '/replay/ui.js', async: Rails.env.production? %>
 <% end %>
 <%= content_tag('div', data: { url: url, file: generic_file_name}) do %>
-<replay-web-page replayBase= '/replay/' source= <%= url %> view="pages" access-control-allow-headers= range/>
+<replay-web-page replayBase= '/replay/' source= <%= url %> view="pages" loading="eager" />
 <% end %>
