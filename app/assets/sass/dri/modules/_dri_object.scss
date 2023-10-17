@@ -164,6 +164,15 @@ h2.dri_no_asset_availiable {
     z-index: 100;          
 }
 
+[id^="dri_webarchive_view"] {
+    display: block;
+    margin: 0 auto;
+    width: 66em;
+    height: 100%;
+    transform: scale(0.9);
+    transform-origin: 0% -25% 0px;
+}
+
 .dri_embed_link {
     margin-left: 20px;
     float: left;
