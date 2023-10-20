@@ -1198,14 +1198,14 @@ h4.suggest {
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        padding: 0 0 0 20px;
+        padding-left: 10px;
 	margin-top: 15px;
         // leave some space for the border
         min-width: $dri_facet_min_width - 2;
     }
     .dri_search_num {
         float: right;
-        padding: 0 15px 0 0;
+        padding-right: 10px14px;
     }
     .panel {
         margin: 0px;
@@ -1223,10 +1223,10 @@ h4.suggest {
             .panel-heading {
                 background-color: $dri_white;
                 width: 100%;
+		padding: 10px;
                 h4 {
-		    font-size: 14px;
+		    font-size: inherit;
                     margin: 0;
-                    margin-left: 6px;
                     padding: 0;
                     background: image-url("dri/arrow_down.png") no-repeat right;
                     a {
