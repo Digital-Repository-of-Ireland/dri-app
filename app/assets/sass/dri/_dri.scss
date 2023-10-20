@@ -1535,6 +1535,7 @@ p.dri_rss_link a {
     padding: 0;
 }
 .dri_content_block {
+    font-size: 75%;
     margin: 0 20px 20px 0;
     padding: 0;
     width: 228px;
@@ -1633,6 +1634,7 @@ p.dri_rss_link a {
     border: 1px solid $dri_thingrey;
     position: relative;
     border-top: none;
+    font-size: 75%;
     .dri_collection_image {
         padding: 0;
         margin: 0;
