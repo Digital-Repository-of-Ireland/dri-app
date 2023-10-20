@@ -520,23 +520,25 @@ a .dri_signin_edugate {
 
 // Web and Mobile Version - clean up
 .dri_main_nav_new {
+    padding: 0 !important;
     border-top: 1px solid $dri_thingrey;
+    border-bottom: 1px solid $dri_thingrey;
     font-size: 1.15em;
     font-weight: bold;
     background-color: $dri_white;
     margin-bottom: 10px;
     .navbar-nav > li > a {
         color: $dri_darkgrey;
-        &:hover {
-            background-color: $dri_extralightgrey;
-        }
     }
     .container-fluid {
         padding-left: 0px;
     }
-    .navbar-nav > li.active > a {
+    .navbar-nav > li {
+        padding: 10px;
+    }
+    .navbar-nav > li.active {
       border-top: 3px solid $dri_green;
-      background-color: $dri_extralightgrey;
+      padding-top: 7px;
     }
 
     #advanced_search_button_mobile {
@@ -564,13 +566,15 @@ a .dri_signin_edugate {
         margin-top: 0;
         padding-top: 0;
         li {
+	    padding: 5px;
             border-top: 1px solid $dri_thingrey;
+	    a {
+              white-space: nowrap;
+	    }
         }
 
         li.active {
             a {
-
-                padding-bottom: 8px;
                 color: $dri_green;
             }
         }
@@ -765,7 +769,6 @@ ol.breadcrumb {
     margin: 0;
     padding: 6px 25px 0 0;
     color: $dri_lightgrey;
-    height: 36px;
     select {
         @extend %dri_sort_select;
     }
@@ -2187,6 +2190,9 @@ ul.dri_collection_institutes_list {
 }
 /*-------------- Footer navigation --------------*/
 
+.dri_main_footer {
+  font-size: 80%;
+}
 .dri_main_footer_navigation {
     clear: left;
     margin: 100px 0 70px 0;
@@ -2244,12 +2250,10 @@ ul.dri_collection_institutes_list {
 }
 .dri_footer_dsa_logo {
     float: right;
-    padding-top: 2.3em;
     box-sizing: border-box;
     display: inline-block;
-    width: 180px;
-    height: 77px;
     text-align: center;
+    margin-right: 1em;
 }
 .dri_main_footer {
     .dri_footer_address {

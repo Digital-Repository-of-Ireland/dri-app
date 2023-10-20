@@ -5,7 +5,7 @@
 <% end %>
 
   <% browselink = main_app.search_catalog_path(mode: 'collections', search_field: 'all_fields') %>
-  <a href="#" class="dropdown-toggle pt-2 pb-2" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="dri-browse-menu"><%= t('dri.headerlinks.browse') %> <span class="caret"></span></a>
+  <a href="#" class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="dri-browse-menu"><%= t('dri.headerlinks.browse') %> <span class="caret"></span></a>
   <ul id="dri-browse-menu" class="dropdown-menu collapse">
     <% if catalog_active? %>
       <li class="active">

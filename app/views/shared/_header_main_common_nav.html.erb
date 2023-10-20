@@ -3,7 +3,7 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.home'), 'http://www.dri.ie/', id: 'dri_home_id', class: "pt-2 pb-2" %>
+<%= link_to t('dri.headerlinks.home'), 'http://www.dri.ie/', id: 'dri_home_id' %>
 </li>
 
 <%= render 'shared/header_main_browse_dropdown' %>
@@ -14,6 +14,6 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.workspace'), main_app.workspace_path, id: 'workspace', class: "pt-2 pb-2" %>
+<%= link_to t('dri.headerlinks.workspace'), main_app.workspace_path, id: 'workspace' %>
 </li>
 
