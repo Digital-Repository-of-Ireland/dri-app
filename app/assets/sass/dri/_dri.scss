@@ -685,6 +685,10 @@ a .dri_signin_edugate {
     }
 }
 
+.dri_authentication_search_container {
+   font-size: 80%;
+}
+
 // fit elements to smaller my-collections layout
 #my_collections_searchform {
     #search_field, #q_ws {
@@ -824,10 +828,7 @@ ol.breadcrumb {
 /*-------------- Grid / table display--------------*/
 
 .dri_change_sort_view {
-    //margin-left: 20px;
-    //padding-top: 25px;
     font-size: 100%;
-    //width: 120px;
     float: left;
     a {
         color: $dri_lightgrey;
@@ -837,13 +838,14 @@ ol.breadcrumb {
     }
     i {
         color: $dri_green;
+	padding: 1px;
     }
 }
 .dri_icon_border {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
-    width: 25px;
-    height: 25px;
+    width: 27px;
+    height: 24px;
     text-align: center;
     line-height: 100%;
     vertical-align: middle;
