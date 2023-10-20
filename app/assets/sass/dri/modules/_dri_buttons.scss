@@ -88,7 +88,12 @@
   @extend .dri_button;
   background-color: $dri_lightgrey;
   padding: 5px 10px 4px 10px;
-  margin: 0;
+  margin: 2px;
+}
+
+.dri-btn-close {
+  @extend .btn-close;
+  float: right;
 }
 
 .btn:hover {
