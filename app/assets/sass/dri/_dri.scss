@@ -1113,15 +1113,14 @@ h4.suggest {
     background-color: $dri_paleorange;
 }
 .dri_flash_message {
-  margin: 10px 0 10px 0;
-    padding: 12px 10px 5px 10px;
+    margin: 10px 0 10px 0;
+    //padding: 12px 10px 5px 10px;
     display: block;
     width: 100%;
     @include border_radius;
     border: 1px solid $dri_lightgrey;
     float: left;
     .dri_alert_text {
-        font-size: 1.15em;
         color: $dri_darkgrey;
         float: left;
         font-weight: normal;
