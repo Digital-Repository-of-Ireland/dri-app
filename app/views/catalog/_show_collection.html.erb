@@ -43,7 +43,7 @@
     <%= link_back_to_catalog %>
   </div>
   <% if document.cover_image %>
-  <div class="dri_vc_image .d-none .d-sm-block">
+  <div class="dri_vc_image d-none d-md-block">
     <%= image_tag(cover_image_path(document), alt: t('dri.views.alt_tags.cover_image') ) %>
   </div>
   <% end %>
