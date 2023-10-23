@@ -521,8 +521,6 @@ a .dri_signin_edugate {
 // Web and Mobile Version - clean up
 .dri_main_nav_new {
     padding: 0 !important;
-    border-top: 1px solid $dri_thingrey;
-    border-bottom: 1px solid $dri_thingrey;
     font-size: 1.15em;
     font-weight: bold;
     background-color: $dri_white;
@@ -558,6 +556,10 @@ a .dri_signin_edugate {
             color: $dri_darkgrey;
         }
     }
+}
+#dri-navbar-collapse {
+  border-top: 1px solid $dri_thingrey;
+  border-bottom: 1px solid $dri_thingrey;
 }
 .dri_dropdown {
     ul {
