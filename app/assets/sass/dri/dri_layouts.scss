@@ -239,7 +239,7 @@
         padding-left: 10px;
         padding-right: 10px;
         margin: 0 auto;
-        margin-top: 9em;
+        margin-top: 1em;
         $zen-column-count: 2;
         .dri_header_container {
             .dri_ident {
@@ -353,7 +353,7 @@
 
 @media only screen and (max-width: 395px) {
     .dri_wrapper {
-        margin-top: 12em;
+        margin-top: 1em;
         $zen-column-count: 1;
     }
     .dri_main_content_container {
