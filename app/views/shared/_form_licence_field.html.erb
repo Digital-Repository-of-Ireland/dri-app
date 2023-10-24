@@ -1,5 +1,5 @@
 <fieldset class="dri_licence_metadata_fieldset" id="licence">
-  <legend class="sr-only"><%= t('dri.views.fields.licence') %></legend>
+  <legend class="visually-hidden"><%= t('dri.views.fields.licence') %></legend>
   <span class="dri_metadata_label_span"><label for="digital_object_licence"><%= t('dri.views.fields.licence') %></label><i class="dri_help_popover fa fa-info-circle fa-1" data-bs-content="<%= t('dri.help.fields.licence_text') %>" data-bs-title="<%= t('dri.help.fields.licence')%>" data-bs-trigger="hover" data-bs-placement="right"></i></span>
   <%= f.select(:licence, options_for_select(@licences, @object.licence), class: 'edit span6') %>
 </fieldset>

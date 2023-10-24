@@ -23,7 +23,7 @@
 			<p>
 				(228 x 128px)
 			</p>
-			<label for="digital_object_cover_image" class="sr-only">Upload image for collection cover</label>
+			<label for="digital_object_cover_image" class="visually-hidden">Upload image for collection cover</label>
 			<%= f.file_field :cover_image, class: "edit span6",
 			onchange:'coverImageFileUploadHelper($(this));', accept: 'image/*' %>
 			<p class='dri_cover_image_file' id="cover_image">
@@ -43,7 +43,7 @@
 
 		<% @object.title.each_with_index do |title, index| %>
 		  <div>
-              <label for="<%= "digital_object_title_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.title") %></label>
+              <label for="<%= "digital_object_title_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.title") %></label>
 		  	  <%= f.text_field "title][", value:title, class: "edit span6 dri-textfield", required:'required', id: "digital_object_title_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -56,14 +56,14 @@
 		  span_string:'dri.views.fields.creators' %>
       <% if @object.creator.size == 0 %>
         <div>
-      	  <label for="digital_object_creator_1" class="sr-only"><%= t("dri.views.fields.creator") %></label>
+      	  <label for="digital_object_creator_1" class="visually-hidden"><%= t("dri.views.fields.creator") %></label>
           <%= f.text_field "creator][", value:'', class: "edit span6 dri-textfield", required:'required', id: 'digital_object_creator_1' %>
 		  <%= render "shared/form_remove_field_button" %>
         </div>
       <% end %>
       <% @object.creator.each_with_index do |creator, index| %>
         <div>
-      	   <label for="<%= "digital_object_creator_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.creator") %></label>
+      	   <label for="<%= "digital_object_creator_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.creator") %></label>
       	   <%= f.text_field "creator][", value:creator, class: "edit span6 dri-textfield", id: "digital_object_creator_#{index+1}" %>
 		   <%= render "shared/form_remove_field_button" %>
         </div>
@@ -79,11 +79,11 @@
 	      <% people.each do |key, value_array| %>
 			    <% value_array.each do |value| %>
 			      <div>
-			      	  <label for="digital_object_roles_type" class="sr-only">Role</label>
+			      	  <label for="digital_object_roles_type" class="visually-hidden">Role</label>
 				      <select id="digital_object_roles_type" name="digital_object[roles][type][]">
 	                    <%= grouped_options_for_select(@qdc_people_select_list, key) %>
 				      </select>
-				      <label for="digital_object_roles_name" class="sr-only">Name</label>
+				      <label for="digital_object_roles_name" class="visually-hidden">Name</label>
 				      <%= f.text_field "roles][name][", value:value, class: "edit span6 dri-textfield", id: 'digital_object_roles_name' %>
 					  <%= render "shared/form_remove_field_button" %>
 			      </div>
@@ -102,14 +102,14 @@
 		  <%= render "shared/form_fieldset_label", f:f, source:'date' %>
 			<% if @object.date.size == 0 %>
 			  <div>
-                  <label for="digital_object_date_1" class="sr-only"><%= t("dri.views.fields.date") %></label>
+                  <label for="digital_object_date_1" class="visually-hidden"><%= t("dri.views.fields.date") %></label>
 				  <%= f.text_field "date][", value:'', class: "edit span6 dri-textfield date-group", id: 'digital_object_date_1' %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<% @object.date.each_with_index do |date, index| %>
 			  <div>
-			  	  <label for="<%= "digital_object_date_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.date") %></label>
+			  	  <label for="<%= "digital_object_date_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.date") %></label>
 				  <%= f.text_field "date][", value:date, class: "edit span6 dri-textfield date-group", id: "digital_object_date_#{index+1}" %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
@@ -121,14 +121,14 @@
 		    <%= render "shared/form_fieldset_label", f:f, source:'creation_date' %>
 			<% if @object.creation_date.size == 0 %>
 			  <div>
-                  <label for="digital_object_creation_date_1" class="sr-only"><%= t("dri.views.fields.creation_date") %></label>
+                  <label for="digital_object_creation_date_1" class="visually-hidden"><%= t("dri.views.fields.creation_date") %></label>
 				  <%= f.text_field "creation_date][", value:'', class: "edit span6 dri-textfield date-group", id: 'digital_object_creation_date_1' %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<% @object.creation_date.each_with_index do |creation_date ,index| %>
 			  <div>
-			  	  <label for="<%= "digital_object_creation_date_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.creator") %></label>
+			  	  <label for="<%= "digital_object_creation_date_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.creator") %></label>
 				  <%= f.text_field "creation_date][", value:creation_date, class: "edit span6 dri-textfield date-group", id: "digital_object_creation_date_#{index+1}" %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
@@ -140,14 +140,14 @@
 		  <%= render "shared/form_fieldset_label", f:f, source:'published_date' %>
 			<% if @object.published_date.size == 0 %>
 			  <div>
-                  <label for="digital_object_published_date_1" class="sr-only"><%= t("dri.views.fields.published_date") %></label>
+                  <label for="digital_object_published_date_1" class="visually-hidden"><%= t("dri.views.fields.published_date") %></label>
  			  	  <%= f.text_field "published_date][", value:'', class: "edit span6 dri-textfield date-group", id: "digital_object_published_date_1" %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
 			<% end %>
 			<% @object.published_date.each_with_index do |published_date, index| %>
 			  <div>
-			  	  <label for="<%= "digital_object_published_date_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.published_date") %></label>
+			  	  <label for="<%= "digital_object_published_date_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.published_date") %></label>
 			  	  <%= f.text_field "published_date][", value:published_date, class: "edit span6 dri-textfield date-group", id: "digital_object_published_date_#{index+1}" %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
@@ -160,7 +160,7 @@
 	  <%= render "shared/form_fieldset_label", f:f, source:'description' %>
 		<% @object.description.each_with_index do |description, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_description_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.description") %></label>
+		  	  <label for="<%= "digital_object_description_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.description") %></label>
 		  	  <%= f.text_area "description][", value:description, class: "edit span6 dri-textarea", required:'required', id: "digital_object_description_#{index+1}"  %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -173,14 +173,14 @@
 	    <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
 		<% if @object.rights.size == 0 %>
 			<div>
-				<label for="digital_object_rights_1" class="sr-only"><%= t("dri.views.fields.rights") %></label>
+				<label for="digital_object_rights_1" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
 				<%= f.text_area "rights][", value:'', class: "edit span6 dri-textarea", required:'required', id: 'digital_object_rights_1'  %>
 				<%= render "shared/form_remove_field_button" %>
 			</div>
 		<% end %>
 		<% @object.rights.each_with_index do |rights, index| %>
 		  <div>
-              <label for="<%= "digital_object_rights_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.rights") %></label>
+              <label for="<%= "digital_object_rights_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
 		  	  <%= f.text_area "rights][", value:rights, class: "edit span6 dri-textarea", required:'required', id: "digital_object_rights_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -209,14 +209,14 @@
 								<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
 							</div>
 							<div>
-								<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
+								<label for="<%= "digital_object_type_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.type") %></label>
 								<%= f.text_field "type][", value:type, class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_#{index+1}" %>
 								<%= render "shared/form_remove_field_button" %>
 							</div>
 						<% end %>				
 					<% else %>
 					  <div>
-						  <label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
+						  <label for="<%= "digital_object_type_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.type") %></label>
 						  <%= f.text_field "type][", value:type, class: "edit span6 dri-textfield", required: "true", id: "digital_object_type_#{index+1}" %>
 						  <%= render "shared/form_remove_field_button" %>
 					  </div>
@@ -234,7 +234,7 @@
 		  f:f, source:'languages', help_string:'dri.help.fields.languages' %>
 		<% @object.language.each_with_index do |language, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_language_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.language") %></label>
+		  	  <label for="<%= "digital_object_language_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.language") %></label>
 		  	  <%= f.text_field "language][", value:language, class: "edit span6 dri-textfield", id: "digital_object_language_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -252,7 +252,7 @@
     <% end %>
 		<% @object.relation.each_with_index do |relation, index| %>
 		  <div>
-              <label for="<%= "digital_object_relation_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.relation") %></label>
+              <label for="<%= "digital_object_relation_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.relation") %></label>
 		  	  <%= f.text_field "relation][", value:relation, class: "edit span6 dri-textfield", id: "digital_object_relation_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -265,7 +265,7 @@
 		  <%= render "shared/form_fieldset_label", f:f, source:'sources' %>
 			<% @object.source.each_with_index do |source, index| %>
 			  <div>
-                  <label for="<%= "digital_object_source_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.source") %></label>
+                  <label for="<%= "digital_object_source_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.source") %></label>
 			  	  <%= f.text_field "source][", value:source, class: "edit span6 dri-textfield", id: "digital_object_source_#{index+1}" %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>
@@ -279,7 +279,7 @@
 	  <%= render "shared/autocomplete_dropdown", source: 'coverage' %>
 	  <% @object.coverage.each_with_index do |coverage, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_coverage_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.coverage") %></label>
+		  	  <label for="<%= "digital_object_coverage_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.coverage") %></label>
 			  <%= f.text_field "coverage][", value:coverage, class: "edit span6 dri-textfield", id: "digital_object_coverage_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -292,7 +292,7 @@
 	  <%= render "shared/autocomplete_dropdown", source: 'geographical_coverage', default:'Logainm' %>
 		<% @object.geographical_coverage.each_with_index do |geographical, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_geographical_coverage_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.geographical_coverage") %></label>
+		  	  <label for="<%= "digital_object_geographical_coverage_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.geographical_coverage") %></label>
 			  <%= f.text_field "geographical_coverage][", value:geographical, class: "edit span6 dri-textfield", id: "digital_object_geographical_coverage_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -306,7 +306,7 @@
 	  <%= render "shared/autocomplete_dropdown", source: 'temporal_coverage' %>
 		<% @object.temporal_coverage.each_with_index do |temporal, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_temporal_coverage_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.temporal_coverage") %></label>
+		  	  <label for="<%= "digital_object_temporal_coverage_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.temporal_coverage") %></label>
 			  <%= f.text_field "temporal_coverage][", value:temporal, class: "edit span6 dri-textfield", id: "digital_object_temporal_coverage_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -325,7 +325,7 @@
 	  <%= render "shared/autocomplete_dropdown", source: 'subject', default:'LOC Subject Headings' %>
 		<% @object.subject.each_with_index do |subject, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_subject_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.subject") %></label>
+		  	  <label for="<%= "digital_object_subject_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.subject") %></label>
 			  <%= f.text_field "subject][", value:subject, class: "edit span6 dri-textfield", id: "digital_object_subject_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -337,7 +337,7 @@
 	  <%= render "shared/form_fieldset_label", f:f, source:'identifiers' %>
 		<% @object.identifier.each_with_index do |identifier, index| %>
 		  <div>
-		  	  <label for="<%= "digital_object_identifier_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.identifier") %></label>
+		  	  <label for="<%= "digital_object_identifier_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.identifier") %></label>
 		  	  <%= f.text_field "identifier][", value:identifier, class: "edit span6 dri-textfield", id: "digital_object_identifier_#{index+1}" %>
 			  <%= render "shared/form_remove_field_button" %>
 		  </div>
@@ -353,7 +353,7 @@
 			<%= render "shared/autocomplete_dropdown", source: 'format' %>
 			<% @object.format.each_with_index do |format, index| %>
 			  <div>
-			  	  <label for="<%= "digital_object_format_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.format") %></label>
+			  	  <label for="<%= "digital_object_format_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.format") %></label>
 			  	  <%= f.text_field "format][", value:format, class: "edit span6 dri-textfield", id: "digital_object_format_#{index+1}" %>
 				  <%= render "shared/form_remove_field_button" %>
 			  </div>

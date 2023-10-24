@@ -1,5 +1,5 @@
 
-<label for="<%= "digital_object_type_#{index+1}" %>" class="sr-only"><%= t("dri.views.fields.type") %></label>
+<label for="<%= "digital_object_type_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.type") %></label>
 <%= select_tag "digital_object[type][]", 
   options_for_select([
     ["Select Primary Type", ""], 

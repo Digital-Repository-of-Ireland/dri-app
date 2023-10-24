@@ -9,7 +9,7 @@
         end
       %>
       <div class="input-group mt-2 dri-search-input-group">
-        <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
+        <label for="search_field" class="visually-hidden"><%= t('blacklight.search.form.search_field.label') %></label>
           <%= select_tag(:search_field,
                    options_for_select(ui_search_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
@@ -23,7 +23,7 @@
 
           <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q_ws, :search_field, :qt, :page, :utf8)) %>
           <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
-          <label for="q_ws" class="sr-only"><%= t('blacklight.search.form.search') %></label>
+          <label for="q_ws" class="visually-hidden"><%= t('blacklight.search.form.search') %></label>
           <%= text_field_tag :q_ws, params[:q_ws], id: "q_ws", class: "dri_search_term_text_input dri_help_popover_slow", :'data-bs-content' =>  t('dri.help.q'),  :'data-bs-title' =>  t('dri.help.q_ws_title'), :'data-bs-trigger' => "hover", :'data-bs-placement' => "left" %>
           <div class="input-group-append">
             <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
