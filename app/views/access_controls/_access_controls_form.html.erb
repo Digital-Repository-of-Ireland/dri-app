@@ -5,7 +5,7 @@
             html: {class: 'form-vertical', id: 'set_access_controls'} do |f| %>
 
         <%= render partial: "access_controls/access_controls", locals: {f: f, record: @object, inherit_disabled: @object.root_collection? } %>
-        <%= f.submit t('dri.views.objects.buttons.save'), class: "hidden" %>
+        <%= f.submit t('dri.views.objects.buttons.save'), class: "d-none" %>
 
     <% end %>
   </div>

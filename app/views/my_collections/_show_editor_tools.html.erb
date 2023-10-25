@@ -158,17 +158,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-            &times;
-          </button>
           <h4 class="modal-title"><%= t('dri.views.objects.buttons.delete_object') %></h4>
+          <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
         </div>
 
         <div class="modal-body">
           <span class="label label-danger"><%= t('dri.views.objects.confirm.delete') %></span>
           <br />
           <%= form_tag (object_path(@document.id)), id: "delete_object_form", class: 'dri_ingest_form', method: :delete, style: "margin:0;padding:0;display:inline;" do %>
-            <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "hidden" %>
+            <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "d-none" %>
           <% end %>
         </div>
 
@@ -187,10 +185,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
         <h4 class="modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h4>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
 
       <div class="modal-body">
@@ -212,10 +208,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
         <h4 class="modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h4>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
 
       <div class="modal-body">
@@ -239,15 +233,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
         <h4 class="modal-title"><%= t('dri.views.catalog.forms.fetch_tp_data') %></h4>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
 
       <div class="modal-body">
         <%= form_tag (tp_data_path(@document.id)), id: "fetch_tp_data_form", class: 'dri_ingest_form', method: :post, style: "margin:0;padding:0;display:inline;" do %>
-          <%= submit_tag t('dri.views.objects.buttons.submit'), id: 'submit_tp_fetch', class: "hidden" %>
+          <%= submit_tag t('dri.views.objects.buttons.submit'), id: 'submit_tp_fetch', class: "d-none" %>
         <% end %>
         <br/>
         <span class="label label-danger"><%= t('dri.views.objects.confirm.tp_data') %></span>
@@ -263,7 +255,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<script>
-
-</script>
