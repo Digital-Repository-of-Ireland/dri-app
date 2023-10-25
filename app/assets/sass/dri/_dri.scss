@@ -412,7 +412,8 @@ a {
             text-decoration: underline;
         }
         span.text_right {
-            margin: 0 0 0 136px;
+            margin-right: 10px;
+	    float: right;
             padding: 0;
             color: $dri_darkgrey;
             &:hover {
