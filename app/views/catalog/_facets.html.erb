@@ -6,7 +6,7 @@
 		    <span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span>
 		  </a>
 	  </h3>
-    <div id="facet-panel-collapse" class="panel-group facet-non-md collapse in" aria-expanded="false">
+    <div id="facet-panel-collapse" class="panel-group facet-non-md collapse in show" aria-expanded="false">
 	    <%= render_facet_partials facet_field_names, response: @response %>
 	  </div>
   </div>
