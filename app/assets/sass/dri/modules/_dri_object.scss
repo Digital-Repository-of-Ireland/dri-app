@@ -57,23 +57,21 @@ h2.dri_no_asset_availiable {
         font-size: 100%;
         line-height: 100%;
     }
-    .carousel-control.left {
-        //background-image: url("previous_carousel_arrow.png");
+    .carousel-control-prev {
         top: 95%;
         width: 12px;
         height: 8px;
         margin-top: -15px;
         padding: 0;
-         color: $dri_lightgrey;
+        color: $dri_lightgrey;
     }
-    .carousel-control.right {
-        //background-image: url("next_carousel_arrow.png");
+    .carousel-control-next {
         top: 95%;
         width: 12px;
         height: 10px;
         margin-top: -15px;
         padding: 0;
-         color: $dri_lightgrey;
+        color: $dri_lightgrey;
     }
     .dri_asset_carousel_item {
         height: 300px;
@@ -113,7 +111,10 @@ h2.dri_no_asset_availiable {
         font-size: 100%;
     }
 }
-
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+}
 .dri_video {
   display: block;
   margin: 0 auto;

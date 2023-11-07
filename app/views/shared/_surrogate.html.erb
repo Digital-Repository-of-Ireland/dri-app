@@ -6,13 +6,11 @@
   </div> <!-- ending dri_asset_holder -->
 
   <div class="modal fade dri_pdf_view" id="dri_pdf_viewer_modal_id">
-    <div class="modal-dialog" style="margin: 2.5vh auto; width: 80%">
+    <div class="modal-dialog modal-lg" style="margin: 2.5vh auto;">
       <div class="modal-content">
         <div class="modal-header" id="dri_pdf_header">
-          <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-            &times;
-          </button>
           <h4 class="modal-title"></h4>
+          <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
         </div>
 
         <div class="modal-body" style="height: calc(90vh - 210px);">
@@ -29,13 +27,11 @@
 <% end %>
 
 <div class="modal fade" id="dri_download_modal_id">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
         <h4 class="modal-title"><%= t('dri.views.catalog.forms.download') %></h4>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
       <div class="modal-body">
       </div>
