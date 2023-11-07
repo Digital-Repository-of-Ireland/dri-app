@@ -11,19 +11,19 @@
 }
 .dri_sidenav {
     margin-top: 20px;
-    color: $dri_midgrey;
+    color: $dri_darkgrey;
     font-size: 100%;
 
 
     a {
-        color: $dri_midgrey;
+        color: $dri_darkgrey;
     }
     button {
       float:right;
     }
     a:hover,
     form:hover {
-        color: $dri_darkgrey;
+        color: $dri_midgrey;
     }
     h5 {
         margin:0;
