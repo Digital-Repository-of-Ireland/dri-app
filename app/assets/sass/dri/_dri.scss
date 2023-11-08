@@ -145,7 +145,7 @@ a.carousel-control {
 .dropdown-submenu:focus > a {
     text-decoration: none;
     color: $dri_green;
-    background-color: $dri_green;
+    background-color: $dri_white;
     background-image: none;
 }
 .submenu{
@@ -533,6 +533,10 @@ a .dri_signin_edugate {
         padding-left: 0px;
     }
     .navbar-nav > li {
+        &:hover {
+        border-top: 3px solid $dri_green;
+        padding-top: 7px;
+        }
         padding: 10px;
     }
     .navbar-nav > li.active {
@@ -569,33 +573,32 @@ a .dri_signin_edugate {
         margin-top: 0;
         padding-top: 0;
         li {
-	    padding: 5px;
-            border-top: 1px solid $dri_thingrey;
-	    a {
-              white-space: nowrap;
-	    }
+          padding: 5px;
+          border-top: 1px solid $dri_thingrey;
+	      a {
+            color: $dri_darkgrey;
+            white-space: nowrap;
+	      }
         }
-
         li.active {
             a {
                 color: $dri_green;
             }
         }
         li:hover {
-            a {
-                background-color: $dri_white;
-            }
+         a {
+          background-color: $dri_white;
+         }
         }
         li:focus {
-            a {
-                 background-color: $dri_white;
-            }
+          a {
+            background-color: $dri_white;
+          }
         }
     }
-
 }
   .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
-     color: $dri_green;
+    color: $dri_green;
     text-decoration: none;
     outline: 0;
     background-color: $dri_white;
