@@ -331,10 +331,10 @@
 				<% end %>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default dri_button" data-bs-dismiss="modal">
+				<button type="button" class="dri_button_grey" data-bs-dismiss="modal">
 						<%= t('dri.window.modal.close') %>
 					</button>
-					<%= button_to review_path(:apply_all => 'yes'), :class =>"dri_button_green", form: { style: 'display:inline-block;', id: 'review_collection' }, :id => "all_objects_reviewed", :method => :put do %>
+					<%= button_to review_path(:apply_all => 'yes'), :class =>"btn-default dri_button_green", form: { style: 'display:inline-block;', id: 'review_collection' }, :id => "all_objects_reviewed", :method => :put do %>
 					  <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
 					<% end %>
 			</div>
@@ -361,10 +361,10 @@
         <br />
       </div>
       <div class="modal-footer">
-        <button type="button" class="dri_button" data-bs-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
           <%= t('dri.window.modal.close') %>
         </button>
-        <%= button_to publish_path(@document), class: "dri_button_green", form: {style: 'display:inline-block;', id: 'publish_collection'}, id: "publish", method: :put do %>
+        <%= button_to publish_path(@document), class: "btn-default dri_button_green", form: {style: 'display:inline-block;', id: 'publish_collection'}, id: "publish", method: :put do %>
           <%= t('dri.views.catalog.links.mark_all_descendants_reviewed') %>
         <% end %>
       </div>
@@ -386,11 +386,11 @@
   				<%= form_tag(collection_doi_path(@document.id), method: "post") do %>
   				  <%= label_tag 'modified', t('dri.views.collection.doi_modification') %>
   				  <%= text_field_tag :modified, nil, size: 50, required: true  %>
-            <%= submit_tag(t('dri.views.catalog.buttons.submit'), class: 'dri_button_green') %>
+            <%= submit_tag(t('dri.views.catalog.buttons.submit'), class: 'btn-default dri_button_green') %>
           <% end %>
   			</div>
   			<div class="modal-footer">
-          <button type="button" class="btn btn-default" data-bs-dismiss="modal">
+          <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
   					<%= t('dri.window.modal.close') %>
   				</button>
   			</div>
