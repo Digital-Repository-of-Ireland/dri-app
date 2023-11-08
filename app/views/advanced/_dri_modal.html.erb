@@ -2,12 +2,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          &times;
-        </button>
         <h1 class="modal-title">
           <%= t('dri.views.advanced_search.header') %>
         </h1>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
       <div class="modal-body">
         <%= form_tag main_app.search_catalog_path, class: 'advanced form-horizontal', method: :get do  %>
