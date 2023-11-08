@@ -114,7 +114,7 @@
 
 .dri_search_save_submit_button {
   @extend .dri_button_green;
-  //margin-top: 25px;
   float: right;
-  margin: 0px 0 10px 0;
+  padding: 2px;
+  margin: 0px;
 }
