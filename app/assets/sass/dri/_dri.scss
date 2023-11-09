@@ -531,6 +531,7 @@ a .dri_signin_edugate {
     }
     .container-fluid {
         padding-left: 0px;
+        padding-right: 0px;
     }
     .navbar-nav > li {
         &:hover {
@@ -746,16 +747,16 @@ ol.breadcrumb {
     li {
         font-size: 100%;
         a {
-            color: $dri_lightgrey;
-             &:hover {
             color: $dri_midgrey;
+             &:hover {
+            color: $dri_darkgrey;
 
         }
         }
     }
 }
 .breadcrumb .active {
-    color: $dri_midgrey;
+    color: $dri_darkgrey;
 }
 /*-------------- Search/Sort features --------------*/
 
@@ -767,13 +768,11 @@ ol.breadcrumb {
 
 %dri_sort_select {
     margin: 0;
-    //padding: 4px;
     padding-right: 10px;
     border: 1px solid $dri_thingrey;
     @include border_radius;
     color: $dri_midgrey;
     font-size: 100%;
-    //height: 25px;
 }
 
 .dri_sort_nav {
@@ -1367,7 +1366,7 @@ h4.suggest {
 /* -----------Main Content Container ---------- */
 
 .dri_main_content_container > h2 {
-    margin: 10px 0 20px 0;
+    margin: 0px 0 20px 0;
     padding: 0 0 8px 0;
     font-size: 140%;
     font-weight: bold;

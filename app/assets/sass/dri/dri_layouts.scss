@@ -104,6 +104,7 @@
     }
     .dri_object_container {
         @include zen-grid-item(4, 1, $gutter-width: 0px);
+        margin-left: -10px;
     }
     .dri_object_first_block {
         @include zen-grid-item(3, 1, $gutter-width: 0px);

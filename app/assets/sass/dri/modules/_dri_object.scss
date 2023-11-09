@@ -99,7 +99,7 @@ h2.dri_no_asset_availiable {
         p.dri_restrict_message {
             margin: 8px 0 0 0;
             padding: 0;
-            color: $dri_midgrey;
+            color: $dri_darkgrey;
         }
     }
     p.dri_assets_total {
@@ -278,7 +278,7 @@ h2.dri_restrict_title {
 p.dri_restrict_message {
     margin: 0px;
     padding: 0;
-    color: $dri_midgrey;
+    color: $dri_darkgrey;
 }
 p.dri_restrict_progress {
     margin: 0px;
@@ -329,12 +329,12 @@ dl.dri_object_metadata_readview {
     padding: 0px 40px 0 0;
     dt {
         margin: 10px 0 0 0;
-        padding: 0px;
-        color: $dri_darkgrey;
+        padding-bottom: 2px;
+        color: black;
         font-weight: bold;
     }
     dd {
-        margin: 0;
+        margin-left: 5px;
         padding: 0;
         color: $dri_darkgrey;
         text-align: left;
