@@ -11,7 +11,7 @@
 <% if current_user.is_admin? %>
   <label for="institute_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
   <%= f.text_field :manager %>
-  <div>
+  <div class="pt-2 pb-2">
     <%= f.label :depositing do %>
       <%= f.check_box :depositing %><%=  t('dri.views.collection.institute.form.depositing') %>
     <% end %>
