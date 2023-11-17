@@ -92,7 +92,7 @@ end
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs', '2.7.0'
-gem 'uglifier', '~> 4'
+gem 'terser'
 
 group :production do
   gem 'clamby'
