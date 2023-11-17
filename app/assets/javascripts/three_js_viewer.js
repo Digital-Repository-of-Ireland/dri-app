@@ -512,7 +512,7 @@ $(document).ready(function () {
     };
 
     function getDisplaySize() {
-        var divSize = document.getElementsByClassName('item dri_asset_carousel_item dri_bottom_stack active')[0];
+        var divSize = document.getElementsByClassName('carousel-item dri_asset_carousel_item dri_bottom_stack active')[0];
 
         if (divSize) {
             var containerRect = divSize.getBoundingClientRect();

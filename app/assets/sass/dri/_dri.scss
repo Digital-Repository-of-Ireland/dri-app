@@ -145,7 +145,7 @@ a.carousel-control {
 .dropdown-submenu:focus > a {
     text-decoration: none;
     color: $dri_green;
-    background-color: $dri_green;
+    background-color: $dri_white;
     background-image: none;
 }
 .submenu{
@@ -303,9 +303,9 @@ input.dri_w230 {
 a {
     text-decoration: none;
 }
-.dri_search_term_input {
-    padding-top: 45px;
-}
+//.dri_search_term_input {
+//    padding-top: 45px;
+//}
 .dri_workspace_search_input_form {
   padding: 0px;
   float: left;
@@ -412,7 +412,8 @@ a {
             text-decoration: underline;
         }
         span.text_right {
-            margin: 0 0 0 136px;
+            margin-right: 10px;
+	    float: right;
             padding: 0;
             color: $dri_darkgrey;
             &:hover {
@@ -520,24 +521,28 @@ a .dri_signin_edugate {
 
 // Web and Mobile Version - clean up
 .dri_main_nav_new {
-    border-top: 1px solid $dri_thingrey;
+    padding: 0 !important;
     font-size: 1.15em;
     font-weight: bold;
     background-color: $dri_white;
     margin-bottom: 10px;
     .navbar-nav > li > a {
         color: $dri_darkgrey;
-        &:hover {
-            background-color: $dri_extralightgrey;
-        }
     }
     .container-fluid {
         padding-left: 0px;
+        padding-right: 0px;
     }
-    .navbar-nav > li.active > a {
-    border-top: 3px solid $dri_green;
-    background-color: $dri_extralightgrey;
-
+    .navbar-nav > li {
+        &:hover {
+        border-top: 3px solid $dri_green;
+        padding-top: 7px;
+        }
+        padding: 10px;
+    }
+    .navbar-nav > li.active {
+      border-top: 3px solid $dri_green;
+      padding-top: 7px;
     }
 
     #advanced_search_button_mobile {
@@ -554,14 +559,13 @@ a .dri_signin_edugate {
     li {
         border-right: 1px solid $dri_thingrey;
         &.active {
-            background-color: $dri_extralightgrey;
             color: $dri_darkgrey;
-            a {
-                padding-top: 12px;
-                background-color: $dri_white;
-            }
         }
     }
+}
+#dri-navbar-collapse {
+  border-top: 1px solid $dri_thingrey;
+  border-bottom: 1px solid $dri_thingrey;
 }
 .dri_dropdown {
     ul {
@@ -570,37 +574,32 @@ a .dri_signin_edugate {
         margin-top: 0;
         padding-top: 0;
         li {
-            border-top: 1px solid $dri_thingrey;
-
-            a {
-                padding-top: 12px;
-                padding-bottom: 8px;
-            }
+          padding: 5px;
+          border-top: 1px solid $dri_thingrey;
+	      a {
+            color: $dri_darkgrey;
+            white-space: nowrap;
+	      }
         }
-
         li.active {
             a {
-
-                padding-top: 12px;
-                padding-bottom: 8px;
                 color: $dri_green;
             }
         }
         li:hover {
-            a {
-                background-color: $dri_white;
-            }
+         a {
+          background-color: $dri_white;
+         }
         }
         li:focus {
-            a {
-                 background-color: $dri_white;
-            }
+          a {
+            background-color: $dri_white;
+          }
         }
     }
-
 }
   .dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
-     color: $dri_green;
+    color: $dri_green;
     text-decoration: none;
     outline: 0;
     background-color: $dri_white;
@@ -693,8 +692,14 @@ a .dri_signin_edugate {
     }
 }
 
+.dri_authentication_search_container {
+   font-size: 80%;
+}
+
 // fit elements to smaller my-collections layout
 #my_collections_searchform {
+    font-size: 80%;
+    width: 100%;
     #search_field, #q_ws {
         margin-top: 10px;
     }
@@ -734,24 +739,24 @@ ol.breadcrumb {
     background-color:  $dri_extralightgrey;
     border-bottom: 1px solid $dri_thingrey;
     border-top: 1px solid $dri_thingrey;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
+    //margin-bottom: 10px;
+    padding: 5px;
     font-weight: normal;
     font-style:italic;
     @include border_radius (0px);
     li {
         font-size: 100%;
         a {
-            color: $dri_lightgrey;
-             &:hover {
             color: $dri_midgrey;
+             &:hover {
+            color: $dri_darkgrey;
 
         }
         }
     }
 }
 .breadcrumb .active {
-    color: $dri_midgrey;
+    color: $dri_darkgrey;
 }
 /*-------------- Search/Sort features --------------*/
 
@@ -763,13 +768,11 @@ ol.breadcrumb {
 
 %dri_sort_select {
     margin: 0;
-    padding: 4px;
     padding-right: 10px;
     border: 1px solid $dri_thingrey;
     @include border_radius;
     color: $dri_midgrey;
     font-size: 100%;
-    height: 25px;
 }
 
 .dri_sort_nav {
@@ -777,7 +780,6 @@ ol.breadcrumb {
     margin: 0;
     padding: 6px 25px 0 0;
     color: $dri_lightgrey;
-    height: 36px;
     select {
         @extend %dri_sort_select;
     }
@@ -795,12 +797,12 @@ ol.breadcrumb {
 }
 /*-------------- Search --------------*/
 
-.dri_search_term_text_input{
-    margin: 24px 0 0 0;
-}
+//.dri_search_term_text_input{
+//    margin: 24px 0 0 0;
+//}
 
 #search_field {
-    margin: 54px 0 0 0;
+    //margin: 54px 0 0 0;
     padding: 5px 0 3px 0;
 }
 
@@ -826,13 +828,14 @@ ol.breadcrumb {
     }
 }
 
+.dri-search-input-group {
+    flex-wrap: nowrap;
+}
+
 /*-------------- Grid / table display--------------*/
 
 .dri_change_sort_view {
-    //margin-left: 20px;
-    //padding-top: 25px;
     font-size: 100%;
-    //width: 120px;
     float: left;
     a {
         color: $dri_lightgrey;
@@ -842,17 +845,17 @@ ol.breadcrumb {
     }
     i {
         color: $dri_green;
+	padding: 1px;
     }
 }
 .dri_icon_border {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
-    width: 25px;
-    height: 25px;
+    width: 27px;
+    height: 24px;
     text-align: center;
     line-height: 100%;
     vertical-align: middle;
-    padding-top: 4px;
 }
 /*-------------- Page Grid --------------*/
 
@@ -1117,15 +1120,14 @@ h4.suggest {
     background-color: $dri_paleorange;
 }
 .dri_flash_message {
-  margin: 10px 0 10px 0;
-    padding: 12px 10px 5px 10px;
+    margin: 10px 0 10px 0;
+    //padding: 12px 10px 5px 10px;
     display: block;
     width: 100%;
     @include border_radius;
     border: 1px solid $dri_lightgrey;
     float: left;
     .dri_alert_text {
-        font-size: 1.15em;
         color: $dri_darkgrey;
         float: left;
         font-weight: normal;
@@ -1202,14 +1204,14 @@ h4.suggest {
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        padding: 0 0 0 20px;
+        padding-left: 10px;
 	margin-top: 15px;
         // leave some space for the border
         min-width: $dri_facet_min_width - 2;
     }
     .dri_search_num {
         float: right;
-        padding: 0 15px 0 0;
+        padding-right: 10px;
     }
     .panel {
         margin: 0px;
@@ -1227,10 +1229,10 @@ h4.suggest {
             .panel-heading {
                 background-color: $dri_white;
                 width: 100%;
+		padding: 10px;
                 h4 {
-		    font-size: 14px;
+		    font-size: inherit;
                     margin: 0;
-                    margin-left: 6px;
                     padding: 0;
                     background: image-url("dri/arrow_down.png") no-repeat right;
                     a {
@@ -1264,8 +1266,6 @@ h4.suggest {
                 display: block;
                 background-color: $dri_extralightgrey;
                 border-bottom: 1px solid $dri_white;
-                margin-left: -15px;
-                margin-right: -15px;
                 padding: 10px 5px 10px 20px;
                 &.selected {
                   background-color: $dri_thingrey;
@@ -1355,10 +1355,13 @@ h4.suggest {
           @extend .dri_account_block_info_item;
         }
         li {
-            color: $dri_midgrey;
-            font-size: 110%;
+            color: $dri_darkgrey;
+            //font-size: 110%;
             margin-bottom: 10px;
             list-style-type: none;
+            a {
+              color: $dri_darkgrey;
+            }
           }
     }
 }
@@ -1366,7 +1369,7 @@ h4.suggest {
 /* -----------Main Content Container ---------- */
 
 .dri_main_content_container > h2 {
-    margin: 10px 0 20px 0;
+    margin: 0px 0 20px 0;
     padding: 0 0 8px 0;
     font-size: 140%;
     font-weight: bold;
@@ -1541,6 +1544,7 @@ p.dri_rss_link a {
     padding: 0;
 }
 .dri_content_block {
+    font-size: 75%;
     margin: 0 20px 20px 0;
     padding: 0;
     width: 228px;
@@ -1639,6 +1643,7 @@ p.dri_rss_link a {
     border: 1px solid $dri_thingrey;
     position: relative;
     border-top: none;
+    font-size: 75%;
     .dri_collection_image {
         padding: 0;
         margin: 0;
@@ -2198,6 +2203,9 @@ ul.dri_collection_institutes_list {
 }
 /*-------------- Footer navigation --------------*/
 
+.dri_main_footer {
+  font-size: 80%;
+}
 .dri_main_footer_navigation {
     clear: left;
     margin: 100px 0 70px 0;
@@ -2255,12 +2263,10 @@ ul.dri_collection_institutes_list {
 }
 .dri_footer_dsa_logo {
     float: right;
-    padding-top: 2.3em;
     box-sizing: border-box;
     display: inline-block;
-    width: 180px;
-    height: 77px;
     text-align: center;
+    margin-right: 1em;
 }
 .dri_main_footer {
     .dri_footer_address {
@@ -2349,7 +2355,11 @@ ul.dri_collection_institutes_list {
           font-weight: bold;
     }
     .dri_ingest_form {
+        font-size: .9em;
         width: 60%;
+        a {
+          color: $dri_darkgrey;
+        }
         input.btn-primary {
             margin: 30px 0 0 0;
             padding: 6px;
@@ -2415,6 +2425,7 @@ ul.dri_collection_institutes_list {
         }
         .dri_licence_metadata_fieldset > select {
             width: 410px;
+            font-size: .9em;
         }
         .dri_description_metadata_fieldset > textarea,
         .dri_rights_metadata_fieldset > textarea {
@@ -2494,7 +2505,6 @@ ul.dri_collection_institutes_list {
     @extend .dri_ingest_form_container;
     .dri_radio_label {
         font-size: 100%;
-        color: $dri_midgrey !important;
         margin: 8px 0 8px 0;
         padding: 0;
      }
@@ -2544,7 +2554,7 @@ ul.dri_collection_institutes_list {
     .dri_access_controls_radio_label {
           display: inline-block !important;
           font-weight: normal !important;
-          color: $dri_midgrey;
+          color: $dri_darkgrey;
         }
 }
 .dri_request_access {
@@ -2634,8 +2644,6 @@ ul.dri_collection_institutes_list {
             background-color: $dri_white;
             padding: 0 0 0 0;
             height: 75px;
-            width: 250px;
-            //vertical-align: 10%;
             input {
                 position: absolute;
                 z-index: 2;
@@ -2717,10 +2725,6 @@ ul.dri_collection_institutes_list {
 .dri_licence_logo {
     height: 2em;
     vertical-align: bottom;
-}
-
-.modal-title {
-	font-size: 20px;
 }
 
 #blacklight-modal {

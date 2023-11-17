@@ -32,7 +32,7 @@
   border-radius: 3px;
   border: none;
   padding: 6px 10px 6px 10px;
-  margin: 10px 0 10px 0;
+  //margin: 10px 0 10px 0;
 }
 
 .dri_button_green {
@@ -87,8 +87,13 @@
 .btn {
   @extend .dri_button;
   background-color: $dri_lightgrey;
-  padding: 5px 10px 4px 10px;
-  margin: 0;
+  //padding: 5px 10px 4px 10px;
+  margin: 2px;
+}
+
+.dri-btn-close {
+  @extend .btn-close;
+  float: right;
 }
 
 .btn:hover {
@@ -109,7 +114,7 @@
 
 .dri_search_save_submit_button {
   @extend .dri_button_green;
-  //margin-top: 25px;
   float: right;
-  margin: 0px 0 10px 0;
+  padding: 2px;
+  margin: 0px;
 }

@@ -65,7 +65,7 @@
     <% end %>
 
     <% if @tp_ready %>
-      <%= link_to '', id: 'tp_data', :'data-target' => '#dri_tp_data_modal_id', :'data-toggle' => 'modal' do %>
+      <%= link_to '', id: 'tp_data', :'data-bs-target' => '#dri_tp_data_modal_id', :'data-bs-toggle' => 'modal' do %>
         <li>
           <%= t('dri.views.objects.buttons.fetch_tp_data') %>
         </li>
@@ -96,7 +96,7 @@
     </li>
 
     <% if @document.editable? && (@document.status != 'published' || current_user.is_admin?) %>
-      <%= link_to '', id: 'delete_object', :'data-target' => '#dri_delete_object_modal_id', :'data-toggle' => 'modal' do %>
+      <%= link_to '', id: 'delete_object', :'data-bs-target' => '#dri_delete_object_modal_id', :'data-bs-toggle' => 'modal' do %>
         <li>
           <%= t('dri.views.objects.buttons.delete_object') %>
         </li>
@@ -107,7 +107,7 @@
   <li>
   <div class="accordion" id="dri_edit_record_tools_id">
     <div class="accordion-group">
-      <a class="accordion-toggle" id="edit_menu" data-toggle="collapse" data-parent="#dri_edit_record_tools_id" href="#dri_edit_record_tools_collapsed_id">
+      <a class="accordion-toggle" id="edit_menu" data-bs-toggle="collapse" data-bs-parent="#dri_edit_record/_tools_id" href="#dri_edit_record_tools_collapsed_id">
         <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.links.edit_this_record') %>
       </a>
 
@@ -135,10 +135,10 @@
 
            <% if signed_in? && can?(:manage, @document.id) %>
              <li>
-               <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-toggle' => 'modal',  :'data-target' => '#dri_access_controls_modal_id' %>
+               <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_access_controls_modal_id' %>
              </li>
 
-              <%= link_to '', :'data-target' => '#dri_licence_modal_id', :'data-toggle' => 'modal', id: "manage_licence" do %>
+             <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence" do %>
                 <li class="dri_subnav_edit_list_last">
                   <%= t('dri.views.catalog.buttons.set_licence') %>
                 </li>
@@ -158,22 +158,20 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-            &times;
-          </button>
-          <h4 class="modal-title"><%= t('dri.views.objects.buttons.delete_object') %></h4>
+          <h2 class="h4 modal-title"><%= t('dri.views.objects.buttons.delete_object') %></h2>
+          <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
         </div>
 
         <div class="modal-body">
           <span class="label label-danger"><%= t('dri.views.objects.confirm.delete') %></span>
           <br />
           <%= form_tag (object_path(@document.id)), id: "delete_object_form", class: 'dri_ingest_form', method: :delete, style: "margin:0;padding:0;display:inline;" do %>
-            <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "hidden" %>
+            <%= submit_tag t('dri.views.objects.buttons.delete_object'), id: 'submit_delete', class: "d-none" %>
           <% end %>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="dri_button_grey" data-dismiss="modal">
+          <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
             <%= t('dri.window.modal.cancel') %>
           </button>
           <%= button_tag t('dri.views.objects.buttons.delete_object'), class: "dri_button_red", id: "delete_object_#{@document.id}", onclick: "$('#delete_object_form').submit();" %>
@@ -187,17 +185,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
-        <h4 class="modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h4>
+        <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
 
       <div class="modal-body">
         <%= render partial: "shared/set_object_licence" %>
       </div>
       <div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
           <%= t('dri.window.modal.close') %>
         </button>
         <button id="set_licence" type="submit" class="dri_button_green" onclick="$('#choose_licence').submit();">
@@ -209,13 +205,11 @@
 </div><!-- /.modal -->
 
 <div class="modal fade" id="dri_access_controls_modal_id">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
-        <h4 class="modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h4>
+        <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
 
       <div class="modal-body">
@@ -224,7 +218,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
           <%= t('dri.window.modal.close') %>
         </button>
         <button id="save_access_controls" type="submit" class="dri_button_green" onclick="$('#set_access_controls').submit();">
@@ -239,15 +233,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-          &times;
-        </button>
-        <h4 class="modal-title"><%= t('dri.views.catalog.forms.fetch_tp_data') %></h4>
+        <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.fetch_tp_data') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
       </div>
 
       <div class="modal-body">
         <%= form_tag (tp_data_path(@document.id)), id: "fetch_tp_data_form", class: 'dri_ingest_form', method: :post, style: "margin:0;padding:0;display:inline;" do %>
-          <%= submit_tag t('dri.views.objects.buttons.submit'), id: 'submit_tp_fetch', class: "hidden" %>
+          <%= submit_tag t('dri.views.objects.buttons.submit'), id: 'submit_tp_fetch', class: "d-none" %>
         <% end %>
         <br/>
         <span class="label label-danger"><%= t('dri.views.objects.confirm.tp_data') %></span>
@@ -255,7 +247,7 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="dri_button_grey" data-dismiss="modal">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
           <%= t('dri.window.modal.cancel') %>
         </button>
         <%= button_tag t('dri.views.objects.buttons.submit'), class: "dri_button_red", id: "fetch_tp_data_#{@document.id}", onclick: "$('#fetch_tp_data_form').submit();" %>
@@ -263,7 +255,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-<script>
-
-</script>

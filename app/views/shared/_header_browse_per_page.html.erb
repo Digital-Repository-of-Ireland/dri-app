@@ -1,7 +1,7 @@
 <% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index') %> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 <nav id="dri_pager_nav_id" class="dri_sort_nav">
-    <label for="dri_page_options_id" class="sr-only"><%= t('dri.help.dri_page_options_title') %></label>
-	<select id="dri_page_options_id" class="dri_select" name="per_page" data-content="<%= t('dri.help.dri_page_options') %>"  data-original-title="<%= t('dri.help.dri_page_options_title')%>" data-trigger="hover" data-placement="right">
+    <label for="dri_page_options_id" class="visually-hidden"><%= t('dri.help.dri_page_options_title') %></label>
+	<select id="dri_page_options_id" class="dri_select" name="per_page" data-bs-content="<%= t('dri.help.dri_page_options') %>"  data-bs-title="<%= t('dri.help.dri_page_options_title')%>" data-bs-trigger="hover" data-bs-placement="right">
 		<%- blacklight_config.per_page.each do |count| %>
 			<% current_params = search_state.params_for_search %>
 			<% current_params[:per_page] = count %>

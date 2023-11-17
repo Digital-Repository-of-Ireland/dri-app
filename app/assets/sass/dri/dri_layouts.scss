@@ -1,5 +1,5 @@
 
-@import "bootstrap-sprockets";
+/*@import "bootstrap-sprockets";*/
 @import "bootstrap";
 
 
@@ -78,8 +78,7 @@
 .main{
  width: 1024px;
  height: 1024px;
-    margin: auto;
-    
+ margin: auto;   
 }
 
 .dri_main_content_container {
@@ -105,6 +104,7 @@
     }
     .dri_object_container {
         @include zen-grid-item(4, 1, $gutter-width: 0px);
+        margin-left: -10px;
     }
     .dri_object_first_block {
         @include zen-grid-item(3, 1, $gutter-width: 0px);
@@ -240,7 +240,7 @@
         padding-left: 10px;
         padding-right: 10px;
         margin: 0 auto;
-        margin-top: 9em;
+        margin-top: 1em;
         $zen-column-count: 2;
         .dri_header_container {
             .dri_ident {
@@ -252,9 +252,9 @@
             }
         }
     }
-    .dri_search_term_text_input, #search_field {
-        margin: 12px 10px 0 10px;
-    }
+    //.dri_search_term_text_input, #search_field {
+     //   margin: 12px 10px 0 10px;
+    //}
     .dri_search_term_text_input {
         width: 50%;
     }
@@ -354,7 +354,7 @@
 
 @media only screen and (max-width: 395px) {
     .dri_wrapper {
-        margin-top: 12em;
+        margin-top: 1em;
         $zen-column-count: 1;
     }
     .dri_main_content_container {

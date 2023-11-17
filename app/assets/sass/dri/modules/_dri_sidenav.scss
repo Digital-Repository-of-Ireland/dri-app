@@ -11,19 +11,19 @@
 }
 .dri_sidenav {
     margin-top: 20px;
-    color: $dri_midgrey;
+    color: $dri_darkgrey;
     font-size: 100%;
 
 
     a {
-        color: $dri_midgrey;
+        color: $dri_darkgrey;
     }
     button {
       float:right;
     }
     a:hover,
     form:hover {
-        color: $dri_darkgrey;
+        color: $dri_midgrey;
     }
     h5 {
         margin:0;
@@ -40,7 +40,7 @@
             padding:5px 0 5px 0;
             border-bottom: 1px solid $dri_thingrey;
             list-style-type: none;
-            font-size: 100%;
+            font-size: 90%;
           }
         li.dri_formats {
           padding:5px 0 5px 0;
@@ -129,6 +129,7 @@
 }
 
 .dri_subnav_review_list {
+    min-width: 245px;
     li {
        text-indent: 0.3em;
      }

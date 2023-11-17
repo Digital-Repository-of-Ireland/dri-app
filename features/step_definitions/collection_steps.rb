@@ -18,6 +18,8 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
   pid = @random_pid if (pid.nil? || pid == "random")
   @pid = pid
 
+  c = DRI::DigitalObject.find_by_alternate_id(pid)
+  c.destroy if c
   @collection = DRI::QualifiedDublinCore.new(alternate_id: pid)
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]

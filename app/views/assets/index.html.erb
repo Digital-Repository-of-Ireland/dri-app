@@ -24,12 +24,12 @@
 		      <td><%= @status[file.id][:status] %></td>
 		      <td>
                 <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
-                          <i class="fa fa-info-circle fa-2x"></i>
+                          <i class="fa fa-info-circle"></i>
 			    <% end %>
 		      </td>
 		      <td>
                 <%= link_to file_download_path(@document, file.id), id: "download_asset" do %>
-                  <i class="fa fa-download fa-2x"></i>
+                  <i class="fa fa-download"></i>
 		        <% end %>
               </td>
               <td>
