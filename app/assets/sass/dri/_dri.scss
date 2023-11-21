@@ -1349,14 +1349,15 @@ h4.suggest {
     @extend .dri_account_block;
     .dri_workspace_menu_block_heading {
         @extend .dri_account_block_heading;
+        min-width: 150px;
     }
     .dri_workspace_menu_block_info {
+        min-width: 200px;
         .dri_workspace_menu_block_info_item {
           @extend .dri_account_block_info_item;
         }
         li {
             color: $dri_darkgrey;
-            //font-size: 110%;
             margin-bottom: 10px;
             list-style-type: none;
             a {
