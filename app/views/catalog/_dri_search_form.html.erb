@@ -1,7 +1,7 @@
-  <%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form pt-5' do %>
+  <%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form' do %>
     <% translated_fields = translated_search_fields(display_search_fields) %>
     <label for="search_field" class="visually-hidden"><%= t('blacklight.search.form.search_field.label') %></label>
-   <div class="input-group mt-2 dri-search-input-group">
+    <div class="input-group mt-2 dri-search-input-group">
     <%= select_tag(:search_field,
                    options_for_select(translated_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
