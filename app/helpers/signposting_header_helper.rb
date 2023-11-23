@@ -33,7 +33,6 @@ module SignpostingHeaderHelper
       else
         raise DRI::Exceptions::BadRequest, 'Invalid ID provided'
       end
-
     end
 
     def mapped_links (target_types, map)
@@ -43,20 +42,19 @@ module SignpostingHeaderHelper
           return link
         end
       end
-      return nil
+      
+      nil
     end
 
     def get_contributors(contributors)
-
-      if contributors.present?
-        identifiers = contributors.map do |entry|
-          match = entry.match(/identifier=(https:\/\/orcid\.org\/\d{4}-\d{4}-\d{4}-\d{4})/)
-          match&.captures&.first
-        end.compact
-        return identifiers
-      else
-        return nil
-      end
+      return nil unless contributors.present?
+      
+      identifiers = contributors.map do |entry|
+        match = entry.match(/identifier=(https:\/\/orcid\.org\/\d{4}-\d{4}-\d{4}-\d{4})/)
+        match&.captures&.first
+      end.compact
+        
+      identifiers
     end
   
     def object_items(assets, id)
@@ -67,9 +65,9 @@ module SignpostingHeaderHelper
 
         if asset.text? || asset.pdf?
           if mime_type.include?('application/pdf')
-            item_link(asset, id, asset_link, "surogate", id_file, mime_type)
+            item_link(asset, id, asset_link, "surrogate", id_file, mime_type)
           else 
-            item_link(asset, id, asset_link, "surogate", id_file, "application/pdf")
+            item_link(asset, id, asset_link, "surrogate", id_file, "application/pdf")
             if @document.read_master? && asset.text? && !mime_type.include?('application/pdf')
               item_link(asset, id, asset_link, "masterfile", id_file, mime_type)
             end
@@ -78,19 +76,19 @@ module SignpostingHeaderHelper
           if @document.read_master?
             item_link(asset, id, asset_link, "masterfile", id_file, mime_type)
           else
-            item_link(asset, id, asset_link, "surogate", id_file, mime_type)
+            item_link(asset, id, asset_link, "surrogate", id_file, mime_type)
           end
         else
-          item_link(asset, id, asset_link, "surogate", id_file, mime_type)
+          item_link(asset, id, asset_link, "surrogate", id_file, mime_type)
         end
       end
 
-      return asset_link
+      asset_link
     end
 
     def item_link(asset, id, asset_link, type, id_file, mime_type)
       place_holder = {}
-      file = "http://repository.dri.ie/objects/#{id}/files/#{id_file}/download?type=#{type}"
+      file = "https://repository.dri.ie/objects/#{id}/files/#{id_file}/download?type=#{type}"
       place_holder[:href] = file
       place_holder[:type] = mime_type
       asset_link << place_holder
@@ -99,7 +97,7 @@ module SignpostingHeaderHelper
     def metadata_link(id)
       describedby_link = {}
       metadata_type = "application/xml"
-      metadata_url = "http://repository.dri.ie/objects/#{id}/metadata"
+      metadata_url = "https://repository.dri.ie/objects/#{id}/metadata"
       describedby_link [:href] = metadata_url
       describedby_link [:type] = metadata_type
       xml_type = @document['has_model_ssim']
@@ -109,7 +107,7 @@ module SignpostingHeaderHelper
         describedby_link [:profile] = profile
       end
 
-      return describedby_link
+      describedby_link
     end
 
     def reverse_link_builder (link_assets, ancestor_id, object_id)
@@ -130,7 +128,6 @@ module SignpostingHeaderHelper
         reverse << place_holder
       end
 
-      return reverse
+      reverse
     end
-
   end
