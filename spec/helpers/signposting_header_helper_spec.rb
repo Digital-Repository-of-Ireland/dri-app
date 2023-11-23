@@ -255,7 +255,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
     it 'returns the correct metadata link without profile' do
       result = metadata_link(id)
 
-      expect(result[:href]).to eq("http://repository.dri.ie/objects/#{id}/metadata")
+      expect(result[:href]).to eq("https://repository.dri.ie/objects/#{id}/metadata")
       expect(result[:type]).to eq('application/xml')
       expect(result[:profile]).to be_nil
     end
@@ -265,7 +265,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       
       result = metadata_link(id)
 
-      expect(result[:href]).to eq("http://repository.dri.ie/objects/#{id}/metadata")
+      expect(result[:href]).to eq("https://repository.dri.ie/objects/#{id}/metadata")
       expect(result[:type]).to eq('application/xml')
       expect(result[:profile]).to eq('http://test.com/profile')
     end
