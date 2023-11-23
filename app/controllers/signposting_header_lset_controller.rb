@@ -3,9 +3,7 @@ class SignpostingHeaderLsetController < ApplicationController
     require 'json'
     require 'net/http'
     require 'uri'
-    require 'rsolr'
-    require 'blacklight/catalog'
-
+    
     def lset
         id = params[:id]
 

@@ -3,8 +3,6 @@ class SignpostingHeaderLsetJsonController < ApplicationController
   require 'json'
   require 'net/http'
   require 'uri'
-  require 'rsolr'
-  require 'blacklight/catalog'
 
   def json
     id = params[:id]
@@ -65,8 +63,6 @@ class SignpostingHeaderLsetJsonController < ApplicationController
     linkset_hash = { "linkset" => [linkset, reverse_link] }
     response.headers['Content-Type'] = 'application/linkset+json'
     render json: JSON.pretty_generate(linkset_hash) + "\n\n"
-
   end
-  private
 end
   
