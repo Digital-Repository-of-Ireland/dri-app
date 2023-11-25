@@ -175,8 +175,8 @@ Rails.application.routes.draw do
     get 'aggregations/:id' => 'aggregations#edit', as: :edit_edm_settings
     put 'aggregations/:id' => 'aggregations#update', as: :save_edm_settings
 
-    get 'linkset/:id/json' => 'signposting_header_lset_json#json'
-    get 'linkset/:id/lset' => 'signposting_header_lset#lset'
+    get 'linkset/:id/json' => 'linksets#json'
+    get 'linkset/:id/lset' => 'linksets#lset'
 
     #API paths
     post 'get_objects' => 'api#objects'
@@ -199,7 +199,4 @@ Rails.application.routes.draw do
    namespace 'api' do 
       get 'oembed' , to: 'oembed#show' , constraints: ->(request){ request.query_parameters["url"].present? } , defaults: { format: 'json' }
    end
-
-   
- 
 end

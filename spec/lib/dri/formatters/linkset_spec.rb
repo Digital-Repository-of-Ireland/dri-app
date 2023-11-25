@@ -1,9 +1,6 @@
-# spec/helpers/signposting_header_helper_spec.rb
-
 require 'rails_helper'
-include SignpostingHeaderHelper
 
-RSpec.describe SignpostingHeaderHelper, type: :helper do
+describe LinksetsController, type: :controller do
   let(:id) { '1' }
 
   describe '#mapped_links' do
@@ -17,24 +14,25 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
         '3d'   => 'https://schema.org/3DModel'
       }
     end
+    let(:formatter) { DRI::Formatters::Linkset.new(controller, {})}
 
     it 'returns the first link that is present in the map' do
-      result = mapped_links(target_types, map)
+      result = formatter.mapped_links(target_types, map)
       expect(result).to eq('https://schema.org/text_link')
     end
 
     it 'returns the last link that is present in the map' do
-      result = mapped_links(target_3d, map)
+      result = formatter.mapped_links(target_3d, map)
       expect(result).to eq('https://schema.org/3DModel')
     end
 
     it 'returns nil if no link not present in the map' do
-      result = mapped_links([target_unknown], map)
+      result = formatter.mapped_links([target_unknown], map)
       expect(result).to be_nil
     end
 
     it 'returns nil if target_types is empty' do
-      result = mapped_links(target_empty, map)
+      result = formatter.mapped_links(target_empty, map)
       expect(result).to be_nil
     end
   end
@@ -49,19 +47,25 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       'name=Test1, Test1; authority=ORCID; identifier=https://org/0000-0000-0000-0001'
       ]}
     let(:identifiers_empty){[]}
-    it 'returns the author ORCID links if match patern' do
-      result = get_contributors(identifiers)
+    it 'returns the author ORCID links if match pattern' do
+      @document = {}
+      @document['contributor_tesim'] = identifiers
+      result = DRI::Formatters::Linkset.new(controller, @document).contributors
       expect(result).to eq(['https://orcid.org/0000-0000-0000-0000', 'https://orcid.org/0000-0000-0000-0001'])
     end
 
-    it 'returns nil if doesnt match patern' do
-      result = get_contributors(identifiers_no_match)
+    it 'returns nil if doesnt match pattern' do
+      @document = {}
+      @document['contributor_tesim'] = identifiers_no_match
+      result = DRI::Formatters::Linkset.new(controller, @document).contributors
       expect(result).to eq([])
     end
 
     it 'returns nil if identifiers empty' do
-      result = get_contributors(identifiers_no_match)
-      expect(result).to eq([])
+      @document = {}
+      @document['contributor_tesim'] = identifiers_empty
+      result = DRI::Formatters::Linkset.new(controller, @document).contributors
+      expect(result).to be nil
     end
   end
 
@@ -88,7 +92,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[0]).to receive(:threeD?).and_return(false)
       allow(assets[0]).to receive(:fetch).with(any_args).and_return("application/pdf")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(1)
       expect(result.first[:type]).to eq('application/pdf')
@@ -102,7 +106,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[0]).to receive(:threeD?).and_return(false)
       allow(assets[0]).to receive(:fetch).with(any_args).and_return("text/plain")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(2)
       expect(result.first[:type]).to eq('application/pdf')
@@ -117,7 +121,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[0]).to receive(:threeD?).and_return(true)
       allow(assets[0]).to receive(:fetch).with(any_args).and_return("glTF binary model")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(1)
       expect(result.first[:type]).to eq('glTF binary model')
@@ -147,7 +151,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[2]).to receive(:threeD?).and_return(false)
       allow(assets[2]).to receive(:fetch).with(any_args).and_return("image/png")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(3)
       expect(result[0][:type]).to eq('audio/mp3')
@@ -176,7 +180,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[0]).to receive(:threeD?).and_return(false)
       allow(assets[0]).to receive(:fetch).with(any_args).and_return("application/pdf")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(1)
       expect(result.first[:type]).to eq('application/pdf')
@@ -190,7 +194,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[0]).to receive(:threeD?).and_return(false)
       allow(assets[0]).to receive(:fetch).with(any_args).and_return("text/plain")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(1)
       expect(result.first[:type]).to eq('application/pdf')
@@ -204,7 +208,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[0]).to receive(:threeD?).and_return(true)
       allow(assets[0]).to receive(:fetch).with(any_args).and_return("glTF binary model")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(1)
       expect(result.first[:type]).to eq('glTF binary model')
@@ -234,7 +238,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       allow(assets[2]).to receive(:threeD?).and_return(false)
       allow(assets[2]).to receive(:fetch).with(any_args).and_return("image/png")
       
-      result = object_items(assets, id)
+      result = DRI::Formatters::Linkset.new(controller, @document).object_items(assets, id)
       expect(result).to be_an(Array)
       expect(result.size).to eq(3)
       expect(result[0][:type]).to eq('audio/mp3')
@@ -247,25 +251,25 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
   describe '#metadata_link' do
 
     before do
-      @document = { 'has_model_ssim' => ['DRI::QualifiedDublinCore'] }
-      allow_any_instance_of(SignpostingHeaderHelper).to receive(:mapped_links).and_return(nil)
+      @document = OpenStruct.new({ id: '1', 'has_model_ssim' => ['DRI::QualifiedDublinCore'] })
+      allow_any_instance_of(DRI::Formatters::Linkset).to receive(:mapped_links).and_return(nil)
     end
 
 
     it 'returns the correct metadata link without profile' do
-      result = metadata_link(id)
+      result = DRI::Formatters::Linkset.new(controller, @document).metadata_link
 
-      expect(result[:href]).to eq("https://repository.dri.ie/objects/#{id}/metadata")
+      expect(result[:href]).to eq("http://test.host/objects/#{id}/metadata")
       expect(result[:type]).to eq('application/xml')
       expect(result[:profile]).to be_nil
     end
 
     it 'returns the correct metadata link with profile' do
-      allow_any_instance_of(SignpostingHeaderHelper).to receive(:mapped_links).and_return('http://test.com/profile')
+      allow_any_instance_of(DRI::Formatters::Linkset).to receive(:mapped_links).and_return('http://test.com/profile')
       
-      result = metadata_link(id)
+      result = DRI::Formatters::Linkset.new(controller, @document).metadata_link
 
-      expect(result[:href]).to eq("https://repository.dri.ie/objects/#{id}/metadata")
+      expect(result[:href]).to eq("http://test.host/objects/#{id}/metadata")
       expect(result[:type]).to eq('application/xml')
       expect(result[:profile]).to eq('http://test.com/profile')
     end
@@ -281,7 +285,7 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
         { 'href2' => 'link2' }
       ]
 
-      result = reverse_link_builder(link_assets, ancestor_id, object_id)
+      result = DRI::Formatters::Linkset.new(controller, {}).reverse_link_builder(link_assets, ancestor_id, object_id)
 
       expect(result).to be_an(Array)
       expect(result.size).to eq(2)
@@ -289,16 +293,14 @@ RSpec.describe SignpostingHeaderHelper, type: :helper do
       expect(result[0][:anchor]).to eq('link1')
       expect(result[0][:collection]).to be_an(Array)
       expect(result[0][:collection].size).to eq(1)
-      expect(result[0][:collection][0][:href]).to eq("https://repository.dri.ie/catalog/#{ancestor_id.first}")
+      expect(result[0][:collection][0][:href]).to eq("http://test.host/catalog/#{ancestor_id.first}")
       expect(result[0][:collection][0][:type]).to eq('text/html')
 
       expect(result[1][:anchor]).to eq('link2')
       expect(result[1][:collection]).to be_an(Array)
       expect(result[1][:collection].size).to eq(1)
-      expect(result[1][:collection][0][:href]).to eq("https://repository.dri.ie/catalog/#{ancestor_id.first}")
+      expect(result[1][:collection][0][:href]).to eq("http://test.host/catalog/#{ancestor_id.first}")
       expect(result[1][:collection][0][:type]).to eq('text/html')
     end
-
   end
-
 end
