@@ -778,10 +778,13 @@ ol.breadcrumb {
 .dri_sort_nav {
     float: left;
     margin: 0;
-    padding: 6px 25px 0 0;
+    //padding: 6px 25px 0 0;
     color: $dri_lightgrey;
     select {
         @extend %dri_sort_select;
+    }
+    button {
+
     }
 }
 .dri_select {
@@ -837,6 +840,7 @@ ol.breadcrumb {
 .dri_change_sort_view {
     font-size: 100%;
     float: left;
+    margin-top: 2px;
     a {
         color: $dri_lightgrey;
         i {
@@ -896,6 +900,20 @@ ol.breadcrumb {
             list-style: none;
             color: $dri_midgrey;
         }
+    }
+}
+
+#dri_sort_options_id,#dri_page_options_id {
+    .dropdown-toggle {
+        margin: 2px;
+        padding: 4px;
+        border: 1px solid $dri_thingrey;
+        @include border_radius;
+        color: $dri_midgrey;
+        //width: 60px;
+        font-size: 100%;
+        background-color: $dri_extralightgrey;
+        color: $dri_darkgrey;
     }
 }
 /*-------------- Pagination --------------*/
