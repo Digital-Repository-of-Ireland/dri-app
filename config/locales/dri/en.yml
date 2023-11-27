@@ -458,7 +458,6 @@ en:
           copy_to_clipboard: Copy to Clipboard 
           copy_success: Copied to Clipboard
           copy_failure: Not copied
-
         headers:
           files: Asset Tools
           related_materials: Related Materials
@@ -477,6 +476,7 @@ en:
           no_surrogates: No surrogates are available.
           no_tasks: No recent background task (publish or review) status information currently available.
           preservation_only: Preservation-only file.
+          results_count: "%{count} search results"
           request_permission_in_progress: Your request is in progress.
           request_permission_logged_in: Request Access
           request_permission_not_logged_in: Sign up/Login to get access.
