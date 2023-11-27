@@ -191,17 +191,20 @@ en:
           other: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
         single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
       per_page: 
-        button_label: "%{count}"
-        label: "%{count} Results"
-        submit: Update
-        title: "Number of results to display per page"
+        label: '%{count}<span class="sr-only visually-hidden"> per page</span>'
+        button_label: '%{count} per page' # TODO: Remove during major release
+        button_label_html: '%{count}<span class="d-none d-sm-inline"> results per page</span>'
+        title: 'Number of results to display per page'
+        submit: 'Update'
+        aria_label: 'Results navigation'
       rss_feed: "RSS for results"
       search_results: "Search Results"
       search_results_header: Search
       show: 
         title: "%{document_title} - %{application_name}"
-      sort: 
-        label: "Sort by %{field}"
+      sort:
+        label: 'Sort by %{field}' # TODO: Remove during major release
+        label_html: 'Sort<span class="d-none d-sm-inline"> by %{field}</span>'
         newest: Newest
         order/sequence: Order/sequence
         relevance: Relevance

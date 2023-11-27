@@ -205,14 +205,20 @@ ga:
       admin: Riarthóir
       batch_ingest: Baiscionghabháil
       blog: Blag
-      browse: Aimsigh
+      browse: Taisclann DRI
+      browse_collections: Brabhsáil de réir Sonraí & Bailiúcháin
+      browse_organisations: Brabhsáil de réir Eagraíochta
       collection: Bailiúchán
       collections: Bailiúcháin
+      community_archive: Scéim Chartlainne Phobail
       deposit_guide: Treoir don Chuir i dTaisce
+      deposit: Taisceadh
       end_user_agreement: Comhaontú an Úsáideora Dheiridh
       events: Imeachtaí
+      guides: Treoir don Úsáideoir
       help: Cabhair
-      home: Baile
+      home: Suíomh gréasáin DRI
+      how_to_deposit: Conas Taisceadh a Dhéanamh
       ingest: Ionghabh
       institutions: Eagraíochtaí
       language: Teanga
@@ -241,6 +247,7 @@ ga:
       resque: Freastalaí Resque
       sub_collections: Fo-bhailiúcháin
       team: Foireann
+      user_guides: 
       usergroups: 'Úsáideoirí agus Grúpaí'
       vacancies: Folúntais
       workspace: Spás Oibre
@@ -412,6 +419,7 @@ ga:
           no_surrogates: Níl aon ionadaí ar fáil.
           no_tasks: 'Níl aon fhaisnéis stádais úrnua faoi tasc sa chúlra (foilsigh nó athbhreithnigh) ar fáil faoi láthair.    '
           preservation_only: Comhad caomhnú-amháin.
+          results_count: "%{count} torthaí"
           request_permission_in_progress: Tá d’iarratas á phróiseáil
           request_permission_logged_in: Iarr Rochtain
           request_permission_not_logged_in: Cláraigh/Logáil Isteach le haghaidh rochtana

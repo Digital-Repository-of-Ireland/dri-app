@@ -778,10 +778,13 @@ ol.breadcrumb {
 .dri_sort_nav {
     float: left;
     margin: 0;
-    padding: 6px 25px 0 0;
+    //padding: 6px 25px 0 0;
     color: $dri_lightgrey;
     select {
         @extend %dri_sort_select;
+    }
+    button {
+
     }
 }
 .dri_select {
@@ -837,6 +840,7 @@ ol.breadcrumb {
 .dri_change_sort_view {
     font-size: 100%;
     float: left;
+    margin-top: 2px;
     a {
         color: $dri_lightgrey;
         i {
@@ -896,6 +900,20 @@ ol.breadcrumb {
             list-style: none;
             color: $dri_midgrey;
         }
+    }
+}
+
+#dri_sort_options_id,#dri_page_options_id {
+    .dropdown-toggle {
+        margin: 2px;
+        padding: 4px;
+        border: 1px solid $dri_thingrey;
+        @include border_radius;
+        color: $dri_midgrey;
+        //width: 60px;
+        font-size: 100%;
+        background-color: $dri_extralightgrey;
+        color: $dri_darkgrey;
     }
 }
 /*-------------- Pagination --------------*/
@@ -1148,7 +1166,7 @@ h4.suggest {
 .dri_facet_filters_block {
     width: 100%;
     min-width: $dri_facet_min_width;
-    margin: 25px 0 0 0;
+    margin: 15px 0 0 0;
     padding: 0px;
     float: left;
     display: block;
@@ -1201,17 +1219,19 @@ h4.suggest {
     }
 }
 
+ .dri_search_num {
+        float: right;
+        //padding-right: 10px;
+        margin-top: 5px;
+    }
+
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        padding-left: 10px;
-	margin-top: 15px;
+        padding-left: 5px;
+ 	    margin-top: 15px;
         // leave some space for the border
         min-width: $dri_facet_min_width - 2;
-    }
-    .dri_search_num {
-        float: right;
-        padding-right: 10px;
     }
     .panel {
         margin: 0px;

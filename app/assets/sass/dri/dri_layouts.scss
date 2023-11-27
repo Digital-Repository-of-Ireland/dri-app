@@ -83,6 +83,7 @@
         @include zen-grid-item(1, 1, $gutter-width: 0px);
     }
     .dri_second_navigation_container {
+        min-width: 250px;
         @include zen-grid-item(1, 4, $gutter-width: 0px);
     }
     .dri_result_container {
