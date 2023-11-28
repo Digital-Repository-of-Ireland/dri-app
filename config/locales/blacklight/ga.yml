@@ -183,8 +183,8 @@ ga:
       pagination_info: 
         no_items_found: "níor aimsíodh %{entry_name} ar bith"
         pages: 
-          one: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b>"
-          other: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b>"
+          one: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b> torthaí"
+          other: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b> torthaí"
         single_item_found: "<b>1</b> go <b>1</b> as <b>1</b>"
       per_page:
         label: '%{count}<span class="sr-only visually-hidden"> Torthaí</span>'

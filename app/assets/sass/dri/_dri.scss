@@ -763,6 +763,7 @@ ol.breadcrumb {
 .dri_search_features_nav_container {
     margin-left: 10px;
     padding: 0;
+    font-size: 90%;
 }
 /*-------------- Sort by --------------*/
 
@@ -849,14 +850,14 @@ ol.breadcrumb {
     }
     i {
         color: $dri_green;
-	padding: 1px;
+	    padding: 5px;
     }
 }
 .dri_icon_border {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
-    width: 27px;
-    height: 24px;
+    width: 38px;
+    height: 32px;
     text-align: center;
     line-height: 100%;
     vertical-align: middle;
@@ -919,8 +920,12 @@ ol.breadcrumb {
 /*-------------- Pagination --------------*/
 
 .dri_pagination_nav {
-    //margin: 25px 0 10px 0;
-    padding: 0x;
+    padding: 0;
+    font-size: 90%;
+    .page-entries {
+      float:right;
+      color: $dri_darkgrey;
+    }
     p {
         margin: 0;
         padding: 3px 6px 0 0;
@@ -945,15 +950,15 @@ ol.breadcrumb {
             list-style: none;
             display: block;
             padding: 0 6px 0 6px;
-            color: $dri_midgrey;
+            color: $dri_darkgrey;
             text-decoration: none;
         }
         a:hover {
-            color: $dri_midgrey;
+            color: $dri_darkgrey;
         }
     }
     .selected a {
-        color: $dri_midgrey;
+        color: $dri_darkgrey;
         text-decoration: underline;
     }
     .first a {
@@ -1049,7 +1054,7 @@ ol.breadcrumb {
         text-decoration: none;
         float: left;
         a {
-            color: $dri_midgrey;
+            color: $dri_darkgrey;
             margin: 10px 4px 0 0;
             padding: 8px 13px 8px 13px;
             text-decoration: none;
@@ -1078,10 +1083,11 @@ ol.breadcrumb {
     }
     .dri_pagination_nav {
         margin-top: 10px;
+        padding: 6px 0px 6px 0px;
         li a {
             color: none;
             margin: 0px 0 0px 0;
-            padding: 6px 8px 6px 8px;
+            padding: 0px 8px 0px 8px;
             border: none;
             border-top-right-radius: none;
             border-top-left-radius: none;
@@ -1166,7 +1172,7 @@ h4.suggest {
 .dri_facet_filters_block {
     width: 100%;
     min-width: $dri_facet_min_width;
-    margin: 15px 0 0 0;
+    margin: 25px 0 0 0;
     padding: 0px;
     float: left;
     display: block;
