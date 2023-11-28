@@ -15,8 +15,6 @@
 <%= render partial: 'did_you_mean' %>
 
 <div id="dri_second_navigation_container_id" class="dri_second_navigation_container">
-  <span class="dri_head_title dri_search_num" id="browse_results_count"><%= t('dri.views.catalog.legends.results_count', count: @response.response[:numFound]) %></span>
-
   <!-- facet block -->
   <% if controller_name == 'my_collections' %>
     <%= render "#{controller_name}/dri_search_form" %>
