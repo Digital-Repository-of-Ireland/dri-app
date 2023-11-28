@@ -175,8 +175,8 @@ Rails.application.routes.draw do
     get 'aggregations/:id' => 'aggregations#edit', as: :edit_edm_settings
     put 'aggregations/:id' => 'aggregations#update', as: :save_edm_settings
 
-    get 'linkset/:id/json' => 'linksets#json'
-    get 'linkset/:id/lset' => 'linksets#lset'
+    get 'linkset/:id/json' => 'linksets#json', as: :linkset_json
+    get 'linkset/:id/lset' => 'linksets#lset', as: :linkset_lset
 
     #API paths
     post 'get_objects' => 'api#objects'

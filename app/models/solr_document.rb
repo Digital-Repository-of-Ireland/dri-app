@@ -159,6 +159,10 @@ class SolrDocument
     aggregation.aggregation_id.present?
   end
 
+  def linkset?
+    object? && self['file_count_isi'].present? && published?
+  end
+
   # @param [String] field_name
   # @return [Boolean]
   def truthy_index_field?(key)
