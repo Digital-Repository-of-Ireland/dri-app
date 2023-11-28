@@ -1,7 +1,4 @@
-
-/*@import "bootstrap-sprockets";*/
 @import "bootstrap";
-
 
 @import "jquery-ui/resizable";
 @import "jquery-ui/autocomplete";
@@ -84,6 +81,7 @@
     }
     .dri_second_navigation_container {
         min-width: 250px;
+        padding-bottom: 5px;
         @include zen-grid-item(1, 4, $gutter-width: 0px);
     }
     .dri_result_container {

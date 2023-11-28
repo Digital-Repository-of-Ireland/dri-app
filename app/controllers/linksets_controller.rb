@@ -32,7 +32,7 @@ class LinksetsController < ApplicationController
    def solr_request(id_target, is_essential)
      @document = SolrDocument.find("#{id_target}")
 
-     if @document.present? && @document.object? && @document['file_count_isi'].present? && @document.published?
+     if @document.present? && @document.linkset?
        return @document
      else
        raise DRI::Exceptions::BadRequest, 'Invalid ID provided'

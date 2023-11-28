@@ -4,15 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 
-    
-    <% if request.path =~ %r{^/catalog/} && @document&.object? %>
-      <!-- FAIR Signposting https://signposting.org/FAIR -->
-      <%path_seg = request.path.split('/')%>
-      <%id = path_seg.last%>
-      <link href= "https://repository.dri.ie/linkset/<%=id%>/json"  rel="linkset"  type="application/linkset+json">
-      <link href= "https://repository.dri.ie/linkset/<%=id%>/lset"  rel="linkset"  type="application/linkset">
-    <% end %>
-
     <!-- Mobile viewport optimization h5bp.com/ad -->
     <meta name="HandheldFriendly" content="True">
     <meta name="apple-mobile-web-app-capable" content="yes">

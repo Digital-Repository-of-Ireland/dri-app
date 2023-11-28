@@ -11,9 +11,6 @@
 
 <%= paginator.render do -%>
 	<!-- navigation to allow the user to page through the search results  -->
-	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
-		<ul id="dri_pagination_nav_links_id" class="dri_pagination_nav_links" data-bs-content="<%= I18n.t('dri.help.dri_pagination_nav_links') %>"  data-bs-title="<%= I18n.t('dri.help.dri_pagination_nav_links_title')%>" data-bs-trigger="hover" data-bs-placement="left">
-			
 		    <%= prev_page_tag unless current_page.first? %>
 		    <% each_relevant_page do |page| -%>
 		      <% if page.left_outer? || page.right_outer? || page.inside_window? -%>
@@ -23,7 +20,4 @@
 		      <% end -%>
 		    <% end -%>
 		    <%= next_page_tag unless current_page.last? %>
-
-		</ul>
-	</nav>
 <% end %>

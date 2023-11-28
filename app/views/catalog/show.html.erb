@@ -16,14 +16,20 @@
 </div>
 <% content_for :head do %>
   <meta property="fb:app_id"          content="298965153560401" />
-    <meta property="og:type"            content="article" />
-    <meta property="og:url"             content="<%= request.original_url %>" />
-    <meta property="og:title"           content="<%= @page_title %>" />
-    <meta property="og:description"    content="DRI Object" />
+  <meta property="og:type"            content="article" />
+  <meta property="og:url"             content="<%= request.original_url %>" />
+  <meta property="og:title"           content="<%= @page_title %>" />
+  <meta property="og:description"    content="DRI Object" />
  
-    <% if @dimensions %>
-      <script>
-        gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
-      </script>
-    <% end %>
+  <% if @document.linkset? %>
+    <!-- FAIR Signposting https://signposting.org/FAIR -->
+    <link href= "<%= linkset_json_url(@document.id) %>"  rel="linkset"  type="application/linkset+json">
+    <link href= "<%= linkset_lset_url(@document.id) %>"  rel="linkset"  type="application/linkset">
+  <% end %>
+
+  <% if @dimensions %>
+    <script>
+      gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
+    </script>
+  <% end %>
 <% end %>

@@ -187,8 +187,8 @@ en:
       pagination_info: 
         no_items_found: "No %{entry_name} found"
         pages: 
-          one: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
-          other: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b>"
+          one: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b> results"
+          other: "<b>%{start_num}</b> - <b>%{end_num}</b> of <b>%{total_num}</b> results"
         single_item_found: "<b>1</b> to <b>1</b> of <b>1</b>"
       per_page: 
         label: '%{count}<span class="sr-only visually-hidden"> per page</span>'
