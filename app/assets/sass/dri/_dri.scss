@@ -920,7 +920,7 @@ ol.breadcrumb {
 /*-------------- Pagination --------------*/
 
 .dri_pagination_nav {
-    padding: 0;
+    //padding-right: 18px !important;
     font-size: 90%;
     .page-entries {
       float:right;
@@ -1082,8 +1082,8 @@ ol.breadcrumb {
         }
     }
     .dri_pagination_nav {
-        margin-top: 10px;
-        padding: 6px 0px 6px 0px;
+        margin-top: 15px;
+        padding: 6px 10px 6px 0px;
         li a {
             color: none;
             margin: 0px 0 0px 0;
@@ -1097,14 +1097,7 @@ ol.breadcrumb {
         }
     }
 }
-/*-------------- Save Search --------------*/
 
-.dri_search_save_submit_button {
-    @extend .dri_button_green;
-    //margin-top: 25px;
-    float: right;
-    margin: 0px 0 10px 0;
-}
 /*-------------- Warning Messages --------------*/
 /*-------------- Suggest Message --------------*/
 
