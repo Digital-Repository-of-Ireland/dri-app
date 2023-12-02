@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 44d665b7e4f66d2ea26f1dd201a4a939c2043f43
-  tag: v4.5.6
+  revision: aacc9976fb153c01f72b13734c77fa56f7e06de9
+  branch: develop
   specs:
-    dri_data_models (4.5.6)
+    dri_data_models (4.5.7)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -566,7 +566,7 @@ GEM
       railties (>= 3.1)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.6.3)
+    json (2.7.0)
     json-canonicalization (0.3.2)
     json-ld (3.3.0)
       htmlentities (~> 4.3)
@@ -682,7 +682,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.5)
+    net-imap (0.4.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -692,7 +692,7 @@ GEM
     net-smtp (0.4.0)
       net-protocol
     netrc (0.11.0)
-    nio4r (2.6.0)
+    nio4r (2.7.0)
     noid (0.9.0)
     noid-rails (3.1.0)
       actionpack (>= 5.0.0, < 7.1)
