@@ -1728,6 +1728,9 @@ p.dri_rss_link a {
         margin: 0 0 0 6px;
         color: $dri_darkgrey;
     }
+    &:hover {
+        border-color: $dri_darkgrey;
+    }
 }
 /*-------------- Tabular View styling --------------*/
 
