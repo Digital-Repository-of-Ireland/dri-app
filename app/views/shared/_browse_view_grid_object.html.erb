@@ -8,7 +8,7 @@
     <% end %>
 
     <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter)} )) do %>
-        <h1><%= document['title_tesim'][0] %></h1>
+        <h3><%= document['title_tesim'][0] %></h3>
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
             <% if @assets && @assets.key?(document.id) %>
