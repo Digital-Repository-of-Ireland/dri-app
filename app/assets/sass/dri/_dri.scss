@@ -1568,7 +1568,6 @@ p.dri_rss_link a {
     margin: 0 20px 20px 0;
     padding: 0;
     width: 228px;
-    //height:270px;
     float: left;
     display: block;
     color: $dri_darkgrey;
@@ -1577,6 +1576,9 @@ p.dri_rss_link a {
     position: relative;
     .top {
         border-top: 5px solid $dri_thingrey;
+    }
+    &:hover {
+        border-color: $dri_darkgrey;
     }
     .dri_image {
         padding: 0;
@@ -1610,7 +1612,7 @@ p.dri_rss_link a {
     }
     p.dri_subject {
         font-size: 100%;
-        color: $dri_midgrey;
+        color: #5b616b;
         padding: 0;
         margin: 4px 14px 10px 14px;
         font-weight: normal;
@@ -1620,7 +1622,7 @@ p.dri_rss_link a {
         text-overflow: ellipsis;
         line-height: 1.3em;
         .dri_subject a {
-            color: $dri_midgrey;
+            color: 5b616b;
             text-decoration: none;
             cursor: pointer;
             &:hover {
@@ -1629,7 +1631,7 @@ p.dri_rss_link a {
         }
     }
     .dri_icon {
-        color: $dri_midgrey;
+        color: #5b616b;
         line-height: 1.4em;
         display: block;
         height: 27px;
@@ -1730,10 +1732,10 @@ p.dri_rss_link a {
 /*-------------- Tabular View styling --------------*/
 
 .dri_result_object {
-    padding: 0 0 20px 0;
-    margin-bottom: 20px;
+    //padding: 0 0 20px 0;
+    margin-top: 1rem;
     border-bottom: 1px solid $dri_extralightgrey;
-    height: 140px;
+    height: 160px;
     width: 96%;
     .dri_content_list_collection {
         width: 700px;
@@ -1757,21 +1759,21 @@ p.dri_rss_link a {
     height: 128px;
     width: 500px;
     float: right;
-    a h4 {
+    a h3 {
         margin: 3px 0 10px 15px;
         padding: 0;
         color: $dri_darkgrey;
-        font-size: 100%;
-        line-height: 1.3em;
+        font-size: 90%;
+        //line-height: 1.3em;
         font-weight: bold;
-        max-height: 28px;
+        max-height: 40px;
         overflow: hidden;
     }
     p {
         margin: 0 0 10px 15px;
         padding: 0;
-        color: $dri_midgrey;
-        font-size: 100%;
+        color: $dri_darkgrey;
+        font-size: 90%;
         line-height: 1.3em;
         max-height: 42px;
         overflow: hidden;
@@ -1783,16 +1785,19 @@ p.dri_rss_link a {
     .dri_list_subject {
         max-height: 1.3em;
         overflow: hidden;
+        color: #5b616b;
     }
     a .dri_num_list_objects {
         margin: 10px 0 0 15px;
         padding: 0;
-        color: $dri_midgrey;
-        font-size: 100%;
+        color: $dri_darkgrey;
+        font-size: 90%;
         line-height: 1.3em;
     }
     .dri_list_icon {
         padding-left: 15px;
+        font-size: 90%;
+        color: #5b616b;
     }
 }
 /*-------------- Dialog Box --------------*/
