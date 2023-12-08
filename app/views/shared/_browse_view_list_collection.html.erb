@@ -6,15 +6,13 @@
       <% end %>
     <% end %>
 
-    <!-- close image -->
-
     <div class="dri_content_list_collection_data">
       <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
-          <h4><%= document['title_tesim'][0] %></h4>
+          <h3><%= document['title_tesim'][0] %></h3>
       <% end %>
       <% if document.key?('description_tesim') %>
         <p>
-          <%= truncate_description(document['description_tesim'][0], 280).html_safe %>
+          <%= truncate_description(document['description_tesim'][0], 180).html_safe %>
         </p>
       <% end %>
       <p class="dri_publishing_institute">
