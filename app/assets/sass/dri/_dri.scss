@@ -779,13 +779,10 @@ ol.breadcrumb {
 .dri_sort_nav {
     float: left;
     margin: 0;
-    //padding: 6px 25px 0 0;
+    padding: 6px 25px 0 0;
     color: $dri_lightgrey;
     select {
         @extend %dri_sort_select;
-    }
-    button {
-
     }
 }
 .dri_select {
@@ -920,12 +917,8 @@ ol.breadcrumb {
 /*-------------- Pagination --------------*/
 
 .dri_pagination_nav {
-    //padding-right: 18px !important;
-    font-size: 90%;
-    .page-entries {
-      float:right;
-      color: $dri_darkgrey;
-    }
+    //margin: 25px 0 10px 0;
+    padding: 0x;
     p {
         margin: 0;
         padding: 3px 6px 0 0;
@@ -950,15 +943,15 @@ ol.breadcrumb {
             list-style: none;
             display: block;
             padding: 0 6px 0 6px;
-            color: $dri_darkgrey;
+            color: $dri_midgrey;
             text-decoration: none;
         }
         a:hover {
-            color: $dri_darkgrey;
+            color: $dri_midgrey;
         }
     }
     .selected a {
-        color: $dri_darkgrey;
+        color: $dri_midgrey;
         text-decoration: underline;
     }
     .first a {
@@ -1054,7 +1047,7 @@ ol.breadcrumb {
         text-decoration: none;
         float: left;
         a {
-            color: $dri_darkgrey;
+            color: $dri_midgrey;
             margin: 10px 4px 0 0;
             padding: 8px 13px 8px 13px;
             text-decoration: none;
@@ -1218,19 +1211,17 @@ h4.suggest {
     }
 }
 
- .dri_search_num {
-        float: right;
-        //padding-right: 10px;
-        margin-top: 5px;
-    }
-
 .dri_facet_filters {
     border-bottom: none;
     .dri_head_title {
-        padding-left: 5px;
- 	    margin-top: 15px;
+        padding-left: 10px;
+	margin-top: 15px;
         // leave some space for the border
         min-width: $dri_facet_min_width - 2;
+    }
+    .dri_search_num {
+        float: right;
+        padding-right: 10px;
     }
     .panel {
         margin: 0px;
@@ -1568,6 +1559,7 @@ p.dri_rss_link a {
     margin: 0 20px 20px 0;
     padding: 0;
     width: 228px;
+    //height:270px;
     float: left;
     display: block;
     color: $dri_darkgrey;
@@ -1588,10 +1580,11 @@ p.dri_rss_link a {
     }
     .dri_collection_image {
         padding: 0;
+        //margin: 0 14px 0 14px;
         height: 128px;
         overflow: hidden;
     }
-    h3 {
+    h1 {
         color: $dri_darkgrey;
         font-size: 100%;
         padding: 0;
@@ -1611,7 +1604,7 @@ p.dri_rss_link a {
     }
     p.dri_subject {
         font-size: 100%;
-        color: #5b616b;
+        color: $dri_midgrey;
         padding: 0;
         margin: 4px 14px 10px 14px;
         font-weight: normal;
@@ -1630,7 +1623,7 @@ p.dri_rss_link a {
         }
     }
     .dri_icon {
-        color: #5b616b;
+        color: $dri_midgrey;
         line-height: 1.4em;
         display: block;
         height: 27px;
@@ -1663,16 +1656,17 @@ p.dri_rss_link a {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
     position: relative;
+    border-top: none;
     font-size: 75%;
     .dri_collection_image {
         padding: 0;
         margin: 0;
         border-bottom: 1px solid $dri_thingrey;
-        border-top: none;
+        border-top: 1px solid $dri_thingrey;
         height: 128px;
         overflow: hidden;
     }
-    h3 {
+    h1 {
         color: $dri_grey;
         font-size: 100%;
         padding: 0 0 0 0;
@@ -1691,7 +1685,7 @@ p.dri_rss_link a {
         }
     }
     p.dri_publishing_institute {
-        color: #5b616b;
+        color: $dri_midgrey;
         line-height: 1.3em;
         height: 40px;
         overflow: hidden;
@@ -1710,7 +1704,7 @@ p.dri_rss_link a {
     }
     a .dri_num_objects {
         border-top: 1px solid $dri_thingrey;
-        color: #5b616b;
+        color: $dri_greytext;
         line-height: 1.4em;
         display: block;
         margin: 0px 0 0 0;
@@ -1726,16 +1720,14 @@ p.dri_rss_link a {
         margin: 0 0 0 6px;
         color: $dri_darkgrey;
     }
-    &:hover {
-        border-color: $dri_darkgrey;
-    }
 }
 /*-------------- Tabular View styling --------------*/
 
 .dri_result_object {
-    margin-top: 1rem;
+    padding: 0 0 20px 0;
+    margin-bottom: 20px;
     border-bottom: 1px solid $dri_extralightgrey;
-    height: 160px;
+    height: 140px;
     width: 96%;
     .dri_content_list_collection {
         width: 700px;
@@ -1975,9 +1967,9 @@ ul.dri_view_collection {
             font-weight: normal;
         }
         form {
-            //margin: 0 0 -10px 0;
+            margin: 0 0 -10px 0;
             .checkbox {
-                margin: 1px 0 0 5px;
+                margin: 0 0 0 -10px;
             }
             input[type="checkbox"] {
                 margin-top: 0px;
