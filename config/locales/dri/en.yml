@@ -90,6 +90,7 @@ en:
         header: "My Reports"
         start: "Start"
         end: "End"
+        manager_user: "Manager"
         title: "Collection Title"
         url: "URL"
         subcollections: "Subcollections"

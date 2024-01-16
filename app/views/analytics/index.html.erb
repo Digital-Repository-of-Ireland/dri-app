@@ -4,11 +4,20 @@
 <div class="dri_report_container">
 <table>
 <tr>
-<td style="width: 20%;"><%= label_tag(:start, t('dri.datatables.analytics.start') ) %>
+<td><%= label_tag(:start, t('dri.datatables.analytics.start') ) %>
 <%= text_field_tag(:startdate, @startdate) %><td>
-<td style="width: 20%;"><%= label_tag(:end, t('dri.datatables.analytics.end') ) %>
+<td><%= label_tag(:end, t('dri.datatables.analytics.end') ) %>
 <%= text_field_tag(:enddate, @enddate) %></td>
-<td style="width: 20%;"><%= submit_tag("Filter", :name => nil) %></td>
+<% if current_user.is_admin? %>
+  <td><%= label_tag(:user, t('dri.datatables.analytics.manager_user') ) %>
+  <%= text_field_tag(:user, @user) %></td>
+<% end %>
+</tr>
+<tr>
+  <td style="padding-top: 10px; padding-left: 10px"><%= submit_tag("Filter", :name => nil) %></td>
+  <td></td>
+  <td></td>
+  <td></td>
 </tr>
 </table>
 </div>

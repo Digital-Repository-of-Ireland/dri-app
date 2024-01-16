@@ -63,30 +63,46 @@ private
   end
 
   def ua_analytics(collections)
-    views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).to_a
-    downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections).action('Download').to_a
+    total_views = []
+    total_downloads = []
 
-    views.each{|r| r[:collection] = r.delete_field(:dimension1) }
-    downloads.each{|r| r[:collection] = r.delete_field(:eventCategory) }
-  
-    (views+downloads)
+    collections.each_slice(10) do |collections_slice|
+      views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections_slice).to_a
+      downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections_slice).action('Download').to_a
+
+      views.each{|r| r[:collection] = r.delete_field(:dimension1) }
+      downloads.each{|r| r[:collection] = r.delete_field(:eventCategory) }
+
+      total_views.concat(views)
+      total_downloads.concat(downloads)
+    end
+
+    (total_views+total_downloads)
   end
 
   def ga4_analytics(collections)
-    views = DRI::Analytics.collection_events_users(startdate, enddate, collections)
-    downloads = DRI::Analytics.collection_events_downloads(startdate, enddate, collections)
-    
-    views.each do |r| 
-      r[:collection] = r.delete('customEvent:collection')
-      r[:ga4_users] = r.delete('totalUsers')
-    end
+    total_views = []
+    total_downloads = []
 
-    downloads.each do |r| 
-      r[:collection] = r.delete('customEvent:collection')
-      r[:ga4_totalEvents] = r.delete('eventCount')
+    collections.each_slice(10) do |collections_slice|
+      views = DRI::Analytics.collection_events_users(startdate, enddate, collections_slice)
+      downloads = DRI::Analytics.collection_events_downloads(startdate, enddate, collections_slice)
+    
+      views.each do |r| 
+        r[:collection] = r.delete('customEvent:collection')
+        r[:ga4_users] = r.delete('totalUsers')
+      end
+
+      downloads.each do |r| 
+        r[:collection] = r.delete('customEvent:collection')
+        r[:ga4_totalEvents] = r.delete('eventCount')
+      end
+
+      total_views.concat(views)
+      total_downloads.concat(downloads)
     end
  
-    (views+downloads)
+    (total_views+total_downloads)
   end
 
   def display_on_page(collections)
