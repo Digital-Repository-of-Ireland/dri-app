@@ -19,7 +19,7 @@
 
 		<% if @document.has_geocode? %>
 		  <li>
-			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id, request_controller: controller_name), id: "logainm_map", :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_map_modal_id' %>
+			  <%= link_to t('dri.views.catalog.forms.map'), maps_path(@document.id, request_controller: controller_name), id: "logainm_map", remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_map_modal_id' %>
 		  </li>
 		<% end %>
 
