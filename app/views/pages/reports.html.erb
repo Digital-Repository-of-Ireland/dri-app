@@ -1,4 +1,15 @@
-<%= link_to (t :'dri.reports.links.user_activity_report'), reports_path(report: 'user') %><br/>
-<%= link_to (t :'dri.reports.links.activity_report'), reports_path(report: 'object') %><br/>
-<%= link_to (t :'dri.reports.links.fixity_report'), reports_path(report: 'fixity') %><br/>
-<%= link_to (t :'dri.reports.links.stats'), reports_path(report: 'stats') %>
+
+<ul>
+    <li class= 'report_link' >
+        <%= link_to (t :'dri.reports.links.user_activity_report'), reports_path(report: 'user') %>
+    </li>
+    <li class= 'report_link' >
+        <%= link_to (t :'dri.reports.links.activity_report'), reports_path(report: 'object') %>
+    </li>
+    <li class= 'report_link' >
+        <%= link_to (t :'dri.reports.links.fixity_report'), reports_path(report: 'fixity') %>
+    </li>
+    <li class= 'report_link' >
+        <%= link_to (t :'dri.reports.links.stats'), reports_path(report: 'stats') %>
+    </li>
+</ul>

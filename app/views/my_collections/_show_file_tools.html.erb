@@ -1,18 +1,25 @@
 <!-- close vc_title -->
 <div class="dri_sidenav">
-	<h5><i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @assets.size %>)</h5>
 	<ul>
-
-	  <% if @assets.empty? %>
-	    <li><%= t('dri.views.catalog.legends.no_files') %></li>
+		<li class="tools_title">
+			<h3>
+				<i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @assets.size %>)
+			</h3>
+		</li>
+	
+	  	<% if @assets.empty? %>
+			<li>
+				<%= t('dri.views.catalog.legends.no_files') %>
+			</li>
 	  <% else %>
-	    <li>
-	      <%= link_to t('dri.views.catalog.links.view_assets'), object_files_path(@document), id: "object_assets" %>
-	    </li>
-
-	     <% if current_user.is_admin? %>
+			<li>
+				<%= link_to t('dri.views.catalog.links.view_assets'), object_files_path(@document), id: "object_assets" %>
+			</li>
+	    <% if current_user.is_admin? %>
            <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, id: "surrogates_generate" do %>
-             <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
+             	<li>
+					<%= t('dri.views.catalog.links.generate_surrogates') %>
+				</li>
            <% end %>
          <% end %>
 	  <% end %>

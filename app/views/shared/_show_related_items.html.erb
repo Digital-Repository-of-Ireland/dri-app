@@ -9,9 +9,19 @@
           
           <div class="dri_clearfix">
             <% value.take(4).each do |item| -%>
-              <article class="">
+              <article class="dri_result_object">
                 <%= link_to url_for_document(item[1].id)  do %>
                   <div class="dri_content_block">
+                    <div class="dri_collection_image">
+                      <% present(document, DRI::ImagePresenter) do |images| %>
+                        <% image = images.cover_image %>
+                        <% if image %>
+                          <%= image_tag image, alt: "image tag"%>
+                        <% else %>
+                            <%= image_tag "no_image.png", alt: "no image tag" %>
+                        <% end %>
+                      <% end %>
+                    </div>
                     <h1><%= item[0] %></h1>
                     <div class="dri_icon">
                       <span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= key %></span>

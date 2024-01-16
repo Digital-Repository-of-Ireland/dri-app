@@ -1,43 +1,36 @@
 /*-------------- Button Styling--------------*/
 
 @mixin small_button {
-  font-size: 80%;
+  font-size: 100%;
   padding: 0px 5px 0px 5px;
   margin: 2px 0px 0px 0px;
 }
 
-// // need to update to sass-rails 5.x to use sass >= 3.3
-// $button-colors: green red grey
 
-// @each $color in $button-colors
-//   .dri_button_#{$color} {
-//     @extend .dri_button;
-//     background-color: $dri_#{$color};
-//   }
-
-//   .dri_button_#{$color} {
-//     @extend .dri_button_#{$color};
-//     @include small_button;
-//   }
-
-//   .dri_button_#{$color}:hover {
-//     background-color: darken($dri_#{$color}, 10%);
-//   }
+.btn-default{
+  &:hover{
+    background-color: $dri_select;
+  }
+}
 
 
 .dri_button {
   font-size: 100%;
-  color: white;
+  color:$dri_black;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  border: none;
+  border: $dri_black;
   padding: 6px 10px 6px 10px;
-  //margin: 10px 0 10px 0;
+  text-align: center;
 }
 
 .dri_button_green {
   @extend .dri_button;
   background-color: $dri_green;
+  &:hover{
+    background-color: darken($dri_green, 20%);
+    color: $dri_white;
+  }
 }
 
 .dri_button_green_small {
@@ -45,22 +38,20 @@
   @include small_button;
 }
 
-.dri_button_green:hover {
-  background-color: darken($dri_green, 10%);
-}
-
 .dri_button_red {
   @extend .dri_button;
-  background-color: $dri_red;
+  background-color: $dri_red !important;
+  color: $dri_black;
+  &:hover {
+    background-color: darken($dri_red, 20%);
+    color: $dri_white
+  }
 }
 
 .dri_button_red_small {
   @extend .dri_button_red;
   @include small_button;
-}
-
-.dri_button_red:hover {
-  background-color: darken($dri_red, 10%);
+  background-color: $dri_red;
 }
 
 .dri_button_grey {
@@ -80,25 +71,40 @@
 .dri_button_black {
   @extend .dri_button;
   background-color: $dri_grey;
+  color: $dri_white;
+  border: 1px solid transparent;
+  &:hover {
+    background-color: $dri_white;
+    color: $dri_black;
+    border-color: $dri_black;
+  }
 }
-
-.dri_button_black:hover {}
 
 .btn {
   @extend .dri_button;
-  background-color: $dri_lightgrey;
-  //padding: 5px 10px 4px 10px;
   margin: 2px;
+  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: none;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  line-height: none;
+  @include border_radius (3px);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
+
 
 .dri-btn-close {
   @extend .btn-close;
   float: right;
-}
-
-.btn:hover {
-  background-color: darken($dri_lightgrey, 10%);
-  color: #FFF;
 }
 
 .dri_w230 {
@@ -111,10 +117,25 @@
 
 /*-------------- Save Search --------------*/
 
-
 .dri_search_save_submit_button {
   @extend .dri_button_green;
   float: right;
   padding: 6px;
   margin: 3px;
+}
+
+button.dri_open_workspace_button {
+  color: $dri_white;
+  border: none;
+  background-color: $dri_teal;
+  padding: 0;
+  margin: 20px 0 20px 0;
+  width: 230px;
+  height: 26px;
+  display: block;
+  @include border_radius;
+  font-weight: bold;
+  &:hover {
+      background-color: darken($dri_teal, 20%);
+  }
 }

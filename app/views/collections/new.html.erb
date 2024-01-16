@@ -29,7 +29,7 @@
 
   	<% end %>
   	<%= form_for @object, as: :digital_object, url: {controller: 'collections', action: 'create'}, method: 'post', html: {:class => 'dri_ingest_form'} do |f| %>
-  	<%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330 mt-1", id: 'cancel_collection' %>
+  	<%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_red dri_w330 mt-1", id: 'cancel_collection' %>
   	<% end %>
   </div>
 </div>

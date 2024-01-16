@@ -18,10 +18,11 @@
         search_fields_for_advanced_search.keys.each { |k| copyParams.delete(k) }
         copyParams = copyParams.except(*['f_inclusive', 'f', 'q', 'c_date', 'p_date', 's_date', 'year_from', 'year_to'])
       %>
-
-      <span class="dri_clear_all">
-        <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), url_for(copyParams), id: 'browse_clear_all' %>
-      </span>
+      <li class="dri_clear_all">
+        <span>
+          <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), url_for(copyParams), id: 'browse_clear_all' %>
+        </span>
+      </li>
     </ul>
   </div>
 <% end %>

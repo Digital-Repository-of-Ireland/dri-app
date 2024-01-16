@@ -1,7 +1,7 @@
 <% if @tasks.empty? %>
   <p><i class="fa fa-exclamation-circle"></i><%= t('dri.views.catalog.legends.no_tasks') %></p>
 <% else %>
-  <div>
+  <div class="dri_pagination_nav" role="navigation" aria-label="pagination">
     <%= paginate @tasks %>
     <%= link_to t('dri.views.tasks.links.delete_all_tasks'), destroy_user_tasks_path, 
       :method => :delete, :id => "clear_tasks", :class => "pull-right btn"  %>

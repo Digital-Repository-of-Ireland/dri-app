@@ -1,14 +1,14 @@
 <% if mode == "collections" %>
-
     <div class="dri_content_block_collection">
-      <div>
+      <div class="dri_collection_link">
+        
         <div class="dri_collection_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
             <% image = images.cover_image %>
             <% if image %>
-              <%= image_tag image, width: "228" %>
+              <%= image_tag image %>
             <% else %>
-              <%= image_tag "no_image.png", width: "228" %>
+              <%= image_tag "no_image.png" %>
             <% end %>
           <% end %>
         </div>
@@ -20,6 +20,7 @@
           <% end %>
         </p>
       </div>
+
       <div class="dri_num_objects">
           <span class="dri_object_text_num">
             <%= "#{t('dri.views.catalog.forms.objects_in_collection')} (#{document.published_objects_count})" %>
@@ -33,7 +34,7 @@
     <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
     <div class="dri_image">
        <% present(document, DRI::ImagePresenter) do |images| %>
-        <%= image_tag images.image_for_search, width: "200" %>
+        <%= image_tag images.image_for_search %>
       <% end %>
     </div><!-- close image -->
     <p class="dri_subject">

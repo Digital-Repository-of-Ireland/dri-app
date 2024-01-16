@@ -7,87 +7,157 @@
       color: $dri_darkgrey;
       font-weight: bold;
       font-size: 100%;
+      &:hover{
+        background-color: $dri_select;
+        border-radius: 5%;
       }
+    }
 }
 .dri_sidenav {
-    margin-top: 20px;
-    color: $dri_darkgrey;
+  margin-top: 20px;
+  color: $dri_black;
+  font-size: 95%;
+
+  a {
+    color: $dri_black;
+  }
+
+  button {
+    float:right;
+  }
+
+  h3 {
+    margin:0;
+    padding-bottom:6px;
     font-size: 100%;
+    font-weight: bold;
+    color: $dri_black;
+  }
+  ul {
+    cursor: auto;
+    margin:0;
+    li.tools_title{
+      &:hover{
+        background-color: $dri_white;
+      }
+    }
 
-
-    a {
-        color: $dri_darkgrey;
-    }
-    button {
-      float:right;
-    }
-    a:hover,
-    form:hover {
-        color: $dri_midgrey;
-    }
-    h5 {
-        margin:0;
-        padding-bottom:6px;
-        font-size: 100%;
-        font-weight: bold;
-        color: $dri_grey;
-        border-bottom: 1px solid $dri_thingrey;
-
-    }
-    ul {
-        margin:0;
-        li {
-            padding:5px 0 5px 0;
-            border-bottom: 1px solid $dri_thingrey;
-            list-style-type: none;
-            font-size: 90%;
+    li.dri_subnav_editor_tools{
+      padding: 0px;
+      &:hover{
+        color: $dri_black;
+        background-color: $dri_white;
+        font-weight: normal;
+        a{
+          // color: $dri_white;
+          font-weight: normal;
+        }
+        a.dri_help_popover{
+          color: $dri_black;
+        }
+      }
+      ul{
+        li{
+          &:hover{
+            background-color: $dri_green;
+            a{
+              background-color: $dri_green;
+            }
           }
-        li.dri_formats {
-          padding:5px 0 5px 0;
-          border:none;
         }
-        li.dri_formats_spacing {
-          margin-bottom: 15px;
-          border:none;
+      }
+    }
+    li.dri_edit_collection{
+      padding-bottom: 0px;
+      i{
+        padding-bottom: 5px;
+      }
+    }
+    .accordion-body{
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    li {
+      display: block;
+      padding:5px 0 5px 0;
+      border-bottom: 1px solid $dri_thingrey;
+      list-style-type: none;
+      font-size: 100%;
+      &:hover{
+        background-color: $dri_green;
+        .accordion-body{
+          background-color: $dri_white;
+          color: $dri_black;
+          a{
+            color: $dri_black;
+          }
         }
-        li.dri_disabled {
-          color: $dri_red;
-        }
-        li.dri_warning {
-          color: $dri_red;
-        }
+      }
+    }
 
+    li.dri_formats {
+      display: inline-block;
+      padding:5px 0 5px 0;
+      border:none;
+      &:hover{
+        background-color: $dri_white;
+      }
+      a{
+        &:hover{
+          background-color: $dri_green;
+        }
+      }
     }
-    span.dri_stat_num {
-      float: right;
-      margin-right: 20px;
+    li.dri_formats_spacing {
+      display: block;
+      margin-bottom: 15px;
+      border:none;
     }
+    li.dri_disabled {
+      color: $dri_red;
+    }
+    li.dri_warning {
+      color: $dri_red;
+    }
+    li.object_status{
+      cursor: pointer;
+      .status_update{
+        display: block;
+      }
+    }
+  }
+  span.dri_stat_num {
+    float: right;
+    margin-right: 20px;
+  }
 }
 
 /*---- Previous Next Doc Pagination ----*/
 
 .dri_doc_pagination {
-    margin-top: 10px;
-    color: $dri_darkgrey;
-     border-bottom: 1px solid $dri_thingrey;
-     padding-bottom: 6px;
-     font-size: 100%;
-     font-weight:bold;
-    .dri_doc_pagination_links {
-     float:right;
-
-            a {
-                color: $dri_darkgrey;
-            }
-            a.previous:before {
-                font-family: FontAwesome;
-                content: "\f060";
-            }
-            a.next:before {
-                font-family: FontAwesome;
-                content: "\f061";
-            }
-}
+  margin-top: 10px;
+  color: $dri_darkgrey;
+  border-bottom: 1px solid $dri_thingrey;
+  padding-bottom: 6px;
+  font-size: 100%;
+  font-weight:bold;
+  .dri_doc_pagination_links {
+    float:right;
+    a {
+      color: $dri_darkgrey;
+      &:hover{
+        color: $dri_green;
+      }
+    }
+    a.previous:before {
+      font-family: FontAwesome;
+      content: "\f060";
+    }
+    a.next:before {
+      font-family: FontAwesome;
+      content: "\f061";
+    }
+  }
 }
 .dri_fileUpload {
     position: relative;
@@ -129,7 +199,7 @@
 }
 
 .dri_subnav_review_list {
-    min-width: 250px;
+    min-width: 245px;
     li {
        text-indent: 0.3em;
      }

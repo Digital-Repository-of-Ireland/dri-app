@@ -25,9 +25,9 @@
 </script>
 
 <div class="dri_sidenav">
-<h5>
+<h3>
   <i class="fa fa-pencil"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
-</h5>
+</h3>
 <ul>
 
   <li>
@@ -80,7 +80,7 @@
   <% end %>
 
   <% if @document.status != 'published' || current_user.is_admin? %>
-    <li>
+    <li class="object_status">
       <%= form_tag status_update_path(@document.id), method: :put do %>
         <% if @document.draft? %>
           <%= hidden_field_tag( :status, "reviewed") %>
@@ -104,7 +104,7 @@
     <% end %>
   <% end %>
 
-  <li>
+  <li class="dri_edit_collection">
   <div class="accordion" id="dri_edit_record_tools_id">
     <div class="accordion-group">
       <a class="accordion-toggle" id="edit_menu" data-bs-toggle="collapse" data-bs-parent="#dri_edit_record/_tools_id" href="#dri_edit_record_tools_collapsed_id">

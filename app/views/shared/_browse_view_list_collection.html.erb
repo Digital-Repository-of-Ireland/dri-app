@@ -1,64 +1,70 @@
 <article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
+
     <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-      <%= link_to bookmark_path(document.id), method: :delete, id: 'remove_bookmark' do %>
-      <span class="dri_remove_bookmark"><i class="fa fa-bookmark"></i></span>
+      <%= link_to bookmark_path(document.id), method: :delete, id: "remove_#{document[:title_tesim][0]}_bookmark" do %>
+        <div class="dri_remove_bookmark_button">
+          <span class="dri_remove_bookmark">x</span>
+          <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
+        </div>
       <% end %>
     <% end %>
 
     <div class="dri_content_list_collection_data">
-      <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
-          <h3><%= document['title_tesim'][0] %></h3>
-      <% end %>
-      <% if document.key?('description_tesim') %>
-        <p>
-          <%= truncate_description(document['description_tesim'][0], 180).html_safe %>
-        </p>
-      <% end %>
-      <p class="dri_publishing_institute">
-	      <% if document.key?('depositing_institute_ssi') %>
-          <%= document['depositing_institute_ssi'] %>
-        <% else %>
-          Depositing Organisation not Set
+      <div class="dri_view_list_title">
+        <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
+            <h3><%= document['title_tesim'][0] %></h3>
         <% end %>
-      </p>
-      <%# If ROOT COLLECTION %>
-      <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
-          <% collection_objects_params = { f: {'root_collection_id_ssi'.to_sym => [document['root_collection_id_ssi']]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
-      <% else %>
-          <%# If SUB-COLLECTION %>
-          <% collection_objects_params = { f: {'ancestor_id_ssim'.to_sym => [document.id]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
-      <% end %>
-      <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
-      <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
-          <div class="dri_num_list_objects">
-            <span class="dri_object_text_num">
-              <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ") " %>
-            </span>
-            <% if document.visibility == "restricted" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
-            <% elsif document.visibility == "logged-in" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
-            <% end %>
-          </div>
-      <% end %> <!-- close dri_num_objects -->
+      </div>
+      <div class="dri_view_list_description">
+        <% if document.key?('description_tesim') %>
+          <p>
+            <%= truncate_description(document['description_tesim'][0], 180).html_safe %>
+          </p>
+        <% end %>
+        <p class="dri_publishing_institute">
+          <% if document.key?('depositing_institute_ssi') %>
+            <%= document['depositing_institute_ssi'] %>
+          <% else %>
+            Depositing Organisation not Set
+          <% end %>
+        </p>
+        <%# If ROOT COLLECTION %>
+        <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
+            <% collection_objects_params = { f: {'root_collection_id_ssi'.to_sym => [document['root_collection_id_ssi']]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
+        <% else %>
+            <%# If SUB-COLLECTION %>
+            <% collection_objects_params = { f: {'ancestor_id_ssim'.to_sym => [document.id]}, mode: "objects", search_field: "all_fields", view: params[:view] } %>
+        <% end %>
+        <% controller = (controller_name == 'bookmarks') ? 'catalog' : controller_name %>
+        <%= link_to collection_objects_params.merge({ controller: controller, action: :index, mode: "objects", search_field: "all_fields", view: params[:view]}) do %>
+            <div class="dri_num_list_objects">
+              <span class="dri_object_text_num">
+                <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ") " %>
+              </span>
+              <% if document.visibility == "restricted" %>
+                <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
+              <% elsif document.visibility == "logged-in" %>
+                <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
+              <% end %>
+            </div>
+        <% end %> <!-- close dri_num_objects -->
+      </div>
     </div>
-  </div>
+  
   <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
       <div class="dri_image">
         <% present(document, DRI::ImagePresenter) do |images| %>
           <% image = images.cover_image %>
           <% if image %>
-            <%= image_tag image, width: "200" %>
+            <%= image_tag image, alt: "image tag"%>
           <% else %>
-            <%= image_tag "no_image.png", width: "200" %>
+            <%= image_tag "no_image.png", alt: "no image tag" %>
           <% end %>
         <% end %>
       </div>
   <% end %>
+  </div>
 
-  <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-      <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, id: 'remove_bookmark' %>
-  <% end %>
   <!-- close content_block -->
 </article>

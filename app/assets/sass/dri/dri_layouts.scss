@@ -29,38 +29,58 @@
 
 .dri_wrapper {
     $zen-column-count: 4;
-    width: 1024px;
+    width: 1245px;
     margin: auto;
 }
+
 .dri_header_container {
     padding-top: 20px;
     @include zen-grid-container;
     .dri_authentication_search_container {
         text-align: right;
         float: right;
-        .dri_authentication_menus_container {} .dri_search_term_input {}
     }
     .dri_social_media_container {
         float: left;
         padding-left: 50px;
+        nav.dri_social_media_nav{
+            color: $dri_black;
+            font-size: 20px;
+            a{
+                color: $dri_black;
+                &:hover{
+                    color: $dri_green;
+                }
+                i{
+
+                }
+                span{
+
+                }
+            }
+        }
     }
     .dri_ident {
         width: 300px;
         float: left;
     }
 }
+
 .navbar-fixed-top {
     position: relative;
 }
-.dri_search_features_nav_container {} .dri_facet_restrictions_container {
+
+.dri_search_features_nav_container .dri_facet_restrictions_container {
     @include zen-grid-container;
     @include zen-grid-flow-item(4, 4, $alpha-gutter: 0px);
     margin-left: 0px;
     padding-left: 10px;
 }
+
 .dri_messages_container {
     margin-bottom: 25px;
 }
+
 .main{
  width: 1024px;
  height: 1024px;
@@ -69,8 +89,8 @@
 
 .dri_main_content_container {
     @include zen-grid-item(4, 1);
-    margin-left: 10px;
-    min-width: 250px;
+    margin-left: 1px;
+    min-width: 300px;
     .dri_login_form_container {
         margin: auto;
         max-width: 450px;
@@ -101,7 +121,7 @@
     }
     .dri_object_second_block {
         @include zen-grid-item(1, 4, $gutter-width: 0px);
-        min-width: 250px;
+        min-width: 300px;
     }
     .dri_section_block {
         @include zen-grid-item(4, 1, $gutter-width: 0px);
@@ -126,6 +146,7 @@
         }
     }
 }
+
 //Static Pages
 .dri_collection_institutes_pages {
     .dri_collection_institutes_pages_img {
@@ -135,13 +156,15 @@
         @include zen-grid-item(2.5, 2.5, $gutter-width: 0px);
     }
 }
+
 .dri_clearfix {
     @include zen-clear();
 }
+
 @media screen and (max-width: 1100px) {
     .dri_wrapper {
         width: 768px;
-        margin: 0 auto;
+        margin: 0;
         $zen-column-count: 3;
         .dri_header_container {
             padding-bottom: 20px;
@@ -168,21 +191,20 @@
             }
         }
     }
+
     .dri_search_features_nav_container {
         .dri_search_save_submit_button {
             clear: both;
         }
     }
+
     .dri_main_content_container {
         .dri_result_object {
             .dri_content_list_collection {
                 width: 450px;
-                .dri_content_list_collection_data {
-                    width: 280px;
-                }
             }
         }
-        .dri_result_container {
+        .dri_result_container { 
             @include zen-grid-item(2, 1, $gutter-width: 0px);
         }
         .dri_second_navigation_container {
@@ -261,6 +283,7 @@
         .dri_result_container {
             @include zen-clear();
             @include zen-grid-item(2, 1, $gutter-width: 0px);
+            width: 100%!important;
         }
         .dri_second_navigation_container {
             @include zen-float();
@@ -319,6 +342,25 @@
     }
 }
 
+.dri_doi,
+.blacklight-role_org_tesim,
+.blacklight-contributor_tesim, 
+.blacklight-creator_tesim,
+.blacklight-subject_tesim,
+.blacklight-geographical_coverage_tesim,
+.blacklight-depositing_institute,
+.blacklight-language_tesim{
+    a{
+        &:hover{
+            background-color: $dri_select;
+            border-radius: 5%;
+            font-size: $dri_black;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    }
+}
+
 @media only screen and (max-width: 500px) {
     input#q_ws.dri_search_term_text_input {
         width: 60%;
@@ -351,6 +393,7 @@
             @include zen-grid-item(4, 1, $gutter-width: 0px);
             dl.dri_object_metadata_readview {
                 padding: 0px 20px 0 0;
+                color: $dri_black;
             }
         }
     }

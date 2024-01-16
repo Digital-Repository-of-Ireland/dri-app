@@ -1,9 +1,9 @@
 <div class="dri_sidenav">
-  <h5>
+  <h3>
     <i class="fa fa-pencil"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
-  </h5>
+  </h3>
   <ul>
-    <li>
+    <li class="dri_subnav_editor_tools">
       <% draft_objects = @document.draft_objects_count %>
       <% draft_subcoll = @document.draft_subcollections_count %>
       <% duplicate_total = @document.duplicate_total %>
