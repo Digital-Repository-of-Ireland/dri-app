@@ -719,6 +719,8 @@ ol.breadcrumb {
     .dropdown-toggle{
         color: $dri_black;
         border: 1px solid $dri_thingrey;
+        padding: 4px;
+        margin: 2px;
     }
 }
 /*-------------- Sort by --------------*/
@@ -831,8 +833,10 @@ ol.breadcrumb {
     font-size: 100%;
     float: left;
     a {
+        text-decoration: none;
         color: $dri_grey;
         i {
+            padding-top: 3px;
             color: $dri_black;
             &:hover{
                 color: $dri_green;
@@ -841,18 +845,30 @@ ol.breadcrumb {
     }
     i {
         color: $dri_green;
-	padding: 1px;
+	    padding-top: 3px;
     }
 }
 .dri_icon_border {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
-    width: 27px;
-    height: 24px;
+    width: 44px;
+    height: 44px;
     text-align: center;
     line-height: 100%;
     vertical-align: middle;
+    // padding-top: 3px;
+    // i{
+    //     padding-top: 3px;
+    // }
 }
+
+.fa-lg {
+    font-size: 36px;
+    // line-height: 0.75em;
+    // vertical-align: -15%;
+    text-align: center;
+    // padding-top: 3px;
+  }
 /*-------------- Page Grid --------------*/
 
 .dri_pager_nav {

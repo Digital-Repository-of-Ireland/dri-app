@@ -45,17 +45,12 @@
         padding-left: 50px;
         nav.dri_social_media_nav{
             color: $dri_black;
-            font-size: 20px;
+            font-size: 36px;
             a{
                 color: $dri_black;
+                text-decoration: none;
                 &:hover{
                     color: $dri_green;
-                }
-                i{
-
-                }
-                span{
-
                 }
             }
         }
