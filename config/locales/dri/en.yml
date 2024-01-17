@@ -542,6 +542,7 @@ en:
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
         confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
         confirm_surrogates: This will (re)generate surrogates for all objects within the collection. Continue?
+        depositing_organisation_not_set: Depositing organisation not set
         doi_modification: DOI change log entry
         duplicates_found: "%{duplicates_count} duplicate objects have been found."
         edit: Edit Collection
