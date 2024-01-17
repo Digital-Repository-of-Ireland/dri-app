@@ -8,7 +8,6 @@ gem 'uri', '>= 0.12.2'
 
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
-#gem 'view_component', '2.83'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'rsolr'
 gem 'kaminari', '>= 1.2.1'
@@ -22,8 +21,8 @@ gem 'riiif'
 gem 'iiif-presentation'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.5.7'
+gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.2.3'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail'
