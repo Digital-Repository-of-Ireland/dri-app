@@ -8,7 +8,6 @@ gem 'uri', '>= 0.12.2'
 
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
-gem 'view_component', '2.74.1'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'rsolr'
 gem 'kaminari', '>= 1.2.1'

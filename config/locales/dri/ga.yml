@@ -479,6 +479,7 @@ ga:
         confirm_review_subcollection: "Tabhair faoi deara, ionas gur féidir an bailiúchán seo a fhoilsiú, go mbeidh ort gach fobhailiúchán de chuid an bhailiúcháin a mharcáil mar 'athbhreithnithe' roimh ré, nó ní bheidh fáil ar an mbailiúchán tar éis an fhoilsithe."
         confirm_review_summary: "(Beidh tionchar ag an oibríocht seo ar %{subcolls} fobhailiúchán agus %{objects} oibiacht)"
         confirm_surrogates: Ginfear ionadaithe do gach oibiacht sa mbailiúchán. Lean ar aghaidh?
+        depositing_organisation_not_set: Níl an Eagraíocht Thaiscthe socraithe.
         doi_modification: Iontráil loga athruithe de chuid an DOI
         duplicates_found: "Fritheadh %{duplicates_count} oibiacht dúblála."
         edit: Cuir an bailiúchán in eagar
