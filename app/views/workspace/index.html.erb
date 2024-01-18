@@ -69,12 +69,6 @@
       <li>
         <%= link_to t('dri.datatables.analytics.header'), analytics_path %>
       </li>
-
-      <% if @tasks_count > 0 %>
-        <li>
-          <%= link_to t('dri.headerlinks.my_tasks'), user_tasks_path, id: 'tasks' %>
-        </li>
-      <% end %>
     </ul>
     </div>
   </div>

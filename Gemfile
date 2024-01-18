@@ -83,7 +83,6 @@ gem 'high_voltage', '~> 3.1'
 # is it working fork
 gem 'is_it_working-cbeer'
 gem 'resque'
-gem 'resque-status', '0.5.0'
 gem 'nest'
 
 group :development, :production do

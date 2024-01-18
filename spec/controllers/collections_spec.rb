@@ -91,7 +91,7 @@ describe CollectionsController do
 
       @collection.governed_items << @object
 
-      expect(PublishCollectionJob).to receive(:create)
+      expect(Resque).to receive(:enqueue).once
 
       post :publish, params: { id: @collection.alternate_id }
     end

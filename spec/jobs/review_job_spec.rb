@@ -8,12 +8,6 @@ end
 
 describe "ReviewJob" do
 
-  before do
-    allow_any_instance_of(ReviewJob).to receive(:completed)
-    allow_any_instance_of(ReviewJob).to receive(:set_status)
-    allow_any_instance_of(ReviewJob).to receive(:at)
-  end
-
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
@@ -44,7 +38,6 @@ describe "ReviewJob" do
 
   after(:each) do
     @collection.destroy
-
     @login_user.delete
 
     FileUtils.remove_dir(@tmp_assets_dir, force: true)
@@ -52,9 +45,7 @@ describe "ReviewJob" do
 
   describe "run" do
     it "should set all objects status to reviewed" do
-      job = ReviewJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
-
+      ReviewJob.perform(@collection.alternate_id, @login_user.id)
       @object.reload
       @object2.reload
 
@@ -63,9 +54,7 @@ describe "ReviewJob" do
     end
 
      it "should set subcollection status to reviewed if draft" do
-      job = ReviewJob.new('test', { 'collection_id' => @subcollection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
-
+      ReviewJob.perform(@subcollection.alternate_id, @login_user.id)
       @subcollection.reload
 
       expect(@subcollection.status).to eql("reviewed")
@@ -76,8 +65,7 @@ describe "ReviewJob" do
       @published[:status] = "published"
       @published.save
 
-      job = ReviewJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      ReviewJob.perform(@collection.alternate_id, @login_user.id)
 
       @object.reload
       @object2.reload
@@ -100,8 +88,7 @@ describe "ReviewJob" do
       end
 
       @collection.save
-      job = ReviewJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id})
-      job.perform
+      ReviewJob.perform(@collection.alternate_id, @login_user.id)
 
       expect(Solr::Query.new("collection_id_sim:\"#{@collection.alternate_id}\" AND status_ssi:reviewed").count).to eq(22)
     end
