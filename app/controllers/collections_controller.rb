@@ -520,15 +520,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def review_all
-      job_id = ReviewCollectionJob.create(
-        'collection_id' => @object.alternate_id,
-        'user_id' => current_user.id
-      )
-      UserBackgroundTask.create(
-        user_id: current_user.id,
-        job: job_id
-      )
-
+      Resque.enqueue(ReviewCollectionJob, @object.alternate_id, current_user.id)
       flash[:notice] = t('dri.flash.notice.collection_objects_review')
     rescue Exception => e
       logger.error "Unable to submit status job: #{e.message}"
@@ -544,14 +536,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def publish_collection
-      job_id = PublishCollectionJob.create(
-        'collection_id' => @object.alternate_id,
-        'user_id' => current_user.id
-      )
-      UserBackgroundTask.create(
-        user_id: current_user.id,
-        job: job_id
-      )
+      Resque.enqueue(PublishCollectionJob, @object.alternate_id, current_user.id)
     rescue Exception => e
       logger.error "Unable to submit publish job: #{e.message}"
       raise DRI::Exceptions::ResqueError
