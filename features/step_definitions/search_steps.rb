@@ -13,7 +13,7 @@ Then /^I should see (\d+) collection(?:s)? with title(?:s)? "([^\"]+)"$/ do |num
   titles_arr = titles.split(',').map(&:strip)
   expect(titles_arr.length).to eq(num)
 
-  collection_titles = collections.map { |col| col.find('h1').text }
+  collection_titles = collections.map { |col| col.find('h3').text }
   expect(collection_titles.sort).to eq(titles_arr.sort)
 end
 
