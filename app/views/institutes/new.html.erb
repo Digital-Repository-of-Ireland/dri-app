@@ -36,7 +36,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="h4 modal-title"><%= t('dri.headerlinks.institutions') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+          &times;
+        </button>
       </div>
       <div class="modal-body">
         <% @institutes.each_with_index do |institute, i| %>

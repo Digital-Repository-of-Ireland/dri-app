@@ -57,7 +57,7 @@
     <%= content_tag(:li, nil, class: @li_class) do %>
     	<%=
 	    	link_to(
-		    	image_tag("rdf_icon.png", title: t('dri.help.dri_view_rdf')),
+		    	image_tag("rdf_icon.png", title: t('dri.help.dri_view_rdf'), alt: "link to " + t('dri.help.dri_view_rdf').to_s.html_safe),
 		    	search_state.url_for_document(@document.id, format: :ttl),
 		    	target: :_blank
 		    )
@@ -92,7 +92,9 @@
 		<div class="modal-content">
 			<div class="modal-header">
         <h2 class="h4 modal-title"><%= t('blacklight.tools.cite') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+          &times;
+        </button>
 			</div>
 			<div class="modal-body">
 
@@ -111,7 +113,9 @@
 		<div class="modal-content">
 			<div class="modal-header">
 			  <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+				<button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+				&times;
+				</button>
 			</div>
 			<div class="modal-body">
 			</div>
@@ -132,7 +136,9 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.map') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+			&times;
+		</button>
       </div>
 			<div class="modal-body" id="map_container"></div>
 			<div class="modal-footer">

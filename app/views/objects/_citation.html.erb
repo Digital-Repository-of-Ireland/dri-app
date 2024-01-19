@@ -1,12 +1,14 @@
 <div class="modal-header">
   <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
-  <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+  <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+    &times;
+  </button>
 </div>
 <div class="modal-body">
-	<textarea id="citation-text-apa" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none"><%= export_as_apa_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
-    <textarea id="citation-text-chicago" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none"><%= export_as_chicago_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
-    <textarea id="citation-text-mla" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none"><%= export_as_mla_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
-    <textarea id="citation-text-dri" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly"><%= @object.export_as_dri_citation %><% if @doi.present? %><%= ", https://doi.org/#{@doi}" %><% end %></textarea>
+	<textarea id="citation-text-apa" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none" aria-label="APA Citation"><%= export_as_apa_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
+    <textarea id="citation-text-chicago" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none" aria-label="Chicago Citation"><%= export_as_chicago_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
+    <textarea id="citation-text-mla" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" style="display:none" aria-label="MLA Citation"><%= export_as_mla_citation(@object, @doi.presence, @depositing_institute.presence) %></textarea>
+    <textarea id="citation-text-dri" class="dri_clipboard_text" cols="62" rows="6" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" readonly="readonly" aria-label="DRI Citation"><%= @object.export_as_dri_citation %><% if @doi.present? %><%= ", https://doi.org/#{@doi}" %><% end %></textarea>
 </div>
 <div class="modal-footer">
   <b><%= t('dri.views.catalog.legends.citation_style') %>:&nbsp;</b>

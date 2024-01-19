@@ -52,7 +52,7 @@
             <span class="dri_icon_image">
               <% present(document, DRI::ImagePresenter) do |images| %>
                 <% images.icons.each do |icon| %>
-                  <%= image_tag(icon, alt: "image tag" ) %>
+                  <%= image_tag(icon, alt: File.basename(icon.to_s, ".*").split("_")[-2]) %>
                 <% end %>
               <% end %> &nbsp;
               <%= presenter.file_type_labels %>
