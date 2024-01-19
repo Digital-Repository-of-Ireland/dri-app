@@ -2,7 +2,7 @@
     <!-- navigation to allow the user to determine how the search result are sorted e.g. by relevance, A to Z, Z to A -->
   <nav id="dri_sort_nav_id" class="dri_sort_nav" data-bs-content="<%= t('dri.help.dri_sort_options') %>"  data-bs-title="<%= t('dri.help.dri_sort_options_title')%>" data-bs-trigger="hover" data-bs-placement="right">
   <%= render(Blacklight::Response::SortComponent.new(
-    choices: active_sort_fields.map { |key, config| [sort_field_label(config.key), key] },
+    choices: active_sort_fields.map { |key, config| [t("blacklight.search.sort.#{sort_field_label(config.key)}"), key] },
     search_state: search_state,
     id: 'dri_sort_options_id',
     selected: current_sort_field&.key)) %>

@@ -164,9 +164,6 @@ Rails.application.routes.draw do
     get 'surrogates/:id' => 'surrogates#index', as: :surrogates
     put 'surrogates/:id' => 'surrogates#update', as: :surrogates_generate
 
-    get 'tasks' => 'user_background_tasks#index', as: :user_tasks
-    delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks
-
     get 'collections/:id' => 'catalog#show'
     get 'objects/:id' => 'objects#show'
 

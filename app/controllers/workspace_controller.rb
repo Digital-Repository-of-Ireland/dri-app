@@ -4,7 +4,6 @@ class WorkspaceController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @tasks_count = UserBackgroundTask.where(user_id: current_user.id).count
     @manage_collections_count = manage_or_edit_collections_count(type: :manage)
     @edit_collections_count = manage_or_edit_collections_count(type: :edit)
     @collection_count = @manage_collections_count + @edit_collections_count
