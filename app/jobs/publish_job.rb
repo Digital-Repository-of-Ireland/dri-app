@@ -1,9 +1,7 @@
 class PublishJob
   include DRI::Versionable
 
-  def queue
-    :publish
-  end
+  @queue = :publish
 
   def self.perform(collection_id, user_id)
     user = UserGroup::User.find(user_id)

@@ -1,7 +1,5 @@
 class PublishCollectionJob
-  def queue
-    :publish
-  end
+  @queue = :publish
   
   def self.perform(collection_id, user_id)
     # start jobs for all sub-collections

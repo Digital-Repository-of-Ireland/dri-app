@@ -1,7 +1,5 @@
 class ReviewCollectionJob
-  def queue
-    :review
-  end
+  @queue = :review
 
   def self.perform(collection_id, user_id)
     # get all sub-collections
