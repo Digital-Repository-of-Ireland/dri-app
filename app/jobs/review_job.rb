@@ -1,9 +1,7 @@
 class ReviewJob
   include DRI::Versionable
 
-  def queue
-    :review
-  end
+  @queue = :review
 
   def self.perform(collection_id, user_id)
     user = UserGroup::User.find(user_id)
