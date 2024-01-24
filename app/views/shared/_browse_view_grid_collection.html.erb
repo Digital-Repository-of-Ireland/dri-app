@@ -27,18 +27,23 @@
           </div>
           <!-- close image -->
           <h3><%= document[:title_tesim][0] %></h3>
-          <p class="dri_publishing_institute">
-            <% if document.key?('depositing_institute_ssi') %>
-              <%= document['depositing_institute_ssi'] %>
-            <% else %>
-              Depositing Organisation not Set
-            <% end %>
-          </p>
+          <% if document.root_collection? %>
+            <p class="dri_publishing_institute">
+              <% if document.key?('depositing_institute_ssi') %>
+                <%= document['depositing_institute_ssi'] %>
+              <% else %>
+                <%= t('dri.views.collection.depositing_organisation_not_set') %>
+              <% end %>
+            </p>
+          <% else %>
+            <p class="dri_publishing_institute">
+              Sub-collection of <%= document['collection_tesim'].first %>
+            </p>
+          <% end %>
         </div>
     <% end %>
 
-    <%# If ROOT COLLECTION %>
-    <% if document['collection_id_tesim'].nil? %>
+    <% if document.root_collection? %>
       <% collection_objects_params = { f: {'root_collection_id_ssi' => [document['root_collection_id_ssi']]}} %>
     <% else %>
       <%# If SUB-COLLECTION %>

@@ -6,12 +6,6 @@ RSpec.configure { |c| c.filter_run_excluding(slow: true) }
 
 describe 'PublishJob' do
 
-  before do
-    allow_any_instance_of(PublishJob).to receive(:completed)
-    allow_any_instance_of(PublishJob).to receive(:set_status)
-    allow_any_instance_of(PublishJob).to receive(:at)
-  end
-
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
@@ -39,9 +33,8 @@ describe 'PublishJob' do
   describe 'run' do
     it "should set a collection\'s reviewed objects status to published" do
       allow(Resque).to receive(:enqueue)
-      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
-
+      PublishJob.perform(@collection.alternate_id, @login_user.id)
+   
       @collection.reload
       @object.reload
 
@@ -51,9 +44,8 @@ describe 'PublishJob' do
 
     it 'should set published_at' do
       allow(Resque).to receive(:enqueue)
-      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
-
+      PublishJob.perform(@collection.alternate_id, @login_user.id)
+     
       @collection.reload
       @object.reload
 
@@ -78,8 +70,7 @@ describe 'PublishJob' do
       @collection.save
 
       allow(Resque).to receive(:enqueue)
-      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      PublishJob.perform(@collection.alternate_id, @login_user.id)
 
       @collection.reload
       @subcollection.reload
@@ -98,8 +89,7 @@ describe 'PublishJob' do
       @collection.governed_items << @draft
       @collection.save
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      PublishJob.perform(@collection.alternate_id, @login_user.id)
 
       @collection.reload
       @draft.reload
@@ -118,10 +108,8 @@ describe 'PublishJob' do
         publisher: 'Digital Repository of Ireland'))
       Settings.doi.enable = true
 
-      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-
       expect(Resque).to receive(:enqueue).twice
-      job.perform
+      PublishJob.perform(@collection.alternate_id, @login_user.id)
 
       @collection.reload
       @object.reload
@@ -141,11 +129,8 @@ describe 'PublishJob' do
 
         @collection.governed_items << o
       end
-
       @collection.save
-
-      job = PublishJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      PublishJob.perform(@collection.alternate_id, @login_user.id)
 
       q = "collection_id_sim:\"#{@collection.alternate_id}\" AND status_ssi:published"
       expect(SolrQuery.new(q).count).to eq(21)

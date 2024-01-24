@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'solr/query'
 
 RSpec.configure do |c|
@@ -7,10 +7,6 @@ RSpec.configure do |c|
 end
 
 describe "PublishCollectionJob" do
-
-  before do
-    expect_any_instance_of(PublishCollectionJob).to receive(:completed)
-  end
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -49,29 +45,24 @@ describe "PublishCollectionJob" do
 
   describe "perform" do
     it "should trigger jobs for subcollections" do
-      expect(PublishJob).to receive(:create).exactly(3).times
-      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      expect(Resque).to receive(:enqueue).exactly(3).times
+      PublishCollectionJob.perform(@collection.alternate_id, @login_user.id)
     end
 
     it "should trigger jobs for published subcollections" do
       @subcollection[:status] = "published"
       @subcollection.save
 
-      expect(PublishJob).to receive(:create).exactly(3).times
-      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      expect(Resque).to receive(:enqueue).exactly(3).times
+      PublishCollectionJob.perform(@collection.alternate_id, @login_user.id)
     end
 
     it "should not trigger jobs for draft subcollections" do
       @subcollection[:status] = "draft"
       @subcollection.save
 
-      expect(PublishJob).to receive(:create).exactly(2).times
-      job = PublishCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      expect(Resque).to receive(:enqueue).exactly(2).times
+      PublishCollectionJob.perform(@collection.alternate_id, @login_user.id)
     end
-
   end
-
 end

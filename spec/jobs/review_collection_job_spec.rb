@@ -8,10 +8,6 @@ end
 
 describe "ReviewCollectionJob" do
 
-  before do
-    expect_any_instance_of(ReviewCollectionJob).to receive(:completed)
-  end
-
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
     Settings.dri.files = @tmp_assets_dir
@@ -49,9 +45,8 @@ describe "ReviewCollectionJob" do
 
   describe "run" do
     it "should trigger jobs for subcollections" do
-      expect(ReviewJob).to receive(:create).exactly(3).times
-      job = ReviewCollectionJob.new('test', { 'collection_id' => @collection.alternate_id, 'user_id' => @login_user.id })
-      job.perform
+      expect(Resque).to receive(:enqueue).exactly(3).times
+      ReviewCollectionJob.perform(@collection.alternate_id, @login_user.id)
     end
   end
 

@@ -1,22 +1,12 @@
 class PublishJob
-  include Resque::Plugins::Status
   include DRI::Versionable
 
-  def queue
-    :publish
-  end
+  @queue = :publish
 
-  def name
-    'PublishJob'
-  end
-
-  def perform
-    collection_id = options['collection_id']
-    user_id = options['user_id']
+  def self.perform(collection_id, user_id)
     user = UserGroup::User.find(user_id)
 
     Rails.logger.info "Publishing collection #{collection_id}"
-    set_status(collection_id: collection_id)
 
     # query for reviewed objects within this collection
     q_str = "collection_id_sim:\"#{collection_id}\""
@@ -44,20 +34,17 @@ class PublishJob
     if collection.save
       mint_doi(doi) if doi
 
-      record_version_committer(collection, user)
+      VersionCommitter.create(version_id: 'v%04d' % collection.object_version, obj_id: collection.alternate_id, committer_login: user.to_s)
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
       preservation.preserve
     else
       doi.destroy if doi
-      failed += 1
     end
-
-    completed(completed: completed, failed: failed)
   end
 
-  def set_as_published(collection_id, user, q_str, f_query)
+  def self.set_as_published(collection_id, user, q_str, f_query)
     total_objects = Solr::Query.new(q_str, 100, { fq: f_query }).count
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
@@ -81,30 +68,20 @@ class PublishJob
         o.doi = doi.doi if doi
 
         if o.save
-          record_version_committer(o, user)
+          VersionCommitter.create(version_id: 'v%04d' % o.object_version, obj_id: o.alternate_id, committer_login: user.to_s)
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)
           preservation.preserve
-
-          completed += 1
           mint_doi(doi) if doi
         else
           doi.destroy if doi
-          failed += 1
         end
       end
-
-      unless total_objects.zero?
-        at(completed, total_objects,
-           "Publishing #{collection_id}: #{completed} of #{total_objects} marked as published")
-      end
     end
-
-    return completed, failed
   end
 
-  def create_doi(obj)
+  def self.create_doi(obj)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
     DataciteDoi.find_or_create_by(
@@ -114,7 +91,7 @@ class PublishJob
     )
   end
 
-  def mint_doi(doi)
+  def self.mint_doi(doi)
     return if Settings.doi.enable != true || DoiConfig.nil?
 
     Resque.enqueue(MintDoiJob, doi.id)
