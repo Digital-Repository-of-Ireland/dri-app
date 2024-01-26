@@ -50,6 +50,14 @@ module DRI::Solr::Document
       metadata('type')
     end
 
+    def temporal_coverage
+      metadata('temporal_coverage')
+    end
+
+    def publisher
+      metadata("publisher")
+    end
+
     def extract_metadata(metadata_fields)
       item = {}
 
