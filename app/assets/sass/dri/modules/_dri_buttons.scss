@@ -73,6 +73,7 @@
   background-color: $dri_grey;
   color: $dri_white;
   border: 1px solid transparent;
+  text-decoration: none;
   &:hover {
     background-color: $dri_white;
     color: $dri_black;
@@ -103,8 +104,12 @@
 
 
 .dri-btn-close {
-  @extend .btn-close;
+  @extend .btn;
   float: right;
+  font-size: 32px;
+  &:hover{
+    background-color: $dri_select;
+  }
 }
 
 .dri_w230 {

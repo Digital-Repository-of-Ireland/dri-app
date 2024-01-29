@@ -210,9 +210,6 @@ input[type="color"],
     @include border_radius (3px);
     vertical-align: middle;
 }
-.modal.fade.in {
-    //padding-top: 5%;
-}
 .field_with_errors label {
     background-color: $dri_white;
     color: $dri_red;
@@ -681,6 +678,8 @@ ul.dropdown a {
 
 .dri_social_media_nav {
     margin: 70px 0 0 0;
+    display: block ruby;
+    justify-content: space-around;
     li {
         font-size: 20px;
         color: $dri_darkgrey;
@@ -694,6 +693,14 @@ ul.dropdown a {
             color: $dri_green;
         }
     }
+    .social_media_icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        text-decoration: none; /* Remove underline from links */
+        color: inherit; /* Inherit the color from the parent */
+      }
 }
 
 ol.breadcrumb {
@@ -1242,14 +1249,6 @@ h4.suggest {
     border: 1px solid $dri_thingrey;
 
     @include border_radius (3px);
-    // &:hover{
-    //     div{
-    //         background-color: $dri_select;
-    //     }
-    //     // background: $dri_green;
-    //     // color: $dri_white;
-    //     ////////////////////////////////////////////////////////////////////////////////////////////
-    // }
 }
 
 #advanced-help {
@@ -1758,6 +1757,10 @@ span.dri_remove_bookmark_back {
     i.fa-circle{
         color: darken($dri_green, 10%);
     }
+}
+
+.social_media_icon{
+    vertical-align: middle;
 }
 
 .dri_result_container {
