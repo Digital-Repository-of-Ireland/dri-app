@@ -280,11 +280,11 @@ end
 
 Then /^I should( not)? see a popover$/ do |negate|
   expectation = negate ? :should_not : :should
-  page.send(expectation, have_css('div.popover', visible: true))
+  page.send(expectation, have_css('div.popover-body', visible: true))
 end
 
 Then /^I should see a popover with the title "([^\"]+)"$/ do |title|
-  expect(page).to have_selector('div.popover .popover-title', visible: true, text: title)
+  expect(page).to have_selector('.popover-header', visible: true, text: title)
 end
 
 Then /^I should see the (valid|modified) metadata$/ do |type|

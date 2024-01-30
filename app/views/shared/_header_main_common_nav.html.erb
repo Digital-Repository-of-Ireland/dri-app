@@ -3,15 +3,11 @@
 <% else %>
     <li>
 <% end %>
-<%= link_to t('dri.headerlinks.home'), 'http://www.dri.ie/', id: 'dri_home_id' %>
+<%= link_to t('dri.headerlinks.home'), 'https://www.dri.ie/', id: 'dri_home_id' %>
 </li>
 
 <%= render 'shared/header_main_browse_dropdown' %>
 <%= render 'shared/header_main_deposit_dropdown' %>
-<%= render 'shared/header_main_resources_dropdown' %>
-<%= render 'shared/header_main_ourwork_dropdown' %>
-<%= render 'shared/header_main_newsevents_dropdown' %>
-<%= render 'shared/header_main_about_dropdown' %>
 
 <% if workspace_active? %>
     <li class="active">
@@ -19,5 +15,8 @@
     <li>
 <% end %>
 <%= link_to t('dri.headerlinks.workspace'), main_app.workspace_path, id: 'workspace' %>
+</li>
+<li>
+  <%= link_to t('dri.headerlinks.guides'), 'https://guides.dri.ie', id: 'guides', target: :_blank %>
 </li>
 

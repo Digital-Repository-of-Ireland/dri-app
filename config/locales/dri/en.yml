@@ -51,6 +51,9 @@ en:
         token_params: Add the following parameters to authenticate a request
         user_type: User Type
         your_collection_details: Your Collection Details
+      nav:
+        main_nav:
+          toggle_navigation: Toggle navigation
     data:
       types:
         Image: Image
@@ -87,6 +90,7 @@ en:
         header: "My Reports"
         start: "Start"
         end: "End"
+        manager_user: "Manager"
         title: "Collection Title"
         url: "URL"
         subcollections: "Subcollections"
@@ -232,7 +236,7 @@ en:
       admin: Admin
       batch_ingest: Batch Ingest
       blog: Blog
-      browse: Repository
+      browse: DRI Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
       collection: Collection
@@ -240,8 +244,9 @@ en:
       deposit_guide: Guide to Deposit
       end_user_agreement: End User Agreement
       events: Events
+      guides: User Guides
       help: FAQ
-      home: Home
+      home: DRI Website
       ingest: Ingest
       institutions: Organisations
       language: Language
@@ -454,7 +459,6 @@ en:
           copy_to_clipboard: Copy to Clipboard 
           copy_success: Copied to Clipboard
           copy_failure: Not copied
-
         headers:
           files: Asset Tools
           related_materials: Related Materials
@@ -473,6 +477,7 @@ en:
           no_surrogates: No surrogates are available.
           no_tasks: No recent background task (publish or review) status information currently available.
           preservation_only: Preservation-only file.
+          results_count: "%{count} search results"
           request_permission_in_progress: Your request is in progress.
           request_permission_logged_in: Request Access
           request_permission_not_logged_in: Sign up/Login to get access.
@@ -539,6 +544,7 @@ en:
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
         confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
         confirm_surrogates: This will (re)generate surrogates for all objects within the collection. Continue?
+        depositing_organisation_not_set: Depositing organisation not set
         doi_modification: DOI change log entry
         duplicates_found: "%{duplicates_count} duplicate objects have been found."
         edit: Edit Collection
@@ -710,7 +716,7 @@ en:
         dublin_core: Dublin Core
       objects:
         access_controls:
-          accessible_master_file: Allow access to a system-generated surrogate version and the original uploaded master file(s)
+          accessible_master_file: System-generated surrogate version and the original uploaded master file(s)
           alert: Set an appropriate licence for this level of access.
           description: Here you can set access permissions for your collections and objects.
           edit_collection: Who can edit in this collection / sub-collection?
@@ -735,7 +741,7 @@ en:
           master_file: Which asset files can they access?
           metadata: 'Access settings affect the asset files that you upload excluding preservation-only files. All metadata will be publicly accessible regardless of what settings you select here. '
           private: Private
-          private_master_file: Only allow access to a system-generated surrogate version of my original uploaded master file(s)
+          private_master_file: System-generated surrogate version of original uploaded master file(s) only
           public: Allow public access (anyone on the web can access)
           read: Who can access your assets?
           registered: Limit access to logged-in users

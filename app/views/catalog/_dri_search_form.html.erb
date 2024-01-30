@@ -1,6 +1,7 @@
   <%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form' do %>
     <% translated_fields = translated_search_fields(display_search_fields) %>
-    <label for="search_field" class="sr-only"><%= t('blacklight.search.form.search_field.label') %></label>
+    <label for="search_field" class="visually-hidden"><%= t('blacklight.search.form.search_field.label') %></label>
+    <div class="input-group mt-2 dri-search-input-group">
     <%= select_tag(:search_field,
                    options_for_select(translated_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
@@ -14,15 +15,17 @@
 
     <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
     <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
-    <label for="q" class="sr-only"><%= t('blacklight.search.form.search') %></label>
-    <%= text_field_tag :q, params[:q], id: "q", class: "dri_search_term_text_input dri_help_popover_slow", :'data-content' =>  t('dri.help.q'),  :'data-original-title' =>  t('dri.help.q_title'), :'data-trigger' => "hover", :'data-placement' => "left" %>
-    <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
-      <%=t('blacklight.search.form.submit')%>
-    </button>
+    <label for="q" class="visually-hidden"><%= t('blacklight.search.form.search') %></label>
+    <%= text_field_tag :q, params[:q], id: "q", class: "dri_search_term_text_input dri_help_popover_slow", :'data-bs-content' =>  t('dri.help.q'),  :'data-bs-title' =>  t('dri.help.q_title'), :'data-bs-trigger' => "hover", :'data-placement' => "left" %>
+    <div class="input-group-append">
+      <button type="submit" class="dri_search_term_text_submit_button dri_no_display" id="search">
+        <%=t('blacklight.search.form.submit')%>
+      </button>
+    </div>
   <% end %><!-- end form -->
 <!-- close dri_search_term_input_form -->
-
+  </div>
   <%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',
-      :'data-target' => '#dri_advanced_search_modal_id',
-      :'data-toggle' => 'modal',
+      :'data-bs-target' => '#dri_advanced_search_modal_id',
+      :'data-bs-toggle' => 'modal',
       id: 'advanced_search_button' %>

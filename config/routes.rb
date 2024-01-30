@@ -164,9 +164,6 @@ Rails.application.routes.draw do
     get 'surrogates/:id' => 'surrogates#index', as: :surrogates
     put 'surrogates/:id' => 'surrogates#update', as: :surrogates_generate
 
-    get 'tasks' => 'user_background_tasks#index', as: :user_tasks
-    delete 'tasks' => 'user_background_tasks#destroy', as: :destroy_user_tasks
-
     get 'collections/:id' => 'catalog#show'
     get 'objects/:id' => 'objects#show'
 
@@ -174,6 +171,9 @@ Rails.application.routes.draw do
 
     get 'aggregations/:id' => 'aggregations#edit', as: :edit_edm_settings
     put 'aggregations/:id' => 'aggregations#update', as: :save_edm_settings
+
+    get 'linkset/:id/json' => 'linksets#json', as: :linkset_json
+    get 'linkset/:id/lset' => 'linksets#lset', as: :linkset_lset
 
     #API paths
     post 'get_objects' => 'api#objects'
@@ -196,7 +196,4 @@ Rails.application.routes.draw do
    namespace 'api' do 
       get 'oembed' , to: 'oembed#show' , constraints: ->(request){ request.query_parameters["url"].present? } , defaults: { format: 'json' }
    end
-
-   
- 
 end

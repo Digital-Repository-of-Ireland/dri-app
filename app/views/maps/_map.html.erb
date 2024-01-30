@@ -1,24 +1,15 @@
 <%= stylesheet_link_tag "blacklight_maps" %>
 
-<div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-  <h4 class="modal-title"><%= t('dri.views.catalog.forms.map') %></h4>
-</div>
-<div class="modal-body">
-  <% if @document[blacklight_config.view.maps.geojson_field.to_sym] || @document[blacklight_config.view.maps.coordinates_field.to_sym] %>
-    <% geojson_features = serialize_geojson(@document) %>
-    <%= blacklight_map_tag('blacklight-show-map',
-          {
-            data: {
-                    initialzoom: blacklight_config.view.maps.show_initial_zoom,
-                    singlemarkermode: true
-                  },
-            style: "height: 480px; width: 100%"
-          })
-    %>
-    <%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>
-  <% end %>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('dri.window.modal.close') %></button>
-</div>
+<% if @document[blacklight_config.view.maps.geojson_field.to_sym] || @document[blacklight_config.view.maps.coordinates_field.to_sym] %>
+  <% geojson_features = serialize_geojson(@document) %>
+  <%= blacklight_map_tag('blacklight-show-map',
+        {
+          data: {
+                  initialzoom: blacklight_config.view.maps.show_initial_zoom,
+                  singlemarkermode: true
+                },
+          style: "height: 480px; width: 100%"
+        })
+  %>
+  <%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>
+<% end %>

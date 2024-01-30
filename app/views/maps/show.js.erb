@@ -1,1 +1,2 @@
- <%= render partial: 'map', locals: { request_controller: @request_controller } -%>
+$('#dri_map_modal_id .modal-body').html("<%= j (render partial: 'map', locals: { request_controller: @request_controller }) %>");
+$('#dri_map_modal_id').modal();

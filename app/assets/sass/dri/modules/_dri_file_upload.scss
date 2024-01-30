@@ -19,6 +19,9 @@
             opacity: .7;
         }
     }
+    .collection_form {
+      width: 228px;
+    }
     a {
         font-size: 100%;
         color: $dri_midgrey;
@@ -26,7 +29,7 @@
         background-color: white;
         padding: 20px 0 0 0;
         height: 128px;
-        width: 228px;
+        //width: 228px;
         vertical-align: center;
         input {
             position: absolute;

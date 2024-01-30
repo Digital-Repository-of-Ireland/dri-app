@@ -19,17 +19,17 @@
 
     <section>
       <h2><%= t('dri.application.terms.deposit_agreement_form') %></h2>
-    	<div class="checkbox">
+    	<div class="checkbox mb-1">
     		<label>
     			<input name="deposit" id="deposit" required type="checkbox" />
     			<span> <%= link_to t('dri.application.terms.deposit_agreement'), main_app.page_path('deposit_terms'), :id => "deposit_agreement", :target => "_blank"%> </span> </label>
     	</div>
     </section>
-  	  <%= f.submit t('dri.views.collection.buttons.create_collection'), :class => "dri_button_green dri_w330", :id => "create_new_collection" %>
+  	  <%= f.submit t('dri.views.collection.buttons.create_collection'), :class => "dri_button_green dri_w330 mt-1", :id => "create_new_collection" %>
 
   	<% end %>
   	<%= form_for @object, as: :digital_object, url: {controller: 'collections', action: 'create'}, method: 'post', html: {:class => 'dri_ingest_form'} do |f| %>
-  	<%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330", id: 'cancel_collection' %>
+  	<%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330 mt-1", id: 'cancel_collection' %>
   	<% end %>
   </div>
 </div>

@@ -1,4 +1,4 @@
-  <nav id="dri_account_nav_id" class="dri_account_nav">
+  <nav id="dri_account_nav_id" class="dri_account_nav mb-2">
 
     <div class="account_container">
     <%= render :partial => 'shared/header_mobile_lang' %>
@@ -7,7 +7,7 @@
       <%= link_to user_group.profile_path, :id => 'view_account' do %>
         <li class="no_border">
           <i class="fa fa-user"></i>
-          <span class="sr-only">Repository User Profile</span>
+          <span class="visually-hidden">Repository User Profile</span>
         </li>
       <% end %>
     </ul>

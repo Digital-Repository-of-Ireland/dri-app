@@ -183,12 +183,13 @@ ga:
       pagination_info: 
         no_items_found: "níor aimsíodh %{entry_name} ar bith"
         pages: 
-          one: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b>"
-          other: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b>"
+          one: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b> torthaí"
+          other: "<b>%{start_num}</b> - <b>%{end_num}</b> as <b>%{total_num}</b> torthaí"
         single_item_found: "<b>1</b> go <b>1</b> as <b>1</b>"
-      per_page: 
-        button_label: "%{count} in aghaidh an leathanaigh"
-        label: "%{count} Torthaí"
+      per_page:
+        label: '%{count}<span class="sr-only visually-hidden"> Torthaí</span>'
+        button_label: '%{count} in aghaidh an leathanaigh' # TODO: Remove during major release
+        button_label_html: '%{count}<span class="d-none d-sm-inline"> in aghaidh an leathanaigh</span>' 
         submit: Nuashonrú
         title: "Líon na dtorthaí in aghaidh an leathanaigh"
       rss_feed: "RSS le haghaidh torthaí"
@@ -196,8 +197,9 @@ ga:
       search_results_header: Cuardach
       show: 
         title: "%{document_title} - %{application_name}"
-      sort: 
-        label: "Eagraigh de réir %{field}"
+      sort:
+        label: 'Eadraigh de réir %{field}' # TODO: Remove during major release
+        label_html: 'Eagraigh<span class="d-none d-sm-inline"> de réir %{field}</span>' 
         newest: Mír is déanaí
         order/sequence: Ord/sraith
         relevance: Ábharthacht

@@ -13,7 +13,7 @@ restrict:
     text: ['application/pdf', 'application/x-pdf', 'application/rtf', 'text/plain', 'text/xml', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
     pdf: ['application/pdf', 'application/x-pdf']
     audio: ['audio/mp3', 'audio/mpeg', 'audio/mpeg3', 'audio/mp2', 'audio/wav', 'audio/x-wave', 'audio/x-wav', 'audio/ogg', 'audio/x-aiff', 'audio/x-ms-wma', 'audio/x-m4a']
-    video: ['application/mp4', 'video/mp4', 'video/mpeg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
+    video: ['application/mp4', 'video/mp4', 'video/mpeg', 'video/mpg', 'video/mp4', 'video/webm', 'video/x-msvideo', 'video/x-ms-wmv', 'video/avi', 'video/quicktime', 'application/mxf', 'video/x-matroska', 'application/x-matroska']
     _3D: ['application/vnd.ms-pki.stl','application/vnd.wavefront.obj', 'application/sla', 'application/octet-stream','application/vnd.ms-pki.stl','application/vnd.ms-pki.stlprinter', 'model/vnd.collada+xml','application/xml', 'text/xml', 'glTF binary model', 'model/gltf+json', 'application/json', 'model/gltf-binary', 'application/x-fbx', 'text/plain']
     interactiveResource: ['application/warc', 'application/zip', 'application/gzip', 'application/warc.gz', 'application/har', 'application/cdx', 'application/cdxj', 'text/html', 'application/json']
   file_formats:

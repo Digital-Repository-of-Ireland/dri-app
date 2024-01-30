@@ -1,6 +1,6 @@
 //Bootstrap Override
 $screen-lg: 1100px;
-//End Bootstarp Override
+//End Bootstrap Override
 $dri_green: #90993d;
 $dri_grey: #2f2f2f;
 $dri_greytext: gray;
@@ -24,7 +24,8 @@ $dri_teal: #00948F;
 $dri_logo_url: "dri/dri_ident.png";
 $dri_logo_small_url: 'dri/dri_ident_small.png';
 $dri_logo_tiny_url: 'dri/dri_ident_tiny.png';
-$dri_facet_min_width: 238px;
+$dri_facet_min_width: 255px;
+
 //.translation_missing {
 // border: 1px red;
 //background: red;
@@ -36,7 +37,7 @@ html {
     margin-bottom: 0.5em;
     height: 100%;
     body {
-        font: 120% Arial, Helvetica, clean, sans-serif;
+        font: 100% Arial, Helvetica, clean, sans-serif;
         *font-size: small;
         *font: x-small;
         margin: 0;

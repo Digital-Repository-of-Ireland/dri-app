@@ -96,15 +96,15 @@ $(document).ready(function() {
           { targets: [1, 3, 4, 5], orderable: true },
           { "render": function ( data, type, row ) {
             return "<a rel=\"nofollow\" data-method=\"get\" href=\"" + data + "\">"
-              + "<i class=\"fa fa-edit fa-2x text-success\"></i></a>"
+              + "<i class=\"fa fa-edit text-success\"></i></a>"
             },
             "targets": 8
           },
           { "render": function ( data, type, row ) {
             if(data == true) {
-               return "<i class=\"fa fa-check-circle-o fa-2x text-success\"></i>"
+               return "<i class=\"fa fa-check-circle-o text-success\"></i>"
             } else {
-               return "<i class=\"fa fa-times fa-2x text-danger\"></i>"
+               return "<i class=\"fa fa-times text-danger\"></i>"
             }
             },
             "targets": 7

@@ -10,7 +10,7 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery
+//= require jquery3
 //= require jquery_ujs
 //= require datatables
 //= require jquery-ui/widgets/mouse
@@ -48,11 +48,13 @@
 //= require js.cookie
 //= require jquery.validate
 //= require jquery.validate-additional-methods
-//= require bootstrap/affix
-//= require bootstrap/carousel
-//= require bootstrap/tooltip
-//= require bootstrap/popover
-//= require bootstrap/tab
+// require bootstrap/affix
+//= require popper
+//= require bootstrap
+// require bootstrap/carousel
+// require bootstrap/tooltip
+// require bootstrap/popover
+// require bootstrap/tab
 //= require jquery.bootstrap-duallistbox
 //= require jquery.readyselector
 // Required by Blacklight

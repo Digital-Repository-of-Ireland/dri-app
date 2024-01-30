@@ -137,7 +137,7 @@ function createRemoveButton(model) {
 
 function createTextArea(id, name, label) {
   return '<div>\
-            <label for="' + id + '" class="sr-only">' + label + '</label>\
+            <label for="' + id + '" class="visually-hidden">' + label + '</label>\
             <textarea class="edit span6 dri-textarea " \
               id='+id+' name='+name+'>\
             </textarea>'+createRemoveButton('batch')+
@@ -146,7 +146,7 @@ function createTextArea(id, name, label) {
 
 function createTextInput(id, name, label) {
   return '<div>\
-            <label for="' + id + '" class="sr-only">' + label + '</label>\
+            <label for="' + id + '" class="visually-hidden">' + label + '</label>\
             <input class="edit span6 dri-textfield " \
               id='+id+' name='+name+' \
               size="30" type="text" value=""/>'+createRemoveButton('batch')+
@@ -165,11 +165,11 @@ function createPersonInput(id, name, previous_select) {
   var count = $('[name="' + name + '[' + id + '][type][]"').length + 1;
 
   return '<div>\
-            <label class="sr-only" for="'+name+'_'+id+'_type_'+count+'">Role</label> \
+            <label class="visually-hidden" for="'+name+'_'+id+'_type_'+count+'">Role</label> \
             <select id="'+name+'_'+id+'_type_'+count+
               '" name="'+name+'['+id+'][type][]">'+roles_options+
             '</select> \
-            <label class="sr-only" for="'+name+'_'+id+'_name_' + count +'">Name</label> \
+            <label class="visually-hidden" for="'+name+'_'+id+'_name_' + count +'">Name</label> \
               <input class="edit span6 dri-textfield " id="'+name+'_'+id+'_name_' + count +'" name="'
               +name+'['+id+'][name][]" size="30" type="text" value=""/>'+createRemoveButton('batch')+
           '</div>';

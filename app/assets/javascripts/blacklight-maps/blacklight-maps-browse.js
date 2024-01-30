@@ -21,7 +21,7 @@
     // Extend options from data-attributes
     $.extend(options, this.data());
 
-    var mapped_items = '<span class="mapped-count"><span class="badge badge-secondary">' + geojson_docs.features.length + '</span>' + ' location' + (geojson_docs.features.length !== 1 ? 's' : '') + ' mapped</span>';
+    var mapped_items = '<span class="mapped-count"><span class="badge bg-secondary">' + geojson_docs.features.length + '</span>' + ' location' + (geojson_docs.features.length !== 1 ? 's' : '') + ' mapped</span>';
 
     var mapped_caveat = '<span class="mapped-caveat">Only items with location data are shown below</span>';
 

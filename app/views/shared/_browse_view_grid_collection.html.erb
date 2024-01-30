@@ -22,19 +22,24 @@
             <% end %>
           </div>
           <!-- close image -->
-          <h1><%= document[:title_tesim][0] %></h1>
-          <p class="dri_publishing_institute">
-            <% if document.key?('depositing_institute_ssi') %>
-              <%= document['depositing_institute_ssi'] %>
-            <% else %>
-              Depositing Organisation not Set
-            <% end %>
-          </p>
+          <h3><%= document[:title_tesim][0] %></h3>
+          <% if document.root_collection? %>
+            <p class="dri_publishing_institute">
+              <% if document.key?('depositing_institute_ssi') %>
+                <%= document['depositing_institute_ssi'] %>
+              <% else %>
+                <%= t('dri.views.collection.depositing_organisation_not_set') %>
+              <% end %>
+            </p>
+          <% else %>
+            <p class="dri_publishing_institute">
+              Sub-collection of <%= document['collection_tesim'].first %>
+            </p>
+          <% end %>
         </div>
     <% end %>
 
-    <%# If ROOT COLLECTION %>
-    <% if document['collection_id_tesim'].nil? %>
+    <% if document.root_collection? %>
       <% collection_objects_params = { f: {'root_collection_id_ssi' => [document['root_collection_id_ssi']]}} %>
     <% else %>
       <%# If SUB-COLLECTION %>
@@ -46,9 +51,9 @@
         <div class="dri_num_objects">
           <span class="dri_object_text_num"> <%= t('dri.views.catalog.forms.objects_in_collection') + " (#{object_count})" %></span>
           <% if document.visibility == "restricted" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
             <% elsif document.visibility == "logged-in" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
             <% end %>
         </div>
     <% end %> <!-- close dri_num_objects -->

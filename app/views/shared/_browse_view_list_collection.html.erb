@@ -6,15 +6,13 @@
       <% end %>
     <% end %>
 
-    <!-- close image -->
-
     <div class="dri_content_list_collection_data">
       <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
-          <h4><%= document['title_tesim'][0] %></h4>
+          <h3><%= document['title_tesim'][0] %></h3>
       <% end %>
       <% if document.key?('description_tesim') %>
         <p>
-          <%= truncate_description(document['description_tesim'][0], 280).html_safe %>
+          <%= truncate_description(document['description_tesim'][0], 180).html_safe %>
         </p>
       <% end %>
       <p class="dri_publishing_institute">
@@ -38,9 +36,9 @@
               <%= t('dri.views.catalog.forms.objects_in_collection') + " (" + object_count.to_s + ") " %>
             </span>
             <% if document.visibility == "restricted" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-lock" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_restricted') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
             <% elsif document.visibility == "logged-in" %>
-              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-original-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-trigger="hover" data-placement="auto"></i></span>
+              <span class="dri_icon_text pull-right"><i class="dri_help_popover fa fa-user" style="font-size: 1.4em;" data-bs-content="<%= t('dri.help.dri_browse_collection_registered') %>" data-bs-title="<%= t('dri.views.catalog.forms.restricted_asset') %>" data-bs-trigger="hover" data-bs-placement="auto"></i></span>
             <% end %>
           </div>
       <% end %> <!-- close dri_num_objects -->

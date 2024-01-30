@@ -24,26 +24,26 @@
 			%>
 
 			<li id="dri_browse_sort_tabs_collections_id"
-			   data-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
-			   data-original-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
-			   data-trigger="hover"
-			   data-placement="auto right">
+			   data-bs-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
+			   data-bs-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
+			   data-bs-trigger="hover"
+			   data-bs-placement="auto right">
 			     <%= link_to t('dri.headerlinks.collections'), collections_params, id: "collections", class: collections_class	%>
 			</li>
 
 		    <li id="dri_browse_sort_tabs_sub_collections_id"
-		      data-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
-		      data-original-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
-		      data-trigger="hover"
-		      data-placement="auto right">
+		      data-bs-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
+		      data-bs-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
+		      data-bs-trigger="hover"
+		      data-bs-placement="auto right">
 			  <%= link_to t('dri.headerlinks.sub_collections'), subcollections_params, id: "sub_collections", class: subcollections_class %>
 		    </li>
 
 			<li id="dri_browse_sort_tabs_objects_id"
-			  data-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"
-			  data-original-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>"
-			  data-trigger="hover"
-			  data-placement="auto right">
+			  data-bs-content="<%= t('dri.help.dri_browse_sort_tabs_objects') %>"
+			  data-bs-title="<%= t('dri.help.dri_browse_sort_tabs_objects_title')%>"
+			  data-bs-trigger="hover"
+			  data-bs-placement="auto right">
 				  <%= link_to t('dri.headerlinks.objects'), objects_params, id: "objects", class: objects_class %>
 			</li>
 

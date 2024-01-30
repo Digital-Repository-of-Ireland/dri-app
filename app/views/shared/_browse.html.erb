@@ -14,10 +14,8 @@
 
 <%= render partial: 'did_you_mean' %>
 
-<div id="dri_second_navigation_container_id"
-     class="dri_second_navigation_container">
+<div id="dri_second_navigation_container_id" class="dri_second_navigation_container">
   <!-- facet block -->
-
   <% if controller_name == 'my_collections' %>
     <%= render "#{controller_name}/dri_search_form" %>
   <% end %>

@@ -3,7 +3,13 @@ require 'rails_helper'
 describe WorkspaceController do
   include Devise::Test::ControllerHelpers
 
+  let(:tmp_upload_dir) { Dir.mktmpdir }
+  let(:tmp_assets_dir) { Dir.mktmpdir }
+
   before(:each) do
+    Settings.dri.uploads = tmp_upload_dir
+    Settings.dri.files = tmp_assets_dir
+
     @manager_user = FactoryBot.create(:collection_manager)
     @login_user = FactoryBot.create(:user)
 
@@ -25,6 +31,16 @@ describe WorkspaceController do
     @object = FactoryBot.create(:sound)
     @collection.governed_items << @object
     @collection.save
+  end
+
+  after(:each) do
+    @collection.destroy
+    @edit_collection.destroy
+    @login_user.delete
+    @manager_user.delete
+
+    FileUtils.remove_dir(tmp_upload_dir, force: true)
+    FileUtils.remove_dir(tmp_assets_dir, force: true)
   end
 
   describe 'GET index request' do

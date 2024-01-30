@@ -217,7 +217,7 @@
          <%= f.hidden_field :read_groups_string, :onkeyup=>"read_group_textbox.catch_tb_value();" %>
          <% if !record.collection? %>
            <%= f.text_area :read_users_string, style: 'width:100%;' %>
-           <label for="digital_object_read_users_string" class="sr-only"><%= t('dri.views.objects.access_controls.read_users_string') %></label>
+           <label for="digital_object_read_users_string" class="visually-hidden"><%= t('dri.views.objects.access_controls.read_users_string') %></label>
          <% end %>
      </div>
     </fieldset>
@@ -262,7 +262,7 @@
           </div>
         <% end %>
         <%= f.text_area :edit_users_string, style: 'width:100%;' %>
-        <label for="digital_object_edit_users_string" class="sr-only"><%= t('dri.views.objects.access_controls.edit_users_string') %></label>
+        <label for="digital_object_edit_users_string" class="visually-hidden"><%= t('dri.views.objects.access_controls.edit_users_string') %></label>
     </fieldset>
 
 	<% if record.collection? && (record.new_record? || (can? :manage_collection, record)) %>
@@ -281,7 +281,7 @@
         <% end %>
 
 		 <%= f.text_area :manager_users_string, style: 'width:100%;' %>
-         <label for="digital_object_manager_users_string" class="sr-only"><%= t('dri.views.objects.access_controls.manager_users_string') %></label>
+         <label for="digital_object_manager_users_string" class="visually-hidden"><%= t('dri.views.objects.access_controls.manager_users_string') %></label>
 		 </fieldset>
 	<% end %>
 </div>

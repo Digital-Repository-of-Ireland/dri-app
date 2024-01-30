@@ -8,7 +8,7 @@ gem 'uri', '>= 0.12.2'
 
 gem 'blacklight', '~>7'
 gem 'blacklight_advanced_search', '~> 7'
-gem 'view_component', '2.74.1'
+#gem 'view_component', '2.83'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'rsolr'
 gem 'kaminari', '>= 1.2.1'
@@ -83,7 +83,6 @@ gem 'high_voltage', '~> 3.1'
 # is it working fork
 gem 'is_it_working-cbeer'
 gem 'resque'
-gem 'resque-status', '0.5.0'
 gem 'nest'
 
 group :development, :production do
@@ -92,7 +91,7 @@ end
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs', '2.7.0'
-gem 'uglifier', '~> 4'
+gem 'terser'
 
 group :production do
   gem 'clamby'
@@ -156,7 +155,7 @@ end
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-rails'
 gem 'jwt', '1.5.2'
-gem 'bootstrap-sass', '~> 3.4.1'
+gem 'bootstrap', '~> 5.3.1'
 gem 'bootstrap-glyphicons'
 gem 'sass-rails', '5.1.0'
 

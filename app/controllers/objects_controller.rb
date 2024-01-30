@@ -104,15 +104,14 @@ class ObjectsController < BaseObjectsController
 
     @object.assign_attributes(update_params)
 
-    unless @object.valid?
-      flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
-      format.html { render action: 'edit' }
-      return
-    end
-
-    @object.increment_version
-
     respond_to do |format|
+      unless @object.valid?
+        flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
+        format.html { render action: 'edit' }
+        return
+      end
+
+      @object.increment_version
       checksum_metadata(@object)
 
       if save_and_index
