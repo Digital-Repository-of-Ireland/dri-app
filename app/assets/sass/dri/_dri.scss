@@ -677,7 +677,7 @@ ul.dropdown a {
 /*-------------- Social Media --------------*/
 
 .dri_social_media_nav {
-    margin: 70px 0 0 0;
+    margin: 60px 0 0 0;
     display: flex;
     justify-content: space-around;
     li {
@@ -875,6 +875,7 @@ ol.breadcrumb {
     height: 44px;
     text-align: center;
     line-height: 100%;
+    font-size: 36px;
     vertical-align: middle;
     // padding-top: 3px;
     // i{
@@ -883,11 +884,7 @@ ol.breadcrumb {
 }
 
 .fa-lg {
-    font-size: 36px;
-    // line-height: 0.75em;
-    // vertical-align: -15%;
     text-align: center;
-    // padding-top: 3px;
   }
 /*-------------- Page Grid --------------*/
 
