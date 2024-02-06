@@ -6,13 +6,11 @@
   margin: 2px 0px 0px 0px;
 }
 
-
 .btn-default{
   &:hover{
     background-color: $dri_select;
   }
 }
-
 
 .dri_button {
   font-size: 100%;
@@ -102,14 +100,9 @@
   user-select: none;
 }
 
-
 .dri-btn-close {
-  @extend .btn;
+  @extend .btn-close;
   float: right;
-  font-size: 32px;
-  &:hover{
-    background-color: $dri_select;
-  }
 }
 
 .dri_w230 {
