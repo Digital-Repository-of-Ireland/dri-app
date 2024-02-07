@@ -103,6 +103,22 @@
 .dri-btn-close {
   @extend .btn-close;
   float: right;
+  &:hover{
+    background-color: $dri_select;
+  }
+  opacity: 1;
+}
+
+.dri_messages_container {
+  .dri-btn-close {
+    @extend .btn-close;
+    float: right;
+    &:hover{
+    background-color: $dri_select;
+    }
+    opacity: 1;
+    margin: 0.75rem 1rem;
+  }
 }
 
 .dri_w230 {
