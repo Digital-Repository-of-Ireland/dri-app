@@ -1,7 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title"><%= t('blacklight.tools.cite') %></h4>
+  <h2 class="h4 modal-title"><%= t('blacklight.tools.cite') %></h2>
   <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
-    &times;
   </button>
 </div>
 <div class="modal-body">
@@ -17,10 +16,10 @@
      <option value="<%= style %>"><%= style %></option>
       <%- end -%>
   </select>
-  <button id="citation-clipboard-button" class="btn btn-default clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#citation-text-dri" data-container="body">
+  <button id="citation-clipboard-button" class="dri_button_black btn-default clipboard-btn" data-clipboard-action="copy" data-clipboard-target="#citation-text-dri" data-container="body">
     <%= t('dri.views.catalog.forms.copy_to_clipboard') %>
   </button>
-  <button type="button" class="btn btn-default" data-bs-dismiss="modal"><%= t('dri.window.modal.close') %></button>
+  <button type="button" class="dri_button_black btn-default" data-bs-dismiss="modal"><%= t('dri.window.modal.close') %></button>
 </div>
 <%= javascript_include_tag 'dri/modals', async: Rails.env.production? %>
 
