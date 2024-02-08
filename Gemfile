@@ -173,7 +173,7 @@ gem 'faraday_middleware'
 gem 'rvm'
 
 # UI widgets
-gem 'jquery-colorbox-rails'
+gem 'jquery-colorbox-rails', git: 'https://github.com/Digital-Repository-of-Ireland/jquery-colorbox-rails.git', branch: 'a11y'
 gem 'bootstrap-switch-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'

@@ -66,6 +66,14 @@ GIT
       mini_magick (>= 3.2, < 5)
 
 GIT
+  remote: https://github.com/Digital-Repository-of-Ireland/jquery-colorbox-rails.git
+  revision: 074fcf8bd732ae8e49724df7dd2b74d3d7f0888f
+  branch: a11y
+  specs:
+    jquery-colorbox-rails (1.7.7)
+      railties (>= 3.1)
+
+GIT
   remote: https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails
   revision: 81555b2f5b24a590ecf14015e7eb0b40bf077a62
   specs:
@@ -559,8 +567,6 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
-    jquery-colorbox-rails (1.7.7)
-      railties (>= 3.1)
     jquery-rails (4.6.0)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -1212,7 +1218,7 @@ DEPENDENCIES
   image_processing (>= 1.12.2)
   is_it_working-cbeer
   it
-  jquery-colorbox-rails
+  jquery-colorbox-rails!
   jquery-rails
   jquery-slick-rails
   jquery-ui-rails!
