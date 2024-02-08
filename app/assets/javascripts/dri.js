@@ -7,7 +7,7 @@ $(document).ready(function() {
     $('.dri_help_popover_slow, #facets, #dri_social_media_links_id, #dri_change_sort_view_id, #dri_facet_restrictions_links_id, #dri_sort_nav_id, #dri_pager_nav_id, #dri_pagination_nav_links_id,  #dri_tlfield_options_id').popover( {delay: { show: 1500, hide: 100 }} );
     $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
     $('.dri_help_tooltip').tooltip( {delay: { show: 100, hide: 100 }} );
-    $('a.dri_gallery').colorbox({rel:'group1', maxWidth:'95%', maxHeight:'95%', photo: true});
+    
     if (navigator.userAgent.indexOf('iPhone') != -1 || navigator.userAgent.indexOf('Android') != -1) {
 	    addEventListener("load", function() {
 	            setTimeout(hideURLbar, 0);
@@ -51,21 +51,6 @@ $(function(){
             window.location = url; // redirect
         }
         return false;
-    });
-});
-
-$(document).ready(function () {
-    $('a.dri_iiif').colorbox({
-        height:'80%' ,
-        width:'80%',
-        inline: true
-    });
-
-    $(window).resize(function(){
-      $.colorbox.resize({
-        width: '80%',
-        height: '80%'
-      });
     });
 });
 
