@@ -1,14 +1,16 @@
 /*-------------- OBJECT VIEW --------------*/
 
 .dri_object_title_top {
+   h1 {
     font-size: 1.1em;
-    height: 1.75em;
     text-overflow: ellipsis;
     overflow: hidden;
     font-weight: bold;
     line-height: 1.5em;
+    }
     margin-right: 20px;
     border-bottom: 1px solid $dri_thingrey;
+    height: 1.75em;
 }
 
 /*-------------- Media asset/ Multiple Media Assets Carousel --------------*/
