@@ -3110,13 +3110,16 @@ dd.dri_licence{
   }
 }
 
-.dri_collection_institutes_new{
+.dri_collection_institutes_new {
     clear: both;
     border-top: 1px solid $dri_thingrey;
     // margin: 20px 0 0 0;
     margin-left: 20%;
     width: 40%;
     text-align: left;
+    h1 {
+      font-size: 1.75rem;
+    }
     .dri_field_new_org{
         margin-top: 10px;
         text-align: center;

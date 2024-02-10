@@ -1,20 +1,20 @@
 <div class="dri_file_upload">
-  <label for="logoInput" class="btn btn-default" aria-label="<%= "#{t('dri.views.collection.institute.form.logo')}, #{t('dri.accessibility.upload.button')}" %>">
+  <label for="logoInput" class="form-label" aria-label="<%= t('dri.views.collection.institute.form.logo') %>">
     <div class="upload-container" role="button" tabindex="0" onclick="document.getElementById('logoInput').click()">
       <img id="selectedLogo" class="visually-hidden" alt="Selected Logo" />
-      <span class="upload-text">Select Organization Logo</span>
+      <span class="upload-text"><%= t('dri.views.collection.institute.form.select_logo') %></span>
       <span id="logoUploadDescription" class="visually-hidden">Choose an image file for the logo upload</span>
     </div>
-    <%= f.file_field :logo, accept: 'image/*', id: 'logoInput', onchange: 'displaySelectedImage(this)' %>
+    <%= f.file_field :logo, accept: 'image/*', class: 'form-control', id: 'logoInput', onchange: 'displaySelectedImage(this)' %>
   </label>
 </div>
 <div class="dri_field_new_org">
   <label for="institute_name"> <%= t('dri.views.collection.institute.form.name') %></label></br>
-  <%= f.text_field :name, :required=>'required' %>
+  <%= f.text_field :name, required: 'required' %>
 </div>
 <div class="dri_field_new_org">
   <label for="institute_url"><%= t('dri.views.collection.institute.form.url') %></label></br>
-  <%= f.url_field :url, :required=>'required'  %>
+  <%= f.url_field :url, required: 'required'  %>
 </div>
 <% if current_user.is_admin? %>
   <div class="dri_field_new_org">
@@ -23,7 +23,7 @@
   </div>
   <div class="pt-2 pb-2">
     <%= f.label :depositing do %>
-      <%= f.check_box :depositing %><%=  t('dri.views.collection.institute.form.depositing') %>
+      <%= f.check_box :depositing %> <%=  t('dri.views.collection.institute.form.depositing') %>
     <% end %>
   </div>
 <% end %>
