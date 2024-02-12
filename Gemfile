@@ -16,7 +16,7 @@ gem 'kaminari', '>= 1.2.1'
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
 gem 'om', '3.2.0'
 gem 'solrizer'
-gem 'nokogiri', '>= 1.14.3'
+gem 'nokogiri', '>= 1.16.2'
 
 gem 'riiif'
 gem 'iiif-presentation'
