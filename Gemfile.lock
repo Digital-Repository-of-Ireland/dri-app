@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 7fe2c43a241f703b940c25c9e609c4dd8d7052f7
-  branch: develop
+  revision: da895b3e0f73870c38eec424e6ef4e3178c45b88
+  tag: v4.5.8
   specs:
     dri_data_models (4.5.8)
       hydra-derivatives
@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
-  branch: develop
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
@@ -205,7 +205,7 @@ GEM
       validatable (~> 1.6)
     base64 (0.2.0)
     bcp47_spec (0.2.1)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
@@ -226,7 +226,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.33.1)
+    blacklight (7.36.2)
       deprecation
       globalid
       hashdiff
@@ -234,8 +234,8 @@ GEM
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 5.1, < 7.1)
-      view_component (~> 2.66)
+      rails (>= 5.1, < 7.2)
+      view_component (>= 2.66, < 4)
     blacklight-access_controls (6.0.1)
       blacklight (> 6.0, < 8)
       cancancan (>= 1.8)
@@ -338,13 +338,13 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.9.2)
+    devise (4.9.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-guests (0.8.1)
+    devise-guests (0.8.2)
       devise
     devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
@@ -444,7 +444,7 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
-    fastimage (2.2.7)
+    fastimage (2.3.0)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.23.0)
@@ -507,7 +507,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashdiff (1.0.1)
+    hashdiff (1.1.0)
     hashie (5.0.0)
     high_voltage (3.1.2)
     highline (2.1.0)
@@ -668,11 +668,11 @@ GEM
     method_source (1.0.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.1205)
+    mime-types-data (3.2024.0206)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitar (0.9)
-    minitest (5.21.2)
+    minitest (5.22.2)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -682,7 +682,7 @@ GEM
     multi_json (1.15.0)
     multi_test (1.1.0)
     multi_xml (0.6.0)
-    multipart-post (2.3.0)
+    multipart-post (2.4.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.5)
@@ -692,7 +692,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.9.1)
+    net-imap (0.4.10)
       date
       net-protocol
     net-pop (0.1.2)
@@ -732,7 +732,7 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (2.1.1)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -747,8 +747,8 @@ GEM
       rails (> 3.2.0)
     orm_adapter (0.5.0)
     os (1.1.4)
-    ostruct (0.5.5)
-    paper_trail (15.0.0)
+    ostruct (0.6.0)
+    paper_trail (15.1.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.23.0)
@@ -902,9 +902,9 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    request_store (1.5.1)
+    request_store (1.6.0)
       rack (>= 1.4)
-    responders (3.1.0)
+    responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
     resque (2.6.0)
@@ -1124,7 +1124,7 @@ GEM
     unicode-types (1.8.0)
     uri (0.12.2)
     validatable (1.6.7)
-    valkyrie (3.1.1)
+    valkyrie (3.1.3)
       activemodel
       activesupport
       dry-struct
@@ -1139,7 +1139,7 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.3)
-    view_component (2.83.0)
+    view_component (3.10.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
       method_source (~> 1.0)
@@ -1161,7 +1161,7 @@ GEM
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
     yard (0.9.34)
-    zeitwerk (2.6.12)
+    zeitwerk (2.6.13)
 
 PLATFORMS
   x86_64-linux

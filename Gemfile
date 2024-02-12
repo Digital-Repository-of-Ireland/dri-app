@@ -22,8 +22,8 @@ gem 'riiif'
 gem 'iiif-presentation'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.5.8'
+gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.2.3'
 gem "devise", ">= 4.7.1"
 
 gem 'paper_trail'
