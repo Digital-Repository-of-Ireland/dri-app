@@ -55,7 +55,7 @@
 
       <div class="dri_account_block dri_clearfix">
         <div class="dri_account_block_info_buttons dri_float_right">
-          <%= link_to(@user, id: "back_to_account", class: "btn btn-small dri_w230") do %>
+          <%= link_to(@user, id: "back_to_account", class: "dri_button_red dri_w230") do %>
                 <%= t ('dri.application.edit_user_profile.cancel') %>
           <% end %>
           <%= f.submit (t :'user_groups.views.shared.update'), id: "commit", class: "dri_button_green dri_w230"%>

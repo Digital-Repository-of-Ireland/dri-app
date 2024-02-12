@@ -406,7 +406,7 @@ Then /^the object should be of type (.*?)$/ do |type|
   interface.is_type?(type)
 end
 
-Then /^I should see a link to "([^\"]+)" with text "([^\"]+)"$/ do |url, text|
+Then /^I should see a href link to "([^\"]+)" with text "([^\"]+)"$/ do |url, text|
   page.should have_link(text, href: url)
 end
 

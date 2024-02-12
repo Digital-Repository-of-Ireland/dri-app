@@ -5,7 +5,8 @@
         <h2 class="modal-title">
           <%= t('dri.views.advanced_search.header') %>
         </h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
       </div>
       <div class="modal-body">
         <%= form_tag main_app.search_catalog_path, class: 'advanced form-horizontal', method: :get do  %>

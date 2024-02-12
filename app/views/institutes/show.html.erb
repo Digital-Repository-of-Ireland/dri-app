@@ -6,7 +6,7 @@
       <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(@inst) %>
       <% if current_user.is_admin? %>
         <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(@inst), method: :delete %>
-    <% end %>
+      <% end %>
     </div>
   </div>
 </div>

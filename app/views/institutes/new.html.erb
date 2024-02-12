@@ -3,10 +3,12 @@
         $("#institution_logo").html(($(thisObj).val()).replace("C:\\fakepath\\", ""));
   }
 </script>
-<p><%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), '#', :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_organisations_modal_id' %>)</p>
-<div class="dri_collection_institutes_dropdown">
+<p class="dri_field_new_org_are_you_sure">
+  <%= t('dri.views.collection.institute.are_you_sure') %> (<%=  link_to t('dri.views.collection.institute.see_orgs'), '#', :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_organisations_modal_id' %>)
+</p>
+<div class="dri_collection_institutes_new">
   <div class="dri_add_institute_link">
-    <h1 class="h3"><%= t('dri.views.collection.institute.add') %></h1>
+    <h1><%= t('dri.views.collection.institute.add') %></h1>
   </div>
   <div>
     <p><%= t('dri.views.collection.institute.depositing_org_text') %></p>
@@ -14,14 +16,18 @@
     <p><%= t('dri.views.collection.institute.associating_text') %></p>
   </div>
   <div id="dri_add_institutes_block">
-    <%= form_for(@inst, url: organisations_path) do |f| %>
-      <%= render partial: 'institute_form', locals: { f: f } %>
-      <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green' %>
-    <% end %>
-    <%= form_for(@inst, url: organisations_path) do |f| %>
-      <%= f.hidden_field :action, value: 'new' %>
-      <%= f.submit t('dri.views.objects.links.cancel'), :class=>'btn dri_grey_button' %>
-    <% end %>
+    <div class="dri_field_new_org">
+      <%= form_for(@inst, url: organisations_path) do |f| %>
+        <%= render partial: 'institute_form', locals: { f: f } %>
+        <%= f.submit t('dri.views.collection.institute.buttons.save'), :id => 'add_institute', :class=>'dri_button_green dri_w230' %>
+      <% end %>
+    </div>
+    <div class="dri_field_new_org">
+      <%= form_for(@inst, url: organisations_path) do |f| %>
+        <%= f.hidden_field :action, value: 'new' %>
+        <%= f.submit t('dri.views.objects.links.cancel'), :class=>'dri_button_red dri_w230' %>
+      <% end %>
+    </div>
   </div>
 </div>
 
@@ -29,8 +35,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="h4 modal-title"><%= t('dri.headerlinks.institutions') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <h2 class="modal-title"><%= t('dri.headerlinks.institutions') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
       </div>
       <div class="modal-body">
         <% @institutes.each_with_index do |institute, i| %>

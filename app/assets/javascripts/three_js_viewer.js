@@ -336,6 +336,8 @@ $(document).ready(function () {
             var gui = new dat.GUI({autoPlace: false});
             gui.domElement.id = "gui";
             parentDiv.appendChild(gui.domElement);
+            gui.domElement.setAttribute('role', 'application');
+            gui.domElement.setAttribute('aria-label', 'Configuration Interface');
 
             var notSkinFormats = ["stl","ply"];
 
@@ -432,13 +434,15 @@ $(document).ready(function () {
                 });
             }
 
-            gui.add(config, 'fullScreen').name('Full Screen Mode');
+            gui.add(config, 'fullScreen').name('Full Screen Mode');      
 
             // Set Camera Folder Settings
             const cameraFolder = gui.addFolder('Rotation & Zoom');
-            cameraFolder.add(object.rotation, 'x', 0, Math.PI * 2);
-            cameraFolder.add(object.rotation, 'y', 0, Math.PI * 2);
-            cameraFolder.add(object.rotation, 'z', 0, Math.PI * 2);
+            cameraFolder.domElement.setAttribute('role', 'group');
+            cameraFolder.domElement.setAttribute('aria-label', 'Camera Settings');
+            cameraFolder.add(object.rotation, 'x', 0, Math.PI * 2).name('X Rotation');
+            cameraFolder.add(object.rotation, 'y', 0, Math.PI * 2).name('Y Rotation');
+            cameraFolder.add(object.rotation, 'z', 0, Math.PI * 2).name('Z Rotation');
             cameraFolder.add(options, 'zoom', 0.1, 2.0, 0.1).name('Zoom').onChange(() => { object.scale.set(options.zoom, options.zoom, options.zoom) });
             cameraFolder.__ul.addEventListener('click', function () {
                 if (cameraFolder.open) {
@@ -448,6 +452,8 @@ $(document).ready(function () {
 
             // Set Color Folder Settings
             const colorFolder = gui.addFolder('Light, Material & Color');
+            colorFolder.domElement.setAttribute('role', 'group');
+            colorFolder.domElement.setAttribute('aria-label', 'Color Settings');
             colorFolder.add(options, 'light', 0, 20).onChange( value => {
                 addLight(lightColor, options.light);
             } );

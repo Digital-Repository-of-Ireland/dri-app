@@ -1,29 +1,18 @@
 /*-------------- OBJECT VIEW --------------*/
 
 .dri_object_title_top {
+   h1 {
     font-size: 1.1em;
-    height: 1.75em;
     text-overflow: ellipsis;
     overflow: hidden;
     font-weight: bold;
     line-height: 1.5em;
+    }
     margin-right: 20px;
     border-bottom: 1px solid $dri_thingrey;
+    height: 1.75em;
 }
-button.dri_open_workspace_button {
-    color: #FFF;
-    border: none;
-    background-color: $dri_teal;
-    padding: 0;
-    margin: 20px 0 20px 0;
-    width: 230px;
-    height: 26px;
-    display: block;
-    @include border_radius;
-    &:hover {
-        background-color: darken($dri_teal, 6%);
-    }
-}
+
 /*-------------- Media asset/ Multiple Media Assets Carousel --------------*/
 
 .dri_object_render_block {
@@ -57,13 +46,21 @@ h2.dri_no_asset_availiable {
         font-size: 100%;
         line-height: 100%;
     }
+
     .carousel-control-prev {
         top: 95%;
         width: 12px;
-        height: 8px;
+        height: 10px;
         margin-top: -15px;
         padding: 0;
-        color: $dri_lightgrey;
+        color: $dri_black;
+        span{
+            padding: 15px;
+            margin-right: -15px;
+            &:hover{
+                background-color: $dri_green 
+            }
+        }
     }
     .carousel-control-next {
         top: 95%;
@@ -71,7 +68,15 @@ h2.dri_no_asset_availiable {
         height: 10px;
         margin-top: -15px;
         padding: 0;
-        color: $dri_lightgrey;
+
+        color: $dri_black;
+        span{
+            padding: 15px;
+            margin-left: -15px;
+            &:hover{
+                background-color: $dri_green 
+            }
+        }
     }
     .dri_asset_carousel_item {
         height: 300px;
@@ -92,8 +97,7 @@ h2.dri_no_asset_availiable {
             padding: 0px;
             margin: 0 0 10px 0;
             a {
-                color: $dri_midgrey;
-
+                color: $dri_black;
             }
         }
         p.dri_restrict_message {
@@ -111,6 +115,14 @@ h2.dri_no_asset_availiable {
         font-size: 100%;
     }
 }
+
+.configure_download{
+    &:hover{
+        background-color: $dri_green;
+        border-radius: 3px;
+    }
+}
+
 .carousel-control-next,
 .carousel-control-prev {
     filter: invert(100%);

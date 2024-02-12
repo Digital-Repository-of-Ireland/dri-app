@@ -6,9 +6,9 @@
           <% present(document, DRI::ImagePresenter) do |images| %>
             <% image = images.cover_image %>
             <% if image %>
-              <%= image_tag image, width: "228" %>
+              <%= image_tag image, width: "228", alt: "Collection"%>
             <% else %>
-              <%= image_tag "no_image.png", width: "228" %>
+              <%= image_tag "no_image.png", width: "228", alt: "Collection" %>
             <% end %>
           <% end %>
         </div>
@@ -33,7 +33,7 @@
       <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
       <div class="dri_image">
         <% present(document, DRI::ImagePresenter) do |images| %>
-          <%= image_tag images.image_for_search, width: "200" %>
+          <%= image_tag images.image_for_search, width: "200", alt: "Content"%>
         <% end %>
       </div><!-- close image -->
       <p class="dri_subject">
@@ -52,7 +52,7 @@
             <span class="dri_icon_image">
               <% present(document, DRI::ImagePresenter) do |images| %>
                 <% images.icons.each do |icon| %>
-                  <%= image_tag(icon) %>
+                  <%= image_tag(icon, alt: File.basename(icon.to_s, ".*").split("_")[-2]) %>
                 <% end %>
               <% end %> &nbsp;
               <%= presenter.file_type_labels %>

@@ -39,7 +39,7 @@ $(document).ready(function() {
         columnDefs: [
           { "render": function ( data, type, row ) {
                         if (data == 'passed') {
-                          return "<i class=\"fa fa-check-circle-o text-success\" >" + "(" + row[5] + " of " + row[4] + " checked)</i>"
+                          return "<i class=\"fa fa-check-circle-o text-darker-green\" >" + "(" + row[5] + " of " + row[4] + " checked)</i>"
                         } else if (data == 'failed') {
                           return "<i class=\"fa fa-times text-danger\" >" + "(" + row[5] + " of " + row[4] + " checked, " + row[6] + " failures)</i>"
                         } else {
@@ -49,12 +49,17 @@ $(document).ready(function() {
             "targets": 2
           },
           { "render": function ( data, type, row ) {
-            return "<a rel=\"nofollow\" data-method=\"put\" href=\"" + data + "\">"
-              + "<i class=\"fa fa-arrow-circle-right text-success\"></i></a>"
-            },
-            "targets": 3
+            const collectionId = data.match(/\/collections\/([a-zA-Z0-9]+)/)[1];
+            const action = data.split('/').pop();
+            const newString = `run ${action} at collection ${collectionId}`;
+
+            return `<a href="${data}" rel="nofollow" data-method="put" role="link" aria-label="${newString}">
+              <i class="fa fa-arrow-circle-right text-darker-green"></i>
+            </a>`;
           },
-          { targets: '_all', orderable: false }
+          "targets": 3
+        },
+        { targets: '_all', orderable: false }
         ]
     } );
     $('#datatable_stats').DataTable( {
@@ -96,13 +101,13 @@ $(document).ready(function() {
           { targets: [1, 3, 4, 5], orderable: true },
           { "render": function ( data, type, row ) {
             return "<a rel=\"nofollow\" data-method=\"get\" href=\"" + data + "\">"
-              + "<i class=\"fa fa-edit text-success\"></i></a>"
+              + "<i class=\"fa fa-edit text-darker-green\"></i></a>"
             },
             "targets": 8
           },
           { "render": function ( data, type, row ) {
             if(data == true) {
-               return "<i class=\"fa fa-check-circle-o text-success\"></i>"
+               return "<i class=\"fa fa-check-circle-o text-darker-green\"></i>"
             } else {
                return "<i class=\"fa fa-times text-danger\"></i>"
             }

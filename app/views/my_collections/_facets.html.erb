@@ -1,11 +1,13 @@
 <% # main container for facets/limits menu -%>
 <% if has_facet_values?  %>
-<div id="facets" class="facets sidenav dri_facet_filters" data-bs-content="<%= t('dri.help.facets') %>"
-data-bs-title="<%= t('dri.help.facets_title') %>" data-bs-trigger="hover" data-bs-placement="top">
-	<h3 class="dri_head_title">
-		<a data-bs-toggle="collapse" href="#facet-panel-collapse" aria-expanded="false" aria-controls="Collapse Facets"> <%= t('blacklight.search.facets.title') %>
-		</a>
-	</h3>
+<div id="facets" class="facets sidenav dri_facet_filters dropdown" data-bs-content="<%= t('dri.help.facets') %>" title="<%= t('dri.help.facets_title') %>" 
+	data-bs-title="<%= t('dri.help.facets_title') %>" data-bs-trigger="hover" data-bs-placement="top">
+	<div class= "panel-heading">
+		<h3 class="dri_head_title">
+			<a class="dropdown-toggle" data-bs-toggle="collapse" href="#facet-panel-collapse" aria-expanded="false" aria-controls="Collapse Facets"> <%= t('blacklight.search.facets.title') %>
+			</a>
+		</h3>
+	</div>
 
 	<div id="facet-panel-collapse" class="panel-group facet-non-md" aria-expanded="false">
 		<%= render_facet_partials %>

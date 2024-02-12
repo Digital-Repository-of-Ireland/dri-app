@@ -2,45 +2,50 @@
 <% style='' %>
 
 <h1 class="h3"><%= t('dri.views.collection.institute.title') %></h1>
-<p><%= t('dri.views.institutes.orgs_legend', url: 'http://www.dri.ie/membership').html_safe %></p>
+<p class="dri_orgs_legend"><%= t('dri.views.institutes.orgs_legend', url: 'http://www.dri.ie/membership').html_safe %></p>
 <div class="dri_section_block">
 <% @institutes.each_with_index do |institute, i| %>
-    <% collection_count = @collections[institute.id].size %>
-    <% next unless collection_count > 0 %>
-    <div class="dri_collection_institutes_pages <%= style %>">
-      <% style='not_first'%>
-      <% institute_browse_params[:f] = { institute_sim: [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
-      <%= link_to main_app.search_catalog_path(institute_browse_params) do %>
-          <div class="dri_collection_institutes_pages_img">
-            <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe if institute.brand %>
-            <p>
-              <%= institute[:name].to_s.html_safe %>
-            </p>
-          </div>
-          <div class="dri_collection_institutes_pages_text" >
-            <ul>
-              <% if (collection_count > 0) %>
-                  <% collections = @collections[institute.id] %>
-                  <% collections[0..2].each do |collection| %>
-                    <% present(collection, DRI::ImagePresenter) do |images| %>
-                      <% image = images.cover_image %>
-                      <% if image %>
-                        <li><%= image_tag image, width: "150", title: collection[:title_tesim].first %></li>
-                      <% else %>
-                        <li><%= image_tag "no_image.png", width: "150", title: collection[:title_tesim].first %></li>
-                      <% end %>
-                    <% end %>
-                  <% end %>
+  <% collection_count = @collections[institute.id].size %>
+  <% next unless collection_count > 0 %>
+  
+  <article role="article" class="dri_collection_institutes_pages <%= style %>" aria-label='Explore Collections of ' + <%= institute[:name].to_s.html_safe%>' %>
+    <% style = 'not_first' %>
+    
+    <% institute_browse_params[:f] = { institute_sim: [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
+    <%= link_to main_app.search_catalog_path(institute_browse_params), 'aria-label' => 'Explore Collections of ' + institute[:name].to_s.html_safe do %>
+      <div class="dri_collection_institutes_pages_img" aria-hidden="true">
+        <%= image_tag logo_url(institute), alt: "institute " + institute[:name].to_s.html_safe + " logo" if institute.brand %>
+        <p>
+          <%= institute[:name].to_s.html_safe %>
+        </p>  
+      </div>
+      
+      <div class="dri_collection_institutes_pages_text">
+        <ul aria-hidden="true">
+          <% if (collection_count > 0) %>
+            <% collections = @collections[institute.id] %>
+            <% collections[0..2].each do |collection| %>
+              <% present(collection, DRI::ImagePresenter) do |images| %>
+                <% image = images.cover_image %>
+                <% if image %>
+                  <li><%= image_tag image, title: collection[:title_tesim].first , alt:"Collection " + collection[:title_tesim].first.to_s.html_safe + "cover pic" %></li>
+                <% else %>
+                  <li><%= image_tag "no_image.png", title: collection[:title_tesim].first, alt:"Collection " + collection[:title_tesim].first.to_s.html_safe + "has no cover" %></li>
+                <% end %>
               <% end %>
-            </ul>
-            <p>
-              <%= t('dri.headerlinks.collections') %>
-              <span class="dri_bold_text">
-                <%= "(#{collection_count})" %>
-              </span>
-            </p>
-          </div>
-      <% end %>
-    </div>
+            <% end %>
+          <% end %>
+        </ul>
+        
+        <p aria-hidden="true">
+          <%= t('dri.headerlinks.collections') %>
+          <span class="dri_bold_text">
+            <%= "(#{collection_count})" %>
+          </span>
+        </p>
+      </div>
+    <% end %>
+  </article>
 <% end %>
+
 </div>

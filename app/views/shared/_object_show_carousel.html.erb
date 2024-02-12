@@ -1,11 +1,11 @@
 <script>
-  $(document).on("click", "#configure_download", function () {
-    var fileid = $(this).data('fileid');
-    var infoModal = $('#dri_download_modal_id');
-    htmlData = $('.' + fileid).html();
-    infoModal.find('.modal-body').html(htmlData);
-    return false;
-  });
+  $(document).on("click", ".configure_download", function () {
+  var fileid = $(this).data('fileid');
+  var infoModal = $('#dri_download_modal_id');
+  htmlData = $('.' + fileid).html();
+  infoModal.find('.modal-body').html(htmlData);
+  return false;
+});
 </script>
 
 <% @iiif_sources = [] %>
@@ -19,11 +19,11 @@
 
     <% if (displayfiles.size > 1) %>
       <div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#oject-multiple-asset-carousel" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#oject-multiple-asset-carousel" data-bs-slide="prev" alt="previous page">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#oject-multiple-asset-carousel" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#oject-multiple-asset-carousel" data-bs-slide="next" alt="next page">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>

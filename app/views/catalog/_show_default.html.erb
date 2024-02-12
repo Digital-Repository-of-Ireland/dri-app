@@ -1,5 +1,5 @@
 <div class="dri_object_first_block">
-	<div class="dri_object_title_top"><%= document_heading %></div>
+	<div class="dri_object_title_top"><h1><%= document_heading %><h1></div>
 	<div class="dri_border_bottom">
 	   &nbsp;
 	</div>
@@ -47,7 +47,7 @@
 	<%= render partial: "shared/tools" %>
 
   <% if signed_in? && can?(:edit, @document.id) %>
-    <%= link_to my_collections_path(@document.id), id: "open_workspace" do %>
+    <%= link_to my_collections_path(@document.id), id: "open_in_workspace" do %>
       <%= button_tag(t('dri.views.catalog.buttons.open_workspace'), {class: 'dri_open_workspace_button'}) %>
     <% end %>
   <% end %>

@@ -60,7 +60,6 @@
 // Required by Blacklight
 //= require blacklight/blacklight
 //
-//= require jquery.colorbox
 //= require jquery-xmleditor
 //= require openseadragon
 //= require spin

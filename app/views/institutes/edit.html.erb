@@ -12,7 +12,7 @@
 		<% end %>
 		<%= form_for(@inst, url: organisation_path) do |f| %>
 		  <%= hidden_field_tag 'action', 'edit' %>
-		  <%= f.submit "Cancel", :class=>'btn dri_grey_button' %>
+		  <%= f.submit "Cancel", :class=>'dri_button_red' %>
 		<% end %>
 	</div>
 </div>

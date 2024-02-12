@@ -1,24 +1,34 @@
 <% lang_params = { :path => request.fullpath } %>
 
 <% if I18n.locale == :en %>
-    <% lang_params[:id] = 'ga' %>
-    <ul class="dropdown dri_language_links">
+  <% lang_params[:id] = 'ga' %>
+  <ul class="dropdown dri_language_links">
+    <li>
+
       <%= link_to '#',:"data-bs-toggle" => "dropdown" do %>
-      English <i class="fa fa-sml fa-caret-down"></i>
+        English <i class="fa fa-sml fa-caret-down"></i> 
       <% end %>
 
       <ul class="dropdown-menu">
-        <%= link_to 'Gaeilge', main_app.lang_path(lang_params) %>
+        <li><%= link_to 'Gaeilge', main_app.lang_path(lang_params) %></li>
       </ul>
-    </ul>
+      
+    </li>
+  </ul>
 <% else %>
-    <% lang_params[:id] = 'en' %>
-    <ul class="dropdown dri_language_links">
+  <% lang_params[:id] = 'en' %>
+  <ul class="dropdown dri_language_links">
+    <li>
+
       <%= link_to '#', :"data-bs-toggle" => "dropdown" do %>
-      Gaeilge <i class="fa fa-sml fa-caret-down"></i>
+        Gaeilge <i class="fa fa-sml fa-caret-down"></i> 
       <% end %>
+
       <ul class="dropdown-menu">
-        <%= link_to 'English', main_app.lang_path(lang_params) %>
+        <li><%= link_to 'English', main_app.lang_path(lang_params) %></li>
       </ul>
-    </ul>
+
+    </li>
+  </ul>
 <% end %>
+

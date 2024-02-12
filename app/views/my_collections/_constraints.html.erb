@@ -13,9 +13,9 @@
       <% end %>
       <% options = copyParams.except(*[:f, :q_ws, :c_date, :p_date, :s_date, :year_from, :year_to]) %>
 
-      <span class="dri_clear_all">
+      <li class="dri_clear_all">
         <%= link_to t('dri.views.catalog.buttons.clear_search_facet_list'), url_for(options), id: 'browse_clear_all' %>
-      </span>
+      </li>
     </ul>
   </div>
 <% end %>
