@@ -802,6 +802,8 @@ en:
           cancel: Cancel
       pagination:
           label: Browse
+          next: 'Next >>'
+          previous: '<< Previous'
       readers:
         headers:
           pending: Pending Request
