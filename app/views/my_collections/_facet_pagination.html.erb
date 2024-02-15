@@ -2,11 +2,11 @@
 <% component = Blacklight::FacetFieldPaginationComponent.new(facet_field: @facet_field) %>
 
 <div class="prev_next_links btn-group">
-  <%= link_to_previous_page @facet_field.paginator, image_tag('dri/previous_carousel_arrow.png'), params: @facet_field.search_state.to_h, param_name: component.param_name, class: 'btn btn-link', data: { blacklight_modal: "preserve" } do %>
-    <%= content_tag :span, image_tag('dri/previous_carousel_arrow.png'), class: 'disabled btn' %>
+  <%= link_to_previous_page @facet_field.paginator, raw(t('dri.views.pagination.previous')), params: @facet_field.search_state.to_h, param_name: component.param_name, class: 'btn btn-link', data: { blacklight_modal: "preserve" } do %>
+   <%= content_tag :span, raw(t('dri.views.pagination.previous')), class: 'disabled btn' %>
   <% end %>
-  <%= link_to_next_page @facet_field.paginator, image_tag('dri/next_carousel_arrow.png'), params: @facet_field.search_state.to_h, param_name: component.param_name, class: 'btn btn-link',  data: { blacklight_modal: "preserve" } do %>
-    <%= content_tag :span, image_tag('dri/next_carousel_arrow.png'), class: 'disabled btn' %>
+  <%= link_to_next_page @facet_field.paginator, raw(t('dri.views.pagination.next')), params: @facet_field.search_state.to_h, param_name: component.param_name, class: 'btn btn-link',  data: { blacklight_modal: "preserve" } do %>
+    <%= content_tag :span, raw(t('dri.views.pagination.next')), class: 'disabled btn' %>
   <% end %>
 </div>
 

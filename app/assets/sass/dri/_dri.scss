@@ -1071,6 +1071,14 @@ ol.breadcrumb {
         box-shadow: 1px 1px 4px $dri_white;
     }
 }
+
+.facet-pagination {
+   a, span {
+     padding: 2px;
+     margin-left: 2px;
+   }
+}
+
 /*-------------- Browse Sort Collections/Objects --------------*/
 
 .dri_search_tab_container{
@@ -2121,6 +2129,11 @@ span.dri_remove_bookmark_back {
     }
 }
 /* ----------- Collection block ---------- */
+
+.dri_ext_rel_content_block {
+    @extend .dri_content_block;
+    height: 100px;
+}
 
 .dri_content_block_collection {
     margin: 0px 14px 14px 0px;

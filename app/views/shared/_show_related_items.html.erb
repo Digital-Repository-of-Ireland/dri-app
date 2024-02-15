@@ -45,7 +45,7 @@
     	  <% @presenter.external_relationships.each do |url| -%>
             <article class="">
     	    <%= link_to url, :target => "_blank"  do %>
-              <div class="dri_content_block">
+              <div class="dri_ext_rel_content_block">
                 <h3><%= url %></h3>
     		<div class="dri_icon">
     		  <span class="dri_icon_image"><i class="fa fa-link"></i> &nbsp;<%= t('dri.views.fields.related.external_link') %></span>

@@ -1282,6 +1282,7 @@ DEPENDENCIES
   unicode
   uri (>= 0.12.2)
   user_group!
+  view_component (< 3)
   yard
 
 BUNDLED WITH
