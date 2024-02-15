@@ -81,11 +81,10 @@
       <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
     <% end %>
   
-  <% elsif generic_file.interactiveResource? %>
-    <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'interactiveResource') %>
+  <% elsif generic_file.interactive_resource? %>
+    <% @surrogate = file_download_path(@document.id, generic_file.id, type: 'interactiveresource') %>
     <% if @surrogate %>
-      <%= render partial: 'shared/display_webarchive', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
-      <%= %>
+      <%= render partial: 'shared/display_webarchive', locals: { id: generic_file.id, url: @surrogate, generic_file_name: generic_file.label } %>
     <% end %>
   <% end %>
 

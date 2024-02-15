@@ -145,8 +145,8 @@ module DRI::Solr::Document::File
    Settings.restrict.mime_types._3D.include?(mime_type) && Settings.restrict.extensions.restricted_3D.include?(extension)   
   end
 
-  def interactiveResource?
-   Settings.restrict.mime_types.interactiveResource.include?(mime_type) && Settings.restrict.extensions.restricted_interactiveResource.include?(extension)
+  def interactive_resource?
+   Settings.restrict.mime_types.interactive_resource.include?(mime_type) && Settings.restrict.extensions.restricted_interactive_resource.include?(extension)
   end
 
 end
