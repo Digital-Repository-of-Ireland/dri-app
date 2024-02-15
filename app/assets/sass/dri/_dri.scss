@@ -1071,6 +1071,14 @@ ol.breadcrumb {
         box-shadow: 1px 1px 4px $dri_white;
     }
 }
+
+.facet-pagination {
+   a, span {
+     padding: 2px;
+     margin-left: 2px;
+   }
+}
+
 /*-------------- Browse Sort Collections/Objects --------------*/
 
 .dri_search_tab_container{
