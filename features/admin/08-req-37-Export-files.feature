@@ -35,5 +35,4 @@ Feature: Export files
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "upload a file"
     Then I should see a "rights statement"
-    And I should see a link to download asset
-
+    And I should see a href link to "#dri_download_modal_id" with text "Download asset"

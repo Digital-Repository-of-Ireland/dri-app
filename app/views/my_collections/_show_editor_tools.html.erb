@@ -25,15 +25,15 @@
 </script>
 
 <div class="dri_sidenav">
-<h5>
+<h3>
   <i class="fa fa-pencil"></i> <%= t('dri.views.catalog.titles.editor_tools') %>
-</h5>
+</h3>
 <ul>
 
   <li>
     <%= form_tag(url_for(object_files_path(@document.id)), multipart: true, method: :post, id: "file_uploader") do %>
       <div class="dri_fileUpload">
-        <%= t('dri.views.catalog.links.upload_file') %><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small" %>
+        <label for="dri_asset_uploader"><%= t('dri.views.catalog.links.upload_file') %></label><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small" %>
         <% options = { required: 'required', class: 'upload', id: 'dri_asset_uploader' } %>
         <% if @document.published? && @document.doi.present? %>
           <% options[:onclick] = "return warnOnReplace();" %>
@@ -50,7 +50,7 @@
       <%= form_tag(url_for(object_files_path(@document.id)), multipart: true, method: :post, id: "file_uploader") do %>
         <%= hidden_field_tag "preservation", "true" %>
         <div class="dri_fileUpload">
-        <%= t('dri.views.catalog.links.upload_preservation_file') %><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_preservation_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small"  %>
+        <label for="dri_preservation_asset_uploader"><%= t('dri.views.catalog.links.upload_preservation_file') %></label><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_preservation_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small"  %>
         <%= file_field_tag 'Presfiledata', required: 'required', class: 'upload', id: 'dri_preservation_asset_uploader' %>
         </div>
         <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
@@ -80,7 +80,7 @@
   <% end %>
 
   <% if @document.status != 'published' || current_user.is_admin? %>
-    <li>
+    <li class="object_status">
       <%= form_tag status_update_path(@document.id), method: :put do %>
         <% if @document.draft? %>
           <%= hidden_field_tag( :status, "reviewed") %>
@@ -104,7 +104,7 @@
     <% end %>
   <% end %>
 
-  <li>
+  <li class="dri_edit_collection">
   <div class="accordion" id="dri_edit_record_tools_id">
     <div class="accordion-group">
       <a class="accordion-toggle" id="edit_menu" data-bs-toggle="collapse" data-bs-parent="#dri_edit_record/_tools_id" href="#dri_edit_record_tools_collapsed_id">
@@ -158,8 +158,9 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="h4 modal-title"><%= t('dri.views.objects.buttons.delete_object') %></h2>
-          <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+          <h2 class="modal-title"><%= t('dri.views.objects.buttons.delete_object') %></h2>
+          <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+          </button>
         </div>
 
         <div class="modal-body">
@@ -185,8 +186,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <h2 class="modal-title"><%= t('dri.views.catalog.forms.manage_licence') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
       </div>
 
       <div class="modal-body">
@@ -208,8 +210,9 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <h2 class="modal-title"><%= t('dri.views.catalog.forms.access_controls') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
       </div>
 
       <div class="modal-body">
@@ -233,8 +236,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.fetch_tp_data') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <h2 class="modal-title"><%= t('dri.views.catalog.forms.fetch_tp_data') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
       </div>
 
       <div class="modal-body">

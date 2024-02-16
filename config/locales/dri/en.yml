@@ -569,6 +569,7 @@ en:
           form:
             depositing: This is a depositing organisation
             logo: Logo
+            select_logo: Select Organization Logo
             name: Name
             url: Url
             manager: Organisation Manager
@@ -803,6 +804,8 @@ en:
           cancel: Cancel
       pagination:
           label: Browse
+          next: 'Next >>'
+          previous: '<< Previous'
       readers:
         headers:
           pending: Pending Request

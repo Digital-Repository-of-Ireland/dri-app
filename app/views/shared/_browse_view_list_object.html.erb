@@ -1,25 +1,39 @@
 <article class="dri_result_object dri_clearfix" id="<%= document.id.to_s %>">
   <div class="dri_content_list_collection">
-    <div class="dri_content_list_collection_data">
-      <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
-          <h3><%= document[:title_tesim][0] %></h3>
+    
+    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
+      <%= link_to bookmark_path(document.id), method: :delete, id: "remove_#{document.id}_bookmark" do %>
+        <div class="dri_remove_bookmark_button">
+          <span class="dri_remove_bookmark">x</span>
+          <span class="dri_remove_bookmark_back"><i class="fa fa-circle"></i></span>
+        </div>
       <% end %>
-      <% if document.key?(:description_tesim) %>
-        <p class="dri_list_description">
-          <%= truncate_description(document[:description_tesim][0], 280) %>
-        </p>
-      <% end %>
-      <p class="dri_list_subject">
-        <% present(document, DRI::ObjectPresenter) do |presenter| %>
-          <% subjects = presenter.subjects %>
-          <%= subjects if subjects %>
-        <% end %>
-      </p>
+    <% end %>
 
-      <div class="dri_list_icon">
-        <%= render partial: 'shared/object_icons', locals: { document: document } %>
+    <div class="dri_content_list_collection_data">
+      <div class="dri_view_list_title">
+        <%= link_to(search_state.url_for_document(document), document_link_params(document, { counter: document_counter_with_offset(document_counter) })) do %>
+            <h3><%= document[:title_tesim][0] %></h3>
+        <% end %>
       </div>
-      <!-- close dri_icon -->
+      <div class="dri_view_list_description">
+        <% if document.key?(:description_tesim) %>
+          <p class="dri_list_description">
+            <%= truncate_description(document[:description_tesim][0], 280) %>
+          </p>
+        <% end %>
+        <p class="dri_list_subject">
+          <% present(document, DRI::ObjectPresenter) do |presenter| %>
+            <% subjects = presenter.subjects %>
+            <%= subjects if subjects %>
+          <% end %>
+        </p>
+
+        <div class="dri_list_icon">
+          <%= render partial: 'shared/object_icons', locals: { document: document } %>
+        </div>
+        <!-- close dri_icon -->
+      </div>
     </div>
 
     <%= link_to(
@@ -32,17 +46,14 @@
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
             <% if @assets && @assets.key?(document.id) %>
-              <%= image_tag images.image_for_search(@assets[document.id]), width: "200" %>
+              <%= image_tag images.image_for_search(@assets[document.id]), alt: "Object " + document[:title_tesim][0].to_s.html_safe + "cover" %>
             <% else %>
-              <%= image_tag images.image_for_search, width: "200" %>
+              <%= image_tag images.image_for_search, alt: "Object " + document[:title_tesim][0].to_s.html_safe + "has no cover"%>
             <% end %>
           <% end %>
         </div><!-- close image -->
     <% end %>
 
-    <% if params[:controller] == 'bookmarks' && params[:action] == 'index' %>
-      <%= link_to 'remove bookmark', bookmark_path(document.id), method: :delete, id: 'remove_bookmark' %>
-    <% end %>
-  </div>
+    </div>
   <!-- close content_block -->
 </article>

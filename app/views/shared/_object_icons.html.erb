@@ -4,7 +4,7 @@
 	      <% present(document, DRI::ImagePresenter) do |images| %>
 	        <% images.icons.each do |icon| %>
 	          <% next unless icon %>
-	          <%= image_tag(icon) %>
+	          <%= image_tag(icon, alt: "Object type is " + File.basename(icon.to_s, ".*").split("_")[-2])%>
 	        <% end %>
 	      <% end %> &nbsp;
 	      <%= presenter.file_type_labels %>

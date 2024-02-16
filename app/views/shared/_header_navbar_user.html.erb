@@ -3,14 +3,10 @@
     <div class="account_container">
     <%= render :partial => 'shared/header_mobile_lang' %>
 
-    <ul id="dri_account_links_id" class="dri_account_links">
       <%= link_to user_group.profile_path, :id => 'view_account' do %>
-        <li class="no_border">
           <i class="fa fa-user"></i>
           <span class="visually-hidden">Repository User Profile</span>
-        </li>
       <% end %>
-    </ul>
     </div>
   </nav>
   <!-- close dri_account_nav -->

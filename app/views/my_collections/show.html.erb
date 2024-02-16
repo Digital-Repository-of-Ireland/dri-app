@@ -14,7 +14,26 @@
 <div class="dri_section_block" id="institutes_block">
   <%= render partial: 'shared/display_organisations' %>
 </div>
+
 <% content_for :head do %>
+  <%= javascript_include_tag 'jquery.colorbox', async: Rails.env.production? %>
+  <script>
+    $(window).on("load", function () {
+      $('a.dri_gallery').colorbox({rel:'group1', maxWidth:'95%', maxHeight:'95%', photo: true});
+      $('a.dri_iiif').colorbox({
+        height:'80%' ,
+        width:'80%',
+        inline: true
+      });
+
+      $(window).resize(function(){
+        $.colorbox.resize({
+          width: '80%',
+          height: '80%'
+        });
+      });
+    });
+  </script>
   <meta property="fb:app_id"          content="298965153560401" />
     <meta property="og:type"            content="article" />
     <meta property="og:url"             content="<%= request.original_url %>" />

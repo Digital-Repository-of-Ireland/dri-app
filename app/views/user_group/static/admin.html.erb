@@ -1,14 +1,13 @@
 <%= render partial: "user_group/shared/header" %>
 
-<ul class="list-unstyled">
-  <li><%= link_to (t :'user_groups.views.shared.users'), main_app.reports_path(report: 'users') %></li>
-  <li><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></li>
-  <br />
-  <li><%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %></li>
-  <li><%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %></li>
+  <ul class="list-unstyled sri_admin_list">
+    <li><%= link_to (t :'user_groups.views.shared.users'), main_app.reports_path(report: 'users') %></li>
+    <li><%= link_to (t :'user_groups.views.shared.groups'), groups_path %></li>
+    <li><%= link_to (t :'user_groups.views.shared.add_user'), new_user_path %></li>
+    <li><%= link_to (t :'user_groups.views.shared.add_group'), new_group_path %></li>
+  </ul>
 
-  <br/>
-
+  
   <h4><%= t('dri.headerlinks.manage_om_users') %></h4>
   <%= form_tag(manage_users_path, method: :post) do %>
     <%= label_tag(:user, t('dri.views.manager_users.email') ) %>
@@ -19,6 +18,6 @@
     <%= label_tag :type, "#{t('dri.application.user_profile.organisational_manager')}?" %>
     <%= check_box_tag :type, 'om' %>
   <% end %>
-</ul>
+
 
 <%#= link_to "Data Logging", "#" %>

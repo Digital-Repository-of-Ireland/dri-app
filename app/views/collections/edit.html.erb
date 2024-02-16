@@ -11,7 +11,7 @@
 
 			  <% end %>
 			  <%= form_for @object, as: :digital_object, :url => {:controller=>"collections", :action=>"update"}, :method=>"put", :html => {:class => 'dri_ingest_form'} do |f| %>
-			    <%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_grey dri_w330", :id => "cancel_edit" %>
+			    <br/><%= f.submit t('dri.views.objects.buttons.cancel'), :class => "dri_button_red dri_w330", :id => "cancel_edit" %>
 			  <% end %>
 		    </div>
 		</div>

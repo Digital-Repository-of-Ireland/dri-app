@@ -1,14 +1,16 @@
-<article class="">
-      <%= link_to search_state.url_for_document(child.id) do %>
+<article class="dri_result_object">
+		<%= link_to search_state.url_for_document(child.id) do %>
       <div class="dri_content_block">
-        <h3><%= child.link_text %></h3>
         <div class="dri_collection_image">
           <% image = child.cover %>
           <% if image %>
-              <%= image_tag cover_image_path(child.id), width: "228" %>
+              <%= image_tag cover_image_path(child.id),alt:"content image"%>
           <% else %>
-              <%= image_tag "no_image.png", width: "228" %>
+              <%= image_tag "no_image.png", alt:"No content image" %>
           <% end %>
+        </div>
+        <div>
+          <h1><%= child.link_text %></h1>
         </div>
         <div class="dri_icon">
           <span class="dri_icon_image">
@@ -20,6 +22,7 @@
             &nbsp;<%= child.type %>
           </span>
         </div>
+        
         <!-- close dri_icon -->
       </div>
       <!-- close content_block -->

@@ -1,19 +1,29 @@
 <div class="dri_file_upload">
-  <a class='btn btn-default' href='javascript:;'> <p class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></p>
-  <p>
-  (recommended height 75px)
-  </p> <%= f.file_field :logo, :accept=>'image/*', :onchange=>'fileUploadHelper($(this));' %> <p id="institution_logo">No File</p> </a>
+  <label for="logoInput" class="form-label" aria-label="<%= t('dri.views.collection.institute.form.logo') %>">
+    <div class="upload-container" role="button" tabindex="0" onclick="document.getElementById('logoInput').click()">
+      <img id="selectedLogo" class="visually-hidden" alt="Selected Logo" />
+      <span class="upload-text"><%= t('dri.views.collection.institute.form.select_logo') %></span>
+      <span id="logoUploadDescription" class="visually-hidden">Choose an image file for the logo upload</span>
+    </div>
+    <%= f.file_field :logo, accept: 'image/*', class: 'form-control', id: 'logoInput', onchange: 'displaySelectedImage(this)' %>
+  </label>
 </div>
-<label for="institute_name"> <%= t('dri.views.collection.institute.form.name') %></label>
-<%= f.text_field :name, :required=>'required' %>
-<label for="institute_url"><%= t('dri.views.collection.institute.form.url') %></label>
-<%= f.url_field :url, :required=>'required'  %>
+<div class="dri_field_new_org">
+  <label for="institute_name"> <%= t('dri.views.collection.institute.form.name') %></label></br>
+  <%= f.text_field :name, required: 'required' %>
+</div>
+<div class="dri_field_new_org">
+  <label for="institute_url"><%= t('dri.views.collection.institute.form.url') %></label></br>
+  <%= f.url_field :url, required: 'required'  %>
+</div>
 <% if current_user.is_admin? %>
-  <label for="institute_manager"> <%= t('dri.views.collection.institute.form.manager') %></label>
-  <%= f.text_field :manager %>
+  <div class="dri_field_new_org">
+    <label for="institute_manager"> <%= t('dri.views.collection.institute.form.manager') %></label></br>
+    <%= f.text_field :manager %>
+  </div>
   <div class="pt-2 pb-2">
     <%= f.label :depositing do %>
-      <%= f.check_box :depositing %><%=  t('dri.views.collection.institute.form.depositing') %>
+      <%= f.check_box :depositing %> <%=  t('dri.views.collection.institute.form.depositing') %>
     <% end %>
   </div>
 <% end %>

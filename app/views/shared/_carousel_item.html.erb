@@ -6,13 +6,6 @@
 <% @surrogate = nil %>
 <% if generic_file.present? && !generic_file.preservation_only? %>
 
-  <div class="load_modal" id="progress-modal">
-    <div class="load-modal-content">
-      <label for="progress-bar"> Loading... </label>
-      <progress id="progress-bar" value="0" max="100"></progress>
-    </div>
-  </div>
-
   <% if generic_file.audio? %>
     <% @surrogate_mp3 = @presenter.surrogate_url(generic_file.id, "mp3") %>
     <% @surrogate = @surrogate_mp3 %>
@@ -36,9 +29,9 @@
       <% @surrogate_thumb = @presenter.surrogate_url(generic_file.id, "thumbnail_large") %>
       <%= link_to '#dri_pdf_viewer_modal_id', :'data-bs-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
         <% if generic_file_counter.zero? %>
-          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>">
+          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>" alt="pdf">
         <% else %>
-          <img class="d-block dri_carousel_img" data-src="<%= @surrogate_thumb %>">
+          <img class="d-block dri_carousel_img" data-src="<%= @surrogate_thumb %>" alt="pdf">
         <% end %>
       <% end %>
     <% end %>
@@ -48,7 +41,7 @@
     <% @title = generic_file.label %>
     <% if @surrogate %>
       <%= link_to '#dri_pdf_viewer_modal_id', :'data-bs-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
-        <%= image_tag('PDF_Logo.png', class: 'd-block') %>
+        <%= image_tag('PDF_Logo.png', class: 'd-block', alt: "PDF  viewer") %>
       <% end %>
     <% end %>
 
@@ -62,20 +55,26 @@
       <% if document.published? && document.public_read? %>
         <% @iiif_sources << iiif_info_url(document.id, generic_file.id) %>
           <%= link_to "#dri_iiif_view", class: 'dri_iiif', data: { viewer_index: @iiif_sources.length - 1 } do %>
-          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>">
+          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>" alt="image viewer">
       <% end %>
     <% else %>
       <%= link_to @surrogate, class: 'dri_gallery group1' do %>
         <% if generic_file_counter.zero? %>
-          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>">
+          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>" alt="pdf viewer">
         <% else %>
-          <img class="d-block dri_carousel_img" data-src="<%= @surrogate_thumb %>">
+          <img class="d-block dri_carousel_img" data-src="<%= @surrogate_thumb %>" alt="pdf viewer">
         <% end %>
       <% end %>
     <% end %>
   <% end %>
 
   <% elsif generic_file.threeD? %>
+    <div class="load_modal" id="progress-modal">
+      <div class="load-modal-content">
+        <label for="progress-bar-load" role="progressbar"> Loading... </label>
+        <progress id="progress-bar" value="0" max="100"></progress>
+      </div>
+    </div>
     <% @surrogate = file_download_path(@document.id, generic_file.id, type: '3d') %>
     <%if @surrogate%>
       <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
@@ -108,9 +107,10 @@
       <%# if generic_file.threeD? %>
         <%#= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url }, class: 'dri_embed_link' %> <%# Embed link not working for 3D assets %>
       <%# end %>
-      <%= link_to '#dri_download_modal_id', :'data-bs-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download", class: 'configure_download' do %>
+      <%= link_to '#dri_download_modal_id', :'data-bs-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download_#{generic_file.id}", class: 'configure_download' do %>
         <%= t('dri.views.catalog.links.download') %>
       <% end %>
+
     <% end %>
   </p>
 </div>

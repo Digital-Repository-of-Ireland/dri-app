@@ -1,16 +1,19 @@
 <div class="dri_sidenav">
-	<h5><i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %> </h5>
+	<ul>
+		<li class="tools_title">
+			<h3><i class="fa fa-lg fa-gear"></i>&nbsp;<%= t('dri.views.catalog.titles.object_tools') %> </h3>
+		</li>
 	<!-- close vc_title -->
 
-	<ul>
       <% if current_or_guest_user && controller_name != 'my_collections' %>
-          <%= render_show_doc_actions %>
-		  <li>
-			  <% if @document.collection? %>
-			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'collections', view: 'grid', show_subs: true}), :tabindex => "-1", id: "manage_bookmark" %>
-			  <% else %>
-			    <%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'objects', view: 'grid'}), tabindex: "-1" %>
-			  <% end %>
+          <li> <%= render_show_doc_actions %>
+			<li>
+				<% if @document.collection? %>
+					<%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'collections', view: 'grid', show_subs: true}), :tabindex => "-1", id: "manage_bookmark" %>
+				<% else %>
+					<%= link_to t('dri.views.catalog.forms.manage_bookmark'), bookmarks_path({mode: 'objects', view: 'grid'}), tabindex: "-1" %>
+				<% end %>
+			</li>
 		  </li>
 		<% end %>
 
@@ -54,7 +57,7 @@
     <%= content_tag(:li, nil, class: @li_class) do %>
     	<%=
 	    	link_to(
-		    	image_tag("rdf_icon.png", title: t('dri.help.dri_view_rdf')),
+		    	image_tag("rdf_icon.png", title: t('dri.help.dri_view_rdf'), alt: "link to " + t('dri.help.dri_view_rdf').to_s.html_safe),
 		    	search_state.url_for_document(@document.id, format: :ttl),
 		    	target: :_blank
 		    )
@@ -88,14 +91,15 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-        <h2 class="h4 modal-title"><%= t('blacklight.tools.cite') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+        <h2 class="modal-title"><%= t('blacklight.tools.cite') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
 			</div>
 			<div class="modal-body">
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-bs-dismiss="modal">
+				<button type="button" class="dri_button_black btn-default" data-bs-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
 				</button>
 			</div>
@@ -107,16 +111,17 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-			  <h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+			  <h2 class="modal-title"><%= t('dri.views.catalog.forms.metadata_full') %></h2>
+				<button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+				</button>
 			</div>
 			<div class="modal-body">
 			</div>
 			<div class="modal-footer">
 				<%= link_to t('dri.views.catalog.buttons.download_metadata_xml'),
-				    object_metadata_path(@document.id, format: :xml), {id: "download_metadata", class: "btn btn-default"}
+				    object_metadata_path(@document.id, format: :xml), {id: "download_metadata", class: "dri_button_black btn-default"}
 				%>
-				<button type="button" class="btn btn-default" data-bs-dismiss="modal">
+				<button type="button" class="dri_button_black btn-default" data-bs-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
 				</button>
 			</div>
@@ -128,12 +133,13 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="h4 modal-title"><%= t('dri.views.catalog.forms.map') %></h2>
-        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true"/>
+				<h2 class="modal-title"><%= t('dri.views.catalog.forms.map') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+	</button>
       </div>
 			<div class="modal-body" id="map_container"></div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-bs-dismiss="modal">
+				<button type="button" class="dri_button_black btn-default" data-bs-dismiss="modal">
 					<%= t('dri.window.modal.close') %>
 				</button>
 			</div>

@@ -16,9 +16,11 @@
 	    <% collection_objects_params = { f: {'ancestor_id_ssim'.to_sym => [document[:id]]}, mode: "objects", search_field: "all_fields", view: "grid" } %>
 	  <% end %>
 
-    <h5>
-      <i class="fa fa-folder-open"></i>&nbsp;<%= t('dri.views.catalog.forms.all_objects_in_collection') %>
-    </h5>
+    <li class="tools_title">
+      <h3>
+        <i class="fa fa-folder-open"></i>&nbsp;<%= t('dri.views.catalog.forms.all_objects_in_collection') %>
+      </h3>
+    </li>
 
 	<% end %>
 

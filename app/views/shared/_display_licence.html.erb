@@ -25,7 +25,7 @@
       <% elsif @document.licence.url.present? %>
         <% if @document.licence.logo.present? %>
           <%= link_to @document.licence.url, target: "_blank" do %>
-            <span><%= image_tag(@document.licence.logo, class: 'dri_licence_logo') %> <%= @document.licence.description %></span>
+            <span><%= image_tag(@document.licence.logo, class: 'dri_licence_logo', alt:"License logo") %> <%= @document.licence.description %></span>
           <% end %>
         <% else %>
           <%= link_to "#{@document.licence.name} - #{@document.licence.description}", @document.licence.url, target: "_blank" %>

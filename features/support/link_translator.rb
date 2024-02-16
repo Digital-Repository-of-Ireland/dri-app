@@ -139,6 +139,9 @@ module LinkTranslator
       when /^manage bookmark$/
         "manage_bookmark"
 
+      when /^remove bookmark for id (.+)$/
+        "remove_#{$1}_bookmark"
+
       when /^manage licence$/
         "manage_licence"
 
