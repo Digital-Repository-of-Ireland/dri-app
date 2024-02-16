@@ -3,6 +3,7 @@
 	    <span class="dri_icon_image">
 	      <% present(document, DRI::ImagePresenter) do |images| %>
 	        <% images.icons.each do |icon| %>
+	          <% next unless icon %>
 	          <%= image_tag(icon) %>
 	        <% end %>
 	      <% end %> &nbsp;

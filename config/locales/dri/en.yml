@@ -65,7 +65,7 @@ en:
         Title: Media Types
         Unknown: Unknown
         all: All
-        InteractiveResource: Interactive Resources
+        InteractiveResource: Interactive Resource
       activity:
         committer: Committer
         in_collection: In Collection
