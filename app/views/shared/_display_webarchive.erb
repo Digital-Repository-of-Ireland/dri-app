@@ -3,5 +3,5 @@
 <% end %>
 
 <%= content_tag('div', id: "dri_webarchive_view #{id}", data: { url: url, file: generic_file_name}) do %>
-<replay-web-page replayBase= '/replay/' source= <%= url %> view="pages" loading="eager"/>
+<replay-web-page replayBase= '/replay/' source= <%= url %> view="pages"/>
 <% end %>
