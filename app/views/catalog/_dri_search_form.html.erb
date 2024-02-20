@@ -1,7 +1,7 @@
-  <%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form' do %>
-    <% translated_fields = translated_search_fields(display_search_fields) %>
-    <label for="search_field" class="visually-hidden"><%= t('blacklight.search.form.search_field.label') %></label>
-    <div class="input-group mt-2 dri-search-input-group">
+<%= form_tag main_app.search_catalog_path, method: :get, id: 'searchform', class: 'dri_search_term_input_form' do %>
+  <% translated_fields = translated_search_fields(display_search_fields) %>
+  <label for="search_field" class="visually-hidden"><%= t('blacklight.search.form.search_field.label') %></label>
+  <div class="input-group mt-2 dri-search-input-group">
     <%= select_tag(:search_field,
                    options_for_select(translated_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
@@ -22,10 +22,11 @@
         <%=t('blacklight.search.form.submit')%>
       </button>
     </div>
-  <% end %><!-- end form -->
-<!-- close dri_search_term_input_form -->
   </div>
-  <%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',
-      :'data-bs-target' => '#dri_advanced_search_modal_id',
-      :'data-bs-toggle' => 'modal',
-      id: 'advanced_search_button' %>
+<% end %><!-- end form -->
+<!-- close dri_search_term_input_form -->
+ 
+<%= link_to "+ #{t('dri.views.catalog.links.advanced_options')}", '',
+    :'data-bs-target' => '#dri_advanced_search_modal_id',
+    :'data-bs-toggle' => 'modal',
+    id: 'advanced_search_button' %>

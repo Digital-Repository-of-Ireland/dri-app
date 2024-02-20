@@ -4,15 +4,15 @@
 		<span class="dri_pagination_label"><%= t('dri.views.pagination.label') %></span>
 		<div class="dri_doc_pagination_links">
 			<%if @search_context[:prev] %>
-			  	<span aria-label="Previous" class="previous" aria-label="Previous">
+			  	<span class="previous" aria-label="Previous">
 					<%= link_to_previous_document(@search_context[:prev], 'aria-label' => 'previous item') %>	
 				</span>
 			<% end %>
-			<span class="position" aria-label="Position" aria-label="Current Position">
+			<span class="position" aria-label="Current Position" aria-current="true">
 				&nbsp;<%= item_page_entry_info %>&nbsp;
 			</span>
 			<%if @search_context[:next] %>
-			  	<span aria-label="Next item" class="next" aria-label="Next">
+			  	<span class="next" aria-label="Next">
 					<%= link_to_next_document(@search_context[:next], 'aria-label' => 'Next item') %>	
 				</span>
 			<% end %>
