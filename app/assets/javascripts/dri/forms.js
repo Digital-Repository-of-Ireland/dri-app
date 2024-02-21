@@ -74,12 +74,12 @@ $(document).ready(function() {
        var $element = $(element);
        $element.data("title", "") // Clear the title - there is no error associated anymore
                .removeClass("dri_form_error")
-               .tooltip("destroy");
+               .tooltip("dispose");
       });
       // Create new tooltips for invalid elements
       $.each(errorList, function (index, error) {
         var $element = $(error.element);
-        $element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
+        $element.tooltip("dispose") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
                 .data("title", error.message)
                 .addClass("dri_form_error")
                 .tooltip(); // Create a new tooltip based on the error messsage we just set in the title
