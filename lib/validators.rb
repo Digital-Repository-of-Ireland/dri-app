@@ -42,6 +42,9 @@ module Validators
   end # End validate_file_type method
 
   def self.extension_matches?(extension, mime_type)
+    # web archive extensions do not match mime types
+    return true if Settings.restrict.extensions.restricted_interactive_resource.include?(".#{extension}")
+
     mime_types = MIME::Types.type_for(extension)
     mime_types.include?(mime_type) || mime_types.any? { |extension_mime| mime_type.include? extension_mime.sub_type }
   end
@@ -105,6 +108,8 @@ module Validators
             .concat(Settings.restrict.mime_types.pdf)
             .concat(Settings.restrict.mime_types.audio)
             .concat(Settings.restrict.mime_types.video)
+            .concat(Settings.restrict.mime_types._3D)
+            .concat(Settings.restrict.mime_types.interactive_resource)
   end
 
   def self.file_path(file)

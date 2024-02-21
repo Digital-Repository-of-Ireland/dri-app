@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: da895b3e0f73870c38eec424e6ef4e3178c45b88
-  tag: v4.5.8
+  revision: 1370fd7f43ab8943fa4f09078a2548c7217f6603
+  tag: v4.6.8
   specs:
-    dri_data_models (4.5.8)
+    dri_data_models (4.6.8)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -1124,7 +1124,7 @@ GEM
     unicode-types (1.8.0)
     uri (0.12.2)
     validatable (1.6.7)
-    valkyrie (3.1.3)
+    valkyrie (3.1.4)
       activemodel
       activesupport
       dry-struct
@@ -1232,7 +1232,7 @@ DEPENDENCIES
   legato
   linkeddata
   listen
-  moab-versioning (~> 4.4)
+  moab-versioning (~> 4.4, >= 4.4.2)
   mysql2
   nest
   nokogiri (>= 1.16.2)

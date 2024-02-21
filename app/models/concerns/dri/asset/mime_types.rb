@@ -8,7 +8,7 @@ module DRI
       end
 
       def text?
-        self.class.text_mime_types.include?(self.mime_type) && !Settings.restrict.extensions.restricted_3D.include?(extension)
+        self.class.text_mime_types.include?(self.mime_type) && !(self.class.restricted_3D_extensions.include?(extension) || self.class.restricted_interactive_resource_extensions.include?(extension))
       end
 
       def image?
@@ -24,7 +24,11 @@ module DRI
       end
 
       def threeD?
-        self.class._3D_mime_types.include?(self.mime_type) && Settings.restrict.extensions.restricted_3D.include?(extension)
+        self.class._3D_mime_types.include?(self.mime_type) && self.class.restricted_3D_extensions.include?(extension)
+      end
+
+      def interactive_resource?
+        self.class.interactive_resource_mime_types.include?(self.mime_type) && self.class.restricted_interactive_resource_extensions.include?(extension)
       end
 
       def file_format
@@ -40,32 +44,41 @@ module DRI
 
       module ClassMethods
         def image_mime_types
-          Settings.restrict.mime_types.image
+          ::Settings.restrict.mime_types.image
         end
 
         def pdf_mime_types
-          Settings.restrict.mime_types.pdf
+          ::Settings.restrict.mime_types.pdf
         end
 
         def text_mime_types
-          Settings.restrict.mime_types.text
+          ::Settings.restrict.mime_types.text
         end
 
         def video_mime_types
-          Settings.restrict.mime_types.video
+          ::Settings.restrict.mime_types.video
         end
 
         def audio_mime_types
-          Settings.restrict.mime_types.audio
+          ::Settings.restrict.mime_types.audio
         end
 
         def _3D_mime_types
-          Settings.restrict.mime_types._3D
+          ::Settings.restrict.mime_types._3D
+        end
+
+        def interactive_resource_mime_types
+          ::Settings.restrict.mime_types.interactive_resource
         end
 
         # Restrict mimetypes for 3D
         def _3D_file_formats
           ::Settings.restrict.file_formats._3D
+        end
+
+        # Restrict mimetypes for Web Archive
+        def interactive_resource_file_formats
+          ::Settings.restrict.file_formats.interactive_resource
         end
 
         def restricted_text_extensions
@@ -74,6 +87,10 @@ module DRI
 
         def restricted_3D_extensions
           ::Settings.restrict.extensions.restricted_3D
+        end
+
+        def restricted_interactive_resource_extensions
+          ::Settings.restrict.extensions.restricted_interactive_resource
         end
 
       end

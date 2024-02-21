@@ -76,8 +76,9 @@ module DRI
     def icons
       document.file_types.map do |file_type|
         format = file_type.to_s.downcase
-
-        if %w(image audio text video 3d mixed_types).include?(format)
+        if format == 'interactiveresource'
+          'dri/formats/text_icon.png'
+        elsif %w(image audio text video 3d).include?(format)
           "dri/formats/#{format}_icon.png"
         else
           'dri/formats/default_icon.png'

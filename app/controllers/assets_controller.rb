@@ -39,24 +39,27 @@ class AssetsController < ApplicationController
   # Retrieves external datastream files that have been stored in the filesystem.
   def download
     @generic_file = retrieve_object! params[:id]
-    if @generic_file
-      @document = SolrDocument.find(params[:object_id])
-
-      can_view?
-
-      if File.file?(@generic_file.path)
-        response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
-        send_file @generic_file.path,
-              type: @generic_file.mime_type || 'application/octet-stream',
-              stream: true,
-              buffer: 4096,
-              disposition: "attachment; filename=\"#{@generic_file.filename.first}\";",
-              url_based_filename: true
-        return
-      end
+    
+    unless @generic_file && File.file?(@generic_file.path)
+      raise DRI::Exceptions::NotFound
     end
+   
+    @document = SolrDocument.find(params[:object_id])
+    can_view?
 
-    render plain: 'Unable to find file', status: 404
+    response.header['Accept-Ranges'] = 'bytes'
+    if request.headers['range']
+      send_file_with_range @generic_file.path,
+          type: @generic_file.mime_type || 'application/octet-stream',
+          disposition: 'inline'
+    else
+      response.headers['Content-Length'] = File.size?(@generic_file.path).to_s
+      send_file @generic_file.path,
+          type: @generic_file.mime_type || 'application/octet-stream',
+          stream: true,
+          buffer: 4096,
+          disposition: "attachment; filename=\"#{@generic_file.filename.first}\";"
+    end
   end
 
   def destroy
@@ -221,6 +224,24 @@ class AssetsController < ApplicationController
     def local_file_ingest(name)
       upload_dir = Rails.root.join(Settings.dri.uploads)
       File.new(File.join(upload_dir, name))
+    end
+
+    def send_file_with_range(path, options = {})
+      file_size = File.size(path)
+      begin_point = 0
+      end_point = file_size - 1
+      status = 200
+      if request.headers['range']
+        status = 206
+        if request.headers['range'] =~ /bytes\=(\d+)\-(\d*)/
+          begin_point = $1.to_i
+          end_point = $2.to_i if $2.present?
+        end
+      end
+      content_length = end_point - begin_point + 1
+      response.header['Content-Range'] = "bytes #{begin_point}-#{end_point}/#{file_size}"
+      response.header['Content-Length'] = content_length.to_s
+      send_data IO.binread(path, content_length, begin_point), options.merge(:status => status)
     end
 
     def upload_from_params

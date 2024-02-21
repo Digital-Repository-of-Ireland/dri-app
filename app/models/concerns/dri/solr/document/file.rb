@@ -121,6 +121,10 @@ module DRI::Solr::Document::File
     @storage_service ||= StorageService.new
   end
 
+  def downloadable_surrogate?
+    !(threeD? || interactive_resource?)
+  end
+
   def text?
     Settings.restrict.mime_types.text.include?(mime_type) && !Settings.restrict.extensions.restricted_3D.include?(extension)
   end
@@ -145,4 +149,9 @@ module DRI::Solr::Document::File
    Settings.restrict.mime_types._3D.include?(mime_type) && Settings.restrict.extensions.restricted_3D.include?(extension)   
   end
 
+  def interactive_resource?
+   Settings.restrict.mime_types.interactive_resource.include?(mime_type) && Settings.restrict.extensions.restricted_interactive_resource.include?(extension)
+  end
+
 end
+

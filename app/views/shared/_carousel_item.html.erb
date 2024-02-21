@@ -75,9 +75,15 @@
         <progress id="progress-bar" value="0" max="100"></progress>
       </div>
     </div>
-    <% @surrogate = file_download_path(@document.id, generic_file.id, type: '3d') %>
-    <%if @surrogate%>
-      <%= render partial: 'shared/display_3d', locals: { id:generic_file.id ,url: @surrogate, generic_file_name: generic_file.label} %>
+    <% @surrogate = file_download_path(@document.id, generic_file.id) %>
+    <% if @surrogate %>
+      <%= render partial: 'shared/display_3d', locals: { id: generic_file.id, url: @surrogate, generic_file_name: generic_file.label } %>
+    <% end %>
+  
+  <% elsif generic_file.interactive_resource? %>
+    <% @surrogate = file_download_path(@document.id, generic_file.id) %>
+    <% if @surrogate %>
+      <%= render partial: 'shared/display_webarchive', locals: { id: generic_file.id, url: @surrogate, generic_file_name: generic_file.label } %>
     <% end %>
   <% end %>
 
@@ -95,7 +101,9 @@
 
 <div class="carousel-caption">
   <p>
-    <% if (@surrogate.nil? || generic_file.threeD?) && !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) && (generic_file.threeD? || !document.read_master?) %> <%# Change conditions when 3D surrogate is available%>
+    <% if (@surrogate.nil? || generic_file.threeD?) && 
+          !((document.read_master? && can?(:read, document.id)) || can?(:edit, document.id)) && 
+          (generic_file.threeD? || !document.read_master?) %> <%# Change conditions when 3D surrogate is available%>
       <%= t('dri.views.catalog.links.download_not_available', index: generic_file_counter.ordinalize) %>
     <% elsif document.read_master? || @surrogate && can?(:read, document.id) || can?(:edit, document.id) %>
       <%# if generic_file.threeD? %>
@@ -104,7 +112,6 @@
       <%= link_to '#dri_download_modal_id', :'data-bs-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download_#{generic_file.id}", class: 'configure_download' do %>
         <%= t('dri.views.catalog.links.download') %>
       <% end %>
-
     <% end %>
   </p>
 </div>
@@ -115,7 +122,7 @@
       <%= t('dri.views.catalog.forms.download_tsandcs_msg', url: main_app.page_path('terms')).html_safe %>
     </p>
   </div>  
-  <% if @surrogate && !generic_file.threeD?%> <%# Change conditions when 3D surrogate is available%>
+  <% if @surrogate && generic_file.downloadable_surrogate? %>
     <div>
       <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate'), id: 'download_surrogate', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
         <i class="fa fa-download"></i>
@@ -125,7 +132,7 @@
   <% end %>
   <% if @document.read_master? || (can? :edit, @document) %>
    <div>
-      <%= link_to file_download_path(@document.id, generic_file.id, type: 'masterfile'), id: 'download_master', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
+      <%= link_to file_download_path(@document.id, generic_file.id), id: 'download_master', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
         <i class="fa fa-download"></i>
         <% file_size = number_to_human_size(generic_file['file_size_ltsi']) %>
         <%= label_tag(:masterfile, "#{t('dri.views.catalog.forms.download_originals')} (#{file_size})") %>
