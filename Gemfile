@@ -22,7 +22,7 @@ gem 'riiif'
 gem 'iiif-presentation'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'warc'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
 gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
 gem "devise", ">= 4.7.1"
 

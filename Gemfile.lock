@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 10ffaac9bc71878415c3e5f5f6211be3635508c3
-  branch: warc
+  revision: 624ec9ea27ede0ee1033390e568d5e051ae49d09
+  branch: develop
   specs:
-    dri_data_models (4.5.8)
+    dri_data_models (4.6.8)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -668,7 +668,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.1205)
+    mime-types-data (3.2024.0206)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitar (0.9)
@@ -682,7 +682,7 @@ GEM
     multi_json (1.15.0)
     multi_test (1.1.0)
     multi_xml (0.6.0)
-    multipart-post (2.3.0)
+    multipart-post (2.4.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.5)
@@ -1124,7 +1124,7 @@ GEM
     unicode-types (1.8.0)
     uri (0.12.2)
     validatable (1.6.7)
-    valkyrie (3.1.3)
+    valkyrie (3.1.4)
       activemodel
       activesupport
       dry-struct
