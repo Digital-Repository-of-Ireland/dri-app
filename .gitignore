@@ -68,6 +68,7 @@ swagger/
 .byebug*
 *.pid
 *.sublime*
+*.vscode*
 
 fits.log
 

@@ -45,7 +45,7 @@ gem "omniauth-rails_csrf_protection"
 gem 'oauth'
 
 # Storage-related gems
-gem 'moab-versioning', '~> 4.4'
+gem 'moab-versioning', '~> 4.4', '>= 4.4.2'
 gem 'bagit'
 
 gem 'redis', '~> 4'
