@@ -208,8 +208,11 @@ class AssetsController < ApplicationController
     end
 
     def viewable?
-      # Change conditions when 3D surrogate is available
-      can?(:read, params[:object_id]) && (@document.read_master? || (@generic_file && @generic_file.threeD?)) && @document.published?
+      can?(:read, params[:object_id]) && (@document.read_master? || master_as_surrogate?) && @document.published?
+    end
+
+    def master_as_surrogate?
+      @generic_file && (@generic_file.threeD? || @generic_file.interactive_resource?)
     end
 
     def editor?
