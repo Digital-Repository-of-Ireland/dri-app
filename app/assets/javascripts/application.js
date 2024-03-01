@@ -19,7 +19,6 @@
 //= require jquery-ui/widgets/autocomplete
 //= require jquery-ui/widgets/menu
 //= require jquery-ui/widgets/sortable
-//= require jquery.slick
 //= require clipboard
 //= require i18n
 //= require i18n/translations
@@ -65,7 +64,6 @@
 //= require spin
 //= require timelineJS3
 //= require dri_batch_ingest
-//= require slick-scroller
 //= require dri/timeline
 //= require dri/forms
 //= require dri/spinner

@@ -6,38 +6,9 @@
       </span>
     </div>
              
-    <div id="dri_sub_collection_list" class="dri_scroller" >
-      <% children.each do |child| %>
-        <div>
-          <%= render partial: 'shared/child', locals: { child: child } %>
-        </div>
+    <div id="dri_sub_collection_list">
+      <% children.each_with_index do |child, index| %>
+        <%= render partial: 'shared/child', locals: { child: child } %>
       <% end %>
     </div>
-  </div>
 <% end %>
-
-<script>
-  $(document).ready(function () {
-    $('.dri_scroller').slick({
-      lazyLoad: 'ondemand',
-      dots: false,
-      infinite: true,
-      variableWidth: true,
-      slidesToShow: 4,
-      responsive: [
-        {
-          breakpoint: 1101,
-          settings: {
-            slidesToShow: 3,
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 2,
-          }
-        }
-      ]
-    })
-  });
-</script>
