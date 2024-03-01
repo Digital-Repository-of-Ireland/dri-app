@@ -66,6 +66,7 @@ __EOF__
     bundle exec rake db:migrate
     bundle exec rake db:test:prepare
     bundle exec rake db:environment:set RAILS_ENV=test
+    bundle exec rails dartsass:build
     ;;
 rspec)
     bundle exec rake rspec RUN_COVERAGE=on
