@@ -238,7 +238,7 @@ input.dri_w230 {
 /*-------------- Layout for Identity and Search feature --------------*/
 
 .dri_ident {
-    background: image-url($dri_logo_url);
+    background: url($dri_logo_url);
     background-repeat: no-repeat;
     height: 135px;
     margin: 0px;
@@ -258,7 +258,7 @@ input.dri_w230 {
 }
 // mobile logo version
 .dri_ident_tiny {
-    background: image-url($dri_logo_tiny_url);
+    background: url($dri_logo_tiny_url);
     background-repeat: no-repeat;
     width: 100px;
     height: 35px;
@@ -810,7 +810,7 @@ ol.breadcrumb {
     padding: 4px 0 4px 30px;
     color: $dri_black;
     font-size: 16px;
-    background: image-url("dri/search_icon.png") no-repeat left;
+    background: url("dri/search_icon.png") no-repeat left;
     &:hover{
         background-color: $dri_select;
     }
@@ -820,7 +820,7 @@ ol.breadcrumb {
     width: 226px;
     padding: 2px 0 2px 30px;
     color: $dri_black;
-    background: image-url("dri/search_icon.png") no-repeat left;
+    background: url("dri/search_icon.png") no-repeat left;
 }
 
 #advanced_search_button {
@@ -973,12 +973,12 @@ ol.breadcrumb {
         background-color: darken($dri_green, 10%);
     }
     .first a {
-        background: image-url("dri/prev_arrow.png") no-repeat center;
+        background: url("dri/prev_arrow.png") no-repeat center;
         background-color: none;
         margin-right: 4px;
     }
     .last a {
-        background: image-url("dri/next_arrow.png") no-repeat center;
+        background: url("dri/next_arrow.png") no-repeat center;
         background-color: none;
         border-right: none;
         margin-left: 4px;
@@ -1336,7 +1336,7 @@ div.sidebar{
             border-top: 1px solid $dri_thingrey;
             .collapsed {
                 h4 {
-                    background: image-url("dri/arrow_up.png") no-repeat right;
+                    background: url("dri/arrow_up.png") no-repeat right;
                 }
             }
             .panel-body {
@@ -1430,7 +1430,7 @@ div.sidebar{
         font-size: inherit;
         margin: 0;
         padding: 0;
-        background: image-url("dri/arrow_down.png") no-repeat right;
+        background: url("dri/arrow_down.png") no-repeat right;
         a {
             text-decoration: none;
             color: $dri_black;
@@ -1656,7 +1656,7 @@ table{
         margin: 0 0 0 0;
         padding: 0 0 0 15px;
         color: $dri_darkgrey;
-        background: image-url("dri/arrow_black.png") no-repeat left center;
+        background: url("dri/arrow_black.png") no-repeat left center;
     }
     .dri_home_link a:hover {
         text-decoration: underline;
@@ -1769,7 +1769,7 @@ span.dri_remove_bookmark_back {
         border: none;
         color: $dri_lightgrey;
         text-decoration: none;
-        background: image-url("dri/clear_all_close.png") no-repeat left;
+        background: url("dri/clear_all_close.png") no-repeat left;
         padding: 2px 8px 0 22px;
     }
     .dri_saved_search_title_block {
@@ -2469,7 +2469,7 @@ ul.dri_view_collection {
             /* to hide the checkbox itself */
 
             input[type=checkbox] + span:after {
-                font-family: FontAwesome;
+                font-family: 'Font Awesome\ 6 Free';
                 display: inline-block;
             }
             input[type=checkbox] + span:after {
@@ -2912,12 +2912,14 @@ dd.dri_licence{
             color: #fff;
         }
         .dri_danger {
-            @extend input.btn-primary;
-            background: darken($dri_red, 10%);
+            //@extend input.btn-primary;
+            @extend input, .btn-primary;
+	    background: darken($dri_red, 10%);
         }
         .dri_cancel {
-            @extend input.btn-primary;
-            clear: both;
+            //@extend input.btn-primary;
+            @extend input, .btn-primary;
+	    clear: both;
             background: $dri_lightgrey;
             display: block;
             text-align: center;
@@ -3324,9 +3326,9 @@ a.dri_help_popover {
     }
 
     #blacklight-modal {
-    .modal-title {
+      .modal-title {
         float: left;
-    }
+      }
     }
 
     .dri-type-dropdown{

@@ -16,12 +16,12 @@
 		    <% timelineParams = changeViewParams.clone %>
 		    <% timelineParams[:tl_field] = @available_timelines.first if @available_timelines %>
 		    <%= link_to timelineParams, id: 'timeline_view' do %>
-		      <i class="fa fa-clock-o dri_icon_border"></i>
+		      <i class="fa fa-regular fa-clock dri_icon_border"></i>
               <span class="visually-hidden">View results on time line</span>
 		    <% end %>
 		    <% changeViewParams[:view] = "maps" %>
 		    <%= link_to changeViewParams, id: 'maps_view' do %>
-		      <i class="fa fa-map-marker dri_icon_border"></i>
+		      <i class="fa fa-solid fa-location-dot dri_icon_border"></i>
               <span class="visually-hidden">View results on map</span>
 		    <% end %>
 		  <% end %>
@@ -39,12 +39,12 @@
 		    <% timelineParams = changeViewParams.clone %>
 		    <% timelineParams[:tl_field] = @available_timelines.first if @available_timelines %>
 		    <%= link_to timelineParams, id: 'timeline_view' do %>
-		      <i class="fa fa-clock-o dri_icon_border"></i>
+		      <i class="fa fa-regular fa-clock dri_icon_border"></i>
               <span class="visually-hidden">View results on time line</span>
 		    <% end %>
 		    <% changeViewParams[:view] = "maps" %>
 		    <%= link_to changeViewParams, id: 'maps_view' do %>
-		      <i class="fa fa-map-marker dri_icon_border"></i>
+		      <i class="fa fa-solid fa-location-dot dri_icon_border"></i>
 		      <span class="visually-hidden">View results on map</span>
 		    <% end %>
 		  <% end %>
@@ -66,10 +66,10 @@
 		    <span class="visually-hidden">View results as list</span>
 		  <% end %>
 		  <% if ['catalog','my_collections'].include?(params[:controller]) %>
-		    <i class="fa fa-clock-o dri_icon_border"></i>
+		    <i class="fa fa-regular fa-clock dri_icon_border"></i>
 		    <% changeViewParams[:view] = "maps" %>
 		    <%= link_to changeViewParams, id: 'maps_view' do %>
-		      <i class="fa fa-map-marker dri_icon_border"></i>
+		      <i class="fa fa-solid fa-location-dot dri_icon_border"></i>
 		      <span class="visually-hidden">View results on map</span>
 		    <% end %>
 		  <% end %>
@@ -90,10 +90,10 @@
 		    <% timelineParams = changeViewParams.clone %>
 		    <% timelineParams[:tl_field] = @available_timelines.first if @available_timelines %>
 		    <%= link_to timelineParams, id: 'timeline_view' do %>
-		      <i class="fa fa-clock-o dri_icon_border"></i>
+		      <i class="fa fa-regular fa-clock dri_icon_border"></i>
 		      <span class="visually-hidden">View results on time line</span>
 		    <% end %>
-		    <i class="fa fa-map-marker dri_icon_border"></i>
+		    <i class="fa fa-solid fa-location-dot dri_icon_border"></i>
 		  <% end %>
 		<% end %>
 	</div>
