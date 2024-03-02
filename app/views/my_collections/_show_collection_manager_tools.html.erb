@@ -24,7 +24,7 @@
 
 <div class="dri_sidenav">
 <h3>
-  <i class="fa fa-pencil"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
+  <i class="fa-solid fa-pencil"></i>&nbsp;<%= t('dri.views.catalog.titles.editor_tools') %>
 </h3>
 <ul>
     <li class="dri_subnav_editor_tools">
@@ -43,10 +43,10 @@
                 <%= t('dri.views.catalog.links.draft') %>
                 (<i class="fa fa-folder" aria-hidden="true"></i>
                 <%= review_link("#{draft_subcoll} ", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-                /<i class="fa fa-file" aria-hidden="true"></i>
+                /<i class="fa-solid fa-file" aria-hidden="true"></i>
                 <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
 
-                <div class='pull-right'>
+              
                   <%
                     review_disabled = (draft_objects == 0 && draft_subcoll == 0)
                     review_button_class = if review_disabled
@@ -71,16 +71,16 @@
                     >
                         <%= t('dri.views.catalog.links.mark_all_reviewed') %>
                     </button>
-                </div>
+                
             </li>
             <!-- end Draft Stats Block -->
 
             <!-- Reviewed Stats Block -->
             <li>
             <%= "#{t('dri.views.catalog.links.reviewed')}" %>
-            (<i class="fa fa-folder" aria-hidden="true"></i>
+            (<i class="fa-solid fa-folder" aria-hidden="true"></i>
             <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-            /<i class="fa fa-file" aria-hidden="true"></i>
+            /<i class="fa-solid fa-file" aria-hidden="true"></i>
             <%= review_link("#{reviewed_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
             <% if @document.root_collection? %> <!-- Only show publish button if on root collection -->
                 <%
@@ -99,7 +99,6 @@
                                             'dri_button_green_small'
                                          end
                 %>
-                <div class='pull-right'>
                   <button
                     type="button"
                     id="publish"
@@ -125,7 +124,6 @@
                   >
                     <%= t('dri.views.catalog.links.publish') %>
                   </button>
-                </div>
             <% end %>
             <!-- end Reviewed Stats Block -->
 
@@ -139,7 +137,7 @@
             <%= "#{t('dri.views.catalog.links.published')}" %>
             (<i class="fa fa-folder" aria-hidden="true"></i>
             <%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-            /<i class="fa fa-file" aria-hidden="true"></i>
+            /<i class="fa-solid fa-file" aria-hidden="true"></i>
             <%= review_link("#{published_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
             </li>
             <!-- end Published Stats Block -->
@@ -178,12 +176,12 @@
         <% end %>
       <% end %> <!-- if end (non-EAD collections) -->
 
-      <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
-        <li>
+      <li>
+        <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
           <%= t('dri.views.collection.access_controls_review') %>
-          <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
-        </li>
-      <% end %>
+        <% end %>
+        <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
+      </li>
 
       <%= link_to new_export_path(document.id), :id => "export_metadata" do %>
         <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
