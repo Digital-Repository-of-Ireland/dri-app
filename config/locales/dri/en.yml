@@ -66,6 +66,7 @@ en:
         Unknown: Unknown
         all: All
         InteractiveResource: Interactive Resource
+    datatables:
       activity:
         committer: Committer
         in_collection: In Collection
