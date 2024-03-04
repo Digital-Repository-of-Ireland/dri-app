@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 624ec9ea27ede0ee1033390e568d5e051ae49d09
+  revision: 5d7d2d4e3048cb80bd7cb373198df4963ddb14f2
   branch: develop
   specs:
-    dri_data_models (4.6.8)
+    dri_data_models (4.6.9)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -663,7 +663,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.2)
+    marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.0.0)
     mime-types (3.5.2)
