@@ -2009,7 +2009,7 @@ span.dri_remove_bookmark_back {
     margin: 0 18px 18px 0;
     padding: 0;
     width: 280px;
-    height:285px;
+    height: 285px;
     float: left;
     display: block;
     color: $dri_black;
@@ -2133,6 +2133,11 @@ span.dri_remove_bookmark_back {
 .dri_ext_rel_content_block {
     @extend .dri_content_block;
     height: 100px;
+}
+
+.dri_sub_collection_content_block {
+    @extend .dri_content_block;
+    height: 252px;
 }
 
 .dri_content_block_collection {
