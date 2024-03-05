@@ -1,10 +1,10 @@
 <% if children.present? %>
   <div class="dri_section_block" id="collection_children">
-    <div class="dri_section_title">
+    <h2 class="dri_section_title">
       <span id="dri_sub_collection_page_info">
         <%= "#{t('dri.views.catalog.headers.sub_collections')}" %> (<%= children.length %>)
       </span>
-    </div>
+    </h2>
              
     <div id="dri_sub_collection_list">
       <% children.each_with_index do |child, index| %>

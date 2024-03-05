@@ -1,8 +1,8 @@
 <% unless @presenter.relationships.empty? && @presenter.external_relationships.empty? %>
   <div class="dri_section_block" id="related_materials">
-    <div class="dri_section_title">
+    <h2 class="dri_section_title">
       <span><%= "#{t('dri.views.catalog.headers.related_materials')}" %></span>
-    </div>
+    </h2>
 
     <% unless @presenter.relationships.empty? %>
         <% @presenter.relationships.each do |key, value| -%>
