@@ -68,7 +68,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails', git: 'https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails'
+gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails" #, git: 'https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails'
 gem 'js_cookie_rails'
 
 # clients
