@@ -155,7 +155,7 @@ end
 gem 'unicode', platforms: [:mri_18, :mri_19]
 gem 'font-awesome-sass', "~> 6.5.1"
 gem 'jwt', '1.5.2'
-gem 'bootstrap', '~> 5.3.1'
+gem 'bootstrap', '5.3.2'
 gem 'bootstrap-glyphicons'
 
 group :translations do
@@ -194,3 +194,4 @@ gem 'qa', '~> 5.1'
 gem "seedbank", "~> 0.5.0"
 
 gem "dartsass-rails", "~> 0.5.0"
+gem "dartsass-sprockets"
