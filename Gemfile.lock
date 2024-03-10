@@ -66,14 +66,6 @@ GIT
       mini_magick (>= 3.2, < 5)
 
 GIT
-  remote: https://github.com/Digital-Repository-of-Ireland/jquery-colorbox-rails.git
-  revision: 074fcf8bd732ae8e49724df7dd2b74d3d7f0888f
-  branch: a11y
-  specs:
-    jquery-colorbox-rails (1.7.7)
-      railties (>= 3.1)
-
-GIT
   remote: https://github.com/kesha-antonov/jstree-rails-4
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
@@ -1211,7 +1203,6 @@ DEPENDENCIES
   image_processing (>= 1.12.2)
   is_it_working-cbeer
   it
-  jquery-colorbox-rails!
   jquery-rails
   jquery-ui-rails-dox-fork
   jquery-xmleditor-rails!
