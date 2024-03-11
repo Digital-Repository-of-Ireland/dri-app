@@ -67,12 +67,16 @@
     line-height: 16px !important;
   }
   a {
-    color: $dri_greytext;
+    color: $dri_black;
     &:hover {
       color: $dri_green;
       text-decoration: none;
     }
   }
+}
+
+h3.tl-headline-date {
+    color: #737373 !important;
 }
 
 .dri_tlfield_options {
