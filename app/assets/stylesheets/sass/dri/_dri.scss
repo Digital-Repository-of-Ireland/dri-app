@@ -865,16 +865,12 @@ ol.breadcrumb {
 .dri_icon_border {
     @include border_radius (3px);
     border: 1px solid $dri_thingrey;
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 38px;
     text-align: center;
     line-height: 100%;
-    font-size: 36px;
+    font-size: 28px;
     vertical-align: middle;
-    // padding-top: 3px;
-    // i{
-    //     padding-top: 3px;
-    // }
 }
 
 .fa-lg {
