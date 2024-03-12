@@ -1,6 +1,6 @@
 <article class="dri_result_object">
 		<%= link_to search_state.url_for_document(child.id) do %>
-      <div class="dri_content_block">
+      <div class="dri_sub_collection_content_block">
         <div class="dri_collection_image">
           <% image = child.cover %>
           <% if image %>
@@ -10,7 +10,7 @@
           <% end %>
         </div>
         <div>
-          <h1><%= child.link_text %></h1>
+          <h3><%= child.link_text %></h3>
         </div>
         <div class="dri_icon">
           <span class="dri_icon_image">

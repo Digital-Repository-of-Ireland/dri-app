@@ -73,3 +73,6 @@ swagger/
 fits.log
 
 .env
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

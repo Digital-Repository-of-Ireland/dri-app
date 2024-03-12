@@ -84,13 +84,13 @@
       <%= form_tag status_update_path(@document.id), method: :put do %>
         <% if @document.draft? %>
           <%= hidden_field_tag( :status, "reviewed") %>
-          <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), id: 'status_update', class: "pull-right dri_button_green_small" %>
+          <span class="label label-danger"><%= t('dri.views.catalog.links.draft') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_reviewed'), id: 'status_update', class: "float-end dri_button_green_small" %>
         <% elsif @document.status == 'reviewed' %>
           <%= hidden_field_tag( :status, "draft") %>
-          <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), id: 'status_update', class: "pull-right dri_button_red_small" %>
+          <span class="label label-success"><%= t('dri.views.catalog.links.reviewed') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), id: 'status_update', class: "float-end dri_button_red_small" %>
         <% elsif current_user.is_admin? %>
           <%= hidden_field_tag( :status, "draft") %>
-          <span class="label label-danger"><%= t('dri.views.catalog.links.published') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), id: 'status_update', class: "pull-right dri_button_red_small" %>
+          <span class="label label-danger"><%= t('dri.views.catalog.links.published') %></span><%= submit_tag t('dri.views.catalog.links.mark_object_draft'), id: 'status_update', class: "float-end dri_button_red_small" %>
         <% end %>
       <% end %>
     </li>
@@ -108,7 +108,7 @@
   <div class="accordion" id="dri_edit_record_tools_id">
     <div class="accordion-group">
       <a class="accordion-toggle" id="edit_menu" data-bs-toggle="collapse" data-bs-parent="#dri_edit_record/_tools_id" href="#dri_edit_record_tools_collapsed_id">
-        <i class="fa fa-caret-square-o-down fa-lg"></i> <%= t('dri.views.catalog.links.edit_this_record') %>
+        <i class="fa-regular fa-square-caret-down fa-lg"></i> <%= t('dri.views.catalog.links.edit_this_record') %>
       </a>
 
       <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">

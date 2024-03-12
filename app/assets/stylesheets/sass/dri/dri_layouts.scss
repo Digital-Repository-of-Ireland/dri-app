@@ -1,13 +1,12 @@
+@use 'font-awesome' with ($fa-font-path: 'font-awesome');
+
 @import "bootstrap";
 
 @import "jquery-ui/resizable";
 @import "jquery-ui/autocomplete";
 @import "jquery-ui/menu";
 
-@import "slick";
-@import 'slick-theme';
 @import "jquery.colorbox-example1";
-@import "font-awesome";
 @import "jquery.xmleditor";
 @import "leaflet";
 @import "openseadragon/openseadragon";
@@ -178,7 +177,7 @@
                 }
             }
             .dri_ident {
-                background: image-url($dri_logo_small_url);
+                background: url($dri_logo_small_url);
                 background-repeat: no-repeat;
                 width: 230px;
                 height: 77px;
@@ -253,7 +252,7 @@
         $zen-column-count: 2;
         .dri_header_container {
             .dri_ident {
-                background: image-url($dri_logo_tiny_url);
+                background: url($dri_logo_tiny_url);
                 background-repeat: no-repeat;
                 width: 100px;
                 height: 50px;
@@ -413,3 +412,4 @@
   flex-direction: column;
   justify-content: center;
 }
+

@@ -33,7 +33,8 @@ To start the application for demo purposes
   $ cd dri-app
   $ rake server:start
   $ rake server:config
-  $ bundle exec rails server
+  $ gem install foreman
+  $ bin/dev
 
 The db:seed step above will create 4 initial accounts:
 
@@ -194,6 +195,7 @@ To run the unit tests:
   $ cd dri-app
   $ rake server:start
   $ rake server:config
+  $ bundle exec rails dartsass:build 
   $ rake rspec
 
 To run the functional tests:
@@ -201,6 +203,7 @@ To run the functional tests:
   $ cd dri-app
   $ rake server:start
   $ rake server:config
+  $ bundle exec rails dartsass:build
   $ rake cucumber or bundle exec cucumber
 
 To run tests in parallel:

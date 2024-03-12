@@ -15,8 +15,8 @@
 	<% end %>
 <% end %>
 <% if document.visibility == "restricted" %>
-  <span class="dri_icon_text pull-right"><i class="fa fa-lock" style="font-size: 1.4em;" title="<%= t('dri.views.catalog.forms.restricted_asset') %>"></i></span>
+  <span class="dri_icon_text float-end"><i class="fa-solid fa-lock" title="<%= t('dri.views.catalog.forms.restricted_asset') %>"></i></span>
 <% elsif document.visibility == "logged-in" %>
-   <span class="dri_icon_text pull-right"><i class="fa fa-user" style="font-size: 1.4em;" title="<%= t('dri.views.catalog.forms.registered_asset') %>"></i></span>
+   <span class="dri_icon_text float-end"><i class="fa-solid fa-user" title="<%= t('dri.views.catalog.forms.registered_asset') %>"></i></span>
 <% end %>
 

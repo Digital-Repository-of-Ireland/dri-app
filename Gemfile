@@ -31,7 +31,7 @@ gem 'paper_trail'
 gem 'linkeddata'
 
 # batch ingest
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'dartsass'
 gem 'browse-everything', '~> 1.2.0' 
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'roo'
@@ -153,11 +153,10 @@ end
 #gem 'debugger'
 
 gem 'unicode', platforms: [:mri_18, :mri_19]
-gem 'font-awesome-rails'
+gem 'font-awesome-sass', "~> 6.5.1"
 gem 'jwt', '1.5.2'
-gem 'bootstrap', '~> 5.3.1'
+gem 'bootstrap', '5.3.2'
 gem 'bootstrap-glyphicons'
-gem 'sass-rails', '5.1.0'
 
 group :translations do
   gem 'i18n_sync'
@@ -173,7 +172,6 @@ gem 'faraday_middleware'
 gem 'rvm'
 
 # UI widgets
-gem 'jquery-colorbox-rails', git: 'https://github.com/Digital-Repository-of-Ireland/jquery-colorbox-rails.git', branch: 'a11y'
 gem 'bootstrap-switch-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'openlayers-rails'
@@ -183,7 +181,6 @@ gem 'clipboard-rails'
 gem 'blacklight-maps', '> 0.5'
 
 #gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
-gem 'jquery-slick-rails'
 gem 'remotipart'
 
 # # api documentation generator / presenter
@@ -194,3 +191,7 @@ gem 'rswag-ui', '~> 2.0'
 gem 'qa', '~> 5.1'
 
 gem "seedbank", "~> 0.5.0"
+
+gem "dartsass-rails", "~> 0.5.0"
+gem "dartsass-sprockets"
+gem "sprockets", "< 4"

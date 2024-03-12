@@ -38,8 +38,8 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
-  revision: 3e60ff3b84e74bc373ea1e025298a260cdcbeb3b
-  branch: main
+  revision: 7741705cdac2b60db773eec538c60ed8877cdbe6
+  branch: dartsass
   specs:
     dri_batch_ingest (1.3.2)
       browse-everything (~> 1.0)
@@ -66,14 +66,6 @@ GIT
       mini_magick (>= 3.2, < 5)
 
 GIT
-  remote: https://github.com/Digital-Repository-of-Ireland/jquery-colorbox-rails.git
-  revision: 074fcf8bd732ae8e49724df7dd2b74d3d7f0888f
-  branch: a11y
-  specs:
-    jquery-colorbox-rails (1.7.7)
-      railties (>= 3.1)
-
-GIT
   remote: https://github.com/kesha-antonov/jstree-rails-4
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
@@ -97,9 +89,9 @@ GIT
 
 GIT
   remote: https://github.com/stkenny/timelineJS3-rails.git
-  revision: 0bfee2ac3254fe133cfee0794537fb5cf2f9b1db
+  revision: 72f62b9bd4e374d4da9555453f8f58c4a1e78b36
   specs:
-    timelineJS3-rails (1.0.3)
+    timelineJS3-rails (1.1.3)
       jquery-rails
 
 GEM
@@ -143,9 +135,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_encode (0.8.2)
+    active_encode (0.6.0)
       rails
-      sprockets (< 4)
     activejob (6.1.7.7)
       activesupport (= 6.1.7.7)
       globalid (>= 0.3.6)
@@ -174,23 +165,23 @@ GEM
     appsignal (3.4.12)
       rack
     ast (2.4.2)
-    autoprefixer-rails (10.4.15.0)
+    autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
-    aws-eventstream (1.2.0)
-    aws-partitions (1.828.0)
-    aws-sdk-core (3.183.1)
-      aws-eventstream (~> 1, >= 1.0.2)
+    aws-eventstream (1.3.0)
+    aws-partitions (1.895.0)
+    aws-sdk-core (3.191.3)
+      aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
-      aws-sigv4 (~> 1.5)
+      aws-sigv4 (~> 1.8)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.71.0)
-      aws-sdk-core (~> 3, >= 3.177.0)
+    aws-sdk-kms (1.77.0)
+      aws-sdk-core (~> 3, >= 3.191.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.136.0)
-      aws-sdk-core (~> 3, >= 3.181.0)
+    aws-sdk-s3 (1.143.0)
+      aws-sdk-core (~> 3, >= 3.191.0)
       aws-sdk-kms (~> 1)
-      aws-sigv4 (~> 1.6)
-    aws-sigv4 (1.6.0)
+      aws-sigv4 (~> 1.8)
+    aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
     bagit (0.4.6)
@@ -219,7 +210,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.36.2)
+    blacklight (7.37.0)
       deprecation
       globalid
       hashdiff
@@ -243,10 +234,9 @@ GEM
       blacklight (~> 7.0)
       oai (~> 1.2)
       rexml
-    bootstrap (5.3.1)
+    bootstrap (5.3.2)
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 2.11.8, < 3)
-      sassc-rails (>= 2.0.0)
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
       sass (>= 3.2)
@@ -319,6 +309,15 @@ GEM
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
     daemons (1.4.1)
+    dartsass-rails (0.5.0)
+      railties (>= 6.0.0)
+      sass-embedded (~> 1.63)
+    dartsass-sprockets (3.1.0)
+      railties (>= 4.0.0)
+      sassc-embedded (~> 1.69)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     database_cleaner (2.0.2)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.1.0)
@@ -346,8 +345,7 @@ GEM
       representable (>= 3.1.1, < 4)
     docile (1.4.0)
     docopt (0.5.0)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20240107)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -441,13 +439,13 @@ GEM
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.23.0)
-    ffi (1.16.2)
+    ffi (1.16.3)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
     filesize (0.2.0)
-    font-awesome-rails (4.7.0.8)
-      railties (>= 3.2, < 8.0)
+    font-awesome-sass (6.5.1)
+      sassc (~> 2.0)
     gapic-common (0.20.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
@@ -464,17 +462,18 @@ GEM
     google-analytics-data-v1beta (0.8.1)
       gapic-common (>= 0.19.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-apis-core (0.11.1)
+    google-apis-core (0.14.0)
       addressable (~> 2.5, >= 2.5.1)
-      googleauth (>= 0.16.2, < 2.a)
+      googleauth (~> 1.9)
       httpclient (>= 2.8.1, < 3.a)
       mini_mime (~> 1.0)
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
       rexml
-      webrick
-    google-apis-drive_v3 (0.44.0)
-      google-apis-core (>= 0.11.0, < 2.a)
+    google-apis-drive_v3 (0.49.0)
+      google-apis-core (>= 0.14.0, < 2.a)
+    google-cloud-env (2.1.1)
+      faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.3.1)
     google-oauth2-installed (0.0.4)
       oauth2
@@ -485,8 +484,9 @@ GEM
       grpc (~> 1.27)
     googleapis-common-protos-types (1.9.0)
       google-protobuf (~> 3.18)
-    googleauth (1.8.1)
-      faraday (>= 0.17.3, < 3.a)
+    googleauth (1.11.0)
+      faraday (>= 1.0, < 3.a)
+      google-cloud-env (~> 2.1)
       jwt (>= 1.4, < 3.0)
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
@@ -523,7 +523,7 @@ GEM
     httpclient (2.8.3)
     hydra-file_characterization (1.2.0)
       activesupport (>= 3.0.0)
-    i18n (1.14.1)
+    i18n (1.14.4)
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.2)
       i18n (>= 0.6.6)
@@ -564,8 +564,6 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    jquery-slick-rails (1.10.0)
-      railties (>= 3.1)
     jquery-ui-rails-dox-fork (7.0.2)
       railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
@@ -663,7 +661,7 @@ GEM
     method_source (1.0.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0206)
+    mime-types-data (3.2024.0305)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitar (0.9)
@@ -918,7 +916,7 @@ GEM
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
       railties (>= 4.2, < 8)
-    roo (2.10.0)
+    roo (2.10.1)
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
     rouge (4.1.3)
@@ -988,23 +986,15 @@ GEM
     sane_patch (1.0.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
+    sass-embedded (1.69.5-x86_64-linux-gnu)
+      google-protobuf (~> 3.23)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.1.0)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
     sassc (2.4.0)
       ffi (~> 1.9)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
+    sassc-embedded (1.69.1)
+      sass-embedded (~> 1.69)
     scanf (1.0.0)
     seedbank (0.5.0)
       rake (>= 10.0)
@@ -1034,7 +1024,7 @@ GEM
       activesupport (>= 4.0.0)
     show_me_the_cookies (6.0.0)
       capybara (>= 2, < 4)
-    signet (0.18.0)
+    signet (0.19.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
@@ -1105,15 +1095,12 @@ GEM
     tilt (2.3.0)
     timeout (0.4.1)
     trailblazer-option (0.1.2)
-    typhoeus (1.4.0)
+    typhoeus (1.4.1)
       ethon (>= 0.9.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     underscore-rails (1.8.3)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.8.2)
     unicode (0.4.4.4)
     unicode-display_width (2.4.2)
     unicode-types (1.8.0)
@@ -1172,7 +1159,7 @@ DEPENDENCIES
   blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider (~> 7.0, >= 7.0.2)
-  bootstrap (~> 5.3.1)
+  bootstrap (= 5.3.2)
   bootstrap-glyphicons
   bootstrap-switch-rails
   browse-everything (~> 1.2.0)
@@ -1186,6 +1173,8 @@ DEPENDENCIES
   cucumber (~> 3.1)
   cucumber-api-steps
   cucumber-rails
+  dartsass-rails (~> 0.5.0)
+  dartsass-sprockets
   database_cleaner
   devise (~> 4.8)
   devise (>= 4.7.1)
@@ -1198,7 +1187,7 @@ DEPENDENCIES
   faraday_middleware
   fcrepo_wrapper (= 0.9.0)
   ffaker
-  font-awesome-rails
+  font-awesome-sass (~> 6.5.1)
   gender_detector
   google-analytics-data-v1beta (~> 0.8.0)
   google-oauth2-installed
@@ -1214,9 +1203,7 @@ DEPENDENCIES
   image_processing (>= 1.12.2)
   is_it_working-cbeer
   it
-  jquery-colorbox-rails!
   jquery-rails
-  jquery-slick-rails
   jquery-ui-rails-dox-fork
   jquery-xmleditor-rails!
   js_cookie_rails
@@ -1258,7 +1245,6 @@ DEPENDENCIES
   rswag-ui (~> 2.0)
   rvm
   sane_patch (~> 1.0)
-  sass-rails (= 5.1.0)
   seedbank (~> 0.5.0)
   selenium-webdriver
   shoulda (~> 3.6)
@@ -1268,6 +1254,7 @@ DEPENDENCIES
   solr_wrapper (>= 0.3)
   solrizer
   sparql-client
+  sprockets (< 4)
   sqlite3
   syntax
   syslog-logger

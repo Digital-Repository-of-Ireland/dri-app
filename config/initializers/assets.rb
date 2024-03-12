@@ -26,3 +26,5 @@ Rails.application.config.assets.precompile += [
     %w( jquery-xmleditor/vendor/cycle.js iiif_viewer.js three_js_viewer.js dri/modals.js analytics.js jquery.colorbox.js )
 ]
 
+Rails.application.config.assets.css_compressor = nil
+

@@ -18,7 +18,7 @@
           <%= t('dri.views.catalog.links.draft') %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
           <%= review_link("#{draft_subcoll} ", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-          /<i class="fa fa-file" aria-hidden="true"></i>
+          /<i class="fa-solid fa-file" aria-hidden="true"></i>
           <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
         </li>
         <!-- end Draft Stats Block -->
@@ -27,7 +27,7 @@
           <%= "#{t('dri.views.catalog.links.reviewed')}" %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
           <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-          /<i class="fa fa-file" aria-hidden="true"></i>
+          /<i class="fa-solid fa-file" aria-hidden="true"></i>
           <%= review_link("#{reviewed_objects} )","#{search_catalog_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
           <!-- end Reviewed Stats Block -->
           <!-- Published Stats Block -->
@@ -39,7 +39,7 @@
           <%= "#{t('dri.views.catalog.links.published')}" %>
           (<i class="fa fa-folder" aria-hidden="true"></i>
           <%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-          /<i class="fa fa-file" aria-hidden="true"></i>
+          /<i class="fa-solid fa-file" aria-hidden="true"></i>
           <%= review_link("#{published_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
         </li>
         <!-- end Published Stats Block -->
@@ -71,11 +71,11 @@
       <% end %>
     <% end %> <!-- if end (non-EAD collections) -->
 
-     <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
         <li>
+          <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
           <%= t('dri.views.collection.access_controls_review') %>
+          <% end %>
           <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
         </li>
-      <% end %>
   </ul>
 </div>
