@@ -1254,6 +1254,7 @@ DEPENDENCIES
   solr_wrapper (>= 0.3)
   solrizer
   sparql-client
+  sprockets (< 4)
   sqlite3
   syntax
   syslog-logger
