@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 5d7d2d4e3048cb80bd7cb373198df4963ddb14f2
+  revision: b6c60c7e5a925b1102f90579f861f5528f57a905
   branch: develop
   specs:
-    dri_data_models (4.6.9)
+    dri_data_models (4.7.9)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -202,7 +202,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.1.6)
+    bigdecimal (3.1.7)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     bixby (5.0.2)
@@ -662,11 +662,11 @@ GEM
     method_source (1.0.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0206)
+    mime-types-data (3.2024.0305)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
     minitar (0.9)
-    minitest (5.22.2)
+    minitest (5.22.3)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
