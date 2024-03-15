@@ -159,6 +159,10 @@ class SolrDocument
     aggregation.aggregation_id.present?
   end
 
+  def identifier
+    self['identifier_ssim']
+  end
+
   def linkset?
     object? && self['file_count_isi'].present? && published?
   end
