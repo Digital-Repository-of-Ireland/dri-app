@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 842d2686ae2440cc7ebe26c4b7e4311a994bcb16
-  tag: v4.6.9
+  revision: 66e47cf3921489b12034b173ff0813e0a8079068
+  tag: v4.7.9
   specs:
     dri_data_models (4.7.9)
       hydra-derivatives
@@ -135,8 +135,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_encode (0.6.0)
+    active_encode (0.8.2)
       rails
+      sprockets (< 4)
     activejob (6.1.7.7)
       activesupport (= 6.1.7.7)
       globalid (>= 0.3.6)
