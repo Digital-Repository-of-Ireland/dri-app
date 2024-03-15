@@ -7,8 +7,7 @@
 	<%= render partial: 'show_surrogate' %>
 
 	<dl class="dri_object_metadata_readview">
-
-        <%= render partial: 'shared/show_doi' %>
+    <%= render partial: 'shared/show_doi' %>
 
 		<% document_show_fields.each do |solr_fname, field| -%>
 		  <% if should_render_show_field? document, field %>

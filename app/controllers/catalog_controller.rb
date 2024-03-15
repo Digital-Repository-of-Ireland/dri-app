@@ -106,6 +106,7 @@ class CatalogController < ApplicationController
     config.add_show_field Solrizer.solr_name('type', :stored_searchable, type: :string), label: 'type'
     config.add_show_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
     config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
+    config.add_show_field 'identifier_ssim', label: 'identifier'
     config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
 
     config.add_search_field 'all_fields', label: 'All Fields'
