@@ -57,6 +57,12 @@ module FacetsHelper
     results
   end
 
+  def parse_date(args)
+    iso_date = args[:document][args[:field]]
+    parsed_date = DateTime.parse(iso_date)
+    parsed_date.strftime("%d/%m/%Y")
+  end
+
   def parse_location(args)
     results = nil
 

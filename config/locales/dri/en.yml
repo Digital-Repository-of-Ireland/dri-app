@@ -365,15 +365,16 @@ en:
         identifiers: Identifiers
         identifiers_text: Identifier for the resource.
         languages: Languages
-        licence: Licence
-        licence_text: The reuse licence for this resource.
+        licence: Reuse Licence
+        licence_text: This licence refers to the reuse of the digital asset or collection. It does not apply to any original artefacts, nor to the descriptive metadata.
+        published_by_dri: Published by Digital Repository of Ireland
         published_date: Published Date
         published_date_text: Date of formal issuance (e.g., publication) of the resource.
         relations: Relations
         relations_text: A related resource.
         related: Related Materials
         rights: Rights
-        rights_text: Information about rights held in and over the resource. If the asset is an orphan work it must be registered with the EUIPO Orphan Works Database, and the associated file number must be included here.
+        rights_text: Information about the rights held in and over the resource. This information refers to the rights held in and over the digital asset, not that of any original artefact, nor that of the descriptive metadata. If Orphan work please add EUIPO database file number here.  
         roles: Contributors
         roles_text: An entity responsible for making contributions to the resource.
         sources: Sources
@@ -629,6 +630,8 @@ en:
         creators: Creators
         date: Date
         dates: Dates
+        metadata_licence: Metadata Statement
+        metadata_licence_standard: All metadata in the Repository is licensed CC0 unless otherwise indicated. For the reuse of digital assets and objects please see Reuse Licence of individual records.
         depositing_institute: Depositing Organisation
         depositing_institute_not_set: Depositing organisation not set. Click here to manage organisations.
         depositing_institute_not_set_object: Depositing organisation not set. Organisations can be set from the Collection view.
@@ -648,7 +651,7 @@ en:
         identifiers: Identifiers
         language: Language
         languages: Languages
-        licence: Licence
+        licence: Reuse Licence
         name_coverage: Subject (Name)
         name_coverages: Subjects (Names)
         published_date: Published Date
@@ -691,7 +694,7 @@ en:
       licences:
         collection: Please see individual objects for licensing information
         collection_mgr: "%{licence} - this licence will be set on objects in this collection unless overridden"
-        all_rights_reserved: All Rights Reserved. This object is not licenced for general reuse. Please see RIghts Statement for more detail.
+        all_rights_reserved: Not licensed for re-use. See Additional Licence and Rights Information.
         public_domain: Work is in the Public Domain
         unlicenced: This work is in copyright but not licenced for reuse.
         orphan_work: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."

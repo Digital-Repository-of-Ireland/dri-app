@@ -141,6 +141,7 @@ en:
         default: Keyword
         facet:
           cdate_year_iim: "Creation Date"
+          published_by_dri: "Published by Digital Repository of Ireland"
           pdate_year_iim: "Published Date"
           depositor_sim: "Depositor" 
           file_type_display_sim: Mediatype
