@@ -1,5 +1,5 @@
 <div class="dri_object_container">
-
+  <div id="uppy" data-url="<%= object_files_path(@document.id) %>" data-token="<%= form_authenticity_token %>"></div>
   <% if @assets.empty? %>
     <p><%= t('dri.views.catalog.legends.no_files') %></p>
   <% else %>
@@ -45,6 +45,32 @@
 		    <% end %><!-- each file -->
 		  </tbody>
 	   </table>
-
     <% end %>
 </div>
+
+<% content_for :head do %>
+  <script type="module">
+	  import Uppy from '@uppy/core'
+    import Dashboard from '@uppy/dashboard'
+    import XHRUpload from '@uppy/xhr-upload'
+
+    const uppy = new Uppy({
+      autoProceed: false,
+    })
+
+    uppy.use(Dashboard, {
+      inline: true,
+      target: '#uppy',
+    })
+    
+    var url = $('#uppy').data('url');
+    var token = $('#uppy').data('token');
+    uppy.setMeta({'authenticity_token': token});
+
+    console.log(token);
+    uppy.use(XHRUpload, {
+      endpoint: url,
+      fieldName: 'Filedata'
+    })
+  </script>
+<% end %>

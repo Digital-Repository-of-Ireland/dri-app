@@ -195,3 +195,5 @@ gem "seedbank", "~> 0.5.0"
 gem "dartsass-rails", "~> 0.5.0"
 gem "dartsass-sprockets"
 gem "sprockets", "< 4"
+
+gem "importmap-rails", "1.2.3"
