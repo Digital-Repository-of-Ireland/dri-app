@@ -117,7 +117,7 @@ class MyCollectionsController < ApplicationController
     config.add_show_field Solrizer.solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
     config.add_show_field Solrizer.solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
     config.add_show_field Solrizer.solr_name('publisher', :stored_searchable), label: 'publishers'
-    config.add_show_field 'published_at_dttsi', label: 'Published by Digital Repository of Ireland', date: true, helper_method: :parse_date
+    config.add_show_field 'published_at_dttsi', label: 'published_by_dri', date: true, helper_method: :parse_date
     config.add_show_field Solrizer.solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
     config.add_show_field Solrizer.solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
     config.add_show_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
