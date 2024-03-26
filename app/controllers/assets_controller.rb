@@ -248,7 +248,7 @@ class AssetsController < ApplicationController
     end
 
     def upload_from_params
-      if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
+      if params[:file].blank? && params[:local_file].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
         return
@@ -257,7 +257,7 @@ class AssetsController < ApplicationController
       upload = if params[:local_file].present?
                  local_file_ingest(params[:local_file])
                else
-                 params[:Filedata].presence || params[:Presfiledata].presence
+                 params[:file].presence
                end
 
       mime_type = validate_upload(upload)

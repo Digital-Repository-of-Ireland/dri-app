@@ -54,6 +54,8 @@ en:
       nav:
         main_nav:
           toggle_navigation: Toggle navigation
+    assets:
+      upload_as_preservation: Upload all files as preservation-only (no display surrogates will be generated).
     data:
       types:
         Image: Image

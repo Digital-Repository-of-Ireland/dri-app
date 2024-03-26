@@ -38,7 +38,7 @@
         <% if @document.published? && @document.doi.present? %>
           <% options[:onclick] = "return warnOnReplace();" %>
         <% end %>
-        <%= file_field_tag 'Filedata', options %>
+        <%= file_field_tag 'file', options %>
       </div>
       <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
       <%= hidden_field_tag 'datastream', "content" %>
@@ -48,13 +48,13 @@
   <% if @assets.present? %>
     <li>
       <%= form_tag(url_for(object_files_path(@document.id)), multipart: true, method: :post, id: "file_uploader") do %>
-        <%= hidden_field_tag "preservation", "true" %>
         <div class="dri_fileUpload">
         <label for="dri_preservation_asset_uploader"><%= t('dri.views.catalog.links.upload_preservation_file') %></label><%= button_tag t('dri.views.objects.buttons.upload'), id: "dri_upload_preservation_asset_file", name: "upload_file", style: "display:none; margin-left: 5px;", class: "dri_button_green_small"  %>
-        <%= file_field_tag 'Presfiledata', required: 'required', class: 'upload', id: 'dri_preservation_asset_uploader' %>
+        <%= file_field_tag 'file', required: 'required', class: 'upload', id: 'dri_preservation_asset_uploader' %>
         </div>
         <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-        <%= hidden_field_tag 'datastream', "content" %>
+        <%= hidden_field_tag 'datastream', 'content' %>
+        <%= hidden_field_tag "preservation", "true" %>
      <% end %>
     </li>
   <% end %>
