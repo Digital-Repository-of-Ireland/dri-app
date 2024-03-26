@@ -1,0 +1,7 @@
+<% content_for :head do %>
+    <%= javascript_include_tag 'three_js_viewer_embed', async: Rails.env.production? %>
+<% end %>
+
+<%= content_tag('div', class: "three_js_viewer_embed", id: "dri_threejs_view #{id}" , data: { id: id, url: url, file: generic_file_name}) do %>
+
+<% end %>

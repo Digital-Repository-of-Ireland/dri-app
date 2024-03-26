@@ -33,21 +33,20 @@ module Api
 
       # Build up a JSON response with the required attributes
       # See "2.3.4. Response parameters" at https://oembed.com/
-      @response = {
-        type: 'rich',
-        version: '1.0',
-        title: resource_title[0],
-        provider_name: 'DRI: Digital Repository of Ireland',
-        provider_url: 'https://repository.dri.ie/',
-        width: 560,
-        height: 315,
-        # Embedding url
 
-        html: <<-HTML
-        <iframe src = "#{embed_url}" width="560px" height="315px">
-        </iframe>
-        HTML
-      }
+      if embed_url
+        @response = {
+          type: 'rich',
+          version: '1.0',
+          title: resource_title[0],
+          provider_name: 'DRI: Digital Repository of Ireland',
+          provider_url: 'https://repository.dri.ie/',
+            width: 560,
+            height: 315,
+          html: generate_iframe(embed_url)
+        }
+      end
+
 
       respond_to do |format|
         if @response
@@ -57,19 +56,30 @@ module Api
           format.all  { raise DRI::Exceptions::NotImplemented }
         end
       end
-   end
+    end
 
     private
+
+      def generate_iframe(url)
+        # Escape the URL to prevent XSS attacks
+        escaped_url = CGI.escapeHTML(url)
+        
+        # Use single quotes for attribute values to avoid issues with double quotes inside the URL
+        iframe_html = "<iframe src='#{escaped_url}' width='100%' height='100%' frameborder='0'></iframe>"
+        
+        return iframe_html
+      end
+
       def can_view?(doc)
         (can?(:read, doc.id) && doc.read_master?) || can?(:edit, doc)
       end
 
       def has_3d_type?(file)
-        file.fetch('file_type_tesim',[]).include?('3d')
-      end
+        file.present? && file.fetch('file_type_tesim', []).include?('3d')
+      end    
 
       def set_headers
         response.headers["Access-Control-Allow-Origin"] = "*"
       end
-   end
+    end
 end

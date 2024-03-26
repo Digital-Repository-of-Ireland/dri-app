@@ -82,6 +82,14 @@
  height: 1024px;
  margin: auto;   
 }
+#gui{
+    .dg{
+        height: 80% !important;
+      }
+    .main{
+        height: 80% !important;
+    }
+}
 
 .dri_main_content_container {
     @include zen-grid-item(4, 1);

@@ -13,6 +13,7 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 #%w( Three/dat.gui.min.js )
 #]	
 
+Rails.application.config.assets.precompile += %w( three_js_viewer_embed.js )
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
