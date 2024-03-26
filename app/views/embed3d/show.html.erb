@@ -3,7 +3,7 @@
     <% if @generic_file.threeD? %>
       <% @surrogate = file_download_path(@document.id, @generic_file.id, type: 'masterfile') %>
 
-      <%= render partial: 'shared/display_3d', locals: { url: @surrogate  } %>
+      <%= render partial: 'shared/display_3d_embed', locals: { id:@generic_file.id ,url: @surrogate, generic_file_name: @generic_file.label} %>
     <% end %>
 
     <% if @surrogate.blank? %>
