@@ -183,10 +183,6 @@
         <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
       </li>
 
-      <%= link_to new_export_path(document.id), :id => "export_metadata" do %>
-        <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
-      <% end %>
-
       <% if @document.published? && @document.doi %>
          <%= link_to '', :'data-bs-target' => '#dri_doi_modal_id', :'data-bs-toggle' => 'modal', id: "request_doi" do %>
 	         <li><%= t('dri.views.catalog.links.request_doi') %></li>
