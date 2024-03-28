@@ -60,5 +60,13 @@ describe CitationsHelper, testing: true do
     it "renders a Chicago citation" do
       expect(helper.export_as_chicago_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. “A Test of Citations.” Digital Repository of Ireland. Depositing Institute, November 24, 2021. https://doi.org/10.7486/DRI.XXXXX.")
     end
+
+    it "renders a DRI General citation" do
+      expect(helper.export_as_dri_citation_general(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. <i>A test of citations.</i> Text [Type] Digital Repository of Ireland (2021) [Publisher]  Depositing Institute [Depositor] https://doi.org/10.7486/DRI.XXXXX (Accessed: #{Time.current.strftime('%Y/%m/%d')})")
+    end
+
+    it "renders a DRI Cultural Heritage citation" do
+      expect(helper.export_as_dri_citation_research(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("Depositing Institute [Depositor] <i>A test of citations.</i> A. Tester. (2015-05-12) text [Type] Digital Repository of Ireland (2021) [Publisher]  https://doi.org/10.7486/DRI.XXXXX (Accessed: #{Time.current.strftime('%Y/%m/%d')})")
+    end
   end
 end

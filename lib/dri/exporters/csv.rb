@@ -104,7 +104,7 @@ module DRI::Exporters
       licence = @object_doc.licence
       return '' if licence.nil?
 
-      licence.name == 'All Rights Reserved' ? licence.name : licence.url
+      licence.name == t('dri.views.licences.all_rights_reserved') ? licence.name : licence.url
     end
 
     def identifier
