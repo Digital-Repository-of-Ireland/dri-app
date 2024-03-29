@@ -246,6 +246,10 @@
             </li>
           <% end %>
 
+          <%= link_to collection_config_path(collection_id: @document.id), id: "collection_config" do %>
+            <li><%= t('dri.views.collection.buttons.options') %></li>
+          <% end %>
+
   		    <li>
   		      <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-bs-toggle' => 'modal', :'data-bs-target' => '#dri_access_controls_modal_id' %>
   		    </li>

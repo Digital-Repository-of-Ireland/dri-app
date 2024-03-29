@@ -66,6 +66,9 @@ Rails.application.routes.draw do
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
 
+    get 'collections/:collection_id/config', to: 'collection_configs#show', as: :collection_config
+    put 'collections/:collection_id/config', to: 'collection_configs#update', as: :update_collection_config
+
     put 'collections/:id/fixity', to: 'fixity#update', as: :fixity_check
     put 'objects/:id/fixity', to: 'fixity#update', as: :object_fixity_check
 

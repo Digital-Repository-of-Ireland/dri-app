@@ -54,6 +54,14 @@ en:
       nav:
         main_nav:
           toggle_navigation: Toggle navigation
+    collection:
+      config:
+        allow_export: Allow export of collection metadata
+        title: Options
+        buttons:
+          save: Save
+        saved: Collection options updated
+        not_saved: Unable to save collection options
     data:
       types:
         Image: Image
@@ -536,6 +544,7 @@ en:
           create_collection: Create Collection
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
+          options: Options
         access_controls_review: Review Access Controls
         access_controls_csv: as csv
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
