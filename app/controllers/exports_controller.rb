@@ -19,8 +19,6 @@ class ExportsController < ApplicationController
   end
 
   def show
-    enforce_permissions!('manage_collection', params[:id])
-
     storage = StorageService.new
 
     bucket = "users.#{Mail::Address.new(current_user.email).local}"
