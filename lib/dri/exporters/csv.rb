@@ -114,6 +114,7 @@ module DRI::Exporters
     end
 
     def relation
+      return nil unless @object.respond_to?(:relation)
       return nil if @object.relation.blank?
       @object.relation.join('|')
     end

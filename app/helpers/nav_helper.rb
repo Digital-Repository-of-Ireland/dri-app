@@ -10,6 +10,7 @@ module NavHelper
     /ingest/ingests
     /pages/reports
     /reports
+    /workspace/downloads
   ).freeze
 
   def browse_active?

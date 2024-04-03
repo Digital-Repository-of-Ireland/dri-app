@@ -18,6 +18,9 @@
         </li>
      <% end %>
      <li>
+       <%= link_to t('dri.headerlinks.downloads'), downloads_path %>
+     </li>
+     <li>
        <%= link_to t('blacklight.header_links.bookmarks'), bookmarks_path({mode: 'collections', view: 'grid'}) %>
      </li>
      <li>

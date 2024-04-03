@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_25_143940) do
+ActiveRecord::Schema.define(version: 2024_03_27_184421) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -42,6 +42,14 @@ ActiveRecord::Schema.define(version: 2023_09_25_143940) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["institute_id"], name: "index_brands_on_institute_id"
+  end
+
+  create_table "collection_configs", force: :cascade do |t|
+    t.boolean "allow_export"
+    t.string "collection_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["collection_id"], name: "index_collection_configs_on_collection_id"
   end
 
   create_table "collection_locks", force: :cascade do |t|
