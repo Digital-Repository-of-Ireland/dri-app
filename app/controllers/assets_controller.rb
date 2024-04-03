@@ -12,12 +12,17 @@ class AssetsController < ApplicationController
   include DRI::Versionable
   include DRI::Asset::MimeTypes
 
+  def new
+    enforce_permissions!('edit', params[:object_id])
+
+    @document = SolrDocument.find(params[:object_id])
+  end
+
   def index
     enforce_permissions!('edit', params[:object_id])
 
     @document = SolrDocument.find(params[:object_id])
     @assets = @document.assets(with_preservation: true, ordered: true)
-
     @status = @document.assets_status_info(@assets)
   end
 
@@ -98,7 +103,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
+      format.html { redirect_to object_files_path(object) }
     end
   end
 

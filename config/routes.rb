@@ -54,7 +54,7 @@ Rails.application.routes.draw do
 
     get 'objects/:object_id/files/:id', to: 'surrogates#show', constraints: { query_string: /surrogate=([^&]*)/ }
     resources :objects, :only => ['new', 'edit', 'update', 'create', 'show', 'destroy'] do
-      resources :files, :controller => :assets, :only => ['index', 'create','show','update','destroy']
+      resources :files, controller: :assets, :only => ['new','index', 'create','show','update','destroy']
       resources :pages
       resources :doi, :only => ['show']
     end

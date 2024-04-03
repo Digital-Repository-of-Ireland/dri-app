@@ -55,7 +55,7 @@ en:
         main_nav:
           toggle_navigation: Toggle navigation
     assets:
-      upload_as_preservation: Upload all files as preservation-only (no display surrogates will be generated).
+      upload_as_preservation: Upload files as preservation-only (no display surrogates will be generated).
     data:
       types:
         Image: Image
@@ -526,6 +526,7 @@ en:
           upload_file: Upload Asset
           upload_preservation_file: Upload Preservation-only Asset
           view_assets: View Assets
+          upload_assets: Upload Assets
           embed_data: Embed
           edm_settings: Configure EDM
         titles:

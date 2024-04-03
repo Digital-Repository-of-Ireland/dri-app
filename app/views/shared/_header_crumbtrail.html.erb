@@ -23,9 +23,9 @@
             <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50),
                      search_state.url_for_document(@document['id']) %></li>
             <li class="active"><%= t('dri.views.catalog.links.iiif_viewer') %></li>
-          <% elsif controller_name == 'assets' && controller.action_name = 'index' %>
+          <% elsif controller_name == 'assets' %>
             <li><%= link_to truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50), search_state.url_for_document(@document.id) %></li>
-            <li class="active"><%= t('dri.views.catalog.links.view_assets') %></li>
+            <li class="active"><%= (controller.action_name == 'index') ? t('dri.views.catalog.links.view_assets') : t('dri.views.catalog.links.upload_assets') %></li>
           <% else %>
             <li class="active"><%= truncate(@document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym].first, length:50) %></li>
           <% end %>
