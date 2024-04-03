@@ -88,6 +88,8 @@ Rails.application.routes.draw do
     post 'collections/:id/exports', to: 'exports#create', as: :exports
     get 'collections/:id/exports/:export_key', to: 'exports#show', as: :export
 
+    get 'workspace/downloads', to: 'exports#index', as: :downloads
+
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'
 

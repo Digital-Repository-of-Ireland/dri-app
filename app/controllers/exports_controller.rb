@@ -7,9 +7,14 @@ class ExportsController < ApplicationController
     @collection = retrieve_object!(params[:id])
   end
 
-  def create
-    enforce_permissions!('manage_collection', params[:id])
+  def index
+    storage = StorageService.new
 
+    bucket = "users.#{Mail::Address.new(current_user.email).local}"
+    @files = storage.surrogate_info(bucket, nil)
+  end
+
+  def create
     Resque.enqueue(CreateExportJob, request.base_url, params[:id], params[:fields], current_user.email)
     flash[:notice] = t('dri.flash.notice.exporting')
     redirect_back(fallback_location: root_path)

@@ -251,6 +251,7 @@ en:
       collection: Collection
       collections: Collections
       deposit_guide: Guide to Deposit
+      downloads: Downloads
       end_user_agreement: End User Agreement
       events: Events
       guides: User Guides
@@ -620,10 +621,16 @@ en:
         unknown_object: Unknown Object.
         view_permission: This item is not available. You do not have sufficient access privileges to view the master file(s).
       export:
+        title: Downloads Available
+        table:
+          file: File
+          date: Date
+          size: Size (bytes)
+          download: Download
         headers:
           export_all_metadata: Export all Metadata
         legends:
-          export_all_metadata: Choose fields to export for each object in the collection. The metadata will be exported as a CSV file for you to download.
+          export_all_metadata: Choose fields to export for each object in the collection. The metadata will be exported as a CSV file for you to download. When ready it will be available in the downloads section of your workspace.
       fields:
         Format: Format
         assets: Assets

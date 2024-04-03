@@ -1,0 +1,23 @@
+<div class="dri_report_container">
+  <h1 class="h3"><%= t('dri.views.export.title') %></h1>
+  <table class="table display">
+    <tr>
+      <th><%= t('dri.views.export.table.file') %></th>
+      <th><%= t('dri.views.export.table.date') %></th>
+      <th><%= t('dri.views.export.table.size') %></th>
+      <th><%= t('dri.views.export.table.download') %></th>
+    </tr>
+    <% @files.each do |key, file| %>
+      <tr>
+        <td><%= key %></td>
+        <td><%= file.last_modified %></td>
+        <td><%= file.content_length %></td>
+        <td>
+          <%= link_to export_url(key.split("_")[0], key), id: "download_export" do %>
+            <i class="fa fa-download"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
