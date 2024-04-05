@@ -138,7 +138,7 @@
   margin: 3px;
 }
 
-button.dri_open_workspace_button {
+button.dri_link_button {
   color: $dri_white;
   border: none;
   background-color: $dri_teal;
@@ -152,4 +152,8 @@ button.dri_open_workspace_button {
   &:hover {
       background-color: darken($dri_teal, 20%);
   }
+}
+
+button.dri_open_workspace_button {
+  @extend .dri_link_button; 
 }

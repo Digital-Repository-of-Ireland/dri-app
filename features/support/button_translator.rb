@@ -127,6 +127,9 @@ module ButtonTranslator
       when /^save licence$/
         "save_licence"
 
+      when /^browse files$/
+        "uppy-Dashboard-browse"
+
       when /^generate surrogates$/
         generate_surrogates
 
@@ -142,7 +145,7 @@ module ButtonTranslator
       when /^save cover image$/
         "add_cover_image"
 
-      else "Unknown"
+      else button_name
 
     end
   end

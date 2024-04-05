@@ -35,14 +35,16 @@ Feature: DOI Feature
 
   Scenario: User should receive a warning when adding asset to a published object
     When I go to the "object" "modify" page for "the saved pid"
-    And I click "#file_uploader"
+    And I click "#dri_upload_asset_file"
     Then I should see a dialog with text "Please note that you are editing a published object"
 
   Scenario: User should receive a warning when replacing asset on a published object
-    When I go to the "object" "modify" page for "the saved pid"
+    When I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_pdf.pdf"
-    And I press the button to "upload a file"
-    When I follow the link to view assets
+    And I press the button to "Upload 1 file"
+    Then I should see "Complete"
+    When I go to the "object" "modify" page for "the saved pid"
+    And I follow the link to view assets
     And I follow the link to view asset details
     And I click "#replace_file"
     Then I should see a dialog with text "Please note that you are editing a published object"

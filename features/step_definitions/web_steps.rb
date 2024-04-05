@@ -57,9 +57,11 @@ Given /^I have added an audio file$/ do
   steps %{
     Then I should see a link to edit an object
     When I follow the link to edit an object
+    And I follow the link to upload asset
     And I attach the asset file "sample_audio.mp3"
-    And I press the button to "upload a file"
-    Then I should see a success message for file upload
+    And I press the button to "Upload 1 file"
+    Then I should see "Complete"
+    And I should see a success message in the asset upload table for file upload
   }
 end
 
@@ -76,9 +78,11 @@ end
 When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   steps %{
     Given I am on the my collections page for id #{pid}
-    When I attach the asset file "#{asset}"
-    And I press the button to "upload a file"
-    Then I should see a success message for file upload
+    And I follow the link to upload asset
+    And I attach the asset file "#{asset}"
+    And I press the button to "Upload 1 file"
+    Then I should see "Complete"
+    And I should see a success message in the asset upload table for file upload
   }
 end
 
@@ -218,7 +222,7 @@ Given /^I have created a licence "(.*?)"$/ do |name|
 end
 
 When /^I attach the asset file "(.*?)"$/ do |file|
-  attach_file("Filedata", File.join(cc_fixture_path, file))
+  attach_file("files[]", File.join(cc_fixture_path, file), make_visible: true, match: :first)
 end
 
 When /^I select a collection$/ do
@@ -357,6 +361,11 @@ end
 
 Then /^"([^\"]+)" should be selected in "([^\"]+)"$/ do |selected, selector|
   expect(page).to have_select(selector, selected: selected)
+end
+
+Then /^(?:|I )should( not)? see a (success|failure) message in the asset upload table for (.+)$/ do |negate, success_failure, message| 
+  expectation = negate ? :should_not : :should
+  page.send(expectation, have_selector("#uploads", text: flash_for(message)))
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|

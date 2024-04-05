@@ -165,28 +165,33 @@ class AssetsController < ApplicationController
       @object.increment_version
 
       if file_content.add_content(file_upload)
-        flash[:notice] = t('dri.flash.notice.file_uploaded')
         record_version_committer(@object, current_user)
         file_content.characterize if file_content.has_content?
+        @message = t('dri.flash.notice.file_uploaded')
+        @status = :created
       else
-        message = @generic_file.errors.full_messages.join(', ')
-        flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
-        @warnings = t('dri.flash.alert.error_saving_file', error: message)
-        logger.error "Error saving file: #{message}"
+        error_message = @generic_file.errors.full_messages.join(', ')     
+        @warnings = t('dri.flash.alert.error_saving_file', error: error_message)
+        @status = :internal_server_error
+        logger.error "Error saving file: #{error_message}"
       end
     rescue DRI::Exceptions::MoabError => e
-      flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
+      @status = :internal_server_error
       logger.error "Error saving file: #{e.message}"
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
+      format.html do
+        flash[:notice] = @message if @message
+        flash[:alert] = @warnings if @warnings
+        redirect_to controller: 'my_collections', action: 'show', id: params[:object_id]
+      end
       format.json do
-        response = { checksum: file_content.checksum }
+        response = {}
         response[:warnings] = @warnings if @warnings
-
-        render json: response, status: :created
+        response[:messages] = @message if @message && @status == :created
+        render json: response, status: @status
       end
     end
   end

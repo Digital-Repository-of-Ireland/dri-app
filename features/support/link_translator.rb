@@ -37,6 +37,9 @@ module LinkTranslator
       when /^sign in$/
         "login"
 
+      when /^upload asset$/
+        "dri_upload_asset_file"
+
       when /^upload XML$/
         "add_object_xml"
 

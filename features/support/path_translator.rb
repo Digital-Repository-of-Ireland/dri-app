@@ -155,6 +155,9 @@ module PathTranslator
 
       when /asset/
         case page
+          when /new/
+            object = DRI::DigitalObject.find_by_alternate_id(pid)
+            new_object_file_path(pid)
           when /details/
             object = DRI::DigitalObject.find_by_alternate_id(pid)
             object_file_path(pid, object.generic_files.first.alternate_id)
