@@ -77,8 +77,7 @@ end
 
 When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
   steps %{
-    Given I am on the my collections page for id #{pid}
-    And I follow the link to upload asset
+    When I go to the "asset" "new" page for "#{pid}"
     And I attach the asset file "#{asset}"
     And I press the button to "Upload 1 file"
     Then I should see "Complete"
