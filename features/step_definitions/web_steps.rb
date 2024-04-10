@@ -221,6 +221,7 @@ Given /^I have created a licence "(.*?)"$/ do |name|
 end
 
 When /^I attach the asset file "(.*?)"$/ do |file|
+  sleep 1
   attach_file("files[]", File.join(cc_fixture_path, file), make_visible: true, match: :first)
 end
 
