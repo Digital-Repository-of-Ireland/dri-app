@@ -12,12 +12,17 @@ class AssetsController < ApplicationController
   include DRI::Versionable
   include DRI::Asset::MimeTypes
 
+  def new
+    enforce_permissions!('edit', params[:object_id])
+
+    @document = SolrDocument.find(params[:object_id])
+  end
+
   def index
     enforce_permissions!('edit', params[:object_id])
 
     @document = SolrDocument.find(params[:object_id])
     @assets = @document.assets(with_preservation: true, ordered: true)
-
     @status = @document.assets_status_info(@assets)
   end
 
@@ -98,7 +103,7 @@ class AssetsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
+      format.html { redirect_to object_files_path(object) }
     end
   end
 
@@ -160,28 +165,33 @@ class AssetsController < ApplicationController
       @object.increment_version
 
       if file_content.add_content(file_upload)
-        flash[:notice] = t('dri.flash.notice.file_uploaded')
         record_version_committer(@object, current_user)
         file_content.characterize if file_content.has_content?
+        @message = t('dri.flash.notice.file_uploaded')
+        @status = :created
       else
-        message = @generic_file.errors.full_messages.join(', ')
-        flash[:alert] = t('dri.flash.alert.error_saving_file', error: message)
-        @warnings = t('dri.flash.alert.error_saving_file', error: message)
-        logger.error "Error saving file: #{message}"
+        error_message = @generic_file.errors.full_messages.join(', ')     
+        @warnings = t('dri.flash.alert.error_saving_file', error: error_message)
+        @status = :internal_server_error
+        logger.error "Error saving file: #{error_message}"
       end
     rescue DRI::Exceptions::MoabError => e
-      flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
       @warnings = t('dri.flash.alert.error_saving_file', error: e.message)
+      @status = :internal_server_error
       logger.error "Error saving file: #{e.message}"
     end
 
     respond_to do |format|
-      format.html { redirect_to controller: 'my_collections', action: 'show', id: params[:object_id] }
+      format.html do
+        flash[:notice] = @message if @message
+        flash[:alert] = @warnings if @warnings
+        redirect_to controller: 'my_collections', action: 'show', id: params[:object_id]
+      end
       format.json do
-        response = { checksum: file_content.checksum }
+        response = {}
         response[:warnings] = @warnings if @warnings
-
-        render json: response, status: :created
+        response[:messages] = @message if @message && @status == :created
+        render json: response, status: @status
       end
     end
   end
@@ -248,7 +258,7 @@ class AssetsController < ApplicationController
     end
 
     def upload_from_params
-      if params[:Filedata].blank? && params[:Presfiledata].blank? && params[:local_file].blank?
+      if params[:file].blank? && params[:local_file].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
         return
@@ -257,7 +267,7 @@ class AssetsController < ApplicationController
       upload = if params[:local_file].present?
                  local_file_ingest(params[:local_file])
                else
-                 params[:Filedata].presence || params[:Presfiledata].presence
+                 params[:file].presence
                end
 
       mime_type = validate_upload(upload)

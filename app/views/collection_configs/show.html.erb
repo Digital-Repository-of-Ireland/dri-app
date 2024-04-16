@@ -1,0 +1,16 @@
+<div class="dri_ingest_form_container">
+  <h1><%= t('dri.collection.config.title') %></h1>
+  <div class="dri_ingest_form">
+  </br>
+    <%= form_for @config, url: { controller: 'collection_configs', action: 'update' }, method: 'put', html: { class: 'form-vertical' } do |f| %>
+      <fieldset id="allow_export_fields">
+        <%= f.label :allow_export do %>
+        <%= f.check_box :allow_export %>
+        <span><%= t('dri.collection.config.allow_export') %></span>
+        <% end %>
+      </fieldset>
+      </br>
+      <%= f.submit t('dri.collection.config.buttons.save'), class: "dri_button_green dri_w330 mt-1", id: "update_collection_config" %>
+    <% end %>
+  </div>
+</div>

@@ -22,7 +22,7 @@ gem 'riiif'
 gem 'iiif-presentation'
 gem 'openseadragon'
 
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.7.9'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.8.0'
 gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.2.3'
 gem "devise", ">= 4.7.1"
 
@@ -195,3 +195,5 @@ gem "seedbank", "~> 0.5.0"
 gem "dartsass-rails", "~> 0.5.0"
 gem "dartsass-sprockets"
 gem "sprockets", "< 4"
+
+gem "importmap-rails", "1.2.3"

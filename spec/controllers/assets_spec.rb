@@ -56,7 +56,7 @@ describe AssetsController do
       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
     end
@@ -66,7 +66,7 @@ describe AssetsController do
       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
       object.reload
@@ -79,7 +79,7 @@ describe AssetsController do
         .to receive(:save).and_return(false)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3").reject { |f| f.include?('bin') }).to be_empty
     end
@@ -90,7 +90,7 @@ describe AssetsController do
       expect_any_instance_of(DRI::GenericFile)
         .to receive(:update_index).and_return(false)
       expect {
-        post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+        post :create, params: { object_id: object.alternate_id, file: uploaded }
       }.to change{ DRI::GenericFile.count }.by(0)
     end
 
@@ -118,7 +118,7 @@ describe AssetsController do
 
       expect(Resque).to receive(:enqueue).once
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      expect { post :create, params: { object_id: object.alternate_id, Filedata: uploaded } }.to change{ DataciteDoi.count }.by(1)
+      expect { post :create, params: { object_id: object.alternate_id, file: uploaded } }.to change{ DataciteDoi.count }.by(1)
 
       DataciteDoi.where(object_id: object.alternate_id).destroy_all
       Settings.doi.enable = false
@@ -148,7 +148,7 @@ describe AssetsController do
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
       expect {
-        post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+        post :create, params: { object_id: object.alternate_id, file: uploaded }
       }.to change{ DataciteDoi.count }.by(0)
 
       DataciteDoi.where(object_id: object.alternate_id).destroy_all
@@ -173,7 +173,7 @@ describe AssetsController do
       file_id = generic_file.alternate_id
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
     end
@@ -195,21 +195,21 @@ describe AssetsController do
       file_id = generic_file.alternate_id
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
       object.reload
       expect(object.object_version).to be > version
     end
 
     it 'should create a valid aip' do
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
       expect(aip_valid?(object.alternate_id, 2)).to be true
 
       object.reload
       file_id = object.generic_files.first.alternate_id
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
 
       expect(aip_valid?(object.alternate_id, 3)).to be true
     end
@@ -232,7 +232,7 @@ describe AssetsController do
       expect_any_instance_of(DRI::GenericFile)
         .to receive(:update_index).and_return(false)
       expect {
-        put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+        put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
       }.to change{ DRI::GenericFile.count }.by(0)
     end
 
@@ -260,14 +260,14 @@ describe AssetsController do
       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
       file = Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3").first
       file_id = Pathname.new(file).basename.to_s.split("_")[0]
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/#{file_id}_SAMPLEA.mp3")).to_not be_empty
     end
@@ -276,7 +276,7 @@ describe AssetsController do
       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
       file = Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3").first
@@ -287,7 +287,7 @@ describe AssetsController do
 
       FileUtils.cp(File.join(fixture_path, "SAMPLEA.mp3"), File.join(tmp_upload_dir, "SAMPLEA_copy.mp3"))
       uploaded = Rack::Test::UploadedFile.new(File.join(tmp_upload_dir, "SAMPLEA_copy.mp3"), "audio/mp3")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/#{file_id}_SAMPLEA.mp3")).to_not be_empty
     end
@@ -296,7 +296,7 @@ describe AssetsController do
       allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      post :create, params: { object_id: object.alternate_id, Filedata: uploaded }
+      post :create, params: { object_id: object.alternate_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3")).not_to be_empty
       file = Dir.glob("#{tmp_assets_dir}/**/*_SAMPLEA.mp3").first
@@ -306,7 +306,7 @@ describe AssetsController do
         .to receive(:save).and_return(false)
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "sample_image.jpeg"), "image/jpeg")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/data/content/#{file_id}_sample_image.jpeg").reject { |f| f.include?('bin') }).to be_empty
       expect(Dir.glob("#{tmp_assets_dir}/**/#{file_id}_SAMPLEA.mp3").reject { |f| f.include?('bin') }).not_to be_empty
@@ -324,7 +324,7 @@ describe AssetsController do
       file_id = Pathname.new(file).basename.to_s.split("_")[0]
 
       uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-      put :update, params: { object_id: object.alternate_id, id: file_id, Filedata: uploaded }
+      put :update, params: { object_id: object.alternate_id, id: file_id, file: uploaded }
 
       expect(Dir.glob("#{tmp_assets_dir}/**/v0002/data/content/*_SAMPLEA.mp3")).not_to be_empty
       expect(flash[:alert]).to be_present
@@ -558,7 +558,7 @@ describe AssetsController do
         allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
         uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
-        post :create, params: { object_id: @object.alternate_id, Filedata: uploaded }
+        post :create, params: { object_id: @object.alternate_id, file: uploaded }
 
         expect(flash[:error]).to be_present
       end

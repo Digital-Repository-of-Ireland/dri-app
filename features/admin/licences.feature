@@ -67,6 +67,7 @@ Feature: Licences
     Then I should see "TestLicenceColl"
     When I go to the "object" "modify" page for "lobject"
     And I click the link to manage licence
+    And I wait for "2" seconds
     And I select "TestLicenceObj" from the selectbox for licence
     And I press the modal button to "set licence" in "dri_licence_modal_id"
     When I go to the "object" "show" page for "lobject"

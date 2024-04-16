@@ -1,0 +1,81 @@
+<div class="dri_object_container">
+  <div id="uppy" class="dri_uppy" data-url="<%= object_files_path(@document.id) %>">
+    <form id="upload_options" class="uppy_upload_options">
+      <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+      <%= label_tag 'preservation', t('dri.assets.upload_as_preservation') %>
+      <%= check_box_tag 'preservation' %>
+    </form>
+  </div>
+
+  <div>
+    <table id="uploads" class="table table-bordered table-sm w-75 mt-3">
+      <thead>
+        <tr>
+          <th><%= t('dri.datatables.assets.filename') %></th>
+          <th><%= t('dri.datatables.assets.status') %></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <%= link_to object_files_path(@document.id), id: "view_assets" do %>
+      <%= button_tag(t('dri.views.catalog.links.view_assets'), { class: 'dri_link_button' }) %>
+    <% end %> 
+  </div>
+</div>
+
+<% content_for :head do %>
+  <script type="module">
+	  import Uppy from '@uppy/core'
+    import Dashboard from '@uppy/dashboard'
+    import XHRUpload from '@uppy/xhr-upload'
+
+    const uppy = new Uppy({
+      autoProceed: false,
+    })
+
+    uppy.use(Dashboard, {
+      inline: true,
+      showProgressDetails: true,
+      target: '#uppy',
+    })
+    
+    var url = $('#uppy').data('url');
+    var token = $('#authenticity_token').val();
+    uppy.setMeta({'authenticity_token': token});
+
+    uppy.use(XHRUpload, {
+      endpoint: url,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+
+    uppy.on('upload', (data) => {
+	    uppy.setMeta({'preservation': $('#preservation').is(':checked')});
+    });
+
+    uppy.on('upload-success', (file, response) => {
+      var status = '';
+      var rowClass = 'table-success';
+      if (response.body.hasOwnProperty("warnings")) {
+        status = response.body.warnings;
+        rowClass = 'table-warning'
+      } else {
+        status = response.body.messages;
+      }
+      $("#uploads").append('<tr class="'+rowClass+'"><td>'+file.name+'</td><td>'+status+'</td></tr>');
+    });
+
+    uppy.on('upload-error', (file, error, response) => {
+      var status = '';
+      var rowClass = 'table-danger';
+      if (response.body.hasOwnProperty("warnings")) {
+        status = response.body.warnings;
+      } else {
+        status = error;
+      }
+      $("#uploads").append('<tr class="'+rowClass+'"><td>'+file.name+'</td><td>'+status+'</td></tr>');
+    });
+  </script>
+<% end %>

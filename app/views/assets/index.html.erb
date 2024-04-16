@@ -1,9 +1,7 @@
 <div class="dri_object_container">
-
   <% if @assets.empty? %>
     <p><%= t('dri.views.catalog.legends.no_files') %></p>
-  <% else %>
-
+  <% elsif ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
 	  <table id="datatable_assets" class="table table-bordered table-condensed">
 		  <thead>
 		    <tr>
@@ -16,35 +14,32 @@
 		    </tr>
 		  </thead>
 		  <tbody>
-      <% @assets.each_with_index do |file, index| %>
-		  <% if ((@document.read_master? && can?(:read, @document.id)) || can?(:edit, @document.id)) %>
+	      <% @assets.each_with_index do |file, index| %>
           <tr>
-          <td><%= file.label %></td>
-          <td><%= file.preservation_only? %></td>
-		      <td><%= @status[file.id][:status] %></td>
-		      <td>
-                <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
-                          <i class="fa fa-info-circle"></i>
-			    <% end %>
-		      </td>
-		      <td>
-                <%= link_to file_download_path(@document, file.id), id: "download_asset" do %>
-                  <i class="fa fa-download"></i>
-		        <% end %>
-              </td>
-              <td>
-		        <% if !@document.published? || current_user.is_admin? %>
-                  <%= form_tag(object_file_path(@document.id, file.id), method: :delete, id: "file_delete", style: "display:inline-block") do %>
-				    <%= button_tag t('dri.views.assets.buttons.delete'), id: "dri_delete_asset_file", name: "delete_file", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
-		                <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
-		              <% end %>
-		          <% end %>
-		          </td>
-		        </tr>
-	          <% end %>
-		    <% end %><!-- each file -->
+	          <td><%= file.label %></td>
+	          <td><%= file.preservation_only? %></td>
+			      <td><%= @status[file.id][:status] %></td>
+			      <td>
+	            <%= link_to object_file_path(@document, file.id), id: "asset_details", style: "display:inline-block" do %>
+	              <i class="fa fa-info-circle"></i>
+				      <% end %>
+			      </td>
+			      <td>
+	            <%= link_to file_download_path(@document, file.id), id: "download_asset" do %>
+	              <i class="fa fa-download"></i>
+			        <% end %>
+	          </td>
+	          <td>
+			        <% if !@document.published? || current_user.is_admin? %>
+	              <%= form_tag(object_file_path(@document.id, file.id), method: :delete, id: "file_delete", style: "display:inline-block") do %>
+					        <%= button_tag t('dri.views.assets.buttons.delete'), id: "dri_delete_asset_file", name: "delete_file", class: 'dri_button_red_small', data: { confirm: t('dri.views.assets.confirm.delete') } %>
+			            <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+			          <% end %>
+			        <% end %>
+			      </td>
+		      </tr>
+			  <% end %><!-- each file -->
 		  </tbody>
-	   </table>
-
-    <% end %>
+	  </table>
+  <% end %>
 </div>

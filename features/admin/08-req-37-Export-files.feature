@@ -32,7 +32,10 @@ Feature: Export files
   Scenario: Export a DigitalObject's asset when I have edit/manage permissions
     Given I create an object and save the pid
     When I go to the "object" "modify" page for "the saved pid"
-    And I attach the asset file "sample_audio.mp3"
-    And I press the button to "upload a file"
+    And I follow the link to upload asset
+    When I attach the asset file "sample_audio.mp3"
+    And I press the button to "Upload 1 file"
+    Then I should see "Complete"
+    When I go to the "object" "show" page for "the saved pid"
     Then I should see a "rights statement"
     And I should see a href link to "#dri_download_modal_id" with text "Download asset"

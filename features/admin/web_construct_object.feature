@@ -43,13 +43,13 @@ Scenario Outline: Constructing a valid Digital Object
     | dublin_core_pdfdoc_sample.xml | Text        |
     | SAMPLEA.xml                   | Sound       |
 
-@test
 Scenario: Adding a pdf asset to an object
   When I create an object and save the pid
   And I go to the "object" "modify" page for "the saved pid"
+  And I follow the link to upload asset
   And I attach the asset file "sample_pdf.pdf"
-  And I press the button to "upload a file"
-  Then I should see a success message for file upload
+  And I press the button to "Upload 1 file"
+  Then I should see "Complete"
 
 Scenario: Replacing the metadata file of a Digital Object
   When I create a collection and save the pid
@@ -100,23 +100,27 @@ Scenario: Editing the metadata of a Digital Object with invalid metadata
   And I press the button to "save changes"
   Then I should not see a success message for updating metadata
 
-Scenario: Adding multiple audio files for a Digital Object
+Scenario: Adding multiple files for a Digital Object
   When I create a collection and save the pid
   And I create an object and save the pid
-  When I attach the asset file "sample_audio.mp3"
-  And I press the button to "upload a file"
-  Then I should see a success message for file upload
-  When I attach the asset file "sample_audio.mp3"
-  And I press the button to "upload a file"
-  Then I should see a success message for file upload
+  And I follow the link to upload asset
+  And I attach the asset file "sample_audio.mp3"
+  And I press the button to "Upload 1 file"
+  Then I should see "Complete"
+  And I go to the "object" "modify" page for "the saved pid"
+  And I follow the link to upload asset
+  And I attach the asset file "sample_pdf.pdf"
+  And I press the button to "Upload 1 file"
+  Then I should see "Complete"
 
 Scenario Outline: Adding an audio file that is not valid
   When I create a collection and save the pid
   And I create an object and save the pid
   And I go to the "object" "modify" page for "the saved pid"
-  When I attach the asset file "<asset_name>"
-  And I press the button to "upload a file"
-  Then I should see a failure message for <case>
+  And I follow the link to upload asset
+  And I attach the asset file "<asset_name>"
+  And I press the button to "Upload 1 file"
+  Then I should see a failure message in the asset upload table for <case>
 
   Examples:
     | asset_name               | case              |
@@ -134,9 +138,11 @@ Scenario: Adding a file that contains a virus
 Scenario Outline: Editing an audio file where the file is invalid
   When I create a collection and save the pid
   And I create an object and save the pid
+  And I go to the "object" "modify" page for "the saved pid"
+  And I follow the link to upload asset
   When I attach the asset file "<asset_name>"
-  And I press the button to "upload a file"
-  Then I should see a failure message for <case>
+  And I press the button to "Upload 1 file"
+  Then I should see a failure message in the asset upload table for <case>
 
   Examples:
     | asset_name               | case              |

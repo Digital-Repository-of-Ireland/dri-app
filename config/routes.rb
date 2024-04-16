@@ -54,7 +54,7 @@ Rails.application.routes.draw do
 
     get 'objects/:object_id/files/:id', to: 'surrogates#show', constraints: { query_string: /surrogate=([^&]*)/ }
     resources :objects, :only => ['new', 'edit', 'update', 'create', 'show', 'destroy'] do
-      resources :files, :controller => :assets, :only => ['index', 'create','show','update','destroy']
+      resources :files, controller: :assets, :only => ['new','index', 'create','show','update','destroy']
       resources :pages
       resources :doi, :only => ['show']
     end
@@ -65,6 +65,9 @@ Rails.application.routes.draw do
 
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
+
+    get 'collections/:collection_id/config', to: 'collection_configs#show', as: :collection_config
+    put 'collections/:collection_id/config', to: 'collection_configs#update', as: :update_collection_config
 
     put 'collections/:id/fixity', to: 'fixity#update', as: :fixity_check
     put 'objects/:id/fixity', to: 'fixity#update', as: :object_fixity_check
@@ -84,6 +87,8 @@ Rails.application.routes.draw do
     get 'collections/:id/exports/new', to: 'exports#new', as: :new_export
     post 'collections/:id/exports', to: 'exports#create', as: :exports
     get 'collections/:id/exports/:export_key', to: 'exports#show', as: :export
+
+    get 'workspace/downloads', to: 'exports#index', as: :downloads
 
     get 'objects/:id/access', to: 'access_controls#edit', as: :access_controls
     put 'objects/:id/access', to: 'access_controls#update'

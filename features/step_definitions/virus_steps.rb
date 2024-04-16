@@ -1,5 +1,5 @@
 When(/^I upload the virus file "(.*?)"$/) do |file|
-  attach_file("Filedata", File.join(cc_fixture_path, file))
+  attach_file("file", File.join(cc_fixture_path, file))
 
   error = DRI::Exceptions::VirusDetected.new('Eicar-Test-Signature')
   expect(Validators).to receive(:virus_scan).and_raise(error)

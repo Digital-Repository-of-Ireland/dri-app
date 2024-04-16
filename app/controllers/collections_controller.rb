@@ -267,6 +267,7 @@ class CollectionsController < BaseObjectsController
 
       # We have to create a default reader group
       create_reader_group
+      CollectionConfig.create(collection_id: @object.alternate_id, allow_export: true)
 
       record_version_committer(@object, current_user)
 

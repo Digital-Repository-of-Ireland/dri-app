@@ -1,5 +1,4 @@
 <% if can? :read, @document %>
-
   <div class="dri_object_render_block">
     <% if @generic_file.audio? %>
       <div class="dri_audio_player">
@@ -23,8 +22,6 @@
   </div>
 
 <% else %>
-
   <h2 class="dri_restrict_title"><%= t('dri.views.catalog.forms.restricted_asset') %></h2>
   <p class="dri_restrict_message"><%= t('dri.views.catalog.legends.no_permission') %></p>
-
 <% end %>

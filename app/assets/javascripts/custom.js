@@ -71,3 +71,4 @@
 //= require dri
 //
 //= require dri/autocomplete_vocabs
+//
