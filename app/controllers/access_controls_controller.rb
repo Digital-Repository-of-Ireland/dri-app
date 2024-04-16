@@ -5,8 +5,8 @@ class AccessControlsController < ApplicationController
   include DRI::Versionable
 
   def edit
-    enforce_permissions!('edit', params[:id])
     @object = retrieve_object!(params[:id])
+    @object.collection? ? enforce_permissions!('manage_collection', params[:id]) : enforce_permissions!('edit', params[:id])
 
     respond_to do |format|
       format.js
@@ -44,7 +44,7 @@ class AccessControlsController < ApplicationController
   end
 
   def show
-    enforce_permissions!('edit', params[:id])
+    enforce_permissions!('manage_collection', params[:id])
     @collection = SolrDocument.find(params[:id])
     @collection_id = @collection.id
     @title = @collection['title_tesim'].first
