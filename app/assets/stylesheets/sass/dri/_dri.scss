@@ -2818,7 +2818,20 @@ dd.dri_licence{
         margin-right: 1em;
         &:hover{
             border: 1px solid $dri_select;
-            background-color: $dri_select;
+        }
+    }
+    .dri_footer_ror_logo{
+        width: 60px;
+        .img{width: 60px;}
+        padding-top: 8px;
+        padding-bottom: 8px;
+        float: right;
+        box-sizing: border-box;
+        display: inline-block;
+        text-align: center;
+        margin-right: 1em;
+        &:hover{
+            border: 1px solid $dri_select;
         }
     }
 }
@@ -3357,4 +3370,8 @@ select.dri-type-dropdown-type{
 
 .modal-title {
     font-size: 1.5rem;
+}
+
+img.dri_licence_logo{
+    width: 88px;
 }
