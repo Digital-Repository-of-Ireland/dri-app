@@ -41,12 +41,7 @@
             <!-- Draft Stats Block -->
             <li>
                 <%= t('dri.views.catalog.links.draft') %>
-                (<i class="fa fa-folder" aria-hidden="true"></i>
-                <%= review_link("#{draft_subcoll} ", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-                /<i class="fa-solid fa-file" aria-hidden="true"></i>
-                <%= review_link("#{draft_objects} )", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>
-
-              
+                (<i class="fa fa-folder" aria-hidden="true"></i><%= review_link("#{draft_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>/<i class="fa-solid fa-file" aria-hidden="true"></i><%= review_link("#{draft_objects}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=draft&mode=objects&view=grid", t('dri.help.view_objects')) %>)
                   <%
                     review_disabled = (draft_objects == 0 && draft_subcoll == 0)
                     review_button_class = if review_disabled
@@ -78,10 +73,7 @@
             <!-- Reviewed Stats Block -->
             <li>
             <%= "#{t('dri.views.catalog.links.reviewed')}" %>
-            (<i class="fa-solid fa-folder" aria-hidden="true"></i>
-            <%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-            /<i class="fa-solid fa-file" aria-hidden="true"></i>
-            <%= review_link("#{reviewed_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
+            (<i class="fa-solid fa-folder" aria-hidden="true"></i><%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>/<i class="fa-solid fa-file" aria-hidden="true"></i><%= review_link("#{reviewed_objects})","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
             <% if @document.root_collection? %> <!-- Only show publish button if on root collection -->
                 <%
                   pub_disabled_warnings = []
@@ -135,10 +127,7 @@
                 <li class="dri_subnav_review_list_last">
             <% end %>
             <%= "#{t('dri.views.catalog.links.published')}" %>
-            (<i class="fa fa-folder" aria-hidden="true"></i>
-            <%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>
-            /<i class="fa-solid fa-file" aria-hidden="true"></i>
-            <%= review_link("#{published_objects} )","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
+            (<i class="fa fa-folder" aria-hidden="true"></i><%= review_link("#{published_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>/<i class="fa-solid fa-file" aria-hidden="true"></i><%= review_link("#{published_objects})","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=published&mode=objects&view=grid", t('dri.help.view_objects')) %>
             </li>
             <!-- end Published Stats Block -->
 
