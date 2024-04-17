@@ -650,7 +650,7 @@ en:
         date: Date
         dates: Dates
         metadata_licence: Metadata Statement
-        metadata_licence_standard: All metadata in the Repository is licensed CC0 unless otherwise indicated. For the reuse of digital assets and objects please see Reuse Licence of individual records.
+        metadata_licence_standard: All metadata in the Repository is licensed CC0 unless otherwise indicated. For the reuse of digital assets please see Reuse Licence of individual objects.
         depositing_institute: Depositing Organisation
         depositing_institute_not_set: Depositing organisation not set. Click here to manage organisations.
         depositing_institute_not_set_object: Depositing organisation not set. Organisations can be set from the Collection view.
