@@ -23,11 +23,21 @@ describe ExportsController do
       @login_user.delete
     end
 
-    it 'should start an export' do
+    it 'should start an export if config allows' do
       @collection = FactoryBot.create(:collection)
+      CollectionConfig.create(collection_id: @collection.alternate_id, allow_export: true)
       @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
 
       expect(Resque).to receive(:enqueue).once
+      post :create, params: { id: @collection.alternate_id }
+    end
+
+     it 'should not start an export if config does not allow' do
+      @collection = FactoryBot.create(:collection)
+      CollectionConfig.create(collection_id: @collection.alternate_id, allow_export: false)
+      @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
+
+      expect(Resque).to_not receive(:enqueue)
       post :create, params: { id: @collection.alternate_id }
     end
   end
