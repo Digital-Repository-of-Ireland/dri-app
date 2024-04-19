@@ -27,7 +27,8 @@
 			<%= link_to t('dri.views.catalog.forms.metadata_full'), object_metadata_path(@document.id, format: 'js'), id: "styled_metadata", remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_metadata_modal_id' %>
 		</li>
 
-    <% if current_user && @document.collection? && CollectionConfig.can_export?(@document.id) %>
+    <% if current_user && @document.collection? && ((can? :edit, @document) || CollectionConfig.can_export?(@document.id)) 
+    %>
       <%= link_to new_export_path(document.id), id: "export_metadata" do %>
         <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
       <% end %>
