@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'dri-jenkins-agent'
             label 'master'
-            args '-u jenkins:jenkins --network jenkins -v rvm:/home/jenkins/.rvm -v /var/lib/jenkins/.ssh:/home/jenkins/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker --group-add docker'
+            args '-u jenkins:jenkins --shm-size="4g" --network jenkins -v rvm:/home/jenkins/.rvm -v /var/lib/jenkins/.ssh:/home/jenkins/.ssh -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker --group-add docker'
         }
     }
     stages {

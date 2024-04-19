@@ -33,6 +33,7 @@ Feature: Export files
     Given I create an object and save the pid
     When I go to the "object" "modify" page for "the saved pid"
     And I follow the link to upload asset
+    And I wait for "1" second
     When I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
     Then I should see "Complete"

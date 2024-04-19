@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe CollectionConfig do
-  it "should return true if no config exists" do
-    expect(CollectionConfig.can_export?('test')).to be true
+  it "should return false if no config exists" do
+    expect(CollectionConfig.can_export?('test')).to be false
   end
 
   context "With configuration" do

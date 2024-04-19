@@ -15,6 +15,8 @@ class ExportsController < ApplicationController
   end
 
   def create
+    raise DRI::Exceptions::Unauthorized unless CollectionConfig.can_export?(params[:id])
+
     Resque.enqueue(CreateExportJob, request.base_url, params[:id], params[:fields], current_user.email)
     flash[:notice] = t('dri.flash.notice.exporting')
     redirect_back(fallback_location: root_path)
