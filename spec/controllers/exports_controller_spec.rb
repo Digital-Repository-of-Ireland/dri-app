@@ -15,7 +15,7 @@ describe ExportsController do
   describe 'create' do
 
     before(:each) do
-      @login_user = FactoryBot.create(:admin)
+      @login_user = FactoryBot.create(:user)
       sign_in @login_user
     end
 
@@ -38,6 +38,17 @@ describe ExportsController do
       @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
 
       expect(Resque).to_not receive(:enqueue)
+      post :create, params: { id: @collection.alternate_id }
+    end
+
+    it 'should start an export if user can edit' do
+      @collection = FactoryBot.create(:collection)
+      @collection.edit_users_string=User.find_by_email(@login_user.email).to_s
+      @collection.save
+      CollectionConfig.create(collection_id: @collection.alternate_id, allow_export: false)
+      @request.env['HTTP_REFERER'] = "/collections/#{@collection.id}/export/new"
+
+      expect(Resque).to receive(:enqueue)
       post :create, params: { id: @collection.alternate_id }
     end
   end
