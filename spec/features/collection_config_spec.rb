@@ -26,6 +26,13 @@ RSpec.describe "Collection config", type: :feature do
       FileUtils.remove_dir(@tmp_assets_dir, force: true)
     end
 
+    it "should not show export link if config does not exist" do
+      @config.destroy
+      visit(catalog_path(@collection.alternate_id))
+
+      expect(page).not_to have_css('a#export_metadata')
+    end
+
     it "should not show export link if not allowed in config" do
       @config.allow_export = false
       @config.save
