@@ -18,6 +18,7 @@ class CreateExportJob
     titles = ['Id']
     titles = titles.concat(fields.values) if fields.present?
     titles << 'Licence'
+    titles << 'Copyright'
     if assets.present?
       options[:with_assets] = true
       titles << 'Assets'

@@ -30,6 +30,7 @@ class ObjectsController < BaseObjectsController
     end
 
     supported_licences
+    supported_copyrights
   end
 
   # Edits an existing model.
@@ -38,6 +39,7 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('edit', params[:id])
 
     supported_licences
+    supported_copyrights
 
     @object = retrieve_object!(params[:id])
     @object.creator = [''] unless @object.creator[0]
@@ -71,6 +73,7 @@ class ObjectsController < BaseObjectsController
         solr_doc = SolrDocument.find(@object.alternate_id)
 
         json['licence'] = DRI::Formatters::Json.licence(solr_doc)
+        json['copyright'] = DRI::Formatters::Json.copyright(solr_doc)
         json['doi'] = DRI::Formatters::Json.dois(solr_doc)
         json['related_objects'] = solr_doc.object_relationships_as_json
         render json: json
@@ -95,6 +98,7 @@ class ObjectsController < BaseObjectsController
     enforce_permissions!('edit', params[:id])
 
     supported_licences
+    supported_copyrights
     @object = retrieve_object!(params[:id])
 
     if params[:digital_object][:governing_collection_id].present?
@@ -184,6 +188,7 @@ class ObjectsController < BaseObjectsController
 
     checksum_metadata(@object)
     supported_licences
+    supported_copyrights
     begin
       if save_and_index
         post_save do
@@ -314,6 +319,11 @@ class ObjectsController < BaseObjectsController
   def set_licence
     enforce_permissions!('edit', params[:id])
 
+    super
+  end
+
+  def set_copyright
+    enforce_permissions!('edit', params[:id])
     super
   end
 

@@ -62,6 +62,7 @@ class CollectionsController < BaseObjectsController
     @object.type = ['Collection']
 
     supported_licences
+    supported_copyrights
 
     respond_to do |format|
       format.html
@@ -81,6 +82,7 @@ class CollectionsController < BaseObjectsController
     @depositing_institute = @object.depositing_institute.present? ? Institute.find_by(name: @object.depositing_institute) : nil
 
     supported_licences
+    supported_copyrights
 
     if @object.published? && @object.doi.present?
       flash[:alert] = "#{t('dri.flash.alert.doi_published_warning')}".html_safe
@@ -122,6 +124,7 @@ class CollectionsController < BaseObjectsController
     @inst = Institute.new
 
     supported_licences
+    supported_copyrights
 
     @object.assign_attributes(update_params)
     unless @object.valid?
@@ -225,6 +228,11 @@ class CollectionsController < BaseObjectsController
   def set_licence
     enforce_permissions!('manage_collection', params[:id])
 
+    super
+  end
+
+  def set_copyright
+    enforce_permissions!('manage_collection', params[:id])
     super
   end
 
@@ -395,6 +403,7 @@ class CollectionsController < BaseObjectsController
       @object = DRI::DigitalObject.with_standard :qdc
 
       supported_licences
+      supported_copyrights
       @object.assign_attributes(create_params.merge({type: "Collection"}))
 
       @object.visibility = visibility_label(@object.read_groups_string)

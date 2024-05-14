@@ -50,6 +50,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'date_range_start_isi', show: false
 
     config.add_facet_field Solrizer.solr_name('licence', :facetable), label: 'Licence', limit: 20
+    config.add_facet_field Solrizer.solr_name('copyright', :facetable), label: 'Copyright', limit: 20
     config.add_facet_field 'status_ssi', label: 'Record Status'
     config.add_facet_field Solrizer.solr_name('master_file_access', :facetable), label: 'Master File Access'
     config.add_facet_field Solrizer.solr_name('subject', :facetable), limit: 20
@@ -245,6 +246,7 @@ class MyCollectionsController < ApplicationController
     @track_download = false
 
     supported_licences
+    supported_copyrights
 
     respond_to do |format|
       format.html { @search_context = setup_next_and_previous_documents }

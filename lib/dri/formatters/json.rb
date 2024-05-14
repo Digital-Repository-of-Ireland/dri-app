@@ -49,6 +49,7 @@ module DRI::Formatters
       identifier = @object_doc.identifier
       @formatted_hash['Identifier'] = identifier if identifier
       @formatted_hash['Licence'] = self.class.licence(@object_doc)
+      @formatted_hash['Copyright'] = self.class.copyright(@object_doc)
       @formatted_hash['Doi'] = self.class.dois(@object_doc)
       @formatted_hash['RelatedObjects'] = @object_doc.object_relationships_as_json
       @formatted_hash['Assets'] = assets if @with_assets
@@ -72,6 +73,10 @@ module DRI::Formatters
     # @return [Hash] licence || nil
     def self.licence(solr_doc)
       solr_doc.licence.show if !solr_doc.collection? && solr_doc.licence
+    end
+
+    def self.copyright(solr_doc)
+      solr_doc.copyright.show if !solr_doc.collection? && solr_doc.copyright
     end
 
     # @param [SolrDocument] solr_doc

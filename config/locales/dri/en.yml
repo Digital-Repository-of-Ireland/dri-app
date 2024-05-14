@@ -177,6 +177,7 @@ en:
         not_created: Unable to create. Check set permissions. You must have at least one collection manager or edit user.
         access_controls_not_updated: "Access controls not updated. Check set permissions. You must have at least one collection manager or edit user."
         licence_not_updated: "Unable to update licence."
+        copyright_not_updated: "Unable to update copyright."
         organisation_cannot_be_deleted: The organisation cannot be deleted as it is still associated with collections
         read_access: Unable to grant read access
         read_only: Repository is currently undergoing maintenance. Updates are temporarily disabled.
@@ -208,6 +209,8 @@ en:
         generating_surrogates: Surrogates are being generated.
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
+        copyright_created: Copyright successfully created.
+        copyright_updated: Copyright successfully updated.
         manager_user_created: 'User %{email} successfully granted collection manager permissions.'
         manager_user_removed: 'User %{email} has had collection manager permissions removed.'
         metadata_updated: Metadata has been successfully updated.
@@ -378,6 +381,8 @@ en:
         languages: Languages
         licence: Reuse Licence
         licence_text: This licence refers to the reuse of the digital asset or collection. It does not apply to any original artefacts, nor to the descriptive metadata.
+        copyright: Copyright
+        copyright_text: This copyright refers to the reuse of the digital asset or collection. It does not apply to any original artefacts, nor to the descriptive metadata.
         published_by_dri: Published by Digital Repository of Ireland
         published_date: Published Date
         published_date_text: Date of formal issuance (e.g., publication) of the resource.
@@ -438,6 +443,7 @@ en:
           edit_metadata: Edit Metadata
           open_workspace: Open in Workspace
           set_licence: Licence
+          set_copyright: Copyright
           submit: Submit
           view_catalog: View in Catalog
         forms:
@@ -460,6 +466,7 @@ en:
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
           manage_licence: Manage Licence
+          manage_copyright: Manage Copyright
           fetch_tp_data: Fetch Transcribathon Data
           tp_story_id: Story ID
           map: Map
@@ -671,6 +678,7 @@ en:
         language: Language
         languages: Languages
         licence: Reuse Licence
+        copyright: Copyright
         name_coverage: Subject (Name)
         name_coverages: Subjects (Names)
         published_by_dri: Published by Digital Repository of Ireland

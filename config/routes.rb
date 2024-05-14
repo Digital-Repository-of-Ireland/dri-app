@@ -81,6 +81,9 @@ Rails.application.routes.draw do
     put 'collections/:id/licences', to: 'collections#set_licence', as: :collection_licence
     put 'objects/:id/licences', to: 'objects#set_licence', as: :object_licence
 
+    put 'collections/:id/copyrights', to: 'collections#set_copyright', as: :collection_copyright
+    put 'objects/:id/copyrights', to: 'objects#set_copyright', as: :object_copyright
+
     post 'collections/:id/lock', to: 'collections#lock', as: :collection_lock
     delete 'collections/:id/lock', to: 'collections#lock', as: :collection_unlock
 
@@ -116,6 +119,7 @@ Rails.application.routes.draw do
     delete 'manage_users/:user_id', to: 'manage_users#destroy'
 
     resources :licences
+    resources :copyrights
 
     get 'resource/:object', to: 'resources#show', defaults: { format: 'ttl' }
 

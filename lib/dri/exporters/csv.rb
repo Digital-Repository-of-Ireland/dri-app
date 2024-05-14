@@ -107,6 +107,13 @@ module DRI::Exporters
       licence.name == 'All Rights Reserved' ? licence.name : licence.url
     end
 
+    def copyright
+      copyright = @object_doc.copyright
+      return '' if copyright.nil?
+
+      copyright.name == 'In Copyright' ? copyright.name : copyright.url #TODO
+    end
+
     def identifier
       return '' unless @object_doc.identifier
 
