@@ -1,0 +1,5 @@
+<fieldset class="dri_copyright_metadata_fieldset" id="copyright">
+  <legend class="visually-hidden"><%= t('dri.views.fields.copyright') %></legend>
+  <span class="dri_metadata_label_span"><label for="digital_object_copyright"><%= t('dri.views.fields.copyright') %></label><i class="dri_help_popover fa fa-info-circle fa-1" data-bs-content="<%= t('dri.help.fields.copyright_text') %>" data-bs-title="<%= t('dri.help.fields.copyright')%>" data-bs-trigger="hover" data-bs-placement="right"></i></span>
+  <%= f.select(:copyright, options_for_select(@copyrights, @object.copyright), class: 'edit span6') %>
+</fieldset>

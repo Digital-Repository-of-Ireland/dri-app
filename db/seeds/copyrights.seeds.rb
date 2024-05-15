@@ -2,7 +2,7 @@ def copyright_data
   [
     {
       name: 'In-Copyright',
-      description: 'Please see copyright statement',
+      description: 'In Copyright',
       url: 'https://rightsstatements.org/page/InC/1.0/',
       logo: 'https://rightsstatements.org/files/buttons/InC.dark-white-interior.png'
     },

@@ -21,6 +21,7 @@
     <% end -%>
 
     <%= render partial: 'shared/display_licence' %>
+    <%#= render partial: 'shared/display_licence' %>
 
     <dt class="blacklight-depositing_institute">
       <%= t('dri.views.fields.depositing_institute') %>
@@ -42,6 +43,13 @@
     <dd class="blacklight-metadata-license">
       <%= t('dri.views.fields.metadata_licence_standard') %>
     </dd>
+
+    <%# <dt class="blacklight-metadata-license"> %>
+      <%# <%= t('dri.views.fields.metadata_licence') %>
+    <%# </dt> %>
+    <%# <dd class="blacklight-metadata-license"> %>
+      <%#= t('dri.views.fields.metadata_licence_standard') %>
+    <%# </dd> %>
 
   </dl>
 </div>

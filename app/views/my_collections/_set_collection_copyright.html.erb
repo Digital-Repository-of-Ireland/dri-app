@@ -1,0 +1,8 @@
+<%= form_for @document, as: :digital_object, html: { id: 'choose_copyright' }, :url => {:controller=>"collections", :action=>"set_copyright"}, :method=>"put" do |f| %>
+
+<%= render partial: 'shared/form_copyright', locals: { f: f } %>
+
+<% end %>
+
+
+

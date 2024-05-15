@@ -1,0 +1,39 @@
+<%# TODO %>
+<% if @document.copyright.present? %>
+  <dt class="dri_copyright"><%= t('dri.views.fields.copyright') %></dt>
+  <dd class="dri_copyright">
+    <% if @document.copyright.is_a? Array %>
+      <%= "#{@document.copyright.first}" %>
+    <% else %>
+      <% if @document.collection? and controller_name=="catalog" %>
+        <%= t('dri.views.copyrights.collection') %>
+      <% elsif @document.collection? %>
+        <%= t('dri.views.copyrights.collection_mgr', copyright: @document.copyright.name) %>
+      <% elsif @document.copyright.name == "All Rights Reserved" %>
+        <%= t('dri.views.copyrights.all_rights_reserved') %>
+      <% elsif @document.copyright.name == "Public Domain" %>
+        <%= t('dri.views.copyrights.public_domain') %>
+      <% elsif @document.copyright.name == "Orphan Work" %>
+        <div><%= t('dri.views.copyrights.uncopyrightd') %></div>
+        <div><%= t('dri.views.copyrights.orphan_work') %></div>
+        <div><%= t('dri.views.copyrights.more_info', url: @document.copyright.url).html_safe %></div>
+      <% elsif @document.copyright.name == "Educational Use" %>
+        <div><%= t('dri.views.copyrights.educational_use') %></div>
+        <div><%= t('dri.views.copyrights.more_info', url: @document.copyright.url).html_safe %></div>
+      <% elsif @document.copyright.name == "Open COVID copyright 1.1" %>
+        <div><%= t('dri.views.copyrights.open_covid') %></div>
+        <div><%= t('dri.views.copyrights.more_info', url: @document.copyright.url).html_safe %></div>
+      <% elsif @document.copyright.url.present? %>
+        <% if @document.copyright.logo.present? %>
+          <%= link_to @document.copyright.url, target: "_blank" do %>
+            <span><%= image_tag(@document.copyright.logo, class: 'dri_copyright_logo', alt:"Copyright logo") %> <%= @document.copyright.description %></span>
+          <% end %>
+        <% else %>
+          <%= link_to "#{@document.copyright.name} - #{@document.copyright.description}", @document.copyright.url, target: "_blank" %>
+        <% end %>
+      <% else %>
+        <%= "#{@document.copyright.name}" %>
+      <% end %>
+    <% end %>
+  </dd>
+<% end %>
