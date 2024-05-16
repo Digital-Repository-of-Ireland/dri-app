@@ -51,7 +51,6 @@ def create_object(owner, title, access: 'public', type: 'Object')
   object.date = ["#{Time.now}"]
   object.rights = ['CC-BY']
   object.licence = 'CC-BY'
-  # object.copyrights = ['In-Copyright']
   object.copyright = 'In-Copyright'  
   object
 end

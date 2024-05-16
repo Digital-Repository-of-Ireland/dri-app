@@ -22,7 +22,7 @@ def copyright_data
       name: 'No-Copyright',
       description: 'No Copyright',
       url: 'https://creativecommons.org/publicdomain/mark/1.0/',
-      logo: 'https://rightsstatements.org/files/buttons/NKC.dark-white-interior.png'
+      logo: 'https://mirrors.creativecommons.org/presskit/buttons/88x31/png/publicdomain.png'
     }
   ]
 end
