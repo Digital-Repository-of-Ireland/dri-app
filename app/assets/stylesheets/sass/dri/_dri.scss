@@ -91,8 +91,13 @@ h3.tl-headline-date {
   color: $dri_white;
   background-color: $dri_darkgrey;
   @include border_radius (3px);
-  box-shadow: 1px 1px 4px #888888;
   text-decoration: none;
+  padding: 5px 0px 5px 5px;
+  &:hover{
+    background-color: $dri_white;
+    color: $dri_black;
+    border-color: $dri_black;
+  }
 }
 
 /* Homepage carousel Controls */
@@ -2697,10 +2702,32 @@ ul.dri_collection_institutes_list {
 /*-------------- Set Licence ------------------*/
 
 dd.dri_licence{
-    display: block;
-    &:hover{
-        background-color: $dri_select;
-        font-weight: bold;
+    display: flex;
+    a{
+
+        &:hover{
+            background-color: $dri_select;
+            font-weight: bold;
+        }
+    }
+
+    .left_container {
+        flex: 0 0 auto; /* Do not grow, do not shrink */
+        .dri_licence_logo_container {
+            float: left;
+            margin-right: 5px;
+            .dri_licence_logo{
+                width: 88px;
+                height: 33px;
+            }
+        }
+    }
+    
+    .right_container {
+        flex: 1; /* Grow to fill remaining space */
+        .dri_licence_container {
+            overflow: hidden;
+        }
     }
 }
 

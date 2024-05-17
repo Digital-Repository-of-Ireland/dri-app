@@ -148,7 +148,7 @@ en:
           geographical_coverage_sim: Places
           institute_sim: Organisation
           language_sim: Language
-          licence_sim: Licence
+          licence_sim: Reuse Licence
           person_sim: Names
           placename_field_sim: Places
           root_collection_id_ssi: Collection
