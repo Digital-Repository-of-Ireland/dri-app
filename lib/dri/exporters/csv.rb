@@ -54,6 +54,7 @@ module DRI::Exporters
       titles = ['Id']
       @request_fields.each { |k| titles << METADATA_FIELDS_MAP[k] }
       titles << 'Licence'
+      titles << 'Copyright'
       titles << 'Assets' if @with_assets.present?
       titles << 'Url'
 
@@ -68,6 +69,7 @@ module DRI::Exporters
         row << value || ''
       end
       row << licence
+      row << copyright
       row << assets if @with_assets.present?
       row << url
       row
@@ -111,7 +113,7 @@ module DRI::Exporters
       copyright = @object_doc.copyright
       return '' if copyright.nil?
 
-      copyright.name == 'In Copyright' ? copyright.name : copyright.url #TODO
+      copyright.name == 'In Copyright' ? copyright.name : copyright.url
     end
 
     def identifier

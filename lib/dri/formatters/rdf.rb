@@ -84,6 +84,7 @@ module DRI::Formatters
       graph << [uri, RDF::Vocab::FOAF.primaryTopic, RDF::URI("#{uri}#id")]
 
       add_licence
+      add_copyright
       add_formats
 
       add_metadata
@@ -136,6 +137,13 @@ module DRI::Formatters
       return unless licence
       value = licence.name == 'All Rights Reserved' ? licence.name : licence.url
       graph << [uri, RDF::Vocab::DC.license, value]
+    end
+
+    def add_copyright
+      copyright = @object_doc.copyright
+      return unless copyright
+      value = copyright.name == 'In Copyright' ? copyright.name : copyright.url
+      graph << [uri, RDF::Vocab::DC.copyright, value]
     end
 
     def add_metadata
