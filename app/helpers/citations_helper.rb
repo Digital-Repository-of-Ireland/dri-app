@@ -7,7 +7,7 @@ module CitationsHelper
     chicago: { style: 'chicago-note-bibliography', format: 'text' },
     mla: { style: 'modern-language-association', format: 'text' }
   }.freeze
-  module PriotiryTypes
+  module PriorityTypes
     # The TYPES array represents the hierarchy of types in line with Europeana practices.
     TYPES = ['Collection', '3D', 'Software', 'InteractiveResource', 'MovingImage', 'Sound', 'Dataset', 'Text', 'Image'].freeze
   end
@@ -29,7 +29,7 @@ module CitationsHelper
     citation_parts = []
     add_creator(citation_parts, object, depositing_institute, true)
     add_title(citation_parts, object)
-    add_type(citation_parts, object, CitationsHelper::PriotiryTypes::TYPES)
+    add_type(citation_parts, object, CitationsHelper::PriorityTypes::TYPES)
     add_depositor(citation_parts)
     add_system_gen_date(citation_parts, object)
     add_depositor_res(citation_parts, depositing_institute)
@@ -44,7 +44,7 @@ module CitationsHelper
     add_title(citation_parts, object)
     add_creator(citation_parts, object, depositing_institute, true)
     add_creation_date(citation_parts, object)
-    add_type(citation_parts, object, CitationsHelper::PriotiryTypes::TYPES)
+    add_type(citation_parts, object, CitationsHelper::PriorityTypes::TYPES)
     add_depositor(citation_parts)
     add_system_gen_date(citation_parts, object)
     add_doi(citation_parts, doi)
@@ -84,6 +84,7 @@ module CitationsHelper
   end
 
   def add_depositor_res(citation_parts, depositing_institute)
+    puts depositing_institute
     citation_parts << "#{depositing_institute} #{t('dri.views.citation.depositor')}." if depositing_institute.to_s.strip.present?
   end
 
@@ -120,7 +121,7 @@ module CitationsHelper
         puts "Error parsing date: #{e.message}"
       end
     end
-    citation_parts << "#{t('dri.views.citation.publisher')}. "
+    citation_parts << "#{t('dri.views.citation.publisher')}."
   end
 
   def add_doi(citation_parts, doi)
