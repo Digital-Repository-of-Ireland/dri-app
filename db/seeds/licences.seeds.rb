@@ -1,55 +1,57 @@
 def licence_data
   [
     {
-      name: 'All Rights Reserved',
-      description: 'Please see copyright statement'
+      name: 'Not licensed for re-use',
+      description: 'See Additional Licence and Rights Information.',
+      url: '',
+      logo: ''
     },
     {
       name: 'CC-BY',
       description: 'Creative Commons Attribution 4.0 International License',
       url: 'http://creativecommons.org/licenses/by/4.0/',
-      logo: 'http://i.creativecommons.org/l/by/4.0/88x31.png'
+      logo: 'dri/home/by.png'
     },
     {
       name: 'CC-BY-SA',
       description: 'Creative Commons Attribution-ShareAlike 4.0 International License',
       url: 'http://creativecommons.org/licenses/by-sa/4.0/',
-      logo: 'http://i.creativecommons.org/l/by-sa/4.0/88x31.png'
+      logo: 'dri/home/by-sa.png'
     },
     {
       name: 'CC-BY-ND',
       description: 'Creative Commons Attribution-NoDerivatives 4.0 International License',
       url: 'http://creativecommons.org/licenses/by-nd/4.0/',
-      logo: 'http://i.creativecommons.org/l/by-nd/4.0/88x31.png'
+      logo: 'dri/home/by-nd.png'
     },
     {
       name: 'CC-BY-NC',
       description: 'Creative Commons Attribution-NonCommercial 4.0 International License',
       url: 'http://creativecommons.org/licenses/by-nc/4.0/',
-      logo: 'http://i.creativecommons.org/l/by-nc/4.0/88x31.png'
+      logo: 'dri/home/by-nc.png'
     },
     {
       name: 'CC-BY-NC-SA',
       description: 'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License',
       url: 'http://creativecommons.org/licenses/by-nc-sa/4.0/',
-      logo: 'http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png'
+      logo: 'dri/home/by-nc-sa.png'
     },
     {
       name: 'CC-BY-NC-ND',
       description: 'Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License',
       url: 'http://creativecommons.org/licenses/by-nc-nd/4.0/',
-      logo: 'http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png'
+      logo: 'dri/home/by-nc-nd.png'
     },
     {
       name: 'CC0',
       description: 'Creative Commons Public Domain Attribution',
       url: 'http://creativecommons.org/publicdomain/zero/1.0/',
-      logo: ''
+      logo: 'dri/home/cc-zero.png'
     },
     {
       name: 'ODC-ODbL',
       description: 'Open Data Commons Open Database Licence 1.0',
-      url: 'http://opendatacommons.org/licenses/odbl/summary/',
+      url: 'https://opendatacommons.org/licenses/odbl/1-0/',
       logo: ''
     },
     {
@@ -59,16 +61,16 @@ def licence_data
       logo: ''
     },
     {
-      name: 'ODC-PPDL',
+      name: 'ODC-PDDL',
       description: 'Open Data Commons Public Domain Dedication and Licence',
-      url: 'http://opendatacommons.org/licenses/pddl/summary/',
+      url: 'https://opendatacommons.org/licenses/pddl/1-0/',
       logo: ''
     },
     {
-      name: 'Orphan Work',
+      name: 'Public Domain Mark',
       description: 'This asset has been registered in the OAMI EU Orphan Works Database',
-      url: 'https://oami.europa.eu/orphanworks/',
-      logo: ''
+      url: 'https://creativecommons.org/publicdomain/mark/1.0/',
+      logo: 'dri/home/publicdomain.png'
     }
   ]
 end
@@ -88,3 +90,4 @@ end
 
 puts "Seeding: #{__FILE__}"
 add_licences
+          

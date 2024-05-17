@@ -5,7 +5,7 @@
       <% if @document[:licence_tesim].present? &&  @document[:licence_tesim].first == value %>
         <option selected="selected" value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
       <% else %>
-        <option value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
+          <option value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
       <% end %>
     <% end %>
   </select>
