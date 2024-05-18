@@ -84,7 +84,6 @@ module CitationsHelper
   end
 
   def add_depositor_res(citation_parts, depositing_institute)
-    puts depositing_institute
     citation_parts << "#{depositing_institute} #{t('dri.views.citation.depositor')}." if depositing_institute.to_s.strip.present?
   end
 
@@ -149,13 +148,13 @@ module CitationsHelper
   def add_creation_date(citation_parts, object)
     creation_date_string = nil
     
-    if object.creation_date.is_a?(Array) && object.creation_date.any? && object.creation_date.join.strip.present?
-      creation_date_string = extract_dates(object.creation_date)
-    elsif object.date.is_a?(Array) && object.date.any? && object.date.join.strip.present?
-      creation_date_string = extract_dates(object.date)
-    end
+    creation_date_string = if object.creation_date.is_a?(Array) && object.creation_date.any? && object.creation_date.join.strip.present?
+                             extract_dates(object.creation_date)
+                           elsif object.date.is_a?(Array) && object.date.any? && object.date.join.strip.present?
+                             extract_dates(object.date)
+                           end
     
-    if !creation_date_string.nil? || !creation_date_string.strip.empty?
+    if creation_date_string && !creation_date_string.strip.empty?
       citation_parts << "(#{creation_date_string})."
     else
       citation_parts << "."
