@@ -723,7 +723,7 @@ en:
         collection_mgr: "%{licence} - this licence will be set on objects in this collection unless overridden"
         not_licensed_re-use: Not licensed for re-use
         see_additional_licence: See Additional Licence and Rights Information.
-        all_Rights_reserved: All Rights Reserved
+        all_rights_reserved: All Rights Reserved
         public_domain_text: Work is in the Public Domain
         public_domain: Public Domain
         unlicenced: This work is in copyright but not licenced for reuse.
