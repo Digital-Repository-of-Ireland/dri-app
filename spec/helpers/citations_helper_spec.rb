@@ -62,7 +62,6 @@ describe CitationsHelper, testing: true do
     end
 
     it "renders a DRI General citation" do
-      puts helper.export_as_dri_citation_general(object, "10.7486/DRI.XXXXX", "Depositing Institute")
       expect(helper.export_as_dri_citation_general(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. <i>A test of citations.</i> Text [Type]. Digital Repository of Ireland (2021) [Publisher]. Depositing Institute [Depositor]. https://doi.org/10.7486/DRI.XXXXX (Accessed: #{Time.current.strftime('%Y/%m/%d')})")
     end
 
