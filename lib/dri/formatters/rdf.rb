@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 require 'rdf'
+require 'i18n'
+
 module DRI::Formatters
   class Rdf
     include RDF
@@ -134,7 +136,8 @@ module DRI::Formatters
     def add_licence
       licence = @object_doc.licence
       return unless licence
-      value = [t('dri.views.licences.all_rights_reserved'), t('dri.views.licences.not_licensed_re-use')].include?(licence.name) ? licence.name : licence.url
+
+      value = [I18n.t('dri.views.licences.all_rights_reserved'), I18n.t('dri.views.licences.not_licensed_re-use')].include?(licence.name) ? licence.name : licence.url
       graph << [uri, RDF::Vocab::DC.license, value]
     end
 
