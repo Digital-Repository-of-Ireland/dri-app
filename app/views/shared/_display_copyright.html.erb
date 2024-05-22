@@ -1,0 +1,18 @@
+<% if @document.copyright.present? %>
+  <dt class="blacklight-copyright"><%= t('dri.views.fields.copyright') %></dt>
+  <dd class="blacklight-copyright">
+    <% if @document.copyright.is_a? Array %>
+      <%= "#{@document.copyright.first}" %>
+    <%else%>
+      <%  if @document.collection? %>
+        <a target="_blank" href="<%=@document.copyright.url %>"> <%= @document.copyright.description %> </a>
+      <% elsif @document.copyright.logo.present? && @document.copyright.url.present?%>
+        <%= link_to @document.copyright.url, target: "_blank" do %>
+          <span><%= image_tag(@document.copyright.logo, class: 'dri_copyright_logo', alt:"License logo") %> <%= @document.copyright.description %></span>
+        <% end %>
+      <% else %>
+        <%= "#{@document.copyright.description}" %>
+      <% end %>
+    <% end %>
+  </dd>
+<% end %>

@@ -191,6 +191,11 @@ module DRI::IIIFViewable
       manifest.license = licence.url
     end
 
+    copyright = solr_doc.copyright
+    if copyright && copyright.url
+      manifest.copyright = copyright.url
+    end
+
     manifest.attribution = attributions.join(', ')
   end
 

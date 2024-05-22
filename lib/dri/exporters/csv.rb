@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'csv'
+require 'i18n'
 
 module DRI::Exporters
   class Csv
@@ -102,9 +103,9 @@ module DRI::Exporters
 
     def licence
       licence = @object_doc.licence
-      return '' if licence.nil?
+      return '' unless licence
 
-      licence.name == 'All Rights Reserved' ? licence.name : licence.url
+       licence.respond_to?(:label) ? licence.label : licence.first
     end
 
     def identifier

@@ -1,31 +1,40 @@
 <% if @document.licence.present? %>
-  <dt class="dri_licence"><%= t('dri.views.fields.licence') %></dt>
+  <dt class="blacklight-licence"><%= t('dri.views.fields.licence') %></dt>
   <dd class="dri_licence">
     <% if @document.licence.is_a? Array %>
       <%= "#{@document.licence.first}" %>
     <% else %>
-      <% if @document.collection? and controller_name=="catalog" %>
+      <% if @document.collection? and controller_name== t('dri.views.catalog.buttons.catalog') %>
         <%= t('dri.views.licences.collection') %>
       <% elsif @document.collection? %>
         <%= t('dri.views.licences.collection_mgr', licence: @document.licence.name) %>
-      <% elsif @document.licence.name == "All Rights Reserved" %>
-        <%= t('dri.views.licences.all_rights_reserved') %>
-      <% elsif @document.licence.name == "Public Domain" %>
-        <%= t('dri.views.licences.public_domain') %>
-      <% elsif @document.licence.name == "Orphan Work" %>
+      <% elsif @document.licence.name == t('dri.views.licences.all_rights_reserved') || @document.licence.name == t('dri.views.licences.not_licensed_re-use') %>
+        <%= t('dri.views.licences.not_licensed_re-use') + '. ' + t('dri.views.licences.see_additional_licence')%>
+      <% elsif @document.licence.name == t('dri.views.licences.public_domain') %>
+        <%= t('dri.views.licences.public_domain_text') %>
+      <% elsif @document.licence.name == t('dri.views.licences.orphan_work') %>
         <div><%= t('dri.views.licences.unlicenced') %></div>
-        <div><%= t('dri.views.licences.orphan_work') %></div>
+        <div><%= t('dri.views.licences.orphan_work_text') %></div>
         <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
-      <% elsif @document.licence.name == "Educational Use" %>
-        <div><%= t('dri.views.licences.educational_use') %></div>
+      <% elsif @document.licence.name == t('dri.views.licences.educational_use') %>
+        <div><%= t('dri.views.licences.educational_use_text') %></div>
         <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
       <% elsif @document.licence.name == "Open COVID Licence 1.1" %>
-        <div><%= t('dri.views.licences.open_covid') %></div>
+        <div><%= t('dri.views.licences.open_covid') + '. ' + t('dri.views.licences.open_covid_text')%></div>
         <div><%= t('dri.views.licences.more_info', url: @document.licence.url).html_safe %></div>
       <% elsif @document.licence.url.present? %>
         <% if @document.licence.logo.present? %>
           <%= link_to @document.licence.url, target: "_blank" do %>
-            <span><%= image_tag(@document.licence.logo, class: 'dri_licence_logo', alt:"License logo") %> <%= @document.licence.description %></span>
+            <div class="left_container">
+              <div class="dri_licence_logo_container">
+                  <%= image_tag(@document.licence.logo, class: 'dri_licence_logo', alt:"License logo") %>
+              </div>
+            </div>
+            <div class="right_container">
+                <div class="dri_licence_container">
+                  <%= @document.licence.description %>
+                </div>
+            </div>
           <% end %>
         <% else %>
           <%= link_to "#{@document.licence.name} - #{@document.licence.description}", @document.licence.url, target: "_blank" %>

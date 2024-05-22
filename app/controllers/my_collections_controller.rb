@@ -50,6 +50,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'date_range_start_isi', show: false
 
     config.add_facet_field Solrizer.solr_name('licence', :facetable), label: 'Licence', limit: 20
+    config.add_facet_field Solrizer.solr_name('copyright', :facetable), label: 'Copyright', limit: 20
     config.add_facet_field 'status_ssi', label: 'Record Status'
     config.add_facet_field Solrizer.solr_name('master_file_access', :facetable), label: 'Master File Access'
     config.add_facet_field Solrizer.solr_name('subject', :facetable), limit: 20
@@ -117,9 +118,9 @@ class MyCollectionsController < ApplicationController
     config.add_show_field Solrizer.solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
     config.add_show_field Solrizer.solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
     config.add_show_field Solrizer.solr_name('publisher', :stored_searchable), label: 'publishers'
-    config.add_show_field 'published_at_dttsi', label: 'published_by_dri', date: true, helper_method: :parse_date
     config.add_show_field Solrizer.solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
     config.add_show_field Solrizer.solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
+    config.add_show_field 'published_at_dttsi', label: 'published_by_dri', date: true, helper_method: :parse_date
     config.add_show_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
     config.add_show_field Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
     config.add_show_field Solrizer.solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
@@ -245,6 +246,7 @@ class MyCollectionsController < ApplicationController
     @track_download = false
 
     supported_licences
+    supported_copyrights
 
     respond_to do |format|
       format.html { @search_context = setup_next_and_previous_documents }

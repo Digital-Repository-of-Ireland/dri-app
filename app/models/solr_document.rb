@@ -225,6 +225,15 @@ class SolrDocument
     end
   end
 
+  def copyright
+    copyright_key = 'copyright_tesim'.freeze
+    if self[copyright_key].present?
+      Copyright.where(name: self[copyright_key]).first || self[copyright_key]
+    else
+      retrieve_ancestor_copyright
+    end
+  end
+
   def object_profile
     key = 'object_profile_ssm'.freeze
 
@@ -266,6 +275,20 @@ class SolrDocument
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
       return Licence.where(name: doc[licence_key]).take if doc[licence_key].present?
+    end
+
+    nil
+  end
+
+  def retrieve_ancestor_copyright
+    ancestors_key = 'ancestor_id_ssim'.to_sym
+    return nil unless ancestor_docs.present?
+
+    copyright_key = Solrizer.solr_name('copyright', :stored_searchable, type: :string).to_sym
+
+    ancestor_ids.each do |id|
+      doc = ancestor_docs[id]
+      return Copyright.where(name: doc[copyright_key]).take if doc[copyright_key].present?
     end
 
     nil

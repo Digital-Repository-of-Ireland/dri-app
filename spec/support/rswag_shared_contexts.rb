@@ -24,6 +24,9 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     @licence = Licence.create(
       name: 'test', description: 'this is a test', url: 'http://example.com'
     )
+    @copyright = Copyright.create(
+      name: 'test copyright', description: 'this is a copyright test', url: 'http://copyright.example.com'
+    )
 
     @example_user = create_user
     @collections  = []
@@ -34,6 +37,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     num_collections.times do |i|
       collection = create_collection_for(@example_user, status: status)
       collection.licence = @licence.name
+      collection.copyright = @copyright.name
 
       if docs
         doc = FactoryBot.create(:documentation)
@@ -61,6 +65,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
     if subcollection
       subcollection_parent = create_subcollection_for(@example_user)
       subcollection_parent.licence = @licence.name
+      subcollection_parent.copyright = @copyright.name
       subcollection_parent.save
       @collections << subcollection_parent
     end
@@ -68,6 +73,7 @@ shared_context 'rswag_user_with_collections' do |status: 'draft', num_collection
   end
   after(:each) do
     @licence.destroy
+    @copyright.destroy
     @institute.delete if @institute
     @example_user.delete
     @dois.map(&:delete)

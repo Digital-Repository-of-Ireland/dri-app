@@ -1,11 +1,18 @@
 <fieldset id="licence">
-	<span><%= f.label "#{t('dri.views.fields.licence')}"%><i class="dri_help_popover fa fa-info-circle fa-1" data-bs-content="<%= t('dri.help.fields.licence_text') %>" data-bs-title="<%= t('dri.help.fields.licence')%>" data-bs-trigger="hover" data-bs-placement="right"></i></span>
+	<span>
+    <%= f.label "#{t('dri.views.fields.licence')}"%>
+    <i class="dri_help_popover fa fa-info-circle fa-1" 
+    data-bs-content="<%= t('dri.help.fields.licence_text') %>" 
+    data-bs-title="<%= t('dri.help.fields.licence')%>" 
+    data-bs-trigger="hover" 
+    data-bs-placement="right"></i>
+  </span>
 	<select class="dri_licence_select" name="digital_object[licence]" id="digital_object_licence">
     <% @licences.each do |text, value| %>
       <% if @document[:licence_tesim].present? &&  @document[:licence_tesim].first == value %>
         <option selected="selected" value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
       <% else %>
-        <option value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
+          <option value="<%= value %>" label="<%= value %>" title="<%= text %>"><%= text %></option>
       <% end %>
     <% end %>
   </select>

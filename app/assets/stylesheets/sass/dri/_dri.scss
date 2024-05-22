@@ -91,8 +91,13 @@ h3.tl-headline-date {
   color: $dri_white;
   background-color: $dri_darkgrey;
   @include border_radius (3px);
-  box-shadow: 1px 1px 4px #888888;
   text-decoration: none;
+  padding: 5px 0px 5px 5px;
+  &:hover{
+    background-color: $dri_white;
+    color: $dri_black;
+    border-color: $dri_black;
+  }
 }
 
 /* Homepage carousel Controls */
@@ -1467,8 +1472,7 @@ div.sidebar{
     }
     .dri_account_block_info {
         a{
-            color: darkblue;
-            text-decoration: underline;
+            color: $dri_black;
             &:hover{
                 color: $dri_red;
             }
@@ -2696,16 +2700,40 @@ ul.dri_collection_institutes_list {
 
 /*-------------- Set Licence ------------------*/
 
-dd.dri_licence{
-    display: block;
-    &:hover{
-        background-color: $dri_select;
-        font-weight: bold;
+dd.dri_licence,
+dd.dri_copyright{
+    display: flex;
+    a{
+        width: 100%;
+        &:hover{
+            background-color: $dri_select;
+            font-weight: bold;
+        }
+    }
+
+    .left_container {
+        flex: 0 0 auto; /* Do not grow, do not shrink */
+        .dri_licence_logo_container {
+            float: left;
+            margin-right: 5px;
+            .dri_licence_logo{
+                width: 88px;
+                height: 33px;
+            }
+        }
+    }
+    
+    .right_container {
+        flex: 1; /* Grow to fill remaining space */
+        .dri_licence_container {
+            overflow: hidden;
+        }
     }
 }
 
-.dri_licence_select{
-    width: 200px;
+.dri_licence_select, 
+.dri_copyright_select{
+    width: 100%;
     display: block;
 }
 /*-------------- General Buttons --------------*/
@@ -2987,9 +3015,11 @@ dd.dri_licence{
         .dri_title_metadata_fieldset > input {
             width: 410px;
         }
-        .dri_licence_metadata_fieldset > select {
-            width: 410px;
+        .dri_licence_metadata_fieldset > select,
+        .dri_copyright_metadata_fieldset > select {
+            width: 450px;
             font-size: 16px;
+            margin-bottom: 16px;
         }
         .dri_description_metadata_fieldset > textarea,
         .dri_rights_metadata_fieldset > textarea {
@@ -3345,7 +3375,8 @@ dd.dri_licence{
 }
 
 a.dri_help_popover {
-    .dri_licence_logo {
+    .dri_licence_logo,
+    .dri_copyright_logo {
         height: 2em;
         vertical-align: bottom;
     }
@@ -3372,6 +3403,7 @@ select.dri-type-dropdown-type{
     font-size: 1.5rem;
 }
 
-img.dri_licence_logo{
+img.dri_licence_logo,
+img.dri_copyright_logo{
     width: 88px;
 }

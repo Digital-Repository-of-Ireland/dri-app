@@ -14,6 +14,7 @@ module DRI::Formatters
       graph << [uri, RDF.type, RDF::FOAF.Document]
 
       add_licence
+      add_copyright
       add_metadata
       add_hierarchy
       add_relationships

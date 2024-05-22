@@ -1,4 +1,6 @@
 class Licence < ActiveRecord::Base
+  scope :supported, -> { where.not(name: ['Orphan Work','Educational Use','All Rights Reserved']) }
+
   validates_uniqueness_of :name
 
   # representation of licence used in json api
@@ -6,5 +8,9 @@ class Licence < ActiveRecord::Base
   # @return [Hash] json 
   def show
     as_json(only: [:name, :description, :url])
+  end
+
+  def label
+    url.presence || name
   end
 end

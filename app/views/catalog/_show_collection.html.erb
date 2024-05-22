@@ -21,6 +21,21 @@
     <% end -%>
 
     <%= render partial: 'shared/display_licence' %>
+    <%= render partial: 'shared/display_copyright' %>
+
+    <dt class="blacklight-licence">
+			<%= t('dri.views.fields.metadata_licence') %>
+		</dt>
+    <dd class="blacklight-licence">
+      <a target="_blank" href="http://creativecommons.org/publicdomain/zero/1.0/" class="licence_link">
+          <div class="right_container">
+              <div class="dri_licence_container">
+                <%= t('dri.views.fields.metadata_licence_standard') %>
+              </div>
+          </div>
+      </a>
+    </dd>
+
 
     <dt class="blacklight-depositing_institute">
       <%= t('dri.views.fields.depositing_institute') %>
@@ -36,12 +51,6 @@
       <% end %>
     </dd>
 
-    <dt class="blacklight-metadata-license">
-      <%= t('dri.views.fields.metadata_licence') %>
-    </dt>
-    <dd class="blacklight-metadata-license">
-      <%= t('dri.views.fields.metadata_licence_standard') %>
-    </dd>
   </dl>
 </div>
 <!-- close dri_object_first_block -->

@@ -289,6 +289,16 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
       end
 
+      if (!record.copyright.name.present?)
+        return ""
+      else
+        copyright = record.copyright.url
+      end
+
+      xml.tag! "cc:Copyright", {"rdf:about" => copyright} do
+        xml.tag! "odrl:inheritFrom", {"rdf:resource" => copyright}
+      end
+
       # Create Contextual classes for user-generated enrichments
       ug_date.each do |key,value|
         xml.tag! "edm:TimeSpan", {"rdf:about" => "##{key.tr(" ", "_")}"} do
@@ -327,6 +337,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag!("edm:dataProvider", record.depositing_institute.try(:name))
         xml.tag!("edm:provider", {"xml:lang" => "eng"}, "Digital Repository of Ireland")
         xml.tag!("edm:rights", {"rdf:resource" => licence})
+        xml.tag!("edm:copyright", {"rdf:resource" => copyright})
 
         if mainfile['file_type_tesim'].include? "video"
           is_shown_by   = object_file_url(record.id, mainfile.id, surrogate: 'mp4')
@@ -378,6 +389,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
         xml.tag!("edm:WebResource", {"rdf:about" => image_url}) do
           xml.tag!("edm:rights", {"rdf:resource" => licence})
+          xml.tag!("edm:copyright", {"rdf:resource" => copyright})
           xml.tag!("svcs:has_service", {"rdf:resource" => base_url})
           xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
         end
@@ -405,6 +417,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
             xml.tag!("edm:WebResource", {"rdf:about" => image_url}) do
               xml.tag!("edm:rights", {"rdf:resource" => licence})
+              xml.tag!("edm:copyright", {"rdf:resource" => copyright})
               xml.tag!("svcs:has_service", {"rdf:resource" => base_url})
               xml.tag!("dcterms:isReferencedBy", {"rdf:resource" => manifest_url})
             end

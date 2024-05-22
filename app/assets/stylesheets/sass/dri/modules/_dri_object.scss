@@ -331,6 +331,7 @@ a.dri_toggle_metadata::after {
 }
 .modal-content {
     padding: 10px;
+    min-width: 600px;
     .dri_object_metadata_readview {
         max-height: 400px;
         overflow: scroll;

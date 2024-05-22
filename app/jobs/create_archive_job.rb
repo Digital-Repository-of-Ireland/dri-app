@@ -31,6 +31,9 @@ class CreateArchiveJob
     licence = licence(object)
     bag.add_file(File.join('metadata', 'Licence.txt'), licence.path)
 
+    copyright = copyright(object)
+    bag.add_file(File.join('metadata', 'Copyright.txt'), copyright.path)
+
     # End User Agreement
     bag.add_file(File.join('metadata', 'End_User_Agreement.txt'), "app/assets/text/End_User_Agreement.txt")
 
@@ -49,6 +52,7 @@ class CreateArchiveJob
     zipfile.close
     metadata.unlink
     licence.unlink
+    copyright.unlink
     FileUtils.remove_dir(bag_dir, force: true)
 
     JobMailer.archive_ready_mail(File.basename(tmp.path), email, object).deliver_now
@@ -99,6 +103,12 @@ class CreateArchiveJob
     inherited_licence(obj.governing_collection)
   end
 
+  def self.inherited_copyright(obj)
+    return if obj.nil?
+    return obj.copyright unless obj.copyright.nil?
+    inherited_copyright(obj.governing_collection)
+  end
+
   def self.inherited_masterfile_access(obj)
     return if obj.nil?
     return obj.master_file_access unless obj.master_file_access.nil? || obj.master_file_access == "inherit"
@@ -112,6 +122,15 @@ class CreateArchiveJob
     licence.close
 
     licence
+  end
+
+  def self.copyright(object)
+    copyright = Tempfile.new('Copyright.txt')
+    copyright.puts("Copyright Statement: #{object.copyright.join()}")
+    copyright.puts("Copyright: #{inherited_copyright(object)}")
+    copyright.close
+
+    copyright
   end
 
   def self.metadata(object)

@@ -65,8 +65,10 @@ describe "Get Objects API" do
                   c.governed_items.map(&:alternate_id).include?(pid)
                 end
                 licence = Licence.find_by(name: governing_collection.first.licence)
+                copyright = Copyright.find_by(name: governing_collection.first.copyright)
 
                 expect(object['metadata']['licence']).to eq licence.show
+                expect(object['metadata']['copyright']).to eq copyright.show
               end
             end
           end

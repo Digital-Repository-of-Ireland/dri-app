@@ -1,0 +1,29 @@
+<div class="dri_ingest_form_container">
+  <div class="dri_ingest_form" style="width: 100%">
+
+    <%= form_for @copyright, :html => { id: 'dri_edit_copyright_form', multipart: true, class: 'form-vertical' }  do |f| %>
+      <fieldset>
+        <%= f.label "#{t('dri.views.copyrights.forms.name')}:" %>
+        <%= f.text_field :name %>
+      </fieldset>
+
+      <fieldset>
+        <%= f.label "#{t('dri.views.copyrights.forms.url')}:" %>
+        <%= f.text_field :url %>
+      </fieldset>
+
+      <fieldset>
+        <%= f.label "#{t('dri.views.copyrights.forms.logo')}:" %>
+        <%= f.text_field :logo %>
+      </fieldset>
+
+      <fieldset>
+      <%= f.label "#{t('dri.views.copyrights.forms.description')}:" %>
+      <%= f.text_field :description %>
+      </fieldset>
+
+      <%= f.submit id: 'save_copyright', class: 'dri_button_green dri_w330' %>
+
+    <% end %>
+  </div>
+</div>
