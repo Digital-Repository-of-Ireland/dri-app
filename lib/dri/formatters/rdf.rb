@@ -137,7 +137,7 @@ module DRI::Formatters
       licence = @object_doc.licence
       return unless licence
 
-      value = [I18n.t('dri.views.licences.all_rights_reserved'), I18n.t('dri.views.licences.not_licensed_re-use')].include?(licence.name) ? licence.name : licence.url
+      value = licence.respond_to?(:label) ? licence.label : licence.first 
       graph << [uri, RDF::Vocab::DC.license, value]
     end
 

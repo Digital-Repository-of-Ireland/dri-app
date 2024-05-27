@@ -9,4 +9,8 @@ class Licence < ActiveRecord::Base
   def show
     as_json(only: [:name, :description, :url])
   end
+
+  def label
+    url.presence || name
+  end
 end

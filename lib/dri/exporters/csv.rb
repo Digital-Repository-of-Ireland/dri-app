@@ -103,9 +103,9 @@ module DRI::Exporters
 
     def licence
       licence = @object_doc.licence
-      return '' if licence.nil?
+      return '' unless licence
 
-       [I18n.t('dri.views.licences.all_rights_reserved'), I18n.t('dri.views.licences.not_licensed_re-use')].include?(licence.name) ? licence.name : licence.url
+       licence.respond_to?(:label) ? licence.label : licence.first
     end
 
     def identifier
