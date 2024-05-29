@@ -19,7 +19,7 @@ class AnalyticsCollectionsDatatable
 private
 
   def data
-    collections = get_collections
+    collections = collections_for_manager
     collection_hash = collection_names(collections)
 
     data = display_on_page(collections)
@@ -88,20 +88,20 @@ private
       views = DRI::Analytics.collection_events_users(startdate, enddate, collections_slice)
       downloads = DRI::Analytics.collection_events_downloads(startdate, enddate, collections_slice)
     
-      views.each do |r| 
+      views.each do |r|
         r[:collection] = r.delete('customEvent:collection')
         r[:ga4_users] = r.delete('totalUsers')
       end
-
+      
       downloads.each do |r| 
         r[:collection] = r.delete('customEvent:collection')
         r[:ga4_totalEvents] = r.delete('eventCount')
       end
-
+      
       total_views.concat(views)
       total_downloads.concat(downloads)
     end
- 
+   
     (total_views+total_downloads)
   end
 
@@ -134,7 +134,7 @@ private
     params[:enddate] || Date.today.strftime('%Y-%m-%d')
   end
 
-  def get_collections
+  def collections_for_manager
     collections = []
 
     query = if current_user.is_admin?
@@ -149,12 +149,7 @@ private
             "-ancestor_id_ssim:[* TO *]"]}
     )
 
-    while solr_query.has_more?
-      objects = solr_query.pop
-      objects.each do |object|
-        collections.push(object['id'])
-      end
-    end
+    solr_query.each { |object| collections.push(object['id']) }
 
     collections
   end
