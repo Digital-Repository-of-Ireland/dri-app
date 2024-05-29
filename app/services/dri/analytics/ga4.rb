@@ -76,7 +76,8 @@ module DRI
              dimension_filter: { and_group: {
 	                               expressions: [
 	                                 { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "object_view" }}},
-	                                 { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}}
+	                                 { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}},
+                                   { not_expression: { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}}
 	                               ]
 	                             }
                                },
@@ -109,7 +110,8 @@ module DRI
              dimension_filter: { and_group: {
                                    expressions: [
                                      { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "object_view" }}},
-                                     { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}}
+                                     { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}},
+                                     { not_expression: { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}}
                                    ]
                                  }
                                },
@@ -141,7 +143,8 @@ module DRI
              dimension_filter: { and_group: {
                                    expressions: [
                                      { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "asset_download" }}},
-                                     { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}}
+                                     { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}},
+                                     { not_expression: { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}}
                                    ]
                                  }
                                },
@@ -156,7 +159,6 @@ module DRI
           request = Google::Analytics::Data::V1beta::RunReportRequest.new(
              property: "properties/#{config.property_id}",
              dimensions: [Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:collection'),
-                          Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:object'),
                           Google::Analytics::Data::V1beta::Dimension.new(name: 'eventName')
                           ],
              metrics: [
@@ -173,11 +175,11 @@ module DRI
              dimension_filter: { and_group: {
                                  expressions: [
                                    { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "object_view" }}},
-                                   { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}
+                                   { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}}
                                  ]
                                }
                                },
-              keep_empty_rows: false,
+              keep_empty_rows: true,
               limit: LIMIT
           )
 
@@ -188,7 +190,6 @@ module DRI
           request = Google::Analytics::Data::V1beta::RunReportRequest.new(
              property: "properties/#{config.property_id}",
              dimensions: [Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:collection'),
-                          Google::Analytics::Data::V1beta::Dimension.new(name: 'customEvent:object'),
                           Google::Analytics::Data::V1beta::Dimension.new(name: 'eventName')
                           ],
              metrics: [
@@ -205,11 +206,11 @@ module DRI
              dimension_filter: { and_group: {
                                    expressions: [
                                      { filter: { field_name: "eventName", string_filter: { match_type:  "EXACT", value: "asset_download" }}},
-                                     { filter: { field_name: "customEvent:object", in_list_filter: { values: collections }}}
+                                     { filter: { field_name: "customEvent:collection", in_list_filter: { values: collections }}}
                                    ]
                                  }
                                },
-              keep_empty_rows: false,
+              keep_empty_rows: true,
               limit: LIMIT
           )
 
@@ -223,7 +224,7 @@ module DRI
 
   	      loop do
   	        report = auth_client.run_report(request)
-  	        
+
   	        dimension_headers = report.dimension_headers.map(&:name)
   	        metric_headers = report.metric_headers.map(&:name)
 
