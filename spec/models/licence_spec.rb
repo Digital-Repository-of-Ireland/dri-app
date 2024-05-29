@@ -16,4 +16,16 @@ describe Licence do
       expect(@licence.show.keys.sort).to eq %w[description name url]
     end
   end
+
+  describe 'label' do
+    it 'should return name if no url' do
+      l = Licence.new(name: 'nourl', description: 'no url', url: '')
+      expect(l.label).to eq l.name
+    end
+
+    it 'should return url if present' do
+      l = Licence.new(name: 'url', description: 'url', url: 'http://licence.url')
+      expect(l.label).to eq l.url
+    end  
+  end
 end
