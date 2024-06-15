@@ -15,7 +15,8 @@ module Blacklight
     end
 
     def save
-      current_user.searches << searches_from_history.find(params[:id])
+      current_user.searches << Search.create(query_params: session[:search]['params'])
+
       if current_user.save
         flash[:notice] = I18n.t('blacklight.saved_searches.add.success')
       else
