@@ -77,7 +77,7 @@ module Blacklight::SearchContext
   def find_or_initialize_search_session_from_params params
     params_copy = params.reject { |k, v| blacklisted_search_session_params.include?(k.to_sym) || v.blank? }
 
-    return if params_copy.reject { |k, _v| [:action, :controller].include? k.to_sym }.blank?
+    return if params_copy.reject { |k, _v| [:action, :controller, :mode].include? k.to_sym }.blank?
     
     params_copy
   end
@@ -95,7 +95,7 @@ module Blacklight::SearchContext
 
   # A list of query parameters that should not be persisted for a search
   def blacklisted_search_session_params
-    [:commit, :counter, :total, :search_id, :page, :per_page]
+    [:commit, :counter, :total, :search_id, :page, :per_page, :view]
   end
 
   # calls setup_previous_document then setup_next_document.
