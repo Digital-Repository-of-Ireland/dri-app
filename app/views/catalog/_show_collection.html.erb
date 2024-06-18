@@ -37,12 +37,31 @@
     </dd>
 
 
+    <dt class="dri_licence_head">
+			<%= t('dri.views.fields.metadata_licence') %>
+		</dt>
+    <dd class="dri_licence">
+      <a target="_blank" href="http://creativecommons.org/publicdomain/zero/1.0/" class="licence_link">
+          <div class="left_container">
+              <div class="dri_licence_logo_container">
+                  <%= image_tag("dri/home/cc-zero.png", alt: "Metadata License logo", class:"dri_licence_logo" ) %>
+              </div>
+          </div>
+          <div class="right_container">
+              <div class="dri_licence_container">
+                <%= t('dri.views.fields.metadata_licence_standard') %>
+              </div>
+          </div>
+      </a>
+    </dd>
+
+
     <dt class="blacklight-depositing_institute">
       <%= t('dri.views.fields.depositing_institute') %>
     </dt>
     <dd class="blacklight-depositing_institute">
       <% if (@presenter.depositing_organisation) %>
-        <% institute_browse_params = { mode: "collections", search_field: "all_fields", view: "grid", f: { Solrizer.solr_name('institute', :facetable).to_sym => [@presenter.depositing_organisation[:name].mb_chars.downcase] } } %>
+        <% institute_browse_params = { mode: "collections", view: "grid", f: { Solrizer.solr_name('institute', :facetable).to_sym => [@presenter.depositing_organisation[:name].mb_chars.downcase] } } %>
         <%= link_to @presenter.depositing_organisation[:name], main_app.search_catalog_path(institute_browse_params), id: 'depositing_institute' %>
       <% else %>
         <%= link_to '', :'data-bs-target' => '#dri_organisation_modal_id', :'data-bs-toggle' => 'modal', class: 'dri_manage_org_link' do %>

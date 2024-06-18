@@ -38,8 +38,8 @@ module BlacklightHelper
   #   link_back_to_catalog(label: 'Back to Search', route_set: my_engine)
   def link_back_to_catalog(opts = { label: nil })
     scope = opts.delete(:route_set) || self
-    query_params = current_search_session.try(:query_params) || {}
-
+    query_params = current_search_session || {}
+  
     if search_session['counter']
       per_page = (search_session['per_page'] || default_per_page).to_i
       counter = search_session['counter'].to_i

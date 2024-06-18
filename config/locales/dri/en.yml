@@ -466,8 +466,8 @@ en:
           download_originals: Download the original uploaded version of this individual asset
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
-          manage_licence: Manage Licence
           manage_copyright: Manage Copyright Status
+          manage_licence: Manage Reuse Licence
           fetch_tp_data: Fetch Transcribathon Data
           tp_story_id: Story ID
           map: Map
@@ -735,9 +735,12 @@ en:
         public_domain_text: Work is in the Public Domain
         public_domain: Public Domain
         unlicenced: This work is in copyright but not licenced for reuse.
-        orphan_work: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."
-        educational_use: "This Item is protected by copyright and/or related rights, however, no permission is required from the rights-holder(s) for educational uses. For other uses, you need to obtain permission from the rights-holder(s)."
-        open_covid: "Open COVID Licence 1.1. You have the right to make, have made, use, sell, and import any patented invention, and reproduce, adapt, translate, distribute, perform, display, modify, create derivative works of and otherwise exploit any copyrights, solely for the purpose of diagnosing, preventing, containing, and treating COVID-19."
+        orphan_work_text: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."
+        orphan_work: Orphan Work
+        educational_use_text: "This Item is protected by copyright and/or related rights, however, no permission is required from the rights-holder(s) for educational uses. For other uses, you need to obtain permission from the rights-holder(s)."
+        educational_use: Educational Use
+        open_covid: Open COVID Licence 1.1
+        open_covid_text: You have the right to make, have made, use, sell, and import any patented invention, and reproduce, adapt, translate, distribute, perform, display, modify, create derivative works of and otherwise exploit any copyrights, solely for the purpose of diagnosing, preventing, containing, and treating COVID-19.
         more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
         buttons:
           edit: Edit Copyright

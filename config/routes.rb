@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
     delete "saved_searches/clear",       :to => "saved_searches#clear",   :as => "clear_saved_searches"
     get "saved_searches",       :to => "saved_searches#index",   :as => "saved_searches"
-    put "saved_searches/save/:id",    :to => "saved_searches#save",    :as => "save_search"
+    put "saved_searches/save",    :to => "saved_searches#save",    :as => "save_search"
     delete "saved_searches/forget/:id",  :to => "saved_searches#forget",  :as => "forget_search"
     post "saved_searches/forget/:id",  :to => "saved_searches#forget"
 

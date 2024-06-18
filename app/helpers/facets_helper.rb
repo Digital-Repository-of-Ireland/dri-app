@@ -239,7 +239,7 @@ module FacetsHelper
   def render_selected_facet_value(facet_solr_field, item)
     # Updated class for Bootstrap Blacklight.
     link_to(
-      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'', class: 'fa fa-remove'),
+      render_facet_value(facet_solr_field, item, suppress_link: true) + content_tag(:i,'x', class: 'fa'),
       search_state.remove_facet_params(facet_solr_field, item),
       class: 'selected'
     )
