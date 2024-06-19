@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 448d347d01623f31082d5acfb8a539051bfbe160
-  branch: develop
+  revision: 583bbdd96b7ee3990643895342ecfe01e2bbc0c8
+  branch: WorldFAIR_Part3
   specs:
     dri_data_models (4.8.0)
       hydra-derivatives
@@ -666,8 +666,8 @@ GEM
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0507)
-    mini_magick (4.12.0)
+    mime-types-data (3.2024.0604)
+    mini_magick (4.13.1)
     mini_mime (1.1.5)
     minitar (0.9)
     minitest (5.23.1)
@@ -690,7 +690,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.12)
+    net-imap (0.4.13)
       date
       net-protocol
     net-pop (0.1.2)
@@ -759,7 +759,7 @@ GEM
     popper_js (2.11.8)
     psych (5.1.0)
       stringio
-    public_suffix (5.0.5)
+    public_suffix (5.1.1)
     qa (5.10.0)
       activerecord-import
       deprecation
@@ -877,7 +877,7 @@ GEM
     rdf-turtle (3.3.0)
       ebnf (~> 2.4)
       rdf (~> 3.3)
-    rdf-vocab (3.3.0)
+    rdf-vocab (3.3.1)
       rdf (~> 3.3)
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
@@ -916,8 +916,8 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.3.0)
+      strscan
     riiif (2.4.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -1151,7 +1151,7 @@ GEM
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
     yard (0.9.36)
-    zeitwerk (2.6.15)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   x86_64-linux
@@ -1276,4 +1276,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.5.10
+   2.4.22
