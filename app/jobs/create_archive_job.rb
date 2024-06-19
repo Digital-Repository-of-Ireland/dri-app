@@ -117,7 +117,7 @@ class CreateArchiveJob
 
   def self.licence(object)
     licence = Tempfile.new('Licence.txt')
-    licence.puts("Rights Statement: #{object.rights.join()}")
+    licence.puts("Rights Statement: #{object.rights.join}")
     licence.puts("Licence: #{inherited_licence(object)}")
     licence.close
 
@@ -126,7 +126,6 @@ class CreateArchiveJob
 
   def self.copyright(object)
     copyright = Tempfile.new('Copyright.txt')
-    copyright.puts("Copyright Statement: #{object.copyright.join()}")
     copyright.puts("Copyright: #{inherited_copyright(object)}")
     copyright.close
 
