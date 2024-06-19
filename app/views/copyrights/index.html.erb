@@ -1,7 +1,7 @@
 <ul>
 <% @copyrights.each do |copyright| %>
-<li><%= copyright.name %> <span><%= link_to t('dri.views.copyrights.buttons.edit'), edit_copyright_path(copyright.id) %> </span> </li>
+<li><%= copyright.name %> <span><%= link_to t('dri.views.copyright.buttons.edit'), edit_copyright_path(copyright.id) %> </span> </li>
 <% end %>
 </ul>
 
-<%= link_to t('dri.views.copyrights.buttons.new'), new_copyright_path, :id => "new_copyright" %>
+<%= link_to t('dri.views.copyright.buttons.new'), new_copyright_path, id: "new_copyright" %>

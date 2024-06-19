@@ -743,8 +743,8 @@ en:
         open_covid_text: You have the right to make, have made, use, sell, and import any patented invention, and reproduce, adapt, translate, distribute, perform, display, modify, create derivative works of and otherwise exploit any copyrights, solely for the purpose of diagnosing, preventing, containing, and treating COVID-19.
         more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
         buttons:
-          edit: Edit Copyright
-          new: Add a new Copyright
+          edit: Edit Licence
+          new: Add a new Licence
         forms:
           description: Description
           logo: Logo
@@ -859,6 +859,7 @@ en:
           metadata: Metadata
           replace_caption: Replace metadata using XML file.
           replace_metadata: Replace Metadata
+          reuse: Data Reuse
           upload_file: Upload Asset
           upload_file_caption: No asset files have been uploaded. Please upload a master asset.
           view_collection: View Collection

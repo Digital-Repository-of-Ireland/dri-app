@@ -6,7 +6,7 @@ class CopyrightsController < ApplicationController
 
   # Get the list of copyrights
   def index
-    @copyright = Copyright.all
+    @copyrights = Copyright.all
   end
 
   # Create new copyright
