@@ -8,6 +8,13 @@
       </section>
 
       <section>
+        <h2><%= t('dri.views.objects.legends.reuse') %></h2>
+        <%= render partial: 'shared/form_copyright_field', locals: { f: f } %>
+        <%= render partial: 'shared/form_licence_field', locals: { f: f } %>
+        <%= render partial: 'shared/form_rights_field', locals: { f: f } %>
+      </section>
+
+      <section>
         <div class="dri_access_controls">
           <h2>
             <%= t('dri.views.objects.legends.access_control') %>
