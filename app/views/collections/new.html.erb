@@ -5,7 +5,13 @@
 
       <section>
         <%= render partial: 'shared/form_metadata_qualifieddublincore', locals: { f: f, action: 'create' } %>
-        <%= render partial: 'shared/form_licence_field', locals: { f: f, action: 'update' } %>
+      </section>
+
+      <section>
+        <h2><%= t('dri.views.objects.legends.reuse') %></h2>
+        <%= render partial: 'shared/form_copyright_field', locals: { f: f } %>
+        <%= render partial: 'shared/form_licence_field', locals: { f: f } %>
+        <%= render partial: 'shared/form_rights_field', locals: { f: f } %>
       </section>
 
       <section>

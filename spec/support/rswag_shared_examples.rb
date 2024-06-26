@@ -1,9 +1,10 @@
 # rswag / api shared examples
 
-shared_examples 'a json response with' do |licence_key: false, doi_key: false, related_objects_key: false|
+shared_examples 'a json response with' do |licence_key: false, copyright_key: false, doi_key: false, related_objects_key: false|
   run_test! do
     json_response = JSON.parse(response.body)
     expect(json_response[licence_key].keys.sort).to eq(%w[name url description]) if licence_key
+    expect(json_response[copyright_key].keys.sort).to eq(%w[name copyright url description]) if copyright_key
     expect(json_response[doi_key].keys.sort).to eq(%w[created_at url version]) if doi_key
     expect(json_response[related_objects_key].keys.sort).to eq(%w[doi relation url]) if related_objects_key
   end
@@ -20,6 +21,20 @@ shared_examples 'it has no json licence information' do |key='Licence'|
   run_test! do
     licence_info = JSON.parse(response.body)[key]
     expect(licence_info).to be nil
+  end
+end
+
+shared_examples 'it has json copyright information' do |key='Copyright'|
+  run_test! do
+    copyright_info = JSON.parse(response.body)[key]
+    expect(copyright_info.keys).to eq(%w[name url description])
+  end
+end
+
+shared_examples 'it has no json copyright information' do |key='Copyright'|
+  run_test! do
+    copyright_info = JSON.parse(response.body)[key]
+    expect(copyright_info).to be nil
   end
 end
 

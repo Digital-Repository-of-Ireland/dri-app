@@ -1,5 +1,19 @@
-<fieldset class="dri_licence_metadata_fieldset" id="licence">
+<fieldset class="dri_licence_metadata_fieldset dri_form_multiline_block" id="licence-fieldset-normal">
   <legend class="visually-hidden"><%= t('dri.views.fields.licence') %></legend>
-  <span class="dri_metadata_label_span"><label for="digital_object_licence"><%= t('dri.views.fields.licence') %></label><i class="dri_help_popover fa fa-info-circle fa-1" data-bs-content="<%= t('dri.help.fields.licence_text') %>" data-bs-title="<%= t('dri.help.fields.licence')%>" data-bs-trigger="hover" data-bs-placement="right"></i></span>
+  <span class="dri_metadata_label_span">
+    <label for="digital_object_licence"> <%= t('dri.views.fields.licence') %> </label>
+    <i class="dri_help_popover fa fa-info-circle fa-1" data-bs-content="<%= t('dri.help.fields.licence_text') %>" data-bs-title="<%= t('dri.help.fields.licence')%>" data-bs-trigger="hover" data-bs-placement="right"></i>
+  </span>
   <%= f.select(:licence, options_for_select(@licences, @object.licence), class: 'edit span6') %>
+</fieldset>
+
+<fieldset class="dri_licence_metadata_fieldset dri_form_multiline_block" id="licence-fieldset-special" style="display: none;">
+  <legend class="visually-hidden"><%= t('dri.views.fields.licence') %></legend>
+  <span class="dri_metadata_label_span">
+    <label for="digital_object_licence"> <%= t('dri.views.fields.licence') %> </label>
+    <i class="dri_help_popover fa fa-info-circle fa-1" data-bs-content="<%= t('dri.help.fields.licence_text') %>" data-bs-title="<%= t('dri.help.fields.licence')%>" data-bs-trigger="hover" data-bs-placement="right"></i>
+  </span>
+  <%= f.select(:licence, 
+             options_for_select(@licences.select { |licence| licence.include?("CC0") || licence.include?("Not licensed for re-use") }), 
+             class: 'edit span6') %>
 </fieldset>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_27_184421) do
+ActiveRecord::Schema.define(version: 2024_05_30_144546) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -56,6 +56,16 @@ ActiveRecord::Schema.define(version: 2024_03_27_184421) do
     t.string "collection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "copyrights", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "logo"
+    t.string "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean "supported"
   end
 
   create_table "datacite_dois", force: :cascade do |t|
@@ -170,6 +180,7 @@ ActiveRecord::Schema.define(version: 2024_03_27_184421) do
     t.text "institute"
     t.string "depositing_institute"
     t.string "licence"
+    t.string "copyright"
     t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
     t.index ["governing_collection_type", "governing_collection_id"], name: "governing_index"
     t.index ["metadata_checksum"], name: "metadata_chksm_index"

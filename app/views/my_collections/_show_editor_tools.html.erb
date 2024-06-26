@@ -107,10 +107,17 @@
              </li>
 
              <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence" do %>
-                <li class="dri_subnav_edit_list_last">
+                <li>
                   <%= t('dri.views.catalog.buttons.set_licence') %>
                 </li>
              <% end %>
+
+             <%= link_to '', :'data-bs-target' => '#dri_copyright_modal_id', :'data-bs-toggle' => 'modal', id: "manage_copyright" do %>
+                <li class="dri_subnav_edit_list_last">
+                  <%= t('dri.views.catalog.buttons.set_copyright') %>
+                </li>
+             <% end %>
+
            <% end %>
           </ul>
       </div>
@@ -167,6 +174,30 @@
           <%= t('dri.window.modal.close') %>
         </button>
         <button id="set_licence" type="submit" class="dri_button_green" onclick="$('#choose_licence').submit();">
+          <%= t('dri.views.catalog.buttons.submit') %>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="dri_copyright_modal_id">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title"><%= t('dri.views.catalog.forms.manage_copyright') %></h2>
+        <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <%= render partial: "shared/set_object_copyright" %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="dri_button_grey" data-bs-dismiss="modal">
+          <%= t('dri.window.modal.close') %>
+        </button>
+        <button id="set_copyright" type="submit" class="dri_button_green" onclick="$('#choose_copyright').submit();">
           <%= t('dri.views.catalog.buttons.submit') %>
         </button>
       </div>

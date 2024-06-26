@@ -118,6 +118,10 @@ module Interface
      page.should have_content("Licence")
     end
 
+    def has_copyright?
+      page.should have_content("Copyright")
+    end
+
     def is_format?(format)
       within(:xpath, "//div[contains(concat(' ', @class, ' '), 'dri_object_container')]") do
         page.should have_content("Format #{format}")
@@ -134,6 +138,12 @@ module Interface
       fill_in("licence[name]", :with => name)
       fill_in("licence[url]", :with => "http://www.dri.ie/")
       fill_in("licence[description]", :with => "Valid Description")
+    end
+
+    def enter_valid_copyright(name)
+      fill_in("copyright[name]", :with => name)
+      fill_in("copyright[url]", :with => "http://www.dri.ie/")
+      fill_in("copyright[description]", :with => "Valid Description")
     end
   end
 

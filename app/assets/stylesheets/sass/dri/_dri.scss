@@ -1472,8 +1472,7 @@ div.sidebar{
     }
     .dri_account_block_info {
         a{
-            color: darkblue;
-            text-decoration: underline;
+            color: $dri_black;
             &:hover{
                 color: $dri_red;
             }
@@ -2701,10 +2700,11 @@ ul.dri_collection_institutes_list {
 
 /*-------------- Set Licence ------------------*/
 
-dd.dri_licence{
+dd.dri_licence,
+dd.dri_copyright{
     display: flex;
     a{
-
+        width: 100%;
         &:hover{
             background-color: $dri_select;
             font-weight: bold;
@@ -2731,8 +2731,9 @@ dd.dri_licence{
     }
 }
 
-.dri_licence_select{
-    width: 200px;
+.dri_licence_select, 
+.dri_copyright_select{
+    width: 100%;
     display: block;
 }
 /*-------------- General Buttons --------------*/
@@ -3014,9 +3015,11 @@ dd.dri_licence{
         .dri_title_metadata_fieldset > input {
             width: 410px;
         }
-        .dri_licence_metadata_fieldset > select {
-            width: 410px;
+        .dri_licence_metadata_fieldset > select,
+        .dri_copyright_metadata_fieldset > select {
+            width: 450px;
             font-size: 16px;
+            margin-bottom: 16px;
         }
         .dri_description_metadata_fieldset > textarea,
         .dri_rights_metadata_fieldset > textarea {
@@ -3372,7 +3375,8 @@ dd.dri_licence{
 }
 
 a.dri_help_popover {
-    .dri_licence_logo {
+    .dri_licence_logo,
+    .dri_copyright_logo {
         height: 2em;
         vertical-align: bottom;
     }
@@ -3399,6 +3403,7 @@ select.dri-type-dropdown-type{
     font-size: 1.5rem;
 }
 
-img.dri_licence_logo{
+img.dri_licence_logo,
+img.dri_copyright_logo{
     width: 88px;
 }

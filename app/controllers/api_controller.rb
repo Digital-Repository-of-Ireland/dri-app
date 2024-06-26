@@ -35,6 +35,7 @@ class ApiController < CatalogController
              end
 
       item['metadata']['licence'] = DRI::Formatters::Json.licence(solr_doc)
+      item['metadata']['copyright'] = DRI::Formatters::Json.copyright(solr_doc)
       item['metadata']['doi'] = DRI::Formatters::Json.dois(solr_doc)
       item['metadata']['related_objects'] = solr_doc.object_relationships_as_json
 

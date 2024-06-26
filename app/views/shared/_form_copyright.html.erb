@@ -1,0 +1,21 @@
+<fieldset id="copyright">
+  <span>
+    <%= f.label "#{t('dri.views.fields.copyright')}" %>
+    <i class="dri_help_popover fa fa-info-circle fa-1" 
+    data-bs-content="<%= t('dri.help.fields.copyright_text') %>" 
+    data-bs-title="<%= t('dri.help.fields.copyright') %>" 
+    data-bs-trigger="hover" 
+    data-bs-placement="right"></i>
+  </span>
+  <select class="dri_copyright_select" name="digital_object[copyright]" id="digital_object_copyright">
+    <% @copyrights.each do |text, value| %>
+      <% if @document[:copyright_tesim].present? && @document[:copyright_tesim].first == value %>
+        <option selected="selected" value="<%= value %>" label="<%= text %>" title="<%= text %>"><%= text %></option>
+      <% else %>
+        <option value="<%= value %>" label="<%= text %>" title="<%= text %>"><%= text %></option>
+      <% end %>
+    <% end %>
+  </select>
+</fieldset>
+
+<%= f.submit t('dri.views.catalog.buttons.submit'), class: "d-none" %>

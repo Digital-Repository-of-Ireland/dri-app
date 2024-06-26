@@ -1,0 +1,18 @@
+<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
+  <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
+  <% if @object.rights.size == 0 %>
+  <div>
+    <label for="digital_object_rights_1" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
+    <%= f.text_area "rights][", value:'', class: "edit span6 dri-textarea", required:'required', id: 'digital_object_rights_1'  %>
+    <%= render "shared/form_remove_field_button" %>
+  </div>
+  <% end %>
+  <% @object.rights.each_with_index do |rights, index| %>
+  <div>
+      <label for="<%= "digital_object_rights_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
+      <%= f.text_area "rights][", value:rights, class: "edit span6 dri-textarea", required:'required', id: "digital_object_rights_#{index+1}" %>
+      <%= render "shared/form_remove_field_button" %>
+  </div>
+  <% end %>
+  <%= render "shared/form_add_text_field_button", input_type: 'textarea', action:%w(add rights), label_string: t("dri.views.fields.rights") %>
+</fieldset>

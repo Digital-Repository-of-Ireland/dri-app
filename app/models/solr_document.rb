@@ -38,6 +38,9 @@ class SolrDocument
     rights: 'rights_tesim',
   )
 
+  ANCESTORS_KEY = 'ancestor_id_ssim'.to_sym
+  COPYRIGHT_KEY = 'copyright_tesim'.freeze
+
   def self.find(id)
     Solr::Query.find(id)
   end
@@ -89,10 +92,9 @@ class SolrDocument
   end
 
   def ancestor_ids
-    ancestors_key = 'ancestor_id_ssim'.to_sym
-    return [] unless self[ancestors_key].present?
+    return [] unless self[ANCESTORS_KEY].present?
 
-    self[ancestors_key]
+    self[ANCESTORS_KEY]
   end
 
   def ancestors_published?
@@ -225,6 +227,14 @@ class SolrDocument
     end
   end
 
+  def copyright
+    if self[COPYRIGHT_KEY].present?
+      Copyright.where(name: self[COPYRIGHT_KEY]).first || self[COPYRIGHT_KEY]
+    else
+      retrieve_ancestor_copyright
+    end
+  end
+
   def object_profile
     key = 'object_profile_ssm'.freeze
 
@@ -258,7 +268,6 @@ class SolrDocument
   end
 
   def retrieve_ancestor_licence
-    ancestors_key = 'ancestor_id_ssim'.to_sym
     return nil unless ancestor_docs.present?
 
     licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
@@ -266,6 +275,17 @@ class SolrDocument
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
       return Licence.where(name: doc[licence_key]).take if doc[licence_key].present?
+    end
+
+    nil
+  end
+
+  def retrieve_ancestor_copyright
+    return nil unless ancestor_docs.present?
+
+    ancestor_ids.each do |id|
+      doc = ancestor_docs[id]
+      return Copyright.where(name: doc[COPYRIGHT_KEY]).take if doc[COPYRIGHT_KEY].present?
     end
 
     nil
@@ -284,16 +304,14 @@ class SolrDocument
   end
 
   def public_read?
-    read_access_groups_key = 'read_access_group_ssim'
-    groups = ancestor_field(read_access_groups_key)
+    groups = ancestor_field('read_access_group_ssim')
     return false if groups.nil? #groups could be nil if read access set to restricted
 
     groups.include?(SETTING_GROUP_PUBLIC)
   end
 
   def visibility
-    read_access_groups_key = 'read_access_group_ssim'
-    groups = ancestor_field(read_access_groups_key)
+    groups = ancestor_field('read_access_group_ssim')
     return "restricted" if groups.blank?
 
     return "public" if groups.include?(SETTING_GROUP_PUBLIC)

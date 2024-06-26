@@ -52,6 +52,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'date_range_start_isi', show: false
 
     config.add_facet_field 'licence_sim', label: 'Licence', limit: 20
+    config.add_facet_field 'copyright_sim', label: 'Copyright', limit: 20
     config.add_facet_field 'subject_sim', limit: 20
     config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false

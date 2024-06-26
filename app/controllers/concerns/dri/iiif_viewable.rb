@@ -190,7 +190,7 @@ module DRI::IIIFViewable
     if licence && licence.url
       manifest.license = licence.url
     end
-
+    
     manifest.attribution = attributions.join(', ')
   end
 
@@ -255,6 +255,11 @@ module DRI::IIIFViewable
     metadata << { 'label' => 'Published date', 'value' => @document.published_date.first } unless @document.published_date.blank?
     metadata << { 'label' => 'Date', 'value' => @document.date.first } unless @document.date.blank?
     metadata << { 'label' => 'Permalink', 'value' => "doi:10.7486/DRI.#{@document.id}" }
+    
+    copyright = @document.copyright
+    if copyright && copyright.url
+      metadata << { 'label' => 'Copyright', 'value' => copyright.url }
+    end
 
     metadata
   end
