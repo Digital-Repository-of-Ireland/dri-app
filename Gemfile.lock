@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 583bbdd96b7ee3990643895342ecfe01e2bbc0c8
+  revision: 49872e3faead94665176100bfed3e08051a87cc3
   branch: WorldFAIR_Part3
   specs:
     dri_data_models (4.8.0)
@@ -161,8 +161,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     appsignal (3.4.12)
       rack
     ast (2.4.2)
@@ -670,7 +670,7 @@ GEM
     mini_magick (4.13.1)
     mini_mime (1.1.5)
     minitar (0.9)
-    minitest (5.23.1)
+    minitest (5.24.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -690,7 +690,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.13)
+    net-imap (0.4.14)
       date
       net-protocol
     net-pop (0.1.2)
@@ -759,7 +759,7 @@ GEM
     popper_js (2.11.8)
     psych (5.1.0)
       stringio
-    public_suffix (5.1.1)
+    public_suffix (6.0.0)
     qa (5.10.0)
       activerecord-import
       deprecation
@@ -916,7 +916,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.0)
+    rexml (3.3.1)
       strscan
     riiif (2.4.0)
       deprecation (>= 1.0.0)
@@ -1112,7 +1112,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (2.4.2)
     unicode-types (1.8.0)
-    uri (0.12.2)
+    uri (0.13.0)
     validatable (1.6.7)
     valkyrie (3.2.0)
       activemodel
