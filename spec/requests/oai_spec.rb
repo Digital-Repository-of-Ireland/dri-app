@@ -71,6 +71,16 @@ RSpec.describe "Oai requests", type: :request do
     expect(response.body).to match(%r{<dcterms:license>http://test.com/licence<\/dcterms:license>})
   end
 
+  it "has a Copyright if one is added" do
+    copyright = Copyright.create(name: "Test Copyright", url: "http://test.com/copyright")
+    collection.copyright = copyright.name
+    collection.save
+    collection.reload
+
+    get "/oai?verb=ListRecords&metadataPrefix=oai_dri"
+    expect(response.body).to match(%r{<dcterms:copyright>http://test.com/copyright<\/dcterms:copyright>})
+  end
+
   it "has a dataProvider" do
     organisation = Institute.create(name: "Test Org", url: "http://test.org")
     collection.depositing_institute = organisation.name

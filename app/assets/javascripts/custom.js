@@ -39,6 +39,8 @@
 //= require Three/lib/three/examples/js/libs/draco/draco_wasm_wrapper.js
 //= require Three/lib/dat.gui/build/dat.gui.js
 
+//= require dri/dynamic_licence_options
+
 // Required by Blacklight-Maps
 //= require leaflet
 //= require leaflet.markercluster

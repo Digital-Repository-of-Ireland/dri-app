@@ -1,7 +1,7 @@
 <div class="dri_ingest_form_container">
   <div class="dri_ingest_form" style="width: 100%">
 
-    <%= form_for @licence, :html => { id: 'dri_edit_licence_form', multipart: true, class: 'form-vertical' }  do |f| %>
+    <%= form_for @licence, html: { id: 'dri_edit_licence_form', multipart: true, class: 'form-vertical' }  do |f| %>
       <fieldset>
         <%= f.label "#{t('dri.views.licences.forms.name')}:" %>
         <%= f.text_field :name %>
@@ -18,8 +18,8 @@
       </fieldset>
 
       <fieldset>
-      <%= f.label "#{t('dri.views.licences.forms.description')}:" %>
-      <%= f.text_field :description %>
+        <%= f.label "#{t('dri.views.licences.forms.description')}:" %>
+        <%= f.text_field :description %>
       </fieldset>
 
       <%= f.submit id: 'save_licence', class: 'dri_button_green dri_w330' %>

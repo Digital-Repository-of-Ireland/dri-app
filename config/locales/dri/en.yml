@@ -177,6 +177,7 @@ en:
         not_created: Unable to create. Check set permissions. You must have at least one collection manager or edit user.
         access_controls_not_updated: "Access controls not updated. Check set permissions. You must have at least one collection manager or edit user."
         licence_not_updated: "Unable to update licence."
+        copyright_not_updated: "Unable to update copyright."
         organisation_cannot_be_deleted: The organisation cannot be deleted as it is still associated with collections
         read_access: Unable to grant read access
         read_only: Repository is currently undergoing maintenance. Updates are temporarily disabled.
@@ -208,6 +209,8 @@ en:
         generating_surrogates: Surrogates are being generated.
         licence_created: Licence successfully created.
         licence_updated: Licence successfully updated.
+        copyright_created: Copyright successfully created.
+        copyright_updated: Copyright successfully updated.
         manager_user_created: 'User %{email} successfully granted collection manager permissions.'
         manager_user_removed: 'User %{email} has had collection manager permissions removed.'
         metadata_updated: Metadata has been successfully updated.
@@ -362,7 +365,7 @@ en:
         coverages: Coverages
         coverages_text: The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant.
         creation_date: Creation Date
-        creation_date_text: 'Date of creation of the resource. NOTE: You are required to enter at least one of Creation Date OR Published Date OR Date'
+        creation_date_text: '<b>NOTE:</b> You are required to enter at least one of <b>Creation Date</b> OR <b>Published Date</b> OR <b>Date</b>'
         creator: Creators
         creator_text: An entity primarily responsible for making the content of the resource.
         date: Date
@@ -378,6 +381,8 @@ en:
         languages: Languages
         licence: Reuse Licence
         licence_text: This licence refers to the reuse of the digital asset or collection. It does not apply to any original artefacts, nor to the descriptive metadata.
+        copyright: Copyright Status
+        copyright_text: A standardised statement on the Copyright held in and over the resource. This statement refers to the copyright of the digital asset, not that of any original artefact, nor that of the descriptive metadata.
         published_by_dri: Published by Digital Repository of Ireland
         published_date: Published Date
         published_date_text: Date of formal issuance (e.g., publication) of the resource.
@@ -439,6 +444,7 @@ en:
           edit_metadata: Edit Metadata
           open_workspace: Open in Workspace
           set_licence: Reuse Licence
+          set_copyright: Copyright Status
           submit: Submit
           view_catalog: View in Catalog
         forms:
@@ -460,6 +466,7 @@ en:
           download_originals: Download the original uploaded version of this individual asset
           download_surrogate: Download optimised surrogate version of this individual asset (recommended for viewing)
           manage_bookmark: Manage Your Bookmarks
+          manage_copyright: Manage Copyright Status
           manage_licence: Manage Reuse Licence
           fetch_tp_data: Fetch Transcribathon Data
           tp_story_id: Story ID
@@ -678,6 +685,7 @@ en:
         language: Language
         languages: Languages
         licence: Reuse Licence
+        copyright: Copyright Status
         name_coverage: Subject (Name)
         name_coverages: Subjects (Names)
         published_by_dri: Published by Digital Repository of Ireland
@@ -736,7 +744,24 @@ en:
         more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
         buttons:
           edit: Edit Licence
-          new: Add a new licence
+          new: Add a new Licence
+        forms:
+          description: Description
+          logo: Logo
+          name: Name
+          url: Url
+      copyright:
+        collection: Please see individual objects for copyright information
+        collection_mgr: "%{copyright} - this licence will be set on objects in this collection unless overridden"
+        all_rights_reserved: Not licensed for re-use. See Additional Licence and Rights Information.
+        public_domain: Work is in the Public Domain
+        unlicenced: This work is in copyright but not copyright for reuse.
+        orphan_work: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."
+        educational_use: "This Item is protected by copyright and/or related rights, however, no permission is required from the rights-holder(s) for educational uses. For other uses, you need to obtain permission from the rights-holder(s)."
+        more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
+        buttons:
+          edit: Edit Copyright
+          new: Add a new Copyright
         forms:
           description: Description
           logo: Logo
@@ -834,6 +859,7 @@ en:
           metadata: Metadata
           replace_caption: Replace metadata using XML file.
           replace_metadata: Replace Metadata
+          reuse: Data Reuse
           upload_file: Upload Asset
           upload_file_caption: No asset files have been uploaded. Please upload a master asset.
           view_collection: View Collection

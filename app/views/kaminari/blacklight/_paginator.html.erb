@@ -12,12 +12,19 @@
 <%= paginator.render do -%>
 	<!-- navigation to allow the user to page through the search results  -->
 		    <%= prev_page_tag unless current_page.first? %>
+	<nav id="dri_pagination_nav_id" class="dri_pagination_nav">
+		<ul class="dri_pagination_nav_links" >
 		    <% each_relevant_page do |page| -%>
-		      <% if page.left_outer? || page.right_outer? || page.inside_window? -%>
-		        <%= page_tag page %>
+				
+		      	<% if page.left_outer? || page.right_outer? || page.inside_window? -%>
+		        	<%= page_tag page %>
+				
 		      <% elsif !page.was_truncated? -%>
 		        <!-- <%= gap_tag %> -->
 		      <% end -%>
+
 		    <% end -%>
 		    <%= next_page_tag unless current_page.last? %>
+		</ul>
+	</nav>
 <% end %>

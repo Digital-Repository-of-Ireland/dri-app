@@ -97,26 +97,9 @@
 		</p>
 	</fieldset>
 
-	<fieldset id="date_group">
-		<fieldset id="date">
-		  <%= render "shared/form_fieldset_label", f:f, source:'date' %>
-			<% if @object.date.size == 0 %>
-			  <div>
-                  <label for="digital_object_date_1" class="visually-hidden"><%= t("dri.views.fields.date") %></label>
-				  <%= f.text_field "date][", value:'', class: "edit span6 dri-textfield date-group", id: 'digital_object_date_1' %>
-				  <%= render "shared/form_remove_field_button" %>
-			  </div>
-			<% end %>
-			<% @object.date.each_with_index do |date, index| %>
-			  <div>
-			  	  <label for="<%= "digital_object_date_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.date") %></label>
-				  <%= f.text_field "date][", value:date, class: "edit span6 dri-textfield date-group", id: "digital_object_date_#{index+1}" %>
-				  <%= render "shared/form_remove_field_button" %>
-			  </div>
-			<% end %>
+	<p><%= t("dri.help.fields.creation_date_text").html_safe%></p>
 
-	    <%= render "shared/form_add_text_field_button", action:%w(add date), label_string: t('dri.views.fields.date') %>
-		</fieldset>
+	<fieldset id="date_group">
 		<fieldset id="creation_date">
 		    <%= render "shared/form_fieldset_label", f:f, source:'creation_date' %>
 			<% if @object.creation_date.size == 0 %>
@@ -154,6 +137,25 @@
 			<% end %>
 	    <%= render "shared/form_add_text_field_button", action:%w(add published date), label_string: t('dri.views.fields.published_date') %>
 		</fieldset>
+		<fieldset id="date">
+		  <%= render "shared/form_fieldset_label", f:f, source:'date' %>
+			<% if @object.date.size == 0 %>
+			  <div>
+                  <label for="digital_object_date_1" class="visually-hidden"><%= t("dri.views.fields.date") %></label>
+				  <%= f.text_field "date][", value:'', class: "edit span6 dri-textfield date-group", id: 'digital_object_date_1' %>
+				  <%= render "shared/form_remove_field_button" %>
+			  </div>
+			<% end %>
+			<% @object.date.each_with_index do |date, index| %>
+			  <div>
+			  	  <label for="<%= "digital_object_date_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.date") %></label>
+				  <%= f.text_field "date][", value:date, class: "edit span6 dri-textfield date-group", id: "digital_object_date_#{index+1}" %>
+				  <%= render "shared/form_remove_field_button" %>
+			  </div>
+			<% end %>
+
+	    <%= render "shared/form_add_text_field_button", action:%w(add date), label_string: t('dri.views.fields.date') %>
+		</fieldset>
 	</fieldset>
 
 	<fieldset id="description" class="dri_description_metadata_fieldset dri_form_multiline_block">
@@ -169,24 +171,7 @@
       <%= render "shared/form_add_text_field_button", input_type: 'textarea', action:%w(add description), label_string: t("dri.views.fields.description") %>
 	</fieldset>
 
-	<fieldset id="rights" class="dri_rights_metadata_fieldset dri_form_multiline_block">
-	    <%= render "shared/form_fieldset_label", f:f, source:'rights' %>
-		<% if @object.rights.size == 0 %>
-			<div>
-				<label for="digital_object_rights_1" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
-				<%= f.text_area "rights][", value:'', class: "edit span6 dri-textarea", required:'required', id: 'digital_object_rights_1'  %>
-				<%= render "shared/form_remove_field_button" %>
-			</div>
-		<% end %>
-		<% @object.rights.each_with_index do |rights, index| %>
-		  <div>
-              <label for="<%= "digital_object_rights_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
-		  	  <%= f.text_area "rights][", value:rights, class: "edit span6 dri-textarea", required:'required', id: "digital_object_rights_#{index+1}" %>
-			  <%= render "shared/form_remove_field_button" %>
-		  </div>
-		<% end %>
-        <%= render "shared/form_add_text_field_button", input_type: 'textarea', action:%w(add rights), label_string: t("dri.views.fields.rights") %>
-	</fieldset>
+	
 
 	<%# we don't want the Collection type to be output as we don't want it modified %>
 	<% if !@object.collection? %>
@@ -363,4 +348,7 @@
 			</p>
 		</fieldset>
   <% end %>
+
 <% end %>
+
+<%= javascript_include_tag 'dri/dynamic_licence_options' %>

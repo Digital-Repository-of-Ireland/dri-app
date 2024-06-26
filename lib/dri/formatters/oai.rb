@@ -33,6 +33,10 @@ class DRI::Formatters::OAI < OAI::Provider::Metadata::Format
       license: lambda do |record|
         licence = record.licence
         licence.present? ? [licence.url || licence.name] : [nil]
+      end,
+      copyright: lambda do |record|
+        copyright = record.copyright
+        copyright.present? ? [copyright.url || copyright.name] : [nil]
       end
     },
     edm: {

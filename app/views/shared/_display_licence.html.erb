@@ -1,5 +1,5 @@
 <% if @document.licence.present? %>
-  <dt class="dri_licence"><%= t('dri.views.fields.licence') %></dt>
+  <dt class="blacklight-licence"><%= t('dri.views.fields.licence') %></dt>
   <dd class="dri_licence">
     <% if @document.licence.is_a? Array %>
       <%= "#{@document.licence.first}" %>

@@ -41,6 +41,7 @@ class DRI::Formatters::Linkset
           
       orcid_links = contributors  
       license_link = @document.licence.url
+      copyright_link = @document.copyright.url
       
       assets = @document.assets
       link_assets = object_items(assets, @document.id)
@@ -75,6 +76,10 @@ class DRI::Formatters::Linkset
         linkset << "<#{license_link}> ; rel=\"license\" ; anchor=\"#{anchor_url}\""
       end
 
+      if copyright_link.present?
+        linkset << "<#{copyright_link}> ; rel=\"copyright\" ; anchor=\"#{anchor_url}\""
+      end
+
       ancestor_id = @document['ancestor_id_ssim']
       reverse_link = reverse_link_builder(link_assets, ancestor_id, @document.id)
       reverse_link.each do |item|
@@ -93,6 +98,7 @@ class DRI::Formatters::Linkset
 
       orcid_links = contributors
       license_link = @document.licence.url
+      copyright_link = @document.copyright.url
 
       assets = @document.assets
       link_assets = object_items(assets, @document.id)
@@ -123,6 +129,7 @@ class DRI::Formatters::Linkset
       linkset[:item] = link_assets if link_assets.present?
       linkset[:describedby] = [describedby]
       linkset[:license] = [{"href" => license_link}] if license_link.present?
+      linkset[:copyright] = [{"href" => copyright_link}] if copyright_link.present?
 
       ancestor_id = @document['ancestor_id_ssim']
       reverse_link = reverse_link_builder(link_assets, ancestor_id, @document.id)

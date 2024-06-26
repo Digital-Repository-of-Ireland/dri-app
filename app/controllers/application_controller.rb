@@ -102,6 +102,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def supported_copyrights
+    @copyrights = {}
+    Copyright.supported.each do |copyright|
+      @copyrights["#{copyright['name']}: #{copyright[:description]}"] = copyright['name']
+    end
+  end  
+
   private
 
     def after_sign_in_path_for(resource)

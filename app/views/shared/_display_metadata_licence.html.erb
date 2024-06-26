@@ -3,11 +3,13 @@
 </dt>
 <dd class="dri_licence">
   <a target="_blank" href="http://creativecommons.org/publicdomain/zero/1.0/" class="licence_link">
-      <div class="left_container">
-          <div class="dri_licence_logo_container">
-              <%= image_tag("dri/home/cc-zero.png", alt: "Metadata License logo", class:"dri_licence_logo" ) %>
-          </div>
-      </div>
+      <% if @document.object? %>
+        <div class="left_container">
+            <div class="dri_licence_logo_container">
+                <%= image_tag("dri/home/cc-zero.png", alt: "Metadata License logo", class:"dri_licence_logo" ) %>
+            </div>
+        </div>
+      <% end %>
       <div class="right_container">
           <div class="dri_licence_container">
             <%= t('dri.views.fields.metadata_licence_standard') %>

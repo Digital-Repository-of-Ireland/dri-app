@@ -33,7 +33,7 @@ describe CatalogController, type: :controller do
 
     it "should accept fields to output" do
       requested_fields = ['title', 'subject', 'temporal_coverage']
-      expected_titles = ["Id", "Title", "Subjects", "Subjects (Temporal)", "Licence", "Url"]
+      expected_titles = ["Id", "Title", "Subjects", "Subjects (Temporal)", "Licence", "Copyright", "Url"]
       object_doc = SolrDocument.new(@object.to_solr)
       formatter = DRI::Exporters::Csv.new(controller.request.base_url, object_doc, { fields: requested_fields })
       generated_csv = CSV.parse(formatter.format)

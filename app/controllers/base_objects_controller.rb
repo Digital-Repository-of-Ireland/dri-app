@@ -47,19 +47,17 @@ class BaseObjectsController < CatalogController
     #
     def set_licence
       @object = retrieve_object!(params[:id])
-
       licence = params[:digital_object][:licence]
+      
       if licence.present?
         @object.licence = licence
         @object.increment_version
       end
 
       updated = @object.save
-
+      
       if updated
         record_version_committer(@object, current_user)
-
-        # Do the preservation actions
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve
       end
@@ -74,6 +72,33 @@ class BaseObjectsController < CatalogController
       end
     end
 
+    def set_copyright
+      @object = retrieve_object!(params[:id])
+      copyright = params[:digital_object][:copyright]
+
+      if copyright.present?
+        @object.copyright = copyright
+        @object.increment_version
+      end
+
+      updated = @object.save 
+
+      if updated
+        record_version_committer(@object, current_user)
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve
+      end
+    
+      respond_to do |format|
+        if updated
+          flash[:notice] = t('dri.flash.notice.copyright_updated')
+        else
+          flash[:error] = t('dri.flash.error.copyright_not_updated')
+        end
+        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
+      end
+    end
+  
     def visibility_label field
       case field
       when 'registered'

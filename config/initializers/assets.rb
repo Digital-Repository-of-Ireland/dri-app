@@ -14,6 +14,7 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 #]	
 
 Rails.application.config.assets.precompile += %w( three_js_viewer_embed.js )
+Rails.application.config.assets.precompile += %w( dri/dynamic_licence_options.js )
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets

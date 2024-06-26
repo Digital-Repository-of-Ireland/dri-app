@@ -70,6 +70,7 @@ module DriApp
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.assets.paths << Rails.root.join('app', 'assets', 'images')
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     # Default SASS Configuration, check out https://github.com/rails/sass-rails for details
@@ -81,6 +82,7 @@ module DriApp
     config.assets.version = '1.0'
 
     config.autoload_paths << Rails.root.join('lib')
+    config.assets.precompile += %w( *.png *.jpg *.jpeg *.gif )
 
   end
 end
