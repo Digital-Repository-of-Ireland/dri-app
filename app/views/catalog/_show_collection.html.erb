@@ -23,16 +23,11 @@
     <%= render partial: 'shared/display_licence' %>
     <%= render partial: 'shared/display_copyright' %>
 
-    <dt class="dri_licence_head">
+    <dt class="blacklight-licence">
 			<%= t('dri.views.fields.metadata_licence') %>
 		</dt>
-    <dd class="dri_licence">
+    <dd class="blacklight-licence">
       <a target="_blank" href="http://creativecommons.org/publicdomain/zero/1.0/" class="licence_link">
-          <div class="left_container">
-              <div class="dri_licence_logo_container">
-                  <%= image_tag("dri/home/cc-zero.png", alt: "Metadata License logo", class:"dri_licence_logo" ) %>
-              </div>
-          </div>
           <div class="right_container">
               <div class="dri_licence_container">
                 <%= t('dri.views.fields.metadata_licence_standard') %>
