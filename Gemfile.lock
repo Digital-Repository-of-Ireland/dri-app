@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 0b3451c74cce317a6921cad0f6a85928f50d174b
-  branch: develop
+  revision: ea8b90686a8dfbf2537181fc145bb9f2cb1703b7
+  tag: v4.9.0
   specs:
     dri_data_models (4.9.0)
       hydra-derivatives
@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
-  branch: develop
+  revision: 7619838076029da7aa0df998f432eaf3a6bc5ec4
+  tag: v2.2.3
   specs:
     user_group (2.2.3)
       blacklight-access_controls
@@ -190,7 +190,7 @@ GEM
       validatable (~> 1.6)
     base64 (0.2.0)
     bcp47_spec (0.2.1)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
@@ -211,7 +211,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.36.2)
+    blacklight (7.37.0)
       deprecation
       globalid
       hashdiff
@@ -254,7 +254,7 @@ GEM
       typhoeus
     builder (3.3.0)
     byebug (10.0.2)
-    cancancan (3.5.0)
+    cancancan (3.6.1)
     capybara (3.39.2)
       addressable
       matrix
@@ -331,13 +331,13 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.9.2)
+    devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-guests (0.8.1)
+    devise-guests (0.8.3)
       devise
     devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
@@ -361,7 +361,7 @@ GEM
     dry-core (1.0.1)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
-    dry-inflector (1.0.0)
+    dry-inflector (1.1.0)
     dry-initializer (3.1.1)
     dry-logic (1.5.0)
       concurrent-ruby (~> 1.0)
@@ -436,7 +436,7 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
-    fastimage (2.2.7)
+    fastimage (2.3.1)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.23.0)
@@ -561,7 +561,7 @@ GEM
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
-    jbuilder (2.11.5)
+    jbuilder (2.12.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
@@ -666,11 +666,11 @@ GEM
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0604)
-    mini_magick (4.13.1)
+    mime-types-data (3.2024.0702)
+    mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (0.9)
-    minitest (5.24.0)
+    minitest (5.24.1)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -730,7 +730,7 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (2.1.1)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -746,7 +746,7 @@ GEM
     orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.0)
-    paper_trail (15.0.0)
+    paper_trail (15.1.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.23.0)
@@ -818,8 +818,9 @@ GEM
     rb-gravatar (1.0.6)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    rdf (3.3.1)
+    rdf (3.3.2)
       bcp47_spec (~> 0.2)
+      bigdecimal (~> 3.1, >= 3.1.5)
       link_header (~> 0.0, >= 0.0.8)
     rdf-aggregate-repo (3.3.0)
       rdf (~> 3.3)
@@ -900,9 +901,9 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    request_store (1.5.1)
+    request_store (1.7.0)
       rack (>= 1.4)
-    responders (3.1.0)
+    responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
     resque (2.6.0)
@@ -1100,7 +1101,7 @@ GEM
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
     thor (1.3.1)
-    tilt (2.3.0)
+    tilt (2.4.0)
     timeout (0.4.1)
     trailblazer-option (0.1.2)
     typhoeus (1.4.1)
