@@ -37,14 +37,13 @@ private
   # else get analytics for these collection ids and return analytics
   def fetch_analytics(collection)
     ga4 = ga4_analytics(collection)
-    ua = ua_analytics(collection)
-   
-    analytics = (ga4+ua).map{|a| a.to_h }.group_by{|h| h[:object] }.map{|k,v| v.reduce({}, :merge)}
+    
+    analytics = ga4.map{|a| a.to_h }.group_by{|h| h[:object] }.map{|k,v| v.reduce({}, :merge)}
     
     analytics.each do |entry|
-      entry[:users] = entry[:users].to_i + entry[:ga4_users].to_i if entry[:ga4_users].present?
-      entry[:totalEvents] = entry[:totalEvents].to_i + entry[:ga4_totalEvents].to_i if entry[:ga4_totalEvents].present?
-      entry[:totalHits] = entry[:totalHits].to_i + entry[:ga4_totalHits].to_i if entry[:ga4_totalHits].present? 
+      entry[:users] = entry[:ga4_users].to_i if entry[:ga4_users].present?
+      entry[:totalEvents] = entry[:ga4_totalEvents].to_i if entry[:ga4_totalEvents].present?
+      entry[:totalHits] = entry[:ga4_totalHits].to_i if entry[:ga4_totalHits].present? 
     end
 
     object_hash = object_titles(collection)

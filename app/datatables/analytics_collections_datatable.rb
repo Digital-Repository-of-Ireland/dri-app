@@ -41,12 +41,11 @@ private
     return collections if collections.empty?
 
     ga4 = ga4_analytics(collections)
-    ua = ua_analytics(collections)
     
-    analytics = (ga4+ua).map{|a| a.to_h }.group_by{|h| h[:collection] }.map{|k,v| v.reduce({}, :merge)}
+    analytics = ga4.map{|a| a.to_h }.group_by{|h| h[:collection] }.map{|k,v| v.reduce({}, :merge)}
     analytics.each do |entry|
-      entry[:users] = entry[:users].to_i + entry[:ga4_users].to_i if entry[:ga4_users].present?
-      entry[:totalEvents] = entry[:totalEvents].to_i + entry[:ga4_totalEvents].to_i if entry[:ga4_totalEvents].present?
+      entry[:users] = entry[:ga4_users].to_i if entry[:ga4_users].present?
+      entry[:totalEvents] = entry[:ga4_totalEvents].to_i if entry[:ga4_totalEvents].present?
     end
 
     collection_hash = collection_names(collections)
