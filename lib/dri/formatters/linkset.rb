@@ -41,7 +41,7 @@ class DRI::Formatters::Linkset
           
       orcid_links = contributors  
       license_link = @document.licence.url
-      copyright_link = @document.copyright.url
+      copyright_link = @document.copyright&.url
       
       assets = @document.assets
       link_assets = object_items(assets, @document.id)
@@ -98,7 +98,7 @@ class DRI::Formatters::Linkset
 
       orcid_links = contributors
       license_link = @document.licence.url
-      copyright_link = @document.copyright.url
+      copyright_link = @document.copyright&.url
 
       assets = @document.assets
       link_assets = object_items(assets, @document.id)
