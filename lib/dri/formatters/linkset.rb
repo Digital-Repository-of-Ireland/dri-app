@@ -40,7 +40,7 @@ class DRI::Formatters::Linkset
       @doi = doi.doi if doi.present? && doi.minted?
           
       orcid_links = contributors  
-      license_link = @document.licence.url
+      license_link = @document.licence&.url
       copyright_link = @document.copyright&.url
       
       assets = @document.assets
@@ -97,7 +97,7 @@ class DRI::Formatters::Linkset
       @doi = doi.doi if doi.present? && doi.minted?
 
       orcid_links = contributors
-      license_link = @document.licence.url
+      license_link = @document.licence&.url
       copyright_link = @document.copyright&.url
 
       assets = @document.assets
