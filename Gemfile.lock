@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: ea8b90686a8dfbf2537181fc145bb9f2cb1703b7
-  tag: v4.9.0
+  revision: f6a5dd4b8175368fe8df28414d91f83bfa49a25a
+  tag: v4.9.1
   specs:
-    dri_data_models (4.9.0)
+    dri_data_models (4.9.1)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -429,7 +429,7 @@ GEM
     faraday-httpclient (1.0.1)
     faraday-multipart (1.0.4)
       multipart-post (~> 2)
-    faraday-net_http (1.0.1)
+    faraday-net_http (1.0.2)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
@@ -759,7 +759,7 @@ GEM
     popper_js (2.11.8)
     psych (5.1.0)
       stringio
-    public_suffix (6.0.0)
+    public_suffix (6.0.1)
     qa (5.10.0)
       activerecord-import
       deprecation
@@ -1115,7 +1115,7 @@ GEM
     unicode-types (1.8.0)
     uri (0.13.0)
     validatable (1.6.7)
-    valkyrie (3.2.0)
+    valkyrie (3.3.0)
       activemodel
       activesupport
       dry-struct
