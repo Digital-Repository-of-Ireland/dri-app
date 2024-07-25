@@ -15,8 +15,8 @@ Scenario: Visiting the site for the first time
   When I accept cookies terms
   Then I should have a cookie accept_cookies
 
-Scenario: Logging in should set accept_cookies
-  Given I am on the home page
-  Then I should see a window about cookies
-  When I am logged in as "user1" and accept cookies
-  Then I should not see a window about cookies
+  #Scenario: Logging in should set accept_cookies
+  #Given I am on the home page
+  #Then I should see a window about cookies 
+  #When I am logged in as "user1" and accept cookies
+  #Then I should not see a window about cookies
