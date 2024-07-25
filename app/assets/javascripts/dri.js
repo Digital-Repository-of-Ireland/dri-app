@@ -2,7 +2,7 @@
 //
 
 $(document).ready(function() {
-    $('#dri_cookie_modal').modal({keyboard: false, backdrop: 'static'});
+    $('#dri_cookie_modal').modal('show', {keyboard: false, backdrop: 'static'});
     $('.carousel').carousel('pause');
     $('.dri_help_popover_slow, #facets, #dri_social_media_links_id, #dri_change_sort_view_id, #dri_facet_restrictions_links_id, #dri_sort_nav_id, #dri_pager_nav_id, #dri_pagination_nav_links_id,  #dri_tlfield_options_id').popover( {delay: { show: 1500, hide: 100 }} );
     $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );

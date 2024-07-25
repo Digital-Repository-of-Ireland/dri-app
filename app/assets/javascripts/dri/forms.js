@@ -39,7 +39,7 @@ $(document).ready(function() {
       });
     } else {
       $(this).parent('div').children('.edit').val("");
-    }
+    } 
   });
 
   $('.add-person-fields a').click(function(e) {
@@ -114,6 +114,17 @@ $(document).ready(function() {
       "digital_object[published_date][]": { placement:'top' },
       "digital_object[date][]": { placement:'top' },
     },
+  });
+
+  $("#copyright-select").on("change", function(){
+    var selectedCopyright = $(this).val();
+    if (selectedCopyright === "No Copyright") {
+      document.getElementById('licence-fieldset-normal').style.display = 'none';
+      document.getElementById('licence-fieldset-special').style.display = 'block';
+    } else {
+      document.getElementById('licence-fieldset-normal').style.display = 'block';
+      document.getElementById('licence-fieldset-special').style.display = 'none';
+    }
   });
 });
 
