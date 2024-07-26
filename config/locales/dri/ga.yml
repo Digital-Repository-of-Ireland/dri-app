@@ -25,7 +25,7 @@ ga:
         deposit_agreement: Aontaím le téarmaí an Chomhaontaithe Taisce
         deposit_header: 'Taisclann Dhigiteach na hÉireann: Téarmaí agus Coinníollacha na Taisce'
         header: Comhaontú Úsáideora Deiridh Thaisclann Dhigiteach na hÉireann
-        message: "Má chuireann tú tic le &quot;Aontaím&quot; thíos aontaíonn tú le húsáid fianán agus leis na téarmaí agus na coinníollacha mar a leagtar amach thuas iad. Tá siad sin ar fáil <a href='%{url}'>Comhaontú an Úsáideora Dheiridh</a> freisin. Féach ar ár <a href='https://dri.ie/dri-privacy-statement'>bPolasaí Príobháideachta</a> le haghaidh tuilleadh eolais."
+        message: "Má chuireann tú tic le &quot;Aontaím&quot; thíos aontaíonn tú leis na téarmaí agus na coinníollacha mar a leagtar amach thuas iad. Tá siad sin ar fáil <a href='%{url}'>Comhaontú an Úsáideora Dheiridh</a> freisin. Féach ar ár <a href='https://dri.ie/dri-privacy-statement'>bPolasaí Príobháideachta</a> le haghaidh tuilleadh eolais."
         reject: Ní aontaím
       timeline:
         description:
@@ -210,6 +210,7 @@ ga:
       browse_organisations: Brabhsáil de réir Eagraíochta
       collection: Bailiúchán
       collections: Bailiúcháin
+      cookie_settings: Do rogha fianáin
       community_archive: Scéim Chartlainne Phobail
       deposit_guide: Treoir don Chuir i dTaisce
       deposit: Taisceadh

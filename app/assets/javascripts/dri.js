@@ -166,7 +166,6 @@ $(document).on("click", "#download_archive", function () {
 
 function trackDownload(track, rootCollection, object) {
   if (track===true) {
-    console.log("Download");
     gtag('event', 'asset_download', {
       'collection':rootCollection,
       'object':object,

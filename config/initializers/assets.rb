@@ -23,7 +23,7 @@ Rails.application.config.assets.precompile += %w( dri/dynamic_licence_options.js
 Rails.application.config.assets.precompile += [
   %w( custom.js video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff ),
     'dri/dri_grid.css','dri/dri_layouts.css', 'dri/dri_print.css', 'blacklight_maps.css',
-    'blacklight_oai_provider/oai_dri.xsl',
+    'blacklight_oai_provider/oai_dri.xsl', 'cookieconsent-config.js',
     %w( replay/ui.js replay/sw.js ),
     %w( jquery-xmleditor/vendor/cycle.js iiif_viewer.js three_js_viewer.js dri/modals.js analytics.js jquery.colorbox.js )
 ]
