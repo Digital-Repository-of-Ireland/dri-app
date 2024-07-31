@@ -26,7 +26,7 @@ CookieConsent.run({
         translations: {
             en: {
                 consentModal: {
-                    title: 'We use cookies',
+                    title: 'This site uses cookies',
                     description: 'These cookies help us to improve your experience by providing insights into how the site is being used. For more detailed information please check our Privacy Policy',
                     acceptAllBtn: 'Accept all',
                     acceptNecessaryBtn: 'Reject non-essential',
