@@ -109,19 +109,14 @@
       <% if generic_file.threeD? %>
         <%= link_to t('dri.views.catalog.links.embed_data'), { controller: 'api/oembed', action: 'show', url: catalog_url, asset_id: generic_file.id }, class: 'dri_embed_link' %>
       <% end %>
-      <%= link_to '#dri_download_modal_id', :'data-bs-toggle' => 'modal', :'data-fileid' => generic_file.id, :id => "configure_download_#{generic_file.id}", class: 'configure_download' do %>
+      <%= link_to '#dri_download_modal_id', :'data-fileid' => generic_file.id, id: "configure_download_#{generic_file.id}", class: 'configure_download' do %>
         <%= t('dri.views.catalog.links.download') %>
       <% end %>
     <% end %>
   </p>
 </div>
 
-<div id="dri_download_assets" class="<%= generic_file.id %>" style="display:none">
-  <div>
-    <p>
-      <%= t('dri.views.catalog.forms.download_tsandcs_msg', url: main_app.page_path('terms')).html_safe %>
-    </p>
-  </div>  
+<div id="dri_download_assets_<%= generic_file.id %>" style="display:none">
   <% if @surrogate && generic_file.downloadable_surrogate? %>
     <div>
       <%= link_to file_download_path(@document.id, generic_file.id, type: 'surrogate'), id: 'download_surrogate', data: { root_collection: @document.root_collection_id, object: @document.id, track_download: @track_download } do %>
