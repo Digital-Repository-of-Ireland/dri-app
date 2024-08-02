@@ -379,9 +379,12 @@ Then /^(?:|I )should( not)? see a message for (.+)$/ do |negate, message|
   page.send(expectation, have_selector(".dri_messages_container", text: flash_for(message)))
 end
 
-Then /^(?:|I )should( not)? see a window about cookies$/ do |negate|
-  expectation = negate ? :should_not : :should
-  page.send(expectation, have_selector(".modal-title", text: flash_for("cookie terms")))
+Then /^(?:|I )should see a window about cookies$/ do
+  expect(page).to have_css(".dri_cookie_acceptance_text", visible: true)
+end
+
+Then /^(?:|I )should not see a window about cookies$/ do
+  expect(page).to_not have_css(".dri_cookie_acceptance_text", visible: true)
 end
 
 Then /^(?:|I )should( not)? see a message about cookies$/ do |negate|

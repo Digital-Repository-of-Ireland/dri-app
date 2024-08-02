@@ -2,7 +2,6 @@
 //
 
 $(document).ready(function() {
-    $('#dri_cookie_modal').modal('show', {keyboard: false, backdrop: 'static'});
     $('.carousel').carousel('pause');
     $('.dri_help_popover_slow, #facets, #dri_social_media_links_id, #dri_change_sort_view_id, #dri_facet_restrictions_links_id, #dri_sort_nav_id, #dri_pager_nav_id, #dri_pagination_nav_links_id,  #dri_tlfield_options_id').popover( {delay: { show: 1500, hide: 100 }} );
     $('.dri_help_popover').popover( {delay: { show: 100, hide: 100 }} );
@@ -166,13 +165,37 @@ $(document).on("click", "#download_archive", function () {
 
 function trackDownload(track, rootCollection, object) {
   if (track===true) {
-    console.log("Download");
     gtag('event', 'asset_download', {
       'collection':rootCollection,
       'object':object,
       'value':'1'
     });
   }
+}
+
+$(document).on("click", ".configure_download", function () {
+    if(Cookies.get('accept_cookies') === 'yes'){
+      var fileid = $(this).data('fileid');
+      displayDownload(fileid);
+    } else {
+      $('#accept_agreement').data('fileid', $(this).data('fileid'));
+      $('#dri_cookie_modal').modal('show');
+    }
+});
+  
+$(document).on("click", "#accept_agreement", function () {
+    Cookies.set('accept_cookies', 'yes', { path: '/', expires: 10000 });
+    
+    var fileid = $(this).data('fileid');
+    displayDownload(fileid);
+});
+
+function displayDownload(fileid){
+    var infoModal = $('#dri_download_modal_id');
+    htmlData = $('#dri_download_assets_' + fileid).html();
+    infoModal.find('#download-modal-links').html(htmlData);
+    infoModal.modal('show');
+    return false;
 }
 
 Blacklight.modal.hide = function(el) {

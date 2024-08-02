@@ -34,16 +34,16 @@
         <span> <%= link_to t('dri.headerlinks.end_user_agreement'), main_app.page_path('terms'), id: "end_user_agreement", class: "muted" %> </span>
       </li>
       <li>
-        <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'http://www.dri.ie/dri-privacy-statement', id: "privacy_statement", class: "muted" %> </span>
+        <span> <%= link_to t('dri.headerlinks.cookie_settings'), '#', id: "cookie_settings", class: "muted", data: { cc: "show-preferencesModal"} %> </span>
       </li>
       <li>
-        <span> <%= link_to t('dri.headerlinks.licensing_statement'), 'http://www.dri.ie/licensing-statement', id: "licensing_statement", class: "muted" %> </span>
+        <span> <%= link_to t('dri.headerlinks.privacy_statement'), 'https://dri.ie/dri-privacy-statement', id: "privacy_statement", class: "muted" %> </span>
+      </li>
+      <li>
+        <span> <%= link_to t('dri.headerlinks.licensing_statement'), 'https://dri.ie/licensing-statement', id: "licensing_statement", class: "muted" %> </span>
       </li>
       <li>
         <span> <%= link_to t('dri.headerlinks.help'), 'https://dri.ie/general-faq', id: "dri_footer_help", class: "muted" %> </span>
-      </li>
-      <li>
-        <span> <%= link_to t('dri.headerlinks.find_us'), 'http://dri.ie/contact', id: "find_us_footer", class: "muted" %> </span>
       </li>
     </ul>
 

@@ -30,8 +30,8 @@ describe ReadersController do
     @login_user.delete
     @manager_user.delete
 
-    @collection.destroy
-    @group.delete
+    @collection.destroy if @collection
+    @group.delete if @group
   end
 
   describe 'POST read request' do
@@ -69,7 +69,7 @@ describe ReadersController do
     end
 
     after(:each) do
-      @subcollection.destroy
+      @subcollection.destroy if @subcollection
     end
 
     it "creates a new pending membership in the governing read group" do

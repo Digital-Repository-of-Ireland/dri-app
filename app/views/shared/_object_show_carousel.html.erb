@@ -1,13 +1,3 @@
-<script>
-  $(document).on("click", ".configure_download", function () {
-  var fileid = $(this).data('fileid');
-  var infoModal = $('#dri_download_modal_id');
-  htmlData = $('.' + fileid).html();
-  infoModal.find('.modal-body').html(htmlData);
-  return false;
-});
-</script>
-
 <% @iiif_sources = [] %>
 
 <div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-bs-interval = "false">
@@ -45,3 +35,25 @@
     <%= javascript_include_tag 'iiif_viewer', async: Rails.env.production? %>
   <% end %>
 <% end %>
+
+<div class="modal fade" id="dri_cookie_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-describedby="dri_end_user_agreement_text" aria-labelledby="dri_cookie_modal_header">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="dri_cookie_modal_header"><%= t('dri.application.terms.header') %></h1>
+      </div>
+      <div class="modal-body">
+        <div class="dri_cookie_acceptance_text">
+          <p><%= render partial: 'shared/terms' %></p>
+        </div>
+        <p><%= t('dri.application.terms.message', url: main_app.page_path('terms') ).html_safe %></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="accept_agreement" class="dri_button_green" data-bs-dismiss="modal">
+          <%= t('dri.application.terms.accept') %>
+        </button>
+        <button type="button" class="dri_button_black" id="reject_agreement" data-bs-dismiss="modal"><%= t('dri.application.terms.reject') %></button>
+      </div>
+    </div>
+  </div>
+</div>
