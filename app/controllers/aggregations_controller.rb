@@ -19,7 +19,6 @@ class AggregationsController < ApplicationController
 
   def edit
     @aggregation = Aggregation.find_or_create_by_collection_id(params[:id])
-    #@aggregation = Aggregation.where(collection_id: params[:id]).first
   end
 
   def admin?
