@@ -275,6 +275,32 @@ describe LinksetsController, type: :controller do
     end
   end
 
+  describe '#document_licence_link' do
+
+    before do
+      allow_any_instance_of(DRI::Formatters::Linkset).to receive(:mapped_links).and_return(nil)
+    end
+
+    it 'returns nil for no licence object' do
+      @document = SolrDocument.new({ id: '1', 'has_model_ssim' => ['DRI::QualifiedDublinCore'], 'licence_tesim' => ['No Licence'] })
+      result = DRI::Formatters::Linkset.new(controller, @document).document_licence_link
+
+      expect(result).to be_nil
+    end
+
+    it 'returns the licence url' do
+      licence = Licence.new(
+        name: 'test', description: 'this is a test', url: 'http://exaample.com'
+      )
+      licence.save
+      @document = SolrDocument.new({ id: '1', 'has_model_ssim' => ['DRI::QualifiedDublinCore'], 'licence_tesim' => ['test'] })
+      result = DRI::Formatters::Linkset.new(controller, @document).document_licence_link
+
+      expect(result).to eq('http://exaample.com')
+      licence.destroy if licence
+    end
+  end
+
   describe '#reverse_link_builder' do
     let(:ancestor_id) { ['ancestor_id'] }
     let(:object_id) { 'object_id' }

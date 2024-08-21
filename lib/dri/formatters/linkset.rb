@@ -39,8 +39,9 @@ class DRI::Formatters::Linkset
       doi = DataciteDoi.where(object_id: @document.id).current
       @doi = doi.doi if doi.present? && doi.minted?
           
-      orcid_links = contributors  
-      license_link = @document.licence&.url
+      orcid_links = contributors
+
+      license_link =document_licence_link
       copyright_link = @document.copyright&.url
       
       assets = @document.assets
@@ -97,7 +98,7 @@ class DRI::Formatters::Linkset
       @doi = doi.doi if doi.present? && doi.minted?
 
       orcid_links = contributors
-      license_link = @document.licence&.url
+      license_link = document_licence_link
       copyright_link = @document.copyright&.url
 
       assets = @document.assets
@@ -184,6 +185,12 @@ class DRI::Formatters::Linkset
       end
 
       asset_link
+    end
+
+    def document_licence_link
+      if @document.licence.present? && @document.licence.respond_to?(:url)
+        return @document.licence&.url
+      end
     end
 
     def item_link(asset, id, asset_link, type, id_file, mime_type)

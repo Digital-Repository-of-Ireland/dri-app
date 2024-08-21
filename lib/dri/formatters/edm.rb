@@ -289,7 +289,7 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
         xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
       end
 
-      if (!record.copyright.name.present?)
+      if (!record.copyright.present? && !record.copyright.name.present?)
         return ""
       else
         copyright = record.copyright.url
@@ -319,11 +319,13 @@ class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
 
       # Get the asset files
       assets = clean_assets(record.assets(with_preservation: false, ordered: false))
-      landing_page = doi_url(record, aggregation.doi_from_metadata?) || catalog_url(record.id)
+      doi_flag = aggregation.doi_from_metadata if aggregation.present?
+      landing_page = doi_url(record, doi_flag) || catalog_url(record.id)
 
       # identify which is the main file (based on metadata type)
       # and get correct Urls
-      mainfile = self.class::mainfile_for_type(edmtype, assets, aggregation.iiif_main?)
+      iiif_flag = aggregation.iiif_main? if aggregation.present?
+      mainfile = self.class::mainfile_for_type(edmtype, assets, iiif_flag)
       imagefile = self.class::mainfile_for_type("IMAGE", assets)
       if mainfile.present?
         thumbnail = thumbnail_url(record, edmtype, mainfile, imagefile)
