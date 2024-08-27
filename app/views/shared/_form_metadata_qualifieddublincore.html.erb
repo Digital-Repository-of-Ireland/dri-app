@@ -12,7 +12,7 @@
 		<% unless @object.cover_image.blank? %>
 			<div class="dri_cover_image_img">
 				<%= image_tag cover_image_path(@object), width:"228" unless @object.cover_image.blank? %>
-				<p>Current Image</p>
+				<p><%= t('dri.views.catalog.forms.qdc_cur_image')%></p>
 			</div>
 		<% end %>
 		<a class='btn btn-default collection_form' href='javascript:;'>
@@ -21,13 +21,13 @@
 				<%= "#{t('dri.views.fields.cover_image')}"%>
 			</p>
 			<p>
-				(228 x 128px)
+				<%= t('dri.views.catalog.forms.qdc_cover_image_size')%>
 			</p>
-			<label for="digital_object_cover_image" class="visually-hidden">Upload image for collection cover</label>
+			<label for="digital_object_cover_image" class="visually-hidden"><%= t('dri.views.catalog.forms.qdc_cover_image')%></label>
 			<%= f.file_field :cover_image, class: "edit span6",
 			onchange:'coverImageFileUploadHelper($(this));', accept: 'image/*' %>
 			<p class='dri_cover_image_file' id="cover_image">
-				No File
+				<%= t('dri.views.catalog.forms.qdc_no_image')%>
 			</p>
 		</a>
 	</div>

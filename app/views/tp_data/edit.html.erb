@@ -1,5 +1,5 @@
 <div class="dri_main_content_container">
-		 <h3>Review Transcribathon Enrichments</h3>
+		 <h3><%= t('dri.views.catalog.forms.tp_review')%></h3>
 
 
 
@@ -11,22 +11,22 @@
 
     <%= render partial: 'shared/surrogate' %>
 
-    <h4>Original object metadata</h4>
+    <h4><%= t('dri.views.catalog.forms.tp_original_metadata')%></h4>
     <dl class="dri_object_metadata_readview">
-      <dt>Type</dt>
+      <dt><%= t('dri.views.catalog.forms.tp_type')%></dt>
       <dd>
         <% @document.type.each do |field| %>
           <%= field %><br/>
         <% end %>
       </dd>
-      <dt>Creators and Contributors</dt>
+      <dt><%= t('dri.views.fields.creators')%> and <%= t('dri.views.fields.contributors')%></dt>
       <dd>
         <% @document['person_tesim'].each do |field| %>
           <%= field %><br/>
         <% end %>
       </dd>
       <% if @document['subject_tesim'].present? %>
-        <dt>Subjects</dt>
+        <dt><%= t('dri.views.fields.subjects')%></dt>
         <dd>
           <% @document['subject_tesim'].each do |field| %>
             <%= field %><br/>
@@ -34,7 +34,7 @@
         </dd>
       <% end %>
       <% if @document.date.present? %>
-        <dt>Dates</dt>
+        <dt><%= t('dri.views.fields.dates')%></dt>
         <dd>
           <% @document.date.each do |field| %> 
             <%= field %><br/>
@@ -42,7 +42,7 @@
         </dd>
       <% end %>
       <% if @document.creation_date.present? %>
-        <dt>Creation Dates</dt>
+        <dt><%= t('dri.views.fields.creation_dates')%></dt>
         <dd>
           <% @document.creation_date.each do |field| %>
             <%= field %><br/>
@@ -50,7 +50,7 @@
         </dd>
       <% end %>
       <% if @document.published_date.present? %>
-        <dt>Published Dates</dt>
+        <dt><%= t('dri.views.fields.published_dates')%></dt>
         <dd>
           <% @document.published_date.each do |field| %> 
             <%= field %><br/>
@@ -58,7 +58,7 @@
         </dd>
       <% end %>
       <% if @document['temporal_coverage_tesim'].present? %>
-        <dt>Temporal Coverage</dt>
+        <dt><%= t('dri.views.fields.temporal_coverage')%></dt>
         <dd>
           <% @document['temporal_coverage_tesim'].each do |field| %> 
             <%= field %><br/>
@@ -66,7 +66,7 @@
         </dd>
       <% end %>
       <% if @document['geographical_coverage_tesim'].present? %>
-        <dt>Geographical Coverage</dt>
+        <dt><%= t('dri.views.fields.geographical_coverages')%></dt>
         <dd>
           <% @document['geographical_coverage_tesim'].each do |field| %>
             <%= field %><br/>
@@ -79,30 +79,30 @@
 
 
 <div class="dri_section_block">
-  <h4>Metadata Enrichments</h4>
+  <h4><%= t('dri.views.catalog.forms.tp_enrichments')%></h4>
 
-  <h5>Overall Start and End dates</h5>
+  <h5><%= t('dri.views.catalog.forms.tp_overall_dates')%></h5>
   <dl>
-    <dt>Start Date</dt>
+    <dt><%= t('dri.views.catalog.forms.tp_start_date')%></dt>
     <% if not @earliest_item.present? %>
-      <dd>No start dates entered</dd>
+      <dd><%= t('dri.views.catalog.forms.tp_no_start_date')%></dd>
       <dt></td>
     <% else %>
       <dd> <%= @earliest_item.start_date %> </dd>
-      <dt>Appears on the following page(s)</dt>
+      <dt><%= t('dri.views.catalog.forms.tp_following_pages')%></dt>
       <dd> <% @early_items.each do |item| %>
            <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
           <% end %>
       </dd>
     <% end %>
 
-    <dt>End Date</dt>
+    <dt><%= t('dri.views.catalog.forms.tp_end_date')%></dt>
     <% if not @latest_item.present? %>
-      <dd>No end date entered</dd>
+      <dd><%= t('dri.views.catalog.forms.tp_no_end_date')%></dd>
       <dt></dt>
     <% else %>
       <dd> <%= @latest_item.end_date %> </dd>
-      <dt>Appears on the following page(s)</dt>
+      <dt><%= t('dri.views.catalog.forms.tp_following_pages')%></dt>
       <dd> <% @late_items.each do |item| %>
             <%= link_to "#{item.item_id}", item.item_link, :target => "_blank" %><br/>
            <% end %>
@@ -112,11 +112,11 @@
 
   <p>
     <%= check_box_tag(:accept_start_end_dates) %>
-    <%= label_tag(:pet_cat, "Accept these dates and add to authoritative metadata?") %>
+    <%= label_tag(:pet_cat, t('dri.views.catalog.forms.tp_accept_dates')) %>
   </p>
 
 
-  <p>See more?</p>
+  <p><%= t('dri.views.catalog.forms.qdc_see_more')%></p>
 
   <% page = 1 %>
   <span><% @items.each do |item| %>
@@ -126,7 +126,7 @@
                 <%= "#{item.start_date} - #{item.end_date}:" %>
                 <%= link_to "Page #{page}: #{item.item_id}", item.item_link, :target => "_blank" %>
                 <%= check_box_tag(:accept_start_end_dates) %>
-                <%= label_tag(:accept_start_end_dates, "Accept these dates and add to authoritative metadata?") %>
+                <%= label_tag(:accept_start_end_dates, t('dri.views.catalog.forms.tp_accept_dates')) %>
               </li>
             </ul>
           <% end %>

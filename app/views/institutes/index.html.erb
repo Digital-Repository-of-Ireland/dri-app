@@ -2,19 +2,19 @@
 <% style='' %>
 
 <h1 class="h3"><%= t('dri.views.collection.institute.title') %></h1>
-<p class="dri_orgs_legend"><%= t('dri.views.institutes.orgs_legend', url: 'http://www.dri.ie/membership').html_safe %></p>
+<p class="dri_orgs_legend"><%= t('dri.views.institutes.orgs_legend', url: t('dri.headerlinks.membership_link')).html_safe %></p>
 <div class="dri_section_block">
 <% @institutes.each_with_index do |institute, i| %>
   <% collection_count = @collections[institute.id].size %>
   <% next unless collection_count > 0 %>
   
-  <article role="article" class="dri_collection_institutes_pages <%= style %>" aria-label='Explore Collections of ' + <%= institute[:name].to_s.html_safe%>' %>
+  <article role="article" class="dri_collection_institutes_pages <%= style %>" aria-label= "<%= t('dri.views.institutes.org_aria_label')%> <%= institute[:name].to_s.html_safe%>" %>
     <% style = 'not_first' %>
     
     <% institute_browse_params[:f] = { institute_sim: [institute[:name].to_s.mb_chars.downcase.html_safe] } %>
-    <%= link_to main_app.search_catalog_path(institute_browse_params), 'aria-label' => 'Explore Collections of ' + institute[:name].to_s.html_safe do %>
+    <%= link_to main_app.search_catalog_path(institute_browse_params), 'aria-label' => t('dri.views.institutes.org_aria_label') + institute[:name].to_s.html_safe do %>
       <div class="dri_collection_institutes_pages_img" aria-hidden="true">
-        <%= image_tag logo_url(institute), alt: "institute " + institute[:name].to_s.html_safe + " logo" if institute.brand %>
+        <%= image_tag logo_url(institute), alt: institute[:name].to_s.html_safe + " " + t('dri.views.licences.forms.logo') if institute.brand %>
         <p>
           <%= institute[:name].to_s.html_safe %>
         </p>  
@@ -28,9 +28,9 @@
               <% present(collection, DRI::ImagePresenter) do |images| %>
                 <% image = images.cover_image %>
                 <% if image %>
-                  <li><%= image_tag image, title: collection[:title_tesim].first , alt:"Collection " + collection[:title_tesim].first.to_s.html_safe + "cover pic" %></li>
+                  <li><%= image_tag image, title: collection[:title_tesim].first , alt: t('dri.headerlinks.collection') + " " + collection[:title_tesim].first.to_s.html_safe %></li>
                 <% else %>
-                  <li><%= image_tag "no_image.png", title: collection[:title_tesim].first, alt:"Collection " + collection[:title_tesim].first.to_s.html_safe + "has no cover" %></li>
+                  <li><%= image_tag "no_image.png", title: collection[:title_tesim].first, alt: t('dri.headerlinks.collection') + " "  + collection[:title_tesim].first.to_s.html_safe %></li>
                 <% end %>
               <% end %>
             <% end %>
