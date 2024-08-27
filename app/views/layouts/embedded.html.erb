@@ -7,8 +7,7 @@
 		<!-- Mobile viewport optimization h5bp.com/ad -->
 		<meta name="HandheldFriendly" content="True">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-title"
-          content="<%= application_name %>">
+		<meta name="apple-mobile-web-app-title" content="<%= application_name %>">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 		<!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
@@ -20,8 +19,9 @@
 		<%= favicon_link_tag asset_path('favicon.ico') %>
 		<%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
 		<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
-		<%= javascript_include_tag "application" %>
-		<%= csrf_meta_tags %>
+                <%= javascript_include_tag "custom" %>
+                <%= javascript_importmap_tags %>
+                <%= csrf_meta_tags %>
 		<%= content_for(:head) %>
 
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -30,9 +30,9 @@
 		<![endif]-->
 
 		<%= favicon_link_tag asset_path('favicon.ico') %>
-        <script type="text/javascript">
-            I18n.locale = "<%= I18n.locale %>";
-        </script>
+                <script type="text/javascript">
+                  I18n.locale = "<%= I18n.locale %>";
+               </script>
 	</head>
 
 	<% onload_text = "$('input#q').focus();" if params[:q].to_s.empty? and params[:f].to_s.empty? and params[:id].nil? %>
