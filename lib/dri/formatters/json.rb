@@ -72,7 +72,10 @@ module DRI::Formatters
     # @param [SolrDocument] solr_doc
     # @return [Hash] licence || nil
     def self.licence(solr_doc)
-      solr_doc.licence.show if !solr_doc.collection? && solr_doc.licence
+      return unless !solr_doc.collection? && solr_doc.licence
+      licence = solr_doc.licence
+
+      licence.is_a?(Array) ? licence : licence.show
     end
 
     def self.copyright(solr_doc)

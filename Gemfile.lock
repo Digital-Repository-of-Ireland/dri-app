@@ -918,7 +918,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.4)
+    rexml (3.3.6)
       strscan
     riiif (2.4.0)
       deprecation (>= 1.0.0)
