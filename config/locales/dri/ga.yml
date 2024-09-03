@@ -647,7 +647,6 @@ ga:
           master_file: Cén comhaid shócmhainne gur féidir leo rochtain a bheith acu orthu?
           metadata: 'Tá tionchar ag socruithe rochtana ar na comhaid shócmhainne a uaslódálann tú (seachas na comhaid atá ''caomhnú amháin'' curtha i bhfeidhm orthu). Beidh rochtain phoiblí ar na meiteashonraí, cibé socruithe a roghnaíonn tú anseo. '
           private: Príobháideach
-          private_master_file: An bunleagan uaslódáilte den mháistirchomhad (nó na máistirchomhaid) amháin
           public: Ceadaigh rochtain phoiblí (is féidir le haon duine ar an ngréasán rochtain a bheith acu)
           read: Cén atá in ann rochtain a bheith acu ar do chuid sócmhainní?
           registered: Déan rochtain a shrianaigh chuig úsáideoirí atá logáilte isteach amháin.
