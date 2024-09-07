@@ -218,11 +218,15 @@ class CatalogController < ApplicationController
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
     end
 
-    @children = @document.children(limit: 100).select { |child| child.published? }
+    if @document.collection?
+      @children = @document.children(limit: 100).select { |child| child.published? }
+      @file_display_type_count = @document.file_display_type_count(published_only: true)
+      @config = CollectionConfig.find_by(collection_id: @document.id)
+    else
+      # assets ordered by label, excludes preservation only files
+      @assets = @document.assets(ordered: true)
+    end
 
-    # assets ordered by label, excludes preservation only files
-    @assets = @document.assets(ordered: true)
-    @file_display_type_count = @document.file_display_type_count(published_only: true)
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 

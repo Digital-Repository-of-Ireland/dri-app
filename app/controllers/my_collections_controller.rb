@@ -220,12 +220,16 @@ class MyCollectionsController < ApplicationController
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
     end
 
-    # published subcollections unless admin or edit permission
-    @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+    if @document.collection?
+      # published subcollections unless admin or edit permission
+      @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+      @file_display_type_count = @document.file_display_type_count
+      @config = CollectionConfig.find_by(collection_id: @document.id)
+    else
+      # assets including preservation only files, ordered by label
+      @assets = @document.assets(with_preservation: true, ordered: true)
+    end
 
-    # assets including preservation only files, ordered by label
-    @assets = @document.assets(with_preservation: true, ordered: true)
-    @file_display_type_count = @document.file_display_type_count
     @reader_group = find_reader_group(@document)
 
     if @document.doi

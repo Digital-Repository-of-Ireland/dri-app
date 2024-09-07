@@ -59,6 +59,7 @@ en:
     collection:
       config:
         allow_export: Allow export of collection metadata
+        default_sort: Default sort
         title: Options
         buttons:
           save: Save

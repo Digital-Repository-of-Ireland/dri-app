@@ -9,6 +9,12 @@
         <span><%= t('dri.collection.config.allow_export') %></span>
         <% end %>
       </fieldset>
+      <fieldset id="default_sort_fields">
+        <%= f.label :default_sort do %>
+        <%= f.select('default_sort', options_for_select(active_sort_fields.map { |key, config| [t("blacklight.search.sort.#{sort_field_label(config.key)}"), key] }, @config.default_sort)) %>
+        <span><%= t('dri.collection.config.default_sort') %></span>
+        <% end %>
+      </fieldset>
       </br>
       <%= f.submit t('dri.collection.config.buttons.save'), class: "dri_button_green dri_w330 mt-1", id: "update_collection_config" %>
     <% end %>

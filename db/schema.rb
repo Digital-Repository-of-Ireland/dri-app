@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_30_144546) do
+ActiveRecord::Schema.define(version: 2024_09_07_105221) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2024_05_30_144546) do
     t.string "collection_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "default_sort"
     t.index ["collection_id"], name: "index_collection_configs_on_collection_id"
   end
 
@@ -63,8 +64,8 @@ ActiveRecord::Schema.define(version: 2024_05_30_144546) do
     t.string "url"
     t.string "logo"
     t.string "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.boolean "supported"
   end
 
