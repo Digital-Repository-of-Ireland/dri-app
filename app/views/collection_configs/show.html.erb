@@ -1,22 +1,18 @@
-<div class="dri_ingest_form_container">
-  <h1><%= t('dri.collection.config.title') %></h1>
-  <div class="dri_ingest_form">
-  </br>
-    <%= form_for @config, url: { controller: 'collection_configs', action: 'update' }, method: 'put', html: { class: 'form-vertical' } do |f| %>
-      <fieldset id="allow_export_fields">
-        <%= f.label :allow_export do %>
-        <%= f.check_box :allow_export %>
-        <span><%= t('dri.collection.config.allow_export') %></span>
-        <% end %>
-      </fieldset>
-      <fieldset id="default_sort_fields">
-        <%= f.label :default_sort do %>
-        <%= f.select('default_sort', options_for_select(active_sort_fields.map { |key, config| [t("blacklight.search.sort.#{sort_field_label(config.key)}"), key] }, @config.default_sort)) %>
-        <span><%= t('dri.collection.config.default_sort') %></span>
-        <% end %>
-      </fieldset>
-      </br>
-      <%= f.submit t('dri.collection.config.buttons.save'), class: "dri_button_green dri_w330 mt-1", id: "update_collection_config" %>
+<h1><%= t('dri.collection.config.title') %></h1>
+</br>
+<%= form_for @config, url: { controller: 'collection_configs', action: 'update' }, method: 'put' do |f| %>
+  <div class="form-group mb-1">
+    <%= f.label :allow_export, { class: 'form-check-label' } do %>
+     <b><%= t('dri.collection.config.allow_export') %></b>
     <% end %>
+     <%= f.check_box :allow_export %>
   </div>
-</div>
+   <div class="col-md-3">
+   <%= f.label :default_sort do %>
+     <b><%= t('dri.collection.config.default_sort') %></b>
+   <% end %>
+   <%= f.select('default_sort', options_for_select(active_sort_fields.map { |key, config| [t("blacklight.search.sort.#{sort_field_label(config.key)}"), key] }, @config.default_sort), {}, { class: 'form-control' }) %>
+  </div>
+</br>
+<%= f.submit t('dri.collection.config.buttons.save'), class: "dri_button_green dri_w330 mt-1", id: "update_collection_config" %>
+<% end %>
