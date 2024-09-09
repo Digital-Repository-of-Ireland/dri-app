@@ -380,6 +380,37 @@ input.dri_w230 {
 }
 /*-------------- Signin Error message styling --------------*/
 
+div.error_page {
+    background-color: $dri_white;
+    color: $dri_darkgrey;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  
+
+    main {
+      width: 90%;
+      padding: 2em;
+      margin: 4em auto;
+      border: 1px solid $dri_extralightgrey;
+      border-right-color: $dri_extralightgrey;
+      border-bottom-color: $dri_extralightgrey;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: $dri_red;
+      margin-bottom: 1em;
+    }
+
+    p {
+      font-size: 18px;
+      color: $dri_black;
+    }
+  }
+
 .dri_login_form_block .field_with_errors {
     background-color: $dri_white;
 }
