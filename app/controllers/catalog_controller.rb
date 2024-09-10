@@ -64,7 +64,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
     config.add_facet_field 'file_type_display_sim'
     config.add_facet_field 'institute_sim', limit: 10
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
+    config.add_facet_field 'root_collection_sim', limit: 20
     config.add_facet_field 'visibility_ssi'
 
     # Added to test sub-collection belonging objects filter in object results view
@@ -189,8 +189,7 @@ class CatalogController < ApplicationController
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list if params[:mode].presence == 'objects'
-    load_collection_titles
-
+    
     # Get Timeline data if view is Timeline
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')

@@ -59,16 +59,16 @@ Scenario: Single character query
   Then I should see 1 collection with title "Z"
 
 Scenario: Resetting all search terms
-  When I search for "titleOne" in facet "Collection" with id "blacklight-root_collection_id_ssi"
+  When I search for "titleone" in facet "Collection" with id "blacklight-root_collection_sim"
   Then I should see 1 visible element "#browse_clear_all"
-  And I should see "titleOne" in the facet well
+  And I should see "titleone" in the facet well
   When I press "#advanced_search_button"
   And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
   Then I should see 1 visible element "#browse_clear_all"
-  And I should see "titleOne" in the facet well
+  And I should see "titleone" in the facet well
   And I should see "Titles = *Two" in the facet well
   And I should see "Creators = *Two" in the facet well
   When I click "#browse_clear_all"
