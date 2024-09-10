@@ -55,9 +55,9 @@
         <% present(document, DRI::ImagePresenter) do |images| %>
           <% image = images.cover_image %>
           <% if image %>
-            <%= image_tag image, alt: "image tag"%>
+            <%= image_tag image, loading: "lazy", alt: "collection cover image"%>
           <% else %>
-            <%= image_tag "no_image.png", alt: "no image tag" %>
+            <%= image_tag "no_image.png", alt: "default collection cover image" %>
           <% end %>
         <% end %>
       </div>
