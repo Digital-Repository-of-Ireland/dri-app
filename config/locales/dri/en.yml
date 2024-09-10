@@ -21,7 +21,7 @@ en:
         delete_help: Note that you cannot delete your account if you currently have read, edit or manager permissions on any collection. Please modify your permissions first.
       lang:
         en: English
-        ga: Irish
+        ga: Gaeilge
       terms:
         accept: I agree
         deposit_agreement: I agree to the terms of Deposit Agreement
@@ -59,6 +59,7 @@ en:
     collection:
       config:
         allow_export: Allow export of collection metadata
+        default_sort: Default sort
         title: Options
         buttons:
           save: Save
@@ -66,16 +67,22 @@ en:
         not_saved: Unable to save collection options
     data:
       types:
+        selectType: Select Primary Type
         Image: Image
         MixedType: Mixed Types
         MovingImage: Video
+        movingImage: movingImage
         Sound: Audio
+        sound: sound
+        Software: Software
+        Dataset: Dataset
         Text: Text
         3D: 3D
         Title: Media Types
         Unknown: Unknown
         all: All
         InteractiveResource: Interactive Resource
+        interactiveResource: interactiveResource
     datatables:
       activity:
         committer: Committer
@@ -241,6 +248,7 @@ en:
         street: 19 Dawson Street
         zip: Dublin 2
     headerlinks:
+      user_profile:  Repository User Profile
       newsletter: Newsletter
       news_events: "News & Events"
       about: About
@@ -272,6 +280,7 @@ en:
       manage_om_users: Assign Manager
       deposit: Deposit
       membership: DRI Membership
+      membership_link: 'https://www.dri.ie/membership'
       community_archive: Community Archive Scheme
       heritage_week_2020: HeritageWeek2020
       my_collections: My Collections
@@ -341,6 +350,10 @@ en:
       dri_browse_sort_tabs_sub_collection_title: Sub-Collections Search
       dri_change_sort_view: 'Use these buttons to select between a Grid, Tabular, Timeline or Map layout for your search result'
       dri_change_sort_view_title: Search Result Layout
+      dri_change_sort_view_list: View results as list
+      dri_change_sort_view_timeline: View results on time line
+      dri_change_sort_view_map: View results on map
+      dri_change_sort_view_grid: View results as grid
       dri_facet_restrictions_links: "These are the Facets which are narrowing your search. You can disable them individually or 'Clear All'"
       dri_facet_restrictions_links_title: Selected Facets
       dri_page_options: Select from this list to choose the number of items shown on each page
@@ -457,7 +470,7 @@ en:
             last_modified: Last Update
           bookmark_collection: Bookmark Collection
           bookmark_object: Bookmark Object
-          europeana_link: Europeana Link
+          europeana_link: View this object on Europeana 
           download: Download
           download_all:
             one: Download entire object including the asset
@@ -481,6 +494,22 @@ en:
           copy_to_clipboard: Copy to Clipboard 
           copy_success: Copied to Clipboard
           copy_failure: Not copied
+          tp_original_metadata: Original object metadata
+          tp_type: Type
+          tp_review: Review Transcribathon Enrichments
+          tp_enrichments: Metadata Enrichments
+          tp_overall_dates: Overall Start and End dates
+          tp_start_date: Start Date
+          tp_no_start_date: No start dates entered
+          tp_following_pages: Appears on the following page(s)
+          tp_end_date: End Date
+          tp_no_end_date: No end date entered
+          tp_accept_dates: Accept these dates and add to authoritative metadata?
+          qdc_cur_image: Current Image
+          qdc_no_image: No File
+          qdc_cover_image: Upload image for collection cover
+          qdc_cover_image_size: (228 x 128px)
+          qdc_see_more: See more?
         headers:
           files: Asset Tools
           related_materials: Related Materials
@@ -727,6 +756,7 @@ en:
           upload: Upload Metadata file
       institutes:
         orgs_legend: "Organisations listed on this page are associated in various ways with deposited collections. They include depositing organisations, contributing partners, collaborating institutions, and funding agencies. For a list of DRI Members, see the <a href='%{url}'>Membership page</a>."
+        org_aria_label: 'Explore Collections of '
       licences:
         collection: Please see individual objects for licensing information
         collection_mgr: "%{licence} - this licence will be set on objects in this collection unless overridden"
@@ -910,3 +940,13 @@ en:
          user_activity_report: User Activity
       object:
          metadata_md5: Metadata Checksum
+    server_error:
+      404_error: Error 404 - Page not found
+      404_message: The page you were looking for doesn't exist.
+      404_explanation: You may have mistyped the address or the page may have moved.
+      422_error: Error 422 - Request rejected
+      422_message: The change you wanted was rejected.
+      422_explanation: Maybe you tried to change something you didn't have access to.
+      500_error: Error 500 - Internal Server Error
+      500_message: The server encountered an error and could not complete your request.
+      500_explanation: The server encountered an unexpected condition that prevented it from fulfilling the request.

@@ -7,7 +7,7 @@
 <% # Render partial for Related Materials (QDC and MODS)  %>
 <%= render partial: "shared/show_related_items", locals: { params: params, document: @document } %>
 
-<% if @children.length > 0 %>
+<% if @document.collection? && @children.length > 0 %>
   <%= render partial: "shared/show_children", locals: { document: @document, children: @presenter.display_children(@children) } %>
 <% end %>
 

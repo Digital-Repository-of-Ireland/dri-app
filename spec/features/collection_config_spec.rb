@@ -56,5 +56,23 @@ RSpec.describe "Collection config", type: :feature do
 
       expect(page).to have_css('a#export_metadata')
     end
+
+    it "should add the default sort choice to the all objects link" do
+      @config.default_sort = "title_sorted_ssi asc"
+      @config.save
+
+      object = FactoryBot.create(:sound)
+      object[:status] = "published"
+      object.depositor=User.find_by_email(@login_user.email).to_s
+      object.manager_users_string=User.find_by_email(@login_user.email).to_s
+      object.creator = [@login_user.email]
+
+      object.save
+      @collection.governed_items << object
+      @collection.save
+
+      visit(catalog_path(@collection.alternate_id))
+      expect(page).to have_link('All 1', href: /title_sorted_ssi\+asc/)
+    end
   end
 end

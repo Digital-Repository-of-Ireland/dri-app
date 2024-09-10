@@ -2,14 +2,14 @@
 <label for="<%= "digital_object_type_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.type") %></label>
 <%= select_tag "digital_object[type][]", 
   options_for_select([
-    ["Select Primary Type", ""], 
-    ["text", "text"], 
-    ["image", "image"], 
-    ["movingImage", "movingImage"], 
-    ["interactiveResource", "interactiveResource"],
-    ["3D" , "3D"],
-    ["sound", "sound"], 
-    ["software", "software"],
-    ["dataset", "dataset"]
+    [t('dri.data.types.selectType'), ""], 
+    [t('dri.data.types.Text').downcase, "text"], 
+    [t('dri.data.types.Image').downcase , "image"], 
+    [t('dri.data.types.movingImage') , "movingImage"],
+    [t('dri.data.types.interactiveResource'), "interactiveResource"],
+    [t('dri.data.types.3D'), "3D"],
+    [t('dri.data.types.sound'), "sound"],
+    [t('dri.data.types.Software').downcase , "software"], 
+    [t('dri.data.types.Dataset').downcase , "dataset"], 
   ], selected: type), 
   class: "edit span6 dri-type-dropdown-type", required: true, id: "digital_object_type_#{index+1}" %>
