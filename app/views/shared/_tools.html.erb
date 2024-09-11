@@ -42,9 +42,9 @@
 			<%= link_to t('blacklight.tools.cite'), citation_object_path(@document), id: 'show_citation', remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_citation_modal_id' %>
 		</li>
 
-		<% if @document.has_aggregation_data? && @document.public_read? && !@assets.empty? && @document.valid_edm? %>
+		<% if @document.has_aggregation_data? && @document.public_read? && @assets.present? && @document.valid_edm? %>
 			<li>
-				<%= link_to t('dri.views.catalog.forms.europeana_link'), Settings.transcribathon.link_item + Aggregation.find_by(collection_id: @document.root_collection_id).aggregation_id + '/_' + @document.id, :target => '_blank' %>
+				<%= link_to t('dri.views.catalog.forms.europeana_link'), Settings.transcribathon.link_item + Aggregation.find_by(collection_id: @document.root_collection_id).aggregation_id + '/_' + @document.id, target: '_blank' %>
 			</li>
 		<% end %>
 
