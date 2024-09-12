@@ -89,6 +89,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'root_collection_sim', limit: 20
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
+    config.add_facet_field 'root_collection_id_ssi', label: 'root_collection_id', helper_method: :collection_title, show: false
 
     config.add_facet_field 'visibility_ssi'
 
