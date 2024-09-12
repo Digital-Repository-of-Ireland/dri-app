@@ -59,7 +59,7 @@ Scenario: Single character query
   Then I should see 1 collection with title "Z"
 
 Scenario: Resetting all search terms
-  When I search for "titleone" in facet "Collection" with id "blacklight-root_collection_sim"
+  When I search for "titleone" in facet "Collection" with id "blacklight-root_collection_id_ssi"
   Then I should see 1 visible element "#browse_clear_all"
   And I should see "titleone" in the facet well
   When I press "#advanced_search_button"
