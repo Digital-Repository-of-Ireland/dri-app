@@ -113,13 +113,13 @@ module FacetsHelper
     return 'nil' if value.nil?
 
     if @collection_titles.present? && @collection_titles.key?(value)
-      return @collection_titles[value].first
+      return @collection_titles[value].first.downcase
     end
 
     doc = SolrDocument.find(value)
     return 'nil' if doc.nil?
 
-    doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+    doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first.downcase
   end
 
   def transform_is_collection(value)
