@@ -189,7 +189,9 @@ class CatalogController < ApplicationController
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list if params[:mode].presence == 'objects'
-    load_collection_titles
+    @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
+      load_collection_titles
+    }
     
     # Get Timeline data if view is Timeline
     @available_timelines = available_timelines_from_facets

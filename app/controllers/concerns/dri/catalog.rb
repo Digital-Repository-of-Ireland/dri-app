@@ -83,17 +83,26 @@ module DRI::Catalog
       end
     end
 
-    def load_collection_titles
-      return {} if @document_list.blank?
-      return unless @response['facet_counts']['facet_fields']['root_collection_id_ssi'].present?
-      ids = @response['facet_counts']['facet_fields']['root_collection_id_ssi'].each_slice(2).map(&:first)
+    def root_collection_filter
+      [
+        "+is_collection_ssi:true",
+        "-ancestor_id_ssim:[* TO *]"
+      ]
+    end
 
-      ids_query = Solr::Query.construct_query_for_ids(ids)
-      query = Solr::Query.new(ids_query, ids.length)
-      @collection_titles = {}
-      query.each do |collection|
-        @collection_titles[collection.alternate_id] = collection.title
+    def load_collection_titles
+      solr_query = Solr::Query.new(
+        "*:*",
+        100,
+        { fq: root_collection_filter, fl: ['id','title_tesim'] }
+      )
+
+      root_collections = {}
+      solr_query.each do |entry|
+        root_collections[entry['id']] = entry['title_tesim']
       end
+
+      root_collections
     end
 
     def timeline_data
