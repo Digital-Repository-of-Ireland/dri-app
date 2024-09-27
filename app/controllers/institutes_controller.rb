@@ -130,8 +130,20 @@ class InstitutesController < ApplicationController
     enforce_permissions!('manage_collection', params[:id])
     @collection = retrieve_object!(params[:id])
 
-    @collection.institute = params[:institutes].select { |i| i.is_a? String } if params[:institutes].present?
-    @collection.depositing_institute = params[:depositing_organisation] if params[:depositing_organisation].present? && params[:depositing_organisation] != 'not_set'
+    @collection.institute = if params[:institutes].present?
+                              params[:institutes].select { |i| i.is_a? String }
+                            else
+                              nil
+                            end
+
+    if params[:depositing_organisation].present? && params[:depositing_organisation] != 'not_set'
+      @collection.depositing_institute =  params[:depositing_organisation] 
+    else
+      if !@collection.published || current_user.is_admin?
+        @collection.depositing_institute = nil
+      end
+    end
+
     @collection.increment_version
 
     raise DRI::Exceptions::InternalError unless @collection.save
