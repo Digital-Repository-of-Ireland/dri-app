@@ -139,7 +139,7 @@ class InstitutesController < ApplicationController
     if params[:depositing_organisation].present? && params[:depositing_organisation] != 'not_set'
       @collection.depositing_institute =  params[:depositing_organisation] 
     else
-      if !@collection.published || current_user.is_admin?
+      if !@collection.published? || current_user.is_admin?
         @collection.depositing_institute = nil
       end
     end
