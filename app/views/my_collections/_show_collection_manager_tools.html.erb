@@ -75,48 +75,49 @@
             <%= "#{t('dri.views.catalog.links.reviewed')}" %>
             (<i class="fa-solid fa-folder" aria-hidden="true"></i><%= review_link("#{reviewed_subcoll}", "#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=collections&show_subs=true&view=grid", t('dri.help.view_subcollections')) %>/<i class="fa-solid fa-file" aria-hidden="true"></i><%= review_link("#{reviewed_objects})","#{my_collections_index_path}?f[ancestor_id_ssim][]=#{@document.id}&f[status_ssi][]=reviewed&mode=objects&view=grid", t('dri.help.view_objects')) %>
             <% if @document.root_collection? %> <!-- Only show publish button if on root collection -->
-                <%
-                  pub_disabled_warnings = []
-                  # can only publish is depositing organisation is set
-                  # and collection contains objects which have been reviewed
-                  is_reviewed = reviewed_objects > 0 || reviewed_subcoll > 0
-                  has_depos_org = @presenter.depositing_organisation
-                  # dri_publish_no_org
-                  pub_disabled_warnings << 'dri.help.dri_publish_no_org' if !has_depos_org
-                  pub_disabled_warnings << 'dri.help.dri_publish_no_reviewed' if !is_reviewed
+              <%
+                pub_disabled_warnings = []                
+                # can only publish if depositing organisation is set OR dataset == Research
+                is_research_dataset = @document["dataset_ss"] == "Research"
+                # and collection contains objects which have been reviewed
+                is_reviewed = reviewed_objects > 0 || reviewed_subcoll > 0
+                has_depos_org = @presenter.depositing_organisation
+                # Add warnings based on conditions
+                pub_disabled_warnings << 'dri.help.dri_publish_no_org' if !has_depos_org && !is_research_dataset
+                pub_disabled_warnings << 'dri.help.dri_publish_no_reviewed' if !is_reviewed
 
-                  publish_button_class = if !pub_disabled_warnings.empty?
-                                           'dri_button_red_small dri_help_popover'
-                                         else
-                                            'dri_button_green_small'
-                                         end
+                publish_button_class = if !pub_disabled_warnings.empty?
+                                        'dri_button_red_small dri_help_popover'
+                                      else
+                                        'dri_button_green_small'
+                                      end
                 %>
-                  <button
-                    type="button"
-                    id="publish"
-                    class="<%= publish_button_class %>"
-                    <% if pub_disabled_warnings.empty? %>
-                      <%# if there are no warnings, show the modal when clicked %>
-                      data-bs-toggle="modal"
-                      data-bs-target="#dri_publish_modal_id"
-                    <% else %>
-                      <%# if there are warnings, disable the button and display all the apllicable warnings in the popover %>
-                      data-bs-content="<%= pub_disabled_warnings.map {|v| t(v)}.join('. ') %>"
-                      title="<%= t('dri.help.dri_publish_unavailable_title') %>"
-                      data-bs-trigger="hover"
-                      data-bs-placement="left"
-                      <%#
+                <button
+                  type="button"
+                  id="publish"
+                  class="<%= publish_button_class %>"
+                  <% if pub_disabled_warnings.empty? %>
+                    <%# if there are no warnings, show the modal when clicked %>
+                    data-bs-toggle="modal"
+                    data-bs-target="#dri_publish_modal_id"
+                  <% else %>
+                    <%# if there are warnings, disable the button and display all the apllicable warnings in the popover %>
+                    data-bs-content="<%= pub_disabled_warnings.map { |v| t(v) }.join('. ') %>"
+                    title="<%= t('dri.help.dri_publish_unavailable_title') %>"
+                    data-bs-trigger="hover"
+                    data-bs-placement="left"
+                    <%#
                         Bootstrap tooltips don't display on disabled buttons.
                         i.e. the user won't see why they can't publish the collection.
                         Would need to apply tooltip to another element.
                         This patch removes the modal trigger rather than fully disabling the button,
                         so tooltips display and the button can be clicked, but it doesn't open the publish modal.
                       %>
-                    <% end %>
-                  >
-                    <%= t('dri.views.catalog.links.publish') %>
-                  </button>
-            <% end %>
+                  <% end %>
+                >
+                  <%= t('dri.views.catalog.links.publish') %>
+                </button>
+              <% end %>
             <!-- end Reviewed Stats Block -->
 
 

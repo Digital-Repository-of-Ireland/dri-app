@@ -11,9 +11,11 @@
   <%= render partial: "shared/show_children", locals: { document: @document, children: @presenter.display_children(@children) } %>
 <% end %>
 
-<div class="dri_section_block" id="institutes_block">
-  <%= render partial: 'shared/display_organisations' %>
-</div>
+<% if @should_render_organizations %>
+  <div class="dri_section_block" id="institutes_block">
+    <%= render partial: 'shared/display_organisations' %>
+  </div>
+<% end %>
 
 <% content_for :head do %>
   <%= javascript_include_tag 'jquery.colorbox', async: Rails.env.production? %>
