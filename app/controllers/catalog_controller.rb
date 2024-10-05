@@ -57,14 +57,13 @@ class CatalogController < ApplicationController
     config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false
     config.add_facet_field 'placename_field_sim', show: true, limit: 20
-    config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
     config.add_facet_field 'creator_sim', label: 'creators', show: false
     config.add_facet_field 'contributor_sim', label: 'contributors', show: false
     config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid
     config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
     config.add_facet_field 'file_type_display_sim'
     config.add_facet_field 'institute_sim', limit: 10
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
     config.add_facet_field 'visibility_ssi'
 
     # Added to test sub-collection belonging objects filter in object results view
@@ -185,6 +184,11 @@ class CatalogController < ApplicationController
   # OVER-RIDDEN from BL
   def index
     params.delete(:q_ws)
+
+    # geojson facet is slow to load
+    if params[:view].presence == 'maps'
+      blacklight_config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
+    end
 
     @response = search_service.search_results.first
     @document_list = @response.documents
