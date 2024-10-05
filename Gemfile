@@ -97,6 +97,7 @@ group :production do
   gem 'clamby'
   gem 'mysql2' 
   gem 'honeybadger'
+  gem 'newrelic_rpm'
 end
 
 group :development, :test do
