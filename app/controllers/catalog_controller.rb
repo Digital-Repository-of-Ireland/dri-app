@@ -213,6 +213,7 @@ class CatalogController < ApplicationController
   def show
     @response = search_service.fetch(params[:id]).first
     @document = @response.documents.first
+    show_orgs
     if @document.generic_file?
       @document = nil
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
