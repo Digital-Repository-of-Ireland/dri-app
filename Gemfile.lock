@@ -1,4 +1,24 @@
 GIT
+  remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
+  revision: 726c9424a45dcaca828a4ab625c6595581ac9a5e
+  branch: Add-dataset-field
+  specs:
+    dri_data_models (4.9.1)
+      hydra-derivatives
+      hydra-file_characterization
+      iso-639
+      iso8601
+      namae
+      net-smtp
+      noid-rails
+      nokogiri (>= 1.12.5)
+      om
+      rails (~> 6.0)
+      resque
+      rsolr
+      valkyrie (~> 3)
+
+GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
   revision: be414a89c4347922f187501d37081ca9ee63e8da
   branch: develop
@@ -73,24 +93,6 @@ GIT
   specs:
     timelineJS3-rails (1.1.3)
       jquery-rails
-
-PATH
-  remote: /home/mdias/Documents/GitHub/dri-data-models
-  specs:
-    dri_data_models (4.9.1)
-      hydra-derivatives
-      hydra-file_characterization
-      iso-639
-      iso8601
-      namae
-      net-smtp
-      noid-rails
-      nokogiri (>= 1.12.5)
-      om
-      rails (~> 6.0)
-      resque
-      rsolr
-      valkyrie (~> 3)
 
 GEM
   remote: https://rubygems.org/
@@ -269,7 +271,7 @@ GEM
       csl (~> 2.0)
     clamby (1.6.10)
     clipboard-rails (1.7.1)
-    concurrent-ruby (1.3.3)
+    concurrent-ruby (1.3.4)
     config (4.2.1)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
@@ -280,6 +282,7 @@ GEM
       rexml
     csl-styles (2.0.1)
       csl (~> 2.0)
+    csv (3.3.0)
     cucumber (3.2.0)
       builder (>= 2.1.2)
       cucumber-core (~> 3.2.0)
@@ -407,7 +410,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (1.10.3)
+    faraday (1.10.4)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -522,7 +525,7 @@ GEM
     httpclient (2.8.3)
     hydra-file_characterization (1.2.0)
       activesupport (>= 3.0.0)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.2)
       i18n (>= 0.6.6)
@@ -555,7 +558,8 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     is_it_working-cbeer (1.0.16)
-    iso-639 (0.3.6)
+    iso-639 (0.3.8)
+      csv
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
@@ -573,13 +577,14 @@ GEM
       railties (>= 3.1)
     json (2.7.2)
     json-canonicalization (1.0.0)
-    json-ld (3.3.1)
+    json-ld (3.3.2)
       htmlentities (~> 4.3)
       json-canonicalization (~> 1.0)
       link_header (~> 0.0, >= 0.0.8)
       multi_json (~> 1.15)
       rack (>= 2.2, < 4)
       rdf (~> 3.3)
+      rexml (~> 3.2)
     json-ld-preloaded (3.3.0)
       json-ld (~> 3.3)
       rdf (~> 3.3)
@@ -662,13 +667,14 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.1.0)
-    mime-types (3.5.2)
+    mime-types (3.6.0)
+      logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0702)
+    mime-types-data (3.2024.1001)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (0.9)
-    minitest (5.24.1)
+    minitest (5.25.1)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -679,7 +685,7 @@ GEM
     multi_test (1.1.0)
     multi_xml (0.6.0)
     multipart-post (2.4.1)
-    mustermann (3.0.0)
+    mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.5)
     namae (1.2.0)
@@ -688,7 +694,7 @@ GEM
       redic
     net-http-persistent (4.0.2)
       connection_pool (~> 2.2)
-    net-imap (0.4.14)
+    net-imap (0.4.16)
       date
       net-protocol
     net-pop (0.1.2)
@@ -700,10 +706,10 @@ GEM
     netrc (0.11.0)
     nio4r (2.7.3)
     noid (0.9.0)
-    noid-rails (3.1.0)
-      actionpack (>= 5.0.0, < 7.1)
+    noid-rails (3.2.0)
+      actionpack (>= 5.0.0, < 8)
       noid (~> 0.9)
-    nokogiri (1.16.6-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     nokogiri-happymapper (0.9.0)
       nokogiri (~> 1.5)
@@ -767,7 +773,7 @@ GEM
       nokogiri (~> 1.6)
       rails (>= 5.0, < 7.1)
       rdf
-    racc (1.8.0)
+    racc (1.8.1)
     rack (2.2.9)
     rack-protection (3.2.0)
       base64 (>= 0.1.0)
@@ -915,8 +921,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.8)
     riiif (2.4.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
@@ -1072,18 +1077,17 @@ GEM
     sparql-client (3.3.0)
       net-http-persistent (~> 4.0, >= 4.0.2)
       rdf (~> 3.3)
-    sprockets (3.7.3)
+    sprockets (3.7.5)
       base64
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
-    sprockets-rails (3.5.1)
+    sprockets-rails (3.5.2)
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     sqlite3 (1.6.6-x86_64-linux)
     stomp (1.4.10)
     stringio (3.0.8)
-    strscan (3.1.0)
     sxp (1.3.0)
       matrix (~> 0.4)
       rdf (~> 3.3)
@@ -1098,7 +1102,7 @@ GEM
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
-    thor (1.3.1)
+    thor (1.3.2)
     tilt (2.4.0)
     timeout (0.4.1)
     trailblazer-option (0.1.2)
@@ -1150,7 +1154,7 @@ GEM
       rdf (~> 3.2, >= 3.2.9)
       rdf-xsd (~> 3.2)
     yard (0.9.36)
-    zeitwerk (2.6.16)
+    zeitwerk (2.6.18)
 
 PLATFORMS
   x86_64-linux
