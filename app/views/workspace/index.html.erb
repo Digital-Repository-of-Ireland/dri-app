@@ -37,7 +37,7 @@
       <ul>
         <% if current_user.is_cm? || current_user.is_om? || current_user.is_admin? %>
           <li>
-            <%= link_to t('dri.headerlinks.new_collection'), new_collection_path(dataset: 'Organization'), id: 'new_collection' %>
+            <%= link_to t('dri.headerlinks.new_collection'), new_collection_path, id: 'new_collection' %>
           </li>
         <% end %>
         <% if current_user.is_admin? %>

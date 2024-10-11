@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_09_30_124104) do
+ActiveRecord::Schema.define(version: 2024_10_03_150549) do
 
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"

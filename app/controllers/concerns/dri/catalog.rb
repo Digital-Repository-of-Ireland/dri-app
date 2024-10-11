@@ -45,25 +45,14 @@ module DRI::Catalog
     { response: { docs: @document_list, facets: @presenter.search_facets, pages: @presenter.pagination_info } }
   end
 
-  def show_orgs
-    @document = SolrDocument.find(params[:id])
+  def show_organisations
     @should_render_organizations = should_render_organizations?(@document)
   end
 
   private
 
   def should_render_organizations?(document)
-    dataset = document["dataset_ss"]
-    ancestor_id = document["ancestor_id_ssim"]
-
-    if dataset.present?
-      return dataset != "Research"
-    elsif ancestor_id.present? && ancestor_id != document.id
-      ancestor_document = SolrDocument.find(ancestor_id)
-      ancestor_dataset = ancestor_document["dataset_ss"] if ancestor_document
-      return ancestor_dataset.nil? || ancestor_dataset != "Research"
-    end
-    true # Default to rendering if no conditions are met
+    !document.dataset?
   end
 
     # This method shows the DO if the metadata is open

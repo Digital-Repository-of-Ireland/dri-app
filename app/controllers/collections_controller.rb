@@ -60,8 +60,7 @@ class CollectionsController < BaseObjectsController
     @object.creation_date = ['']
     @object.rights = ['']
     @object.type = ['Collection']
-    @object.dataset = params[:dataset] || "Organization"
-
+    
     supported_licences
     supported_copyrights
 

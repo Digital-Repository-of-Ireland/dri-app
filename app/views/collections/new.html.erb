@@ -7,7 +7,7 @@
         <%= render partial: 'shared/form_metadata_qualifieddublincore', locals: { f: f, action: 'create' } %>
       </section>
 
-      <%= f.hidden_field :dataset, value: params[:dataset] || 'Organization' %>
+      <%= f.hidden_field :dataset, value: params[:dataset] %>
 
       <section>
         <h2><%= t('dri.views.objects.legends.reuse') %></h2>

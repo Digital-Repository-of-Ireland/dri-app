@@ -78,7 +78,7 @@
               <%
                 pub_disabled_warnings = []                
                 # can only publish if depositing organisation is set OR dataset == Research
-                is_research_dataset = @document["dataset_ss"] == "Research"
+                is_research_dataset = @document.dataset?
                 # and collection contains objects which have been reviewed
                 is_reviewed = reviewed_objects > 0 || reviewed_subcoll > 0
                 has_depos_org = @presenter.depositing_organisation
