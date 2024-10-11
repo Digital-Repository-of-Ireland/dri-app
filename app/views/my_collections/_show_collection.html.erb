@@ -24,9 +24,11 @@
     <%= render partial: 'shared/display_copyright' %>
     <%= render partial: 'shared/display_metadata_licence' %>
 
-    <dt class="blacklight-depositing_institute">
-      <%= t('dri.views.fields.depositing_institute') %>
-    </dt>
+    <% if @should_render_organizations %>
+      <dt class="blacklight-depositing_institute">
+        <%= t('dri.views.fields.depositing_institute') %>
+      </dt>
+    <% end %>
     <dd class="blacklight-depositing_institute">
       <% if @presenter.depositing_organisation %>
       <% institute_browse_params = { mode: "collections", view: "grid", f: { Solrizer.solr_name('institute', :facetable).to_sym => [@presenter.depositing_organisation[:name].mb_chars.downcase] } } %>

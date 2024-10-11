@@ -224,6 +224,8 @@ class CatalogController < ApplicationController
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
     end
 
+    show_organisations
+
     if @document.collection?
       @children = @document.children(limit: 100).select { |child| child.published? }
       @file_display_type_count = @document.file_display_type_count(published_only: true)

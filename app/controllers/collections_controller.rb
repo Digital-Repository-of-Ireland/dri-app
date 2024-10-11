@@ -60,7 +60,7 @@ class CollectionsController < BaseObjectsController
     @object.creation_date = ['']
     @object.rights = ['']
     @object.type = ['Collection']
-
+    
     supported_licences
     supported_copyrights
 
@@ -406,6 +406,8 @@ class CollectionsController < BaseObjectsController
       supported_licences
       supported_copyrights
       @object.assign_attributes(create_params.merge({type: "Collection"}))
+
+      dataset = params[:digital_object][:dataset].presence || 'Organization'
 
       @object.visibility = visibility_label(@object.read_groups_string)
 
