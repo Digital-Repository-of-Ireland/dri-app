@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
   revision: 726c9424a45dcaca828a4ab625c6595581ac9a5e
-  branch: Add-dataset-field
+  branch: develop
   specs:
     dri_data_models (4.9.1)
       hydra-derivatives
@@ -655,7 +655,7 @@ GEM
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    logger (1.5.3)
+    logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
