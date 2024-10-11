@@ -700,6 +700,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     netrc (0.11.0)
+    newrelic_rpm (9.14.0)
     nio4r (2.7.3)
     noid (0.9.0)
     noid-rails (3.1.0)
@@ -1226,6 +1227,7 @@ DEPENDENCIES
   moab-versioning (~> 4.4, >= 4.4.2)
   mysql2
   nest
+  newrelic_rpm
   nokogiri (>= 1.16.5)
   oauth
   om (= 3.2.0)
