@@ -222,6 +222,8 @@ class MyCollectionsController < ApplicationController
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
     end
 
+    show_organisations
+    
     if @document.collection?
       # published subcollections unless admin or edit permission
       @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }

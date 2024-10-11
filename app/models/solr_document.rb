@@ -124,6 +124,13 @@ class SolrDocument
     (['3d','video','audio','text','image'] & self['file_type_tesim']).any?
   end
   
+  def dataset?
+    dataset = ancestor_field("dataset_ss")
+    return true if dataset && dataset == "Research"
+    
+    false
+  end
+
   def doi
     self['doi_ss']
   end

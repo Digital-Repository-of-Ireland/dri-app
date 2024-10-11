@@ -3,7 +3,7 @@ GIT
   revision: f6a5dd4b8175368fe8df28414d91f83bfa49a25a
   tag: v4.9.1
   specs:
-    dri_data_models (4.9.1)
+    dri_data_models (4.10.0)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -283,6 +283,7 @@ GEM
       rexml
     csl-styles (2.0.1)
       csl (~> 2.0)
+    csv (3.3.0)
     cucumber (3.2.0)
       builder (>= 2.1.2)
       cucumber-core (~> 3.2.0)
@@ -558,7 +559,8 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     is_it_working-cbeer (1.0.16)
-    iso-639 (0.3.6)
+    iso-639 (0.3.8)
+      csv
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
@@ -654,7 +656,7 @@ GEM
     llhttp-ffi (0.4.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
-    logger (1.5.3)
+    logger (1.6.1)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)

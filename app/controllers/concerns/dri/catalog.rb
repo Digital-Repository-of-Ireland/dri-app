@@ -45,7 +45,15 @@ module DRI::Catalog
     { response: { docs: @document_list, facets: @presenter.search_facets, pages: @presenter.pagination_info } }
   end
 
+  def show_organisations
+    @should_render_organizations = should_render_organizations?(@document)
+  end
+
   private
+
+  def should_render_organizations?(document)
+    !document.dataset?
+  end
 
     # This method shows the DO if the metadata is open
     # rather than before where the user had to have read permissions on the object all the time
