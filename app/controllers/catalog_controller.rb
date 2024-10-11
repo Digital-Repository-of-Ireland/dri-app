@@ -57,20 +57,19 @@ class CatalogController < ApplicationController
     config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true
     config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false
     config.add_facet_field 'placename_field_sim', show: true, limit: 20
-    config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
     config.add_facet_field 'creator_sim', label: 'creators', show: false
     config.add_facet_field 'contributor_sim', label: 'contributors', show: false
     config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid
     config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
     config.add_facet_field 'file_type_display_sim'
     config.add_facet_field 'institute_sim', limit: 10
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
     config.add_facet_field 'visibility_ssi'
 
     # Added to test sub-collection belonging objects filter in object results view
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
-
+    
     config.add_facet_fields_to_solr_request!
 
     # Solr fields to be displayed in the index (search results) view
@@ -186,11 +185,18 @@ class CatalogController < ApplicationController
   def index
     params.delete(:q_ws)
 
+    # geojson facet is slow to load
+    if params[:view].presence == 'maps'
+      blacklight_config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
+    end
+
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list if params[:mode].presence == 'objects'
-    load_collection_titles
-
+    @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
+      load_collection_titles
+    }
+    
     # Get Timeline data if view is Timeline
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
@@ -219,11 +225,15 @@ class CatalogController < ApplicationController
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
     end
 
-    @children = @document.children(limit: 100).select { |child| child.published? }
+    if @document.collection?
+      @children = @document.children(limit: 100).select { |child| child.published? }
+      @file_display_type_count = @document.file_display_type_count(published_only: true)
+      @config = CollectionConfig.find_by(collection_id: @document.id)
+    else
+      # assets ordered by label, excludes preservation only files
+      @assets = @document.assets(ordered: true)
+    end
 
-    # assets ordered by label, excludes preservation only files
-    @assets = @document.assets(ordered: true)
-    @file_display_type_count = @document.file_display_type_count(published_only: true)
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
     @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
 

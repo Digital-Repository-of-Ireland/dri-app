@@ -1,4 +1,7 @@
 <% @iiif_sources = [] %>
+<% content_for :head do %>
+    <%= javascript_include_tag "viewers" %>
+<% end %>
 
 <div id="oject-multiple-asset-carousel" class="carousel slide dri_carousel_controls" data-bs-interval = "false">
     <!-- Wrapper for slides -->

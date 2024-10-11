@@ -1,6 +1,6 @@
 
 <div class="dri_display_institutes">
-	<% if @presenter.organisations || @presenter.depositing_organisation %>
+	<% if @presenter.organisations.size > 0 || @presenter.depositing_organisation %>
 	<div class="dri_section_title">
 		<span><%= t('dri.views.collection.institute.title') %></span>
 	</div>

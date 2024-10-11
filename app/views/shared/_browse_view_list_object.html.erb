@@ -46,7 +46,7 @@
         <div class="dri_image">
           <% present(document, DRI::ImagePresenter) do |images| %>
             <% if @assets && @assets.key?(document.id) %>
-              <%= image_tag images.image_for_search(@assets[document.id]), alt: "Object " + document[:title_tesim][0].to_s.html_safe + "cover" %>
+              <%= image_tag images.image_for_search(@assets[document.id]), loading: "lazy", alt: "Object " + document[:title_tesim][0].to_s.html_safe + "cover" %>
             <% else %>
               <%= image_tag images.image_for_search, alt: "Object " + document[:title_tesim][0].to_s.html_safe + "has no cover"%>
             <% end %>

@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2024_09_30_124104) do
     t.string "collection_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "default_sort"
     t.index ["collection_id"], name: "index_collection_configs_on_collection_id"
   end
 

@@ -113,19 +113,15 @@ class SolrDocument
   end
 
   def contains_images?
-    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND isPartOf_ssim:#{alternate_id}"
-    files_query += " AND file_type_sim:\"image\""
+    return false if self['file_type_tesim'].blank?
 
-    Solr::Query.new(files_query).count > 0
+    self['file_type_tesim'].include?('image')
   end
 
   def valid_edm?
-    files_query = "active_fedora_model_ssi:\"DRI::GenericFile\""
-    files_query += " AND isPartOf_ssim:#{alternate_id}"
-    files_query += " AND (file_type_sim:\"3d\" OR file_type_sim:\"video\" OR file_type_sim:\"audio\" OR file_type_sim:\"text\" OR file_type_sim:\"image\")"
-  
-    Solr::Query.new(files_query).count > 0
+    return false if self['file_type_tesim'].blank?
+    
+    (['3d','video','audio','text','image'] & self['file_type_tesim']).any?
   end
   
   def doi

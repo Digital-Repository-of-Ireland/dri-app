@@ -2,14 +2,14 @@
 
 <% if I18n.locale == :en %>
 	<% lang_params[:id] = 'ga' %>
-	<ul class="dropdown">
-		<li>
-			<%= link_to 'English', '#', :"data-toggle" => "dropdown", id: :en %>
+	<ul class="dropdown" role="menu">
+		<li role="presentation">
+			<%= link_to t('dri.application.lang.ga'), '#', :"data-toggle" => "dropdown", id: :en %>
 			<i class="icon-caret-down"></i>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu" role="menu">
 				<%= link_to lang_path(lang_params), id: :ga do %>
-				<li>
-					Gaeilge
+				<li role="presentation">
+					<%= t('dri.application.lang.ga') %>
 				</li>
 				<% end %>
 			</ul>
@@ -17,13 +17,13 @@
 	</ul>
 <% else %>
 	<% lang_params[:id] = 'en' %>
-	<ul class="dropdown">
-		<%= link_to 'Gaeilge', '#', :"data-toggle" => "dropdown", id: :ga %>
+	<ul class="dropdown" role="menu">
+		<%= link_to t('dri.application.lang.ga'), '#', :"data-toggle" => "dropdown", id: :ga %>
 		<i class="icon-caret-down"></i>
-		<ul class="dropdown-menu">
+		<ul class="dropdown-menu" role="menu">
 			<%= link_to lang_path(lang_params), id: :en  do %>
-			<li>
-				English
+			<li role="presentation">
+				<%= t('dri.application.lang.en') %>
 			</li>
 			<% end %>
 		</ul>

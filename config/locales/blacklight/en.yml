@@ -152,6 +152,7 @@ en:
           person_sim: Names
           placename_field_sim: Places
           root_collection_id_ssi: Collection
+          root_collection_sim: Collection
           subject_sim: Subjects
           temporal_coverage_sim: "Subject (Temporal)"
           visibility_ssi: "Data Access"

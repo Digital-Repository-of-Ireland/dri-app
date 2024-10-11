@@ -89,7 +89,7 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
-
+    
     config.add_facet_field 'visibility_ssi'
 
     config.add_facet_fields_to_solr_request!
@@ -192,7 +192,9 @@ class MyCollectionsController < ApplicationController
     @response = search_service.search_results.first
     @document_list = @response.documents
     load_assets_for_document_list if params[:mode].presence == 'objects'
-    load_collection_titles
+    @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
+      load_collection_titles
+    }
 
     @available_timelines = available_timelines_from_facets
     if params[:view].present? && params[:view].include?('timeline')
@@ -220,12 +222,16 @@ class MyCollectionsController < ApplicationController
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
     end
 
-    # published subcollections unless admin or edit permission
-    @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+    if @document.collection?
+      # published subcollections unless admin or edit permission
+      @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+      @file_display_type_count = @document.file_display_type_count
+      @config = CollectionConfig.find_by(collection_id: @document.id)
+    else
+      # assets including preservation only files, ordered by label
+      @assets = @document.assets(with_preservation: true, ordered: true)
+    end
 
-    # assets including preservation only files, ordered by label
-    @assets = @document.assets(with_preservation: true, ordered: true)
-    @file_display_type_count = @document.file_display_type_count
     @reader_group = find_reader_group(@document)
 
     if @document.doi

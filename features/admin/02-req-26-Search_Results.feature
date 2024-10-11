@@ -33,6 +33,7 @@ edit permission.
     And a Digital Object with title "Search Object 2" created by "user1"
     And the object is in the collection
     And I am on the my collections page
+    And I select the "collections" tab
     Then I should see a search result "Search Collection 2"
     And I select the "objects" tab
     Then I should see a search result "Search Object 2"
@@ -57,6 +58,7 @@ edit permission.
     And the object is in the collection with pid "coll4"
     And "user3@user3.com" has been granted "<permission>" permissions on "coll4"
     And I am on my collections page
+    And I select the "collections" tab
     Then I should see a search result "Search Collection 4"
     And I select the "objects" tab
     Then I should see a search result "Search Object 4"
