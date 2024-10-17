@@ -47,12 +47,17 @@ module DRI::Catalog
 
   def show_organisations
     @should_render_organizations = should_render_organizations?(@document)
+    @should_render_orgs_and_sponsors = should_render_orgs_and_sponsors?(@document)
   end
 
   private
 
   def should_render_organizations?(document)
-    !document.dataset?
+    !document.dataset? || document.dataset? == 'Organization'
+  end
+
+  def should_render_orgs_and_sponsors?(document)
+    !document.dataset? || document.dataset? == 'Organization' || document.depositing_institute.present?
   end
 
     # This method shows the DO if the metadata is open
