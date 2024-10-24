@@ -169,7 +169,13 @@ class SolrDocument
   end
 
   def linkset?
-    object? && self['file_count_isi'].present? && published?
+    if object? && self['file_count_isi'].present? && published?
+      true
+    elsif collection? && published?
+      true
+    else
+      false
+    end
   end
 
   # @param [String] field_name
