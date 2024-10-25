@@ -26,8 +26,8 @@ describe LinksetsController, type: :controller do
       expect(result).to eq('https://schema.org/3DModel')
     end
 
-    it 'returns nil if no link not present in the map' do
-      result = formatter.mapped_links([target_unknown], map)
+    it 'returns nil if no link present in the map' do
+      result = formatter.mapped_links(target_unknown, map)
       expect(result).to be_nil
     end
 
@@ -327,6 +327,59 @@ describe LinksetsController, type: :controller do
       expect(result[1][:collection].size).to eq(1)
       expect(result[1][:collection][0][:href]).to eq("http://test.host/catalog/#{ancestor_id.first}")
       expect(result[1][:collection][0][:type]).to eq('text/html')
+    end
+  end
+
+  describe DRI::Formatters::Linkset, type: :model do
+    let(:controller) { double('LinksetsController') }
+    let(:linkset) { described_class.new(controller, document) }
+  
+    describe '#collection_objects' do
+      let(:document) { double('SolrDocument') }
+      let(:collection_id) { 'parent_id' }
+  
+      before do
+        allow(controller).to receive(:catalog_url).and_return('http://localhost:3000/catalog/obj1')
+      end
+  
+      context 'when an object is linked to the main collection' do
+        it 'includes the object link with MIME type' do
+          mock_object = OpenStruct.new(id: 'obj1', isGovernedBy_ssim: [collection_id], mime_type: 'application/pdf')
+          objects = [mock_object]
+  
+          allow(CreateExportJob).to receive(:collection_objects).with(collection_id).and_return(objects)
+  
+          result = linkset.collection_objects(collection_id)
+  
+          expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'application/pdf')
+        end
+      end
+  
+      context 'when an object is linked to a subcollection' do
+        it 'includes the subcollection link' do
+          mock_object1 = OpenStruct.new(id: 'obj1', isGovernedBy_ssim: [collection_id], mime_type: 'text/html')
+          mock_object2 = OpenStruct.new(id: 'obj2', isGovernedBy_ssim: ['other_parent_id'], mime_type: 'text/html')
+  
+          objects = [mock_object1, mock_object2]
+  
+          allow(CreateExportJob).to receive(:collection_objects).with(collection_id).and_return(objects)
+  
+          result = linkset.collection_objects(collection_id)
+  
+          expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'text/html')
+          expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'text/html')
+        end
+      end
+  
+      context 'when no objects are found' do
+        it 'returns an empty array' do
+          allow(CreateExportJob).to receive(:collection_objects).with(collection_id).and_return([])
+  
+          result = linkset.collection_objects(collection_id)
+  
+          expect(result).to eq([])
+        end
+      end
     end
   end
 end

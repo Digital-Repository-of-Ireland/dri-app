@@ -173,8 +173,8 @@ class DRI::Formatters::Linkset
       objects_collection.each do |object|
         place_holder = {}
         governedby_id = object['isGovernedBy_ssim'][0]
-        Rails.logger.debug("Object: #{@controller.catalog_url(governedby_id).inspect}")
-        # Check if it's a object linked to a subcollection or not
+
+        # Check if it's a object linked to a subcollection
         if id != governedby_id && !subCollection_check.include?(governedby_id) 
           subCollection_check << governedby_id
           place_holder[:href] = @controller.catalog_url(governedby_id)
@@ -183,9 +183,7 @@ class DRI::Formatters::Linkset
           place_holder[:href] = @controller.catalog_url(object.id)
           place_holder[:type] = object.mime_type
         end
-        if place_holder[:href].present?
-          objects_link << place_holder
-        end
+        objects_link << place_holder if place_holder[:href].present?
       end
       objects_link
     end
@@ -220,6 +218,8 @@ class DRI::Formatters::Linkset
     end
 
     def document_licence_link
+      return unless ActiveRecord::Base.connection.table_exists?('licences')
+      
       if @document.licence.present? && @document.licence.respond_to?(:url)
         return @document.licence&.url
       end
