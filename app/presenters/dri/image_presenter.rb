@@ -61,12 +61,12 @@ module DRI
       cover_key = 'cover_image_ss'.to_sym
 
       path = if solr_doc[cover_key].present? && solr_doc[cover_key].first
-               cover_image_path(solr_doc)
+               solr_doc[cover_key]
              elsif document[:root_collection_tesim].present?
                collection = solr_doc.root_collection
 
                if collection[cover_key].present? && collection[cover_key].first
-                 cover_image_path(collection)
+                 collection[cover_key]
                end
              end
 
