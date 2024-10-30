@@ -97,11 +97,6 @@ group :production do
   gem 'clamby'
   gem 'honeybadger'
   gem 'mysql2'
-  gem 'yabeda-prometheus'
-  gem 'yabeda-rails'
-  gem 'yabeda-activerecord'
-  gem 'yabeda-http_requests'
-  gem 'webrick'
 end
 
 group :development, :test do
