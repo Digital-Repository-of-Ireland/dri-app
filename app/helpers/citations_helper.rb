@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require "dri/citations_behaviours/name_behaviour"
+
 module CitationsHelper
   include DRI::CitationsBehaviours::NameBehaviour
 

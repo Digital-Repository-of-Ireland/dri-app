@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class DRI::Formatters::EDM < OAI::Provider::Metadata::Format
+class DRI::Formatters::Edm < OAI::Provider::Metadata::Format
   include ActionController::UrlFor
   include Rails.application.routes.url_helpers
 

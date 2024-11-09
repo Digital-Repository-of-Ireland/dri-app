@@ -17,7 +17,7 @@ describe IiifController, type: :request do
       LABEL_SOLR_FIELD = Solrizer.solr_name('label')
 
       allow_any_instance_of(
-        DRI::IIIFViewable
+        DRI::IiifViewable
       ).to receive(:attached_images) do |arg|
         id =  arg.is_a?(String) ? "#{arg}_image1" : "image1"
         [

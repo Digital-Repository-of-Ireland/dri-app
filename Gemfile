@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 6.1'
 gem 'uri', '>= 0.12.2'
 
-gem 'blacklight', '~>7'
+gem 'blacklight', '7.36.0'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'kaminari', '>= 1.2.1'
@@ -23,7 +23,7 @@ gem 'openseadragon'
 gem 'riiif'
 
 gem "devise", ">= 4.7.1"
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'zeitwerk'
 gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
 
 gem 'paper_trail'
@@ -33,7 +33,7 @@ gem 'linkeddata'
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'browse-everything', '~> 1.2.0'
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'dartsass'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'zeitwerk'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 gem 'roo'
 

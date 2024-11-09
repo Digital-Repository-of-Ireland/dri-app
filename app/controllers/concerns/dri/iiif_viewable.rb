@@ -1,4 +1,4 @@
-module DRI::IIIFViewable
+module DRI::IiifViewable
 
   require 'iiif/presentation'
 

@@ -249,7 +249,7 @@ class ProcessBatchIngest
   end
 
   def self.update_master_file(id, update)
-    master_file = DriBatchIngest::MasterFile.find(id)
+    master_file = DRIBatchIngest::MasterFile.find(id)
     master_file.status_code = update[:status_code]
     master_file.file_location = update[:file_location]
     master_file.save

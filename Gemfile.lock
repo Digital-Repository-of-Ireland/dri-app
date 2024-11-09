@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: a114d138b197019986eab5fd5979dcd4cca3de26
-  branch: develop
+  revision: e9bf1fce01faf2c4ec3db077f8c27888b0b4ab2b
+  branch: zeitwerk
   specs:
     dri_data_models (4.10.0)
       hydra-derivatives
@@ -20,7 +20,7 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: be414a89c4347922f187501d37081ca9ee63e8da
+  revision: 317461629141ef7ddf61f46bae023718468edc19
   branch: develop
   specs:
     user_group (2.2.3)
@@ -38,8 +38,8 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
-  revision: 7741705cdac2b60db773eec538c60ed8877cdbe6
-  branch: dartsass
+  revision: acc9b4d0f042936e4b95fd62f6bd9e25634f566d
+  branch: zeitwerk
   specs:
     dri_batch_ingest (1.3.2)
       browse-everything (~> 1.0)
@@ -169,20 +169,20 @@ GEM
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
     aws-eventstream (1.3.0)
-    aws-partitions (1.985.0)
-    aws-sdk-core (3.209.1)
+    aws-partitions (1.1001.0)
+    aws-sdk-core (3.212.0)
       aws-eventstream (~> 1, >= 1.3.0)
-      aws-partitions (~> 1, >= 1.651.0)
+      aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       jmespath (~> 1, >= 1.6.1)
-    aws-sdk-kms (1.94.0)
-      aws-sdk-core (~> 3, >= 3.207.0)
+    aws-sdk-kms (1.95.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.167.0)
-      aws-sdk-core (~> 3, >= 3.207.0)
+    aws-sdk-s3 (1.170.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
-    aws-sigv4 (1.10.0)
+    aws-sigv4 (1.10.1)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
     bagit (0.4.6)
@@ -190,7 +190,7 @@ GEM
       validatable (~> 1.6)
     base64 (0.2.0)
     bcp47_spec (0.2.1)
-    bcrypt (3.1.19)
+    bcrypt (3.1.20)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
@@ -211,7 +211,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.36.2)
+    blacklight (7.36.0)
       deprecation
       globalid
       hashdiff
@@ -254,7 +254,7 @@ GEM
       typhoeus
     builder (3.3.0)
     byebug (10.0.2)
-    cancancan (3.5.0)
+    cancancan (3.6.1)
     capybara (3.39.2)
       addressable
       matrix
@@ -326,19 +326,19 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.3.4)
+    date (3.4.0)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.9.2)
+    devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-guests (0.8.1)
+    devise-guests (0.8.3)
       devise
     devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
@@ -359,8 +359,9 @@ GEM
     dry-configurable (1.1.0)
       dry-core (~> 1.0, < 2)
       zeitwerk (~> 2.6)
-    dry-core (1.0.1)
+    dry-core (1.0.2)
       concurrent-ruby (~> 1.0)
+      logger
       zeitwerk (~> 2.6)
     dry-inflector (1.1.0)
     dry-initializer (3.1.1)
@@ -437,11 +438,11 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
-    fastimage (2.2.7)
+    fastimage (2.3.1)
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.23.0)
-    ffi (1.16.3)
+    ffi (1.17.0-x86_64-linux-gnu)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -464,17 +465,17 @@ GEM
     google-analytics-data-v1beta (0.8.1)
       gapic-common (>= 0.19.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-apis-core (0.14.0)
+    google-apis-core (0.15.1)
       addressable (~> 2.5, >= 2.5.1)
       googleauth (~> 1.9)
-      httpclient (>= 2.8.1, < 3.a)
+      httpclient (>= 2.8.3, < 3.a)
       mini_mime (~> 1.0)
+      mutex_m
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
-      rexml
-    google-apis-drive_v3 (0.49.0)
-      google-apis-core (>= 0.14.0, < 2.a)
-    google-cloud-env (2.1.1)
+    google-apis-drive_v3 (0.59.0)
+      google-apis-core (>= 0.15.0, < 2.a)
+    google-cloud-env (2.2.1)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.3.1)
     google-oauth2-installed (0.0.4)
@@ -486,7 +487,7 @@ GEM
       grpc (~> 1.27)
     googleapis-common-protos-types (1.9.0)
       google-protobuf (~> 3.18)
-    googleauth (1.11.0)
+    googleauth (1.11.2)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
       jwt (>= 1.4, < 3.0)
@@ -502,7 +503,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashdiff (1.1.0)
+    hashdiff (1.1.1)
     hashie (5.0.0)
     high_voltage (3.1.2)
     highline (2.1.0)
@@ -515,7 +516,7 @@ GEM
       http-form_data (~> 2.2)
       llhttp-ffi (~> 0.4.0)
     http-accept (1.7.0)
-    http-cookie (1.0.5)
+    http-cookie (1.0.7)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     http_accept_language (2.1.1)
@@ -543,7 +544,7 @@ GEM
     i18n_sync (0.5.1)
       ya2yaml
     ice_nine (0.11.2)
-    iconv (1.0.8)
+    iconv (1.1.0)
     iiif-image-api (0.2.0)
       activesupport
     iiif-presentation (1.1.0)
@@ -563,7 +564,7 @@ GEM
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
-    jbuilder (2.11.5)
+    jbuilder (2.13.0)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
@@ -575,7 +576,7 @@ GEM
       railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.7.2)
+    json (2.8.1)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -670,7 +671,7 @@ GEM
     mime-types (3.6.0)
       logger
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.1001)
+    mime-types-data (3.2024.1105)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (0.9)
@@ -683,10 +684,12 @@ GEM
     mono_logger (1.1.2)
     multi_json (1.15.0)
     multi_test (1.1.0)
-    multi_xml (0.6.0)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     multipart-post (2.4.1)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
+    mutex_m (0.2.0)
     mysql2 (0.5.5)
     namae (1.2.0)
       racc (~> 1.7)
@@ -704,7 +707,7 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     netrc (0.11.0)
-    nio4r (2.7.3)
+    nio4r (2.7.4)
     noid (0.9.0)
     noid-rails (3.2.0)
       actionpack (>= 5.0.0, < 8)
@@ -734,7 +737,7 @@ GEM
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
-    omniauth (2.1.1)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
@@ -750,7 +753,7 @@ GEM
     orm_adapter (0.5.0)
     os (1.1.4)
     ostruct (0.6.0)
-    paper_trail (15.0.0)
+    paper_trail (15.2.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.23.0)
@@ -819,7 +822,7 @@ GEM
     rainbow (3.1.1)
     rake (13.2.1)
     rb-fsevent (0.11.2)
-    rb-gravatar (1.0.6)
+    rb-gravatar (1.0.7)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rdf (3.3.2)
@@ -882,7 +885,7 @@ GEM
     rdf-turtle (3.3.0)
       ebnf (~> 2.4)
       rdf (~> 3.3)
-    rdf-vocab (3.3.1)
+    rdf-vocab (3.3.2)
       rdf (~> 3.3)
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
@@ -905,9 +908,9 @@ GEM
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
-    request_store (1.5.1)
+    request_store (1.7.0)
       rack (>= 1.4)
-    responders (3.1.0)
+    responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
     resque (2.6.0)
@@ -1104,7 +1107,7 @@ GEM
       rack (>= 1, < 3)
     thor (1.3.2)
     tilt (2.4.0)
-    timeout (0.4.1)
+    timeout (0.4.2)
     trailblazer-option (0.1.2)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
@@ -1117,7 +1120,7 @@ GEM
     unicode-types (1.8.0)
     uri (0.13.0)
     validatable (1.6.7)
-    valkyrie (3.3.0)
+    valkyrie (3.4.0)
       activemodel
       activesupport
       dry-struct
@@ -1166,7 +1169,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 5)
-  blacklight (~> 7)
+  blacklight (= 7.36.0)
   blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider (~> 7.0, >= 7.0.2)

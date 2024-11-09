@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DRI::IIIFViewable do
+describe DRI::IiifViewable do
 
   FITS_DATA = <<-FITSXML
               <?xml version=\"1.0\"?>\n<fits xmlns=\"http://hul.harvard.edu/ois/xml/ns/fits/fits_output\"
@@ -49,7 +49,7 @@ describe DRI::IIIFViewable do
           FITSXML
 
   let(:iiif_test) { Class.new do
-    include DRI::IIIFViewable
+    include DRI::IiifViewable
     include Rails.application.routes.url_helpers
 
     def initialize(object)
@@ -149,6 +149,5 @@ describe DRI::IIIFViewable do
       expect(manifest.sequences.first.canvases.first.images.first.resource['@id']).to end_with(
         "#{@sound.alternate_id}:#{@generic_file.alternate_id}/full/full/0/default.jpg")
     end
-
   end
 end

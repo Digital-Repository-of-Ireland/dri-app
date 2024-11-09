@@ -143,6 +143,7 @@ module Storage
 
     # Save Surrogate File
     def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype = nil)
+      puts "Store #{bucket} #{with_prefix(bucket)}"
       @client.put_object(
         bucket: with_prefix(bucket),
         body: File.open(Pathname.new(surrogate_file)),
