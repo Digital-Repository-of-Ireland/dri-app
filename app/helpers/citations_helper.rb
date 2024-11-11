@@ -150,7 +150,7 @@ module CitationsHelper
   def add_creation_date(citation_parts, object)
     creation_date_string = nil
     
-    creation_date_string = if object.creation_date.is_a?(Array) && object.creation_date.any? && object.creation_date.join.strip.present?
+    creation_date_string = if object.respond_to?(:creation_date) && object.creation_date.is_a?(Array) && object.creation_date.any? && object.creation_date.join.strip.present?
                              extract_dates(object.creation_date)
                            elsif object.date.is_a?(Array) && object.date.any? && object.date.join.strip.present?
                              extract_dates(object.date)
