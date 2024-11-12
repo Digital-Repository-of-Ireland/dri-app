@@ -211,7 +211,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.36.0)
+    blacklight (7.39.0)
       deprecation
       globalid
       hashdiff
@@ -1170,7 +1170,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 5)
-  blacklight (= 7.36.0)
+  blacklight (= 7.39.0)
   blacklight-maps (> 0.5)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider (~> 7.0, >= 7.0.2)
