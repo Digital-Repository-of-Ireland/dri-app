@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 72484a29fdc5b26718c0a73f9eef9e75ade462f3
-  branch: develop
+  revision: b0eb6bb68855b16302b0421f64163929efcd6389
+  tag: v4.11.0
   specs:
     dri_data_models (4.11.0)
       hydra-derivatives
@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: 317461629141ef7ddf61f46bae023718468edc19
-  branch: develop
+  revision: 5ea6325cf1c4086580b1a3a885e7ac8317857f86
+  tag: v2.3.0
   specs:
-    user_group (2.2.3)
+    user_group (2.3.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -503,7 +503,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashdiff (1.1.1)
+    hashdiff (1.1.2)
     hashie (5.0.0)
     high_voltage (3.1.2)
     highline (2.1.0)
@@ -752,8 +752,8 @@ GEM
       rails (> 3.2.0)
     orm_adapter (0.5.0)
     os (1.1.4)
-    ostruct (0.6.0)
-    paper_trail (15.2.0)
+    ostruct (0.6.1)
+    paper_trail (16.0.0)
       activerecord (>= 6.1)
       request_store (~> 1.4)
     parallel (1.23.0)
