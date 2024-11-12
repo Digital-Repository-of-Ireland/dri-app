@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require "#{Rails.root}/lib/dri/renderers/json"
 
-module FailureApps
+module FailureApp
   class CustomDeviseFailureApp < Devise::FailureApp
     include DRI::Renderers::Json
 

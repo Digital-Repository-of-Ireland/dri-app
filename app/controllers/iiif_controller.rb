@@ -1,6 +1,6 @@
 class IiifController < ApplicationController
   include Blacklight::AccessControls::Catalog
-  include DRI::IIIFViewable
+  include DRI::IiifViewable
 
   def show
     id = params[:id].split(':')[0]

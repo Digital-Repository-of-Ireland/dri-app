@@ -21,8 +21,8 @@ describe 'ProcessBatchIngest' do
 
    context "ingest object" do
 
-    let(:master_file) { DriBatchIngest::MasterFile.create }
-    let(:asset_master_file) { DriBatchIngest::MasterFile.create }
+    let(:master_file) { DRIBatchIngest::MasterFile.create }
+    let(:asset_master_file) { DRIBatchIngest::MasterFile.create }
 
     it "should create an object from metadata and asset" do
       tmp_download_dir = Dir.mktmpdir
@@ -70,7 +70,7 @@ describe 'ProcessBatchIngest' do
 
   context "ingest metadata" do
 
-    let(:master_file) { DriBatchIngest::MasterFile.create }
+    let(:master_file) { DRIBatchIngest::MasterFile.create }
 
     it "should create an object from metadata XML" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
@@ -100,7 +100,7 @@ describe 'ProcessBatchIngest' do
 
   context "ingest asset" do
 
-    let(:master_file) { DriBatchIngest::MasterFile.create }
+    let(:master_file) { DRIBatchIngest::MasterFile.create }
     let(:object) { FactoryBot.create(:image) }
 
     it "should create an asset from file" do
@@ -137,7 +137,7 @@ describe 'ProcessBatchIngest' do
     it "should not error if preservation asset and asset are the same file" do
       tmp_file = Tempfile.new(['sample_image', '.jpeg'])
       FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
-      pres_master_file = DriBatchIngest::MasterFile.create
+      pres_master_file = DRIBatchIngest::MasterFile.create
       assets = [{ master_file_id: master_file.id, path: tmp_file.path }, { label: 'preservation', master_file_id: pres_master_file.id, path: tmp_file.path }]
       object.increment_version
       object.save
@@ -157,8 +157,8 @@ describe 'ProcessBatchIngest' do
 
   context "ingest errors" do
 
-    let(:master_file) { DriBatchIngest::MasterFile.create }
-    let(:asset_master_file) { DriBatchIngest::MasterFile.create }
+    let(:master_file) { DRIBatchIngest::MasterFile.create }
+    let(:asset_master_file) { DRIBatchIngest::MasterFile.create }
 
     it "should rescue errors saving metadata" do
       allow_any_instance_of(DRI::DigitalObject).to receive(:save).and_raise(ActiveRecord::RecordNotSaved)

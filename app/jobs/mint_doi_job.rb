@@ -10,7 +10,7 @@ class MintDoiJob
     return if doi.nil?
 
     Rails.logger.info "Mint DOI for #{doi.object_id}"
-    client = DOI::Datacite.new(doi)
+    client = Doi::Datacite.new(doi)
 
     if client.doi_exists? && doi.status.nil?
       doi.status = 'minted'

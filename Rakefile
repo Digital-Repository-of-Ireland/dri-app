@@ -54,7 +54,7 @@ task :ci => ['ci_clean'] do
   ENV['environment'] = "test"
   Rake::Task['db:migrate'].invoke
 
-  with_solr_test_server do
+  DRI::RakeSupport.with_solr_test_server do
     begin
       Rake::Task['cucumber:first_try'].invoke
     rescue Exception => e

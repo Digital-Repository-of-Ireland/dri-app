@@ -146,7 +146,7 @@ module DRI::Formatters
       copyright = @object_doc.copyright
       return unless copyright
       value = copyright.name == 'In Copyright' ? copyright.name : copyright.url
-      graph << [uri, RDF::Vocab::DC.copyright, value]
+      graph << [uri, RDF::Vocab::PROV.Copyright, value]
     end
 
     def add_metadata

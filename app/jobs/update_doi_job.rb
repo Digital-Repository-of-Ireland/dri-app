@@ -7,7 +7,7 @@ class UpdateDoiJob
     doi = DataciteDoi.find(doi_id)
     return if doi.nil?
 
-    client = DOI::Datacite.new(doi)
+    client = Doi::Datacite.new(doi)
     client.metadata
   end
 end

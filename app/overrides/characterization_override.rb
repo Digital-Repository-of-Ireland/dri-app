@@ -2,7 +2,7 @@ require "dri/derivatives/extract_metadata"
 
 DRI::Derivatives::ExtractMetadata.module_eval do
   # Quick fixes to get the content from storage and avoid using the REST API
- def extract_metadata
+  def extract_metadata
     # Bit of a hack here to force mp2 files to be characterized in FITS
     # We have to pretend it's an mp3 by creating a tempfile with an mp3 extension
     if (File.extname(path) == ".mp2")

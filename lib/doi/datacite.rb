@@ -2,7 +2,7 @@
 require 'rest_client'
 require 'uri'
 
-module DOI
+module Doi
   class Datacite
     def initialize(doi)
       @doi = doi
