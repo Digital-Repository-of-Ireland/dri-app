@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 6.1'
 gem 'uri', '>= 0.12.2'
 
-gem 'blacklight', '7.36.0'
+gem 'blacklight', '7.39.0'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'kaminari', '>= 1.2.1'
