@@ -1,5 +1,3 @@
-require 'dri/versionable'
-
 class AccessControlsController < ApplicationController
   before_action :read_only, except: :edit
   before_action ->(id=params[:id]) { locked(id) }, except: :edit

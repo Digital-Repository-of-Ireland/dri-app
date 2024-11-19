@@ -25,7 +25,7 @@ describe "validators" do
       if @stubbed_clamby
         expect(Clamby).to receive(:safe?).and_return(true)
       end
-      input_file = File.join(fixture_path, "SAMPLEA.mp3")
+      input_file = File.join(fixture_paths, "SAMPLEA.mp3")
       expect { Validators.virus_scan(input_file) }.to_not raise_error()
     end
 
@@ -33,7 +33,7 @@ describe "validators" do
       if @stubbed_clamby
         expect(Clamby).to receive(:safe?).and_return(false)
       end
-      input_file = File.join(fixture_path, "sample_virus.mp3")
+      input_file = File.join(fixture_paths, "sample_virus.mp3")
       expect { Validators.virus_scan(input_file) }.to raise_error(DRI::Exceptions::VirusDetected)
     end
 

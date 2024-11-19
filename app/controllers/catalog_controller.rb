@@ -27,6 +27,7 @@ class CatalogController < ApplicationController
       qt: 'search',
       rows: 9
     }
+    config.search_state_fields << :mode
 
     # solr field configuration for search results/index views
     config.index.title_field = 'title_tesim'

@@ -22,11 +22,11 @@ module Solr
     def get
       args = @args.merge(q: @query, qt: 'standard')
       response = solr_index.connection.get('select', params: args)
-      blacklight_config.response_model.new(
+      CatalogController.blacklight_config.response_model.new(
         response,
         args,
-        document_model: blacklight_config.document_model,
-        blacklight_config: blacklight_config
+        document_model: CatalogController.blacklight_config.document_model,
+        blacklight_config: CatalogController.blacklight_config
       )
     end
 
@@ -87,17 +87,17 @@ module Solr
         args = { q: "alternate_id:\"#{id}\"", fl: "*", rows: 1 }
         response = repository.connection.get("select", params: args)
 
-        bl_response = blacklight_config.response_model.new(
+        bl_response = CatalogController.blacklight_config.response_model.new(
                         response,
                         args,
-                        document_model: blacklight_config.document_model,
-                        blacklight_config: blacklight_config
+                        document_model: CatalogController.blacklight_config.document_model,
+                        blacklight_config: CatalogController.blacklight_config
                       )
         return bl_response.documents.first unless bl_response.documents.empty?
       end
 
       def repository
-        blacklight_config.repository_class.new(blacklight_config)
+        CatalogController.blacklight_config.repository_class.new(CatalogController.blacklight_config)
       end
 
       def construct_query_for_ids(id_array, id_field = 'id')

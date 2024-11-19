@@ -5,7 +5,7 @@ class MyCollectionsSearchBuilder < SearchBuilder
 
   def only_manage_or_edit_access(solr_parameters)
     solr_parameters[:fq] ||= []
-    return if (current_ability.current_user && current_ability.current_user.is_admin?)
+    return if (scope.context[:current_user] && scope.context[:current_user].is_admin?)
 
     # any objects that the user can edit or manage
     solr_parameters[:fq] << "(" + apply_manage_or_edit_permissions + ")"

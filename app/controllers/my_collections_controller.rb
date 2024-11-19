@@ -9,7 +9,7 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user!
 
   self.search_service_class = ::SearchService
-
+  
   configure_blacklight do |config|
 
     config.advanced_search = {
@@ -188,6 +188,10 @@ class MyCollectionsController < ApplicationController
     'my_collections'
   end
 
+  def search_service_context
+    { current_user: current_user }
+  end
+  
   def index
     @response = search_service.search_results.first
     @document_list = @response.documents

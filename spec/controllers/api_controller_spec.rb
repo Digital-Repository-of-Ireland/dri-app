@@ -77,7 +77,7 @@ describe ApiController do
 
       storage = StorageService.new
       storage.create_bucket(object.alternate_id)
-      storage.store_surrogate(object.alternate_id, File.join(fixture_path, "SAMPLEA.mp3"), "#{gf.alternate_id}_mp3.mp3")
+      storage.store_surrogate(object.alternate_id, File.join(fixture_paths, "SAMPLEA.mp3"), "#{gf.alternate_id}_mp3.mp3")
 
       request.env["HTTP_ACCEPT"] = 'application/json'
       post :objects, params: { objects: [{ 'pid' => object.alternate_id }] }
@@ -143,13 +143,13 @@ describe ApiController do
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
       generic_file.save
 
       storage = StorageService.new
       storage.create_bucket(object.alternate_id)
-      storage.store_surrogate(object.alternate_id, File.join(fixture_path, "SAMPLEA.mp3"), "#{generic_file.alternate_id}_mp3.mp3")
+      storage.store_surrogate(object.alternate_id, File.join(fixture_paths, "SAMPLEA.mp3"), "#{generic_file.alternate_id}_mp3.mp3")
     end
 
     it "should return a list of asset information" do
@@ -171,7 +171,7 @@ describe ApiController do
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
       generic_file.save
 
@@ -192,7 +192,7 @@ describe ApiController do
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
       generic_file.save
 
@@ -213,7 +213,7 @@ describe ApiController do
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_path, "SAMPLEA.mp3"), "audio/mp3")
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
       generic_file.save
 
