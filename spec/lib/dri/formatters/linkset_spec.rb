@@ -347,9 +347,9 @@ describe LinksetsController, type: :controller do
           mock_object = OpenStruct.new(id: 'obj1', isGovernedBy_ssim: [collection_id], mime_type: 'application/pdf')
           objects = [mock_object]
   
-          allow(CreateExportJob).to receive(:collection_objects).with(collection_id).and_return(objects)
+          allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return(objects)
   
-          result = linkset.collection_objects(collection_id)
+          result = linkset.collection_objects
   
           expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'application/pdf')
         end
@@ -362,9 +362,9 @@ describe LinksetsController, type: :controller do
   
           objects = [mock_object1, mock_object2]
   
-          allow(CreateExportJob).to receive(:collection_objects).with(collection_id).and_return(objects)
+          allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return(objects)
   
-          result = linkset.collection_objects(collection_id)
+          result = linkset.collection_objects
   
           expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'text/html')
           expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'text/html')
@@ -373,9 +373,9 @@ describe LinksetsController, type: :controller do
   
       context 'when no objects are found' do
         it 'returns an empty array' do
-          allow(CreateExportJob).to receive(:collection_objects).with(collection_id).and_return([])
+          allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return([])
   
-          result = linkset.collection_objects(collection_id)
+          result = linkset.collection_objects
   
           expect(result).to eq([])
         end

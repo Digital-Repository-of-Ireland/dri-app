@@ -105,7 +105,7 @@ class DRI::Formatters::Linkset
       copyright_link = @document.copyright&.url
 
       link_descendants =  if @document.collection?
-                            collection_objects(@document.id) 
+                            collection_objects
                           else
                             object_items(@document.assets, @document.id)
                           end
@@ -166,25 +166,23 @@ class DRI::Formatters::Linkset
       end.compact
     end
     
-    def collection_objects(id)
-      objects_collection = CreateExportJob.collection_objects(id)
+    def collection_objects
+      objects_collection = @document.children(chunk: 1000, subcollections_only: false)
       objects_link = []
-      subCollection_check = []
+      
       objects_collection.each do |object|
         place_holder = {}
-        governedby_id = object['isGovernedBy_ssim'][0]
+        place_holder[:href] = @controller.catalog_url(object.id)
 
         # Check if it's a object linked to a subcollection
-        if id != governedby_id && !subCollection_check.include?(governedby_id) 
-          subCollection_check << governedby_id
-          place_holder[:href] = @controller.catalog_url(governedby_id)
+        if object.collection?
           place_holder[:type] = "text/html"
-        elsif id == governedby_id
-          place_holder[:href] = @controller.catalog_url(object.id)
+        else
           place_holder[:type] = object.mime_type
         end
-        objects_link << place_holder if place_holder[:href].present?
+        objects_link << place_holder
       end
+
       objects_link
     end
 

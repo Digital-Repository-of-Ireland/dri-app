@@ -193,6 +193,32 @@ describe SolrDocument do
       expect(doc.relatives).to match_array([collection_b.alternate_id])
     end
 
+    it 'should return all children' do
+      doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
+      object = FactoryBot.create(:sound)
+      @collection.governed_items << object
+      @collection.save
+      @collection.reload
+
+      children = doc.children(chunk: 10, subcollections_only: false)
+      expect(children.size).to eq 2
+
+      expect(children.map(&:alternate_id)).to match_array([object.alternate_id, @subcollection.alternate_id])
+    end
+
+    it 'should return subcollection children only if requested' do
+      doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
+      object = FactoryBot.create(:sound)
+      @collection.governed_items << object
+      @collection.save
+      @collection.reload
+
+      children = doc.children(chunk: 10)
+      expect(children.size).to eq 1
+
+      expect(children.map(&:alternate_id)).to match_array([@subcollection.alternate_id])
+    end
+
     # ensure responses grouped into pages of 10 still return the correct count
     context 'when a document has over 10 objects' do
       before do
