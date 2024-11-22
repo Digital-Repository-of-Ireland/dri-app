@@ -17,7 +17,7 @@
         <img src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "thumbnail_large") %>" alt="pdf">
       </div>
     <% elsif @generic_file.image? %>
-      <img src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "thumbnail_medium") %>" alt="generic">
+      <img src="<%= @presenter.surrogate_url(@generic_file.alternate_id, "thumbnail_medium") %>" alt="Asset thumbnail">
     <% end %>
   </div>
 

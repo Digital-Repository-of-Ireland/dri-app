@@ -1,4 +1,3 @@
-
 DRI::Asset::Derivatives.module_eval do
   def create_derivatives(_filename)
     case mime_type

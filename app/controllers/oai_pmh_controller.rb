@@ -3,8 +3,8 @@ class OaiPmhController < ApplicationController
   include BlacklightOaiProvider::Controller
   copy_blacklight_config_from(CatalogController)
 
-  DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::EDM.instance)
-  DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::OAI.instance)
+  DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::Edm.instance)
+  DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::Oai.instance)
 
   def oai
     body = oai_provider

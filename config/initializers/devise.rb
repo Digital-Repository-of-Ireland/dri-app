@@ -3,6 +3,6 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   config.warden do |manager|
-    manager.failure_app = FailureApps::CustomDeviseFailureApp
+    manager.failure_app = FailureApp::CustomDeviseFailureApp
   end
 end

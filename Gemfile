@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 6.1'
 gem 'uri', '>= 0.12.2'
 
-gem 'blacklight', '~>7'
+gem 'blacklight', '7.38.0'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'kaminari', '>= 1.2.1'
@@ -33,7 +33,7 @@ gem 'linkeddata'
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'browse-everything', '~> 1.2.0'
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'dartsass'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 gem 'roo'
 
@@ -97,7 +97,6 @@ group :production do
   gem 'clamby'
   gem 'honeybadger'
   gem 'mysql2'
-  gem 'newrelic_rpm'
 end
 
 group :development, :test do

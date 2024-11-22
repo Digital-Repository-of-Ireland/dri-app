@@ -17,11 +17,19 @@ module DriApp
     # -- all .rb files in that directory are automatically loaded.
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
-    config.autoloader = :classic
+    #config.autoloader = :classic
+
+    overrides = "#{Rails.root}/app/overrides"
+    Rails.autoloaders.main.ignore(overrides)
+
+    config.to_prepare do
+      Dir.glob("#{overrides}/**/*_override.rb").sort.each do |override|
+        load override
+      end
+    end
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.eager_load_paths += %W(#{config.root}/lib)
-    config.eager_load_paths += %W(#{config.root}/lib/failure_apps)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -75,14 +83,10 @@ module DriApp
 
     # Default SASS Configuration, check out https://github.com/rails/sass-rails for details
     config.assets.compress = !Rails.env.development?
-
     config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    config.autoload_paths << Rails.root.join('lib')
     config.assets.precompile += %w( *.png *.jpg *.jpeg *.gif )
-
   end
 end

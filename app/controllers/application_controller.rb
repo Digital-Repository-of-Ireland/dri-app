@@ -1,3 +1,5 @@
+require "dri/exceptions"
+
 class ApplicationController < ActionController::Base
   helper Openseadragon::OpenseadragonHelper
   before_action :authenticate_user_from_token!
