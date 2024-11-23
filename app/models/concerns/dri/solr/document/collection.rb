@@ -13,10 +13,9 @@ module DRI::Solr::Document::Collection
   def children(chunk: 100, subcollections_only: true)
     # Find immediate children of this collection
     solr_query = "collection_id_sim:\"#{self.alternate_id}\""
-    f_query = "is_collection_ssi:true"
 
     args = { sort: "system_create_dtsi asc" }
-    args[:fq] = f_query if subcollections_only
+    args[:fq] = "is_collection_ssi:true" if subcollections_only
 
     Solr::Query.new(
       solr_query,

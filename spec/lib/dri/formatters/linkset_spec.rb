@@ -357,16 +357,15 @@ describe LinksetsController, type: :controller do
   
       context 'when an object is linked to a subcollection' do
         it 'includes the subcollection link' do
-          mock_object1 = OpenStruct.new(id: 'obj1', isGovernedBy_ssim: [collection_id], mime_type: 'text/html')
-          mock_object2 = OpenStruct.new(id: 'obj2', isGovernedBy_ssim: ['other_parent_id'], mime_type: 'text/html')
-  
+          mock_object1 = OpenStruct.new(id: 'obj1', isGovernedBy_ssim: [collection_id], mime_type: 'text/html', collection?: true)
+          mock_object2 = OpenStruct.new(id: 'obj2', isGovernedBy_ssim: ['other_parent_id'], mime_type: 'text/html', collection?: true)
+
           objects = [mock_object1, mock_object2]
   
           allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return(objects)
   
           result = linkset.collection_objects
   
-          expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'text/html')
           expect(result).to include(href: 'http://localhost:3000/catalog/obj1', type: 'text/html')
         end
       end

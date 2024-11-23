@@ -167,14 +167,14 @@ class DRI::Formatters::Linkset
     end
     
     def collection_objects
+      # get objects and subcollections that are direct children of this collection only
       objects_collection = @document.children(chunk: 1000, subcollections_only: false)
       objects_link = []
       
       objects_collection.each do |object|
-        place_holder = {}
-        place_holder[:href] = @controller.catalog_url(object.id)
+        place_holder = { href: @controller.catalog_url(object.id) }
 
-        # Check if it's a object linked to a subcollection
+        # Check if it's a subcollection
         if object.collection?
           place_holder[:type] = "text/html"
         else
@@ -216,8 +216,6 @@ class DRI::Formatters::Linkset
     end
 
     def document_licence_link
-      return unless ActiveRecord::Base.connection.table_exists?('licences')
-      
       if @document.licence.present? && @document.licence.respond_to?(:url)
         return @document.licence&.url
       end
