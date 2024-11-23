@@ -481,6 +481,11 @@
   <xs:documentation>Film editor</xs:documentation>
   </xs:annotation>
   </xs:element>
+  <xs:element name="fmk" substitutionGroup="dc:contributor">
+  <xs:annotation>
+  <xs:documentation>Filmmaker</xs:documentation>
+  </xs:annotation>
+  </xs:element>
   <xs:element name="fpy" substitutionGroup="dc:any">
   <xs:annotation>
   <xs:documentation>First party</xs:documentation>

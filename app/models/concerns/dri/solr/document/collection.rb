@@ -1,24 +1,26 @@
 module DRI::Solr::Document::Collection
 
-  def descendants(limit: 100)
+  def descendants(chunk: 100)
     # Find all sub-collections below this collection
     solr_query = "ancestor_id_ssim:\"#{self.alternate_id}\""
     f_query = "is_collection_ssi:true"
 
-    Solr::Query.new(solr_query, limit, fq: f_query).to_a
+    Solr::Query.new(solr_query, chunk, fq: f_query).to_a
   end
 
   # Filter to only get those that are collections:
   # fq=is_collection_ssi:true
-  def children(limit: 100)
+  def children(chunk: 100, subcollections_only: true)
     # Find immediate children of this collection
     solr_query = "collection_id_sim:\"#{self.alternate_id}\""
-    f_query = "is_collection_ssi:true"
+
+    args = { sort: "system_create_dtsi asc" }
+    args[:fq] = "is_collection_ssi:true" if subcollections_only
 
     Solr::Query.new(
       solr_query,
-      limit,
-      {fq: f_query, sort: "system_create_dtsi asc"}
+      chunk,
+      args
     ).to_a
   end
 
