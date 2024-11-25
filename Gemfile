@@ -23,7 +23,7 @@ gem 'openseadragon'
 gem 'riiif'
 
 gem "devise", ">= 4.7.1"
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'rails7'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
 gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
 
 gem 'paper_trail'
@@ -33,7 +33,7 @@ gem 'linkeddata'
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'browse-everything'#, '~> 1.2.0'
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'rails7'
+gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 gem 'roo'
 
@@ -68,7 +68,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails" # , git: 'https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails'
+gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails"
 gem 'js_cookie_rails'
 
 # clients
