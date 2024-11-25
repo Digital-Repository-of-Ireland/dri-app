@@ -1,7 +1,6 @@
 require 'iso8601'
 require 'iso-639'
 require 'rsolr'
-require 'blacklight/catalog'
 
 module DRI::Catalog
   extend ActiveSupport::Concern

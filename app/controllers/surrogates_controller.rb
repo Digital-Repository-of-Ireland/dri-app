@@ -1,5 +1,4 @@
 require 'rsolr'
-require 'blacklight/catalog'
 
 class SurrogatesController < ApplicationController
   before_action :authenticate_user_from_token!, only: [:index, :download]

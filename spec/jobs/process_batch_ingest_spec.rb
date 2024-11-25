@@ -29,10 +29,10 @@ describe 'ProcessBatchIngest' do
       Settings.downloads.directory = tmp_download_dir
 
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'valid_metadata.xml'), tmp_file.path)
 
       asset_tmp_file = Tempfile.new(['sample_image', '.jpeg'])
-      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), asset_tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'sample_image.jpeg'), asset_tmp_file.path)
 
       ingest_message = {}
       ingest_message['collection'] = @collection.alternate_id
@@ -74,7 +74,7 @@ describe 'ProcessBatchIngest' do
 
     it "should create an object from metadata XML" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
       rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
@@ -85,7 +85,7 @@ describe 'ProcessBatchIngest' do
 
      it "should create add an object to the correct collection" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
       rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
@@ -105,7 +105,7 @@ describe 'ProcessBatchIngest' do
 
     it "should create an asset from file" do
       tmp_file = Tempfile.new(['sample_image', '.jpeg'])
-      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'sample_image.jpeg'), tmp_file.path)
       assets = [{ master_file_id: master_file.id, path: tmp_file.path }]
       object.increment_version
       object.save
@@ -119,7 +119,7 @@ describe 'ProcessBatchIngest' do
 
     it "should create a preservation asset from file" do
       tmp_file = Tempfile.new(['sample_image', '.jpeg'])
-      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'sample_image.jpeg'), tmp_file.path)
       assets = [{ label: 'preservation', master_file_id: master_file.id, path: tmp_file.path }]
       object.increment_version
       object.save
@@ -136,7 +136,7 @@ describe 'ProcessBatchIngest' do
 
     it "should not error if preservation asset and asset are the same file" do
       tmp_file = Tempfile.new(['sample_image', '.jpeg'])
-      FileUtils.cp(File.join(fixture_path, 'sample_image.jpeg'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'sample_image.jpeg'), tmp_file.path)
       pres_master_file = DRIBatchIngest::MasterFile.create
       assets = [{ master_file_id: master_file.id, path: tmp_file.path }, { label: 'preservation', master_file_id: pres_master_file.id, path: tmp_file.path }]
       object.increment_version
@@ -164,7 +164,7 @@ describe 'ProcessBatchIngest' do
       allow_any_instance_of(DRI::DigitalObject).to receive(:save).and_raise(ActiveRecord::RecordNotSaved)
 
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
       rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
@@ -179,7 +179,7 @@ describe 'ProcessBatchIngest' do
       allow_any_instance_of(DRI::DigitalObject).to receive(:update_index).and_return(false)
 
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'valid_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
       rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
@@ -192,7 +192,7 @@ describe 'ProcessBatchIngest' do
 
     it "should rescue errors saving metadata with missing required fields" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'metadata_no_rights.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'metadata_no_rights.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
       rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
@@ -205,7 +205,7 @@ describe 'ProcessBatchIngest' do
 
     it "should rescue errors saving metadata with invalid xml" do
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'invalid_xml_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'invalid_xml_metadata.xml'), tmp_file.path)
       metadata = { master_file_id: master_file.id, path: tmp_file.path }
       rc, object = ProcessBatchIngest.ingest_metadata(@collection.alternate_id, @login_user, metadata)
 
@@ -247,7 +247,7 @@ describe 'ProcessBatchIngest' do
       Settings.downloads.directory = tmp_download_dir
 
       tmp_file = Tempfile.new(['metadata', '.xml'])
-      FileUtils.cp(File.join(fixture_path, 'valid_metadata.xml'), tmp_file.path)
+      FileUtils.cp(File.join(fixture_paths, 'valid_metadata.xml'), tmp_file.path)
 
       asset_tmp_file = Tempfile.new(['sample_image', '.jpeg'])
       FileUtils.rm asset_tmp_file

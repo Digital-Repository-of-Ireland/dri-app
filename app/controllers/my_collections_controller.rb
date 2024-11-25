@@ -9,7 +9,7 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user!
 
   self.search_service_class = ::SearchService
-
+  
   configure_blacklight do |config|
 
     config.advanced_search = {
@@ -188,6 +188,10 @@ class MyCollectionsController < ApplicationController
     'my_collections'
   end
 
+  def search_service_context
+    { current_user: current_user }
+  end
+  
   def index
     @response = search_service.search_results.first
     @document_list = @response.documents
@@ -226,7 +230,7 @@ class MyCollectionsController < ApplicationController
     
     if @document.collection?
       # published subcollections unless admin or edit permission
-      @children = @document.children(limit: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+      @children = @document.children(chunk: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
       @file_display_type_count = @document.file_display_type_count
       @config = CollectionConfig.find_by(collection_id: @document.id)
     else
