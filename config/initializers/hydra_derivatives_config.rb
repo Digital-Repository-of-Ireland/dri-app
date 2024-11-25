@@ -1,4 +1,6 @@
 require 'hydra/derivatives'
+require 'dri/derivatives/services/local_file_source_file'
+require 'dri/derivatives/services/persist_s3_output_file'
 
 Hydra::Derivatives.libreoffice_path = Settings.plugins.libreoffice_path
 Hydra::Derivatives.source_file_service = DRI::Derivatives::Services::LocalFileSourceFile

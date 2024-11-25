@@ -4,7 +4,7 @@ require 'csv'
 describe ExportsController, type: :controller do
 
   before(:each) do
-    Settings.add_source!(Rails.root.join(fixture_path, "settings-fs.yml").to_s)
+    Settings.add_source!(Rails.root.join(fixture_paths.first, "settings-fs.yml").to_s)
     Settings.reload!
 
     @tmp_assets_dir = Dir.mktmpdir

@@ -45,7 +45,7 @@ RSpec.describe "Collection config", type: :feature do
       @config.allow_export = true
       @config.save
       visit(catalog_path(@collection.alternate_id))
-
+      
       expect(page).to have_css('a#export_metadata')
     end
 

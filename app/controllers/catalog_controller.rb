@@ -27,6 +27,7 @@ class CatalogController < ApplicationController
       qt: 'search',
       rows: 9
     }
+    config.search_state_fields << :mode
 
     # solr field configuration for search results/index views
     config.index.title_field = 'title_tesim'
@@ -227,7 +228,7 @@ class CatalogController < ApplicationController
     show_organisations
 
     if @document.collection?
-      @children = @document.children(limit: 100).select { |child| child.published? }
+      @children = @document.children(chunk: 100).select { |child| child.published? }
       @file_display_type_count = @document.file_display_type_count(published_only: true)
       @config = CollectionConfig.find_by(collection_id: @document.id)
     else

@@ -1,13 +1,13 @@
 class DoiMetadata < ActiveRecord::Base
   belongs_to :datacite_doi
 
-  serialize :title
-  serialize :subject
-  serialize :description
-  serialize :rights
-  serialize :creator
-  serialize :creation_date
-  serialize :published_date
+  serialize :title, coder: YAML
+  serialize :subject, coder: YAML
+  serialize :description, coder: YAML
+  serialize :rights, coder: YAML
+  serialize :creator, coder: YAML
+  serialize :creation_date, coder: YAML
+  serialize :published_date, coder: YAML
 
   def metadata_fields
     %w(title subject creator description creation_date published_date)

@@ -119,7 +119,10 @@ module FacetsHelper
     doc = SolrDocument.find(value)
     return 'nil' if doc.nil?
 
-    doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first.downcase
+    title_field = doc[Solrizer.solr_name('title', :stored_searchable, type: :string)]
+    return 'nil' if title_field.nil? || title_field.empty?
+
+    title_field.first.downcase
   end
 
   def transform_is_collection(value)

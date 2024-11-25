@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1'
+gem 'rails', '< 7.2'
 gem 'uri', '>= 0.12.2'
 
 gem 'blacklight', '7.38.0'
@@ -13,9 +13,9 @@ gem 'kaminari', '>= 1.2.1'
 gem 'rsolr'
 gem 'view_component', '< 3'
 
-gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'main'
+gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'af_optional'
 gem 'nokogiri', '>= 1.16.5'
-gem 'om', '3.2.0'
+gem 'om', git: 'https://github.com/Digital-Repository-of-Ireland/om.git', branch: 'master'
 gem 'solrizer'
 
 gem 'iiif-presentation'
@@ -32,7 +32,7 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'browse-everything', '~> 1.2.0'
+gem 'browse-everything'#, '~> 1.2.0'
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 gem 'roo'
@@ -68,7 +68,7 @@ gem 'gender_detector'
 gem 'syslog-logger'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails" # , git: 'https://github.com/Digital-Repository-of-Ireland/jquery-ui-rails'
+gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails"
 gem 'js_cookie_rails'
 
 # clients
@@ -178,9 +178,8 @@ gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 
-gem 'blacklight-maps', '> 0.5'
+gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps.git', branch: 'rails7'
 
-# gem 'jquery-datatables', git: 'https://github.com/stkenny/jquery-datatables.git'
 gem 'remotipart'
 
 # # api documentation generator / presenter

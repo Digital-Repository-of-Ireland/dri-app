@@ -174,7 +174,7 @@ describe MetadataController do
 
     before(:each) do
         Settings.add_source!(
-          Rails.root.join(fixture_path, "settings-ro.yml").to_s
+                          Rails.root.join(fixture_paths.first, "settings-ro.yml").to_s
         )
 	Settings.reload!
         @tmp_assets_dir = Dir.mktmpdir

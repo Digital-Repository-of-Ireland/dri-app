@@ -179,7 +179,7 @@
 			<%= render "shared/form_fieldset_label", f:f, source:'types' %>
 			<% if @object.type.empty? %>
 				<div>
-					<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
+					<%= render partial: 'shared/form_object_type', locals: { index: 0, type: "" } %>
 				</div>
 			<% else %>
 			  <% primary_types = %w(text image movingImage interactiveResources 3D sound software dataset) %> 
@@ -187,11 +187,11 @@
 					<% if index == 0 %>
 						<% if ObjectsController::PrimaryTypes::TYPES.include?(type)%>
 							<div>
-								<%= render partial: 'shared/form_object_type.html', locals: { index: index, type: type } %>
+								<%= render partial: 'shared/form_object_type', locals: { index: index, type: type } %>
 							</div>
 						<% else %>
 							<div>
-								<%= render partial: 'shared/form_object_type.html', locals: { index: 0, type: "" } %>
+								<%= render partial: 'shared/form_object_type', locals: { index: 0, type: "" } %>
 							</div>
 							<div>
 								<label for="<%= "digital_object_type_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.type") %></label>

@@ -1,3 +1,6 @@
 require "user_group/engine"
-User = UserGroup::User
-Group = UserGroup::Group
+
+Rails.application.config.to_prepare do
+  User = UserGroup::User
+  Group = UserGroup::Group
+end
