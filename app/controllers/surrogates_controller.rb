@@ -31,7 +31,7 @@ class SurrogatesController < ApplicationController
     raise DRI::Exceptions::NotFound unless file
 
     if file =~ /\A#{URI.regexp(['http', 'https'])}\z/
-      redirect_to file
+      redirect_to file, allow_other_host: true
       return
     end
 
