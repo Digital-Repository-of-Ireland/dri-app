@@ -17,10 +17,10 @@ module Api
       doc = SolrDocument.find(resource_id)
       raise DRI::Exceptions::Unauthorized unless can_view?(doc)
 
-      type =   DRI::Formatters::EDM.edm_type(doc["type_tesim"])
+      type =   DRI::Formatters::Edm.edm_type(doc["type_tesim"])
       assets = doc.assets(with_preservation: true, ordered: false)
 
-      mainfile = DRI::Formatters::EDM.mainfile_for_type(type, assets)
+      mainfile = DRI::Formatters::Edm.mainfile_for_type(type, assets)
       raise DRI::Exceptions::NotFound if mainfile.nil?
 
       if has_3d_type?(mainfile)
