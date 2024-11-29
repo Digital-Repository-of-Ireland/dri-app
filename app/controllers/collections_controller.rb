@@ -207,7 +207,7 @@ class CollectionsController < BaseObjectsController
 
     if cover_url =~ /\A#{URI.regexp(['http', 'https'])}\z/
       cover_uri = URI.parse(cover_url)
-      redirect_to cover_uri.to_s
+      redirect_to cover_uri.to_s, allow_other_host: true
       return
     end
 
