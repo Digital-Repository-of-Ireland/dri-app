@@ -23,10 +23,12 @@
           </p>
         <% end %>
         <p class="dri_publishing_institute">
-          <% if document.key?('depositing_institute_ssi') %>
-            <%= document['depositing_institute_ssi'] %>
-          <% else %>
-            Depositing Organisation not Set
+          <% unless document.dataset? %>
+            <% if document.key?('depositing_institute_ssi') %>
+              <%= document['depositing_institute_ssi'] %>
+            <% else %>
+              Depositing Organisation not Set
+            <% end %>
           <% end %>
         </p>
         <%# If ROOT COLLECTION %>

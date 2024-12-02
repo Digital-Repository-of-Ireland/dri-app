@@ -29,10 +29,12 @@
           <h3><%= document[:title_tesim][0] %></h3>
           <% if document.root_collection? %>
             <p class="dri_publishing_institute">
-              <% if document.key?('depositing_institute_ssi') %>
-                <%= document['depositing_institute_ssi'] %>
-              <% else %>
-                <%= t('dri.views.collection.depositing_organisation_not_set') %>
+              <% unless document.dataset? %>
+                <% if document.key?('depositing_institute_ssi') %>
+                  <%= document['depositing_institute_ssi'] %>
+                <% else %>
+                  <%= t('dri.views.collection.depositing_organisation_not_set') %>
+                <% end %>
               <% end %>
             </p>
           <% else %>

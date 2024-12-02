@@ -9,35 +9,15 @@ RSpec.describe DRI::Catalog, type: :controller do
   # Mocking a document object to simulate the data used in the controller
   let(:mock_document) { double("Document", dataset?: "Organization", depositing_institute: nil) }
 
-  describe "#should_render_organizations?" do
-    it "returns true when dataset is 'Organization'" do
-      expect(subject.send(:should_render_organizations?, mock_document)).to be true
+  describe "#should_render_depositing_organization?" do
+    it "returns true when not a dataset" do
+      allow(mock_document).to receive(:dataset?).and_return(false)
+      expect(subject.send(:should_render_depositing_organization?, mock_document)).to be true
     end
 
-    it "returns true when dataset is nil" do
-      allow(mock_document).to receive(:dataset?).and_return(nil)
-      expect(subject.send(:should_render_organizations?, mock_document)).to be true
-    end
-
-    it "returns false when dataset is not 'Organization'" do
-      allow(mock_document).to receive(:dataset?).and_return("Research")
-      expect(subject.send(:should_render_organizations?, mock_document)).to be false
-    end
-  end
-
-  describe "#should_render_orgs_and_sponsors?" do
-    it "returns true when dataset is 'Organization'" do
-      expect(subject.send(:should_render_orgs_and_sponsors?, mock_document)).to be true
-    end
-
-    it "returns true when depositing institute is present" do
-      allow(mock_document).to receive(:depositing_institute).and_return('Some Institute')
-      expect(subject.send(:should_render_orgs_and_sponsors?, mock_document)).to be true
-    end
-
-    it "returns false when dataset is not 'Organization' and depositing institute is nil" do
-      allow(mock_document).to receive(:dataset?).and_return("Research")
-      expect(subject.send(:should_render_orgs_and_sponsors?, mock_document)).to be false
+    it "returns false when research dataset" do
+      allow(mock_document).to receive(:dataset?).and_return("true")
+      expect(subject.send(:should_render_depositing_organization?, mock_document)).to be false
     end
   end
 
