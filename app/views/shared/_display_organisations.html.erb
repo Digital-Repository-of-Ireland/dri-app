@@ -7,7 +7,7 @@
 
 
 	<ul class="dri_collection_institutes_list">
-		<% if @presenter.depositing_organisation %>
+		<% if !@document.dataset? && @presenter.depositing_organisation %>
 		<li>
 			<div class="dri_collection_institutes_item">
 				<%= @presenter.display_organisation(@presenter.depositing_organisation) %>
