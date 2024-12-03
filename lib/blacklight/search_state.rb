@@ -1,10 +1,9 @@
 # frozen_string_literal: true
-
-require 'blacklight/search_state/filter_field'
-
 module Blacklight
   # This class encapsulates the search state as represented by the query
   # parameters namely: :f, :q, :page, :per_page and, :sort
+  autoload :FilterField, 'blacklight/search_state/filter_field'
+
   class SearchState
     extend Deprecation
 
