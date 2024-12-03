@@ -45,7 +45,7 @@ class DRI::Formatters::Linkset
       copyright_link = @document.copyright&.url
 
       link_descendants =  if @document.collection?
-                            collection_objects(@document.id) 
+                            collection_objects
                           else
                             object_items(@document.assets, @document.id)
                           end
