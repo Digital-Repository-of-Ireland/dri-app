@@ -4,6 +4,7 @@ module DRI::Derivatives::Processors
     def create_resized_image
       create_image do |xfrm|
         if size
+          xfrm.density(density) if density
           xfrm.combine_options do |i|
             i.flatten
             i.resize(size)
@@ -50,6 +51,10 @@ module DRI::Derivatives::Processors
 
     def crop
       directives.fetch(:crop, nil)
+    end
+
+    def density
+      directives.fetch(:density, nil)
     end
 
     def gravity
