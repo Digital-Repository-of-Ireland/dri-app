@@ -5,7 +5,7 @@ DRI::Asset::Derivatives.module_eval do
       Hydra::Derivatives::PdfDerivatives.create(self, source: :content,
         outputs: [
           { label: :thumbnail_medium, format: 'jpg', size: '200', trim: 'true', object: self.digital_object.alternate_id, file: self.alternate_id, layer: 0 },
-          { label: :thumbnail_large, format: 'jpg', size: '400', trim: 'true', object: self.digital_object.alternate_id, file: self.alternate_id, layer: 0 },
+          { label: :thumbnail_large, format: 'jpg', density: 72, size: '400', trim: 'true', object: self.digital_object.alternate_id, file: self.alternate_id, layer: 0 },
           { label: :lightbox_format, format: 'jpg', size: '600', object: self.digital_object.alternate_id, file: self.alternate_id, layer: 0 },
           { label: :full_size_web_format, format: 'jpg', size: '100%', object: self.digital_object.alternate_id, file: self.alternate_id, layer: 0 },
           { label: :crop16_9_width_200_thumbnail, size: '200', crop: '200x113+0+0', gravity: "Center", trim: true, object: self.digital_object.alternate_id, file: self.alternate_id, layer: 0 }
