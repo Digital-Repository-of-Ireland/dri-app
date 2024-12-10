@@ -21,7 +21,11 @@
 			</p>
     		</div>
   		<% end %>
-      <%= paginate @collection_data, theme: 'blacklight' %>
+  		<nav id="dri_my_collections_pagination_nav_id" class="dri_pagination_nav" aria-label="Navigation">
+        <ul id="dri_my_collections_pagination_nav_links_id" class="dri_pagination_nav_links">
+          <%= paginate @collection_data, theme: 'blacklight' %>
+        </ul>
+      </nav>
   	</div>
   </div>
 <% end %>
