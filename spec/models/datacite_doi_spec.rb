@@ -68,6 +68,56 @@ describe "DataciteDoi" do
     expect(hash["resource"]["publicationYear"]).to eq "#{Time.now.year}"
   end
 
+  it "should include resourcetype in XML" do
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
+    xml = datacite.to_xml
+
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["resourceType"]["resourceTypeGeneral"]).to eq @object.type.first
+  end
+
+  it "should include resourcetype for 3D in XML" do
+    @object.type = "3d"
+    @object.save
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
+    xml = datacite.to_xml
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(doc.at('resourceType')['resourceTypeGeneral']).to eq "Other"
+    expect(hash["resource"]["resourceType"]).to eq "3D"
+  end
+
+  it "should use audiovisual for movingImage in XML" do
+    @object.type = "movingImage"
+    @object.save
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
+    xml = datacite.to_xml
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["resourceType"]["resourceTypeGeneral"]).to eq "AudioVisual"
+  end
+
+  it "should use audiovisual for video in XML" do
+    @object.type = "Video"
+    @object.save
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
+    xml = datacite.to_xml
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["resourceType"]["resourceTypeGeneral"]).to eq "AudioVisual"
+  end
+
+  it "should use sound for audio in XML" do
+    @object.type = "Audio"
+    @object.save
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
+    xml = datacite.to_xml
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["resourceType"]["resourceTypeGeneral"]).to eq "Sound"
+  end
+
   it 'should use roles if no creator' do
     @creator = DRI::DigitalObject.with_standard :qdc
     @creator[:title] = ["An Audio Title"]

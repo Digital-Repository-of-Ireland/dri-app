@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_03_150549) do
-
+ActiveRecord::Schema[7.1].define(version: 2025_01_10_174445) do
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
     t.string "aggregation_id"
     t.boolean "doi_from_metadata"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "iiif_main"
     t.string "comment"
     t.index ["collection_id"], name: "index_aggregations_on_collection_id", unique: true
@@ -27,8 +26,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.integer "user_id", null: false
     t.string "document_id"
     t.string "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "user_type"
     t.string "document_type"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
@@ -39,24 +38,24 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "content_type"
     t.binary "file_contents", limit: 1048576
     t.integer "institute_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["institute_id"], name: "index_brands_on_institute_id"
   end
 
   create_table "collection_configs", force: :cascade do |t|
     t.boolean "allow_export"
     t.string "collection_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "default_sort"
     t.index ["collection_id"], name: "index_collection_configs_on_collection_id"
   end
 
   create_table "collection_locks", force: :cascade do |t|
     t.string "collection_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "copyrights", force: :cascade do |t|
@@ -64,8 +63,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "url"
     t.string "logo"
     t.string "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "supported"
   end
 
@@ -73,8 +72,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "object_id"
     t.string "modified"
     t.string "mod_version"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "update_type"
     t.integer "version"
     t.string "status"
@@ -89,8 +88,9 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.text "rights"
     t.text "creation_date"
     t.text "published_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
+    t.text "resource_type"
     t.index ["datacite_doi_id"], name: "index_doi_metadata_on_datacite_doi_id"
   end
 
@@ -104,8 +104,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.text "edit_groups"
     t.text "manager_users"
     t.text "manager_groups"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "digital_object_type"
     t.integer "digital_object_id"
     t.string "visibility"
@@ -119,8 +119,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.text "media_object_ids"
     t.boolean "finished", default: false
     t.boolean "email_sent", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "dri_batch_ingest_master_files", force: :cascade do |t|
@@ -130,8 +130,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.text "file_location"
     t.boolean "preservation"
     t.text "download_spec"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "metadata"
     t.index ["media_object_id"], name: "index_dri_batch_ingest_master_files_on_media_object_id"
   end
@@ -139,23 +139,23 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
   create_table "dri_batch_ingest_media_objects", force: :cascade do |t|
     t.integer "ingest_batch_id"
     t.string "collection"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["ingest_batch_id"], name: "ingest_batch_idx"
   end
 
   create_table "dri_batch_ingest_user_ingests", force: :cascade do |t|
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
   end
 
   create_table "dri_collection_relationships", force: :cascade do |t|
     t.integer "digital_object_id"
     t.integer "collection_relative_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "dri_digital_objects", force: :cascade do |t|
@@ -168,8 +168,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.integer "previous_sibling_id"
     t.string "documentation_for_type"
     t.integer "documentation_for_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "metadata_checksum"
     t.integer "object_version"
     t.string "status"
@@ -201,8 +201,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "checksum_md5"
     t.string "checksum_sha256"
     t.string "checksum_rmd160"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "digital_object_type"
     t.integer "digital_object_id"
     t.boolean "preservation_only"
@@ -224,8 +224,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "identifier"
     t.string "source"
     t.text "spatial"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "dri_om_datastreams", force: :cascade do |t|
@@ -233,16 +233,16 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.binary "datastream_content", limit: 16777216
     t.string "describable_type"
     t.integer "describable_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["describable_type", "describable_id"], name: "om_index"
   end
 
   create_table "dri_reconciliation_results", force: :cascade do |t|
     t.string "object_id"
     t.string "uri"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "fixity_checks", force: :cascade do |t|
@@ -250,8 +250,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "object_id"
     t.boolean "verified"
     t.text "result"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "fixity_report_id"
     t.index ["collection_id"], name: "index_fixity_checks_on_collection_id"
     t.index ["fixity_report_id"], name: "index_fixity_checks_on_fixity_report_id"
@@ -259,8 +259,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
   end
 
   create_table "fixity_reports", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "collection_id"
     t.index ["collection_id"], name: "index_fixity_reports_on_collection_id"
   end
@@ -269,8 +269,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "batch_id"
     t.string "asset_id"
     t.string "status"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "asset_type"
     t.index ["asset_id"], name: "index_ingest_statuses_on_asset_id"
     t.index ["batch_id"], name: "index_ingest_statuses_on_batch_id"
@@ -279,8 +279,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
   create_table "institutes", force: :cascade do |t|
     t.string "name"
     t.string "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "logo"
     t.boolean "depositing"
     t.index ["name"], name: "index_institutes_on_name"
@@ -291,8 +291,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "job"
     t.string "status"
     t.text "message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["ingest_status_id"], name: "index_job_statuses_on_ingest_status_id"
   end
 
@@ -301,23 +301,23 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "url"
     t.string "logo"
     t.string "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "organisation_users", force: :cascade do |t|
     t.integer "institute_id"
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "manager"
     t.index ["institute_id", "user_id"], name: "index_organisation_users_on_institute_id_and_user_id", unique: true
   end
 
   create_table "qa_local_authorities", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "index_qa_local_authorities_on_name", unique: true
   end
 
@@ -325,8 +325,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.integer "local_authority_id"
     t.string "label"
     t.string "uri"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["local_authority_id"], name: "index_qa_local_authority_entries_on_local_authority_id"
     t.index ["uri"], name: "index_qa_local_authority_entries_on_uri", unique: true
   end
@@ -334,8 +334,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
   create_table "searches", force: :cascade do |t|
     t.text "query_params"
     t.integer "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "user_type"
     t.index ["user_id"], name: "index_searches_on_user_id"
   end
@@ -345,8 +345,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.date "start_date"
     t.date "end_date"
     t.string "item_link"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tp_people", primary_key: "person_id", id: :string, force: :cascade do |t|
@@ -358,8 +358,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "death_place"
     t.date "death_date"
     t.string "person_description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tp_places", primary_key: "place_id", id: :string, force: :cascade do |t|
@@ -369,14 +369,14 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.float "longitude"
     t.string "wikidata_id"
     t.string "wikidata_name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tp_stories", primary_key: "story_id", id: :string, force: :cascade do |t|
     t.string "dri_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_background_tasks", force: :cascade do |t|
@@ -396,8 +396,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
   create_table "user_group_groups", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.boolean "is_locked", default: false
     t.boolean "reader_group", default: false
     t.index ["name"], name: "index_user_group_groups_on_name", unique: true
@@ -406,8 +406,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
   create_table "user_group_memberships", force: :cascade do |t|
     t.integer "group_id"
     t.integer "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "approved_by"
     t.text "request_form"
     t.index ["group_id", "user_id"], name: "index_user_group_memberships_on_group_id_and_user_id", unique: true
@@ -417,27 +417,27 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "authentication_token"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "first_name"
     t.string "second_name"
     t.string "locale"
     t.boolean "guest", default: false
     t.integer "view_level", default: 0
     t.string "about_me", default: ""
-    t.datetime "token_creation_date"
+    t.datetime "token_creation_date", precision: nil
     t.string "image_link"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.index ["authentication_token"], name: "index_user_group_users_on_authentication_token", unique: true
     t.index ["confirmation_token"], name: "index_user_group_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_user_group_users_on_email", unique: true
@@ -449,8 +449,8 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "datastream_id"
     t.string "version_id"
     t.string "committer_login"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "versions", force: :cascade do |t|
@@ -459,7 +459,7 @@ ActiveRecord::Schema.define(version: 2024_10_03_150549) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
