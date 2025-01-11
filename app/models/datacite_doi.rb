@@ -126,6 +126,7 @@ class DataciteDoi < ActiveRecord::Base
       metadata.creation_date = object.creation_date.to_a if object.creation_date.present?
       metadata.published_date = object.published_date.to_a if object.published_date.present?
       metadata.rights = object.rights.to_a if object.rights
+      metadata.resource_type = object.type.to_a
       metadata.save
 
       self.doi_metadata = metadata

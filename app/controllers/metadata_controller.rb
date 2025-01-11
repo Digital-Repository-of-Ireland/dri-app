@@ -164,7 +164,11 @@ class MetadataController < ApplicationController
 
       doi_metadata_fields = {}
       @doi.metadata_fields.each do |field|
-        doi_metadata_fields[field] = @object.send(field.to_sym)
+        if field == "type"
+          doi_metadata_fields['resource_type'] = @object.send(field.to_sym)
+        else
+          doi_metadata_fields[field] = @object.send(field.to_sym)
+        end
       end
       @doi.update_metadata(doi_metadata_fields)
       new_doi_if_required(@object, @doi, 'metadata updated')
