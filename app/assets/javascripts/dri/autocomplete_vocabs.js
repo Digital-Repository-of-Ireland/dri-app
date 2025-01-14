@@ -39,17 +39,13 @@ function addVocabAutocomplete(id) {
     source: function(request, response) {
       $.ajax({
         url: endpoint + request.term.toLowerCase(),
-        timeout: 5000,
+        timeout: 8000,
         type: 'GET',
         dataType: 'json',
         complete: function(xhr, status) {
           var results = $.parseJSON(xhr.responseText);
           response(results);
         }
-      }).fail(function(){
-        var endpoint_name = $(dropdown_selector).find(':selected').text().trim();
-        var end_message = '. Please try a different autocomplete source';
-        alert('error fetching ' + endpoint_name + end_message);
       }).always(function(){
         // remove loading gif
         $(input_selector).removeClass('ui-autocomplete-loading');
