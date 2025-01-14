@@ -8,12 +8,10 @@ module Qa::Authorities
 
       json_response['@graph'].map do |res_hash|
         {
-          id: res_hash['@id'],
-          label: res_hash['skos:prefLabel']
+          label: res_hash['skos:prefLabel']['@value'],
+          id: res_hash['@id']
         }
       end
-    rescue StandardError => e
-      Rails.logger.error "Homosaurus Authority: #{e.message}"
     end
   end
 end
