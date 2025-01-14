@@ -398,7 +398,7 @@ describe ObjectsController do
             )
         )
       Settings.doi.enable = true
-
+      puts @object.type
       @object.status = "published"
       @object.save
       doi = DataciteDoi.create(object_id: @object.alternate_id)
@@ -440,6 +440,7 @@ describe ObjectsController do
       params[:digital_object][:title] = ["An Audio Title"]
       params[:digital_object][:read_users_string] = "public"
       params[:digital_object][:edit_users_string] = @login_user.email
+      params[:digital_object][:type] = @object.type
       expect {
         put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
       }.to change{ DataciteDoi.count }.by(0)

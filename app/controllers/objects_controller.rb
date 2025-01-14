@@ -430,7 +430,9 @@ class ObjectsController < BaseObjectsController
 
       DRI::DigitalObject.transaction do
         if doi
-          doi.update_metadata(update_params.select { |key, _value| doi.metadata_fields.include?(key) })
+          doi_params = update_params.select { |key, _value| doi.metadata_fields.include?(key) }
+          doi_params[:resource_type] = doi_params.delete(:type) if doi_params.key?(:type)
+          doi.update_metadata(doi_params)
           new_doi_if_required(@object, doi, 'metadata updated')
         end
 

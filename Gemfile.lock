@@ -1281,7 +1281,7 @@ DEPENDENCIES
   parallel_tests
   qa (~> 5.1)
   railroady
-  rails (< 7.2)
+  rails (> 6, < 7.2)
   rails-controller-testing
   redis (~> 4)
   remotipart
