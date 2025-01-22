@@ -466,12 +466,12 @@ GEM
     fcrepo_wrapper (0.9.0)
       ruby-progressbar
     ffaker (2.23.0)
-    ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.1-x86_64-linux-gnu)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
     filesize (0.2.0)
-    font-awesome-sass (6.5.1)
+    font-awesome-sass (6.7.2)
       sassc (~> 2.0)
     gapic-common (0.20.0)
       faraday (>= 1.9, < 3.a)
@@ -1237,7 +1237,7 @@ DEPENDENCIES
   faraday_middleware
   fcrepo_wrapper (= 0.9.0)
   ffaker
-  font-awesome-sass (~> 6.5.1)
+  font-awesome-sass (~> 6.7.2)
   gender_detector
   google-analytics-data-v1beta (~> 0.8.0)
   google-oauth2-installed
