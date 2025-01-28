@@ -398,7 +398,6 @@ describe ObjectsController do
             )
         )
       Settings.doi.enable = true
-      puts @object.type
       @object.status = "published"
       @object.save
       doi = DataciteDoi.create(object_id: @object.alternate_id)
