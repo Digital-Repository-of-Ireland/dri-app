@@ -12,7 +12,11 @@
   </ol>
 </div>
 
- <%= paginate @document_list, theme: 'blacklight' %>
+<nav id="dri_my_collections_duplicates_nav" class="dri_pagination_nav" aria-label="Navigation">
+  <ul id="dri_my_collections_duplicates_nav_links" class="dri_pagination_nav_links">
+    <%= paginate @document_list, theme: 'blacklight' %>
+  </ul>
+</nav>
 
 <div id="dri_result_container_id" class="dri_result_container">
   <% if (@document_list.size > 0) %>
