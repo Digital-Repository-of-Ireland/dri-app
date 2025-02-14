@@ -16,7 +16,7 @@ end
 # quickly. If so, enable the condition to exclude them from tracking.
 
 Rack::Attack.safelist_ip(ENV["RACK_ATTACK_SAFELIST"])
-Rack::Attack.safelist_ip(ENV["10.115.0.0/24"])
+Rack::Attack.safelist_ip("10.115.0.0/24")
 
 # Throttle all requests by IP
 #
@@ -34,7 +34,9 @@ Rack::Attack.safelist_ip(ENV["10.115.0.0/24"])
 # averaging over a minute -- after bot  attacks costing us money from s3.
 Rack::Attack.throttle('req/ip', limit: 80, period: 1.minutes) do |req|
   req.ip unless (
-                  req.path.start_with?('/assets')
+                  req.path.start_with?('/assets') ||
+                  req.path.start_with?("/images") ||
+                  req.path.start_with?("/iiif")
                  )
 end
 
