@@ -801,6 +801,8 @@ GEM
       rdf
     racc (1.8.1)
     rack (2.2.10)
+    rack-attack (6.7.0)
+      rack (>= 1.0, < 4)
     rack-protection (3.2.0)
       base64 (>= 0.1.0)
       rack (~> 2.2, >= 2.2.4)
@@ -1278,6 +1280,7 @@ DEPENDENCIES
   paper_trail
   parallel_tests
   qa (~> 5.1)
+  rack-attack (~> 6.6)
   railroady
   rails (> 6, < 7.2)
   rails-controller-testing

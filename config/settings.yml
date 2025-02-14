@@ -39,6 +39,7 @@ iiif:
   server: http://localhost:3000/images
 analytics:
   disable: true
+cf_turnstile_enabled: false
 transcribathon:
   story_endpoint: "https://transcribathon.eu/tp-api/stories/"
   item_endpoint: "https://transcribathon.eu/tp-api/items/"
