@@ -84,6 +84,7 @@ gem 'high_voltage', '~> 3.1'
 gem 'is_it_working-cbeer'
 gem 'nest'
 gem 'resque'
+gem 'rack-attack', '~> 6.6'
 
 group :development, :production do
   gem 'appsignal'

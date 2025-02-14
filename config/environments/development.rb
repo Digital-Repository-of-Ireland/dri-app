@@ -32,6 +32,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  if Settings.cf_turnstile_enabled
+    config.cache_store = :memory_store
+  end
+
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 
