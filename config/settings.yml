@@ -39,7 +39,9 @@ iiif:
   server: http://localhost:3000/images
 analytics:
   disable: true
-cf_turnstile_enabled: false
+cf_turnstile:
+  enabled: false
+  redis: "redis://localhost/0/cache"
 transcribathon:
   story_endpoint: "https://transcribathon.eu/tp-api/stories/"
   item_endpoint: "https://transcribathon.eu/tp-api/items/"

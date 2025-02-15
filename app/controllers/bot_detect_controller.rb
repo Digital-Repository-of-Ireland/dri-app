@@ -46,6 +46,7 @@ class BotDetectController < ApplicationController
   # subnet: /24 for IPv4, and /72 for IPv6
   # https://git.drupalcode.org/project/turnstile_protect/-/blob/0dae9f95d48f9d8cae5a8e61e767c69f64490983/src/EventSubscriber/Challenge.php#L140-151
   class_attribute :rate_limit_discriminator, default: (lambda do |req|
+    ip = Rails.env.production? ? req.remote_ip : ip
     if req.ip.index(":") # ipv6
       IPAddr.new("#{req.ip}/24").to_string
     else

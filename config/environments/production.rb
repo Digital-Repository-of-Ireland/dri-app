@@ -41,6 +41,8 @@ Rails.application.configure do
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+  config.middleware.insert_after ActionDispatch::RemoteIp, Rack::Attack
+  config.action_dispatch.trusted_proxies = [IPAddr.new(ENV["TRUSTED_PROXY"])]
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
@@ -83,7 +85,7 @@ Rails.application.configure do
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
-
+ 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
