@@ -4,14 +4,22 @@
 # with `./bin/rails dev:cache`
 if Rails.env.production?
   Rack::Attack.cache.store = ActiveSupport::Cache::RedisCacheStore.new(url: Settings.cf_turnstile.redis)
-
-  if ENV["RACK_ATTACK_SAFELIST"].present?
-    ENV["RACK_ATTACK_SAFELIST"].split(',').each do |safe_ip|
-      Rack::Attack.safelist_ip(safe_ip)
-    end
-  end
 else
   Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new 
+end
+
+if ENV["RACK_ATTACK_SAFELIST"].present?
+  ENV["RACK_ATTACK_SAFELIST"].split(',').each do |safe_ip|
+    Rack::Attack.safelist_ip(safe_ip)
+  end  
+end
+
+Rack::Attack.safelist('allow signed in user') do |req|
+  req.env['warden'].user.present?
+end
+
+Rack::Attack.safelist('allow uptime robot') do |req|
+  req.user_agent.include?("UptimeRobot")
 end
 
 class Rack::Attack
@@ -42,12 +50,15 @@ Rails.application.config.to_prepare do
   ]
 
   # But except any Catalog #facet action that looks like an ajax/fetch request, the redirect
-  # ain't gonna work there, we just exempt it.
+  # won't work there, we just exempt it.
   #
   # sec-fetch-dest is set to 'empty' by browser on fetch requests, to limit us further;
-  # sure an attacker could fake it, we don't mind if someone determined can avoid rate-limiting on this one action
   BotDetectController.allow_exempt = ->(controller) {
-    controller.params[:action] == "facet" && controller.request.headers["sec-fetch-dest"] == "empty" && controller.kind_of?(CatalogController)
+    (
+      controller.params[:action] == "facet" && 
+      controller.request.headers["sec-fetch-dest"] == "empty" && 
+      controller.kind_of?(CatalogController)
+    )
   }
 
   BotDetectController.rack_attack_init

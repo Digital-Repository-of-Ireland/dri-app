@@ -151,7 +151,7 @@ class BotDetectController < ApplicationController
 
       # we can only do GET requests right now
       if !controller.request.get?
-        Rails.logger.warn("#{self}: Asked to protect request we could not, unprotected: #{controller.requet.method} #{controller.request.url}, (#{controller.request.remote_ip}, #{controller.request.user_agent})")
+        Rails.logger.warn("#{self}: Asked to protect request we could not, unprotected: #{controller.request.method} #{controller.request.url}, (#{controller.request.remote_ip}, #{controller.request.user_agent})")
         return
       end
 
