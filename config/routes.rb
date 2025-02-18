@@ -184,10 +184,6 @@ Rails.application.routes.draw do
     get 'linkset/:id/json' => 'linksets#json', as: :linkset_json
     get 'linkset/:id/lset' => 'linksets#lset', as: :linkset_lset
 
-    # bot detection challenge
-    get "/challenge", to: "bot_detect#challenge", as: :bot_detect_challenge
-    post "/challenge", to: "bot_detect#verify_challenge"
-
     #API paths
     post 'get_objects' => 'api#objects'
     get 'related' => 'api#related'
