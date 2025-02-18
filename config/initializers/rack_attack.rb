@@ -15,7 +15,7 @@ if ENV["RACK_ATTACK_SAFELIST"].present?
 end
 
 Rack::Attack.safelist('allow signed in user') do |req|
-  req.env['warden'].user.present?
+  req.env['warden']&.user.present?
 end
 
 Rack::Attack.safelist('allow uptime robot') do |req|
