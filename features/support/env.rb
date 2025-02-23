@@ -112,6 +112,10 @@ class Module
   end
 end
 
+RailsCloudflareTurnstile.configure do |c|
+  c.enabled = false
+end
+
 Before do
   allow(DRI.queue).to receive(:push)
   allow_any_instance_of(DRI::Versionable).to receive(:record_version_committer)
