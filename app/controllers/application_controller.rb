@@ -48,6 +48,10 @@ class ApplicationController < ActionController::Base
   end
   rescue_from DRI::Exceptions::ResqueError, with: :render_resque_error
   rescue_from Blacklight::Exceptions::RecordNotFound, with: :render_404
+  rescue_from RailsCloudflareTurnstile::Forbidden do |exception| 
+    flash[:error] = t('dri.flash.error.turnstile_failed')
+    redirect_to user_group.new_user_session_url
+  end
 
   def set_locale
     current_lang = http_accept_language.preferred_language_from(Settings.interface.languages)

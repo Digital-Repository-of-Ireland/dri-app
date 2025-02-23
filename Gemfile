@@ -24,7 +24,7 @@ gem 'riiif'
 
 gem "devise", ">= 4.7.1"
 gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.12.0'
-gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.3.1'
+gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.4.0'
 
 gem 'paper_trail'
 
@@ -177,7 +177,6 @@ gem 'clipboard-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
-
 gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps.git', branch: 'rails7'
 
 gem 'remotipart'

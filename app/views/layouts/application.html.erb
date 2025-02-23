@@ -39,6 +39,7 @@
     <%= stylesheet_link_tag "dri/dri_print", media: "print" %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css">
     <%= javascript_include_tag "custom" %>
+    <%= cloudflare_turnstile_script_tag %>
     <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
