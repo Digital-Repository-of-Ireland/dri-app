@@ -1161,7 +1161,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (2.4.2)
     unicode-types (1.10.0)
-    uri (0.13.0)
+    uri (0.13.2)
     validatable (1.6.7)
     valkyrie (3.4.0)
       activemodel
@@ -1320,7 +1320,7 @@ DEPENDENCIES
   thin
   timelineJS3-rails!
   unicode
-  uri (>= 0.12.2)
+  uri (~> 0.13.2)
   user_group!
   view_component (< 3)
   yard
