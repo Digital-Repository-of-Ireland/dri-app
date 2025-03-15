@@ -36,7 +36,7 @@ Feature: Export files
     And I wait for "1" second
     When I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     When I go to the "object" "show" page for "the saved pid"
     Then I should see a "rights statement"
     And I should see a href link to "#dri_download_modal_id" with text "Download asset"

@@ -53,4 +53,8 @@ class StorageService
   def store_file(bucket, file, file_key, mimetype=nil)
     @driver.store_file(bucket, file, file_key, mimetype)
   end
+
+  def download_file(bucket, file, prefix = false)
+    @driver.download_file(bucket, file, prefix)
+  end
 end

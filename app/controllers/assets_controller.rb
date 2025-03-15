@@ -196,6 +196,26 @@ class AssetsController < ApplicationController
     end
   end
 
+  def upload
+    enforce_permissions!('edit', params[:object_id])
+
+    data = JSON.parse(request.body.string)
+
+    storage = Storage::S3Interface.new
+    storage_bucket_name = "users.#{::Mail::Address.new(current_user.email).local}"
+    storage.create_upload_bucket(storage_bucket_name)
+
+    url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'])
+
+    respond_to do |format|
+      format.json do
+        response = { method: "PUT", url: url , headers: { "content-type" => data['contentType'] }}
+        
+        render json: response, status: 200
+      end
+    end
+  end
+
   private
 
     def build_generic_file(object:, user:, preservation: false)
@@ -239,6 +259,17 @@ class AssetsController < ApplicationController
       File.new(File.join(upload_dir, name))
     end
 
+    def s3_file_ingest(name)
+      bucket = name.split('/')[-2]
+      key = name.split('/')[-1]
+      download = Tempfile.new([key, File.extname(key)])
+
+      storage = StorageService.new
+      storage.download_file(bucket, key, download)
+
+      download
+    end
+
     def send_file_with_range(path, options = {})
       file_size = File.size(path)
       begin_point = 0
@@ -258,7 +289,7 @@ class AssetsController < ApplicationController
     end
 
     def upload_from_params
-      if params[:file].blank? && params[:local_file].blank?
+      if params[:file].blank? && params[:local_file].blank? && params[:s3_url].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
         return
@@ -266,7 +297,9 @@ class AssetsController < ApplicationController
 
       upload = if params[:local_file].present?
                  local_file_ingest(params[:local_file])
-               else
+               elsif params[:s3_url].present?
+                  s3_file_ingest(params[:s3_url])
+                else
                  params[:file].presence
                end
 

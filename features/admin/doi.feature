@@ -42,7 +42,7 @@ Feature: DOI Feature
     When I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_pdf.pdf"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     When I go to the "object" "modify" page for "the saved pid"
     And I follow the link to view assets
     And I follow the link to view asset details

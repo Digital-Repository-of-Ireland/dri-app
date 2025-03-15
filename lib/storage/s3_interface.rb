@@ -32,11 +32,43 @@ module Storage
     # Create bucket
     def create_bucket(bucket)
       @client.create_bucket(bucket: with_prefix(bucket))
-
+      
       true
     rescue Aws::S3::Errors::ServiceError => e
       Rails.logger.error "Could not create Storage Bucket #{bucket}: #{e}"
       false
+    end
+
+    def create_upload_bucket(bucket)
+      return false unless @client.create_bucket(bucket: with_prefix(bucket))
+
+      @client.put_bucket_cors({
+        bucket: with_prefix(bucket), 
+        cors_configuration: {
+          cors_rules: [
+            {
+              allowed_headers: [
+                "content-type", 
+              ], 
+              allowed_methods: [
+                "PUT", 
+                "POST", 
+                "OPTIONS"
+              ], 
+              allowed_origins: [
+                "*", 
+              ], 
+              expose_headers: [
+                "x-amz-server-side-encryption",
+                "ETag",
+                "Location",
+              ]
+            }, 
+          ], 
+        }, 
+      })
+
+      true
     end
 
     # Delete bucket
@@ -141,6 +173,18 @@ module Storage
       nil
     end
 
+    def put_url(bucket, key, content_type, prefix = false)
+       bucket = with_prefix(bucket) if prefix
+       s3 = Aws::S3::Resource.new(client: @client)
+       bucket_obj = s3.bucket(bucket)
+       obj = bucket_obj.object(key)
+      
+       obj.presigned_url(:put)
+    rescue Aws::S3::Errors::ServiceError => e
+      Rails.logger.error "Problem getting url for file #{bucket} #{key}: #{e}"
+      nil
+    end
+
     # Save Surrogate File
     def store_surrogate(bucket, surrogate_file, surrogate_key, mimetype = nil)
       @client.put_object(
@@ -170,6 +214,15 @@ module Storage
     rescue Aws::S3::Errors::ServiceError => e
       Rails.logger.error "Problem saving file #{file_key}: #{e}"
       false
+    end
+
+    def download_file(bucket, file, target, prefix = false)
+      bucket = with_prefix(bucket) if prefix
+      @client.get_object(
+        response_target: target.path,
+        bucket: bucket,
+        key: file
+      )
     end
 
     private
