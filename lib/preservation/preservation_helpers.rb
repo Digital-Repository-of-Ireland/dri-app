@@ -58,6 +58,7 @@ module Preservation
       4.times do
         dir = File.join(dir, object_id[index..index + 1])
         index += 2
+        break if index > object_id.length - 2
       end
 
       File.join(dir, object_id)

@@ -25,6 +25,7 @@ Feature: Licences
     Then I should see a form for create new licence
     When I enter valid licence information for licence "TestLicence" into the new licence form
     And I press the button to "add a licence"
+    And I wait for "1" second
     Then I should be on the licence index page
     And I should see "TestLicence"
 
@@ -34,6 +35,7 @@ Feature: Licences
     When I enter valid licence information for licence "TestLicence2" into the new licence form
     And I enter an url to a licence logo
     And I press the button to "add a licence"
+    And I wait for "1" second
     Then I should be on the licence index page
     And I should see "TestLicence2"
 
