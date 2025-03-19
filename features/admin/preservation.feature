@@ -148,7 +148,8 @@ Feature: Preservation
     And I follow the link to view asset details
     And I attach the asset file "sample_pdf.pdf"
     And I click "#replace_file"
-    Then an AIP should exist for the saved pid
+    Then I should see "Asset has been successfully uploaded."
+    And an AIP should exist for the saved pid
     And the AIP for the saved pid should have "3" versions
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
@@ -198,6 +199,7 @@ Feature: Preservation
     Then I should see a button to delete object with the saved pid
     When I follow the link to delete an object
     And I press the button to "delete object with the saved pid"
+    Then I should see "Object has been deleted."
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid

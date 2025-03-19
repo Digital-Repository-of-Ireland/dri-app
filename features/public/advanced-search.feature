@@ -20,6 +20,7 @@ Scenario: Boolean AND search
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
+  Then I should see "Titles = *Two" in the facet well
   Then I should see 1 collection with title "titleTwo"
 
 Scenario: Boolean OR search
@@ -28,7 +29,8 @@ Scenario: Boolean OR search
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "any" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see 2 collections with titles "titleTwo, titleThree"
+  Then I should see "Titles = *Two" in the facet well
+  And I should see 2 collections with titles "titleTwo, titleThree"
 
 Scenario: Boolean NOT search
   When I press "#advanced_search_button"
@@ -36,6 +38,7 @@ Scenario: Boolean NOT search
   When I fill in "Creator" with "*" within "#advanced_search"
   And I select "any" from ".query-criteria #op"
   And I press "#advanced-search-submit"
+  Then I should see "Titles = -*Two" in the facet well
   Then I should see 2 collections with titles "titleOne, titleThree"
 
 Scenario: Wildcard search
@@ -46,6 +49,7 @@ Scenario: Wildcard search
   When I fill in "Creator" with "*" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
+  Then I should see "Titles = *e*e*" in the facet well
   Then I should see 2 collections with titles "titleOne, titleThree"
 
 Scenario: Single character query
@@ -56,6 +60,7 @@ Scenario: Single character query
   And I fill in "Creator" with "*" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
+  Then I should see "Titles = Z" in the facet well
   Then I should see 1 collection with title "Z"
 
 Scenario: Resetting all search terms
