@@ -52,8 +52,8 @@ module Storage
               ], 
               allowed_methods: [
                 "PUT", 
-                "POST", 
-                "OPTIONS"
+                "POST",
+                "GET"
               ], 
               allowed_origins: [
                 "*", 

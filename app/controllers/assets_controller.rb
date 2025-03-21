@@ -202,7 +202,7 @@ class AssetsController < ApplicationController
     data = JSON.parse(request.body.string)
 
     storage = Storage::S3Interface.new
-    storage_bucket_name = "users.#{::Mail::Address.new(current_user.email).local}"
+    storage_bucket_name = "users.#{::Mail::Address.new(current_user.email).local}.uploads"
     storage.create_upload_bucket(storage_bucket_name)
 
     url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'])
