@@ -364,8 +364,7 @@ Then /^"([^\"]+)" should be selected in "([^\"]+)"$/ do |selected, selector|
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message in the asset upload table for (.+)$/ do |negate, success_failure, message| 
-  expectation = negate ? :should_not : :should
-  page.send(expectation, have_selector("#uploads", text: flash_for(message)))
+  negate ? (expect(page).to_not have_selector("#uploads", text: flash_for(message), wait: 4)) : (expect(page).to have_selector("#uploads", text: flash_for(message), wait: 4))
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|

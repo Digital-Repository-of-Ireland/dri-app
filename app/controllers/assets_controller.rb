@@ -205,7 +205,7 @@ class AssetsController < ApplicationController
     storage_bucket_name = "users.#{::Mail::Address.new(current_user.email).local}.uploads"
     storage.create_upload_bucket(storage_bucket_name)
 
-    url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'])
+    url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'], true)
 
     respond_to do |format|
       format.json do
