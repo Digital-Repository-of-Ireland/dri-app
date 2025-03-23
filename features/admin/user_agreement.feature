@@ -7,7 +7,7 @@ Background:
     And I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Asset has been successfully uploaded."
+    Then I should see a success message in the asset upload table for file upload
 
 Scenario: download without accepted end user agreement
     When I go to the "object" "show" page for "the saved pid"
