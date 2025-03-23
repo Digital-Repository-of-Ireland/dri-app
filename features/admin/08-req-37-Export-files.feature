@@ -34,6 +34,7 @@ Feature: Export files
     And I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
+    And I wait for "2" seconds
     Then I should see a success message in the asset upload table for file upload
     When I go to the "object" "show" page for "the saved pid"
     Then I should see a "rights statement"
