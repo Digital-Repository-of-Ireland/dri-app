@@ -20,6 +20,10 @@ Given /^a collection with(?: pid "(.*?)")?(?: (?:and )?title "(.*?)")?(?: create
 
   c = DRI::DigitalObject.find_by_alternate_id(pid)
   c.destroy if c
+
+  i = DRI::Identifier.find_by_alternate_id(pid)
+  i.destroy if i
+
   @collection = DRI::QualifiedDublinCore.new(alternate_id: pid)
   @collection.title = title ? [title] : [SecureRandom.hex(5)]
   @collection.description = [SecureRandom.hex(20)]
@@ -79,6 +83,12 @@ end
 Given /^a Digital Object(?: with)?(?: pid "(.*?)")?(?:(?: and)? title "(.*?)")?(?:, description "(.*?)")?(?:, type "(.*?)")?(?: created by "(.*?)")?(?: in collection "(.*?)")?/ do |pid, title, desc, type, user, coll|
   pid = @random_pid if (pid == "random")
   if pid
+    o = DRI::DigitalObject.find_by_alternate_id(pid)
+    o.destroy if o
+
+    i = DRI::Identifier.find_by_alternate_id(pid)
+    i.destroy if i
+
     @digital_object = DRI::QualifiedDublinCore.create(alternate_id: pid)
     # TODO: add similar guard clause to build_hash_dir ?
     err_msg = 'A pid must be at least 6 characters long. '\
