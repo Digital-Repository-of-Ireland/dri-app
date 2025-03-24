@@ -41,6 +41,7 @@ class InstitutesController < ApplicationController
 
   def logo
     brand = Institute.find(params[:id]).brand
+    raise DRI::Exceptions::NotFound unless brand
 
     send_data(
       brand.file_contents,
