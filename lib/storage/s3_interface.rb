@@ -85,6 +85,15 @@ module Storage
       false
     end
 
+    def delete_file(bucket, key)
+      @client.delete_object(bucket: with_prefix(bucket), key: key)
+
+      true
+    rescue Aws::S3::Errors::ServiceError => e
+      Rails.logger.error "Could not delete surrogate for #{key}: #{e}"
+      false
+    end
+
     def delete_surrogates(bucket, key)
       objects = list_files(bucket, key)
       objects.each { |obj| @client.delete_object(bucket: with_prefix(bucket), key: obj) }
@@ -223,6 +232,10 @@ module Storage
         bucket: bucket,
         key: file
       )
+      true
+    rescue Aws::S3::Errors::ServiceError => e
+      Rails.logger.error "Problem saving file #{file_key}: #{e}"
+      false
     end
 
     private

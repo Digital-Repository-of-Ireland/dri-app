@@ -265,9 +265,12 @@ class AssetsController < ApplicationController
       download = Tempfile.new([key, File.extname(key)])
 
       storage = StorageService.new
-      storage.download_file(bucket, key, download)
-
-      download
+      if storage.download_file(bucket, key, download)
+        storage.delete_file(bucket, key)
+        download
+      else
+        raise DRI::Exceptions::InternalError
+      end
     end
 
     def send_file_with_range(path, options = {})

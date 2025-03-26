@@ -18,6 +18,10 @@ class StorageService
     @driver.delete_bucket(bucket_name)
   end
 
+  def delete_file(bucket, key)
+    @driver.delete_file(bucket, key)
+  end
+
   def delete_surrogates(object_id, file_id)
     @driver.delete_surrogates(object_id, file_id)
   end
