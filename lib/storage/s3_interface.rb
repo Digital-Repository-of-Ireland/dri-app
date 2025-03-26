@@ -40,7 +40,7 @@ module Storage
     end
 
     def create_upload_bucket(bucket)
-      return false unless @client.create_bucket(bucket: with_prefix(bucket))
+      return false unless create_bucket(bucket)
 
       @client.put_bucket_cors({
         bucket: with_prefix(bucket), 
@@ -85,8 +85,9 @@ module Storage
       false
     end
 
-    def delete_file(bucket, key)
-      @client.delete_object(bucket: with_prefix(bucket), key: key)
+    def delete_file(bucket, key, prefix = false)
+      bucket = with_prefix(bucket) if prefix
+      @client.delete_object(bucket: bucket, key: key)
 
       true
     rescue Aws::S3::Errors::ServiceError => e
@@ -234,7 +235,7 @@ module Storage
       )
       true
     rescue Aws::S3::Errors::ServiceError => e
-      Rails.logger.error "Problem saving file #{file_key}: #{e}"
+      Rails.logger.error "Problem downloading file #{file}: #{e}"
       false
     end
 

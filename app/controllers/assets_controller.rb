@@ -260,8 +260,9 @@ class AssetsController < ApplicationController
     end
 
     def s3_file_ingest(name)
-      bucket = name.split('/')[-2]
-      key = name.split('/')[-1]
+      bucket = name.split('/')[-2] #bucket from url will include prefix
+      key = params[:file_name]
+
       download = Tempfile.new([key, File.extname(key)])
 
       storage = StorageService.new
