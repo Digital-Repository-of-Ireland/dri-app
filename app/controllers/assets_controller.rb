@@ -203,16 +203,19 @@ class AssetsController < ApplicationController
 
     storage = Storage::S3Interface.new
     storage_bucket_name = "users.#{::Mail::Address.new(current_user.email).local}.uploads"
-    storage.create_upload_bucket(storage_bucket_name)
+    created = storage.create_upload_bucket(storage_bucket_name)
 
-    url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'], true)
+    if created
+      url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'], true)
+      response = { method: "PUT", url: url , headers: { "content-type" => data['contentType'] }}
+      response_code = 200
+    else
+       response = { message: t('dri.flash.alert.error_saving_file', error: "S3 upload failed") }
+       response_code = 500
+    end
 
     respond_to do |format|
-      format.json do
-        response = { method: "PUT", url: url , headers: { "content-type" => data['contentType'] }}
-        
-        render json: response, status: 200
-      end
+      format.json { render json: response, status: response_code }
     end
   end
 

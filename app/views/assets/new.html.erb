@@ -58,12 +58,16 @@
                 }).then((response) => {
                     return response.json(); 
                 }).then((data) => {
+                  if (data.url) {
                     return {
                        method: data.method,
                        url: data.url,
                        fields: {},
                        headers: { 'Content-Type': file.type },
                     };
+                  } else {
+                    throw new Error(data.message);
+                  };
                 });
               },
       })

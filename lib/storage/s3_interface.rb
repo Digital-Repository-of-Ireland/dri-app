@@ -42,7 +42,7 @@ module Storage
     def create_upload_bucket(bucket)
       return false unless create_bucket(bucket)
 
-      @client.put_bucket_cors({
+      resp = @client.put_bucket_cors({
         bucket: with_prefix(bucket), 
         cors_configuration: {
           cors_rules: [
@@ -68,7 +68,7 @@ module Storage
         }, 
       })
 
-      true
+      resp.successful?
     end
 
     # Delete bucket
