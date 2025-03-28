@@ -49,7 +49,7 @@ Scenario: Adding a pdf asset to an object
   And I follow the link to upload asset
   And I attach the asset file "sample_pdf.pdf"
   And I press the button to "Upload 1 file"
-  Then I should see "Complete"
+  Then I should see "Asset has been successfully uploaded."
 
 Scenario: Replacing the metadata file of a Digital Object
   When I create a collection and save the pid
@@ -106,12 +106,12 @@ Scenario: Adding multiple files for a Digital Object
   And I follow the link to upload asset
   And I attach the asset file "sample_audio.mp3"
   And I press the button to "Upload 1 file"
-  Then I should see "Complete"
+  Then I should see "Asset has been successfully uploaded."
   And I go to the "object" "modify" page for "the saved pid"
   And I follow the link to upload asset
   And I attach the asset file "sample_pdf.pdf"
   And I press the button to "Upload 1 file"
-  Then I should see "Complete"
+  Then I should see "Asset has been successfully uploaded."
 
 Scenario Outline: Adding an audio file that is not valid
   When I create a collection and save the pid

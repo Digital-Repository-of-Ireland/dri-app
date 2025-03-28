@@ -143,6 +143,8 @@ Rails.application.routes.draw do
     get 'objects/:object_id/files/:id/download', to: 'surrogates#download', constraints: { query_string: /type=surrogate/ }
     get 'objects/:object_id/files/:id/download', to: 'assets#download', as: :file_download
 
+    post 'objects/:object_id/upload', to: 'assets#upload'
+
     get 'objects/:id/retrieve/:archive' => 'objects#retrieve', as: :retrieve_archive
     put 'objects/:id/status' => 'objects#status', as: :status_update
     get 'objects/:id/status' => 'objects#status', as: :status

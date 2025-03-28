@@ -196,6 +196,29 @@ class AssetsController < ApplicationController
     end
   end
 
+  def upload
+    enforce_permissions!('edit', params[:object_id])
+
+    data = JSON.parse(request.body.string)
+
+    storage = Storage::S3Interface.new
+    storage_bucket_name = "users.#{::Mail::Address.new(current_user.email).local}.uploads"
+    created = storage.create_upload_bucket(storage_bucket_name)
+
+    if created
+      url = storage.put_url(storage_bucket_name, data['filename'], data['contentType'], true)
+      response = { method: "PUT", url: url , headers: { "content-type" => data['contentType'] }}
+      response_code = 200
+    else
+       response = { message: t('dri.flash.alert.error_saving_file', error: "S3 upload failed") }
+       response_code = 500
+    end
+
+    respond_to do |format|
+      format.json { render json: response, status: response_code }
+    end
+  end
+
   private
 
     def build_generic_file(object:, user:, preservation: false)
@@ -239,6 +262,21 @@ class AssetsController < ApplicationController
       File.new(File.join(upload_dir, name))
     end
 
+    def s3_file_ingest(name)
+      bucket = name.split('/')[-2] #bucket from url will include prefix
+      key = params[:file_name]
+
+      download = Tempfile.new([key, File.extname(key)])
+
+      storage = StorageService.new
+      if storage.download_file(bucket, key, download)
+        storage.delete_file(bucket, key)
+        download
+      else
+        raise DRI::Exceptions::InternalError
+      end
+    end
+
     def send_file_with_range(path, options = {})
       file_size = File.size(path)
       begin_point = 0
@@ -258,7 +296,7 @@ class AssetsController < ApplicationController
     end
 
     def upload_from_params
-      if params[:file].blank? && params[:local_file].blank?
+      if params[:file].blank? && params[:local_file].blank? && params[:s3_url].blank?
         flash[:notice] = t('dri.flash.notice.specify_file')
         redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
         return
@@ -266,7 +304,9 @@ class AssetsController < ApplicationController
 
       upload = if params[:local_file].present?
                  local_file_ingest(params[:local_file])
-               else
+               elsif params[:s3_url].present?
+                  s3_file_ingest(params[:s3_url])
+                else
                  params[:file].presence
                end
 

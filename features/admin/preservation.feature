@@ -129,7 +129,7 @@ Feature: Preservation
     And I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     And I should see a success message in the asset upload table for file upload
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
@@ -141,14 +141,15 @@ Feature: Preservation
     And I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     And I should see a success message in the asset upload table for file upload
     When I go to the "object" "modify" page for "the saved pid"
     And I follow the link to view assets
     And I follow the link to view asset details
     And I attach the asset file "sample_pdf.pdf"
     And I click "#replace_file"
-    Then an AIP should exist for the saved pid
+    Then I should see "Asset has been successfully uploaded."
+    And an AIP should exist for the saved pid
     And the AIP for the saved pid should have "3" versions
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
@@ -159,7 +160,7 @@ Feature: Preservation
     And I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     And I should see a success message in the asset upload table for file upload
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
@@ -178,7 +179,7 @@ Feature: Preservation
     And I go to the "asset" "new" page for "the saved pid"
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     And I should see a success message in the asset upload table for file upload
     And the AIP for the saved pid should have "4" versions
     And the manifest for version "4" for the saved pid should be valid
@@ -198,6 +199,7 @@ Feature: Preservation
     Then I should see a button to delete object with the saved pid
     When I follow the link to delete an object
     And I press the button to "delete object with the saved pid"
+    Then I should see "Object has been deleted."
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid

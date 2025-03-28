@@ -60,7 +60,7 @@ Given /^I have added an audio file$/ do
     And I follow the link to upload asset
     And I attach the asset file "sample_audio.mp3"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     And I should see a success message in the asset upload table for file upload
   }
 end
@@ -80,7 +80,7 @@ When /^I add the asset "([^\"]+)" to "([^\"]+)"$/ do |asset, pid|
     When I go to the "asset" "new" page for "#{pid}"
     And I attach the asset file "#{asset}"
     And I press the button to "Upload 1 file"
-    Then I should see "Complete"
+    Then I should see "Asset has been successfully uploaded."
     And I should see a success message in the asset upload table for file upload
   }
 end
@@ -364,8 +364,7 @@ Then /^"([^\"]+)" should be selected in "([^\"]+)"$/ do |selected, selector|
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message in the asset upload table for (.+)$/ do |negate, success_failure, message| 
-  expectation = negate ? :should_not : :should
-  page.send(expectation, have_selector("#uploads", text: flash_for(message)))
+  negate ? (expect(page).to_not have_selector("#uploads", text: flash_for(message), wait: 4)) : (expect(page).to have_selector("#uploads", text: flash_for(message), wait: 4))
 end
 
 Then /^(?:|I )should( not)? see a (success|failure) message for (.+)$/ do |negate, success_failure, message|
