@@ -6,7 +6,7 @@
 
     <!-- Mobile viewport optimization h5bp.com/ad -->
     <meta name="HandheldFriendly" content="True">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="<%= application_name %>">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
@@ -37,9 +37,8 @@
     <%= favicon_link_tag asset_path('favicon.ico') %>
     <%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
     <%= stylesheet_link_tag "dri/dri_print", media: "print" %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" crossOrigin="anonymous">
     <%= javascript_include_tag "custom" %>
-    <%= cloudflare_turnstile_script_tag %>
     <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
@@ -88,6 +87,6 @@
     	<!-- close dri_main_content_container -->
       <%= render partial: 'shared/footer' %>
     </div><!-- close dri_wrapper -->
-    <%= javascript_include_tag "cookieconsent-config.js", type: :module %>
+    <%= javascript_include_tag "cookieconsent-config.js", type: :module, crossorigin: "anonymous" %>
   </body>
 </html>

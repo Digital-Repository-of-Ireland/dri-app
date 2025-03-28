@@ -1,7 +1,9 @@
 <div class="dri_object_container">
-  <div id="uppy" class="dri_uppy" data-url="<%= object_files_path(@document.id) %>">
+  <div id="uppy" class="dri_uppy" data-objectid="<%= @document.id %>" data-url="<%= object_files_path(@document.id) %>">
     <form id="upload_options" class="uppy_upload_options">
       <%= hidden_field_tag 'authenticity_token', form_authenticity_token %>
+      <%= hidden_field_tag 's3_url', "" %>
+      <%= hidden_field_tag 'file_name', "" %>
       <%= label_tag 'preservation', t('dri.assets.upload_as_preservation') %>
       <%= check_box_tag 'preservation' %>
     </form>
@@ -29,53 +31,88 @@
 	  import Uppy from '@uppy/core'
     import Dashboard from '@uppy/dashboard'
     import XHRUpload from '@uppy/xhr-upload'
+    import AwsS3 from '@uppy/aws-s3'
 
     const uppy = new Uppy({
       autoProceed: false,
     })
 
+    var objectId = $('#uppy').data('objectid');
     uppy.use(Dashboard, {
       inline: true,
       showProgressDetails: true,
       target: '#uppy',
-    })
-    
-    var url = $('#uppy').data('url');
-    var token = $('#authenticity_token').val();
-    uppy.setMeta({'authenticity_token': token});
-
-    uppy.use(XHRUpload, {
-      endpoint: url,
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
-
-    uppy.on('upload', (data) => {
-	    uppy.setMeta({'preservation': $('#preservation').is(':checked')});
-    });
+    }).use(AwsS3, {
+      fields: [ ], // empty array
+      getUploadParameters(file, options) {
+        return fetch("/objects/" + objectId + "/upload", { 
+                   method: 'POST',
+                   headers: {
+                     'X-CSRF-Token': $('#authenticity_token').val(),
+                     'content-type': 'application/json'
+                   },
+                   body: JSON.stringify({
+                        filename: file.name, // here we are passing data to the server/back end
+                        contentType: file.type,
+                   })
+                }).then((response) => {
+                    return response.json(); 
+                }).then((data) => {
+                  if (data.url) {
+                    return {
+                       method: data.method,
+                       url: data.url,
+                       fields: {},
+                       headers: { 'Content-Type': file.type },
+                    };
+                  } else {
+                    throw new Error(data.message);
+                  };
+                });
+              },
+      })
 
     uppy.on('upload-success', (file, response) => {
-      var status = '';
-      var rowClass = 'table-success';
-      if (response.body.hasOwnProperty("warnings")) {
-        status = response.body.warnings;
-        rowClass = 'table-warning'
-      } else {
-        status = response.body.messages;
-      }
-      $("#uploads").append('<tr class="'+rowClass+'"><td>'+file.name+'</td><td>'+status+'</td></tr>');
+      $('#s3_url').val(response.body.location);
+      $('#file_name').val(file.name);
+
+      createAssets(file);       
     });
 
     uppy.on('upload-error', (file, error, response) => {
-      var status = '';
-      var rowClass = 'table-danger';
-      if (response.body.hasOwnProperty("warnings")) {
-        status = response.body.warnings;
-      } else {
+        var status = '';
+        var rowClass = 'table-danger';
         status = error;
-      }
-      $("#uploads").append('<tr class="'+rowClass+'"><td>'+file.name+'</td><td>'+status+'</td></tr>');
+        
+        $("#uploads").append('<tr class="'+rowClass+'"><td>'+file.name+'</td><td>'+status+'</td></tr>');
     });
+
+    async function createAssets(file) {
+      const form = document.getElementById('upload_options');
+      const formData = new FormData(form);
+      // Convert formData object to URL-encoded string:
+      const payload = new URLSearchParams(formData);
+      const url = $('#uppy').data('url');
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: payload,
+      });
+      
+      const data = await response.json();
+      var status = '';
+        var rowClass = 'table-success';
+        if (data.hasOwnProperty("warnings")) {
+          status = data.warnings;
+          rowClass = 'table-warning'
+        } else {
+          status = data.messages;
+        }
+        $("#uploads").append('<tr class="'+rowClass+'"><td>'+file.name+'</td><td>'+status+'</td></tr>');
+    }
   </script>
 <% end %>

@@ -18,6 +18,10 @@ class StorageService
     @driver.delete_bucket(bucket_name)
   end
 
+  def delete_file(bucket, key)
+    @driver.delete_file(bucket, key)
+  end
+
   def delete_surrogates(object_id, file_id)
     @driver.delete_surrogates(object_id, file_id)
   end
@@ -52,5 +56,9 @@ class StorageService
 
   def store_file(bucket, file, file_key, mimetype=nil)
     @driver.store_file(bucket, file, file_key, mimetype)
+  end
+
+  def download_file(bucket, file, prefix = false)
+    @driver.download_file(bucket, file, prefix)
   end
 end
