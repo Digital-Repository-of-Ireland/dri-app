@@ -33,6 +33,7 @@
           });
       </script>
     <% end %>
+    <%= cloudflare_turnstile_script_tag %>
 
     <%= favicon_link_tag asset_path('favicon.ico') %>
     <%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
