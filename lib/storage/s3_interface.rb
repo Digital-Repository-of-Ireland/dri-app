@@ -42,33 +42,34 @@ module Storage
     def create_upload_bucket(bucket)
       return false unless create_bucket(bucket)
 
-      resp = @client.put_bucket_cors({
-        bucket: with_prefix(bucket), 
-        cors_configuration: {
-          cors_rules: [
-            {
-              allowed_headers: [
-                "content-type", 
-              ], 
-              allowed_methods: [
-                "PUT", 
-                "POST",
-                "GET"
-              ], 
-              allowed_origins: [
-                "*", 
-              ], 
-              expose_headers: [
-                "x-amz-server-side-encryption",
-                "ETag",
-                "Location",
-              ]
-            }, 
-          ], 
-        }, 
-      })
+      #resp = @client.put_bucket_cors({
+      #  bucket: with_prefix(bucket), 
+      #  cors_configuration: {
+      #    cors_rules: [
+      #      {
+      #        allowed_headers: [
+      #          "content-type", 
+      #        ], 
+      #        allowed_methods: [
+      #          "PUT", 
+      #          "POST",
+      #          "GET"
+      #        ], 
+      #        allowed_origins: [
+      #          "*", 
+      #        ], 
+      #        expose_headers: [
+      #          "x-amz-server-side-encryption",
+      #          "ETag",
+      #          "Location",
+      #        ]
+      #      }, 
+      #    ], 
+      #  }, 
+      #})
 
-      resp.successful?
+      #resp.successful?
+      true
     end
 
     # Delete bucket
