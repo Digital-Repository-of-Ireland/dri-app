@@ -292,6 +292,8 @@ class MyCollectionsController < ApplicationController
     @object = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @object.nil?
 
+    params[:sort] ||= 'title_sorted_ssi asc'
+
     params[:per_page] ||= blacklight_config.default_per_page
     @response, document_list = @object.duplicates(params[:sort])
     @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
