@@ -90,14 +90,26 @@ module DRI::Solr::Document::Collection
     duplicates.each { |_hash, count| total += count }
 
     hashes = duplicates.keys
+    docs = []
+    response = nil
 
-    query = Solr::Query.construct_query_for_ids(hashes, 'metadata_checksum_ssi')
-    response = Solr::Query.new(query, 100, { sort: sort, rows: total }).get
+    hashes.each_slice(200) do |hash_slice|
+      query = Solr::Query.construct_query_for_ids(hash_slice, 'metadata_checksum_ssi')
+      response = Solr::Query.new(query, 100, { fq: ["ancestor_id_ssim:#{self.alternate_id}"], sort: sort, rows: total }).get
+      docs.push(*response.docs)
+    end
 
-    return Blacklight::Solr::Response.new(response.response, response.header), response.docs
+    response.response["numFound" => docs.size]
+    response.header["rows" => docs.size]
+
+    return Blacklight::Solr::Response.new(response.response, response.header), docs
   end
 
   def duplicate_metadata_hashes
+    @duplicate_metadata_hashes ||= load_duplicate_metadata_hashes
+  end
+
+  def load_duplicate_metadata_hashes
     ids = descendants.map { |descendant| descendant['resource_id_isi']} << self['resource_id_isi']
     DRI::DigitalObject.where(governing_collection_id: ids).group(:metadata_checksum).having('count_metadata_checksum > 1').count(:metadata_checksum)
   end

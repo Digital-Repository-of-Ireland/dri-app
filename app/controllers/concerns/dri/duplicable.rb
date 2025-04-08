@@ -34,12 +34,8 @@ module DRI::Duplicable
 
   def duplicate_query(object)
     checksum_field = 'metadata_checksum_ssi'
-
-    governed_field = Solrizer.solr_name(
-      'isGovernedBy',
-      :stored_searchable,
-      type: :symbol
-    )
+    governed_field = 'isGovernedBy_ssim'
+    
     query = "#{checksum_field}:\"#{object.metadata_checksum}\""
     query += " AND #{governed_field}:\"#{object.governing_collection.alternate_id}\""
 
