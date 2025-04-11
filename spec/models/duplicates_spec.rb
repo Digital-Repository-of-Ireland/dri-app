@@ -15,6 +15,7 @@ describe 'DRI::Solr::Document::Collection' do
   describe "#duplicates" do
     before(:each) do
       @collection = FactoryBot.create(:collection)
+      @collection2 = FactoryBot.create(:collection)
 
       @object = FactoryBot.create(:sound)
       @object[:status] = "draft"
@@ -26,6 +27,11 @@ describe 'DRI::Solr::Document::Collection' do
       checksum_metadata(@object2)
       @object2.save
 
+      @object4 = FactoryBot.create(:sound)
+      @object4[:status] = "draft"
+      checksum_metadata(@object4)
+      @object4.save
+
       @object3 = FactoryBot.create(:sound)
       @object3[:status] = "draft"
       @object3[:title] = ["Not a Duplicate"]
@@ -35,10 +41,13 @@ describe 'DRI::Solr::Document::Collection' do
       @collection.governed_items << @object
       @collection.governed_items << @object2
       @collection.governed_items << @object3
+
+      @collection2.governed_items << @object4
     end
 
     after(:each) do
       @collection.destroy
+      @collection2.destroy
     end
 
     it 'should return a count of duplicates' do

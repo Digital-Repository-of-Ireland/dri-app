@@ -99,6 +99,8 @@ module DRI::Solr::Document::Collection
       docs.push(*response.docs)
     end
 
+    return nil unless response
+    
     response.response["numFound" => docs.size]
     response.header["rows" => docs.size]
 
