@@ -244,6 +244,16 @@ class SolrDocument
     end
   end
 
+  def find_metadata_matches
+    q = Solr::Query.new(
+      "metadata_checksum_ssi:#{self['metadata_checksum_ssi']}", 
+      100, 
+      { fq: ["-alternate_id:#{self.alternate_id}", "ancestor_id_ssim:#{self.collection_id}"] }
+    )
+
+    q.to_a
+  end
+
   def object_profile
     key = 'object_profile_ssm'.freeze
 
