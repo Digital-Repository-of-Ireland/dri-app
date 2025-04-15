@@ -266,7 +266,7 @@ class AssetsController < ApplicationController
       bucket = name.split('/')[-2] #bucket from url will include prefix
       key = params[:file_name]
 
-      download = Tempfile.new([key, File.extname(key)])
+      download = Tempfile.new([key[/^(.*?)\./,1], File.extname(key)])
 
       storage = StorageService.new
       if storage.download_file(bucket, key, download)
@@ -331,6 +331,6 @@ class AssetsController < ApplicationController
       mime_type
     rescue DRI::Exceptions::VirusDetected => e
       flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload.original_filename)
+      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload&.original_filename || params[:file_name].presence)
     end
 end
