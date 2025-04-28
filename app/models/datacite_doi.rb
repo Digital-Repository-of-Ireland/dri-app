@@ -123,8 +123,8 @@ class DataciteDoi < ActiveRecord::Base
       metadata.creator = find_creator.reject(&:blank?)
       metadata.description = object.description.reject(&:blank?) if object.description.present?
       metadata.subject = object.subject.reject(&:blank?) if object.subject.present?
-      metadata.creation_date = object.creation_date.to_a if object.creation_date.present?
-      metadata.published_date = object.published_date.to_a if object.published_date.present?
+      metadata.creation_date = object.creation_date.to_a if object.respond_to?(:creation_date) && object.creation_date.present?
+      metadata.published_date = object.published_date.to_a if object.respond_to?(:published_date) && object.published_date.present?
       metadata.rights = object.rights.to_a if object.rights
       metadata.resource_type = object.type.to_a
       metadata.save
