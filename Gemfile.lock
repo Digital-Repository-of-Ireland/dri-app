@@ -726,7 +726,7 @@ GEM
       redic
     net-http-persistent (4.0.4)
       connection_pool (~> 2.2)
-    net-imap (0.5.6)
+    net-imap (0.5.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -741,7 +741,7 @@ GEM
     noid-rails (3.2.0)
       actionpack (>= 5.0.0, < 8)
       noid (~> 0.9)
-    nokogiri (1.18.6-x86_64-linux-gnu)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri-happymapper (0.9.0)
       nokogiri (~> 1.5)
