@@ -95,5 +95,6 @@ class DoiMetadata < ActiveRecord::Base
     return ["Other", "3D"] if downcased.include?("3d")
     return "AudioVisual" if downcased.include?("movingimage") || downcased.include?("video")
     return "Sound" if downcased.include?("audio")
+    return ["Other", resource_type[0]]
   end
 end
