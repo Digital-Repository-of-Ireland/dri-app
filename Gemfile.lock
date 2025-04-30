@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: e5bded9dbb069f2290a20062776fe0675cee7387
+  revision: a020aebf03eef9198ff6dc97403fb484e2d4fb11
   branch: develop
   specs:
-    dri_data_models (4.12.0)
+    dri_data_models (4.13.0)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -206,8 +206,9 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    appsignal (3.4.12)
-      rack
+    appsignal (4.5.9)
+      logger
+      rack (>= 2.0.0)
     ast (2.4.2)
     autoprefixer-rails (10.4.19.0)
       execjs (~> 2)
@@ -323,7 +324,7 @@ GEM
       rexml
     csl-styles (2.0.1)
       csl (~> 2.0)
-    csv (3.3.0)
+    csv (3.3.4)
     cucumber (3.2.0)
       builder (>= 2.1.2)
       cucumber-core (~> 3.2.0)
@@ -398,21 +399,22 @@ GEM
       faraday (< 3.0)
       oauth2 (~> 1.1)
     druid-tools (3.0.0)
-    dry-core (1.0.2)
+    dry-core (1.1.0)
       concurrent-ruby (~> 1.0)
       logger
       zeitwerk (~> 2.6)
-    dry-inflector (1.1.0)
-    dry-logic (1.5.0)
+    dry-inflector (1.2.0)
+    dry-logic (1.6.0)
+      bigdecimal
       concurrent-ruby (~> 1.0)
-      dry-core (~> 1.0, < 2)
+      dry-core (~> 1.1)
       zeitwerk (~> 2.6)
-    dry-struct (1.6.0)
-      dry-core (~> 1.0, < 2)
-      dry-types (>= 1.7, < 2)
+    dry-struct (1.8.0)
+      dry-core (~> 1.1)
+      dry-types (~> 1.8, >= 1.8.2)
       ice_nine (~> 0.11)
       zeitwerk (~> 2.6)
-    dry-types (1.7.2)
+    dry-types (1.8.2)
       bigdecimal (~> 3.0)
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.0)
@@ -605,7 +607,7 @@ GEM
       railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.8.2)
+    json (2.11.3)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -1163,7 +1165,7 @@ GEM
     unicode-types (1.10.0)
     uri (0.13.2)
     validatable (1.6.7)
-    valkyrie (3.4.0)
+    valkyrie (3.5.0)
       activemodel
       activesupport
       dry-struct

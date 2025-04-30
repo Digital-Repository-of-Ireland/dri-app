@@ -234,6 +234,7 @@ class CatalogController < ApplicationController
     else
       # assets ordered by label, excludes preservation only files
       @assets = @document.assets(ordered: true)
+      @thumbnail = @document.thumbnail
     end
 
     @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)

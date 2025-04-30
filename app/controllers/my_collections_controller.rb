@@ -236,6 +236,7 @@ class MyCollectionsController < ApplicationController
     else
       # assets including preservation only files, ordered by label
       @assets = @document.assets(with_preservation: true, ordered: true)
+      @thumbnail = @document.thumbnail
     end
 
     @reader_group = find_reader_group(@document)
