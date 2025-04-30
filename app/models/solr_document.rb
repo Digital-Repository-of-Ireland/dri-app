@@ -310,6 +310,12 @@ class SolrDocument
     nil
   end
 
+  def thumbnail
+    return nil unless self.key?('thumbnail_ss') && self['thumbnail_ss'].present?
+
+    self['thumbnail_ss']
+  end
+
   def status
     self['status_ssi'.to_sym]
   end
