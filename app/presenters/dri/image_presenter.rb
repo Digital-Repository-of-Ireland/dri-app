@@ -21,6 +21,11 @@ module DRI
       return default_image(file_types) unless can?(:read, document[:id])
 
       image = nil
+      if document.thumbnail
+        image = search_image(SolrDocument.find(document.thumbnail))
+        return image if image
+      end
+
       files = assets ? DRI::Sorters.sort_by_label_trailing_digits(assets) : document.assets(ordered: true)
 
       files.each do |file|

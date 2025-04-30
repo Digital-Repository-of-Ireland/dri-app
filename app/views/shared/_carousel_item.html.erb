@@ -1,4 +1,6 @@
-<% if generic_file_counter.zero? %>
+<% if @thumbnail.nil? && generic_file_counter.zero? %>
+  <div class="carousel-item dri_asset_carousel_item dri_bottom_stack active">
+<% elsif (@thumbnail == generic_file.id) %>
   <div class="carousel-item dri_asset_carousel_item dri_bottom_stack active">
 <% else %>
   <div class="carousel-item dri_asset_carousel_item dri_bottom_stack">
@@ -41,7 +43,7 @@
     <% @title = generic_file.label %>
     <% if @surrogate %>
       <%= link_to '#dri_pdf_viewer_modal_id', :'data-bs-toggle' => 'modal', :'data-source' => @surrogate, :'data-title' => @title, id: "view_pdf", class: "view_pdf" do %>
-        <%= image_tag('PDF_Logo.png', class: 'd-block', alt: "PDF  viewer") %>
+        <%= image_tag('PDF_Logo.png', class: 'd-block', alt: "PDF viewer") %>
       <% end %>
     <% end %>
 
@@ -59,10 +61,10 @@
       <% end %>
     <% else %>
       <%= link_to @surrogate, class: 'dri_gallery group1' do %>
-        <% if generic_file_counter.zero? %>
-          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>" alt="pdf viewer">
+        <% if (@thumbnail == generic_file.id) || (@thumbnail.nil? && generic_file_counter.zero?) %>
+          <img class="d-block dri_carousel_img" src="<%= @surrogate_thumb %>" alt="image viewer">
         <% else %>
-          <img class="d-block dri_carousel_img" data-src="<%= @surrogate_thumb %>" alt="pdf viewer">
+          <img class="d-block dri_carousel_img" data-src="<%= @surrogate_thumb %>" alt="image viewer">
         <% end %>
       <% end %>
     <% end %>

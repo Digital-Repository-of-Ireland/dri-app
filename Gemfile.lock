@@ -3,7 +3,7 @@ GIT
   revision: 4a7b1d456d45c80e052bb5e87b24077a5ae9dbbc
   tag: v4.12.0
   specs:
-    dri_data_models (4.12.0)
+    dri_data_models (4.13.0)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -206,8 +206,9 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
-    appsignal (3.4.12)
-      rack
+    appsignal (4.5.9)
+      logger
+      rack (>= 2.0.0)
     ast (2.4.2)
     autoprefixer-rails (10.4.19.0)
       execjs (~> 2)
@@ -323,7 +324,7 @@ GEM
       rexml
     csl-styles (2.0.1)
       csl (~> 2.0)
-    csv (3.3.3)
+    csv (3.3.4)
     cucumber (3.2.0)
       builder (>= 2.1.2)
       cucumber-core (~> 3.2.0)
@@ -606,7 +607,7 @@ GEM
       railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.10.2)
+    json (2.11.3)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
