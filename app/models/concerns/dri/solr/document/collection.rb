@@ -35,6 +35,17 @@ module DRI::Solr::Document::Collection
     self[cover_field].presence
   end
 
+  def cover_image_timestamp
+    cover_url = cover_image
+    return nil unless cover_url
+    
+    uri = URI.parse(cover_url)
+    timestamp = uri.query
+
+    return nil unless timestamp && timestamp.start_with?('time=')
+    timestamp.split('=')[1]
+  end
+
   def draft_objects_count
     status_counts[:draft_objects]
   end

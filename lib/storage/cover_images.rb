@@ -16,7 +16,7 @@ module Storage
         return nil
       end
       
-      url
+      url + "?time=#{Time.now.utc.iso8601}"
     end
 
     def self.virus?(cover_image)
