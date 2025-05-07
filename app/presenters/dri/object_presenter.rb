@@ -81,7 +81,7 @@ module DRI
 
     private
 
-    Child = Struct.new(:id, :link_text, :path, :type, :cover) do
+    Child = Struct.new(:id, :link_text, :path, :type, :cover, :cover_ts) do
       def to_partial_path
         'child'
       end
@@ -101,12 +101,14 @@ module DRI
       # FIXME: For now, the EAD type is indexed last in the type solr index, review in the future
       type = child_doc['file_type_display_tesim'].last
       cover = child_doc['cover_image_ss'].presence
+      cover_ts = child_doc.cover_image_timestamp
 
       child = Child.new
       child.id = child_doc['id']
       child.link_text = link_text
       child.path = solr_document_path(child_doc['id'])
       child.cover = cover
+      child.cover_ts = cover_ts
       child.type = type
 
       child
