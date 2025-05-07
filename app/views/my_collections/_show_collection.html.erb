@@ -50,7 +50,7 @@
   </div>
   <% if document.cover_image %>
   <div class="dri_vc_image d-none d-md-block">
-    <%= image_tag(cover_image_path(document), alt: t('dri.views.alt_tags.cover_image')) %>
+    <%= image_tag(cover_image_path(document, time: document.cover_image_timestamp), alt: t('dri.views.alt_tags.cover_image')) %>
   </div>
   <% end %>
   <%= render partial: "show_collection_navigation_tools", locals: { document: document, objects_count: @file_display_type_count['all'] } %>

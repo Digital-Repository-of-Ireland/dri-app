@@ -283,20 +283,20 @@ class DRI::Formatters::Edm < OAI::Provider::Metadata::Format
         return ""
       else
         licence = record.licence.url
+      
+        xml.tag! "cc:Licence", {"rdf:about" => licence} do
+          xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
+        end
       end
 
-      xml.tag! "cc:Licence", {"rdf:about" => licence} do
-        xml.tag! "odrl:inheritFrom", {"rdf:resource" => licence}
-      end
-
-      if (!record.copyright.present? && !record.copyright.name.present?)
-        return ""
-      else
+      if (record.copyright.present? && record.copyright&.url.present?)
         copyright = record.copyright.url
-      end
-
-      xml.tag! "cc:Copyright", {"rdf:about" => copyright} do
-        xml.tag! "odrl:inheritFrom", {"rdf:resource" => copyright}
+      
+        xml.tag! "cc:Copyright", {"rdf:about" => copyright} do
+          xml.tag! "odrl:inheritFrom", {"rdf:resource" => copyright}
+        end
+      else
+        return ""
       end
 
       # Create Contextual classes for user-generated enrichments

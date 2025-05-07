@@ -4,7 +4,7 @@
         <div class="dri_collection_image">
           <% image = child.cover %>
           <% if image %>
-              <%= image_tag cover_image_path(child.id),alt:"content image"%>
+              <%= image_tag cover_image_path(child.id, child.cover_image_timestamp), alt:"content image"%>
           <% else %>
               <%= image_tag "no_image.png", alt:"No content image" %>
           <% end %>
