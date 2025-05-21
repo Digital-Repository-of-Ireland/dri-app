@@ -1,5 +1,5 @@
 <% if @available %>
-  <div><%= link_to t('dri.views.doi.links.view_full_object'), solr_document_path(@object_id) %><div>
+  <div><%= t('dri.views.doi.links.view_full_object', :url => solr_document_path(@object_id)).html_safe %></div>
 <% else %>
   <p><i class="fa fa-exclamation-circle"></i><%= t('dri.views.doi.unavailable') %></p>
   <p><%= @reason %></p>

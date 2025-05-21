@@ -288,7 +288,7 @@ en:
       search_my_collections: Search My Collections
       my_tasks: Background Tasks
       new_collection: New Collection
-      new_single_collection: New Single Collection Deposit Collection
+      new_single_collection: New Single Collection Deposit
       new_organisation: New Organisation
       object: Object
       objects: Objects
@@ -650,7 +650,7 @@ en:
           modified: Change
           modified_at: Modification Date
         links:
-          view_full_object: View object
+          view_full_object: "<a href='%{url}'>View the most recent version of this object</a>"
         unavailable: The object referenced by this DOI is not available. If you require more information please contact dri@ria.ie.
       exceptions:
         access_denied: You do not have permission to perform the requested operation.

@@ -177,7 +177,7 @@ gem 'clipboard-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
-gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps.git', branch: 'rails7'
+gem 'blacklight-maps', '1.2.0'
 
 gem 'remotipart'
 
