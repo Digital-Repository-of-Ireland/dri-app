@@ -157,7 +157,7 @@ class AssetsController < ApplicationController
       flash[:notice] = t('dri.flash.notice.specify_object_id')
       return redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
     end
-    preservation = params[:preservation].presence == 'true' ? true : false
+    preservation = params[:preservation].presence == '1' ? true : false
     @generic_file = build_generic_file(object: @object, user: current_user, preservation: preservation)
 
     file_content = GenericFileContent.new(user: current_user, object: @object, generic_file: @generic_file)
