@@ -13,14 +13,14 @@ module Solr
     end
 
     def count
-      args = @args.merge(rows: 0, qt: 'standard')
+      args = @args.merge(rows: 0, qt: 'standard', uf: '* _query_')
       params = { q: @query }.merge(args)
       response = solr_index.connection.get('select', params: params)['response']
       response['numFound'].to_i
     end
 
     def get
-      args = @args.merge(q: @query, qt: 'standard')
+      args = @args.merge(q: @query, qt: 'standard', uf: '* _query_')
       response = solr_index.connection.get('select', params: args)
       CatalogController.blacklight_config.response_model.new(
         response,
@@ -33,9 +33,9 @@ module Solr
     def query
       sort = @args[:sort].present? ? "#{@args[:sort]}, #{@sort}" : @sort
       query_args = if @args[:rows].present?
-                        @args.merge({ sort: sort })
+                        @args.merge({ sort: sort, uf: '* _query_' })
                       else
-                        @args.merge({ raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark })
+                        @args.merge({ uf: '* _query_', raw: true, rows: @chunk, sort: sort, cursorMark: @cursor_mark })
                       end
       params = { q: @query }.merge(query_args)
       response = solr_index.search(params)
