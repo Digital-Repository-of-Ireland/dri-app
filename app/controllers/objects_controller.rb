@@ -374,6 +374,7 @@ class ObjectsController < BaseObjectsController
         @object = DRI::Documentation.new
         @documented = retrieve_object(params[:documentation_for])
         @object.documentation_for = @documented if @documented
+        @object.read_groups = ["public"]
       else
         @object = DRI::DigitalObject.with_standard(type)
       end
