@@ -7,6 +7,12 @@
     <% end %>
      <%= f.check_box :allow_export %>
   </div>
+  <div class="form-group mb-1">
+    <%= f.label :allow_aggregation, { class: 'form-check-label' } do %>
+     <b><%= t('dri.collection.config.allow_aggregation') %></b>
+    <% end %>
+     <%= check_box_tag :allow_aggregation %>
+  </div>
    <div class="col-md-3">
    <%= f.label :default_sort do %>
      <b><%= t('dri.collection.config.default_sort') %></b>
