@@ -1,18 +1,22 @@
 <h1><%= t('dri.collection.config.title') %></h1>
 </br>
 <%= form_for @config, url: { controller: 'collection_configs', action: 'update' }, method: 'put' do |f| %>
-  <div class="form-group mb-1">
-    <%= f.label :allow_export, { class: 'form-check-label' } do %>
+  <div class="form-check mb-1">
+    <%= f.check_box :allow_export, { class: 'form-check-input'} %>
+    <%= f.label :allow_export, { class: 'form-check-label pt-1' } do %>
      <b><%= t('dri.collection.config.allow_export') %></b>
     <% end %>
-     <%= f.check_box :allow_export %>
   </div>
-  <div class="form-group mb-1">
-    <%= f.label :allow_aggregation, { class: 'form-check-label' } do %>
-     <b><%= t('dri.collection.config.allow_aggregation') %></b>
-    <% end %>
-     <%= check_box_tag :allow_aggregation %>
-  </div>
+
+  <% if @document.root_collection? %>
+    <div class="form-check mb-1">
+      <%= check_box_tag :allow_aggregation, 'true', @document.allow_aggregation?, {class: 'form-check-input'} %>
+      <%= f.label :allow_aggregation, { class: 'form-check-label pt-1' } do %>
+       <b><%= t('dri.collection.config.allow_aggregation') %></b>
+      <% end %>
+    </div>
+  <% end %>
+
    <div class="col-md-3">
    <%= f.label :default_sort do %>
      <b><%= t('dri.collection.config.default_sort') %></b>

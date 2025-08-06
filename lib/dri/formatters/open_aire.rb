@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
-  include ActionController::UrlFor
-  include Rails.application.routes.url_helpers
-
-  delegate :riiif, :env, :request, to: :controller
-
   attr_reader :controller
 
   DATES = { 
@@ -42,6 +37,8 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
   def encode(model, record)
     @controller = model.controller
   
+    return "" unless valid?(record)
+
     xml = Builder::XmlMarkup.new
     xml.tag!("#{prefix}", header_specification) do
       xml.tag!("schemaVersion", {}, 4)
@@ -81,11 +78,24 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
               xml.tag!("rights", { "rightsURI" => "info:eu-repo/semantics/restrictedAccess" })
             end
 
+            if (record.copyright.present? && record.copyright&.url.present?)
+              copyright = record.copyright.url
+              xml.tag!("rights", { "rightsURI" => record.copyright.url }, record.copyright.name)
+            end
+
             if record.licence
               if !record.licence&.url.blank?
                 xml.tag!("rights", { "rightsURI" => record.licence.url }, record.licence.name)
               else
                 xml.tag!("rights", {}, record.licence.name)
+              end
+            end
+
+            if record['subject_tesim'].present?
+              xml.tag!("subjects") do
+                record['subject_tesim'].each do |subject|
+                  xml.tag!("subject", {}, subject)
+                end
               end
             end
           end
@@ -111,16 +121,12 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
     end
   end
 
-  def value_for(field, record, _map)
-    Array(field).map do |f|
-      record[f] || []
-    end.flatten.compact
-  end
+  def valid?(record)
+    return false unless record.allow_aggregation?
+    return false unless record.setspec.include?("openaire_data")
+    return false unless record.published?
+    return false unless record.depositing_institute.present?
 
-  def valid_url?(url)
-    uri = URI.parse(url)
-    (uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)) && !uri.host.nil?
-  rescue URI::InvalidURIError
-    false
+    true
   end
 end

@@ -58,7 +58,7 @@ en:
       upload_as_preservation: Upload files as preservation-only (no display surrogates will be generated).
     collection:
       config:
-        allow_aggregation: Allow aggregation to select aggregators
+        allow_aggregation: Allow harvesting by select aggregators
         allow_export: Allow export of collection metadata
         default_sort: Default sort
         title: Options

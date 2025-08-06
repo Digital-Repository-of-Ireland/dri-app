@@ -320,6 +320,10 @@ class SolrDocument
     ancestor_field('setspec_ssim')
   end
 
+  def allow_aggregation?
+    self.setspec.present?
+  end
+
   def status
     self['status_ssi'.to_sym]
   end
