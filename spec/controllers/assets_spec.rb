@@ -494,6 +494,28 @@ describe AssetsController do
       DataciteDoi.where(object_id: object.alternate_id).destroy_all
       Settings.doi.enable = false
     end
+
+    it 'should clean the index if file doesnt exist' do
+      allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
+
+      generic_file = DRI::GenericFile.new(alternate_id: Noid::Rails::Service.new.mint)
+      generic_file.digital_object = object
+      generic_file.apply_depositor_metadata('test@test.com')
+      options = {}
+      options[:mime_type] = "audio/mp3"
+      options[:file_name] = "SAMPLEA.mp3"
+
+      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "SAMPLEA.mp3"), "audio/mp3")
+      generic_file.add_file uploaded, options
+      generic_file.save
+      file_id = generic_file.alternate_id
+
+      DRI::GenericFile.where(id: generic_file.id).delete_all
+      expect(SolrDocument.find(file_id)).not_to be_nil
+
+      delete :destroy, params: { object_id: object.alternate_id, id: file_id }
+      expect(SolrDocument.find(file_id)).to be_nil
+    end
   end
 
   describe 'download' do

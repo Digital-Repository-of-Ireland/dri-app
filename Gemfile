@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '> 6', '< 7.2'
+gem 'rails', '> 6'
 gem 'uri', '~> 0.13.2'
 
 gem 'blacklight', '7.38.0'
@@ -23,7 +23,7 @@ gem 'openseadragon'
 gem 'riiif'
 
 gem "devise", ">= 4.7.1"
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.13.0'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.14.0'
 gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.4.0'
 
 gem 'paper_trail'

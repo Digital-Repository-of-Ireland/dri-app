@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_29_144714) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_31_191637) do
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
     t.string "aggregation_id"
@@ -184,6 +184,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_29_144714) do
     t.string "copyright"
     t.string "dataset"
     t.string "thumbnail"
+    t.text "setspec"
     t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
     t.index ["governing_collection_type", "governing_collection_id"], name: "governing_index"
     t.index ["metadata_checksum"], name: "metadata_chksm_index"
@@ -339,6 +340,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_29_144714) do
     t.datetime "updated_at", precision: nil
     t.string "user_type"
     t.index ["user_id"], name: "index_searches_on_user_id"
+  end
+
+  create_table "set_specs", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tp_items", primary_key: "item_id", id: :string, force: :cascade do |t|

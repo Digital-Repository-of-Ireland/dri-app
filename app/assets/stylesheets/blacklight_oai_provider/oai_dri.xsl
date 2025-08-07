@@ -494,6 +494,7 @@ p.intro {
       <xsl:value-of select="oai:identifier"/>
       <xsl:text> </xsl:text><a class="link" href="?verb=GetRecord&amp;metadataPrefix=oai_dri&amp;identifier={oai:identifier}">oai_dri</a>
       <xsl:text> </xsl:text><a class="link" href="?verb=GetRecord&amp;metadataPrefix=edm&amp;identifier={oai:identifier}">edm</a>
+      <xsl:text> </xsl:text><a class="link" href="?verb=GetRecord&amp;metadataPrefix=oai_datacite&amp;identifier={oai:identifier}">oai_datacite</a>
       <xsl:text> </xsl:text><a class="link" href="?verb=ListMetadataFormats&amp;identifier={oai:identifier}">formats</a>
     </td></tr>
     <tr><td class="key">Datestamp</td>
@@ -554,7 +555,7 @@ p.intro {
 <!-- unknown metadata format -->
 
 <xsl:template match="oai:metadata/*" priority='-100'>
-  <h3>DRI Metadata (edm)</h3>
+  <h3>DRI Metadata</h3>
   <div class="xmlSource">
     <xsl:apply-templates select="." mode='xmlMarkup' />
   </div>

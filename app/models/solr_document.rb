@@ -316,6 +316,14 @@ class SolrDocument
     self['thumbnail_ss']
   end
 
+  def setspec
+    ancestor_field('setspec_ssim')
+  end
+
+  def allow_aggregation?
+    self.setspec.present?
+  end
+
   def status
     self['status_ssi'.to_sym]
   end

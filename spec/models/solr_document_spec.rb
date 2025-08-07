@@ -252,7 +252,6 @@ describe SolrDocument do
     end
   end
 
-
   context 'object type methods' do
     before(:each) do
       @to_delete = []

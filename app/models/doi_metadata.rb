@@ -79,7 +79,7 @@ class DoiMetadata < ActiveRecord::Base
       }
     end
 
-    builder.to_xml
+    builder.doc.root.to_xml
   end
 
   def publication_year

@@ -10,6 +10,22 @@ class CollectionConfigsController < ApplicationController
 
   def update
     config = CollectionConfig.find_by(collection_id: params[:collection_id])
+    collection = DRI::DigitalObject.find_by_alternate_id(params[:collection_id])
+
+    # set setspec in collection unless nil
+    if params[:allow_aggregation]
+      sets = ::SetSpec.all&.map { |s| s.name }
+      if sets && (sets.sort != collection.setspec&.sort)
+        collection.setspec = sets
+        collection.save
+      end
+    else
+      if collection.setspec.present?
+        collection.setspec = nil
+        collection.save
+      end
+    end
+
     config.update!(collection_config_params)
     flash[:notice] = t('dri.collection.config.saved')
     respond_to do |format|
