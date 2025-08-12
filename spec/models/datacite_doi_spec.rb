@@ -161,6 +161,18 @@ describe "DataciteDoi" do
     expect(datacite.changed?).to be false
   end
 
+  it "should handle a nil resource type" do
+    datacite = DataciteDoi.create(object_id: @object.alternate_id)
+    datacite.doi_metadata.resource_type = nil
+    datacite.save
+    datacite.reload
+
+    xml = datacite.to_xml
+    doc = Nokogiri::XML(xml)
+    hash = Hash.from_xml(doc.to_s)
+    expect(hash["resource"]["resourceType"]["resourceTypeGeneral"]).to eq "Sound"
+  end
+
   it "should add version numbers to doi" do
     datacite = DataciteDoi.create(object_id: @object.alternate_id)
 
