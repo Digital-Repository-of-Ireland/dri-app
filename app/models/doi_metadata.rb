@@ -87,6 +87,10 @@ class DoiMetadata < ActiveRecord::Base
   end
 
   def resource_type_general
+    if self.resource_type.nil?
+      self.resource_type = datacite_doi.object.type.to_a
+      save
+    end
     resource_type_matches = resource_type.map(&:camelcase).intersection(RESOURCE_TYPE_GENERAL)
     return resource_type_matches.first unless resource_type_matches.empty?
    
