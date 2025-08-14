@@ -62,11 +62,9 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
           end
 
           xml.tag!("dates", {}) do
-            if contains_dates?(record)
-              parse_dates(record, xml)
-            else
-              xml.tag!("date", {dateType: "Issued"}, parse_published_at(record))
-            end
+            parse_dates(record, xml)
+            
+            xml.tag!("date", { dateType: "Issued" }, parse_published_at(record))
           end
 
           xml.tag!("rightsList") do
