@@ -83,7 +83,9 @@ class DoiMetadata < ActiveRecord::Base
   end
 
   def publication_year
-    Time.now.year
+    return Time.now.year unless datacite_doi&.object
+    published_at = datacite_doi.object.published_at
+    published_at.nil? ? Time.now.year : DateTime.parse(published_at).strftime('%Y')
   end
 
   def resource_type_general

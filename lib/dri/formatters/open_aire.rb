@@ -4,8 +4,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
 
   DATES = { 
     'creation_date_tesim' => 'Created',
-    'published_date_tesim' => 'Issued',
-    'date_tesim' => "Other"
+    'published_date_tesim' => 'Issued'
   }.freeze
 
   def initialize
@@ -63,7 +62,11 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
           end
 
           xml.tag!("dates", {}) do
-            parse_dates(record, xml)
+            if contains_dates?(record)
+              parse_dates(record, xml)
+            else
+              xml.tag!("date", {dateType: "Issued"}, parse_published_at(record))
+            end
           end
 
           xml.tag!("rightsList") do
@@ -108,7 +111,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
 
   def parse_dates(record, xml)
     DATES.each do |k, date_type|
-      next unless record.key?(k)
+      next unless record.key?(k) && record[k].present?
 
       record[k].each do |date|
         parsed = DRI::Metadata::Transformations.date_range(date)
@@ -119,6 +122,19 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
         end
       end
     end
+  end
+
+  def parse_published_at(record)
+    DateTime.parse(record['published_at_dttsi']).strftime('%Y-%m-%d')
+  end
+
+  def contains_dates?(record)
+    found_date = false
+
+    DATES.each do |k, date_type|
+      found_date = true if record.key?(k) && record[k].present?
+    end
+    found_date
   end
 
   def valid?(record)
