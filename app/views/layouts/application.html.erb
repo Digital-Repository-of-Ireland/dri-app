@@ -16,6 +16,11 @@
 
     <link href="<%= main_app.opensearch_catalog_url(format: 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+    </script>
+
     <% if Settings.dig(:analytics, :disable) == false %>
       <script type="text/plain"
         data-category="analytics"
@@ -24,8 +29,6 @@
         type="text/plain"
         data-category="analytics"
         data-service="Google Analytics">
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '<%= ENV['GA4_TRACKER'] %>', {
             'cookie_flags': 'max-age=7200;secure;samesite=none',
