@@ -645,8 +645,6 @@ GEM
       parslet
       rdf (~> 3.0)
       rdf-vocab (~> 3.0)
-    legato (0.7.0)
-      multi_json
     link_header (0.0.8)
     linkeddata (3.3.1)
       json-ld (~> 3.3)
@@ -1274,7 +1272,6 @@ DEPENDENCIES
   jwt (= 1.5.2)
   kaminari (>= 1.2.1)
   launchy
-  legato
   linkeddata
   listen
   moab-versioning (~> 4.4, >= 4.4.2)

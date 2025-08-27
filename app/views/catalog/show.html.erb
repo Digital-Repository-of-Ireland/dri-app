@@ -46,9 +46,11 @@
     <link href= "<%= linkset_lset_url(@document.id) %>"  rel="linkset"  type="application/linkset">
   <% end %>
 
-  <% if @dimensions %>
-    <script>
-      gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
-    </script>
+  <% if Settings.dig(:analytics, :disable) == false %>
+    <% if @dimensions %>
+      <script>
+        gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
+      </script>
+    <% end %>
   <% end %>
 <% end %>
