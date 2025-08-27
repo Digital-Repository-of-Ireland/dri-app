@@ -2,9 +2,8 @@ class AnalyticsCollectionDatatable
   delegate :current_user, :params, :solr_document_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
-  def initialize(profile, view)
+  def initialize(view)
     @view = view
-    @profile = profile
   end
 
   def as_json(options = {})
@@ -58,20 +57,7 @@ private
 
     analytics
   end
-
-  def ua_analytics(collection)
-    views = AnalyticsObjectUsers.results(@profile, start_date: startdate, end_date: enddate).collection(collection).to_a
-    downloads = AnalyticsObjectEvents.results(@profile, start_date: startdate, end_date: enddate).collection(collection).action('Download').to_a
-    
-    views.each do |r| 
-      r[:object] = URI(r.delete_field(:pagepath)).path.split('/').last
-      r[:totalHits] = r.delete_field(:pageviews)
-    end
-    downloads.each {|r| r[:object] = r.delete_field(:eventLabel) }
-
-    (views+downloads)
-  end
-
+ 
   def ga4_analytics(collection)
     views = DRI::Analytics.object_events_users(startdate, enddate, [collection])
     downloads = DRI::Analytics.object_events_downloads(startdate, enddate, [collection])
