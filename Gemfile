@@ -167,7 +167,6 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'google-analytics-data-v1beta', '~> 0.8.0'
 gem 'google-oauth2-installed'
-gem 'legato'
 
 gem 'rvm'
 
