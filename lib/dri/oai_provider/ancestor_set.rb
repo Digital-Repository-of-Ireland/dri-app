@@ -11,8 +11,9 @@ module DRI::OaiProvider
       builder = search_service.search_builder.merge(params)
       response = search_service.repository.search(builder)
 
-      sets = []
+      # sets_from_facets returns array or nil
       sets = sets_from_facets(response.facet_fields) if response.facet_fields
+      sets ||= []
 
       SetSpec.all.each do |spec|
         sets << new(spec.name)
