@@ -410,6 +410,8 @@ en:
         related: Related Materials
         rights: Rights
         rights_text: Information about the rights held in and over the resource. This information refers to the rights held in and over the digital asset, not that of any original artefact, nor that of the descriptive metadata. If Orphan work please add EUIPO database file number here.  
+        access_rights: Access Rights
+        access_rights_text: Information about the conditions of access of the resource. This information refers to the access rights of the digital asset, not that of any original artefact, nor that of the descriptive metadata.
         roles: Contributors
         roles_text: An entity responsible for making contributions to the resource.
         sources: Sources
@@ -732,6 +734,7 @@ en:
         relations: Relations
         related: Related Materials
         rights: Rights
+        access_rights: Access Rights
         roles: Contributors
         show_description_eng: Show English
         show_description_gle: Show Irish
@@ -883,6 +886,7 @@ en:
           add_published_date: Add Published Date
           add_relation: Add Relation
           add_rights: Add Rights
+          add_access_rights: Add Access Rights
           add_role: Add Contributor
           add_source: Add Source
           add_subject: Add Subject

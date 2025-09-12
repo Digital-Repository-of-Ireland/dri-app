@@ -1,0 +1,18 @@
+<fieldset id="access_rights" class="dri_access_rights_metadata_fieldset dri_form_multiline_block">
+  <%= render "shared/form_fieldset_label", f:f, source:'access_rights' %>
+  <% if @object.rights.size == 0 %>
+  <div>
+    <label for="digital_object_access_rights_1" class="visually-hidden"><%= t("dri.views.fields.rights") %></label>
+    <%= f.text_area "access_rights][", value:'', class: "edit span6 dri-textarea", id: 'digital_object_access_rights_1'  %>
+    <%= render "shared/form_remove_field_button" %>
+  </div>
+  <% end %>
+  <% @object.access_rights.each_with_index do |access_rights, index| %>
+  <div>
+      <label for="<%= "digital_object_access_rights_#{index+1}" %>" class="visually-hidden"><%= t("dri.views.fields.access_rights") %></label>
+      <%= f.text_area "access_rights][", value:access_rights, class: "edit span6 dri-textarea", id: "digital_object_access_rights_#{index+1}" %>
+      <%= render "shared/form_remove_field_button" %>
+  </div>
+  <% end %>
+  <%= render "shared/form_add_text_field_button", input_type: 'textarea', action:%w(add access_rights), label_string: t("dri.views.fields.access_rights") %>
+</fieldset>

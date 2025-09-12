@@ -131,6 +131,7 @@ class MyCollectionsController < ApplicationController
     config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
     config.add_show_field 'identifier_ssim', label: 'identifier'
     config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
+    config.add_show_field Solrizer.solr_name('access_rights', :stored_searchable, type: :string), label: 'access_rights'
 
     config.add_search_field 'all_fields', label: 'All Fields'
     config.dri_display_search_fields = %i[all_fields title subject person place]

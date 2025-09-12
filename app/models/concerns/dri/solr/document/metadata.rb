@@ -1,7 +1,7 @@
 module DRI::Solr::Document
   module Metadata
     DEFAULT_METADATA_FIELDS = ['title', 'subject', 'creation_date', 'published_date',
-                               'type', 'rights', 'language', 'description', 'creator',
+                               'type', 'rights', 'access_rights', 'language', 'description', 'creator',
                                'contributor', 'publisher', 'date', 'format', 'source', 'temporal_coverage',
                                'geographical_coverage', 'geocode_point', 'geocode_box', 'institute',
                                'root_collection_id', 'isGovernedBy', 'ancestor_id', 'ancestor_title', 'role_dnr'].freeze
@@ -44,6 +44,10 @@ module DRI::Solr::Document
 
     def rights
       metadata('rights')
+    end
+
+    def access_rights
+      metadata('accessRights')
     end
 
     def type
