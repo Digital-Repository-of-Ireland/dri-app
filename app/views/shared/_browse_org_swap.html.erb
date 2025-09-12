@@ -1,0 +1,36 @@
+<div class="dri_facet_restrictions_container">
+		<ul id="dri_browse_sort_tabs" class="dri_browse_sort_tabs dri_search_tab_container" >
+				<%
+					members_class = 'dri_help_popover_slow'
+					others_class = 'dri_help_popover_slow'
+
+                    mode = params[:mode]? params[:mode] : "members"
+
+				    members_class += ' selected' if mode == 'members'
+					others_class += ' selected' if mode == 'others'
+
+				%>
+
+				<li id="dri_browse_sort_tabs_collections_id", class="dri_search_tab"
+				data-bs-content="<%= t('dri.help.dri_browse_sort_tabs_collections') %>"
+				data-bs-title="<%= t('dri.help.dri_browse_sort_tabs_collections_title')%>"
+				data-bs-trigger="hover"
+				data-bs-placement="auto right">
+					<%= link_to t('dri.headerlinks.member_orgs'), request.params.merge(mode: "members"), id: "members", class: members_class	%>
+				</li>
+
+				<li id="dri_browse_sort_tabs_sub_collections_id", class="dri_search_tab"
+				data-bs-content="<%= t('dri.help.dri_browse_sort_tabs_sub_collection') %>"
+				data-bs-title="<%= t('dri.help.dri_browse_sort_tabs_sub_collection_title')%>"
+				data-bs-trigger="hover"
+				data-bs-placement="auto right">
+				<%= link_to t('dri.headerlinks.other_orgs'), request.params.merge(mode: "others"), id: "others", class: others_class %>
+				</li>
+
+			<li class="dri_pagination_search"> 
+			</li>
+			
+		</ul>
+</div>
+
+<!-- close dri_facet_restrictions_container -->
