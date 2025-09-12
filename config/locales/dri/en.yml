@@ -263,6 +263,8 @@ en:
       browse: DRI Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
+      member_orgs: Member Organisations
+      other_orgs: Other Organisations
       collection: Collection
       collections: Collections
       cookie_settings: Cookie Settings
