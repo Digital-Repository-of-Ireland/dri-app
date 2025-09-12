@@ -20,7 +20,11 @@ class InstitutesController < ApplicationController
 
   # Get the list of institutes
   def index
-    @institutes = Institute.all.order('name asc')
+    if params[:mode] == "others"
+      @institutes = Institute.where(depositing: false).order('name asc')
+    else
+      @institutes = Institute.where(depositing: true).order('name asc')
+    end
     @collections = {}
     @institutes.each do |institute|
       @collections[institute.id] = institute.collections.select(&:published?)
