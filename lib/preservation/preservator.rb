@@ -83,7 +83,7 @@ module Preservation
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
         end
-        dslist.push(datastreams.map { |item| File.join(metadata_path(object.alternate_id, version), item << ".xml") }).flatten!
+        dslist.push(datastreams.map { |item| File.join(metadata_path(object.alternate_id, version), item.dup << ".xml") }).flatten!
       end
 
       create_or_update_manifests(dslist)
@@ -136,7 +136,6 @@ module Preservation
       previous_version_id, previous_manifest_path = find_previous_manifest_path(version)
       @version_inventory = file_inventory_from_path(previous_version_id, previous_manifest_path)
       @version_inventory.version_id = version
-
       perform_changes(changes)
 
       signature_catalog = signature_catalog_from_path(previous_manifest_path)

@@ -83,7 +83,8 @@ Scenario: Creating Digital Object in a governing collection using the web forms
   When I go to the "metadata" "upload" page for "coll2"
   And I attach the metadata file "valid_metadata.xml"
   And I press the button to "ingest metadata"
-  Then the collection "coll2" should contain the new digital object
+  Then I should see a success message for ingestion
+  And the collection "coll2" should contain the new digital object
 
 Scenario: Deleting a collection as an admin
   Given I am not logged in

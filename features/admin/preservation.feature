@@ -119,6 +119,7 @@ Feature: Preservation
     And I follow the link to edit
     And I attach the metadata file "SAMPLEA.xml"
     And I press the button to "upload metadata"
+    Then I should see a success message for updating metadata
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid
@@ -200,7 +201,18 @@ Feature: Preservation
     When I follow the link to delete an object
     And I press the button to "delete object with the saved pid"
     Then I should see "Object has been deleted."
+
+  Scenario: Delete an published object
+    Given I am logged in as "admin" in the group "admin"	    
+    When I create an object and save the pid
+    And the collection with pid "the saved pid" is published
+    And I go to the "object" "modify" page for "the saved pid"
+    Then I should see a button to delete object with the saved pid
+    When I follow the link to delete an object
+    And I press the button to "delete object with the saved pid"
+    Then I should see "Object has been deleted."
     Then an AIP should exist for the saved pid
     And the AIP for the saved pid should have "2" versions
     And the manifest for version "1" for the saved pid should be valid
     And the manifest for version "2" for the saved pid should be valid
+
