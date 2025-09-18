@@ -966,7 +966,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.4.1)
+    rexml (3.4.4)
     riiif (2.6.0)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
