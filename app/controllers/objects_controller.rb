@@ -220,26 +220,30 @@ class ObjectsController < BaseObjectsController
       collection_id = solr_object.collection_id
       SolrDocument.delete(params[:id])
     else
-
       if @object.status == 'published' && !current_user.is_admin?
         raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
       end
 
-      # Do the preservation actions
-      @object.increment_version
-
-      assets = []
-      @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
-
       preservation = Preservation::Preservator.new(@object)
-      preservation.update_manifests(
-        deleted: {
-          'content' => assets,
-          'metadata' => ['descMetadata.xml']
-          }
-      )
+      if @object.status == 'published'
+        # Do the preservation actions
+        @object.increment_version
 
-      record_version_committer(@object, current_user)
+        assets = []
+        @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
+
+        preservation.update_manifests(
+          deleted: {
+            'content' => assets,
+            'metadata' => ['descMetadata.xml']
+            }
+        )
+
+        record_version_committer(@object, current_user)
+      else
+        # clean up MOAB
+        preservation.remove_moab_dirs
+      end
 
       collection_id = @object.governing_collection.alternate_id
       @object.destroy

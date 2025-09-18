@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'moab'
+require 'fileutils'
 
 module Preservation
   class Preservator
@@ -31,6 +32,10 @@ module Preservation
           content_path(object.alternate_id, version)
         ]
       )
+    end
+
+    def remove_moab_dirs
+      FileUtils.remove_dir(aip_dir(object.alternate_id), force: true)
     end
 
     def existing_filepath(file_path)
