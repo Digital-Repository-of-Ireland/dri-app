@@ -51,6 +51,38 @@ describe ObjectsController do
       collection.destroy
     end
 
+    it 'should delete the MOAB files of draft object' do
+      collection = FactoryBot.create(:collection)
+      collection.depositor = User.find_by_email(@login_user.email).to_s
+      collection.manager_users_string=User.find_by_email(@login_user.email).to_s
+      collection.discover_groups_string="public"
+      collection.read_groups_string="registered"
+      collection.creator = [@login_user.email]
+
+      object = FactoryBot.create(:sound)
+      object[:status] = "draft"
+      object.depositor=User.find_by_email(@login_user.email).to_s
+      object.manager_users_string=User.find_by_email(@login_user.email).to_s
+      object.creator = [@login_user.email]
+
+      object.save
+
+      collection.governed_items << object
+      id = object.alternate_id
+
+      preservator = Preservation::Preservator.new(object)
+      expect(File.exist?(preservator.aip_dir(id))).to be true
+
+      expect {
+        delete :destroy, params: { id: object.alternate_id }
+      }.to change { DRI::Identifier.object_exists?(object.alternate_id) }.from(true).to(false)
+
+      expect(File.exist?(preservator.aip_dir(id))).to be false
+
+      collection.reload
+      collection.destroy
+    end
+
     it 'should not delete a published object for non-admin' do
       @collection = FactoryBot.create(:collection)
       @collection.depositor = User.find_by_email(@login_user.email).to_s
@@ -89,6 +121,32 @@ describe ObjectsController do
       delete :destroy,  params: { id: @object.alternate_id }
 
       expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+
+      @collection.reload
+      @collection.destroy
+    end
+
+    it 'should not delete a published object MOAB' do
+      sign_out @login_user
+      @admin_user = FactoryBot.create(:admin)
+      sign_in @admin_user
+
+      @collection = FactoryBot.create(:collection)
+
+      @object = FactoryBot.create(:sound)
+      @object[:status] = "published"
+      @object.save
+
+      @collection.governed_items << @object
+      id = @object.alternate_id
+
+      preservator = Preservation::Preservator.new(@object)
+      expect(File.exist?(preservator.aip_dir(id))).to be true
+
+      delete :destroy,  params: { id: @object.alternate_id }
+
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(File.exist?(preservator.aip_dir(id))).to be true
 
       @collection.reload
       @collection.destroy

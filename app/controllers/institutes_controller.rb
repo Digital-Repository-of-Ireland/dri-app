@@ -21,7 +21,7 @@ class InstitutesController < ApplicationController
   # Get the list of institutes
   def index
     if params[:mode] == "others"
-      @institutes = Institute.where(depositing: false).order('name asc')
+      @institutes = Institute.where(depositing: [false,nil]).order('name asc')
     else
       @institutes = Institute.where(depositing: true).order('name asc')
     end
@@ -29,9 +29,6 @@ class InstitutesController < ApplicationController
     @institutes.each do |institute|
       @collections[institute.id] = institute.collections.select(&:published?)
     end
-
-    @depositing_institutes = @institutes.select { |i| i.depositing == true }
-    @other_institutes = @institutes.select { |i| i.depositing.blank? }
   end
 
   def new
