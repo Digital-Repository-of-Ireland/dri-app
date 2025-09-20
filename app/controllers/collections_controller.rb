@@ -323,6 +323,10 @@ class CollectionsController < BaseObjectsController
     if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status == 'draft')
       begin
         delete_collection
+
+        @object.increment_version
+        record_version_committer(@object, current_user)
+        
         flash[:notice] = t('dri.flash.notice.collection_deleted')
       rescue DRI::Exceptions::ResqueError => e
         flash[:error] = t('dri.flash.alert.error_deleting_collection', error: e.message)
