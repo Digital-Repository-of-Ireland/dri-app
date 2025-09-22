@@ -70,6 +70,31 @@ describe "DeleteCollectionJob" do
       expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
     end
 
-  end
+    it "should not cleanup MOAB for previously published objects" do
+      @object.governing_collection = @collection
+      @object.save
 
+      @object.increment_version
+      @object.status = "published"
+      @object.save
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve
+
+      @object.increment_version
+      @object.status = "draft"
+      @object.save
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve
+
+      preservator = Preservation::Preservator.new(@object)
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+
+      job = DeleteCollectionJob.new(@collection.alternate_id)
+      job.run
+
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+    end
+  end
 end

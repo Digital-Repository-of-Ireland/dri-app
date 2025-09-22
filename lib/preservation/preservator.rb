@@ -34,7 +34,27 @@ module Preservation
       )
     end
 
-    def remove_moab_dirs
+    def remove_moab_dirs(force = false)
+      # check if status was ever published and if so do not delete unless force is set true
+      attribute_files = Dir.glob("#{aip_dir(object.alternate_id)}/**/attributes.json")
+      
+      if attribute_files.blank?
+        Rails.logger.error "No attribute files found, MOAB dirs not removed #{object.alternate_id}"
+        return
+      end
+
+      published = false
+      attribute_files.each do |attr|
+        File.foreach(attr) do |file|
+          data = JSON.load file
+          published = true if data['status'] == 'published'
+        end
+      end
+
+      if published && !force
+        Rails.logger.error "Not removing MOAB dirs for previously published object #{object.alternate_id}"
+        return
+      end
       FileUtils.remove_dir(aip_dir(object.alternate_id), force: true)
     end
 
