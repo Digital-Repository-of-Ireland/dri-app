@@ -59,7 +59,7 @@ class BaseObjectsController < CatalogController
       updated = @object.save
       
       if updated
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'update')
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve
       end
@@ -86,7 +86,7 @@ class BaseObjectsController < CatalogController
       updated = @object.save 
 
       if updated
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'update')
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve
       end

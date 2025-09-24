@@ -117,6 +117,7 @@ class ObjectsController < BaseObjectsController
 
       if save_and_index
         post_save do
+          record_version_committer(@object, current_user, 'update')
           mint_or_update_doi(@object, doi) if doi
         end
 
@@ -189,6 +190,7 @@ class ObjectsController < BaseObjectsController
     begin
       if save_and_index
         post_save do
+          record_version_committer(@object, current_user)
           create_reader_group if @object.collection?
         end
 
@@ -219,9 +221,10 @@ class ObjectsController < BaseObjectsController
     else
       raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published' && !current_user.is_admin?
       
+      @object.increment_version
+
       if @object.status == 'published'
         # Do the preservation actions
-        @object.increment_version
         assets = []
         @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
         
@@ -232,13 +235,13 @@ class ObjectsController < BaseObjectsController
             'metadata' => ['descMetadata.xml']
           }
         )
-        record_version_committer(@object, current_user)
       else
         # clean up MOAB
         preservation = Preservation::Preservator.new(@object)
         preservation.remove_moab_dirs
       end
 
+      record_version_committer(@object, current_user, 'delete')
       collection_id = @object.governing_collection.alternate_id
       @object.destroy
     end
@@ -295,6 +298,8 @@ class ObjectsController < BaseObjectsController
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
       preservation.preserve
+
+      record_version_committer(@object, current_user, @object.status)
 
       # if this object is in a sub-collection, we need to set that collection status
       # to reviewed so that a publish job will run on the collection
@@ -446,7 +451,6 @@ class ObjectsController < BaseObjectsController
   def post_save
     warn_if_has_duplicates(@object)
     retrieve_linked_data if AuthoritiesConfig
-    record_version_committer(@object, current_user)
 
     yield
 
@@ -474,6 +478,8 @@ class ObjectsController < BaseObjectsController
         # Do the preservation actions
         preservation = Preservation::Preservator.new(governing_collection)
         preservation.preserve
+
+        record_version_committer(governing_collection, current_user, governing_collection.status)
       end
 
       governing_collection = governing_collection.governing_collection

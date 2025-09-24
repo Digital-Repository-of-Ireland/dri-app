@@ -146,9 +146,12 @@ class CollectionsController < BaseObjectsController
 
     respond_to do |format|
       if save_and_index
-        post_save do
-          mint_or_update_doi(@object, doi) if doi
-        end
+        record_version_committer(@object, current_user, 'update')
+        mint_or_update_doi(@object, doi) if doi
+
+        # Do the preservation actions
+        preservation = Preservation::Preservator.new(@object)
+        preservation.preserve(['descMetadata'])
 
         flash[:notice] = t('dri.flash.notice.updated')
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
@@ -180,7 +183,7 @@ class CollectionsController < BaseObjectsController
       @object.cover_image = cover_url
       @object.save
 
-      record_version_committer(@object, current_user)
+      record_version_committer(@object, current_user, 'update')
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
@@ -323,6 +326,10 @@ class CollectionsController < BaseObjectsController
     if current_user.is_admin? || ((can? :manage_collection, @object) && @object.status == 'draft')
       begin
         delete_collection
+
+        @object.increment_version
+        record_version_committer(@object, current_user, 'delete')
+        
         flash[:notice] = t('dri.flash.notice.collection_deleted')
       rescue DRI::Exceptions::ResqueError => e
         flash[:error] = t('dri.flash.alert.error_deleting_collection', error: e.message)
@@ -387,16 +394,6 @@ class CollectionsController < BaseObjectsController
   end
 
   private
-
-    def post_save
-      record_version_committer(@object, current_user)
-
-      yield
-
-      # Do the preservation actions
-      preservation = Preservation::Preservator.new(@object)
-      preservation.preserve(['descMetadata'])
-    end
 
     # Create a collection with the web form
     #
@@ -542,7 +539,7 @@ class CollectionsController < BaseObjectsController
     end
 
     def delete_collection
-      DRI.queue.push(DeleteCollectionJob.new(@object.alternate_id))
+      DRI.queue.push(DeleteCollectionJob.new(@object.alternate_id, current_user.to_s))
     rescue Exception => e
       logger.error "Unable to delete collection: #{e.message}"
       raise DRI::Exceptions::ResqueError, e.message

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_31_191637) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_23_143727) do
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
     t.string "aggregation_id"
@@ -461,6 +461,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_31_191637) do
     t.string "committer_login"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.string "event"
   end
 
   create_table "versions", force: :cascade do |t|
