@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: ac48cbba74cfe925cab41376ed1e687a98fea02e
-  tag: v4.14.0
+  revision: ae09757602db46955894dd06c7d7831a5c322541
+  tag: v4.15.0
   specs:
     dri_data_models (4.15.0)
       hydra-derivatives
