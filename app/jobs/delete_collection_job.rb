@@ -14,6 +14,8 @@ class DeleteCollectionJob < IdBasedJob
       query = Solr::Query.new(solr_query, 1000, fq: f_query)
       query.each do |obj|
         child_object = DRI::DigitalObject.find_by_alternate_id(obj.id)
+        child_object.increment_version
+
         if child_object.published?
           # update moab
           update_moab(child_object)
@@ -21,6 +23,13 @@ class DeleteCollectionJob < IdBasedJob
           # cleanup filesystem
           cleanup_moab(child_object)
         end
+
+        VersionCommitter.create(
+          version_id: 'v%04d' % child_object.object_version,
+          obj_id: child_object.alternate_id,
+          committer_login: user,
+          event: 'deleted'
+        )
       end
 
       preservation = Preservation::Preservator.new(object)
@@ -28,13 +37,11 @@ class DeleteCollectionJob < IdBasedJob
     end
 
     object.destroy
-
     CollectionConfig.find_by(collection_id: object.alternate_id).destroy if CollectionConfig.exists?(collection_id: object.alternate_id)
   end
 
   def update_moab(child)
     # Do the preservation actions
-    child.increment_version
     assets = []
     child.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
     

@@ -27,7 +27,7 @@ class AccessControlsController < ApplicationController
     if updated
       flash[:notice] = t('dri.flash.notice.access_controls_updated')
 
-      record_version_committer(@object, current_user)
+      record_version_committer(@object, current_user, 'access controls update')
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(@object)
@@ -234,5 +234,4 @@ class AccessControlsController < ApplicationController
         @object.master_file_access == params[:digital_object][:master_file_access]
       )
     end
-
 end

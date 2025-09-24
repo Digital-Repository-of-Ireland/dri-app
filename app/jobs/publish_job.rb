@@ -34,7 +34,12 @@ class PublishJob
     if collection.save
       mint_doi(doi) if doi
 
-      VersionCommitter.create(version_id: 'v%04d' % collection.object_version, obj_id: collection.alternate_id, committer_login: user.to_s)
+      VersionCommitter.create(
+        version_id: 'v%04d' % collection.object_version,
+        obj_id: collection.alternate_id,
+        committer_login: user.to_s,
+        event: 'published'
+      )
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
@@ -68,7 +73,12 @@ class PublishJob
         o.doi = doi.doi if doi
 
         if o.save
-          VersionCommitter.create(version_id: 'v%04d' % o.object_version, obj_id: o.alternate_id, committer_login: user.to_s)
+          VersionCommitter.create(
+            version_id: 'v%04d' % o.object_version,
+            obj_id: o.alternate_id,
+            committer_login: user.to_s,
+            event: 'published'
+          )
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)

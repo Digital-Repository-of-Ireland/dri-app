@@ -90,7 +90,7 @@ class AssetsController < ApplicationController
 
         object.increment_version
         object.save!
-        record_version_committer(object, current_user)
+        record_version_committer(object, current_user, 'asset delete')
         if object.status == "published"
           new_doi(object, 'asset modified')
           mint_or_update_doi(object)
@@ -127,7 +127,7 @@ class AssetsController < ApplicationController
 
       if file_content.update_content(file_upload)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'asset update')
         file_content.characterize if file_content.has_content?
       else
         message = @generic_file.errors.full_messages.join(', ')
@@ -171,7 +171,7 @@ class AssetsController < ApplicationController
       @object.increment_version
 
       if file_content.add_content(file_upload)
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'asset added')
         file_content.characterize if file_content.has_content?
         @message = t('dri.flash.notice.file_uploaded')
         @status = :created
