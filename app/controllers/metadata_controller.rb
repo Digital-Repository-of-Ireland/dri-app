@@ -106,7 +106,7 @@ class MetadataController < ApplicationController
           raise DRI::Exceptions::InternalError
         end
 
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'update')
         flash[:notice] = t('dri.flash.notice.metadata_updated')
 
         update_or_mint_doi

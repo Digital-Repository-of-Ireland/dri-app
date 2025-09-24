@@ -2,8 +2,15 @@ module DRI
   module Versionable
     extend ActiveSupport::Concern
 
-    def record_version_committer(object, user)
-      VersionCommitter.create(version_id: version_id(object), obj_id: object.alternate_id, committer_login: user.to_s)
+    def record_version_committer(object, user, event = nil)
+      version_params = { 
+        version_id: version_id(object), 
+        obj_id: object.alternate_id, 
+        committer_login: user.to_s
+      }
+      version_params[:event] = event if event
+      
+      VersionCommitter.create(version_params)
     end
 
     private

@@ -9,33 +9,10 @@ end
 describe "DeleteCollectionJob" do
 
   before(:each) do
-    @collection = DRI::DigitalObject.with_standard :qdc
-    @collection[:title] = ["A collection"]
-    @collection[:description] = ["This is a Collection"]
-    @collection[:rights] = ["This is a statement about the rights associated with this object"]
-    @collection[:publisher] = ["RnaG"]
-    @collection[:creator] = ["Creator"]
-    @collection[:resource_type] = ["Collection"]
-    @collection[:creation_date] = ["1916-01-01"]
-    @collection[:published_date] = ["1916-04-01"]
-    @collection[:status] = "draft"
-    @collection.save
+    @collection = FactoryBot.create(:collection)
 
-    @object = DRI::DigitalObject.with_standard :qdc
-    @object[:title] = ["An Audio Title"]
-    @object[:rights] = ["This is a statement about the rights associated with this object"]
-    @object[:role_hst] = ["Collins, Michael"]
-    @object[:contributor] = ["DeValera, Eamonn", "Connolly, James"]
-    @object[:language] = ["ga"]
-    @object[:description] = ["This is an Audio file"]
-    @object[:published_date] = ["1916-04-01"]
-    @object[:creation_date] = ["1916-01-01"]
-    @object[:source] = ["CD nnn nuig"]
-    @object[:geographical_coverage] = ["Dublin"]
-    @object[:temporal_coverage] = ["1900s"]
-    @object[:subject] = ["Ireland","something else"]
-    @object[:resource_type] = ["Sound"]
-    @object[:status] = "reviewed"
+    @object = FactoryBot.create(:image)
+    @object[:status] = "draft"
     @object.save
   end
 
@@ -60,6 +37,64 @@ describe "DeleteCollectionJob" do
       expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
     end
 
-  end
+    it "should cleanup MOAB for draft objects" do
+      @object.governing_collection = @collection
+      @object.save
 
+      preservator = Preservation::Preservator.new(@object)
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+
+      job = DeleteCollectionJob.new(@collection.alternate_id)
+      job.run
+
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be false
+    end
+
+    it "should not cleanup MOAB for published objects" do
+      @object.governing_collection = @collection
+      @object.save
+
+      @collection.status = "published"
+      @collection.save
+
+      preservator = Preservation::Preservator.new(@object)
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+
+      job = DeleteCollectionJob.new(@collection.alternate_id)
+      job.run
+
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+    end
+
+    it "should not cleanup MOAB for previously published objects" do
+      @object.governing_collection = @collection
+      @object.save
+
+      @object.increment_version
+      @object.status = "published"
+      @object.save
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve
+
+      @object.increment_version
+      @object.status = "draft"
+      @object.save
+      preservation = Preservation::Preservator.new(@object)
+      preservation.preserve
+
+      preservator = Preservation::Preservator.new(@object)
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+
+      job = DeleteCollectionJob.new(@collection.alternate_id)
+      job.run
+
+      expect(DRI::Identifier.object_exists?(@object.alternate_id)).to be false
+      expect(DRI::Identifier.object_exists?(@collection.alternate_id)).to be false
+      expect(File.exist?(preservator.aip_dir(@object.alternate_id))).to be true
+    end
+  end
 end
