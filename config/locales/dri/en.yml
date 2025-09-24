@@ -89,8 +89,8 @@ en:
         committer: Committer
         in_collection: In Collection
         object_id: Object ID
-        status: Status
-        type: Type
+        version_id: Version ID
+        event: Event
         updated_at: Updated At
       assets:
         preservation: Preservation Only
