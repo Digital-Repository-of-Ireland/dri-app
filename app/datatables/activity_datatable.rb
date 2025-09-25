@@ -1,5 +1,5 @@
 class ActivityDatatable
-  delegate :params, :h, :link_to, :solr_document_path, :object_file_path, to: :@view
+  delegate :params, :h, :link_to, :my_collections_path, to: :@view
 
   def initialize(view)
     @view = view
@@ -18,20 +18,15 @@ private
   def data
     display_on_page.map do |version|
       update = update_info(version)
-
-      link = if update[:type] == "object"
-               solr_document_path(update[:updated_id])
-             else
-               update[:batch_id].present? ? object_file_path(update[:batch_id], update[:updated_id]) : ''
-             end
+      link = my_collections_path(update[:updated_id])
 
       [
         update[:updated_at],
         link_to(update[:updated_id], link),
-        update[:type],
-        link_to(update[:collection_title], solr_document_path(update[:collection_id])),
+        update[:version_id],
+        link_to(update[:collection_title], my_collections_path(update[:collection_id])),
         update[:committer],
-        update[:status]
+        update[:event]
       ]
     end
   end
@@ -61,7 +56,7 @@ private
   end
 
   def sort_column
-    columns = %w[created_at obj_id type collection committer_login status]
+    columns = %w[created_at obj_id version_id collection committer_login event]
     columns[params[:order][:'0'][:column].to_i]
   end
 
@@ -73,57 +68,22 @@ private
     info = {}
     info[:committer] = version.committer_login
     info[:updated_at] = version.created_at
+    info[:updated_id] = version.obj_id
+    info[:version_id] = version.version_id
+    info[:event] = version.event
 
-    updated_obj = version.obj_id
-    updated_version = version.version_id
-
-    if updated_obj
-      info[:updated_id] = updated_obj
-      info[:type] = 'Object'
-
-      # get object solr info
-      doc = solr_doc_for_id(updated_obj)
-      if doc
-        ids = doc['collection_id_tesim'] || [doc['id']]
-        titles = doc['collection_tesim'] || doc['title_tesim']
-        info[:collection_id] = ids.first
-        info[:collection_title] = titles.first
-      else
-        info[:collection_id] = ''
-        info[:collection_title] = ''
-        info[:status] = "Not found"
-      end
-
-    elsif updated_version
-      # get gf solr info
-      gf_id = extract_id(updated_version)
-      info[:updated_id] = gf_id
-      info[:type] = 'File'
-
-      doc = solr_doc_for_id(gf_id)
-      if doc
-        parent_id = doc['isPartOf_ssim'].first
-        parent = solr_doc_for_id(parent_id)
-        info[:batch_id] = parent_id
-        info[:collection_id] = parent['collection_id_tesim'].first
-        info[:collection_title] = parent['collection_tesim'].first
-      else
-        info[:collection_id] = ''
-        info[:collection_title] = ''
-        info[:status] = "Not found"
-      end
+    # get object solr info
+    doc = SolrDocument.find(version.obj_id)
+    if doc
+      ids = doc['isGovernedBy_ssim'] || [doc['id']]
+      titles = doc['collection_tesim'] || doc['title_tesim']
+      info[:collection_id] = ids.first
+      info[:collection_title] = titles.first
+    else
+      info[:collection_id] = ''
+      info[:collection_title] = ''
     end
 
     info
   end
-
-  def extract_id(vid)
-    uri = URI(vid)
-    uri.path.split('content')[0].split('/').last
-  end
-
-  def solr_doc_for_id(id)
-    SolrDocument.find(id)
-  end
-
 end
