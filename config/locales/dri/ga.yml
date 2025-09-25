@@ -68,8 +68,8 @@ ga:
         committer: An Té a Chuir isteach
         in_collection: Sa mBailiúchán
         object_id: ID na hOibiachta
-        status: Stádas
-        type: Cineál
+        version_id: ID
+        event: Teagmhas 
         updated_at: Nuashonraithe ag
       assets:
         preview: Réamhamharc
