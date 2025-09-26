@@ -107,7 +107,7 @@ group :development, :test do
   gem 'railroady'
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 6'
+  gem 'rspec-rails', '~> 7'
   gem 'rswag-specs'
   gem 'selenium-webdriver'
   gem 'show_me_the_cookies'
