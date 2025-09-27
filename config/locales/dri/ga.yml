@@ -433,6 +433,7 @@ ga:
           timeline_display_field: Taispeáin oibiachtaí de réir
         links:
           add_documentation: Cuir doiciméadacht leis
+          add_documentation_xml: Uaslódáil XML na doiciméadacht
           add_object: Cuir Oibiacht leis
           add_object_xml: Uaslódáil XML na hOibiachta
           add_sub_collection: Cuir fo-bhailiúchán leis

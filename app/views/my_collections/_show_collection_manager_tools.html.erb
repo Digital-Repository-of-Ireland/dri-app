@@ -147,7 +147,10 @@
     <li class="dri_help_popover" data-bs-content="<%= t('dri.help.add_documentation_help_text') %>" title="<%= t('dri.help.add_documentation_help_title') %>" data-bs-trigger="hover" data-bs-placement="left">
       <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><%= t('dri.views.catalog.links.add_documentation') %><% end %>
     </li>
-
+    <li class="dri_help_popover" data-bs-content="<%= t('dri.help.add_documentation_help_text') %>" data-bs-title="<%= t('dri.help.add_documentation_help_title') %>" data-bs-trigger="hover" data-bs-placement="left">
+      <%= link_to new_object_path(collection: document.id, method: 'upload', is_documentation: 'true'), id: "add_documentation_object_xml" do %><%= t('dri.views.catalog.links.add_documentation_xml') %><% end %>
+    </li>
+    
       <% if @document.editable? %>
         <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
           <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>

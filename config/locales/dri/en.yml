@@ -546,6 +546,7 @@ en:
           interactive_resource_alert_2: "%{mime_type} asset interactive resource identified case 2."
         links:
           add_documentation: Add Documentation
+          add_documentation_xml: Upload Documentation XML
           add_object: Add an Object
           add_object_xml: Upload Object XML
           add_sub_collection: Add Sub-Collection

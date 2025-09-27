@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 959ae4b9018302a962086eee21cf8384dae04341
+  revision: 3b33095b4684c60aa1fe894440b5251b97c2256c
   branch: develop
   specs:
-    dri_data_models (4.15.0)
+    dri_data_models (4.16.0)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -15,6 +15,7 @@ GIT
       om
       resque
       rsolr
+      uri (~> 0.13.2)
       valkyrie (~> 3)
 
 GIT
@@ -695,7 +696,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0916)
+    mime-types-data (3.2025.0924)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (0.9)
@@ -1321,7 +1322,6 @@ DEPENDENCIES
   thin
   timelineJS3-rails!
   unicode
-  uri (~> 0.13.2)
   user_group!
   view_component (< 3)
   yard
