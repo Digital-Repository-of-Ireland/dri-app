@@ -433,9 +433,9 @@ ga:
           timeline_display_field: Taispeáin oibiachtaí de réir
         links:
           add_documentation: Cuir doiciméadacht leis
-          add_documentation_xml: Uaslódáil XML na doiciméadacht
+          add_documentation_xml: Uaslódáil
           add_object: Cuir Oibiacht leis
-          add_object_xml: Uaslódáil XML na hOibiachta
+          add_object_xml: Uaslódáil XML
           add_sub_collection: Cuir fo-bhailiúchán leis
           advanced_options: Tuilleadh roghanna
           advanced_search: Cuardach casta
@@ -455,6 +455,7 @@ ga:
           mark_all_reviewed: Athbhreithnigh
           mark_object_draft: Léirigh gur dréachtoibiacht í seo
           mark_object_reviewed: Léirigh gur athbhreithníodh an oibiacht
+          metadata_form: Foirm Meiteashonraí
           not_characterized: gan tréithriú déanta fós
           publish: Foilsigh
           publish_reviewed: Foilsigh na hoibiachtaí athbhreithnithe
