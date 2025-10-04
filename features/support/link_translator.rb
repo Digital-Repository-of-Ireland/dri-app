@@ -43,6 +43,9 @@ module LinkTranslator
       when /^upload XML$/
         "add_object_xml"
 
+      when /^upload documentation XML$/
+        "add_documentation_object_xml"
+
       when /^user profile$/
        "view_account"
 

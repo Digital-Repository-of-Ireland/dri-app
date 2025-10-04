@@ -55,7 +55,7 @@ private
       parse_user(entry)
     elsif entry.item_type == 'UserGroup::Membership'
       membership = entry.reify
-      "group: #{membership.group.name} user: #{membership.user.email} approved by: #{membership.approved_by}"
+      "group: #{membership.group.name} user: #{membership.user.email}"
     else
       entry.object
     end

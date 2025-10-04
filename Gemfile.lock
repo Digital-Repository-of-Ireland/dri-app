@@ -1,9 +1,9 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: ae09757602db46955894dd06c7d7831a5c322541
-  tag: v4.15.0
+  revision: 81d2b35ec6f840d86cfcbbab2ee2f53dea5ffce9
+  tag: v4.16.0
   specs:
-    dri_data_models (4.15.0)
+    dri_data_models (4.16.0)
       hydra-derivatives
       hydra-file_characterization
       iso-639
@@ -15,6 +15,7 @@ GIT
       om
       resque
       rsolr
+      uri (~> 0.13.2)
       valkyrie (~> 3)
 
 GIT
@@ -695,7 +696,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2025.0916)
+    mime-types-data (3.2025.0924)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (0.9)
@@ -721,7 +722,7 @@ GEM
       redic
     net-http-persistent (4.0.4)
       connection_pool (~> 2.2)
-    net-imap (0.5.10)
+    net-imap (0.5.11)
       date
       net-protocol
     net-pop (0.1.2)
@@ -925,9 +926,10 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
-    rdoc (6.14.2)
+    rdoc (6.15.0)
       erb
       psych (>= 4.0.0)
+      tsort
     readline (0.0.4)
       reline
     redic (1.5.3)
@@ -1153,6 +1155,7 @@ GEM
     tilt (2.6.1)
     timeout (0.4.3)
     trailblazer-option (0.1.2)
+    tsort (0.2.0)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
     tzinfo (2.0.6)
@@ -1322,7 +1325,6 @@ DEPENDENCIES
   thin
   timelineJS3-rails!
   unicode
-  uri (~> 0.13.2)
   user_group!
   view_component (< 3)
   yard
