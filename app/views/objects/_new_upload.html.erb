@@ -1,7 +1,6 @@
 <fieldset>
     <div class="dri_file_upload">
         <form id="metadata_uploader" action="<%= url_for(action: "create", controller: "objects") %>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-
             <div>
                 <a class='btn btn-default' href='javascript:;'>
                     <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= t('dri.views.ingest.steps.upload') %></h5>
@@ -9,6 +8,9 @@
                     <h5 id="file_name">No File</h5></a>
             </div>
             <input type="hidden" name="governing_collection_id" value="<%= @collection %>">
+            <% if params[:is_documentation].present? && params[:is_documentation] == 'true' %>
+              <%= hidden_field_tag :documentation_for, @collection %>
+            <%end%>
             <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
             <div>
                 <%= submit_tag t('dri.views.ingest.buttons.continue'), class: "btn-primary btn-large dri_clearfix", name: "ingest_metadata", id: "ingest_metadata" %>
@@ -16,4 +18,3 @@
         </form>
     </div>
 </fieldset>
-

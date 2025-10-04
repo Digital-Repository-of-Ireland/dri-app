@@ -28,7 +28,6 @@ class ObjectsController < BaseObjectsController
     @object.creator = ['']
 
     @object.type = ['Collection'] if params[:is_sub_collection].present? && params[:is_sub_collection] == 'true'
-
     supported_licences
     supported_copyrights
   end
@@ -158,7 +157,7 @@ class ObjectsController < BaseObjectsController
     locked(@governing_collection.alternate_id)
     return if performed?
 
-    if params[:documentation_for].present?
+    if params[:documentation_for].present? && params[:metadata_file].blank?
       create_from_form :documentation
     elsif params[:metadata_file].present?
       create_from_upload
@@ -220,14 +219,14 @@ class ObjectsController < BaseObjectsController
       SolrDocument.delete(params[:id])
     else
       raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '') if @object.status == 'published' && !current_user.is_admin?
-      
+
       @object.increment_version
 
       if @object.status == 'published'
         # Do the preservation actions
         assets = []
         @object.generic_files.map { |gf| assets << "#{gf.alternate_id}_#{gf.label}" }
-        
+
         preservation = Preservation::Preservator.new(@object)
         preservation.update_manifests(
           deleted: {
@@ -361,7 +360,18 @@ class ObjectsController < BaseObjectsController
     xml_ds = XmlDatastream.new
     xml = xml_ds.load_xml(params[:metadata_file])
 
-    @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
+    if params[:documentation_for]
+      if xml_ds.metadata_standard != :qdc
+        flash[:alert] = t('dri.flash.alert.invalid_object', error: "documentation objects must use Qualified Dublin Core")
+        after_create_failure(DRI::Exceptions::BadRequest)
+      end
+      @object = DRI::Documentation.new
+      @documented = retrieve_object(params[:documentation_for])
+      @object.documentation_for = @documented if @documented
+      @object.read_groups = ["public"]
+    else
+      @object = DRI::DigitalObject.with_standard xml_ds.metadata_standard
+    end
 
     @object.depositor = current_user.to_s
     @object.assign_attributes create_params

@@ -194,8 +194,26 @@
       margin-left: 0.1em;
     }
 }
+
+.dri_subnav_add_object {
+    li {
+       text-indent: 0.1em;
+     }
+    li:before {
+      font-family: 'Font Awesome\ 6 Free';
+      content: "\f0fe"; /* FontAwesome Unicode */
+      display: inline-block;
+      float: left;
+      margin-left: 0.1em;
+    }
+}
+
 .dri_subnav_edit_list .dri_subnav_edit_list_last {
     border-bottom-style: none;
+}
+
+.accordion_last {
+  border-bottom-style: none !important;
 }
 
 .dri_subnav_review_list {

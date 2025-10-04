@@ -100,6 +100,15 @@ Scenario: Editing the metadata of a Digital Object with invalid metadata
   And I press the button to "save changes"
   Then I should not see a success message for updating metadata
 
+Scenario: Constructing a valid Documentation Object
+  When I create a collection and save the pid
+  And I go to the "my collections" "show" page for "the saved pid"
+  And I follow the link to upload documentation XML
+  And I attach the metadata file "valid_metadata.xml"
+  And I press the button to "ingest metadata"
+  Then I should see a success message for ingestion
+  And I should see "Related Materials"
+
 Scenario: Adding multiple files for a Digital Object
   When I create a collection and save the pid
   And I create an object and save the pid
