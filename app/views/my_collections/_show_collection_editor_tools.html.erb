@@ -44,7 +44,7 @@
       </ul>
     </li>
 
-   <% if @document.editable? %>
+  <% if @document.editable? %>
     <li class="dri_edit_collection">
       <div class="accordion" id="dri_add_object_id">
         <div class="accordion-group">
@@ -71,26 +71,27 @@
         </div>
       </div>
     </li>
+  <% end %>
 
-    <!-- Add documentation should be available to any collection (MARC, MODS, QDC and EAD) -->
-    <li class="dri_edit_collection">
-      <div class="accordion" id="dri_add_documentation_id">
-        <div class="accordion-group">
-          <a class="accordion-toggle" id="add_documentation_menu" data-bs-toggle="collapse" data-parent="#dri_add_documentation_id" href="#dri_add_documentation_collapsed_id">
-            <i class="fa-regular fa-square-caret-down fa-lg"></i> <%= t('dri.views.catalog.links.add_documentation') %>
-          </a>
-          <div id="dri_add_documentation_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
-          <div class="accordion-inner">
-            <ul class="dri_subnav_add_object dri_help_popover" data-bs-content="<%= t('dri.help.add_documentation_help_text') %>" title="<%= t('dri.help.add_documentation_help_title') %>" data-bs-trigger="hover" data-bs-placement="left">
-              <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><li><%= t('dri.views.catalog.links.metadata_form') %></li><% end %>
-              <%= link_to new_object_path(collection: document.id, method: 'upload', is_documentation: 'true'), class: "accordion_last", id: "add_documentation_object_xml" do %>
-                <li class="accordion_last"><%= t('dri.views.catalog.links.add_documentation_xml') %></li>
-              <% end %>
-            </ul>
-          </div>
-          </div>
+  <!-- Add documentation should be available to any collection (MARC, MODS, QDC and EAD) -->
+  <li class="dri_edit_collection">
+    <div class="accordion" id="dri_add_documentation_id">
+      <div class="accordion-group">
+        <a class="accordion-toggle" id="add_documentation_menu" data-bs-toggle="collapse" data-parent="#dri_add_documentation_id" href="#dri_add_documentation_collapsed_id">
+          <i class="fa-regular fa-square-caret-down fa-lg"></i> <%= t('dri.views.catalog.links.add_documentation') %>
+        </a>
+        <div id="dri_add_documentation_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
+        <div class="accordion-inner">
+          <ul class="dri_subnav_add_object dri_help_popover" data-bs-content="<%= t('dri.help.add_documentation_help_text') %>" title="<%= t('dri.help.add_documentation_help_title') %>" data-bs-trigger="hover" data-bs-placement="left">
+            <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><li><%= t('dri.views.catalog.links.metadata_form') %></li><% end %>
+            <%= link_to new_object_path(collection: document.id, method: 'upload', is_documentation: 'true'), class: "accordion_last", id: "add_documentation_object_xml" do %>
+              <li class="accordion_last"><%= t('dri.views.catalog.links.add_documentation_xml') %></li>
+            <% end %>
+          </ul>
+        </div>
         </div>
       </div>
-    </li>
+    </div>
+  </li>
   </ul>
 </div>
