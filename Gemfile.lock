@@ -101,7 +101,7 @@ GIT
 
 GIT
   remote: https://github.com/stkenny/timelineJS3-rails.git
-  revision: 72f62b9bd4e374d4da9555453f8f58c4a1e78b36
+  revision: b5ef89d79d086a16315eafc58ed43c2045895f8f
   specs:
     timelineJS3-rails (1.1.3)
       jquery-rails
@@ -235,7 +235,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
-    bigdecimal (3.2.3)
+    bigdecimal (3.3.1)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     bixby (5.0.2)
@@ -418,7 +418,7 @@ GEM
       scanf (~> 1.0)
       sxp (~> 1.3)
       unicode-types (~> 1.8)
-    erb (5.0.2)
+    erb (5.1.1)
     erubi (1.13.1)
     ethon (0.16.0)
       ffi (>= 1.15.0)
@@ -700,7 +700,7 @@ GEM
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (0.9)
-    minitest (5.25.5)
+    minitest (5.26.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -784,7 +784,7 @@ GEM
       racc
     parslet (2.0.0)
     popper_js (2.11.8)
-    pp (0.6.2)
+    pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
     psych (5.2.6)
@@ -801,17 +801,18 @@ GEM
       rails (>= 5.0, < 8.0)
       rdf
     racc (1.8.1)
-    rack (2.2.20)
-    rack-protection (3.2.0)
+    rack (3.1.18)
+    rack-protection (4.2.1)
       base64 (>= 0.1.0)
-      rack (~> 2.2, >= 2.2.4)
-    rack-session (1.0.2)
-      rack (< 3)
+      logger (>= 1.6.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.1.1)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0)
     rack-test (2.2.0)
       rack (>= 1.3)
-    rackup (1.0.1)
-      rack (< 3)
-      webrick
+    rackup (2.2.1)
+      rack (>= 3)
     railroady (1.6.0)
     rails (7.2.2.2)
       actioncable (= 7.2.2.2)
@@ -926,9 +927,10 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
-    rdoc (6.14.2)
+    rdoc (6.15.0)
       erb
       psych (>= 4.0.0)
+      tsort
     readline (0.0.4)
       reline
     redic (1.5.3)
@@ -1093,10 +1095,12 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
-    sinatra (3.2.0)
+    sinatra (4.2.1)
+      logger (>= 1.6.0)
       mustermann (~> 3.0)
-      rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.2.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.2.1)
+      rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     smart_properties (1.17.0)
     snaky_hash (2.0.1)
@@ -1125,10 +1129,10 @@ GEM
     sparql-client (3.3.0)
       net-http-persistent (~> 4.0, >= 4.0.2)
       rdf (~> 3.3)
-    sprockets (3.7.5)
-      base64
+    sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
-      rack (> 1, < 3)
+      logger
+      rack (>= 2.2.4, < 4)
     sprockets-rails (3.5.2)
       actionpack (>= 6.1)
       activesupport (>= 6.1)
@@ -1146,14 +1150,16 @@ GEM
       unicode-display_width (>= 1.1.1, < 3)
     terser (1.1.19)
       execjs (>= 0.3.0, < 3)
-    thin (1.8.2)
+    thin (2.0.1)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
-      rack (>= 1, < 3)
+      logger
+      rack (>= 1, < 4)
     thor (1.4.0)
     tilt (2.6.1)
     timeout (0.4.3)
     trailblazer-option (0.1.2)
+    tsort (0.2.0)
     typhoeus (1.4.1)
       ethon (>= 0.9.0)
     tzinfo (2.0.6)
@@ -1311,10 +1317,11 @@ DEPENDENCIES
   shoulda-matchers
   show_me_the_cookies
   simplecov
+  sinatra (~> 4)
   solr_wrapper (>= 0.3)
   solrizer
   sparql-client
-  sprockets (< 4)
+  sprockets (~> 4)
   sqlite3
   syntax
   syslog-logger

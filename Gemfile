@@ -83,6 +83,7 @@ gem 'high_voltage', '~> 3.1'
 gem 'is_it_working-cbeer'
 gem 'nest'
 gem 'resque'
+gem 'sinatra', '~> 4'
 
 group :development, :production do
   gem 'appsignal'
@@ -190,6 +191,6 @@ gem "seedbank", "~> 0.5.0"
 
 gem "dartsass-rails", "~> 0.5.0"
 gem "dartsass-sprockets"
-gem "sprockets", "< 4"
+gem "sprockets", "~> 4"
 
 gem "importmap-rails", "1.2.3"
