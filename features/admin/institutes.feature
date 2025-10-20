@@ -29,6 +29,7 @@ Feature: Institutes
     And I have associated the institute "TestInstitute" with the collection with pid "the saved pid"
     And the collection with pid "the saved pid" is published
     When I go to "the organisations page"
+    And I press "#others"
     Then I should see the image "TestInstitute"
 
   Scenario: viewing associated institutes for an object

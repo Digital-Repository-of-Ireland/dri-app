@@ -293,6 +293,7 @@ class SolrDocument
 
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
+      return nil unless doc
       return Licence.where(name: doc[licence_key]).take if doc[licence_key].present?
     end
 
@@ -304,6 +305,7 @@ class SolrDocument
 
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]
+      return nil unless doc
       return Copyright.where(name: doc[COPYRIGHT_KEY]).take if doc[COPYRIGHT_KEY].present?
     end
 
@@ -314,6 +316,14 @@ class SolrDocument
     return nil unless self.key?('thumbnail_ss') && self['thumbnail_ss'].present?
 
     self['thumbnail_ss']
+  end
+
+  def setspec
+    ancestor_field('setspec_ssim')
+  end
+
+  def allow_aggregation?
+    self.setspec.present?
   end
 
   def status

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'moab'
+require 'fileutils'
 
 module Preservation
   class Preservator
@@ -31,6 +32,30 @@ module Preservation
           content_path(object.alternate_id, version)
         ]
       )
+    end
+
+    def remove_moab_dirs(force = false)
+      # check if status was ever published and if so do not delete unless force is set true
+      attribute_files = Dir.glob("#{aip_dir(object.alternate_id)}/**/attributes.json")
+      
+      if attribute_files.blank?
+        Rails.logger.error "No attribute files found, MOAB dirs not removed #{object.alternate_id}"
+        return
+      end
+
+      published = false
+      attribute_files.each do |attr|
+        File.foreach(attr) do |file|
+          data = JSON.load file
+          published = true if data['status'] == 'published'
+        end
+      end
+
+      if published && !force
+        Rails.logger.error "Not removing MOAB dirs for previously published object #{object.alternate_id}"
+        return
+      end
+      FileUtils.remove_dir(aip_dir(object.alternate_id), force: true)
     end
 
     def existing_filepath(file_path)
@@ -78,7 +103,7 @@ module Preservation
           saved = moabify_datastream(ds, object.attached_files[ds])
           return false unless saved
         end
-        dslist.push(datastreams.map { |item| File.join(metadata_path(object.alternate_id, version), item << ".xml") }).flatten!
+        dslist.push(datastreams.map { |item| File.join(metadata_path(object.alternate_id, version), item.dup << ".xml") }).flatten!
       end
 
       create_or_update_manifests(dslist)
@@ -131,7 +156,6 @@ module Preservation
       previous_version_id, previous_manifest_path = find_previous_manifest_path(version)
       @version_inventory = file_inventory_from_path(previous_version_id, previous_manifest_path)
       @version_inventory.version_id = version
-
       perform_changes(changes)
 
       signature_catalog = signature_catalog_from_path(previous_manifest_path)

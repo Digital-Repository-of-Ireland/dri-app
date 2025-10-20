@@ -106,7 +106,7 @@ class MetadataController < ApplicationController
           raise DRI::Exceptions::InternalError
         end
 
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'update')
         flash[:notice] = t('dri.flash.notice.metadata_updated')
 
         update_or_mint_doi
@@ -167,7 +167,7 @@ class MetadataController < ApplicationController
         if field == "type"
           doi_metadata_fields['resource_type'] = @object.send(field.to_sym)
         else
-          doi_metadata_fields[field] = @object.send(field.to_sym)
+          doi_metadata_fields[field] = @object.send(field.to_sym) if @object.respond_to?(field.to_sym)
         end
       end
       @doi.update_metadata(doi_metadata_fields)

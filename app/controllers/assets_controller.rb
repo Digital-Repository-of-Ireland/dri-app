@@ -71,35 +71,41 @@ class AssetsController < ApplicationController
     enforce_permissions!('edit', params[:object_id])
 
     object = retrieve_object!(params[:object_id])
-    generic_file = retrieve_object!(params[:id])
-
+    
     if object.status == 'published' && !current_user.is_admin?
       raise Blacklight::AccessControls::AccessDenied.new(t('dri.flash.alert.delete_permission'), :delete, '')
     end
-
-    begin
-      DRI::GenericFile.transaction do
-        delete_surrogates(params[:object_id], generic_file.alternate_id)
-        generic_file.destroy!
-      end
-
-      object.increment_version
-      object.save!
-      record_version_committer(object, current_user)
-      if object.status == "published"
-        new_doi(object, 'asset modified')
-        mint_or_update_doi(object)
-      end
-
-      # Do the preservation actions
-      delfiles = ["#{generic_file.alternate_id}_#{generic_file.label}"]
-      preservation = Preservation::Preservator.new(object)
-      preservation.preserve_assets({ deleted: { 'content' => delfiles }})
-
+    generic_file = retrieve_object(params[:id])
+    
+    # index out of date
+    if generic_file.nil? && SolrDocument.find(params[:id])
+      SolrDocument.delete(params[:id])
       flash[:notice] = t('dri.flash.notice.asset_deleted')
-    rescue RuntimeError => e
-      logger.error "Could not delete file #{generic_file.alternate_id}: #{e.message}"
-      flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
+    else
+      begin
+        DRI::GenericFile.transaction do
+          delete_surrogates(params[:object_id], generic_file.alternate_id)
+          generic_file.destroy!
+        end
+
+        object.increment_version
+        object.save!
+        record_version_committer(object, current_user, 'asset delete')
+        if object.status == "published"
+          new_doi(object, 'asset modified')
+          mint_or_update_doi(object)
+        end
+
+        # Do the preservation actions
+        delfiles = ["#{generic_file.alternate_id}_#{generic_file.label}"]
+        preservation = Preservation::Preservator.new(object)
+        preservation.preserve_assets({ deleted: { 'content' => delfiles }})
+
+        flash[:notice] = t('dri.flash.notice.asset_deleted')
+      rescue RuntimeError => e
+        logger.error "Could not delete file #{generic_file.alternate_id}: #{e.message}"
+        flash[:alert] = t('dri.flash.alert.error_saving_file', error: e.message)
+      end
     end
 
     respond_to do |format|
@@ -121,7 +127,7 @@ class AssetsController < ApplicationController
 
       if file_content.update_content(file_upload)
         flash[:notice] = t('dri.flash.notice.file_uploaded')
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'asset update')
         file_content.characterize if file_content.has_content?
       else
         message = @generic_file.errors.full_messages.join(', ')
@@ -165,7 +171,7 @@ class AssetsController < ApplicationController
       @object.increment_version
 
       if file_content.add_content(file_upload)
-        record_version_committer(@object, current_user)
+        record_version_committer(@object, current_user, 'asset added')
         file_content.characterize if file_content.has_content?
         @message = t('dri.flash.notice.file_uploaded')
         @status = :created

@@ -2,9 +2,8 @@ class AnalyticsCollectionsDatatable
   delegate :current_user, :params, :analytic_path, :link_to, to: :@view
   delegate :user_path, to: 'UserGroup::Engine.routes.url_helpers'
 
-  def initialize(profile, view)
+  def initialize(view)
     @view = view
-    @profile = profile
   end
 
   def as_json(options = {})
@@ -60,25 +59,7 @@ private
 
     analytics
   end
-
-  def ua_analytics(collections)
-    total_views = []
-    total_downloads = []
-
-    collections.each_slice(10) do |collections_slice|
-      views = AnalyticsCollectionUsers.results(@profile, start_date: startdate, end_date: enddate).collections(*collections_slice).to_a
-      downloads = AnalyticsCollectionEvents.results(@profile, start_date: startdate, end_date: enddate).collections(*collections_slice).action('Download').to_a
-
-      views.each{|r| r[:collection] = r.delete_field(:dimension1) }
-      downloads.each{|r| r[:collection] = r.delete_field(:eventCategory) }
-
-      total_views.concat(views)
-      total_downloads.concat(downloads)
-    end
-
-    (total_views+total_downloads)
-  end
-
+ 
   def ga4_analytics(collections)
     total_views = []
     total_downloads = []

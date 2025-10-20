@@ -15,6 +15,17 @@
   <%= render partial: 'shared/display_organisations' %>
 </div>
 
+<% if Settings.dig(:analytics, :disable) == false %>
+  <% if @dimensions %>
+    <script
+      type="text/plain"
+      data-category="analytics"
+      data-service="Google Analytics">
+        gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
+    </script>
+  <% end %>
+<% end %>
+
 <% content_for :head do %>
   <%= javascript_include_tag 'jquery.colorbox', async: Rails.env.production? %>
   <script>
@@ -44,11 +55,5 @@
     <!-- FAIR Signposting https://signposting.org/FAIR -->
     <link href= "<%= linkset_json_url(@document.id) %>"  rel="linkset"  type="application/linkset+json">
     <link href= "<%= linkset_lset_url(@document.id) %>"  rel="linkset"  type="application/linkset">
-  <% end %>
-
-  <% if @dimensions %>
-    <script>
-      gtag('event', 'object_view', <%= @dimensions.to_json.html_safe %>);
-    </script>
   <% end %>
 <% end %>

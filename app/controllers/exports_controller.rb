@@ -3,6 +3,24 @@ class ExportsController < ApplicationController
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
 
+  TRANSLATIONS = {
+    "Teideal" => "Title", 
+    "Cruthaitheoir" => "Creator", 
+    "Rannpháirtí" => "Contributor", 
+    "Foilsitheoir" => "Publisher", 
+    "Cur Síos" => "Description", 
+    "Dáta Cruthaithe" => "Creation Date",
+    "Dáta Foilsithe" => "Published Date", 
+    "Dáta" => "Date", 
+    "Aitheantóirí" => "Identifiers",
+    "Ábhair" => "Subjects",
+    "Ábhair (Réanna)" => "Subjects (Temporal)",
+    "Ábhair (Áiteanna)" => "Subjects (Places)",
+    "Naisc" => "Relations",
+    "Cearta" => "Rights",
+    "Stádas" => "Status"
+  }
+
   def new
     @collection = retrieve_object!(params[:id])
   end
@@ -17,7 +35,18 @@ class ExportsController < ApplicationController
   def create
     raise DRI::Exceptions::Unauthorized unless (can? :edit, params[:id]) || CollectionConfig.can_export?(params[:id])
 
-    Resque.enqueue(CreateExportJob, request.base_url, params[:id], params[:fields], current_user.email)
+    fields = params[:fields]
+
+    if fields.present?
+      translated_fields = {}
+      fields.each do |k,v|
+        translated_fields[k] = TRANSLATIONS.key?(v) ? TRANSLATIONS[v] : v
+      end
+    else
+      translated_fields = nil
+    end
+
+    Resque.enqueue(CreateExportJob, request.base_url, params[:id], translated_fields, current_user.email)
     flash[:notice] = t('dri.flash.notice.exporting')
     redirect_back(fallback_location: root_path)
   rescue Exception

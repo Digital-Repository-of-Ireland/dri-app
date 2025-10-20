@@ -58,6 +58,7 @@ en:
       upload_as_preservation: Upload files as preservation-only (no display surrogates will be generated).
     collection:
       config:
+        allow_aggregation: Allow harvesting by select aggregators
         allow_export: Allow export of collection metadata
         default_sort: Default sort
         title: Options
@@ -88,8 +89,8 @@ en:
         committer: Committer
         in_collection: In Collection
         object_id: Object ID
-        status: Status
-        type: Type
+        version_id: Version ID
+        event: Event
         updated_at: Updated At
       assets:
         preservation: Preservation Only
@@ -262,6 +263,8 @@ en:
       browse: DRI Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
+      member_orgs: Member Organisations
+      other_orgs: Other Organisations
       collection: Collection
       collections: Collections
       cookie_settings: Cookie Settings
@@ -543,8 +546,9 @@ en:
           interactive_resource_alert_2: "%{mime_type} asset interactive resource identified case 2."
         links:
           add_documentation: Add Documentation
+          add_documentation_xml: Upload XML
           add_object: Add an Object
-          add_object_xml: Upload Object XML
+          add_object_xml: Upload XML
           add_sub_collection: Add Sub-Collection
           advanced_options: More options
           advanced_search: Advanced Search
@@ -565,6 +569,7 @@ en:
           mark_all_reviewed: Mark as Reviewed
           mark_object_draft: Mark Object as Draft
           mark_object_reviewed: Mark Object as Reviewed
+          metadata_form: Metadata Form
           not_characterized: not yet characterized
           publish: Publish
           publish_reviewed: Publish Reviewed

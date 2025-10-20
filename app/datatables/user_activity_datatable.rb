@@ -23,7 +23,7 @@ private
        entry.item_type,
        item_id(entry),
        entry.event,
-       entry.object
+       parse_object(entry)
       ]
     end
   end
@@ -46,6 +46,31 @@ private
 
   def page
     params[:start].to_i/per_page + 1
+  end
+
+  def parse_object(entry)
+    return entry.object if entry.object.nil?
+
+    if entry.item_type == 'UserGroup::User'
+      parse_user(entry)
+    elsif entry.item_type == 'UserGroup::Membership'
+      membership = entry.reify
+      "group: #{membership.group.name} user: #{membership.user.email}"
+    else
+      entry.object
+    end
+  end
+
+  def parse_user(entry)
+    user = entry.reify
+
+    if entry.object.gsub(/\n/,"").start_with?('---reset_password_token: reset_password_sent_at: id')
+      "reset password requested"
+    elsif user.encrypted_password && user.reset_password_token
+      "password reset"
+    else
+      ""
+    end  
   end
 
   def per_page

@@ -95,7 +95,7 @@ module DRI
             status: code
           )
         end
-        format.all { render nothing: true, status: status_type }
+        format.all { head status_code(status_type) }
       end
       true
     end

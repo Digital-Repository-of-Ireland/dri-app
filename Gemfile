@@ -3,8 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '> 6'
-gem 'uri', '~> 0.13.2'
+gem 'rails', '~> 7.2'
 
 gem 'blacklight', '7.38.0'
 gem 'blacklight_advanced_search', '~> 7'
@@ -84,6 +83,7 @@ gem 'high_voltage', '~> 3.1'
 gem 'is_it_working-cbeer'
 gem 'nest'
 gem 'resque'
+gem 'sinatra', '~> 4'
 
 group :development, :production do
   gem 'appsignal'
@@ -107,7 +107,7 @@ group :development, :test do
   gem 'railroady'
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 6'
+  gem 'rspec-rails', '~> 7'
   gem 'rswag-specs'
   gem 'selenium-webdriver'
   gem 'show_me_the_cookies'
@@ -167,7 +167,6 @@ gem 'faraday'
 gem 'faraday_middleware'
 gem 'google-analytics-data-v1beta', '~> 0.8.0'
 gem 'google-oauth2-installed'
-gem 'legato'
 
 gem 'rvm'
 
@@ -192,6 +191,6 @@ gem "seedbank", "~> 0.5.0"
 
 gem "dartsass-rails", "~> 0.5.0"
 gem "dartsass-sprockets"
-gem "sprockets", "< 4"
+gem "sprockets", "~> 4"
 
 gem "importmap-rails", "1.2.3"

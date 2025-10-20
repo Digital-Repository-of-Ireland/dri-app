@@ -21,7 +21,12 @@ class ReviewJob
 
       failed += 1 unless collection.save
 
-      VersionCommitter.create(version_id: 'v%04d' % collection.object_version, obj_id: collection.alternate_id, committer_login: user.to_s)
+      VersionCommitter.create(
+        version_id: 'v%04d' % collection.object_version,
+        obj_id: collection.alternate_id,
+        committer_login: user.to_s,
+        event: 'published'
+      )
 
       # Do the preservation actions
       preservation = Preservation::Preservator.new(collection)
@@ -44,7 +49,12 @@ class ReviewJob
           o.increment_version
           o.save
 
-          VersionCommitter.create(version_id: 'v%04d' % o.object_version, obj_id: o.alternate_id, committer_login: user.to_s)
+          VersionCommitter.create(
+            version_id: 'v%04d' % o.object_version,
+            obj_id: o.alternate_id,
+            committer_login: user.to_s,
+            event: 'published'
+          )
 
           # Do the preservation actions
           preservation = Preservation::Preservator.new(o)

@@ -79,14 +79,20 @@ class DoiMetadata < ActiveRecord::Base
       }
     end
 
-    builder.to_xml
+    builder.doc.root.to_xml
   end
 
   def publication_year
-    Time.now.year
+    return Time.now.year unless datacite_doi&.object
+    published_at = datacite_doi.object.published_at
+    published_at.nil? ? Time.now.year : DateTime.parse(published_at).strftime('%Y')
   end
 
   def resource_type_general
+    if self.resource_type.nil?
+      self.resource_type = datacite_doi.object.type.to_a
+      save
+    end
     resource_type_matches = resource_type.map(&:camelcase).intersection(RESOURCE_TYPE_GENERAL)
     return resource_type_matches.first unless resource_type_matches.empty?
    
