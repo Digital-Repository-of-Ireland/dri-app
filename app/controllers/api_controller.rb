@@ -23,7 +23,7 @@ class ApiController < CatalogController
     end
 
     solr_query = Solr::Query.construct_query_for_ids(object_ids)
-    results = Solr::Query.new(solr_query)
+    results = Solr::Query.new("*:*", 1000, {fq: solr_query})
 
     results.each do |solr_doc|
       next unless solr_doc.published? || (current_user.is_admin? || can?(:edit, solr_doc))
@@ -61,7 +61,7 @@ class ApiController < CatalogController
     solr_query = Solr::Query.construct_query_for_ids(
       params[:objects].map { |o| o.values.first }
     )
-    result_docs = Solr::Query.new(solr_query)
+    result_docs = Solr::Query.new("*:*", 1000, {fq: solr_query})
     result_docs.each do |doc|
       item = {}
       item['pid'] = doc.id

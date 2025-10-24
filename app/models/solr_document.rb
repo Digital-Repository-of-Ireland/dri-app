@@ -70,7 +70,7 @@ class SolrDocument
     if ids.present?
       docs = {}
       query = Solr::Query.construct_query_for_ids(ids, 'alternate_id')
-      results = Solr::Query.new(query, 100, { rows: ids.length }).to_a
+      results = Solr::Query.new("*:*", 100, { fq: query, rows: ids.length }).to_a
       results.each { |r| docs[r['alternate_id']] = r }
     end
 
