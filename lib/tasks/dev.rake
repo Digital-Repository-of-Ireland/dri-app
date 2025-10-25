@@ -6,6 +6,7 @@ namespace :server do
 
   desc 'Starts configured solr instances for local development and testing'
   task start: :environment do
+    ENV['SOLR_MODULES'] = "extraction,ltr,analysis-extras" 
     solr.extract_and_configure
     solr.start
   end
