@@ -216,12 +216,12 @@ module DRI::Solr::Document::Collection
     counts = response['facet_counts']['facet_queries']
 
     @status_counts = {}
-    @status_counts[:published_objects] = counts['status_ssi:published AND is_collection_ssi:false']
-    @status_counts[:reviewed_objects] = counts['status_ssi:reviewed AND is_collection_ssi:false']
-    @status_counts[:draft_objects] = counts['status_ssi:draft AND is_collection_ssi:false']
-    @status_counts[:published_collections] = counts['status_ssi:published AND is_collection_ssi:true']
-    @status_counts[:reviewed_collections] = counts['status_ssi:reviewed AND is_collection_ssi:true']
-    @status_counts[:draft_collections] = counts['status_ssi:draft AND is_collection_ssi:true']
+    @status_counts[:published_objects] = counts['status_ssi:published AND is_collection_ssi:false'] || 0
+    @status_counts[:reviewed_objects] = counts['status_ssi:reviewed AND is_collection_ssi:false'] || 0
+    @status_counts[:draft_objects] = counts['status_ssi:draft AND is_collection_ssi:false'] || 0
+    @status_counts[:published_collections] = counts['status_ssi:published AND is_collection_ssi:true'] || 0
+    @status_counts[:reviewed_collections] = counts['status_ssi:reviewed AND is_collection_ssi:true'] || 0
+    @status_counts[:draft_collections] = counts['status_ssi:draft AND is_collection_ssi:true'] || 0
     @status_counts[:total_objects] = @status_counts[:published_objects] + @status_counts[:reviewed_objects] + @status_counts[:draft_objects]
 
     @status_counts
@@ -234,7 +234,7 @@ module DRI::Solr::Document::Collection
     Solr::Query.new(
       "ancestor_id_ssim:#{self.alternate_id}",
       100,
-      { fq: status_query_filters(status, subcoll)}
+      { fq: status_query_filters(status, subcoll) }
     )
   end
 
@@ -245,7 +245,7 @@ module DRI::Solr::Document::Collection
     Solr::Query.new(
       "ancestor_id_ssim:#{self.alternate_id}",
       100,
-      { fq: status_query_filters(status, subcoll)}
+      { fq: status_query_filters(status, subcoll) }
     ).map(&:alternate_id)
   end
 end

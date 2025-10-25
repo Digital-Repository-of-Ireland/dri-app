@@ -461,9 +461,6 @@ GEM
       ruby-progressbar
     ffaker (2.23.0)
     ffi (1.17.2-x86_64-linux-gnu)
-    ffi-compiler (1.0.1)
-      ffi (>= 1.0.0)
-      rake
     filesize (0.2.0)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
@@ -531,15 +528,9 @@ GEM
     hiredis (0.6.3)
     honeybadger (5.2.1)
     htmlentities (4.3.4)
-    http (5.1.1)
-      addressable (~> 2.8)
-      http-cookie (~> 1.0)
-      http-form_data (~> 2.2)
-      llhttp-ffi (~> 0.4.0)
     http-accept (1.7.0)
-    http-cookie (1.0.8)
+    http-cookie (1.1.0)
       domain_name (~> 0.5)
-    http-form_data (2.3.0)
     http_accept_language (2.1.1)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -678,9 +669,6 @@ GEM
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    llhttp-ffi (0.4.0)
-      ffi-compiler (~> 1.0)
-      rake (~> 13.0)
     logger (1.7.0)
     loofah (2.24.1)
       crass (~> 1.0.2)
@@ -699,7 +687,7 @@ GEM
     mime-types-data (3.2025.0924)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitar (0.9)
+    minitar (1.1.0)
     minitest (5.26.0)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
@@ -1107,9 +1095,11 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
-    solr_wrapper (4.0.2)
-      http
+    solr_wrapper (4.2.0)
+      faraday (>= 1.0, < 3)
+      faraday-follow_redirects
       minitar
+      ostruct
       retriable
       ruby-progressbar
     solrizer (3.4.1)
