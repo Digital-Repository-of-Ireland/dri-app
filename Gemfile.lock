@@ -20,8 +20,8 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: 046acc6285ed0954bd4eea682c85e4281164ed7a
-  tag: v2.4.0
+  revision: 5bb3ab993e5c01fd695830cf87fd031a4e300e2a
+  tag: v2.4.1
   specs:
     user_group (2.4.0)
       blacklight-access_controls
