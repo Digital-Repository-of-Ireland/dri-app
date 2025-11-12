@@ -268,11 +268,13 @@ module DRI::Formatters
     end
 
     def sparql_subject(value)
-      Rails.cache.fetch(value, expires_in: 48.hours) do
-        return nil unless AuthoritiesConfig
-        provider = DRI::Sparql::Provider::Sparql.new
-        provider.endpoint = AuthoritiesConfig['data.dri.ie']['endpoint']
+      return nil unless AuthoritiesConfig
 
+      provider = DRI::Sparql::Provider::Sparql.new
+      provider.endpoint = AuthoritiesConfig['data.dri.ie']&.dig('endpoint')
+      return nil unless provider.endpoint
+
+      Rails.cache.fetch(value, expires_in: 48.hours) do
         escaped_value = RDF::NTriples::Writer.escape(value)
         triples = provider.retrieve_data([nil, 'skos:prefLabel', "\"#{escaped_value}\"@en"])
 
