@@ -7,6 +7,7 @@
 
 			  <%= render :partial => "shared/form_metadata_qualifieddublincore", :locals => { :f => f, :action => "update" } %>
               <%= render partial: 'shared/form_rights_field', locals: { f: f } %>
+              <%= render partial: 'shared/form_access_rights_field', locals: { f: f } %>
 
               <%= f.submit t('dri.views.objects.buttons.save'), :class => "dri_button_green dri_w330", :id => "edit_collection" %>
 
