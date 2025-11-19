@@ -526,6 +526,8 @@ GEM
       concurrent-ruby (~> 1.0)
     hashdiff (1.2.1)
     hashie (5.0.0)
+    health-monitor-rails (12.9.0)
+      railties (>= 6.1)
     high_voltage (3.1.2)
     highline (2.1.0)
     hiredis (0.6.3)
@@ -579,7 +581,6 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    is_it_working-cbeer (1.0.16)
     iso-639 (0.3.8)
       csv
     iso8601 (0.13.0)
@@ -1254,6 +1255,7 @@ DEPENDENCIES
   gender_detector
   google-analytics-data-v1beta (~> 0.8.0)
   google-oauth2-installed
+  health-monitor-rails
   high_voltage (~> 3.1)
   honeybadger
   http_accept_language
@@ -1265,7 +1267,6 @@ DEPENDENCIES
   iiif-presentation
   image_processing (>= 1.12.2)
   importmap-rails (= 1.2.3)
-  is_it_working-cbeer
   it
   jquery-rails
   jquery-ui-rails-dox-fork

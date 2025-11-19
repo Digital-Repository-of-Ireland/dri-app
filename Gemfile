@@ -79,8 +79,7 @@ gem 'sparql-client'
 gem 'high_voltage', '~> 3.1'
 
 # monitoring
-# is it working fork
-gem 'is_it_working-cbeer'
+gem 'health-monitor-rails'
 gem 'nest'
 gem 'resque'
 gem 'sinatra', '~> 4'
