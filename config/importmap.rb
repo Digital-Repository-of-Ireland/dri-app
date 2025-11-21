@@ -61,3 +61,4 @@ pin "@uppy/utils/lib/getSocketHost", to: "https://ga.jspm.io/npm:@uppy/utils@5.9
 pin "is-network-error", to: "https://ga.jspm.io/npm:is-network-error@1.1.0/index.js"
 pin "p-retry", to: "https://ga.jspm.io/npm:p-retry@6.2.1/index.js"
 pin "retry", to: "https://ga.jspm.io/npm:retry@0.13.1/index.js"
+pin "uppy_upload", preload: false
