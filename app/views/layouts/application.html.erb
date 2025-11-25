@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%= javascript_importmap_tags %>
-
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
 
@@ -24,6 +22,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" crossOrigin="anonymous">
   
     <%= javascript_include_tag "custom" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
     <script>
       window.dataLayer = window.dataLayer || [];

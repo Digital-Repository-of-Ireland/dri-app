@@ -3,7 +3,8 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.2.2.2'
+gem 'rails', '7.2.3'
+gem 'jsbundling-rails'
 
 gem 'blacklight', '7.38.0'
 gem 'blacklight_advanced_search', '~> 7'
