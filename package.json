@@ -1,0 +1,18 @@
+{
+  "name": "dri-app",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/turbo-rails": "^8.0.20",
+    "@uppy/aws-s3": "^5.0.2",
+    "@uppy/core": "^5.1.1",
+    "@uppy/dashboard": "^5.0.4",
+    "@uppy/xhr-upload": "^5.0.2"
+  }
+}

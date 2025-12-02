@@ -67,7 +67,16 @@ To generate the api docs:
 
 If you are using Ubuntu or another debian linux distribution
 
-  $ sudo apt-get install coreutils libtool libksba8 libxml2 libxslt1.1 automake autoconf openssl curl libreadline8 gettext pkg-config libyaml-dev redis sqlite ffmpeg libgtk2.0-dev imagemagick ghostscript nodejs
+  $ sudo apt-get install coreutils libtool libksba8 libxml2 libxslt1.1 automake autoconf openssl curl libreadline8 gettext pkg-config libyaml-dev redis sqlite ffmpeg libgtk2.0-dev imagemagick ghostscript npm
+
+For building Javascript:
+
+  $ npm install -g n
+  $ npm install n -g
+  $ n stable
+  $ npm install -g yarn
+
+With the above installed the Javascript can be compiled with: bin/rails javascript:build. Follow the jsbundling-rails gem README for more instructions.
 
 There are a few installation options for fits:
 

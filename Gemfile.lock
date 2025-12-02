@@ -190,8 +190,8 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
+    addressable (2.8.8)
+      public_suffix (>= 2.0.2, < 8.0)
     appsignal (4.5.9)
       logger
       rack (>= 2.0.0)
@@ -216,7 +216,6 @@ GEM
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
-    backports (3.24.1)
     bagit (0.4.6)
       docopt (~> 0.5.0)
       validatable (~> 1.6)
@@ -288,11 +287,11 @@ GEM
     builder (3.3.0)
     byebug (10.0.2)
     cancancan (3.6.1)
-    capybara (3.39.2)
+    capybara (3.40.0)
       addressable
       matrix
       mini_mime (>= 0.1.3)
-      nokogiri (~> 1.8)
+      nokogiri (~> 1.11)
       rack (>= 1.6.0)
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
@@ -308,7 +307,7 @@ GEM
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (2.5.4)
+    connection_pool (2.5.5)
     crass (1.0.6)
     csl (2.0.0)
       namae (~> 1.0)
@@ -316,23 +315,32 @@ GEM
     csl-styles (2.0.1)
       csl (~> 2.0)
     csv (3.3.5)
-    cucumber (3.2.0)
-      builder (>= 2.1.2)
-      cucumber-core (~> 3.2.0)
-      cucumber-expressions (~> 6.0.1)
-      cucumber-wire (~> 0.0.1)
-      diff-lcs (~> 1.3)
-      gherkin (~> 5.1.0)
-      multi_json (>= 1.7.5, < 2.0)
-      multi_test (>= 0.1.2)
+    cucumber (8.0.0)
+      builder (~> 3.2, >= 3.2.4)
+      cucumber-ci-environment (~> 9.0, >= 9.0.4)
+      cucumber-core (~> 11.0, >= 11.0.0)
+      cucumber-cucumber-expressions (~> 15.1, >= 15.1.1)
+      cucumber-gherkin (~> 23.0, >= 23.0.1)
+      cucumber-html-formatter (~> 19.1, >= 19.1.0)
+      cucumber-messages (~> 18.0, >= 18.0.0)
+      diff-lcs (~> 1.5, >= 1.5.0)
+      mime-types (~> 3.4, >= 3.4.1)
+      multi_test (~> 1.1, >= 1.1.0)
+      sys-uname (~> 1.2, >= 1.2.2)
     cucumber-api-steps (0.14.0)
       cucumber (>= 2.0.2)
       jsonpath (>= 0.1.2)
-    cucumber-core (3.2.1)
-      backports (>= 3.8.0)
-      cucumber-tag_expressions (~> 1.1.0)
-      gherkin (~> 5.0)
-    cucumber-expressions (6.0.1)
+    cucumber-ci-environment (9.2.0)
+    cucumber-core (11.0.0)
+      cucumber-gherkin (~> 23.0, >= 23.0.1)
+      cucumber-messages (~> 18.0, >= 18.0.0)
+      cucumber-tag-expressions (~> 4.1, >= 4.1.0)
+    cucumber-cucumber-expressions (15.2.0)
+    cucumber-gherkin (23.0.1)
+      cucumber-messages (~> 18.0, >= 18.0.0)
+    cucumber-html-formatter (19.2.0)
+      cucumber-messages (~> 18.0, >= 18.0.0)
+    cucumber-messages (18.0.0)
     cucumber-rails (2.6.1)
       capybara (>= 2.18, < 4)
       cucumber (>= 3.2, < 9)
@@ -341,8 +349,7 @@ GEM
       railties (>= 5.0, < 8)
       rexml (~> 3.0)
       webrick (~> 1.7)
-    cucumber-tag_expressions (1.1.1)
-    cucumber-wire (0.0.1)
+    cucumber-tag-expressions (4.1.0)
     daemons (1.4.1)
     dartsass-rails (0.5.0)
       railties (>= 6.0.0)
@@ -474,7 +481,6 @@ GEM
       grpc (~> 1.36)
     gender_detector (2.0.0)
     geocoder (1.8.2)
-    gherkin (5.1.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
     google-analytics-data-v1beta (0.8.1)
@@ -523,11 +529,13 @@ GEM
       concurrent-ruby (~> 1.0)
     hashdiff (1.2.1)
     hashie (5.0.0)
+    health-monitor-rails (12.9.0)
+      railties (>= 6.1)
     high_voltage (3.1.2)
     highline (2.1.0)
     hiredis (0.6.3)
     honeybadger (5.2.1)
-    htmlentities (4.3.4)
+    htmlentities (4.4.2)
     http-accept (1.7.0)
     http-cookie (1.1.0)
       domain_name (~> 0.5)
@@ -576,7 +584,6 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    is_it_working-cbeer (1.0.16)
     iso-639 (0.3.8)
       csv
     iso8601 (0.13.0)
@@ -594,7 +601,9 @@ GEM
       railties (>= 3.2.16)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.15.1)
+    jsbundling-rails (1.3.1)
+      railties (>= 6.0.0)
+    json (2.16.0)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -680,7 +689,8 @@ GEM
       net-pop
       net-smtp
     marcel (1.1.0)
-    matrix (0.4.2)
+    matrix (0.4.3)
+    memoist3 (1.0.0)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -696,7 +706,7 @@ GEM
       nokogiri
       nokogiri-happymapper
     mono_logger (1.1.2)
-    multi_json (1.17.0)
+    multi_json (1.18.0)
     multi_test (1.1.0)
     multi_xml (0.7.2)
       bigdecimal (~> 3.1)
@@ -780,7 +790,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (6.0.2)
+    public_suffix (7.0.0)
     qa (5.13.0)
       activerecord-import
       deprecation
@@ -832,7 +842,7 @@ GEM
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_cloudflare_turnstile (0.4.3)
+    rails_cloudflare_turnstile (0.4.4)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
     railties (7.2.2.2)
@@ -917,7 +927,7 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
-    rdoc (6.15.1)
+    rdoc (6.16.1)
       erb
       psych (>= 4.0.0)
       tsort
@@ -935,7 +945,7 @@ GEM
     reform-rails (0.3.1)
       activemodel (>= 5.0)
       reform (>= 2.3.1, < 3.0.0)
-    regexp_parser (2.8.1)
+    regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
     remotipart (1.4.4)
@@ -1131,11 +1141,14 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (2.7.1-x86_64-linux-gnu)
     stomp (1.4.10)
-    stringio (3.1.8)
+    stringio (3.1.9)
     sxp (1.3.0)
       matrix (~> 0.4)
       rdf (~> 3.3)
     syntax (1.2.2)
+    sys-uname (1.4.1)
+      ffi (~> 1.1)
+      memoist3 (~> 1.0.0)
     syslog-logger (1.6.8)
     temple (0.10.3)
     terminal-table (3.0.2)
@@ -1223,13 +1236,13 @@ DEPENDENCIES
   bootstrap-switch-rails
   browse-everything
   byebug (~> 10.0)
-  capybara (~> 3.14)
+  capybara
   citeproc-ruby
   clamby
   clipboard-rails
   config
   csl-styles
-  cucumber (~> 3.1)
+  cucumber
   cucumber-api-steps
   cucumber-rails
   dartsass-rails (~> 0.5.0)
@@ -1250,6 +1263,7 @@ DEPENDENCIES
   gender_detector
   google-analytics-data-v1beta (~> 0.8.0)
   google-oauth2-installed
+  health-monitor-rails
   high_voltage (~> 3.1)
   honeybadger
   http_accept_language
@@ -1261,12 +1275,12 @@ DEPENDENCIES
   iiif-presentation
   image_processing (>= 1.12.2)
   importmap-rails (= 1.2.3)
-  is_it_working-cbeer
   it
   jquery-rails
   jquery-ui-rails-dox-fork
   jquery-xmleditor-rails!
   js_cookie_rails
+  jsbundling-rails
   jstree-rails-4!
   jwt (= 1.5.2)
   kaminari (>= 1.2.1)
@@ -1288,7 +1302,7 @@ DEPENDENCIES
   parallel_tests
   qa (~> 5.1)
   railroady
-  rails (= 7.2.2.2)
+  rails (= 7.2.3)
   rails-controller-testing
   redis (~> 4)
   remotipart

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount Rswag::Api::Engine => '/api-docs'
   scope ENV["RAILS_RELATIVE_URL_ROOT"] || "/" do
     root :to => redirect('/catalog?mode=collections&search_field=all_fields')
+    mount HealthMonitor::Engine, at: "/"
 
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images', as: 'riiif'

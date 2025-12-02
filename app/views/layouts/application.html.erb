@@ -16,6 +16,14 @@
 
     <link href="<%= main_app.opensearch_catalog_url(format: 'xml') %>" title="<%= application_name%>" type="application/opensearchdescription+xml" rel="search"/>
 
+    <%= favicon_link_tag asset_path('favicon.ico') %>
+    <%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
+    <%= stylesheet_link_tag "dri/dri_print", media: "print" %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" crossOrigin="anonymous">
+  
+    <%= javascript_include_tag "custom" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -24,7 +32,8 @@
     <% if Settings.dig(:analytics, :disable) == false %>
       <script type="text/plain"
         data-category="analytics"
-        data-service="Google Analytics" async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GA4_TRACKER'] %>"></script>
+        data-service="Google Analytics" async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GA4_TRACKER'] %>">
+      </script>
       <script
         type="text/plain"
         data-category="analytics"
@@ -38,12 +47,6 @@
     <% end %>
     <%= cloudflare_turnstile_script_tag %>
 
-    <%= favicon_link_tag asset_path('favicon.ico') %>
-    <%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
-    <%= stylesheet_link_tag "dri/dri_print", media: "print" %>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" crossOrigin="anonymous">
-    <%= javascript_include_tag "custom" %>
-    <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
     <%= content_for(:head) %>
 

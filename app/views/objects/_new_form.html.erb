@@ -9,6 +9,7 @@
   <section>
     <h2><%= t('dri.views.objects.legends.reuse') %></h2>
     <%= render partial: 'shared/form_rights_field', locals: { f: f } %>
+    <%= render partial: 'shared/form_access_rights_field', locals: { f: f } %>
   </section>
   <%= f.submit t('dri.views.ingest.buttons.continue'), class: "btn-primary btn-large", id: "continue" %>
 <% end %>
