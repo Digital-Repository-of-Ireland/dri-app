@@ -31,8 +31,8 @@
     <% interactive_resource_count = @file_display_type_count["interactiveresource"] %>
 
     <%= link_to(search_catalog_path(collection_objects_params), id: 'collection_s_object') do %>
+      <li>  
         <%= t("dri.data.types.all") %>
-      <li>
         <span class="dri_stat_num"><%= objects_count %></span>
       </li>
     <% end %>
