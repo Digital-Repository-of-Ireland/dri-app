@@ -27,7 +27,7 @@
             <% if document.key?('depositing_institute_ssi') %>
               <%= document['depositing_institute_ssi'] %>
             <% else %>
-              Depositing Organisation not Set
+              <%= t('dri.views.collection.depositing_organisation_not_set') %>
             <% end %>
           <% end %>
         </p>
