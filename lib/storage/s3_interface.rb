@@ -48,7 +48,10 @@ module Storage
           cors_rules: [
             {
               allowed_headers: [
-                "content-type", 
+                "Authorization",
+                "x-amz-date",
+                "x-amz-content-sha256",
+                "content-type" 
               ], 
               allowed_methods: [
                 "PUT", 
