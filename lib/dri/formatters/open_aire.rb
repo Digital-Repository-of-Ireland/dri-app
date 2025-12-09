@@ -71,12 +71,13 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
       end
 
       xml.tag!("datacite:dates", {}) do
-        if record.key?('published_date_tesim') && record['published_date_tesim'].present?
-          parsed = DRI::Metadata::Transformations.date_range(record['published_date_tesim'].first)
-          xml.tag!("datacite:date", { dateType: "Issued" }, parsed["start"])
-        else
-          xml.tag!("datacite:date", { dateType: "Issued" }, parse_published_at(record))
-        end
+        published_date = if record.key?('published_date_tesim') && record['published_date_tesim'].present?
+                           parsed = DRI::Metadata::Transformations.date_range(record['published_date_tesim'].first)
+                           parsed.key?("start") ? parsed['start'] : parse_published_at(record)
+                         else
+                           parse_published_at(record)
+                         end
+        xml.tag!("datacite:date", { dateType: "Issued" }, published_date)
       end
 
       case record.visibility
@@ -104,18 +105,26 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
         end
       end
     
-      if record.text?
+      type = record.object_type.first.downcase
+
+      if record.text? || type == "text"
         xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "literature", "uri" => "http://purl.org/coar/resource_type/c_18cf" }, "text")
-      elsif record.image?
+      elsif record.image? || type == "image"
         xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_c513" }, "image")
-      elsif record.video?
+      elsif record.video? || type == "video"
         xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_12ce" }, "video")
-      elsif record.audio?
+      elsif record.audio? || type == "sound"
         xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_18cc" }, "sound")
-      elsif record.threeD?
+      elsif record.threeD? || type == "3d"
         xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_e9a0" }, "interactive resource")
-      elsif record.interactive_resource?
+      elsif record.interactive_resource? || type == "interactiveresource"
         xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_e9a0" }, "interactive resource")
+      elsif type == "software"
+        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "software", "uri" => "http://purl.org/coar/resource_type/c_5ce6" }, "software")
+      elsif type == "dataset"
+        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_1843" }, "other")
+      else
+        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "other research product", "uri" => "http://purl.org/coar/resource_type/c_1843" }, "other")
       end
     end
 
