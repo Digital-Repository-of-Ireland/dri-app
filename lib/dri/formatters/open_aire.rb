@@ -27,7 +27,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
     @controller = model.controller
   
     return "" unless valid?(record)
-
+   
     xml = Builder::XmlMarkup.new
     xml.tag!("resource", resource_header) do
       doi = DataciteDoi.find_by(object_id: record.id)
@@ -56,7 +56,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
       end
 
       record['rights_tesim'].each do |rights|
-        xml.tag!("dc:description", rights)
+        xml.tag!("dc:description", "Rights: #{rights}")
       end
  
       if (record.copyright.present? && record.copyright&.url.present?)
@@ -73,7 +73,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
       xml.tag!("datacite:dates", {}) do
         if record.key?('published_date_tesim') && record['published_date_tesim'].present?
           parsed = DRI::Metadata::Transformations.date_range(record['published_date_tesim'].first)
-          xml.tag!("datacite:date", { dateType: "Issued" }, parsed[:start])
+          xml.tag!("datacite:date", { dateType: "Issued" }, parsed["start"])
         else
           xml.tag!("datacite:date", { dateType: "Issued" }, parse_published_at(record))
         end
@@ -131,7 +131,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
     return false unless record.setspec.include?("openaire_data")
     return false unless record.published?
     return false unless record.depositing_institute.present?
-    return false unless record.assets.size < 1
+    return false unless record.assets.size > 0
 
     true
   end
