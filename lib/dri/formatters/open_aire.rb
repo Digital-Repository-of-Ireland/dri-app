@@ -131,7 +131,7 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
     return false unless record.setspec.include?("openaire_data")
     return false unless record.published?
     return false unless record.depositing_institute.present?
-    #return false unless record.assets.size < 1
+    return false unless record.assets.size < 1
 
     true
   end
