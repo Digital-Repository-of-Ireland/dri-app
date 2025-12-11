@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Analyse') {
           steps {
-            sh 'brakeman --no-progress --no-pager --no-exit-on-warn -o brakeman-output.json'
+            sh './buildshim analyse'
           }
         } 
     }
