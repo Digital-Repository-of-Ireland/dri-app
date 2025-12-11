@@ -45,11 +45,17 @@ pipeline {
                 sh './buildshim compile'
             }
         }
+        stage('Analyse') {
+          steps {
+            sh 'brakeman --no-progress --no-pager --no-exit-on-warn -o brakeman-output.json'
+          }
+        } 
     }
     post {
         always {
             junit 'spec/reports/*.xml'
             cucumber fileIncludePattern: 'features/reports/*.json'
+            recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [brakeman()]
         }
         success {
           publishHTML target: [
