@@ -45,11 +45,17 @@ pipeline {
                 sh './buildshim compile'
             }
         }
+        stage('Analyse') {
+          steps {
+            sh './buildshim analyse'
+          }
+        } 
     }
     post {
         always {
             junit 'spec/reports/*.xml'
             cucumber fileIncludePattern: 'features/reports/*.json'
+            recordIssues sourceCodeRetention: 'LAST_BUILD', tools: [brakeman()]
         }
         success {
           publishHTML target: [

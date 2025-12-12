@@ -72,14 +72,14 @@ class UsersDatatable
 
   def approver_filter(users)
     if params[:approver].present? && params[:approver] != 'All'
-      users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = #{params[:approver]}")
+      users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = ?", params[:approver])
     else
       users.joins(:groups).where("user_group_groups.name = 'cm'")
     end
   end
 
   def user_filter(users)
-    users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = #{current_user.id}")
+    users.joins(:groups).where("user_group_groups.name = 'cm'").where("user_group_memberships.approved_by = ?", current_user.id)
   end
 
   def page

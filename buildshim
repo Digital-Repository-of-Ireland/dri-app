@@ -81,6 +81,9 @@ api)
 compile)
     bundle exec rake assets:precompile
     ;;
+analyse)
+    bundle exec brakeman --no-progress --no-pager --no-exit-on-warn -o brakeman-output.json
+    ;;
 push)
     rm -rf dri-app-mirror
     git clone --mirror ssh://git@tracker.dri.ie:2200/drirepo/dri-app.git dri-app-mirror
