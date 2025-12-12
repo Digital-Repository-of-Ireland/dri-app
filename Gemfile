@@ -114,14 +114,13 @@ group :development, :test do
   gem 'simplecov', require: false
   gem 'thin'
   # gem 'ci_reporter_rspec'
-  gem 'byebug', '~> 10.0'
-  gem 'fcrepo_wrapper', '0.9.0'
+  gem 'byebug'
   gem 'parallel_tests'
   gem 'solr_wrapper', '>= 0.3'
-  # gem 'i18n-debug', '~> 1.2'
   gem 'listen'
   gem 'sane_patch', '~> 1.0'
   gem 'yard'
+  gem 'brakeman'
 end
 
 group :test do
@@ -192,5 +191,3 @@ gem "seedbank", "~> 0.5.0"
 gem "dartsass-rails", "~> 0.5.0"
 gem "dartsass-sprockets"
 gem "sprockets", "~> 4"
-
-gem "importmap-rails", "1.2.3"

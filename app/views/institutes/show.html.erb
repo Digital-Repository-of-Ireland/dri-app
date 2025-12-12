@@ -1,8 +1,8 @@
 <div class="dri_collection_institutes_item">
   <div class="dri_collection_institutes_pages">
     <div class="dri_collection_institutes_modal_img">
-      <%= image_tag logo_url(@inst), alt: @inst[:name].to_s.html_safe if @inst.brand %>
-      <p><%= @inst[:name].to_s.html_safe %></p>
+      <%= image_tag logo_url(@inst), alt: @inst[:name] if @inst.brand %>
+      <p><%= @inst[:name] %></p>
       <%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_organisation_path(@inst) %>
       <% if current_user.is_admin? %>
         <%= link_to '<i class="fa fa-times-circle"></i>'.html_safe, organisation_path(@inst), method: :delete %>
