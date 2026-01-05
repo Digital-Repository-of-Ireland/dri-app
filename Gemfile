@@ -24,7 +24,7 @@ gem 'riiif'
 
 gem "devise", ">= 4.7.1"
 gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
-gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
+gem 'user_group', path: '/home/skenny/Development/dri/dri-user-group' #git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
 
 gem 'paper_trail'
 
@@ -72,7 +72,7 @@ gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails"
 gem 'js_cookie_rails'
 
 # clients
-gem 'httparty', '>= 0.21.0'
+gem 'httparty', '>= 0.24.0'
 gem 'rest-client', '~> 2.0'
 gem 'sparql-client'
 
@@ -96,8 +96,10 @@ gem 'terser'
 group :production do
   gem 'clamby'
   gem 'honeybadger'
-  gem 'mysql2'
+  #gem 'mysql2'
 end
+
+gem 'mysql2'
 
 group :development, :test do
   gem 'better_errors'

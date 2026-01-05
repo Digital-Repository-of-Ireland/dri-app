@@ -19,24 +19,6 @@ GIT
       valkyrie (~> 3)
 
 GIT
-  remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: 5bb3ab993e5c01fd695830cf87fd031a4e300e2a
-  branch: develop
-  specs:
-    user_group (2.4.0)
-      blacklight-access_controls
-      devise
-      devise-guests (~> 0.3)
-      devise-i18n-views
-      fastimage
-      kaminari
-      omniauth
-      omniauth-shibboleth
-      paper_trail (> 14)
-      rails_cloudflare_turnstile
-      rb-gravatar
-
-GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
   revision: b0379017d34bf69e24876210559aa93004a55393
   branch: main
@@ -105,6 +87,22 @@ GIT
   specs:
     timelineJS3-rails (1.1.3)
       jquery-rails
+
+PATH
+  remote: /home/skenny/Development/dri/dri-user-group
+  specs:
+    user_group (2.4.1)
+      blacklight-access_controls
+      devise
+      devise-guests (~> 0.3)
+      devise-i18n-views
+      fastimage
+      kaminari
+      omniauth
+      omniauth-shibboleth
+      paper_trail (> 14)
+      rails_cloudflare_turnstile
+      rb-gravatar
 
 GEM
   remote: https://rubygems.org/
@@ -201,8 +199,8 @@ GEM
     autoprefixer-rails (10.4.19.0)
       execjs (~> 2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1193.0)
-    aws-sdk-core (3.239.2)
+    aws-partitions (1.1200.0)
+    aws-sdk-core (3.240.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -213,7 +211,7 @@ GEM
     aws-sdk-kms (1.118.0)
       aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.206.0)
+    aws-sdk-s3 (1.209.0)
       aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -309,7 +307,7 @@ GEM
       csl (~> 2.0)
     clamby (1.6.10)
     clipboard-rails (1.7.1)
-    concurrent-ruby (1.3.5)
+    concurrent-ruby (1.3.6)
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
@@ -431,7 +429,7 @@ GEM
       scanf (~> 1.0)
       sxp (~> 1.3)
       unicode-types (~> 1.8)
-    erb (6.0.0)
+    erb (6.0.1)
     erubi (1.13.1)
     ethon (0.15.0)
       ffi (>= 1.15.0)
@@ -544,7 +542,8 @@ GEM
     http-cookie (1.1.0)
       domain_name (~> 0.5)
     http_accept_language (2.1.1)
-    httparty (0.21.0)
+    httparty (0.24.0)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     httpclient (2.9.0)
@@ -579,8 +578,8 @@ GEM
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
-    io-console (0.8.1)
-    irb (1.15.3)
+    io-console (0.8.2)
+    irb (1.16.0)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
@@ -679,7 +678,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
-    loofah (2.24.1)
+    loofah (2.25.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.9.0)
@@ -699,7 +698,8 @@ GEM
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
-    minitest (5.27.0)
+    minitest (6.0.0)
+      prism (~> 1.5)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -708,8 +708,8 @@ GEM
     mono_logger (1.1.2)
     multi_json (1.18.0)
     multi_test (1.1.0)
-    multi_xml (0.7.2)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.0)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
@@ -721,7 +721,7 @@ GEM
       redic
     net-http-persistent (4.0.4)
       connection_pool (~> 2.2)
-    net-imap (0.5.12)
+    net-imap (0.6.2)
       date
       net-protocol
     net-pop (0.1.2)
@@ -787,7 +787,8 @@ GEM
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
-    psych (5.3.0)
+    prism (1.7.0)
+    psych (5.3.1)
       date
       stringio
     public_suffix (7.0.0)
@@ -842,7 +843,7 @@ GEM
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_cloudflare_turnstile (0.4.3)
+    rails_cloudflare_turnstile (0.4.4)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
     railties (7.2.3)
@@ -929,7 +930,7 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
-    rdoc (6.17.0)
+    rdoc (7.0.1)
       erb
       psych (>= 4.0.0)
       tsort
@@ -1143,7 +1144,7 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (2.7.1-x86_64-linux-gnu)
     stomp (1.4.10)
-    stringio (3.1.9)
+    stringio (3.2.0)
     sxp (1.3.0)
       matrix (~> 0.4)
       rdf (~> 3.3)
@@ -1164,7 +1165,7 @@ GEM
       rack (>= 1, < 4)
     thor (1.4.0)
     tilt (2.6.1)
-    timeout (0.5.0)
+    timeout (0.6.0)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
     typhoeus (1.5.0)
@@ -1217,7 +1218,7 @@ GEM
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
     yard (0.9.36)
-    zeitwerk (2.7.3)
+    zeitwerk (2.7.4)
 
 PLATFORMS
   x86_64-linux
@@ -1268,7 +1269,7 @@ DEPENDENCIES
   high_voltage (~> 3.1)
   honeybadger
   http_accept_language
-  httparty (>= 0.21.0)
+  httparty (>= 0.24.0)
   hydra-derivatives!
   i18n-js (< 4)
   i18n-tasks
