@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: a08340a7949b0e86388c2b10f4bb7d5985e40256
-  branch: develop
+  revision: 4a4966c88a676ecc0eb1c141574112157f11e086
+  tag: v4.17.0
   specs:
     dri_data_models (4.17.0)
       hydra-derivatives
@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: e62528b9289189f8bf03bd0ae56b3fde36787b5f
-  branch: develop
+  revision: 5bb3ab993e5c01fd695830cf87fd031a4e300e2a
+  tag: v2.4.1
   specs:
-    user_group (2.4.1)
+    user_group (2.4.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -403,7 +403,7 @@ GEM
       faraday (< 3.0)
       oauth2 (~> 1.1)
     druid-tools (3.0.0)
-    dry-core (1.1.0)
+    dry-core (1.2.0)
       concurrent-ruby (~> 1.0)
       logger
       zeitwerk (~> 2.6)
@@ -709,7 +709,7 @@ GEM
       nokogiri
       nokogiri-happymapper
     mono_logger (1.1.2)
-    multi_json (1.18.0)
+    multi_json (1.19.1)
     multi_test (1.1.0)
     multi_xml (0.8.0)
       bigdecimal (>= 3.1, < 5)
@@ -794,7 +794,7 @@ GEM
     psych (5.3.1)
       date
       stringio
-    public_suffix (7.0.0)
+    public_suffix (7.0.2)
     qa (5.13.0)
       activerecord-import
       deprecation
