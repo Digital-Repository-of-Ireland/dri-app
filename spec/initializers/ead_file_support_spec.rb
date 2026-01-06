@@ -57,7 +57,7 @@ describe 'EadFileSupport' do
     preservation = Preservation::Preservator.new(component)
     preservation.preserve(['descMetadata'])
 
-    expect(component.add_file_to_object(File.new(File.join(fixture_paths, "SAMPLEA.mp3")), 'SAMPLEA.mp3')).to be true
+    expect(component.add_file_to_object(File.new(file_fixture("SAMPLEA.mp3")), 'SAMPLEA.mp3')).to be true
     expect(component.object_version).to eq 2
     component.reload
     expect(component.generic_files.length).to eq 1

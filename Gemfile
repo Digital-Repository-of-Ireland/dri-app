@@ -72,7 +72,7 @@ gem 'jquery-ui-rails-dox-fork', require: "jquery-ui-rails"
 gem 'js_cookie_rails'
 
 # clients
-gem 'httparty', '>= 0.21.0'
+gem 'httparty', '>= 0.24.0'
 gem 'rest-client', '~> 2.0'
 gem 'sparql-client'
 
@@ -96,8 +96,10 @@ gem 'terser'
 group :production do
   gem 'clamby'
   gem 'honeybadger'
-  gem 'mysql2'
+  #gem 'mysql2'
 end
+
+gem 'mysql2'
 
 group :development, :test do
   gem 'better_errors'

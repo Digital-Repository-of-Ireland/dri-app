@@ -81,7 +81,7 @@ describe InstitutesController do
 
   describe "create" do
     it "should create an organisation" do
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "sample_logo.png"), "image/png")
+      uploaded = Rack::Test::UploadedFile.new(file_fixture("sample_logo.png"), "image/png")
 
       expect do
         post :create, params: { institute: { url: 'http://test.create', name: 'Test Create', logo: uploaded } }
@@ -91,7 +91,7 @@ describe InstitutesController do
 
   describe "update" do
     it "should update an organisation" do
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "sample_logo.png"), "image/png")
+      uploaded = Rack::Test::UploadedFile.new(file_fixture("sample_logo.png"), "image/png")
 
       expect do
         post :update, params: { id: @institute.id, institute: { url: 'http://test.create', name: 'Test Create', logo: uploaded } }

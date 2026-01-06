@@ -122,19 +122,19 @@ describe CollectionsController do
     end
 
     it 'accepts a valid image' do
-      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "sample_image.jpeg"), "image/jpeg")
+      @uploaded = Rack::Test::UploadedFile.new(file_fixture("sample_image.jpeg"), "image/jpeg")
       put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: @uploaded } }
       expect(flash[:notice]).to be_present
     end
 
     it 'rejects unsupported image format' do
-      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "sample_image.tiff"), "image/tiff")
+      @uploaded = Rack::Test::UploadedFile.new(file_fixture("sample_image.tiff"), "image/tiff")
       put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: @uploaded } }
       expect(flash[:error]).to be_present
     end
 
     it 'creates new AIP' do
-      @uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "sample_image.jpeg"), "image/jpeg")
+      @uploaded = Rack::Test::UploadedFile.new(file_fixture("sample_image.jpeg"), "image/jpeg")
       put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: @uploaded } }
 
       expect(Dir.entries(aip_dir(@collection.alternate_id)).size - 2).to eq(2)
@@ -344,7 +344,7 @@ describe CollectionsController do
 
     before(:each) do
       Settings.add_source!(
-                        Rails.root.join(fixture_paths.first, "settings-ro.yml").to_s
+                        file_fixture("settings-ro.yml").to_s
       )
       Settings.reload!
       @tmp_assets_dir = Dir.mktmpdir
@@ -425,6 +425,5 @@ describe CollectionsController do
 
       expect(flash[:error]).to be_present
     end
-
   end
 end
