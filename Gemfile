@@ -24,7 +24,7 @@ gem 'riiif'
 
 gem "devise", ">= 4.7.1"
 gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', branch: 'develop'
-gem 'user_group', path: '/home/skenny/Development/dri/dri-user-group' #git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
+gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', branch: 'develop'
 
 gem 'paper_trail'
 
