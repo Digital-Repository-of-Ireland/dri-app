@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module UserTests
     describe UserGroup::User do
@@ -13,20 +13,20 @@ module UserTests
         
         describe "#new" do
             it "takes six parameters and returns a UserGroup::User object" do
-                @user.should be_an_instance_of UserGroup::User
+                expect(@user).to be_an_instance_of UserGroup::User
             end
         end
 
         #User security additions
         describe "#to_s" do
             it "should return the users email" do
-                @user.to_s.should == @user_email
+                expect(@user.to_s).to eql @user_email
             end
         end
 
         describe "#full_name" do
             it "should return the users name" do
-                @user.full_name.should == @user_fname+" "+@user_sname
+                expect(@user.full_name).to eql @user_fname+" "+@user_sname
             end
         end
 
@@ -43,13 +43,13 @@ module UserTests
                 end
 
                 it "should return true" do
-                    @user.is_admin?.should == true
+                    expect(@user.is_admin?).to be true
                 end
             end
 
             context "not an admin" do
                 it "should not be true" do
-                    @user.is_admin?.should be_falsey
+                    expect(@user.is_admin?).to be_falsey
                 end
             end
         end
@@ -63,12 +63,11 @@ module UserTests
             end
             context "valid member" do
                 it "should be a member of the group" do
-                    @user.member?(@group.id).should == true
-                    
+                    expect(@user.member?(@group.id)).to be true
                 end
 
                 it "should not be a pending member of the group" do
-                    @user.pending_member?(@group.id).should be_falsey
+                    expect(@user.pending_member?(@group.id)).to be_falsey
                 end
             end
         end
@@ -81,11 +80,11 @@ module UserTests
 
             context "pending member" do
                 it "should be a pending member of the group" do
-                    @user.pending_member?(@group.id).should == true
+                    expect(@user.pending_member?(@group.id)).to be true
                 end
 
                 it "should not be a member of the group" do
-                    @user.member?(@group.id).should be_falsey
+                    expect(@user.member?(@group.id)).to be_falsey
                 end
             end        
         end
@@ -98,15 +97,15 @@ module UserTests
 
                 it "should return a valid (pending) membership" do
                     membership = @user.join_group(@group.id)
-                    membership.valid?.should == true
-                    @user.pending_member?(@group.id).should == true
+                    expect(membership.valid?).to be true
+                    expect(@user.pending_member?(@group.id)).to be true
                 end
             end
 
             context "invalid group" do
                 it "should return an invalid membership" do
                     membership = @user.join_group(nil)
-                    membership.valid?.should be false
+                    expect(membership.valid?).to be false
                 end
             end
         end
@@ -121,23 +120,25 @@ module UserTests
                 before :each do
                     @membership.approved_by = @user.id
                     @membership.save
-                    @user.member?(@group.id).should == true
+                    expect(@user.member?(@group.id)).to be true
                 end
 
                 it "should remove the user from the group" do
                     @user.leave_group(@group.id)
-                    @user.member?(@group_id).should be_falsey and @user.pending_member?(@group.id).should be_falsey
+                    expect(@user.member?(@group_id)).to be_falsey 
+                    expect(@user.pending_member?(@group.id)).to be_falsey
                 end  
             end
 
             context "leave a group with partial membership" do
                 before :each do
-                    @user.pending_member?(@group.id).should == true
+                    expect(@user.pending_member?(@group.id)).to be true
                 end
 
                 it "should remove the user from the group" do
                     @user.leave_group(@group.id)
-                    @user.member?(@group_id).should be_falsey and @user.pending_member?(@group.id).should be_falsey
+                    expect(@user.member?(@group_id)).to be_falsey 
+                    expect(@user.pending_member?(@group.id)).to be_falsey
                 end
             end
         end
@@ -148,9 +149,9 @@ module UserTests
                 @user.token_creation_date = nil
             end
             it "should create a login token" do
-                @user.authentication_token.should be_nil
+                expect(@user.authentication_token).to be_nil
                 @user.create_token
-                @user.authentication_token.empty?.should be false
+                expect(@user.authentication_token.empty?).to be false
             end
         end
 
@@ -159,13 +160,13 @@ module UserTests
                 @user.create_token
             end
             it "should delete the login token" do
-                @user.authentication_token.should_not be_nil
-                @user.token_creation_date.should_not be_nil
+                expect(@user.authentication_token).to_not be_nil
+                expect(@user.token_creation_date).to_not be_nil
 
                 @user.destroy_token
 
-                @user.authentication_token.should be_nil
-                @user.token_creation_date.should be_nil
+                expect(@user.authentication_token).to be_nil
+                expect(@user.token_creation_date).to be_nil
             end
         end
 
@@ -181,11 +182,11 @@ module UserTests
             end
             context "full memberships" do
                 it "should be a full member of group a" do
-                    @user.full_memberships.map(&:group_id).include?(@group.id).should ==  true                    
+                    expect(@user.full_memberships.map(&:group_id).include?(@group.id)).to be true                    
                 end
 
                 it "should not be a full member of group b" do
-                    @user.full_memberships.map(&:group_id).include?(@groupb.id).should == false
+                    expect(@user.full_memberships.map(&:group_id).include?(@groupb.id)).to be false
                 end
             end
         end
@@ -202,11 +203,11 @@ module UserTests
             end
             context "pending memberships" do
                 it "should not be a pending member of group a" do
-                    @user.pending_memberships.map(&:group_id).include?(@group.id).should == false                    
+                    expect(@user.pending_memberships.map(&:group_id).include?(@group.id)).to be false                    
                 end
 
                 it "should be a pending member of group b" do
-                    @user.pending_memberships.map(&:group_id).include?(@groupb.id).should == true
+                    expect(@user.pending_memberships.map(&:group_id).include?(@groupb.id)).to be true
                 end
             end
         end
@@ -217,9 +218,9 @@ module UserTests
                 @user.locale = "" 
             end
             it "should reset locale to default" do
-                @user.locale.should == ""
+                expect(@user.locale).to eql ""
                 @user.set_locale
-                @user.locale.should == I18n.locale.to_s
+                expect(@user.locale).to eql I18n.locale.to_s
             end
         end
 
@@ -228,9 +229,9 @@ module UserTests
                 @user.view_level = 0
             end
             it "should set view level to public (1)" do
-                @user.view_level.should == 0
+                expect(@user.view_level).to eql 0
                 @user.set_view_level("public")
-                @user.view_level.should == 1
+                expect(@user.view_level).to eql 1
             end
         end
 
@@ -239,7 +240,7 @@ module UserTests
                 @user.set_view_level("registered")
             end
             it "should return registered" do
-                @user.get_view_level.should == "registered"
+                expect(@user.get_view_level).to eql "registered"
             end
         end
     end

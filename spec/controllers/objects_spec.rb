@@ -543,7 +543,7 @@ describe ObjectsController do
   describe "read only is set" do
 
       before(:each) do
-        Settings.add_source!(Rails.root.join(fixture_paths.first, "settings-ro.yml").to_s)
+        Settings.add_source!(file_fixture("settings-ro.yml").to_s)
 	      Settings.reload!
 
         @tmp_assets_dir = Dir.mktmpdir

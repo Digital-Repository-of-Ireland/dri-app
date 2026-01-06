@@ -14,11 +14,11 @@ describe DRI::DigitalObject do
     @t.type = ["Image"]
 
     @t.save
-    @t.title.first.should == "A fake record"
+    expect(@t.title.first).to eql "A fake record"
 
     @t.title = ["An edited record"]
     @t.save
-    @t.title.first.should == "An edited record"
+    expect(@t.title.first).to eql "An edited record"
   end
 
   it "should not overwrite object changes on reload" do
@@ -33,12 +33,12 @@ describe DRI::DigitalObject do
     @t.type = ["Image"]
 
     @t.save
-    @t.title.first.should == "A fake record"
+    expect(@t.title.first).to eql "A fake record"
 
     @t.title = ["An edited record"]
     @t.save
     @t.reload
-    @t.title.first.should == "An edited record" 
+    expect(@t.title.first).to eql "An edited record" 
   end
 
   it "should not overwrite mods object changes on save" do
@@ -53,11 +53,11 @@ describe DRI::DigitalObject do
     @t.mods_id_local = "test"
 
     @t.save
-    @t.title.first.should == "A fake record"
+    expect(@t.title.first).to eql "A fake record"
 
     @t.title = ["An edited record"]
     @t.save
-    @t.title.first.should == "An edited record"
+    expect(@t.title.first).to eql "An edited record"
   end
 
   it "should not overwrite mods object changes on reload" do
@@ -72,12 +72,12 @@ describe DRI::DigitalObject do
     @t.mods_id_local = "test"
 
     @t.save
-    @t.title.first.should == "A fake record"
+    expect(@t.title.first).to eql "A fake record"
 
     @t.title = ["An edited record"]
     @t.save
     @t.reload
-    @t.title.first.should == "An edited record"
+    expect(@t.title.first).to eql "An edited record"
   end
 
   it "should not overwrite mods values on save" do
@@ -92,13 +92,13 @@ describe DRI::DigitalObject do
     @t.mods_id_local = "test"
 
     @t.save
-    @t.creator.first.should == "A Test"
+    expect(@t.creator.first).to eql "A Test"
 
     @t.creator = ["A New Creator"]
     #@t.description = ["An edited fake object"]
     @t.save
     @t.reload
-    @t.creator.first.should == "A New Creator"
+    expect(@t.creator.first).to eql "A New Creator"
     #@t.description.first.should == "An edited fake object"
   end
  
@@ -113,12 +113,12 @@ describe DRI::DigitalObject do
     @t.type = ["Image"]
 
     @t.save
-    @t.creator.first.should == "A Test"
+    expect(@t.creator.first).to eql "A Test"
 
     @t.creator = ["A New Creator"]
     @t.save
     @t.reload
-    @t.creator.first.should == "A New Creator"
+    expect(@t.creator.first).to eql "A New Creator"
   end
  
   after(:each) do
@@ -126,5 +126,4 @@ describe DRI::DigitalObject do
       @t.destroy
     end
   end
-
 end

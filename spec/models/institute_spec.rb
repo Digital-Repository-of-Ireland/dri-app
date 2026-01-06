@@ -21,7 +21,7 @@ describe Institute do
   end
 
   it "should allow for a logo to be added" do
-    uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "sample_logo.png"), "image/png")
+    uploaded = Rack::Test::UploadedFile.new(file_fixture("sample_logo.png"), "image/png")
     expect(@institute.add_logo(uploaded)).to be true
   end
 

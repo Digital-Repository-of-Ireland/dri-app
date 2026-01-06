@@ -81,7 +81,7 @@ describe DRI::IiifViewable do
     allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
     allow_any_instance_of(GenericFileContent).to receive(:push_characterize_job)
 
-    FileUtils.cp(File.join(fixture_paths, 'sample_image.jpeg'),
+    FileUtils.cp(file_fixture('sample_image.jpeg'),
       File.join(@tmp_upload_dir, 'sample_image.jpeg'))
 
     @generic_file = DRI::GenericFile.new(alternate_id: DRI::Noid::Service.new.mint)

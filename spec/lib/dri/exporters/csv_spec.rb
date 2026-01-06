@@ -20,7 +20,7 @@ describe CatalogController, type: :controller do
 
   context "exporting CSV" do
     it "should format an object as a CSV" do
-      expected_csv = CSV.read(File.join(fixture_paths, "export.csv"))
+      expected_csv = CSV.read(file_fixture("export.csv"))
       doc = SolrDocument.find(@object.alternate_id)
       formatter = DRI::Exporters::Csv.new(controller.request.base_url, doc)
       generated_csv = CSV.parse(formatter.format)

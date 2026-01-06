@@ -40,7 +40,7 @@ describe "DataciteDoi" do
 
   it "should create a DOI" do
     datacite = DataciteDoi.create(object_id: @object.alternate_id)
-    datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
+    expect(datacite.doi).to eq File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
   end
 
   it "should create datacite XML" do
@@ -176,13 +176,13 @@ describe "DataciteDoi" do
   it "should add version numbers to doi" do
     datacite = DataciteDoi.create(object_id: @object.alternate_id)
 
-    datacite.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
+    expect(datacite.doi).to eq File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}"))
 
     datacite2 = DataciteDoi.create(object_id: @object.alternate_id)
-    datacite2.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-1"))
+    expect(datacite2.doi).to eq File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-1"))
 
     datacite3 = DataciteDoi.create(object_id: @object.alternate_id)
-    datacite3.doi.should == File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-2"))
+    expect(datacite3.doi).to eq File.join(File.join(DoiConfig.prefix.to_s, "DRI.#{datacite.object_id}-2"))
   end
 
   describe 'show' do
@@ -198,5 +198,4 @@ describe "DataciteDoi" do
       expect(@doi.show.keys.include?('created_at')).to be true
     end
   end
-
 end

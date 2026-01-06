@@ -34,7 +34,7 @@ describe "Query" do
         count += query.pop.count
       end
 
-      count.should eq(20)
+      expect(count).to eql 20
     end
 
     @slow
@@ -54,7 +54,7 @@ describe "Query" do
         count += query.pop.count
       end
 
-      count.should eq(10)
+      expect(count).to eql 10
     end
 
     @slow
@@ -74,9 +74,7 @@ describe "Query" do
         count += query.pop.count
       end
 
-      count.should eq(27)
+      expect(count).to eq 27
     end
-
   end
-
 end

@@ -6,10 +6,6 @@ describe "Storage::S3Interface" do
     @storage = Storage::S3Interface.new({stub_responses: true})
   end
 
-  after(:all) do
-   
-  end
-
   it "should create a signed url" do
     expect_any_instance_of(Storage::S3Interface).to receive(:list_files).and_return(["x059d075t_crop16_9_width_200_thumbnail.png"])
     response = @storage.surrogate_url("1n79j1386", "x059d075t_crop16_9_width_200_thumbnail.png")
@@ -17,13 +13,12 @@ describe "Storage::S3Interface" do
     endpoint = URI.parse(Settings.S3.server)
     signed_url = URI.parse(response)
 
-    endpoint.scheme.should == signed_url.scheme
-    endpoint.host.should == signed_url.host
-    endpoint.port.should == signed_url.port
-    signed_url.path.should == "/1n79j1386/x059d075t_crop16_9_width_200_thumbnail.png"
+    expect(endpoint.scheme).to eql signed_url.scheme
+    expect(endpoint.host).to eql signed_url.host
+    expect(endpoint.port).to eql signed_url.port
+    expect(signed_url.path).to eql "/1n79j1386/x059d075t_crop16_9_width_200_thumbnail.png"
 
-    signed_url.query.should include(Settings.S3.access_key_id)
-    signed_url.query.should include("Signature=")
+    expect(signed_url.query).to include(Settings.S3.access_key_id)
+    expect(signed_url.query).to include("Signature=")
   end
-
 end

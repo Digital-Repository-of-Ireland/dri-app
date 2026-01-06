@@ -91,14 +91,14 @@ describe SurrogatesController do
       options[:mime_type] = "audio/mp3"
       options[:file_name] = "SAMPLEA.mp3"
 
-      uploaded = Rack::Test::UploadedFile.new(File.join(fixture_paths, "SAMPLEA.mp3"), "audio/mp3")
+      uploaded = Rack::Test::UploadedFile.new(file_fixture("SAMPLEA.mp3"), "audio/mp3")
       generic_file.add_file uploaded, options
       generic_file.save
       file_id = generic_file.alternate_id
 
       storage = StorageService.new
       storage.create_bucket(@object.alternate_id)
-      storage.store_surrogate(@object.alternate_id, File.join(fixture_paths, "SAMPLEA.mp3"), "#{generic_file.alternate_id}_mp3.mp3")
+      storage.store_surrogate(@object.alternate_id, file_fixture("SAMPLEA.mp3"), "#{generic_file.alternate_id}_mp3.mp3")
 
       get :download, params: { id: file_id, object_id: @object.alternate_id, type: 'surrogate' }
       expect(response.status).to eq(200)
