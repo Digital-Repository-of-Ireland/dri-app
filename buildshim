@@ -10,7 +10,7 @@ else
   printf "ERROR: An RVM installation was not found.\n"
 fi
 
-ruby_version=3.2.8
+ruby_version=3.3.10
 
 rvm use ruby-$ruby_version || exit 100
 
