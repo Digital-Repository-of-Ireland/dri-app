@@ -57,7 +57,7 @@ Rails.application.configure do
   # when problems arise.
   config.log_level = :info
   # Use syslog
-  config.gem 'syslog-logger'
+  require 'syslog/logger'
   config.logger = Logger::Syslog.new
 
   # Prepend all log lines with the following tags.

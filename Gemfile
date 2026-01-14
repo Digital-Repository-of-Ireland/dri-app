@@ -96,10 +96,8 @@ gem 'terser'
 group :production do
   gem 'clamby'
   gem 'honeybadger'
-  #gem 'mysql2'
+  gem 'mysql2'
 end
-
-gem 'mysql2'
 
 group :development, :test do
   gem 'better_errors'
