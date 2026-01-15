@@ -578,11 +578,15 @@ class DRI::Formatters::Edm < OAI::Provider::Metadata::Format
   end
   
   def object_3d_url(record)
-
     api_oembed_url+"?url="+catalog_url(record.id)
-   
-  end  
+  end
 
-
-
+  def valid?(record)
+    return false unless record.published?
+    return false if record.assets.size < 1
+    # We are not going to aggregate restricted assets to Europeana
+    return false unless record.public_read?
+    
+    true
+  end
 end
