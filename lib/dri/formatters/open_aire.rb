@@ -25,7 +25,6 @@ class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
 
   def encode(model, record)
     @controller = model.controller
-  
     return "" unless valid?(record)
    
     xml = Builder::XmlMarkup.new

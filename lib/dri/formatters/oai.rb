@@ -87,4 +87,8 @@ class DRI::Formatters::Oai < OAI::Provider::Metadata::Format
       record[f] || []
     end.flatten.compact
   end
+
+  def valid?(record)
+    record.published?
+  end
 end
