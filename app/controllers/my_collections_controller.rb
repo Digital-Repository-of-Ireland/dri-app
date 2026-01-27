@@ -230,10 +230,10 @@ class MyCollectionsController < ApplicationController
     show_organisations
     
     if @document.collection?
-      # published subcollections unless admin or edit permission
-      @children = @document.children(chunk: 100).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
-      @file_display_type_count = @document.file_display_type_count
       @config = CollectionConfig.find_by(collection_id: @document.id)
+      # published subcollections unless admin or edit permission
+      @children = @document.children(chunk: 100, sort: @config&.subcollection_sort).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
+      @file_display_type_count = @document.file_display_type_count
     else
       # assets including preservation only files, ordered by label
       @assets = @document.assets(with_preservation: true, ordered: true)

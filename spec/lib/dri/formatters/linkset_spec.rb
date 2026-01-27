@@ -347,7 +347,7 @@ describe LinksetsController, type: :controller do
           mock_object = OpenStruct.new(id: 'obj1', isGovernedBy_ssim: [collection_id], mime_type: 'application/pdf')
           objects = [mock_object]
   
-          allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return(objects)
+          allow(document).to receive(:children).with(chunk: 1000, sort: nil, subcollections_only: false).and_return(objects)
   
           result = linkset.collection_objects
   
@@ -362,7 +362,7 @@ describe LinksetsController, type: :controller do
 
           objects = [mock_object1, mock_object2]
   
-          allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return(objects)
+          allow(document).to receive(:children).with(chunk: 1000, sort: nil, subcollections_only: false).and_return(objects)
   
           result = linkset.collection_objects
   
@@ -372,7 +372,7 @@ describe LinksetsController, type: :controller do
   
       context 'when no objects are found' do
         it 'returns an empty array' do
-          allow(document).to receive(:children).with(chunk: 1000, subcollections_only: false).and_return([])
+          allow(document).to receive(:children).with(chunk: 1000, sort: nil, subcollections_only: false).and_return([])
   
           result = linkset.collection_objects
   
