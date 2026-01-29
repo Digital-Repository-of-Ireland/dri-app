@@ -219,6 +219,28 @@ describe SolrDocument do
       expect(children.map(&:alternate_id)).to match_array([@subcollection.alternate_id])
     end
 
+    it 'should sort subcollection children' do
+      doc = SolrDocument.find_by_alternate_id(@collection.alternate_id)
+
+      subcollection_b = FactoryBot.create(:collection)
+      @subcollection.title = "Sub A"
+      subcollection_b.title = "Sub B"
+
+      @subcollection.save
+      subcollection_b.save
+
+      @collection.governed_items << subcollection_b
+      @collection.save
+      @collection.reload
+
+      children = doc.children(chunk: 10, sort: 'title_sorted_ssi asc', subcollections_only: true)
+      expect(children.map(&:alternate_id)).to eq([@subcollection.alternate_id, subcollection_b.alternate_id])
+      children = doc.children(chunk: 10, sort: 'title_sorted_ssi desc', subcollections_only: true)
+      expect(children.map(&:alternate_id)).to eq([subcollection_b.alternate_id, @subcollection.alternate_id])
+      
+      subcollection_b.destroy
+    end
+
     # ensure responses grouped into pages of 10 still return the correct count
     context 'when a document has over 10 objects' do
       before do
