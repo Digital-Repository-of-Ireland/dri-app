@@ -230,9 +230,9 @@ class CatalogController < ApplicationController
     show_organisations
 
     if @document.collection?
-      @children = @document.children(chunk: 100).select { |child| child.published? }
-      @file_display_type_count = @document.file_display_type_count(published_only: true)
       @config = CollectionConfig.find_by(collection_id: @document.id)
+      @children = @document.children(chunk: 100, sort: @config&.subcollection_sort).select { |child| child.published? }
+      @file_display_type_count = @document.file_display_type_count(published_only: true)
     else
       # assets ordered by label, excludes preservation only files
       @assets = @document.assets(ordered: true)
