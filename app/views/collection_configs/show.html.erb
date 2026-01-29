@@ -21,7 +21,21 @@
    <%= f.label :default_sort do %>
      <b><%= t('dri.collection.config.default_sort') %></b>
    <% end %>
-   <%= f.select('default_sort', options_for_select(active_sort_fields.map { |key, config| [t("blacklight.search.sort.#{sort_field_label(config.key)}"), key] }, @config.default_sort), {}, { class: 'form-control' }) %>
+   <%= f.select('default_sort', options_for_select(
+                                  active_sort_fields.map { |key, config| [t("blacklight.search.sort.#{sort_field_label(config.key)}"), key] }, @config.default_sort
+                                  ), {}, { class: 'form-control' }) %>
+  </div>
+
+  <div class="col-md-3">
+   <%= f.label :subcollection_sort do %>
+     <b><%= t('dri.collection.config.subcollection_sort') %></b>
+   <% end %>
+   <%= f.select('subcollection_sort', options_for_select(
+     [[t("blacklight.search.sort.title_A-Z"), 'title_sorted_ssi asc'],
+     [t("blacklight.search.sort.title_Z-A"), 'title_sorted_ssi desc'],
+     [t("blacklight.search.sort.created_desc"), 'system_create_dtsi desc'],
+     [t("blacklight.search.sort.created_asc"), 'system_create_dtsi asc']], 
+     @config.subcollection_sort), {}, { class: 'form-control' }) %>
   </div>
 </br>
 <%= f.submit t('dri.collection.config.buttons.save'), class: "dri_button_green dri_w330 mt-1", id: "update_collection_config" %>

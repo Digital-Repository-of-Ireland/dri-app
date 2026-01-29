@@ -168,7 +168,7 @@ class DRI::Formatters::Linkset
     
     def collection_objects
       # get objects and subcollections that are direct children of this collection only
-      objects_collection = @document.children(chunk: 1000, subcollections_only: false)
+      objects_collection = @document.children(chunk: 1000, sort: nil, subcollections_only: false)
       objects_link = []
       
       objects_collection.each do |object|

@@ -10,11 +10,12 @@ module DRI::Solr::Document::Collection
 
   # Filter to only get those that are collections:
   # fq=is_collection_ssi:true
-  def children(chunk: 100, subcollections_only: true)
+  def children(chunk: 100, sort: nil, subcollections_only: true)
     # Find immediate children of this collection
     solr_query = "collection_id_sim:\"#{self.alternate_id}\""
 
-    args = { sort: "system_create_dtsi asc" }
+    args = {}
+    args[:sort] = sort.nil? ? "system_create_dtsi asc" : sort
     args[:fq] = "is_collection_ssi:true" if subcollections_only
 
     Solr::Query.new(

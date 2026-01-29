@@ -61,6 +61,7 @@ en:
         allow_aggregation: Allow harvesting by select aggregators
         allow_export: Allow export of collection metadata
         default_sort: Default sort
+        subcollection_sort: Sub-Collection display order
         title: Options
         buttons:
           save: Save
