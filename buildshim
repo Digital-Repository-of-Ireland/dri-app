@@ -56,30 +56,31 @@ __EOF__
     #SERVICES=s3 localstack start --host &>/dev/null &
     #echo $! > localstack.pid
 
-    bundle install --without production
-    
-    bundle exec rake server:start
-    bundle exec rake server:config
+    bundle config set without 'production'    
+    bundle install
 
-    bundle exec rake db:migrate
-    bundle exec rake db:seed
-    bundle exec rake db:migrate
-    bundle exec rake db:test:prepare
-    bundle exec rake db:environment:set RAILS_ENV=test
-    bundle exec rails dartsass:build
-    bundle exec rails javascript:build
+    bundle exec bin/rake server:start
+    bundle exec bin/rake server:config
+
+    bundle exec bin/rake db:migrate
+    bundle exec bin/rake db:seed
+    bundle exec bin/rake db:migrate
+    bundle exec bin/rake db:test:prepare
+    bundle exec bin/rake db:environment:set RAILS_ENV=test
+    bundle exec bin/rails dartsass:build
+    bundle exec bin/rails javascript:build
     ;;
 rspec)
-    bundle exec rake rspec RUN_COVERAGE=on
+    bundle exec bin/rake rspec RUN_COVERAGE=on
     ;;
 cucumber)
-    bundle exec rake cucumber_ci
+    bundle exec bin/rake cucumber_ci
     ;;
 api)
-   bundle exec rake api:docs:generate
+   bundle exec bin/rake api:docs:generate
    ;; 
 compile)
-    bundle exec rake assets:precompile
+    bundle exec bin/rake assets:precompile
     ;;
 analyse)
     bundle exec brakeman --no-progress --no-pager --no-exit-on-warn -o brakeman-output.json
