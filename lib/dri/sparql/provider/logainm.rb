@@ -28,7 +28,12 @@ module DRI::Sparql::Provider
     end
 
     def dbpedia_lookup(transformed_uri, names)
-      client = DRI::Sparql::Client.new AuthoritiesConfig['data.dri.ie']['endpoint']
+      return [] unless AuthoritiesConfig
+
+      endpoint = AuthoritiesConfig['data.dri.ie']&.dig('endpoint')
+      return [] unless endpoint
+
+      client = DRI::Sparql::Client.new endpoint
       results = client.query dbpedia_query(transformed_uri)
 
       points = []
