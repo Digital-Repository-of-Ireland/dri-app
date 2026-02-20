@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: dacd1ce19a3dcc104a19c0e00278e1f6e6d917e5
-  branch: develop
+  revision: 313980b64cee0cb4f5855c2a2c999e84832a9d50
+  tag: v4.18.0
   specs:
     dri_data_models (4.18.0)
       hydra-derivatives
@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: e62528b9289189f8bf03bd0ae56b3fde36787b5f
-  branch: develop
+  revision: 5bb3ab993e5c01fd695830cf87fd031a4e300e2a
+  tag: v2.4.1
   specs:
-    user_group (2.4.1)
+    user_group (2.4.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -378,10 +378,10 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (4.9.4)
+    devise (5.0.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0)
+      railties (>= 7.0)
       responders
       warden (~> 1.2.3)
     devise-guests (0.8.3)
