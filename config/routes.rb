@@ -150,7 +150,7 @@ Rails.application.routes.draw do
     put 'objects/:id/status' => 'objects#status', as: :status_update
     get 'objects/:id/status' => 'objects#status', as: :status
 
-    get 'maps/:id' => 'maps#show', as: :maps
+    get 'maps/:id' => 'maps#show', as: :maps, constraints: lambda { |req| req.format == :js }
     #match 'timeline_json' => 'timeline#get', :via => :get
 
     put 'collections/:id/publish' => 'collections#publish', as: :publish

@@ -148,7 +148,7 @@ class CatalogController < ApplicationController
     config.add_sort_field "published_at_dttsi desc", label: "newest"
     config.add_sort_field "title_sorted_ssi asc", label: "title_A-Z"
     config.add_sort_field "title_sorted_ssi desc", label: "title_Z-A"
-    config.add_sort_field "id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
+    config.add_sort_field "identifier_si asc, id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
     config.add_sort_field "score desc, title_sorted_ssi asc", label: "relevance"
 
     # If there are more than this many search results, no spelling ("did you
