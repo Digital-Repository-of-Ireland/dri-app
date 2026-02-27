@@ -688,6 +688,7 @@ en:
         publisher: "[Publisher]"
         type: "[Type]"
         doi_sub_link: https://doi.org/
+        accessed: Accessed
       fields:
         Format: Format
         assets: Assets

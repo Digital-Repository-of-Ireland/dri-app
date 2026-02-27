@@ -59,7 +59,7 @@ ga:
         MovingImage: Físeán
         Sound: Fuaim
         Text: Téacs
-        3D: Tríthoiseach
+        3D: 3T
         Title: Cineálacha Meán
         Unknown: Anaithnid
         all: Gach
@@ -68,8 +68,8 @@ ga:
         committer: An Té a Chuir isteach
         in_collection: Sa mBailiúchán
         object_id: ID na hOibiachta
-        version_id: ID
-        event: Teagmhas 
+        version_id: ID an Leagain
+        event: Teagmhas
         updated_at: Nuashonraithe ag
       assets:
         preview: Réamhamharc
@@ -215,7 +215,7 @@ ga:
       browse: Taisclann DRI
       browse_collections: Brabhsáil de réir Sonraí & Bailiúcháin
       browse_organisations: Brabhsáil de réir Eagraíochta
-      member_orgs: Eagraíochtaí Ballraíochta
+      member_orgs: Eagraíochtaí Baill
       other_orgs: Eagraíochtaí Eile
       collection: Bailiúchán
       collections: Bailiúcháin
@@ -433,7 +433,7 @@ ga:
           timeline_display_field: Taispeáin oibiachtaí de réir
         links:
           add_documentation: Cuir doiciméadacht leis
-          add_documentation_xml: Uaslódáil
+          add_documentation_xml: Uaslódáil XML
           add_object: Cuir Oibiacht leis
           add_object_xml: Uaslódáil XML
           add_sub_collection: Cuir fo-bhailiúchán leis
@@ -526,7 +526,7 @@ ga:
           modified: Athrú
           modified_at: Dáta Modhnaithe
         links:
-          view_full_object: Amharc ar oibiacht
+          view_full_object: "<a href='%{url}'>Amharc ar an leagan is déanaí den oibiacht</a>"
         unavailable: 'Níl an oibiacht, tagartha ag an DOI seo, ar fáil. Má tá níos mó eolais uait le do thoil déan teagmháil le dri@ria.ie '
       exceptions:
         access_denied: Thriail tú oibríocht nach bhfuil cead agat a chur i bhfeidhm.
@@ -542,6 +542,13 @@ ga:
       export:
         headers:
           export_all_metadata: Easpórtáil gach meitashonraí
+      citation:
+        publisher_name: Taisclann Dhigiteach na hÉireann
+        depositor: "[Taisceoir]"
+        publisher: "[Foilsitheoir]"
+        type: "[Cineál]"
+        doi_sub_link: https://doi.org/
+        accessed: Rochtain
       fields:
         Format: Formáid
         assets: Sócmhainní

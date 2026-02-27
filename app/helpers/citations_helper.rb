@@ -11,7 +11,7 @@ module CitationsHelper
     # The TYPES array represents the hierarchy of types in line with Europeana practices.
     TYPES = ['Collection', '3D', 'Software', 'InteractiveResource', 'MovingImage', 'Sound', 'Dataset', 'Text', 'Image'].freeze
   end
-  ACCESS_DATE_STRING = "(Accessed: #{Time.current.strftime('%Y/%m/%d')})".freeze
+  ACCESS_DATE_STRING = "#{Time.current.strftime('%Y/%m/%d')}".freeze
 
   def export_as_apa_citation(object, doi = nil, depositing_institute = nil)
     render_citation(STYLE_AND_FORMAT[:apa], object, doi, depositing_institute)
@@ -128,7 +128,7 @@ module CitationsHelper
   end
 
   def add_current_date(citation_parts)
-    citation_parts << ACCESS_DATE_STRING
+    citation_parts << "(#{t('dri.views.citation.accessed')}: #{ACCESS_DATE_STRING})"
   end
 
   def extract_dates(dates)
