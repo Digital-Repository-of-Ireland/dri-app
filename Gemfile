@@ -32,7 +32,7 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'browse-everything'#, '~> 1.2.0'
+gem 'browse-everything', '1.5.0' 
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 gem 'roo'
@@ -163,8 +163,8 @@ end
 
 # analytics
 gem 'faraday'
-gem 'faraday_middleware'
-gem 'google-analytics-data-v1beta', '~> 0.8.0'
+gem 'faraday-httpclient', '~> 2.0'
+gem 'google-analytics-data-v1beta'
 gem 'google-oauth2-installed'
 
 gem 'rvm'

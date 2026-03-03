@@ -1,6 +1,6 @@
 class FetchTpDataJob
   require 'faraday'
-  require 'faraday_middleware'
+  require 'faraday/httpclient'
   require 'json'
 
   @queue = :fetch_tp_data

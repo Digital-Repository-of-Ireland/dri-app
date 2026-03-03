@@ -38,15 +38,15 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
-  revision: ad0f23dc7d653e6bffc5db652009a56b7fafe02d
+  revision: 8e7c751b3f0ca9d4b98cf19bba59c62cc26fbf19
   branch: main
   specs:
     dri_batch_ingest (1.5.0)
-      browse-everything (~> 1.0)
+      browse-everything
       filesize
       iconv
       kaminari
-      rails (> 6, < 8)
+      rails (> 6)
       resque
       rest-client (~> 2.0)
       roo
@@ -172,7 +172,7 @@ GEM
       activemodel (= 7.2.3)
       activesupport (= 7.2.3)
       timeout (>= 0.4.0)
-    activerecord-import (1.5.0)
+    activerecord-import (2.2.0)
       activerecord (>= 4.2)
     activestorage (7.2.3)
       actionpack (= 7.2.3)
@@ -192,16 +192,16 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    addressable (2.8.8)
+    addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
     appsignal (4.5.9)
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
-    autoprefixer-rails (10.4.19.0)
+    autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1212.0)
+    aws-partitions (1.1220.0)
     aws-sdk-core (3.242.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -210,7 +210,7 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.121.0)
+    aws-sdk-kms (1.122.0)
       aws-sdk-core (~> 3, >= 3.241.4)
       aws-sigv4 (~> 1.5)
     aws-sdk-s3 (1.213.0)
@@ -313,7 +313,7 @@ GEM
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (2.5.5)
+    connection_pool (3.0.2)
     crass (1.0.6)
     csl (2.0.0)
       namae (~> 1.0)
@@ -431,7 +431,7 @@ GEM
       scanf (~> 1.0)
       sxp (~> 1.3)
       unicode-types (~> 1.8)
-    erb (6.0.1)
+    erb (6.0.2)
     erubi (1.13.1)
     ethon (0.15.0)
       ffi (>= 1.15.0)
@@ -442,79 +442,72 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    faraday (1.10.5)
-      faraday-em_http (~> 1.0)
-      faraday-em_synchrony (~> 1.0)
-      faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0)
-      faraday-multipart (~> 1.0)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.0)
-      faraday-patron (~> 1.0)
-      faraday-rack (~> 1.0)
-      faraday-retry (~> 1.0)
-      ruby2_keywords (>= 0.0.4)
-    faraday-em_http (1.0.0)
-    faraday-em_synchrony (1.0.1)
-    faraday-excon (1.1.0)
+    faraday (2.14.1)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
-    faraday-httpclient (1.0.1)
+    faraday-httpclient (2.0.2)
+      httpclient (>= 2.2)
     faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (1.0.2)
-    faraday-net_http_persistent (1.2.0)
-    faraday-patron (1.0.0)
-    faraday-rack (1.0.0)
-    faraday-retry (1.0.3)
-    faraday_middleware (1.2.0)
-      faraday (~> 1.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
+    faraday-retry (2.4.0)
+      faraday (~> 2.0)
     fastimage (2.4.0)
     ffaker (2.23.0)
     ffi (1.17.3-x86_64-linux-gnu)
     filesize (0.2.0)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
-    gapic-common (0.20.0)
+    gapic-common (1.2.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
-      google-protobuf (~> 3.14)
-      googleapis-common-protos (>= 1.3.12, < 2.a)
-      googleapis-common-protos-types (>= 1.3.1, < 2.a)
-      googleauth (~> 1.0)
-      grpc (~> 1.36)
+      google-cloud-env (~> 2.2)
+      google-logging-utils (~> 0.1)
+      google-protobuf (~> 4.26)
+      googleapis-common-protos (~> 1.6)
+      googleapis-common-protos-types (~> 1.15)
+      googleauth (~> 1.12)
+      grpc (~> 1.66)
     gender_detector (2.0.0)
-    geocoder (1.8.2)
+    geocoder (1.8.6)
+      base64 (>= 0.1.0)
+      csv (>= 3.0.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    google-analytics-data-v1beta (0.8.1)
-      gapic-common (>= 0.19.1, < 2.a)
+    google-analytics-data-v1beta (0.19.1)
+      gapic-common (~> 1.2)
       google-cloud-errors (~> 1.0)
-    google-apis-core (0.18.0)
-      addressable (~> 2.5, >= 2.5.1)
-      googleauth (~> 1.9)
-      httpclient (>= 2.8.3, < 3.a)
-      mini_mime (~> 1.0)
-      mutex_m
+    google-apis-core (1.0.2)
+      addressable (~> 2.8, >= 2.8.7)
+      faraday (~> 2.13)
+      faraday-follow_redirects (~> 0.3)
+      googleauth (~> 1.14)
+      mini_mime (~> 1.1)
       representable (~> 3.0)
-      retriable (>= 2.0, < 4.a)
-    google-apis-drive_v3 (0.77.0)
+      retriable (~> 3.1)
+    google-apis-drive_v3 (0.78.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
-    google-cloud-errors (1.3.1)
+    google-cloud-errors (1.5.0)
     google-logging-utils (0.2.0)
     google-oauth2-installed (0.0.4)
       oauth2
-    google-protobuf (3.25.5-x86_64-linux)
-    googleapis-common-protos (1.4.0)
-      google-protobuf (~> 3.14)
-      googleapis-common-protos-types (~> 1.2)
-      grpc (~> 1.27)
-    googleapis-common-protos-types (1.9.0)
-      google-protobuf (~> 3.18)
-    googleauth (1.16.1)
+    google-protobuf (4.34.0-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    googleapis-common-protos (1.9.0)
+      google-protobuf (~> 4.26)
+      googleapis-common-protos-types (~> 1.21)
+      grpc (~> 1.41)
+    googleapis-common-protos-types (1.22.0)
+      google-protobuf (~> 4.26)
+    googleauth (1.16.2)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -522,7 +515,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.76.0-x86_64-linux-gnu)
+    grpc (1.78.1-x86_64-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     haml (6.3.0)
@@ -545,7 +538,7 @@ GEM
     http-cookie (1.1.0)
       domain_name (~> 0.5)
     http_accept_language (2.1.1)
-    httparty (0.24.0)
+    httparty (0.24.2)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -698,11 +691,12 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0203)
+    mime-types-data (3.2026.0224)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
-    minitest (6.0.1)
+    minitest (6.0.2)
+      drb (~> 2.0)
       prism (~> 1.5)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
@@ -723,8 +717,10 @@ GEM
       racc (~> 1.7)
     nest (3.2.0)
       redic
-    net-http-persistent (4.0.4)
-      connection_pool (~> 2.2)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
+    net-http-persistent (4.0.8)
+      connection_pool (>= 2.2.4, < 4)
     net-imap (0.6.3)
       date
       net-protocol
@@ -796,15 +792,15 @@ GEM
     psych (5.3.1)
       date
       stringio
-    public_suffix (7.0.2)
-    qa (5.13.0)
+    public_suffix (7.0.5)
+    qa (5.16.0)
       activerecord-import
       deprecation
       faraday (< 3.0, != 2.0.0)
       geocoder
       ldpath
       nokogiri (~> 1.6)
-      rails (>= 5.0, < 8.0)
+      rails (>= 6.0, < 8.2)
       rdf
     racc (1.8.1)
     rack (3.2.5)
@@ -842,8 +838,8 @@ GEM
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.2)
-      loofah (~> 2.21)
+    rails-html-sanitizer (1.7.0)
+      loofah (~> 2.25)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
@@ -979,7 +975,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (3.1.2)
+    retriable (3.2.1)
     rexml (3.4.4)
     riiif (2.6.0)
       deprecation (>= 1.0.0)
@@ -1056,8 +1052,8 @@ GEM
     sane_patch (1.0.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
-    sass-embedded (1.69.5-x86_64-linux-gnu)
-      google-protobuf (~> 3.23)
+    sass-embedded (1.97.3-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -1246,7 +1242,7 @@ DEPENDENCIES
   bootstrap-glyphicons
   bootstrap-switch-rails
   brakeman
-  browse-everything
+  browse-everything (= 1.5.0)
   byebug
   capybara
   citeproc-ruby
@@ -1267,11 +1263,11 @@ DEPENDENCIES
   execjs (= 2.7.0)
   factory_bot_rails
   faraday
-  faraday_middleware
+  faraday-httpclient (~> 2.0)
   ffaker
   font-awesome-sass (~> 6.7.2)
   gender_detector
-  google-analytics-data-v1beta (~> 0.8.0)
+  google-analytics-data-v1beta
   google-oauth2-installed
   health-monitor-rails
   high_voltage (~> 3.1)

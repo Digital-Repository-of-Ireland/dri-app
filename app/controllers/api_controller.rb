@@ -2,7 +2,6 @@
 #
 require 'solr/query'
 require 'faraday'
-require 'faraday_middleware'
 require 'json'
 
 class ApiController < CatalogController
