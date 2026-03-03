@@ -175,6 +175,8 @@ en:
         read_permission: You do not have permission to read this document.
         unknown_permission: 'Unsupported Permission Level: %{action}'
         virus_detected: 'Virus detected in uploaded file'
+        invalid_depositing_org: 'The Depositing Organisation you selected is invalid. Please set a Depositing Organisation via the "Manage Organisations" menu item.'
+        no_depositing_org: 'No Depositing Organisation was selected. Please set a Depositing Organisation via the "Manage Organisations" menu item.'
       error:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.
@@ -907,6 +909,7 @@ en:
           upload_file: Upload Asset
           upload_file_caption: No asset files have been uploaded. Please upload a master asset.
           view_collection: View Collection
+          depositing_org: Depositing Organisation
         links:
           cancel: Cancel
       pagination:

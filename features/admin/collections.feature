@@ -43,6 +43,40 @@ Scenario: Constructing a collection with invalid permissions
   And I press the button to "create a collection"
   Then I should see a failure message for invalid collection
 
+Scenario: Constructing a collection with a valid Depositing Org
+  Given I am on the home page
+  And a depositing organisation with name "test_organisation" exists
+  When I go to "create new collection"
+  And I enter valid metadata for a collection
+  And I fill in "depositing_institute" with "test_organisation"
+  And I check "deposit"
+  And I press the button to "create a collection"
+  Then I should see a success message for creating a collection
+  And I should not see a failure message for no depositing organisation
+  And I should not see a failure message for invalid depositing organisation
+  And I should see "test_organisation"
+
+Scenario: Constructing a collection with an invalid Depositing Org
+  Given I am on the home page
+  When I go to "create new collection"
+  And I enter valid metadata for a collection
+  And I fill in "depositing_institute" with "test_organisation"
+  And I check "deposit"
+  And I press the button to "create a collection"
+  Then I should see a success message for creating a collection
+  And I should see a failure message for invalid depositing organisation
+  And I should see "Depositing organisation not set"
+
+Scenario: Constructing a collection with no Depositing Org
+  Given I am on the home page
+  When I go to "create new collection"
+  And I enter valid metadata for a collection
+  And I check "deposit"
+  And I press the button to "create a collection"
+  Then I should see a success message for creating a collection
+  And I should see a failure message for no depositing organisation
+  And I should see "Depositing organisation not set
+
 Scenario: Constructing a collection (form focus)
   Given I am on the home page
   When I go to "create new collection"

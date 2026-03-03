@@ -1,0 +1,13 @@
+<h2><%= t('dri.views.objects.legends.depositing_org') %></h2>
+
+    <div class="dri_institutes_title mt-2">
+        <span><%= t('dri.views.collection.institute.associate_depositing') %></span>
+    </div>
+    <input id="depositing_institute", name="depositing_institute", list="depositing_org_list">
+    <datalist name="depositing_org_list" id="depositing_org_list">
+      <% @deposit_orgs.each do |institute| %>
+        <option value="<%= institute.name %>" label="<%= institute.name %>" title="<%= institute.name %>"><%= institute.name %></option>
+      <% end %>
+    </datalist>
+    <br/>
+
