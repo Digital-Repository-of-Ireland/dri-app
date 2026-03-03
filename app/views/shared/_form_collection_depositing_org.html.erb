@@ -5,8 +5,10 @@
     </div>
     <input id="depositing_institute", name="depositing_institute", list="depositing_org_list">
     <datalist name="depositing_org_list" id="depositing_org_list">
-      <% @deposit_orgs.each do |institute| %>
-        <option value="<%= institute.name %>" label="<%= institute.name %>" title="<%= institute.name %>"><%= institute.name %></option>
+      <% if @deposit_orgs.present? %>
+        <% @deposit_orgs.each do |institute| %>
+          <option value="<%= institute.name %>" label="<%= institute.name %>" title="<%= institute.name %>"><%= institute.name %></option>
+        <% end %>
       <% end %>
     </datalist>
     <br/>

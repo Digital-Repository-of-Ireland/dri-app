@@ -75,7 +75,7 @@ Scenario: Constructing a collection with no Depositing Org
   And I press the button to "create a collection"
   Then I should see a success message for creating a collection
   And I should see a failure message for no depositing organisation
-  And I should see "Depositing organisation not set
+  And I should see "Depositing organisation not set"
 
 Scenario: Constructing a collection (form focus)
   Given I am on the home page
