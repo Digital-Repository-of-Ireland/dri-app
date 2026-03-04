@@ -254,15 +254,10 @@ en:
         zip: Dublin 2
     headerlinks:
       user_profile:  Repository User Profile
-      newsletter: Newsletter
-      news_events: "News & Events"
-      about: About
-      about_dri: About DRI
       about_api: About the API
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
       batch_ingest: Batch Ingest
-      blog: Blog
       browse: DRI Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
@@ -274,7 +269,6 @@ en:
       deposit_guide: Guide to Deposit
       downloads: Downloads
       end_user_agreement: End User Agreement
-      events: Events
       guides: User Guides
       help: FAQ
       home: DRI Website
@@ -298,34 +292,15 @@ en:
       new_organisation: New Organisation
       object: Object
       objects: Objects
-      our_members: Our Members
-      our_work: Our Work
-      people: People
       privacy: 'Privacy & Cookies policy'
       privacy_statement: Privacy Statement
-      projects: Projects
-      publications: Publications
       reports: Reports
-      resources: Resources
       resque: Resque Server
       sub_collections: Sub-Collections
-      team: People
       usergroups: 'Users & Groups'
-      vacancies: Vacancies
       how_to_deposit: 'How to Deposit'
       workspace: Workspace
-      find_us: 'Contact'
-      research_data: Research Data Management
-      training: Training & Education
-      user_guides: DRI User Guides
-      early_career: DRI Early Career Research Award
-      networks: Collaborations & Networks
       themes: Themes
-      digipres: Digital Preservation
-      standards: Standards Adoption
-      fair: FAIR and Open Science
-      culturalheritage: Digital Cultural Heritage
-      dpassh: DPASSH Conference
       rda: Research Data Alliance
       amplifying_change: Amplifying Change
       archiving_reproductive_health: Archiving Reproductive Health
