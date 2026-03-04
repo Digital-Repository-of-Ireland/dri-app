@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '7.2.3'
 gem 'jsbundling-rails'
 
-gem 'blacklight', '7.38.0'
+gem 'blacklight', '7.41.0'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'kaminari', '>= 1.2.1'
