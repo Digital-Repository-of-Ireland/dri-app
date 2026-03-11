@@ -54,17 +54,18 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git
-  revision: 125a93b0c196b040b0f9d1843271ddfea2a7c7bb
+  revision: f08896c5ad3f8eb7e122854c4d60a5ec4da6a99c
   branch: af_optional
   specs:
-    hydra-derivatives (4.0.0)
+    hydra-derivatives (4.1.0)
       active-triples (>= 1.2)
-      active_encode (~> 1.2)
-      activesupport (>= 4.0, < 8.0)
-      addressable (~> 2.5)
+      active_encode
+      activesupport (>= 4.0, < 9.0)
+      addressable
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
+      ruby-vips
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/om.git
@@ -172,9 +173,10 @@ GEM
       activesupport (>= 3.0.0)
       rdf (>= 2.0.2, < 4.0)
       rdf-vocab (>= 2.0, < 4.0)
-    active_encode (1.3.0)
+    active_encode (2.0.0)
       addressable (~> 2.8)
       rails
+      retriable
     activejob (7.2.3)
       activesupport (= 7.2.3)
       globalid (>= 0.3.6)
@@ -686,7 +688,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0224)
+    mime-types-data (3.2026.0303)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
@@ -972,7 +974,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (3.2.1)
+    retriable (3.4.1)
     rexml (3.4.4)
     riiif (2.6.0)
       deprecation (>= 1.0.0)
@@ -1036,8 +1038,9 @@ GEM
     rubocop-rspec (2.11.1)
       rubocop (~> 1.19)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.1.4)
+    ruby-vips (2.3.0)
       ffi (~> 1.12)
+      logger
     ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     rvm (1.11.3.9)
@@ -1161,7 +1164,7 @@ GEM
       rack (>= 1, < 4)
     thor (1.5.0)
     tilt (2.7.0)
-    timeout (0.6.0)
+    timeout (0.6.1)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
     tzinfo (2.0.6)
