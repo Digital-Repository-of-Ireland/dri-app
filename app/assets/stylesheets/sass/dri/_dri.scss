@@ -3441,3 +3441,17 @@ img.dri_licence_logo,
 img.dri_copyright_logo{
     width: 88px;
 }
+
+.marker-cluster-xlarge {
+    background-color: rgba(253, 156, 115, 0.6);
+    border-radius: 30px !important;
+    }
+.marker-cluster-xlarge div {
+    background-color: rgba(241, 128, 23, 0.6);
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 25px !important;
+    }
+.marker-cluster-xlarge span {
+    line-height: 50px !important;
+}
