@@ -38,15 +38,15 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
-  revision: ad0f23dc7d653e6bffc5db652009a56b7fafe02d
+  revision: 8e7c751b3f0ca9d4b98cf19bba59c62cc26fbf19
   branch: main
   specs:
     dri_batch_ingest (1.5.0)
-      browse-everything (~> 1.0)
+      browse-everything
       filesize
       iconv
       kaminari
-      rails (> 6, < 8)
+      rails (> 6)
       resque
       rest-client (~> 2.0)
       roo
@@ -54,17 +54,18 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git
-  revision: 125a93b0c196b040b0f9d1843271ddfea2a7c7bb
+  revision: de3d1924881389e6487c780e850ada4c1b35f726
   branch: af_optional
   specs:
-    hydra-derivatives (4.0.0)
+    hydra-derivatives (4.1.0)
       active-triples (>= 1.2)
-      active_encode (~> 1.2)
-      activesupport (>= 4.0, < 8.0)
-      addressable (~> 2.5)
+      active_encode
+      activesupport (>= 4.0, < 9.0)
+      addressable
       deprecation
       mime-types (> 2.0, < 4.0)
       mini_magick (>= 3.2, < 5)
+      ruby-vips
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/om.git
@@ -82,6 +83,18 @@ GIT
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
     jstree-rails-4 (3.3.9)
+
+GIT
+  remote: https://github.com/samvera/browse-everything.git
+  revision: efb9aadb8fecb367749b92a7341c019db2a08cb3
+  specs:
+    browse-everything (2.0.0.alpha.2)
+      addressable (~> 2.5)
+      aws-sdk-s3
+      faraday (~> 2.0)
+      google-apis-drive_v3
+      googleauth (>= 0.6.6, < 2.0)
+      rails (>= 4.2, < 8.2)
 
 GIT
   remote: https://github.com/stkenny/avalon_ingest
@@ -158,11 +171,12 @@ GEM
       activesupport (>= 3.0.0)
       rdf (>= 2.0.2, < 4.0)
       rdf-vocab (>= 2.0, < 4.0)
-    active_encode (1.3.0)
+    active_encode (2.0.0)
       addressable (~> 2.8)
       rails
-    activejob (7.2.2.2)
-      activesupport (= 7.2.2.2)
+      retriable
+    activejob (7.2.3)
+      activesupport (= 7.2.3)
       globalid (>= 0.3.6)
     activemodel (7.2.2.2)
       activesupport (= 7.2.2.2)
@@ -170,7 +184,7 @@ GEM
       activemodel (= 7.2.2.2)
       activesupport (= 7.2.2.2)
       timeout (>= 0.4.0)
-    activerecord-import (1.5.0)
+    activerecord-import (2.2.0)
       activerecord (>= 4.2)
     activestorage (7.2.2.2)
       actionpack (= 7.2.2.2)
@@ -190,16 +204,16 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    addressable (2.8.8)
+    addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
     appsignal (4.5.9)
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
-    autoprefixer-rails (10.4.19.0)
+    autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1212.0)
+    aws-partitions (1.1220.0)
     aws-sdk-core (3.242.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
@@ -208,7 +222,7 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.121.0)
+    aws-sdk-kms (1.122.0)
       aws-sdk-core (~> 3, >= 3.241.4)
       aws-sigv4 (~> 1.5)
     aws-sdk-s3 (1.213.0)
@@ -222,7 +236,7 @@ GEM
       validatable (~> 1.6)
     base64 (0.3.0)
     bcp47_spec (0.2.1)
-    bcrypt (3.1.21)
+    bcrypt (3.1.22)
     benchmark (0.5.0)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
@@ -244,7 +258,7 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.38.0)
+    blacklight (7.41.0)
       deprecation
       globalid
       hashdiff
@@ -252,8 +266,9 @@ GEM
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 5.1, < 7.3)
-      view_component (>= 2.66, < 4)
+      rails (>= 6.1, < 8.1)
+      view_component (>= 2.74, < 4)
+      zeitwerk
     blacklight-access_controls (6.1.0)
       blacklight (> 6.0, < 9)
       cancancan (>= 1.8)
@@ -277,16 +292,6 @@ GEM
     bootstrap-switch-rails (3.3.5)
     brakeman (7.1.1)
       racc
-    browse-everything (1.5.0)
-      addressable (~> 2.5)
-      aws-sdk-s3
-      dropbox_api (>= 0.1.20)
-      google-apis-drive_v3
-      googleauth (>= 0.6.6, < 2.0)
-      rails (>= 4.2, < 8.1)
-      ruby-box
-      signet (~> 0.8)
-      typhoeus
     builder (3.3.0)
     byebug (12.0.0)
     cancancan (3.6.1)
@@ -311,7 +316,7 @@ GEM
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (2.5.5)
+    connection_pool (3.0.2)
     crass (1.0.6)
     csl (2.0.0)
       namae (~> 1.0)
@@ -319,41 +324,38 @@ GEM
     csl-styles (2.0.1)
       csl (~> 2.0)
     csv (3.3.5)
-    cucumber (8.0.0)
-      builder (~> 3.2, >= 3.2.4)
-      cucumber-ci-environment (~> 9.0, >= 9.0.4)
-      cucumber-core (~> 11.0, >= 11.0.0)
-      cucumber-cucumber-expressions (~> 15.1, >= 15.1.1)
-      cucumber-gherkin (~> 23.0, >= 23.0.1)
-      cucumber-html-formatter (~> 19.1, >= 19.1.0)
-      cucumber-messages (~> 18.0, >= 18.0.0)
-      diff-lcs (~> 1.5, >= 1.5.0)
-      mime-types (~> 3.4, >= 3.4.1)
-      multi_test (~> 1.1, >= 1.1.0)
-      sys-uname (~> 1.2, >= 1.2.2)
+    cucumber (10.2.0)
+      base64 (~> 0.2)
+      builder (~> 3.2)
+      cucumber-ci-environment (> 9, < 12)
+      cucumber-core (> 15, < 17)
+      cucumber-cucumber-expressions (> 17, < 20)
+      cucumber-html-formatter (> 21, < 23)
+      diff-lcs (~> 1.5)
+      logger (~> 1.6)
+      mini_mime (~> 1.1)
+      multi_test (~> 1.1)
+      sys-uname (~> 1.3)
     cucumber-api-steps (0.14.0)
       cucumber (>= 2.0.2)
       jsonpath (>= 0.1.2)
-    cucumber-ci-environment (9.2.0)
-    cucumber-core (11.0.0)
-      cucumber-gherkin (~> 23.0, >= 23.0.1)
-      cucumber-messages (~> 18.0, >= 18.0.0)
-      cucumber-tag-expressions (~> 4.1, >= 4.1.0)
-    cucumber-cucumber-expressions (15.2.0)
-    cucumber-gherkin (23.0.1)
-      cucumber-messages (~> 18.0, >= 18.0.0)
-    cucumber-html-formatter (19.2.0)
-      cucumber-messages (~> 18.0, >= 18.0.0)
-    cucumber-messages (18.0.0)
-    cucumber-rails (2.6.1)
-      capybara (>= 2.18, < 4)
-      cucumber (>= 3.2, < 9)
-      mime-types (~> 3.3)
-      nokogiri (~> 1.10)
-      railties (>= 5.0, < 8)
-      rexml (~> 3.0)
-      webrick (~> 1.7)
-    cucumber-tag-expressions (4.1.0)
+    cucumber-ci-environment (11.0.0)
+    cucumber-core (16.2.0)
+      cucumber-gherkin (> 36, < 40)
+      cucumber-messages (> 31, < 33)
+      cucumber-tag-expressions (> 6, < 9)
+    cucumber-cucumber-expressions (19.0.0)
+      bigdecimal
+    cucumber-gherkin (39.0.0)
+      cucumber-messages (>= 31, < 33)
+    cucumber-html-formatter (22.3.0)
+      cucumber-messages (> 23, < 33)
+    cucumber-messages (32.2.0)
+    cucumber-rails (4.0.0)
+      capybara (>= 3.25, < 4)
+      cucumber (>= 7, < 11)
+      railties (>= 6.1, < 9)
+    cucumber-tag-expressions (8.1.0)
     daemons (1.4.1)
     dartsass-rails (0.5.0)
       railties (>= 6.0.0)
@@ -376,7 +378,7 @@ GEM
     deep_merge (1.2.2)
     deprecation (1.1.0)
       activesupport
-    devise (5.0.2)
+    devise (5.0.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 7.0)
@@ -397,9 +399,6 @@ GEM
       dotenv (= 2.8.1)
       railties (>= 3.2)
     drb (2.2.3)
-    dropbox_api (0.1.21)
-      faraday (< 3.0)
-      oauth2 (~> 1.1)
     druid-tools (3.0.0)
     dry-core (1.2.0)
       concurrent-ruby (~> 1.0)
@@ -411,7 +410,7 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.1)
       zeitwerk (~> 2.6)
-    dry-struct (1.8.0)
+    dry-struct (1.8.1)
       dry-core (~> 1.1)
       dry-types (~> 1.8, >= 1.8.2)
       ice_nine (~> 0.11)
@@ -429,10 +428,8 @@ GEM
       scanf (~> 1.0)
       sxp (~> 1.3)
       unicode-types (~> 1.8)
-    erb (6.0.1)
+    erb (6.0.2)
     erubi (1.13.1)
-    ethon (0.15.0)
-      ffi (>= 1.15.0)
     eventmachine (1.2.7)
     execjs (2.7.0)
     factory_bot (6.5.0)
@@ -440,79 +437,72 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    faraday (1.10.5)
-      faraday-em_http (~> 1.0)
-      faraday-em_synchrony (~> 1.0)
-      faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0)
-      faraday-multipart (~> 1.0)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.0)
-      faraday-patron (~> 1.0)
-      faraday-rack (~> 1.0)
-      faraday-retry (~> 1.0)
-      ruby2_keywords (>= 0.0.4)
-    faraday-em_http (1.0.0)
-    faraday-em_synchrony (1.0.1)
-    faraday-excon (1.1.0)
-    faraday-follow_redirects (0.3.0)
+    faraday (2.14.1)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-follow_redirects (0.5.0)
       faraday (>= 1, < 3)
-    faraday-httpclient (1.0.1)
+    faraday-httpclient (2.0.2)
+      httpclient (>= 2.2)
     faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (1.0.2)
-    faraday-net_http_persistent (1.2.0)
-    faraday-patron (1.0.0)
-    faraday-rack (1.0.0)
-    faraday-retry (1.0.3)
-    faraday_middleware (1.2.0)
-      faraday (~> 1.0)
-    fastimage (2.4.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
+    faraday-retry (2.4.0)
+      faraday (~> 2.0)
+    fastimage (2.4.1)
     ffaker (2.23.0)
     ffi (1.17.3-x86_64-linux-gnu)
     filesize (0.2.0)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
-    gapic-common (0.20.0)
+    gapic-common (1.2.0)
       faraday (>= 1.9, < 3.a)
       faraday-retry (>= 1.0, < 3.a)
-      google-protobuf (~> 3.14)
-      googleapis-common-protos (>= 1.3.12, < 2.a)
-      googleapis-common-protos-types (>= 1.3.1, < 2.a)
-      googleauth (~> 1.0)
-      grpc (~> 1.36)
+      google-cloud-env (~> 2.2)
+      google-logging-utils (~> 0.1)
+      google-protobuf (~> 4.26)
+      googleapis-common-protos (~> 1.6)
+      googleapis-common-protos-types (~> 1.15)
+      googleauth (~> 1.12)
+      grpc (~> 1.66)
     gender_detector (2.0.0)
-    geocoder (1.8.2)
+    geocoder (1.8.6)
+      base64 (>= 0.1.0)
+      csv (>= 3.0.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    google-analytics-data-v1beta (0.8.1)
-      gapic-common (>= 0.19.1, < 2.a)
+    google-analytics-data-v1beta (0.19.1)
+      gapic-common (~> 1.2)
       google-cloud-errors (~> 1.0)
-    google-apis-core (0.18.0)
-      addressable (~> 2.5, >= 2.5.1)
-      googleauth (~> 1.9)
-      httpclient (>= 2.8.3, < 3.a)
-      mini_mime (~> 1.0)
-      mutex_m
+    google-apis-core (1.0.2)
+      addressable (~> 2.8, >= 2.8.7)
+      faraday (~> 2.13)
+      faraday-follow_redirects (~> 0.3)
+      googleauth (~> 1.14)
+      mini_mime (~> 1.1)
       representable (~> 3.0)
-      retriable (>= 2.0, < 4.a)
-    google-apis-drive_v3 (0.77.0)
+      retriable (~> 3.1)
+    google-apis-drive_v3 (0.78.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
-    google-cloud-errors (1.3.1)
+    google-cloud-errors (1.5.0)
     google-logging-utils (0.2.0)
     google-oauth2-installed (0.0.4)
       oauth2
-    google-protobuf (3.25.5-x86_64-linux)
-    googleapis-common-protos (1.4.0)
-      google-protobuf (~> 3.14)
-      googleapis-common-protos-types (~> 1.2)
-      grpc (~> 1.27)
-    googleapis-common-protos-types (1.9.0)
-      google-protobuf (~> 3.18)
-    googleauth (1.16.1)
+    google-protobuf (4.34.0-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    googleapis-common-protos (1.9.0)
+      google-protobuf (~> 4.26)
+      googleapis-common-protos-types (~> 1.21)
+      grpc (~> 1.41)
+    googleapis-common-protos-types (1.22.0)
+      google-protobuf (~> 4.26)
+    googleauth (1.16.2)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -520,7 +510,7 @@ GEM
       multi_json (~> 1.11)
       os (>= 0.9, < 2.0)
       signet (>= 0.16, < 2.a)
-    grpc (1.76.0-x86_64-linux-gnu)
+    grpc (1.78.1-x86_64-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     haml (6.3.0)
@@ -543,7 +533,7 @@ GEM
     http-cookie (1.1.0)
       domain_name (~> 0.5)
     http_accept_language (2.1.1)
-    httparty (0.24.0)
+    httparty (0.24.2)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -604,7 +594,7 @@ GEM
       railties (>= 3.1)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.18.1)
+    json (2.19.2)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -680,7 +670,7 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
-    loofah (2.25.0)
+    loofah (2.25.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.9.0)
@@ -696,11 +686,12 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0203)
+    mime-types-data (3.2026.0317)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
-    minitest (6.0.1)
+    minitest (6.0.2)
+      drb (~> 2.0)
       prism (~> 1.5)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
@@ -721,8 +712,10 @@ GEM
       racc (~> 1.7)
     nest (3.2.0)
       redic
-    net-http-persistent (4.0.4)
-      connection_pool (~> 2.2)
+    net-http (0.9.1)
+      uri (>= 0.11.1)
+    net-http-persistent (4.0.8)
+      connection_pool (>= 2.2.4, < 4)
     net-imap (0.6.3)
       date
       net-protocol
@@ -738,7 +731,7 @@ GEM
     noid-rails (3.3.0)
       actionpack (>= 5.0.0, < 9)
       noid (~> 0.9)
-    nokogiri (1.19.1-x86_64-linux-gnu)
+    nokogiri (1.19.2-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri-happymapper (0.9.0)
       nokogiri (~> 1.5)
@@ -753,12 +746,14 @@ GEM
       version_gem (~> 1.1, >= 1.1.9)
     oauth-tty (1.0.6)
       version_gem (~> 1.1, >= 1.1.9)
-    oauth2 (1.4.11)
-      faraday (>= 0.17.3, < 3.0)
-      jwt (>= 1.0, < 3.0)
-      multi_json (~> 1.3)
+    oauth2 (2.0.18)
+      faraday (>= 0.17.3, < 4.0)
+      jwt (>= 1.0, < 4.0)
+      logger (~> 1.2)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
+      snaky_hash (~> 2.0, >= 2.0.3)
+      version_gem (~> 1.1, >= 1.1.9)
     omniauth (2.1.4)
       hashie (>= 3.4.6)
       logger
@@ -794,15 +789,15 @@ GEM
     psych (5.3.1)
       date
       stringio
-    public_suffix (7.0.2)
-    qa (5.13.0)
+    public_suffix (7.0.5)
+    qa (5.16.0)
       activerecord-import
       deprecation
       faraday (< 3.0, != 2.0.0)
       geocoder
       ldpath
       nokogiri (~> 1.6)
-      rails (>= 5.0, < 8.0)
+      rails (>= 6.0, < 8.2)
       rdf
     racc (1.8.1)
     rack (3.2.5)
@@ -840,13 +835,13 @@ GEM
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.6.2)
-      loofah (~> 2.21)
+    rails-html-sanitizer (1.7.0)
+      loofah (~> 2.25)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_cloudflare_turnstile (0.4.4)
+    rails_cloudflare_turnstile (0.5.0)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
     railties (7.2.2.2)
@@ -975,7 +970,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (3.1.2)
+    retriable (3.4.1)
     rexml (3.4.4)
     riiif (2.6.0)
       deprecation (>= 1.0.0)
@@ -1038,22 +1033,18 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
     rubocop-rspec (2.11.1)
       rubocop (~> 1.19)
-    ruby-box (1.15.0)
-      addressable
-      json
-      multipart-post
-      oauth2
     ruby-progressbar (1.13.0)
-    ruby-vips (2.1.4)
+    ruby-vips (2.3.0)
       ffi (~> 1.12)
+      logger
     ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     rvm (1.11.3.9)
     sane_patch (1.0.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
-    sass-embedded (1.69.5-x86_64-linux-gnu)
-      google-protobuf (~> 3.23)
+    sass-embedded (1.97.3-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -1153,7 +1144,7 @@ GEM
       matrix (~> 0.4)
       rdf (~> 3.3)
     syntax (1.2.2)
-    sys-uname (1.4.1)
+    sys-uname (1.5.0)
       ffi (~> 1.1)
       memoist3 (~> 1.0.0)
     syslog-logger (1.6.8)
@@ -1169,11 +1160,9 @@ GEM
       rack (>= 1, < 4)
     thor (1.5.0)
     tilt (2.7.0)
-    timeout (0.6.0)
+    timeout (0.6.1)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
-    typhoeus (1.5.0)
-      ethon (>= 0.9.0, < 0.16.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -1234,7 +1223,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 5)
-  blacklight (= 7.38.0)
+  blacklight (= 7.41.0)
   blacklight-maps (= 1.2.0)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider (~> 7.0, >= 7.0.2)
@@ -1242,7 +1231,7 @@ DEPENDENCIES
   bootstrap-glyphicons
   bootstrap-switch-rails
   brakeman
-  browse-everything
+  browse-everything!
   byebug
   capybara
   citeproc-ruby
@@ -1264,11 +1253,11 @@ DEPENDENCIES
   execjs (= 2.7.0)
   factory_bot_rails
   faraday
-  faraday_middleware
+  faraday-httpclient (~> 2.0)
   ffaker
   font-awesome-sass (~> 6.7.2)
   gender_detector
-  google-analytics-data-v1beta (~> 0.8.0)
+  google-analytics-data-v1beta
   google-oauth2-installed
   health-monitor-rails
   high_voltage (~> 3.1)
@@ -1344,6 +1333,7 @@ DEPENDENCIES
   unicode
   user_group!
   view_component (< 3)
+  webrick
   yard
 
 BUNDLED WITH

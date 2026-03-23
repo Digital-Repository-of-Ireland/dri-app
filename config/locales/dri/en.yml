@@ -175,10 +175,12 @@ en:
         read_permission: You do not have permission to read this document.
         unknown_permission: 'Unsupported Permission Level: %{action}'
         virus_detected: 'Virus detected in uploaded file'
+        invalid_depositing_org: 'The Depositing Organisation you selected is invalid. Please set a Depositing Organisation via the "Manage Organisations" menu item.'
+        no_depositing_org: 'No Depositing Organisation was selected. Please set a Depositing Organisation via the "Manage Organisations" menu item.'
       error:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.
-        exporting: "Error submitting 'export' background job."
+        exporting: "Error submitting 'export' background task."
         locked: This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information.
         manager_user_invalid: 'User %{email} does not exist, please have the user create an account first.'
         manager_user_permission: You do not have permission to create a Collection Manager
@@ -252,15 +254,10 @@ en:
         zip: Dublin 2
     headerlinks:
       user_profile:  Repository User Profile
-      newsletter: Newsletter
-      news_events: "News & Events"
-      about: About
-      about_dri: About DRI
       about_api: About the API
       about_dri_lifecycle: DRI Lifecycle
       admin: Admin
       batch_ingest: Batch Ingest
-      blog: Blog
       browse: DRI Repository
       browse_collections: Browse by Data & Collections
       browse_organisations: Browse by Organisation
@@ -272,7 +269,6 @@ en:
       deposit_guide: Guide to Deposit
       downloads: Downloads
       end_user_agreement: End User Agreement
-      events: Events
       guides: User Guides
       help: FAQ
       home: DRI Website
@@ -287,7 +283,6 @@ en:
       membership: DRI Membership
       membership_link: 'https://www.dri.ie/membership'
       community_archive: Community Archive Scheme
-      heritage_week_2020: HeritageWeek2020
       my_collections: My Collections
       search_my_collections: Search My Collections
       my_tasks: Background Tasks
@@ -296,45 +291,14 @@ en:
       new_organisation: New Organisation
       object: Object
       objects: Objects
-      our_members: Our Members
-      our_work: Our Work
-      people: People
       privacy: 'Privacy & Cookies policy'
       privacy_statement: Privacy Statement
-      projects: Projects
-      publications: Publications
       reports: Reports
-      resources: Resources
       resque: Resque Server
       sub_collections: Sub-Collections
-      team: People
       usergroups: 'Users & Groups'
-      vacancies: Vacancies
       how_to_deposit: 'How to Deposit'
       workspace: Workspace
-      find_us: 'Contact'
-      research_data: Research Data Management
-      training: Training & Education
-      user_guides: DRI User Guides
-      early_career: DRI Early Career Research Award
-      networks: Collaborations & Networks
-      themes: Themes
-      digipres: Digital Preservation
-      standards: Standards Adoption
-      fair: FAIR and Open Science
-      culturalheritage: Digital Cultural Heritage
-      dpassh: DPASSH Conference
-      rda: Research Data Alliance
-      amplifying_change: Amplifying Change
-      archiving_reproductive_health: Archiving Reproductive Health
-      inspiring_ireland: Inspiring Ireland
-      projects_archive: Projects Archive
-      allea: ALLEA
-      oecd: OECD
-      dpc: DPC
-      norf: NORF
-      europeana: Europeana
-      committees: Conferences & Committees
     help:
       add_documentation_help_text: These objects appear in the Related Materials section of the collection page.
       add_documentation_help_title: Add contextual information
@@ -457,7 +421,6 @@ en:
       back: "< Back"
       catalog:
         buttons:
-          catalog: catalog
           clear_all_bookmarks: Clear All Bookmarks
           clear_all_saved_searches: Clear All Saved Searches
           clear_search_facet_list: Clear All
@@ -688,6 +651,7 @@ en:
         publisher: "[Publisher]"
         type: "[Type]"
         doi_sub_link: https://doi.org/
+        accessed: Accessed
       fields:
         Format: Format
         assets: Assets
@@ -773,16 +737,10 @@ en:
         collection_mgr: "%{licence} - this licence will be set on objects in this collection unless overridden"
         not_licensed_re-use: Not licensed for re-use
         see_additional_licence: See Additional Licence and Rights Information.
-        all_rights_reserved: All Rights Reserved
         public_domain_text: Work is in the Public Domain
-        public_domain: Public Domain
         unlicenced: This work is in copyright but not licenced for reuse.
         orphan_work_text: "This Item has been identified as an orphan work in the country of first publication and in line with Directive 2012/28/EU of the European Parliament and of the Council of 25 October 2012 on certain permitted uses of orphan works. For this Item, either (a) no rights-holder(s) have been identified or (b) one or more rights-holder(s) have been identified but none have been located even though a diligent search for the rights-holder(s) has been conducted. The results of the diligent search are available in the EU Orphan Works Database."
-        orphan_work: Orphan Work
         educational_use_text: "This Item is protected by copyright and/or related rights, however, no permission is required from the rights-holder(s) for educational uses. For other uses, you need to obtain permission from the rights-holder(s)."
-        educational_use: Educational Use
-        open_covid: Open COVID Licence 1.1
-        open_covid_text: You have the right to make, have made, use, sell, and import any patented invention, and reproduce, adapt, translate, distribute, perform, display, modify, create derivative works of and otherwise exploit any copyrights, solely for the purpose of diagnosing, preventing, containing, and treating COVID-19.
         more_info: "For more information see the Rights Statement above or visit <a href='%{url}' class='inline' target='_blank'>%{url}</a>."
         buttons:
           edit: Edit Licence
@@ -906,6 +864,7 @@ en:
           upload_file: Upload Asset
           upload_file_caption: No asset files have been uploaded. Please upload a master asset.
           view_collection: View Collection
+          depositing_org: Depositing Organisation
         links:
           cancel: Cancel
       pagination:

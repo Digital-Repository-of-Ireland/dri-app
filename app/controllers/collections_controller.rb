@@ -60,7 +60,9 @@ class CollectionsController < BaseObjectsController
     @object.creation_date = ['']
     @object.rights = ['']
     @object.type = ['Collection']
-    
+   
+    @deposit_orgs = Institute.where(depositing: true).order('name asc')
+ 
     supported_licences
     supported_copyrights
 
@@ -407,6 +409,17 @@ class CollectionsController < BaseObjectsController
       dataset = params[:digital_object][:dataset].presence || 'Organization'
 
       @object.visibility = visibility_label(@object.read_groups_string)
+
+      # if a valid depositing org was set add it to the object
+      deposit_org = params[:depositing_institute]
+      if deposit_org.blank?
+        flash[:alert] = t('dri.flash.alert.no_depositing_org')
+      elsif !Institute.exists?(depositing: true, name: deposit_org)
+        flash[:alert] = t('dri.flash.alert.invalid_depositing_org')
+      else
+        @object.institute.push(deposit_org)
+        @object.depositing_institute = deposit_org
+      end
 
       # depositor is not submitted as part of the form
       @object.depositor = current_user.to_s

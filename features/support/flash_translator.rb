@@ -86,6 +86,12 @@ module FlashTranslator
       when /^editing a published object$/
         I18n.t('dri.flash.alert.doi_published_warning', locale: @user.locale)
 
+      when /^no depositing organisation$/
+        I18n.t('dri.flash.alert.no_depositing_org', locale: @user.locale)
+
+      when /^invalid depositing organisation$/
+        I18n.t('dri.flash.alert.invalid_depositing_org', locale: @user.locale)
+
       else "Unknown"
 
     end

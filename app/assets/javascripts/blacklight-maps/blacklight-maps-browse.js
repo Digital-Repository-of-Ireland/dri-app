@@ -48,14 +48,19 @@
           childCount += markers[i].feature.properties.hits;
         }
         var c = ' marker-cluster-';
+        pointSize = 40;
         if (childCount < 10) {
           c += 'small';
         } else if (childCount < 100) {
           c += 'medium';
-        } else {
+        } else if (childCount < 10000) {
           c += 'large';
+        } else {
+          c += 'xlarge';
+          pointSize = 60;
         }
-        return new L.divIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+
+        return new L.divIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(pointSize, pointSize) });
       };
     } else {
       var clusterIconFunction = this._defaultIconCreateFunction;

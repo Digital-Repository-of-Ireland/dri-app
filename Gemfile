@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '7.2.3'
 gem 'jsbundling-rails'
 
-gem 'blacklight', '7.38.0'
+gem 'blacklight', '7.41.0'
 gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'kaminari', '>= 1.2.1'
@@ -32,7 +32,7 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'browse-everything'#, '~> 1.2.0'
+gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
 gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
 gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
 gem 'roo'
@@ -113,6 +113,7 @@ group :development, :test do
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false
   gem 'thin'
+  gem 'webrick'
   # gem 'ci_reporter_rspec'
   gem 'byebug'
   gem 'parallel_tests'
@@ -163,8 +164,8 @@ end
 
 # analytics
 gem 'faraday'
-gem 'faraday_middleware'
-gem 'google-analytics-data-v1beta', '~> 0.8.0'
+gem 'faraday-httpclient', '~> 2.0'
+gem 'google-analytics-data-v1beta'
 gem 'google-oauth2-installed'
 
 gem 'rvm'

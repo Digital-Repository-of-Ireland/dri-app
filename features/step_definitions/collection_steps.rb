@@ -196,6 +196,14 @@ Given /^the (object|collection)(?: with pid "([^\"]+)")? is reviewed$/ do |_, ob
   object.save
 end
 
+Given /^a depositing organisation with name "(.*?)" exists$/ do |institute_name|
+  institute = Institute.new(name: institute_name, url: "http://www.dri.ie", depositing: true)
+
+  logo = Rack::Test::UploadedFile.new(File.join(cc_fixture_path, "sample_logo.png"), "image/png")
+  institute.store_logo(logo)
+  institute.save
+end
+
 When /^I create a Digital Object in the collection "(.*?)"$/ do |collection_pid|
   steps %{
     When I go to the "collection" "show" page for "#{collection_pid}"
