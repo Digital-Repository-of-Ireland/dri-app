@@ -22,7 +22,6 @@
     $.extend(options, this.data());
 
     var mapped_items = '<span class="mapped-count"><span class="badge bg-secondary">' + geojson_docs.features.length + '</span>' + ' location' + (geojson_docs.features.length !== 1 ? 's' : '') + ' mapped</span>';
-
     var mapped_caveat = '<span class="mapped-caveat">Only items with location data are shown below</span>';
 
     var sortAndPerPage = $('#sortAndPerPage');
@@ -33,10 +32,10 @@
     if (sortAndPerPage.length) { // catalog#index and #map view
       var page_links = sortAndPerPage.find('.page-links');
       var result_count = page_links.find('.page-entries').find('strong').last().html();
-      page_links.html('<span class="page-entries"><strong>' + result_count + '</strong> items found</span>' + mapped_items + mapped_caveat);
+      page_links.html('<span class="page-entries"><strong>' + result_count + '</strong> items found</span>' + mapped_items + mapped_caveat + '<div id="map-progress"><div id="map-progress-bar"></div></div>');
       sortAndPerPage.find('.dropdown-toggle').hide();
     } else { // catalog#show view
-        $(this).before(mapped_items);
+        $(this).before(mapped_items + '<div id="map-progress"><div id="map-progress-bar"></div></div>');
     }
 
     // determine whether to use item location or result count in cluster icon display
@@ -66,6 +65,22 @@
       var clusterIconFunction = this._defaultIconCreateFunction;
     }
 
+    var progress = document.getElementById('map-progress');
+    var progressBar = document.getElementById('map-progress-bar');
+
+    function updateProgressBar(processed, total, elapsed, layersArray) {
+      if (elapsed > 1000) {
+        // if it takes more than a second to load, display the progress bar:
+        progress.style.display = 'block';
+        progressBar.style.width = Math.round(processed/total*100) + '%';
+      }
+
+      if (processed === total) {
+        // all markers processed - hide the progress bar:
+        progress.style.display = 'none';
+      }
+    }
+
     // Display the map
     this.each(function() {
       options.id = this.id;
@@ -83,7 +98,8 @@
       // Create a marker cluster object and set options
       markers = new L.MarkerClusterGroup({
         singleMarkerMode: options.singlemarkermode,
-        iconCreateFunction: clusterIconFunction
+        iconCreateFunction: clusterIconFunction,
+        chunkedLoading: true, chunkProgress: updateProgressBar
       });
 
       geoJsonLayer = L.geoJson(geojson_docs, {
@@ -202,7 +218,7 @@
 
     // remove stale params, add new params, and run a new search
     function _search() {
-      var params = filterParams(['view', 'spatial_search_type', 'coordinates', 'f%5B' + options.placenamefield + '%5D%5B%5D']),
+      var params = filterParams(['page', 'view', 'spatial_search_type', 'coordinates', 'f%5B' + options.placenamefield + '%5D%5B%5D']),
           bounds = map.getBounds().toBBoxString().split(',').map(function(coord) {
             if (parseFloat(coord) > 180) {
               coord = '180'
