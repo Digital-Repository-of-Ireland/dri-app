@@ -21,7 +21,6 @@
 		<%= stylesheet_link_tag "dri/dri_print", media: "print" %>
     <%= javascript_include_tag "custom" %>
     <%= javascript_include_tag "viewers" %>
-    <%= javascript_importmap_tags %>
     <%= csrf_meta_tags %>
 		<%= content_for(:head) %>
 
@@ -37,7 +36,7 @@
 		
 			<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
 			<%# - check below is to see if a facet or text query exists %>
-			<% if query_has_constraints? && has_constraint_params? %>
+			<% if has_constraint_params? %>
 			  <%= render 'constraints' %>
 			<% end %>
 
