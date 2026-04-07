@@ -22,8 +22,4 @@ module ConstraintsHelper
       super(facet, values, localized_params)
     end
   end
-
-  def query_has_constraints?(localized_params = params)
-    true #!((localized_params[:q].blank? || localized_params[:q_ws].blank?) and localized_params[:f].blank?)
-  end
 end
