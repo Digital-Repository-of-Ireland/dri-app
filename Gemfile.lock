@@ -211,8 +211,6 @@ GEM
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
-    autoprefixer-rails (10.4.21.0)
-      execjs (~> 2)
     aws-eventstream (1.4.0)
     aws-partitions (1.1220.0)
     aws-sdk-core (3.242.0)
@@ -284,8 +282,7 @@ GEM
       blacklight (~> 7.0)
       oai (~> 1.2)
       rexml
-    bootstrap (5.3.2)
-      autoprefixer-rails (>= 9.1.0)
+    bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
     bootstrap-glyphicons (0.0.1)
       railties (>= 3.0)
@@ -361,9 +358,9 @@ GEM
     dartsass-rails (0.5.0)
       railties (>= 6.0.0)
       sass-embedded (~> 1.63)
-    dartsass-sprockets (3.1.0)
+    dartsass-sprockets (3.2.1)
       railties (>= 4.0.0)
-      sassc-embedded (~> 1.69)
+      sassc-embedded (~> 1.80.1)
       sprockets (> 3.0)
       sprockets-rails
       tilt
@@ -494,7 +491,7 @@ GEM
     google-logging-utils (0.2.0)
     google-oauth2-installed (0.0.4)
       oauth2
-    google-protobuf (4.34.0-x86_64-linux-gnu)
+    google-protobuf (4.34.1-x86_64-linux-gnu)
       bigdecimal
       rake (~> 13.3)
     googleapis-common-protos (1.9.0)
@@ -799,12 +796,12 @@ GEM
       rails (>= 6.0, < 8.2)
       rdf
     racc (1.8.1)
-    rack (3.2.5)
+    rack (3.2.6)
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
-    rack-session (2.1.1)
+    rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rack-test (2.2.0)
@@ -1043,15 +1040,15 @@ GEM
     sane_patch (1.0.0)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
-    sass-embedded (1.97.3-x86_64-linux-gnu)
+    sass-embedded (1.98.0-x86_64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
     sassc (2.4.0)
       ffi (~> 1.9)
-    sassc-embedded (1.69.1)
-      sass-embedded (~> 1.69)
+    sassc-embedded (1.80.8)
+      sass-embedded (~> 1.80)
     scanf (1.0.0)
     securerandom (0.4.1)
     seedbank (0.5.0)
@@ -1227,7 +1224,7 @@ DEPENDENCIES
   blacklight-maps (= 1.2.0)
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider (~> 7.0, >= 7.0.2)
-  bootstrap (= 5.3.2)
+  bootstrap (~> 5.3)
   bootstrap-glyphicons
   bootstrap-switch-rails
   brakeman

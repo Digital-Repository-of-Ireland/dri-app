@@ -152,7 +152,7 @@ end
 # To use debugger
 # gem 'debugger'
 
-gem 'bootstrap', '5.3.2'
+gem 'bootstrap', '~> 5.3'
 gem 'bootstrap-glyphicons'
 gem 'font-awesome-sass', "~> 6.7.2"
 gem 'jwt', '1.5.2'

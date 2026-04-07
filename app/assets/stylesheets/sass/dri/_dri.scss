@@ -3455,3 +3455,20 @@ img.dri_copyright_logo{
 .marker-cluster-xlarge span {
     line-height: 50px !important;
 }
+
+#map-progress {
+    display: none;
+    width: 200px;
+    height: 20px;
+    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#map-progress-bar {
+    width: 0;
+    height: 100%;
+    background-color: #76A6FC;
+    border-radius: 4px;
+}
