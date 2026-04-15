@@ -10,7 +10,6 @@ class BaseObjectsController < CatalogController
   protected
 
     def create_params
-      #params.permit(:metadata_file, :governing_collection_id, :authenticity_token, :ingest_metadata)
       params.fetch(:digital_object, {}).permit!
     end
 

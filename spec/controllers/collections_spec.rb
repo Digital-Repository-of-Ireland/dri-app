@@ -247,7 +247,7 @@ describe CollectionsController do
 
       DataciteDoi.create(object_id: @collection.alternate_id)
 
-      expect(Resque).to receive(:enqueue).once
+      expect(Resque).to receive(:enqueue).with(MintDoiJob, 2)
       params = {}
 
       params[:digital_object] = {}
@@ -290,7 +290,7 @@ describe CollectionsController do
 
       DataciteDoi.create(object_id: @collection.alternate_id)
 
-      expect(Resque).to_not receive(:enqueue)
+      expect(Resque).to_not receive(:enqueue).with(MintDoiJob, 2)
       params = {}
       params[:digital_object] = {}
       params[:digital_object][:title] = ["A collection"]

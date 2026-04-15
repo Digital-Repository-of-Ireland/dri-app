@@ -155,6 +155,12 @@ class CollectionsController < BaseObjectsController
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve(['descMetadata'])
 
+        begin
+          Resque.enqueue(UpdateAncestorsJob, @object.alternate_id)
+        rescue Exception => e
+          logger.error "Unable to submit update job: #{e.message}"
+        end
+
         flash[:notice] = t('dri.flash.notice.updated')
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
         format.json { render json: @object }

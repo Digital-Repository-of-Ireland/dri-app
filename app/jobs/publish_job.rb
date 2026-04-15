@@ -15,7 +15,7 @@ class PublishJob
     # excluding sub-collections
     f_query = "is_collection_ssi:false"
 
-    completed, failed = set_as_published(collection_id, user, q_str, f_query)
+    set_as_published(collection_id, user, q_str, f_query)
 
     ident = DRI::Identifier.find_by!(alternate_id: collection_id)
     collection = ident.identifiable
@@ -53,9 +53,6 @@ class PublishJob
     total_objects = Solr::Query.new(q_str, 100, { fq: f_query }).count
 
     query = Solr::Query.new(q_str, 100, fq: f_query)
-
-    completed = 0
-    failed = 0
 
     while query.has_more?
       collection_objects = query.pop
