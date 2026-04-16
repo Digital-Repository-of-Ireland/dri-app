@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: dacd1ce19a3dcc104a19c0e00278e1f6e6d917e5
-  branch: develop
+  revision: 313980b64cee0cb4f5855c2a2c999e84832a9d50
+  tag: v4.18.0
   specs:
     dri_data_models (4.18.0)
       hydra-derivatives
@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: e62528b9289189f8bf03bd0ae56b3fde36787b5f
-  branch: develop
+  revision: 5bb3ab993e5c01fd695830cf87fd031a4e300e2a
+  tag: v2.4.1
   specs:
-    user_group (2.4.1)
+    user_group (2.4.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -54,7 +54,7 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git
-  revision: f08896c5ad3f8eb7e122854c4d60a5ec4da6a99c
+  revision: de3d1924881389e6487c780e850ada4c1b35f726
   branch: af_optional
   specs:
     hydra-derivatives (4.1.0)
@@ -409,7 +409,7 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.1)
       zeitwerk (~> 2.6)
-    dry-struct (1.8.0)
+    dry-struct (1.8.1)
       dry-core (~> 1.1)
       dry-types (~> 1.8, >= 1.8.2)
       ice_nine (~> 0.11)
@@ -427,7 +427,7 @@ GEM
       scanf (~> 1.0)
       sxp (~> 1.3)
       unicode-types (~> 1.8)
-    erb (6.0.2)
+    erb (6.0.3)
     erubi (1.13.1)
     eventmachine (1.2.7)
     execjs (2.7.0)
@@ -450,9 +450,9 @@ GEM
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
-    fastimage (2.4.0)
+    fastimage (2.4.1)
     ffaker (2.23.0)
-    ffi (1.17.3-x86_64-linux-gnu)
+    ffi (1.17.4-x86_64-linux-gnu)
     filesize (0.2.0)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
@@ -593,7 +593,7 @@ GEM
       railties (>= 3.1)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.19.2)
+    json (2.19.3)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -685,7 +685,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0303)
+    mime-types-data (3.2026.0414)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
@@ -696,13 +696,12 @@ GEM
       nokogiri
       nokogiri-happymapper
     mono_logger (1.1.2)
-    multi_json (1.19.1)
+    multi_json (1.20.1)
     multi_test (1.1.0)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
-    mustermann (3.0.4)
-      ruby2_keywords (~> 0.0.1)
+    mustermann (3.1.1)
     mutex_m (0.3.0)
     mysql2 (0.5.5)
     namae (1.2.0)
@@ -838,7 +837,7 @@ GEM
     rails-i18n (7.0.8)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
-    rails_cloudflare_turnstile (0.4.4)
+    rails_cloudflare_turnstile (0.5.0)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
     railties (7.2.3.1)
@@ -852,7 +851,7 @@ GEM
       tsort (>= 0.2)
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
-    rake (13.3.1)
+    rake (13.4.2)
     rb-fsevent (0.11.2)
     rb-gravatar (1.0.7)
     rb-inotify (0.10.1)
@@ -1036,7 +1035,6 @@ GEM
     ruby-vips (2.3.0)
       ffi (~> 1.12)
       logger
-    ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     rvm (1.11.3.9)
     sane_patch (1.0.0)
