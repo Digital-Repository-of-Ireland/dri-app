@@ -17,8 +17,6 @@ class PublishCollectionJob
 
     f_query = "is_collection_ssi:true"
 
-    job_ids = []
-
     query = Solr::Query.new(q_str, 100, fq: f_query)
     while query.has_more?
       subcollection_objects = query.pop
