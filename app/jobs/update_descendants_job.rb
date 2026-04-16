@@ -1,4 +1,4 @@
-class UpdateAncestorsJob
+class UpdateDescendantsJob
   @queue = :update
   
   def self.perform(collection_id)
@@ -6,7 +6,7 @@ class UpdateAncestorsJob
     sub_collection_update_jobs(collection_id)
 
     # review direct child objects of this collection
-    Resque.enqueue(UpdateAncestorJob, collection_id)
+    Resque.enqueue(UpdateGovernedItemsJob, collection_id)
   end
 
   def self.sub_collection_update_jobs(collection_id)
@@ -18,7 +18,7 @@ class UpdateAncestorsJob
       subcollection_objects = query.pop
 
       subcollection_objects.each do |subcoll|
-        Resque.enqueue(UpdateAncestorJob, subcoll['id'])
+        Resque.enqueue(UpdateGovernedItemsJob, subcoll['id'])
       end
     end
   end

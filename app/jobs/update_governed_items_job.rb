@@ -1,4 +1,4 @@
-class UpdateAncestorJob
+class UpdateGovernedItemsJob
   @queue = :update
 
   def self.perform(collection_id)

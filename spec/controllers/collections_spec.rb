@@ -191,6 +191,96 @@ describe CollectionsController do
       @collection.destroy
     end
 
+    it 'should update ancestors when title updated' do
+      @collection = DRI::DigitalObject.with_standard :qdc
+      @collection[:title] = ["A collection"]
+      @collection[:description] = ["This is a Collection"]
+      @collection[:creator] = [@login_user.email]
+      @collection[:rights] = ["This is a statement about the rights associated with this object"]
+      @collection[:publisher] = ["RnaG"]
+      @collection[:resource_type] = ["Collection"]
+      @collection[:creation_date] = ["1916-01-01"]
+      @collection[:published_date] = ["1916-04-01"]
+      @collection[:status] = "draft"
+      @collection.save
+
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(['descMetadata'])
+
+      @subcollection = DRI::DigitalObject.with_standard :qdc
+      @subcollection[:title] = ["A sub collection"]
+      @subcollection[:description] = ["This is a sub-collection"]
+      @subcollection[:creator] = [@login_user.email]
+      @subcollection[:rights] = ["This is a statement about the rights associated with this object"]
+      @subcollection[:publisher] = ["RnaG"]
+      @subcollection[:resource_type] = ["Collection"]
+      @subcollection[:creation_date] = ["1916-01-01"]
+      @subcollection[:published_date] = ["1916-04-01"]
+      @subcollection[:status] = "draft"
+      @subcollection.save
+
+      preservation = Preservation::Preservator.new(@subcollection)
+      preservation.preserve(['descMetadata'])
+
+      @collection.governed_items << @subcollection
+      @collection.reload
+      @subcollection.reload
+
+      params = {}
+      params[:digital_object] = {}
+      params[:digital_object][:title] = ["A modified collection title"]
+
+      expect(Resque).to receive(:enqueue).with(UpdateDescendantsJob, @collection.alternate_id)
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
+      
+      @collection.destroy
+    end
+
+    it 'should not update ancestors when title not changed' do
+      @collection = DRI::DigitalObject.with_standard :qdc
+      @collection[:title] = ["A collection"]
+      @collection[:description] = ["This is a Collection"]
+      @collection[:creator] = [@login_user.email]
+      @collection[:rights] = ["This is a statement about the rights associated with this object"]
+      @collection[:publisher] = ["RnaG"]
+      @collection[:resource_type] = ["Collection"]
+      @collection[:creation_date] = ["1916-01-01"]
+      @collection[:published_date] = ["1916-04-01"]
+      @collection[:status] = "draft"
+      @collection.save
+
+      preservation = Preservation::Preservator.new(@collection)
+      preservation.preserve(['descMetadata'])
+
+      @subcollection = DRI::DigitalObject.with_standard :qdc
+      @subcollection[:title] = ["A sub collection"]
+      @subcollection[:description] = ["This is a sub-collection"]
+      @subcollection[:creator] = [@login_user.email]
+      @subcollection[:rights] = ["This is a statement about the rights associated with this object"]
+      @subcollection[:publisher] = ["RnaG"]
+      @subcollection[:resource_type] = ["Collection"]
+      @subcollection[:creation_date] = ["1916-01-01"]
+      @subcollection[:published_date] = ["1916-04-01"]
+      @subcollection[:status] = "draft"
+      @subcollection.save
+
+      preservation = Preservation::Preservator.new(@subcollection)
+      preservation.preserve(['descMetadata'])
+
+      @collection.governed_items << @subcollection
+      @collection.reload
+      @subcollection.reload
+
+      params = {}
+      params[:digital_object] = {}
+      params[:digital_object][:description] = ["This is modified Collection"]
+
+      expect(Resque).to_not receive(:enqueue).with(UpdateDescendantsJob, @collection.alternate_id)
+      put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
+      
+      @collection.destroy
+    end
+
     it 'should rollback changes when an update fails' do
       @collection = FactoryBot.create(:collection)
       @collection.depositor = @login_user.email

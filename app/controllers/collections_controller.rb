@@ -128,6 +128,8 @@ class CollectionsController < BaseObjectsController
     supported_licences
     supported_copyrights
 
+    title_changed = update_params['title'].present? && (update_params['title'] != @object.title)
+   
     @object.assign_attributes(update_params)
     unless @object.valid?
       flash[:alert] = t('dri.flash.alert.invalid_object', error: @object.errors.full_messages.inspect)
@@ -155,11 +157,7 @@ class CollectionsController < BaseObjectsController
         preservation = Preservation::Preservator.new(@object)
         preservation.preserve(['descMetadata'])
 
-        begin
-          Resque.enqueue(UpdateAncestorsJob, @object.alternate_id)
-        rescue Exception => e
-          logger.error "Unable to submit update job: #{e.message}"
-        end
+        update_descendants if title_changed
 
         flash[:notice] = t('dri.flash.notice.updated')
         format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
@@ -555,6 +553,12 @@ class CollectionsController < BaseObjectsController
       logger.error "Unable to submit status job: #{e.message}"
       flash[:alert] = t('dri.flash.alert.error_review_job', error: e.message)
       @warnings = t('dri.flash.alert.error_review_job', error: e.message)
+    end
+
+    def update_descendants
+      Resque.enqueue(UpdateDescendantsJob, @object.alternate_id)
+    rescue Exception => e
+      logger.error "Unable to submit update job: #{e.message}"
     end
 
     def delete_collection

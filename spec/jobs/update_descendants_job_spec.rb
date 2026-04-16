@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "UpdateAncestorsJob" do
+describe "UpdateDescendantsJob" do
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -30,7 +30,7 @@ describe "UpdateAncestorsJob" do
   describe "perform" do
     it "should trigger jobs for subcollections" do
       expect(Resque).to receive(:enqueue).exactly(3).times
-      UpdateAncestorsJob.perform(@collection.alternate_id)
+      UpdateDescendantsJob.perform(@collection.alternate_id)
     end
   end
 end

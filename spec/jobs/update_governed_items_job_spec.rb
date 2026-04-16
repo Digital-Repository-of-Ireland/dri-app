@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'UpdateAncestorJob' do
+describe 'UpdateGovernedItemsJob' do
 
   before(:each) do
     @tmp_assets_dir = Dir.mktmpdir
@@ -26,7 +26,7 @@ describe 'UpdateAncestorJob' do
       @collection.title = "edited"
       @collection.save
 
-      UpdateAncestorJob.perform(@collection.alternate_id)
+      UpdateGovernedItemsJob.perform(@collection.alternate_id)
    
       doc = SolrDocument.find(@object.alternate_id)
       expect(doc['ancestor_title_tesim']).to eql(['edited'])
