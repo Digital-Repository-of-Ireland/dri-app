@@ -25,12 +25,12 @@ Rails.application.routes.draw do
     delete "saved_searches/forget/:id",  :to => "saved_searches#forget",  :as => "forget_search"
     post "saved_searches/forget/:id",  :to => "saved_searches#forget"
 
-    resource :catalog, only: [:index], controller: 'catalog' do
+    resource :catalog, except: [:show, :create, :update, :destroy, :new, :edit], controller: 'catalog' do
       concerns :searchable
     end
     get 'catalog/:id', to: 'catalog#show', as: :catalog
 
-    resource :my_collections, only: [:index], controller: 'my_collections' do
+    resource :my_collections, except: [:show, :create, :update, :destroy, :new, :edit], controller: 'my_collections' do
       concerns :searchable
     end
 
@@ -54,15 +54,15 @@ Rails.application.routes.draw do
     devise_for :users, :skip => [:sessions, :registrations, :passwords], class_name: 'UserGroup::User', :controllers => { :omniauth_callbacks => "user_group/omniauth_callbacks" }
 
     get 'objects/:object_id/files/:id', to: 'surrogates#show', constraints: { query_string: /surrogate=([^&]*)/ }
-    resources :objects, :only => ['new', 'edit', 'update', 'create', 'show', 'destroy'] do
-      resources :files, controller: :assets, :only => ['new','index', 'create','show','update','destroy']
+    resources :objects, only: [:new, :edit, :update, :create, :show, :destroy] do
+      resources :files, controller: :assets, only: [:new, :index, :create, :show, :update, :destroy]
       resources :pages
-      resources :doi, :only => ['show']
+      resources :doi, only: [:show]
     end
 
-    resources :session, :only => ['create']
+    resources :session, only: [:create]
 
-    resources :collections, :only => ['index','new','create','update','edit','destroy']
+    resources :collections, only: [:index, :new, :create, :update, :edit, :destroy]
 
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
@@ -110,7 +110,7 @@ Rails.application.routes.draw do
 
     get 'reports', to: 'reports#index'
 
-    resources :analytics, only: ['index', 'show']
+    resources :analytics, only: [:index, :show]
 
     post 'association' => 'institutes#associate', as: :new_association
     delete 'association' => 'institutes#disassociate', as: :disassociation

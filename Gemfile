@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '7.2.3.1'
+gem 'rails', '~> 8.0' #'7.2.3.1'
 gem 'jsbundling-rails'
 
 gem 'blacklight', '7.41.0'
@@ -175,7 +175,7 @@ gem 'clipboard-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
-gem 'blacklight-maps', '1.2.0'
+gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps', branch: 'master' 
 
 gem 'remotipart'
 
