@@ -11,7 +11,6 @@ gem 'blacklight_advanced_search', '~> 7'
 gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
 gem 'kaminari', '>= 1.2.1'
 gem 'rsolr'
-gem 'view_component', '< 3'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'af_optional'
 gem 'nokogiri', '>= 1.16.5'

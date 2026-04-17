@@ -1187,9 +1187,9 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.9)
-    view_component (2.83.0)
-      activesupport (>= 5.2.0, < 8.0)
-      concurrent-ruby (~> 1.0)
+    view_component (3.24.0)
+      activesupport (>= 5.2.0, < 8.2)
+      concurrent-ruby (~> 1)
       method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -1330,7 +1330,6 @@ DEPENDENCIES
   timelineJS3-rails!
   unicode
   user_group!
-  view_component (< 3)
   webrick
   yard
 
