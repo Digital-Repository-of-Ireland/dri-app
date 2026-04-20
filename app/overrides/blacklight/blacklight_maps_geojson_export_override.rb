@@ -64,7 +64,7 @@ BlacklightMaps::GeojsonExport.class_eval do
     new_params[:coordinates] = "#{point_coords[1]},#{point_coords[0]}"  
     new_params[:view] = "list"
     
-    "<a href=\"catalog?#{new_params.to_query}\">#{I18n.t('blacklight.maps.interactions.point_search')}</a>"
+    "<a href=\"#{@controller.url_for({controller: request_controller, action: 'index', only_path: true}.merge(new_params))}\">#{I18n.t('blacklight.maps.interactions.point_search')}</a>"
   end
 
   # create a link to a bbox spatial search
@@ -77,7 +77,11 @@ BlacklightMaps::GeojsonExport.class_eval do
     new_params[:spatial_search_type] = 'bbox'
     new_params[:coordinates] = bbox_search_coords
     new_params[:view] = "list"
+    
+    "<a href=\"#{@controller.url_for({controller: request_controller, action: 'index', only_path: true}.merge(new_params))}\">#{I18n.t('blacklight.maps.interactions.bbox_search')}</a>"
+  end
 
-    "<a href=\"catalog?#{new_params.to_query}\">#{I18n.t('blacklight.maps.interactions.bbox_search')}</a>"
+  def request_controller
+    @controller_params["request_controller"]
   end
 end
