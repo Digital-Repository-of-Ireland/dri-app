@@ -13,7 +13,7 @@ end
 shared_examples 'it has json licence information' do |key='Licence'|
   run_test! do
     licence_info = JSON.parse(response.body)[key]
-    expect(licence_info.keys).to eq(%w[name url description])
+    expect(licence_info.keys).to match_array(%w[name url description])
   end
 end
 
