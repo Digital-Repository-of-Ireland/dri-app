@@ -8,7 +8,7 @@ describe 'Users API' do
       produces 'application/json'
 
       # should redirect to sign in
-      response '204', 'Returns no content, only manages the state of the session' do
+      response '401', 'Returns no content, only manages the state of the session' do
         run_test!
       end
     end
