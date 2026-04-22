@@ -37,6 +37,15 @@ GIT
       rb-gravatar
 
 GIT
+  remote: https://github.com/Digital-Repository-of-Ireland/blacklight-maps
+  revision: f90612886c38143fa7d4fbd9c8d3f8d81ce73df0
+  branch: master
+  specs:
+    blacklight-maps (1.2.0)
+      blacklight (>= 7.35.0, < 8)
+      rails (>= 7.1)
+
+GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
   revision: 8e7c751b3f0ca9d4b98cf19bba59c62cc26fbf19
   branch: main
@@ -69,11 +78,11 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/om.git
-  revision: 0a517d5e36b3d252b6a8abd5389f50227216c766
+  revision: bb4a46bdcbd864ee6434f61b2b68274c822a0f06
   branch: master
   specs:
     om (3.2.0)
-      activemodel (>= 5.1, < 8)
+      activemodel
       activesupport
       nokogiri (>= 1.4.2)
       solrizer (~> 3.3)
@@ -122,47 +131,45 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (7.2.3.1)
-      actionpack (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    actioncable (8.0.5)
+      actionpack (= 8.0.5)
+      activesupport (= 8.0.5)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
       zeitwerk (~> 2.6)
-    actionmailbox (7.2.3.1)
-      actionpack (= 7.2.3.1)
-      activejob (= 7.2.3.1)
-      activerecord (= 7.2.3.1)
-      activestorage (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    actionmailbox (8.0.5)
+      actionpack (= 8.0.5)
+      activejob (= 8.0.5)
+      activerecord (= 8.0.5)
+      activestorage (= 8.0.5)
+      activesupport (= 8.0.5)
       mail (>= 2.8.0)
-    actionmailer (7.2.3.1)
-      actionpack (= 7.2.3.1)
-      actionview (= 7.2.3.1)
-      activejob (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    actionmailer (8.0.5)
+      actionpack (= 8.0.5)
+      actionview (= 8.0.5)
+      activejob (= 8.0.5)
+      activesupport (= 8.0.5)
       mail (>= 2.8.0)
       rails-dom-testing (~> 2.2)
-    actionpack (7.2.3.1)
-      actionview (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
-      cgi
+    actionpack (8.0.5)
+      actionview (= 8.0.5)
+      activesupport (= 8.0.5)
       nokogiri (>= 1.8.5)
-      racc
-      rack (>= 2.2.4, < 3.2)
+      rack (>= 2.2.4)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
       useragent (~> 0.16)
-    actiontext (7.2.3.1)
-      actionpack (= 7.2.3.1)
-      activerecord (= 7.2.3.1)
-      activestorage (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    actiontext (8.0.5)
+      actionpack (= 8.0.5)
+      activerecord (= 8.0.5)
+      activestorage (= 8.0.5)
+      activesupport (= 8.0.5)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.2.3.1)
-      activesupport (= 7.2.3.1)
+    actionview (8.0.5)
+      activesupport (= 8.0.5)
       builder (~> 3.1)
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
@@ -176,24 +183,24 @@ GEM
       addressable (~> 2.8)
       rails
       retriable
-    activejob (7.2.3.1)
-      activesupport (= 7.2.3.1)
+    activejob (8.0.5)
+      activesupport (= 8.0.5)
       globalid (>= 0.3.6)
-    activemodel (7.2.3.1)
-      activesupport (= 7.2.3.1)
-    activerecord (7.2.3.1)
-      activemodel (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    activemodel (8.0.5)
+      activesupport (= 8.0.5)
+    activerecord (8.0.5)
+      activemodel (= 8.0.5)
+      activesupport (= 8.0.5)
       timeout (>= 0.4.0)
     activerecord-import (2.2.0)
       activerecord (>= 4.2)
-    activestorage (7.2.3.1)
-      actionpack (= 7.2.3.1)
-      activejob (= 7.2.3.1)
-      activerecord (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    activestorage (8.0.5)
+      actionpack (= 8.0.5)
+      activejob (= 8.0.5)
+      activerecord (= 8.0.5)
+      activesupport (= 8.0.5)
       marcel (~> 1.0)
-    activesupport (7.2.3.1)
+    activesupport (8.0.5)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -202,9 +209,10 @@ GEM
       drb
       i18n (>= 1.6, < 2)
       logger (>= 1.4.2)
-      minitest (>= 5.1, < 6)
+      minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+      uri (>= 0.13.1)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     appsignal (4.5.9)
@@ -272,9 +280,6 @@ GEM
       blacklight (> 6.0, < 9)
       cancancan (>= 1.8)
       deprecation (~> 1.0)
-    blacklight-maps (1.2.0)
-      blacklight (>= 7.35.0, < 8)
-      rails (>= 7.1, < 8)
     blacklight_advanced_search (7.0.0)
       blacklight (~> 7.0)
       parslet
@@ -302,7 +307,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    cgi (0.5.1)
     citeproc (1.0.10)
       namae (~> 1.0)
     citeproc-ruby (2.0.0)
@@ -688,7 +692,9 @@ GEM
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
-    minitest (5.27.0)
+    minitest (6.0.4)
+      drb (~> 2.0)
+      prism (~> 1.5)
     moab-versioning (4.4.2)
       druid-tools (>= 1.0.0)
       json
@@ -808,20 +814,20 @@ GEM
     rackup (2.3.1)
       rack (>= 3)
     railroady (1.6.0)
-    rails (7.2.3.1)
-      actioncable (= 7.2.3.1)
-      actionmailbox (= 7.2.3.1)
-      actionmailer (= 7.2.3.1)
-      actionpack (= 7.2.3.1)
-      actiontext (= 7.2.3.1)
-      actionview (= 7.2.3.1)
-      activejob (= 7.2.3.1)
-      activemodel (= 7.2.3.1)
-      activerecord (= 7.2.3.1)
-      activestorage (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
+    rails (8.0.5)
+      actioncable (= 8.0.5)
+      actionmailbox (= 8.0.5)
+      actionmailer (= 8.0.5)
+      actionpack (= 8.0.5)
+      actiontext (= 8.0.5)
+      actionview (= 8.0.5)
+      activejob (= 8.0.5)
+      activemodel (= 8.0.5)
+      activerecord (= 8.0.5)
+      activestorage (= 8.0.5)
+      activesupport (= 8.0.5)
       bundler (>= 1.15.0)
-      railties (= 7.2.3.1)
+      railties (= 8.0.5)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -833,16 +839,15 @@ GEM
     rails-html-sanitizer (1.7.0)
       loofah (~> 2.25)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
-    rails-i18n (7.0.8)
+    rails-i18n (8.1.0)
       i18n (>= 0.7, < 2)
-      railties (>= 6.0.0, < 8)
-    rails_cloudflare_turnstile (0.5.0)
+      railties (>= 8.0.0, < 9)
+    rails_cloudflare_turnstile (0.4.4)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
-    railties (7.2.3.1)
-      actionpack (= 7.2.3.1)
-      activesupport (= 7.2.3.1)
-      cgi
+    railties (8.0.5)
+      actionpack (= 8.0.5)
+      activesupport (= 8.0.5)
       irb (~> 1.13)
       rackup (>= 1.0.0)
       rake (>= 12.2)
@@ -968,10 +973,11 @@ GEM
       netrc (~> 0.8)
     retriable (3.4.1)
     rexml (3.4.4)
-    riiif (2.6.0)
+    riiif (2.8.1)
       deprecation (>= 1.0.0)
       iiif-image-api (>= 0.1.0)
-      railties (>= 4.2, < 8)
+      railties (>= 4.2, < 9)
+      ruby-vips
     roo (2.10.1)
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
@@ -1183,9 +1189,9 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.9)
-    view_component (2.83.0)
-      activesupport (>= 5.2.0, < 8.0)
-      concurrent-ruby (~> 1.0)
+    view_component (3.24.0)
+      activesupport (>= 5.2.0, < 8.2)
+      concurrent-ruby (~> 1)
       method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -1205,7 +1211,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
-    yard (0.9.36)
+    yard (0.9.43)
     zeitwerk (2.7.5)
 
 PLATFORMS
@@ -1219,7 +1225,7 @@ DEPENDENCIES
   binding_of_caller
   bixby (~> 5)
   blacklight (= 7.41.0)
-  blacklight-maps (= 1.2.0)
+  blacklight-maps!
   blacklight_advanced_search (~> 7)
   blacklight_oai_provider (~> 7.0, >= 7.0.2)
   bootstrap (~> 5.3)
@@ -1292,7 +1298,7 @@ DEPENDENCIES
   parallel_tests
   qa (~> 5.1)
   railroady
-  rails (= 7.2.3.1)
+  rails (~> 8.0)
   rails-controller-testing
   redis (~> 4)
   remotipart
@@ -1327,7 +1333,6 @@ DEPENDENCIES
   timelineJS3-rails!
   unicode
   user_group!
-  view_component (< 3)
   webrick
   yard
 
