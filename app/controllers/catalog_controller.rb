@@ -15,6 +15,7 @@ class CatalogController < ApplicationController
     }
     #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
+    config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view])
 
     config.show.route = { controller: 'catalog' }
     config.per_page = [12, 24, 36, 48]
@@ -27,8 +28,7 @@ class CatalogController < ApplicationController
       qt: 'search',
       rows: 9
     }
-    config.search_state_fields << :mode
-
+    
     # solr field configuration for search results/index views
     config.index.title_field = 'title_tesim'
     config.index.record_tsim_type = 'has_model_ssim'

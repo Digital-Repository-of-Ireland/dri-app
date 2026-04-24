@@ -19,7 +19,8 @@ class MyCollectionsController < ApplicationController
 
     #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::MyCollectionsSearchBuilder
-
+    config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view])
+    
     config.show.route = { controller: 'my_collections' }
     config.per_page = [12, 24, 36, 48, 72, 96]
     config.default_per_page = 12
