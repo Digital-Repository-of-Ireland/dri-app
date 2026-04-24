@@ -10,8 +10,9 @@
 
 <% @page_title = t('blacklight.search.title', application_name: application_name) %>
 
-<% render_opensearch_response_metadata.html_safe %>
-
+<% content_for :head do %>
+  <%= render partial: 'catalog/opensearch_response_metadata', locals: { response: @response } %>
+<% end %>
 <%= render partial: 'did_you_mean' %>
 
 <div id="dri_second_navigation_container_id" class="dri_second_navigation_container">

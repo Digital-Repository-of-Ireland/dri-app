@@ -63,8 +63,6 @@ BlacklightMaps::GeojsonExport.class_eval do
     new_params[:spatial_search_type] = 'point'
     new_params[:coordinates] = "#{point_coords[1]},#{point_coords[0]}"  
     new_params[:view] = "list"
-    
-    puts @controller.inspect
 
     "<a href=\"#{@controller.url_for({controller: request_controller, action: 'index', only_path: true}.merge(new_params))}\">#{I18n.t('blacklight.maps.interactions.point_search')}</a>"
   end
