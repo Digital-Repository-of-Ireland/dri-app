@@ -1,4 +1,4 @@
-<% if has_browse_params? || (params[:controller] == 'saved_searches' && params[:action] == 'index') %> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
+<% if has_browse_params? %> <!-- navigation to allow the user to determine how the search result is displayed e.g. number of items output  -->
 <nav id="dri_pager_nav_id" class="dri_sort_nav" data-bs-content="<%= t('dri.help.dri_page_options') %>"  data-bs-title="<%= t('dri.help.dri_page_options_title')%>" data-bs-trigger="hover" data-bs-placement="right">
   <span class="sr-only visually-hidden"><%= t('blacklight.search.per_page.title') %></span>
   <%= render Blacklight::Search::PerPageComponent.new(search_state:, blacklight_config:, response: @response) %>
