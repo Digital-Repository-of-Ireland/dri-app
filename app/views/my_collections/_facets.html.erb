@@ -1,5 +1,5 @@
 <% # main container for facets/limits menu -%>
-<% if has_facet_values?  %>
+<% if facets_from_request(facet_field_names, @response).any?  %>
 <div id="facets" class="facets sidenav dri_facet_filters dropdown" data-bs-content="<%= t('dri.help.facets') %>" title="<%= t('dri.help.facets_title') %>" 
 	data-bs-title="<%= t('dri.help.facets_title') %>" data-bs-trigger="hover" data-bs-placement="top">
 	<div class= "panel-heading">
@@ -10,7 +10,7 @@
 	</div>
 
 	<div id="facet-panel-collapse" class="panel-group facet-non-md" aria-expanded="false">
-		<%= render_facet_partials %>
+	  <%= render_facet_partials facet_field_names, response: @response %>
 	</div>
 </div>
 <% end %>
