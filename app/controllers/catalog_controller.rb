@@ -15,7 +15,7 @@ class CatalogController < ApplicationController
     }
     #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
-    config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view])
+    config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view, :id, :collection, :verb, :object_id, :method, :licence, :commit, :metadataPrefix])
 
     config.show.route = { controller: 'catalog' }
     config.per_page = [12, 24, 36, 48]
