@@ -9,7 +9,7 @@
           <div class="dri_clearfix">
             <% value.take(4).each do |item| -%>
               <article class="dri_result_object">
-                <%= link_to url_for_document(item[1].id)  do %>
+                <%= link_to search_state.url_for_document(item[1].id)  do %>
                   <div class="dri_content_block">
                     <div class="dri_collection_image">
                       <% present(document, DRI::ImagePresenter) do |images| %>
