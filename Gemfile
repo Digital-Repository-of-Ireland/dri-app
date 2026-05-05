@@ -3,12 +3,12 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 8.0' #'7.2.3.1'
+gem 'rails', '~> 8.0'
 gem 'jsbundling-rails'
 
-gem 'blacklight', '7.41.0'
-gem 'blacklight_advanced_search', '~> 7'
-gem 'blacklight_oai_provider', '~> 7.0', '>= 7.0.2'
+gem 'blacklight', '~> 8'
+gem 'blacklight_advanced_search', '~> 8'
+gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider'
 gem 'kaminari', '>= 1.2.1'
 gem 'rsolr'
 
@@ -175,7 +175,7 @@ gem 'clipboard-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
-gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps', branch: 'master' 
+gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps', branch: 'blacklight8' 
 
 gem 'remotipart'
 

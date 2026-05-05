@@ -38,12 +38,12 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/blacklight-maps
-  revision: f90612886c38143fa7d4fbd9c8d3f8d81ce73df0
-  branch: master
+  revision: b7bb6f9bbf0432e3ea66fc052072445eb14e3885
+  branch: blacklight8
   specs:
     blacklight-maps (1.2.0)
-      blacklight (>= 7.35.0, < 8)
-      rails (>= 7.1)
+      blacklight (> 7, < 9)
+      rails (~> 8)
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
@@ -92,6 +92,15 @@ GIT
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
     jstree-rails-4 (3.3.9)
+
+GIT
+  remote: https://github.com/projectblacklight/blacklight_oai_provider
+  revision: 69795b06cc37150386b6d9732be027d200412598
+  specs:
+    blacklight_oai_provider (7.0.2)
+      blacklight (>= 7.0, < 9)
+      oai (~> 1.2)
+      rexml
 
 GIT
   remote: https://github.com/samvera/browse-everything.git
@@ -265,28 +274,22 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.41.0)
-      deprecation
+    blacklight (8.12.3)
       globalid
-      hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 6.1, < 8.1)
-      view_component (>= 2.74, < 4)
+      rails (>= 6.1, < 9)
+      view_component (>= 2.74, < 5)
       zeitwerk
     blacklight-access_controls (6.1.0)
       blacklight (> 6.0, < 9)
       cancancan (>= 1.8)
       deprecation (~> 1.0)
-    blacklight_advanced_search (7.0.0)
-      blacklight (~> 7.0)
+    blacklight_advanced_search (8.0.0)
+      blacklight (>= 7.15, < 10)
       parslet
-    blacklight_oai_provider (7.0.2)
-      blacklight (~> 7.0)
-      oai (~> 1.2)
-      rexml
     bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
     bootstrap-glyphicons (0.0.1)
@@ -521,7 +524,6 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashdiff (1.2.1)
     hashie (5.1.0)
       logger
     health-monitor-rails (12.9.0)
@@ -572,7 +574,7 @@ GEM
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
     io-console (0.8.2)
-    irb (1.17.0)
+    irb (1.18.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
@@ -684,7 +686,6 @@ GEM
     marcel (1.1.0)
     matrix (0.4.3)
     memoist3 (1.0.0)
-    method_source (1.1.0)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
@@ -692,7 +693,7 @@ GEM
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
-    minitest (6.0.4)
+    minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
     moab-versioning (4.4.2)
@@ -718,7 +719,7 @@ GEM
       uri (>= 0.11.1)
     net-http-persistent (4.0.8)
       connection_pool (>= 2.2.4, < 4)
-    net-imap (0.6.3)
+    net-imap (0.6.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -733,7 +734,7 @@ GEM
     noid-rails (3.3.0)
       actionpack (>= 5.0.0, < 9)
       noid (~> 0.9)
-    nokogiri (1.19.2-x86_64-linux-gnu)
+    nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri-happymapper (0.9.0)
       nokogiri (~> 1.5)
@@ -1192,10 +1193,10 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.9)
-    view_component (3.24.0)
-      activesupport (>= 5.2.0, < 8.2)
+    view_component (4.8.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
-      method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     webrick (1.9.1)
@@ -1227,10 +1228,10 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 5)
-  blacklight (= 7.41.0)
+  blacklight (~> 8)
   blacklight-maps!
-  blacklight_advanced_search (~> 7)
-  blacklight_oai_provider (~> 7.0, >= 7.0.2)
+  blacklight_advanced_search (~> 8)
+  blacklight_oai_provider!
   bootstrap (~> 5.3)
   bootstrap-glyphicons
   bootstrap-switch-rails
