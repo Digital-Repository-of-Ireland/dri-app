@@ -14,6 +14,9 @@ uppy.use(Dashboard, {
   target: '#uppy',
 }).use(AwsS3, {
   fields: [ ], // empty array
+  shouldUseMultipart(file) {
+    return false;
+  },
   getUploadParameters(file, options) {
     return fetch("/objects/" + objectId + "/upload", { 
                method: 'POST',
