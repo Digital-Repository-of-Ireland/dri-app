@@ -252,6 +252,18 @@
     "@uppy/companion-client" "^5.1.1"
     "@uppy/utils" "^7.2.0"
 
+blacklight-frontend@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/blacklight-frontend/-/blacklight-frontend-8.0.0.tgz#30a3d3b5654cefc225f98436580166f9353d8795"
+  integrity sha512-Ab/6jJcH2ez9d0zpkO6vm//EttRQ55Ugm/PMmot+vwOufCn7hh/5lXo7Q6qSib7ydhon145kMXXhSBIqhIE2hQ==
+  dependencies:
+    bootstrap ">=4.3.1 <6.0.0"
+
+"bootstrap@>=4.3.1 <6.0.0":
+  version "5.3.8"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.8.tgz#6401a10057a22752d21f4e19055508980656aeed"
+  integrity sha512-HP1SZDqaLDPwsNiqRqi5NcP0SSXciX2s9E+RyqJIIqGo+vJeN5AJVM98CXmW/Wux0nQ5L7jeWUdplCEf0Ee+tg==
+
 classnames@^2.2.6:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"

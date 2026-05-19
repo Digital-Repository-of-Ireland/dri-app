@@ -1338,19 +1338,12 @@ div.sidebar{
         font-weight: bold;
         font-size: 100%;
         line-height: 100%;
-        &:hover {
-            background-color: darken($dri_green, 10%);
-            a,h3{
-                color: $dri_white;
-            }
-        }
 
         a{
             color: $dri_black;
         }
 
         display: block;
-        min-width: $dri_facet_min_width - 2;
     }
     
     .dri_search_num {
@@ -1438,10 +1431,9 @@ div.sidebar{
 
 .panel-heading {
     background-color: $dri_white;
-    width: 100%;
     padding: 10px;
     
-    h3 {
+    h2 {
         font-size: 100%;
         margin: 0;
         padding: 0;
@@ -1452,34 +1444,14 @@ div.sidebar{
             font-size: 16px;
         }
     }
-    &:hover{
-        background: darken($dri_green, 10%);
-        border: 1px solid $dri_thingrey;
-        margin: -1px;
-        h4,h3,a{
-            font-weight: bold;
-            color: $dri_white;
-        }
-    }
-
     h4 {
         font-size: inherit;
         margin: 0;
         padding: 0;
-        background: url("dri/arrow_down.png") no-repeat right;
         a {
             text-decoration: none;
             color: $dri_black;
             font-size: 16px;
-        }
-    }
-    &:hover{
-        background: darken($dri_green, 10%);
-        border: 1px solid $dri_thingrey;
-        margin: -1px;
-        h4,h3,a{
-            font-weight: bold;
-            color: $dri_white;
         }
     }
 }
@@ -3471,4 +3443,88 @@ img.dri_copyright_logo{
     height: 100%;
     background-color: #76A6FC;
     border-radius: 4px;
+}
+
+.facets  {
+  --bl-facets-smallish-border: none;
+
+  // no special styles for active facets
+  --bl-facet-active-color: initial;
+  --bl-facet-active-item-color: initial;
+
+  .accordion, .facet-limit {
+    --bs-accordion-active-bg: var(--bs-accordion-btn-bg);
+    --bs-accordion-btn-active-icon: var(--bs-accordion-btn-icon);
+
+    --bs-btn-hover-bg: var(--bs-accordion-btn-bg);
+    --bs-accordion-btn-padding-x: 0.5rem;
+    --bs-accordion-btn-padding-y: 0.5rem;
+    --bs-accordion-border-color: #{$card-border-color};
+
+    --bs-accordion-body-padding-x: 1rem;
+    --bs-accordion-body-padding-y: 1rem;
+
+    // need to override variable set on .btn
+    .btn {
+      --bs-btn-font-weight: 500;
+    }
+  }
+
+  .facet-limit-active {
+    --bs-accordion-btn-icon: inherit;
+  }
+
+  .facets-header {
+    // To try to make top line of search results all line up, we hackily try to make
+    // this have the exact same line-height in pixels as .page_links. hack to try to improve on BL.
+    line-height: 2.3rem;
+  }
+
+  .accordion-header {
+    font-weight: normal;
+    line-height: 1.4;
+    color: inherit;
+
+    padding: .625rem .9375rem;
+  }
+
+  .facet-limit {
+    margin-top: 0;
+    margin-bottom: 0;
+    --bs-card-border-radius: 0;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+
+    .card-header {
+      &:hover{
+            background: darken($dri_green, 10%);
+            border: 1px solid $dri_thingrey;
+            margin: -1px;
+                font-weight: bold;
+                color: $dri_white;
+        }
+
+    }
+
+    .card-header:first-child {
+      border-radius:0 0 0 0
+    }
+  }
+
+  .facet-values li {
+    line-height: 1.2;
+    // override blacklight spacing to be better
+    padding-top: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  form.range_limit {
+    display: block;
+      // get 'limit' button all on one line by making inputs more compact
+    input.range_begin, input.range_end {
+      width: 52px;
+      padding: 6px;
+    }
+  }
 }
