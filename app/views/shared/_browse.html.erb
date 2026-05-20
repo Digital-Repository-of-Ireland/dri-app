@@ -11,6 +11,7 @@
 <% @page_title = t('blacklight.search.title', application_name: application_name) %>
 
 <% content_for :head do %>
+  <meta name="blacklight-search-storage" content="<%= blacklight_config.track_search_session.storage %>">
   <%= render partial: 'catalog/opensearch_response_metadata', locals: { response: @response } %>
 <% end %>
 <%= render partial: 'did_you_mean' %>

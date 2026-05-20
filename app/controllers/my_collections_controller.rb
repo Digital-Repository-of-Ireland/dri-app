@@ -195,7 +195,7 @@ class MyCollectionsController < ApplicationController
   end
   
   def index
-    @response = search_service.search_results.first
+    @response = search_service.search_results
     @document_list = @response.documents
     load_assets_for_document_list if params[:mode].presence == 'objects'
     @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
@@ -221,8 +221,7 @@ class MyCollectionsController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    @response = search_service.fetch(params[:id]).first
-    @document = @response.documents.first
+    @document = search_service.fetch(params[:id])
     if @document.generic_file?
       @document = nil
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
