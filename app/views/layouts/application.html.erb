@@ -23,6 +23,7 @@
   
     <%= javascript_include_tag "custom" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%= javascript_include_tag "blacklight/blacklight", type: 'module' %>
 
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -62,12 +63,12 @@
     <div id="dri_wrapper_id" class="block1 dri_wrapper">
     	<%= render partial: 'advanced/dri_modal' %>
     	<%= render partial: 'shared/header_navbar' %>
-    	<div id="blacklight-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-turbo="false">
+    	<dialog id="blacklight-modal" class="modal" tabindex="-1" aria-hidden="true" data-turbo="false">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
           </div>
         </div>
-      </div>
+      </dialog>
 
     	<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
     	<%# - check below is to see if a facet or text query exists %>
