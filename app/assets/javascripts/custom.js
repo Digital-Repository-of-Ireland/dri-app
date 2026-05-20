@@ -40,8 +40,6 @@
 // require bootstrap/tab
 //= require jquery.bootstrap-duallistbox
 //= require jquery.readyselector
-// Required by Blacklight
-//= require blacklight/blacklight
 //
 //= require jquery-xmleditor
 //= require spin
