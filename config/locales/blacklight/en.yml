@@ -137,6 +137,7 @@ en:
           count: "Numerical Sort"
           index: "A-Z Sort"
         title: "Refine your search"
+      start_over: "Clear All"
       fields:
         default: Keyword
         facet:

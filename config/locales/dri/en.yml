@@ -921,3 +921,6 @@ en:
       500_error: Error 500 - Internal Server Error
       500_message: The server encountered an error and could not complete your request.
       500_explanation: The server encountered an unexpected condition that prevented it from fulfilling the request.
+  blacklight:
+    search:
+      start_over: "Clear All"

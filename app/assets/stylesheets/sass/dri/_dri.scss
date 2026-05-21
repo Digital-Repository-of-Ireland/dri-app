@@ -1025,6 +1025,58 @@ ol.breadcrumb {
 }
 /*-------------- Facet Restriction --------------*/
 
+
+.dri_facet_restrictions_container {
+    a.catalog_startOverLink {
+        text-decoration: none;
+        background-color: $dri_white;
+        @include border_radius (3px);
+        float: left;
+        box-shadow: 1px 1px 4px #888888;
+
+        color: $dri_red;
+        font-weight: bold;
+        float: left;
+        display: block;
+        border-left: none;
+        margin: 10px 10px 0 0;
+        padding: 4px 4px 4px 4px;
+          
+        &:hover {
+            color: $dri_white;
+            background-color: $dri_red;
+            border-radius: 5%;
+        }
+    }
+    .empty {
+        background-color: $dri_white;
+        box-shadow: 1px 1px 4px $dri_white;
+    }
+    span.applied-filter {
+        margin: 10px 10px 0 0;
+        padding: 4px 0 4px 15px;
+        @include border_radius (3px);
+        box-shadow: 1px 1px 4px #888888;
+        color: $dri_black;
+        background-color: $dri_white;
+        float: left;
+        display: block;
+        a {
+            margin: 0 0 0 20px;
+            padding: 0 10px 0 10px;
+            color: $dri_black;
+            border-left: 1px solid $dri_thingrey;
+            text-decoration: none;
+        }
+        a:hover {
+            background-color: $dri_red;
+            color: $dri_white;
+            border-radius: 5%;
+            @include border_radius (3px);
+        }
+    }
+}
+
 .dri_facet_restrictions_links {
     margin: 0 0 6px 0;
     padding: 0;
@@ -1051,6 +1103,30 @@ ol.breadcrumb {
                 }
             }
         }
+    }
+    a.catalog_startOverLink {
+        text-decoration: none;
+        background-color: $dri_white;
+        @include border_radius (3px);
+        float: left;
+
+        color: $dri_red;
+        font-weight: bold;
+        float: left;
+        display: block;
+        border-left: none;
+        margin: 0px 10px 0px 0px;
+        padding: 0px 5px 0px 5px;
+
+        &:hover {
+            color: $dri_white;
+            background-color: $dri_red;
+            border-radius: 5%;
+        }
+    }
+    .empty {
+        background-color: $dri_white;
+        box-shadow: 1px 1px 4px $dri_white;
     }
     ul {
         margin: 0;
@@ -1081,7 +1157,7 @@ ol.breadcrumb {
             @include border_radius (3px);
         }
     }
-    li.dri_clear_all a {
+    li.dri_clear_all a, catalog_startOverLink {
         list-style: none;
         text-decoration: none;
         background-color: $dri_white;

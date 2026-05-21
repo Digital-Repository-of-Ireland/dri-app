@@ -206,7 +206,7 @@ ga:
         relevance: Ábharthacht
         title: Teideal
         submit: "sórtáil na torthaí"
-      start_over: "Tosaigh arís"
+      start_over: "Glan Gach Rud"
       title: "Torthaí an Chuardaigh %{application_name}"
     search_history: 
       clear: 
