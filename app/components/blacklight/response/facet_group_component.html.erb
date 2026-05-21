@@ -1,5 +1,5 @@
 <% # main container for facets/limits menu -%>
-<%= content_tag :div, id: @id,  class: 'facets sidenav dri_facet_filters facets-toggleable-sm' do %>
+<%= content_tag :div, id: @id, class: 'facets sidenav dri_facet_filters facets-toggleable-sm', title: t('dri.help.facets_title'), data: {"bs-content"=>t('dri.help.facets'), "bs-toggle"=>"popover", "bs-trigger"=>"hover", "bs-placement"=>"top"} do %>
   <div class="panel-heading">
     <%= content_tag :h2, class: 'dri_head_title facets-heading' do %>
     <%= t('blacklight.search.facets.title') %>
