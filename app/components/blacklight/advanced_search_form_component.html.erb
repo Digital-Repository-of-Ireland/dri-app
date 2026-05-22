@@ -1,0 +1,46 @@
+<% if constraints? %>
+  <div class="constraints well search_history">
+    <h4><%= t 'blacklight.advanced_search.form.search_context' %></h4>
+    <% constraints.each do |constraint| %>
+      <%= constraint %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= form_tag @url, method: @method, class: @classes.join(' '), role: 'search', 'aria-label' => t('blacklight.search.form.submit') do %>
+  <%= render Blacklight::HiddenSearchStateComponent.new(params: hidden_search_state_params) %>
+
+  <div class="input-criteria">
+    <div class="query-criteria mb-4">
+      <h2 class="query-criteria-heading h3 mb-4">
+        <%= t('blacklight.advanced_search.form.query_criteria_heading_html', select_menu: default_operator_menu) %>
+      </h2>
+
+      <div id="advanced_search">
+        <% search_field_controls.each do |control| %>
+          <%= control %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="advanced-submit-buttons clearfix">
+    <div class='submit-buttons float-end'>
+      <%= submit_tag(
+          t('blacklight.search.form.search'),
+          class: 'dri_button_black btn-default advanced-search-submit dri_help_popover_slow',
+          id: 'advanced-search-submit',
+          'data-bs-content': t('dri.help.advanced_search.search'),
+         'data-bs-title': t('dri.help.advanced_search.search_title'),
+          'data-bs-placement': 'left',
+          'data-bs-trigger': 'hover') %>
+
+      <%= link_to(
+          t('blacklight.search.form.start_over'), request.path, :class =>'dri_button_black btn-default advanced-search-start-over dri_help_popover_slow',
+          'data-bs-content': t('dri.help.advanced_search.start_over'),
+          'data-bs-title': t('dri.help.advanced_search.start_over_title'),
+          'data-bs-placement': 'left',
+          'data-bs-trigger': 'hover') %>
+    </div>
+  </div>
+<% end %>

@@ -9,12 +9,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <%= form_tag main_app.search_catalog_path, class: 'advanced form-horizontal', method: :get do  %>
-          <%= render Blacklight::HiddenSearchStateComponent.new(params: controller.search_state_class.new(advanced_search_context, blacklight_config).params_for_search({})) %>
-          <%= render 'advanced/dri_search_fields' %>
-          <hr>
-          <%= render 'advanced/dri_submit_buttons' %>
-        <% end %>
+        <%= render(Blacklight::AdvancedSearchFormComponent.new(
+      url: search_action_url,
+      classes: ['advanced'],
+      params: search_state.params_for_search.except(:qt),
+      response: @response
+    )) %>
       </div>
     </div>
   </div>

@@ -21,8 +21,8 @@ When /^I search for "(.*?)" in facet "(.*?)" with id "(.*?)"$/ do |search, facet
   regexp = Regexp.escape(facetname)
   # minimum: 0 capybara returns nil instead of throwing an exception if a new element is not found
   within find(:xpath, "//div[@id='facets']") do
-    element = page.find(:css, '.dri_title_dropdown', text: /^#{regexp}$/)
-    while better_match = element.first(:css, '.dri_title_dropdown', text: /^#{regexp}$/, minimum: 0)
+    element = page.find(:css, '.facet-field-heading', text: /^#{regexp}$/)
+    while better_match = element.first(:css, '.facet-field-heading', text: /^#{regexp}$/, minimum: 0)
       element = better_match
     end
     element.click
@@ -40,5 +40,5 @@ end
 
 Then /^I should( not)? see "([^\"]+)" in the facet well$/ do |negate, text|
   expectation = negate ? :should_not : :should
-  page.send(expectation, have_css('#dri_facet_restrictions_container_id li', text: text))
+  page.send(expectation, have_css('#dri_facet_restrictions_container_id', text: text))
 end
