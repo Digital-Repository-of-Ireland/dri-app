@@ -4,7 +4,7 @@ class Timeline
   TITLE_KEY = Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym
   DESCRIPTION_KEY = Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym
 
-  delegate :can?, :asset_url, :asset_path, :link_to, :url_for_document, :cover_image_path, :object_file_path, to: :@view
+  delegate :can?, :asset_url, :asset_path, :link_to, :controller_name, :url_for, :cover_image_path, :object_file_path, to: :@view
 
   def initialize(view)
     @view = view
@@ -34,7 +34,7 @@ class Timeline
     event[:text] = {}
     event[:start_date] = { year: start.year, month: start.month, day: start.day }
     event[:end_date] = { year: end_date.year, month: end_date.month, day: end_date.day }
-    event[:text][:headline] = link_to(document[TITLE_KEY].first, url_for_document(document[:id]))
+    event[:text][:headline] = link_to(document[TITLE_KEY].first, url_for(action: "show", controller: controller_name, id: document[:id]))
     event[:text][:text] = document[DESCRIPTION_KEY].first.truncate(60, separator: ' ') if document.key?(DESCRIPTION_KEY)
     event[:media] = {}
     event[:media][:url] = image(document)
