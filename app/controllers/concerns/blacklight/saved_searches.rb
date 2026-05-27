@@ -6,7 +6,6 @@ module Blacklight
 
     included do
       copy_blacklight_config_from(CatalogController)
-      before_action :require_user_authentication_provider
       before_action :verify_user
     end
 
@@ -16,7 +15,6 @@ module Blacklight
 
     def save
       current_user.searches << ::Search.create(query_params: session[:search]['params'])
-
       if current_user.save
         flash[:notice] = I18n.t('blacklight.saved_searches.add.success')
       else
