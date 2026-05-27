@@ -6,13 +6,6 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|
 
-    config.advanced_search = {
-      # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
-      # support wildcards in advanced search
-      query_parser: 'edismax',
-      url_key: 'advanced',
-      form_solr_parameters: {}
-    }
     #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
     config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view, :id,
@@ -47,32 +40,32 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20
-    config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
+    config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20, include_in_advanced_search: false
 
-    config.add_facet_field 'cdate_range_start_isi', show: false
-    config.add_facet_field 'sdate_range_start_isi', show: false
-    config.add_facet_field 'pdate_range_start_isi', show: false
-    config.add_facet_field 'date_range_start_isi', show: false
+    config.add_facet_field 'cdate_range_start_isi', show: false, include_in_advanced_search: false
+    config.add_facet_field 'sdate_range_start_isi', show: false, include_in_advanced_search: false
+    config.add_facet_field 'pdate_range_start_isi', show: false, include_in_advanced_search: false
+    config.add_facet_field 'date_range_start_isi', show: false, include_in_advanced_search: false
 
-    config.add_facet_field 'licence_sim', label: 'Licence', limit: 20
-    config.add_facet_field 'copyright_sim', label: 'Copyright', limit: 20
-    config.add_facet_field 'subject_sim', limit: 20
-    config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true
-    config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false
-    config.add_facet_field 'placename_field_sim', show: true, limit: 20
-    config.add_facet_field 'creator_sim', label: 'creators', show: false
-    config.add_facet_field 'contributor_sim', label: 'contributors', show: false
-    config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid
-    config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
-    config.add_facet_field 'file_type_display_sim'
-    config.add_facet_field 'institute_sim', limit: 10
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
-    config.add_facet_field 'visibility_ssi'
+    config.add_facet_field 'licence_sim', label: 'Licence', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'copyright_sim', label: 'Copyright', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'subject_sim', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true, include_in_advanced_search: false
+    config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false, include_in_advanced_search: false
+    config.add_facet_field 'placename_field_sim', show: true, limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'creator_sim', label: 'creators', show: false, include_in_advanced_search: false
+    config.add_facet_field 'contributor_sim', label: 'contributors', show: false, include_in_advanced_search: false
+    config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid, include_in_advanced_search: false
+    config.add_facet_field 'language_sim', helper_method: :label_language, limit: true, include_in_advanced_search: false
+    config.add_facet_field 'file_type_display_sim', include_in_advanced_search: false
+    config.add_facet_field 'institute_sim', limit: 10, include_in_advanced_search: false
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10, include_in_advanced_search: false
+    config.add_facet_field 'visibility_ssi', include_in_advanced_search: false
 
     # Added to test sub-collection belonging objects filter in object results view
-    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
-    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
+    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false, include_in_advanced_search: false
+    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false, include_in_advanced_search: false
     
     config.add_facet_fields_to_solr_request!
 
@@ -157,6 +150,14 @@ class CatalogController < ApplicationController
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    config.advanced_search = {
+      # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
+      # support wildcards in advanced search
+      query_parser: 'edismax',
+      url_key: 'advanced',
+      form_solr_parameters: {}
+    }
 
     config.view.maps.coordinates_field = 'geospatial'
     config.view.maps.placename_property = 'placename'
