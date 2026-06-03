@@ -21,15 +21,14 @@ module BlacklightHelper
     content_tag('div', content.join('\n').html_safe, class: 'documentFunctions')
   end
 
-  def link_to_saved_search(params)
-    label = title_to_saved_search(params)
-    link_to(raw(label), search_catalog_path(params.symbolize_keys)).html_safe
+   def link_to_saved_search(params)
+    search_state = controller.search_state_class.new(params, blacklight_config, self)
+    link_to(raw(title_to_saved_search(params) + " (" + render(Blacklight::ConstraintsComponent.for_search_history(search_state: search_state, classes: 'constraint')) + ")"), search_action_path(params))
   end
 
   def title_to_saved_search(params)
     params[:mode] = params[:mode].presence || 'objects'
-
-    "#{params[:mode].to_s.capitalize} (" + [render_search_to_s_q(params), render_search_to_s_filters(params)].reject { |value| value.blank? }.join(", ") + ")"
+    params[:mode].to_s.capitalize
   end
 
   # Create a link back to the index screen, keeping the user's facet, query and paging choices intact by using session.

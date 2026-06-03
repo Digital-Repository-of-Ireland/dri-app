@@ -24,7 +24,8 @@ class CatalogController < ApplicationController
       qt: 'search',
       rows: 9
     }
-    
+    config.track_search_session.storage = 'server'
+
     # solr field configuration for search results/index views
     config.index.title_field = 'title_tesim'
     config.index.record_tsim_type = 'has_model_ssim'

@@ -14,11 +14,11 @@ class SavedSearchesController < ApplicationController
   def retrieve_search_info
     Hash[
       @searches.map do |search|
-      search_count = saved_search_count(search.query_params)
-      search_snippets = saved_search_snippet_documents(search.query_params)
+        search_count = saved_search_count(search.query_params)
+        search_snippets = saved_search_snippet_documents(search.query_params)
 
-      [search.id, { count: search_count, snippets: search_snippets }]
-    end
+        [search.id, { count: search_count, snippets: search_snippets }]
+      end
     ]
   end
 
@@ -39,6 +39,8 @@ class SavedSearchesController < ApplicationController
   end
 
   def saved_search_solr_query(search_params)
+    return "*:*" if search_params.nil?
+
     query_params = saved_search_query(search_params[:q])
     query_facets = saved_search_facets(search_params[:f])
 
@@ -56,6 +58,7 @@ class SavedSearchesController < ApplicationController
   end
 
   def exclude_unwanted_models(user_parameters)
+    return [] if user_parameters.nil?
     fq = []
     fq << "-#{Solr::SchemaFields.searchable_symbol('has_model')}:\"DRI::GenericFile\""
     if user_parameters[:mode] == 'collections'
