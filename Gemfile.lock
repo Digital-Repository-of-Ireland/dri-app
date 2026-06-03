@@ -439,7 +439,7 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
-    faraday (2.14.1)
+    faraday (2.14.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -449,7 +449,7 @@ GEM
       httpclient (>= 2.2)
     faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.2)
+    faraday-net_http (3.4.4)
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
@@ -596,7 +596,7 @@ GEM
       railties (>= 3.1)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.19.2)
+    json (2.19.8)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -613,7 +613,8 @@ GEM
       addressable (>= 2.8)
     jsonpath (1.1.4)
       multi_json
-    jwt (1.5.2)
+    jwt (3.2.0)
+      base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -1280,7 +1281,7 @@ DEPENDENCIES
   js_cookie_rails
   jsbundling-rails
   jstree-rails-4!
-  jwt (= 1.5.2)
+  jwt
   kaminari (>= 1.2.1)
   launchy
   linkeddata

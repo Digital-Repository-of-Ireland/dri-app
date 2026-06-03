@@ -154,7 +154,7 @@ end
 gem 'bootstrap', '~> 5.3'
 gem 'bootstrap-glyphicons'
 gem 'font-awesome-sass', "~> 6.7.2"
-gem 'jwt', '1.5.2'
+gem 'jwt'
 gem 'unicode', platforms: [:mri_18, :mri_19]
 
 group :translations do
