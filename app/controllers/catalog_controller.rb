@@ -2,8 +2,7 @@
 class CatalogController < ApplicationController
   include DRI::Catalog
   include BlacklightAdvancedSearch::Controller
-  self.search_service_class = ::SearchService
-
+  
   configure_blacklight do |config|
 
     #config.document_unique_id_param = 'alternate_id'
@@ -285,15 +284,5 @@ class CatalogController < ApplicationController
 
       additional_export_formats(@document, format)
     end
-  end
-
-  private
-
-  def search_service
-    search_service_class.new(
-      config: blacklight_config,
-      user_params: search_state.to_h,
-      current_ability: current_ability
-    )
   end
 end

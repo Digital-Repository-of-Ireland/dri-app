@@ -12,7 +12,7 @@
         <% end %>
       </h5>
   <% else %>
-      <%= render_document_index %>
+      <%= render_document_index(@response.documents) %>
       <div class="dri_result_container dri_clearfix">
         <%= render partial: "bookmarks/paginate_compact" %>
       </div>
