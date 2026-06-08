@@ -1,4 +1,7 @@
 pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '3'))
+    }
     agent {
         docker {
             image 'dri-jenkins-agent'

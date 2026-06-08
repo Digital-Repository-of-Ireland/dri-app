@@ -29,7 +29,7 @@
 
     <% if current_user && @document.collection? && ((can? :edit, @document) || CollectionConfig.can_export?(@document.id)) 
     %>
-      <%= link_to new_export_path(document.id), id: "export_metadata" do %>
+      <%= link_to new_export_path(@document.id), id: "export_metadata" do %>
         <li ><%= t('dri.views.catalog.links.export_collection_metadata') %></li>
       <% end %>
     <% end %>

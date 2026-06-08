@@ -3,11 +3,11 @@
 	<ul>
 		<li class="tools_title">
 			<h3>
-				<i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @assets.size %>)
+				<i class="fa fa-lg fa-gear"></i> <%= t('dri.views.catalog.headers.files') %> (<%= @assets&.size || 0 %>)
 			</h3>
 		</li>
 	
-	  	<% if @assets.empty? %>
+	  	<% if @assets.blank? %>
 			<li>
 				<%= t('dri.views.catalog.legends.no_files') %>
 			</li>
