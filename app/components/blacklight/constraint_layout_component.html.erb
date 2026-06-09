@@ -7,7 +7,7 @@
       <span class="filter-name"><%= @label %></span>
     <% end %>
     <% if @value.present? %>
-      <%= content_tag :span, @value, class: 'filter-value', title: strip_tags(@value) %>
+      <%= content_tag :span, @value, class: 'filter-value' %>
     <% end %>
   </span>
   <% if @remove_path.present? %>

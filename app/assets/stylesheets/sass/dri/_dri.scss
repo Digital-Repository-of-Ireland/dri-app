@@ -3548,8 +3548,18 @@ img.dri_copyright_logo{
 
   .facet-limit-active {
     --bs-accordion-btn-icon: inherit;
-    --bl-facet-active-bg: #90993d;;
-    border-color: #90993d;;
+    --bl-facet-active-bg: #90993d;
+    border-color: #90993d;
+
+    .card-header {
+	    .btn {
+              color: $dri_black;
+	      font-weight: bold;
+	      &:hover{
+		      color: $dri_white;
+	      }
+	    }
+    }
   }
 
   .facets-header {
