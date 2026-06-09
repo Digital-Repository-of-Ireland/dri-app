@@ -141,11 +141,11 @@ class CatalogController < ApplicationController
     end
 
     # "sort results by" options
-    config.add_sort_field "published_at_dttsi desc", label: "newest"
-    config.add_sort_field "title_sorted_ssi asc", label: "title_A-Z"
-    config.add_sort_field "title_sorted_ssi desc", label: "title_Z-A"
-    config.add_sort_field "identifier_si asc, id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
-    config.add_sort_field "score desc, title_sorted_ssi asc", label: "relevance"
+    config.add_sort_field "published_at_dttsi desc", key: 'newest', label: "newest"
+    config.add_sort_field "title_sorted_ssi asc", key: 'title_A-Z', label: "title_A-Z"
+    config.add_sort_field "title_sorted_ssi desc", key: 'title_Z-A', label: "title_Z-A"
+    config.add_sort_field "identifier_si asc, id_asset_ssi asc, system_create_dtsi desc", key: 'order/sequence', label: "order/sequence"
+    config.add_sort_field "score desc, title_sorted_ssi asc", key: 'relevance', label: "relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
