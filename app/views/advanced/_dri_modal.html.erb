@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <%= render(Blacklight::AdvancedSearchFormComponent.new(
-          url: search_catalog_url,
+          url: main_app.search_catalog_url,
           classes: ['advanced'],
           params: search_state.params_for_search.except('qt'),
           response: @response
