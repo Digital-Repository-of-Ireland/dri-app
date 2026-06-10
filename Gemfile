@@ -106,7 +106,7 @@ group :development, :test do
   gem 'railroady'
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
-  gem 'rspec-rails', '~> 7'
+  gem 'rspec-rails', '~> 8'
   gem 'rswag-specs'
   gem 'selenium-webdriver'
   gem 'show_me_the_cookies'
@@ -134,9 +134,11 @@ group :test do
   gem 'factory_bot_rails'
   gem 'ffaker'
   gem 'launchy'
-  gem 'shoulda', '~> 3.6'
+  gem 'observer'
+  gem 'shoulda', '~> 4'
   gem 'shoulda-matchers'
   gem 'syntax'
+  gem 'syslog'
 end
 
 # To use ActiveModel has_secure_password
