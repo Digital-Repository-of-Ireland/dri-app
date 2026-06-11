@@ -401,9 +401,9 @@ Then /^(?:|I )should( not)? see "([^"]*)"(?: within "([^"]*)")?$/ do |negate, te
       end
     else
       if page.respond_to? :should
-        page.should have_content(text)
+        page.should have_content(text, wait: 10)
       else
-        assert page.has_content?(text)
+        assert page.has_content?(text, wait: 10)
       end
     end
   end
