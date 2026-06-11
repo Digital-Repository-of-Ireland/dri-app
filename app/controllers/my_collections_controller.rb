@@ -9,6 +9,7 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user!
 
   self.search_service_class = ::SearchService
+  self.search_state_class = ::SearchState
   
   configure_blacklight do |config|
 

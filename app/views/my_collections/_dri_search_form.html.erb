@@ -3,25 +3,22 @@
   </div>
 
   <%= form_tag my_collections_index_path, method: :get, id: 'my_collections_searchform', class: 'dri_workspace_search_input_form' do %>
-      <%
-        ui_search_fields = blacklight_config.search_fields.select do |arr|
-          %w[all_fields title subject person place].include?(arr[1])
-        end
-      %>
       <div class="input-group mt-2 dri-search-input-group">
         <label for="search_field" class="visually-hidden"><%= t('blacklight.search.form.search_field.label') %></label>
+          <% translated_fields = translated_search_fields(display_search_fields) %>
           <%= select_tag(:search_field,
-                   options_for_select(ui_search_fields, h(params[:search_field])),
+                   options_for_select(translated_fields, h(params[:search_field])),
                    title: t('blacklight.search.form.search_field.title'),
                    id: "search_field",
-                   class: "search_field")
+                   class: "dri_select")
           %>
 
           <% if params[:mode].blank? %>
             <%= hidden_field_tag 'mode', 'objects' %>
           <% end %>
+          
+          <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except('q', 'search_field', 'qt', 'page', 'utf8', 'controller', 'action', 'q_ws')) %>
 
-          <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q_ws, :search_field, :qt, :page, :utf8)) %>
           <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
           <label for="q_ws" class="visually-hidden"><%= t('blacklight.search.form.search') %></label>
           <%= text_field_tag :q_ws, params[:q_ws], id: "q_ws", class: "dri_search_term_text_input dri_help_popover_slow", :'data-bs-content' =>  t('dri.help.q'),  :'data-bs-title' =>  t('dri.help.q_ws_title'), :'data-bs-trigger' => "hover", :'data-bs-placement' => "left" %>

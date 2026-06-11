@@ -11,7 +11,7 @@ module Blacklight
     # that should be persisted across search sessions.
     def start_over_path query_params = params
       h = {}
-      current_index_view_type = helpers.document_index_view_type(query_params)
+      current_index_view_type = query_params['view'] || 'grid'
       h[:view] = current_index_view_type
       h[:mode] = query_params[:mode] if query_params.key?(:mode)
 
