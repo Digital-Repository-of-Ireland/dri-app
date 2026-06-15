@@ -38,12 +38,12 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/blacklight-maps
-  revision: f90612886c38143fa7d4fbd9c8d3f8d81ce73df0
-  branch: master
+  revision: b7bb6f9bbf0432e3ea66fc052072445eb14e3885
+  branch: blacklight8
   specs:
     blacklight-maps (1.2.0)
-      blacklight (>= 7.35.0, < 8)
-      rails (>= 7.1)
+      blacklight (> 7, < 9)
+      rails (~> 8)
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
@@ -92,6 +92,15 @@ GIT
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
     jstree-rails-4 (3.3.9)
+
+GIT
+  remote: https://github.com/projectblacklight/blacklight_oai_provider
+  revision: 69795b06cc37150386b6d9732be027d200412598
+  specs:
+    blacklight_oai_provider (7.0.2)
+      blacklight (>= 7.0, < 9)
+      oai (~> 1.2)
+      rexml
 
 GIT
   remote: https://github.com/samvera/browse-everything.git
@@ -179,7 +188,7 @@ GEM
       activesupport (>= 3.0.0)
       rdf (>= 2.0.2, < 4.0)
       rdf-vocab (>= 2.0, < 4.0)
-    active_encode (2.0.0)
+    active_encode (2.0.1)
       addressable (~> 2.8)
       rails
       retriable
@@ -265,28 +274,22 @@ GEM
       rubocop-performance
       rubocop-rails
       rubocop-rspec
-    blacklight (7.41.0)
-      deprecation
+    blacklight (8.12.3)
       globalid
-      hashdiff
       i18n (>= 1.7.0)
       jbuilder (~> 2.7)
       kaminari (>= 0.15)
       ostruct (>= 0.3.2)
-      rails (>= 6.1, < 8.1)
-      view_component (>= 2.74, < 4)
+      rails (>= 6.1, < 9)
+      view_component (>= 2.74, < 5)
       zeitwerk
     blacklight-access_controls (6.1.0)
       blacklight (> 6.0, < 9)
       cancancan (>= 1.8)
       deprecation (~> 1.0)
-    blacklight_advanced_search (7.0.0)
-      blacklight (~> 7.0)
+    blacklight_advanced_search (8.0.0)
+      blacklight (>= 7.15, < 10)
       parslet
-    blacklight_oai_provider (7.0.2)
-      blacklight (~> 7.0)
-      oai (~> 1.2)
-      rexml
     bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
     bootstrap-glyphicons (0.0.1)
@@ -434,12 +437,12 @@ GEM
     erubi (1.13.1)
     eventmachine (1.2.7)
     execjs (2.7.0)
-    factory_bot (6.5.0)
-      activesupport (>= 5.0.0)
-    factory_bot_rails (6.4.4)
+    factory_bot (6.6.0)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
-      railties (>= 5.0.0)
-    faraday (2.14.1)
+      railties (>= 6.1.0)
+    faraday (2.14.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -449,7 +452,7 @@ GEM
       httpclient (>= 2.2)
     faraday-multipart (1.2.0)
       multipart-post (~> 2.0)
-    faraday-net_http (3.4.2)
+    faraday-net_http (3.4.4)
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
@@ -478,14 +481,15 @@ GEM
     google-analytics-data-v1beta (0.19.1)
       gapic-common (~> 1.2)
       google-cloud-errors (~> 1.0)
-    google-apis-core (1.0.2)
-      addressable (~> 2.8, >= 2.8.7)
+    google-apis-core (1.2.3)
+      addressable (~> 2.9)
       faraday (~> 2.13)
       faraday-follow_redirects (~> 0.3)
       googleauth (~> 1.14)
       mini_mime (~> 1.1)
+      multi_json (~> 1.11)
       representable (~> 3.0)
-      retriable (~> 3.1)
+      retriable (>= 3.1, < 5.0)
     google-apis-drive_v3 (0.78.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
@@ -521,7 +525,6 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashdiff (1.2.1)
     hashie (5.1.0)
       logger
     health-monitor-rails (12.9.0)
@@ -582,7 +585,7 @@ GEM
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
-    jbuilder (2.14.1)
+    jbuilder (2.15.1)
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     jmespath (1.6.2)
@@ -596,7 +599,7 @@ GEM
       railties (>= 3.1)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.19.3)
+    json (2.19.9)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -613,7 +616,8 @@ GEM
       addressable (>= 2.8)
     jsonpath (1.1.4)
       multi_json
-    jwt (1.5.2)
+    jwt (3.2.0)
+      base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -681,10 +685,9 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.1.0)
+    marcel (1.2.1)
     matrix (0.4.3)
     memoist3 (1.0.0)
-    method_source (1.1.0)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
@@ -701,7 +704,7 @@ GEM
       nokogiri
       nokogiri-happymapper
     mono_logger (1.1.2)
-    multi_json (1.20.1)
+    multi_json (1.21.1)
     multi_test (1.1.0)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
@@ -717,7 +720,7 @@ GEM
       uri (>= 0.11.1)
     net-http-persistent (4.0.8)
       connection_pool (>= 2.2.4, < 4)
-    net-imap (0.6.4)
+    net-imap (0.6.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -755,6 +758,7 @@ GEM
       rack (>= 1.2, < 4)
       snaky_hash (~> 2.0, >= 2.0.3)
       version_gem (~> 1.1, >= 1.1.9)
+    observer (0.1.2)
     omniauth (2.1.4)
       hashie (>= 3.4.6)
       logger
@@ -787,7 +791,7 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.9.0)
-    psych (5.3.1)
+    psych (5.4.0)
       date
       stringio
     public_suffix (7.0.5)
@@ -842,7 +846,7 @@ GEM
     rails-i18n (8.1.0)
       i18n (>= 0.7, < 2)
       railties (>= 8.0.0, < 9)
-    rails_cloudflare_turnstile (0.4.4)
+    rails_cloudflare_turnstile (0.5.0)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
     railties (8.0.5)
@@ -971,7 +975,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (3.4.1)
+    retriable (4.2.0)
     rexml (3.4.4)
     riiif (2.8.1)
       deprecation (>= 1.0.0)
@@ -985,23 +989,23 @@ GEM
     rsolr (2.6.0)
       builder (>= 2.1.2)
       faraday (>= 0.9, < 3, != 2.0.0)
-    rspec-core (3.13.5)
+    rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.5)
+    rspec-mocks (3.13.8)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (7.1.1)
-      actionpack (>= 7.0)
-      activesupport (>= 7.0)
-      railties (>= 7.0)
-      rspec-core (~> 3.13)
-      rspec-expectations (~> 3.13)
-      rspec-mocks (~> 3.13)
-      rspec-support (~> 3.13)
-    rspec-support (3.13.6)
+    rspec-rails (8.0.4)
+      actionpack (>= 7.2)
+      activesupport (>= 7.2)
+      railties (>= 7.2)
+      rspec-core (>= 3.13.0, < 5.0.0)
+      rspec-expectations (>= 3.13.0, < 5.0.0)
+      rspec-mocks (>= 3.13.0, < 5.0.0)
+      rspec-support (>= 3.13.0, < 5.0.0)
+    rspec-support (3.13.7)
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
     rswag-api (2.16.0)
@@ -1075,12 +1079,12 @@ GEM
       rdf-xsd (~> 3.3)
       sparql (~> 3.3)
       sxp (~> 1.3)
-    shoulda (3.6.0)
-      shoulda-context (~> 1.0, >= 1.0.1)
-      shoulda-matchers (~> 3.0)
-    shoulda-context (1.2.2)
-    shoulda-matchers (3.1.3)
-      activesupport (>= 4.0.0)
+    shoulda (4.0.0)
+      shoulda-context (~> 2.0)
+      shoulda-matchers (~> 4.0)
+    shoulda-context (2.0.0)
+    shoulda-matchers (4.5.1)
+      activesupport (>= 4.2.0)
     show_me_the_cookies (6.0.0)
       capybara (>= 2, < 4)
     signet (0.21.0)
@@ -1148,6 +1152,8 @@ GEM
     sys-uname (1.5.0)
       ffi (~> 1.1)
       memoist3 (~> 1.0.0)
+    syslog (0.4.0)
+      logger
     syslog-logger (1.6.8)
     temple (0.10.3)
     terminal-table (3.0.2)
@@ -1189,15 +1195,15 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.9)
-    view_component (3.24.0)
-      activesupport (>= 5.2.0, < 8.2)
+    view_component (4.12.0)
+      actionview (>= 7.1.0)
+      activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)
-      method_source (~> 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     webrick (1.9.1)
     websocket (1.2.10)
-    websocket-driver (0.8.0)
+    websocket-driver (0.8.1)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -1212,7 +1218,7 @@ GEM
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
     yard (0.9.43)
-    zeitwerk (2.7.5)
+    zeitwerk (2.8.2)
 
 PLATFORMS
   x86_64-linux
@@ -1224,10 +1230,10 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bixby (~> 5)
-  blacklight (= 7.41.0)
+  blacklight (~> 8)
   blacklight-maps!
-  blacklight_advanced_search (~> 7)
-  blacklight_oai_provider (~> 7.0, >= 7.0.2)
+  blacklight_advanced_search (~> 8)
+  blacklight_oai_provider!
   bootstrap (~> 5.3)
   bootstrap-glyphicons
   bootstrap-switch-rails
@@ -1278,7 +1284,7 @@ DEPENDENCIES
   js_cookie_rails
   jsbundling-rails
   jstree-rails-4!
-  jwt (= 1.5.2)
+  jwt
   kaminari (>= 1.2.1)
   launchy
   linkeddata
@@ -1288,6 +1294,7 @@ DEPENDENCIES
   nest
   nokogiri (>= 1.19.3)
   oauth
+  observer
   om!
   omniauth (~> 2)
   omniauth-rails_csrf_protection
@@ -1307,7 +1314,7 @@ DEPENDENCIES
   riiif
   roo
   rsolr
-  rspec-rails (~> 7)
+  rspec-rails (~> 8)
   rspec_junit_formatter
   rswag-api (~> 2.0)
   rswag-specs
@@ -1316,7 +1323,7 @@ DEPENDENCIES
   sane_patch (~> 1.0)
   seedbank (~> 0.5.0)
   selenium-webdriver
-  shoulda (~> 3.6)
+  shoulda (~> 4)
   shoulda-matchers
   show_me_the_cookies
   simplecov
@@ -1327,6 +1334,7 @@ DEPENDENCIES
   sprockets (~> 4)
   sqlite3
   syntax
+  syslog
   syslog-logger
   terser
   thin

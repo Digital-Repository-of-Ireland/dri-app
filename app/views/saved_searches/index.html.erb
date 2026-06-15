@@ -9,6 +9,7 @@
 <%- else -%>
 
     <% @searches.each do |search| %>
+        <% next if search.query_params.nil? %>
         <div class="dri_clearfix dri_lightgrey_bottom_border">
 
           <div class="dri_result_container">
@@ -20,7 +21,7 @@
                 </div>
                 <div class="dri_float_left dri_saved_search_params">
                   <% search_count = @search_info[search.id][:count] %>
-                  <b><%= "#{search_count} " %></b>
+                  <b><%= "#{search_count}" %></b>
                   <%= link_to_saved_search(search.query_params) %>
                 </div>
               </div>

@@ -1,0 +1,19 @@
+<span class="btn-group applied-filter constraint <%= @classes %>">
+  <span class="constraint-value btn btn-outline-secondary dri_help_popover_slow" data-bs-content="<%= t('dri.help.dri_facet_restrictions_links') %>"
+      title="<%= t('dri.help.dri_facet_restrictions_links_title') %>"
+      data-bs-trigger="hover"
+      data-bs-placement="top">
+    <% if @label.present? %>
+      <span class="filter-name"><%= @label %></span>
+    <% end %>
+    <% if @value.present? %>
+      <%= content_tag :span, @value, class: 'filter-value' %>
+    <% end %>
+  </span>
+  <% if @remove_path.present? %>
+    <%= link_to(@remove_path, class: 'btn btn-outline-secondary remove') do %>
+      <%= render Blacklight::Icons::RemoveComponent.new %>
+      <span class="sr-only visually-hidden"><%= remove_aria_label %></span>
+    <% end %>
+  <% end %>
+</span>

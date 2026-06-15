@@ -2,20 +2,15 @@
 class CatalogController < ApplicationController
   include DRI::Catalog
   include BlacklightAdvancedSearch::Controller
-  self.search_service_class = ::SearchService
-
+  
   configure_blacklight do |config|
 
-    config.advanced_search = {
-      # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
-      # support wildcards in advanced search
-      query_parser: 'edismax',
-      url_key: 'advanced',
-      form_solr_parameters: {}
-    }
     #config.document_unique_id_param = 'alternate_id'
     config.search_builder_class = ::CatalogSearchBuilder
-    config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view, :id, :collection, :verb, :object_id, :method, :licence, :commit, :metadataPrefix])
+    config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view, :id,
+      :collection, :verb, :object_id, :method, :licence, :commit, :metadataPrefix,
+      :all_fields, :title, :subject, :description, :creator,
+      :contributor, :publisher, :person, :place, :context])
 
     config.show.route = { controller: 'catalog' }
     config.per_page = [12, 24, 36, 48]
@@ -28,7 +23,8 @@ class CatalogController < ApplicationController
       qt: 'search',
       rows: 9
     }
-    
+    config.track_search_session.storage = 'server'
+
     # solr field configuration for search results/index views
     config.index.title_field = 'title_tesim'
     config.index.record_tsim_type = 'has_model_ssim'
@@ -44,32 +40,32 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     #   The ordering of the field names is the order of the display
-    config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20
-    config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20
+    config.add_facet_field 'cdate_year_iim', label: 'Creation Date', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'pdate_year_iim', label: 'Published Date', limit: 20, include_in_advanced_search: false
 
-    config.add_facet_field 'cdate_range_start_isi', show: false
-    config.add_facet_field 'sdate_range_start_isi', show: false
-    config.add_facet_field 'pdate_range_start_isi', show: false
-    config.add_facet_field 'date_range_start_isi', show: false
+    config.add_facet_field 'cdate_range_start_isi', show: false, include_in_advanced_search: false
+    config.add_facet_field 'sdate_range_start_isi', show: false, include_in_advanced_search: false
+    config.add_facet_field 'pdate_range_start_isi', show: false, include_in_advanced_search: false
+    config.add_facet_field 'date_range_start_isi', show: false, include_in_advanced_search: false
 
-    config.add_facet_field 'licence_sim', label: 'Licence', limit: 20
-    config.add_facet_field 'copyright_sim', label: 'Copyright', limit: 20
-    config.add_facet_field 'subject_sim', limit: 20
-    config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true
-    config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false
-    config.add_facet_field 'placename_field_sim', show: true, limit: 20
-    config.add_facet_field 'creator_sim', label: 'creators', show: false
-    config.add_facet_field 'contributor_sim', label: 'contributors', show: false
-    config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid
-    config.add_facet_field 'language_sim', helper_method: :label_language, limit: true
-    config.add_facet_field 'file_type_display_sim'
-    config.add_facet_field 'institute_sim', limit: 10
-    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10
-    config.add_facet_field 'visibility_ssi'
+    config.add_facet_field 'licence_sim', label: 'Licence', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'copyright_sim', label: 'Copyright', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'subject_sim', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, show: true, include_in_advanced_search: false
+    config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false, include_in_advanced_search: false
+    config.add_facet_field 'placename_field_sim', show: true, limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'creator_sim', label: 'creators', show: false, include_in_advanced_search: false
+    config.add_facet_field 'contributor_sim', label: 'contributors', show: false, include_in_advanced_search: false
+    config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid, include_in_advanced_search: false
+    config.add_facet_field 'language_sim', helper_method: :label_language, limit: true, include_in_advanced_search: false
+    config.add_facet_field 'file_type_display_sim', include_in_advanced_search: false
+    config.add_facet_field 'institute_sim', limit: 10, include_in_advanced_search: false
+    config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 10, include_in_advanced_search: false
+    config.add_facet_field 'visibility_ssi', include_in_advanced_search: false
 
     # Added to test sub-collection belonging objects filter in object results view
-    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false
-    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false
+    config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false, include_in_advanced_search: false
+    config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false, include_in_advanced_search: false
     
     config.add_facet_fields_to_solr_request!
 
@@ -145,15 +141,23 @@ class CatalogController < ApplicationController
     end
 
     # "sort results by" options
-    config.add_sort_field "published_at_dttsi desc", label: "newest"
-    config.add_sort_field "title_sorted_ssi asc", label: "title_A-Z"
-    config.add_sort_field "title_sorted_ssi desc", label: "title_Z-A"
-    config.add_sort_field "identifier_si asc, id_asset_ssi asc, system_create_dtsi desc", label: "order/sequence"
-    config.add_sort_field "score desc, title_sorted_ssi asc", label: "relevance"
+    config.add_sort_field "published_at_dttsi desc", key: 'newest', label: "newest"
+    config.add_sort_field "title_sorted_ssi asc", key: 'title_A-Z', label: "title_A-Z"
+    config.add_sort_field "title_sorted_ssi desc", key: 'title_Z-A', label: "title_Z-A"
+    config.add_sort_field "identifier_si asc, id_asset_ssi asc, system_create_dtsi desc", key: 'order/sequence', label: "order/sequence"
+    config.add_sort_field "score desc, title_sorted_ssi asc", key: 'relevance', label: "relevance"
 
     # If there are more than this many search results, no spelling ("did you
     # mean") suggestion is offered.
     config.spell_max = 5
+
+    config.advanced_search = {
+      # https://github.com/projectblacklight/blacklight_advanced_search/tree/74d5be9756f2157204d486d37c766162d59bb400/lib/parsing_nesting#why-not-use-e-dismax
+      # support wildcards in advanced search
+      query_parser: 'edismax',
+      url_key: 'advanced',
+      form_solr_parameters: {}
+    }
 
     config.view.maps.coordinates_field = 'geospatial'
     config.view.maps.placename_property = 'placename'
@@ -193,7 +197,7 @@ class CatalogController < ApplicationController
       blacklight_config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
     end
 
-    @response = search_service.search_results.first
+    @response = search_service.search_results
     @document_list = @response.documents
     load_assets_for_document_list if params[:mode].presence == 'objects' && params[:view].presence != 'maps'
     @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
@@ -220,8 +224,7 @@ class CatalogController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    @response = search_service.fetch(params[:id]).first
-    @document = @response.documents.first
+    @document = search_service.fetch(params[:id])
     if @document.generic_file?
       @document = nil
       raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
@@ -281,15 +284,5 @@ class CatalogController < ApplicationController
 
       additional_export_formats(@document, format)
     end
-  end
-
-  private
-
-  def search_service
-    search_service_class.new(
-      config: blacklight_config,
-      user_params: search_state.to_h,
-      current_ability: current_ability
-    )
   end
 end

@@ -96,11 +96,11 @@ Scenario: Advanced Search Link
 
 Scenario: Reset Search
   Given I am on the home page
-  Then I should see 0 visible elements "#browse_clear_all"
+  Then I should see 0 visible elements ".catalog_startOverLink"
   When I fill in "q" with "test"
   And I perform a search
-  Then I should see 1 visible element "#browse_clear_all"
-  When I click "#browse_clear_all"
-  Then I should see 0 visible elements "#browse_clear_all"
+  Then I should see 1 visible element ".catalog_startOverLink"
+  When I click ".catalog_startOverLink"
+  Then I should see 0 visible elements ".catalog_startOverLink"
 
 #TODO fix single character queries (will there ever be collections / objects with a single character field in prod?)

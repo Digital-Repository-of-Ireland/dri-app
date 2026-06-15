@@ -20,7 +20,7 @@ Scenario: Boolean AND search
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see "Titles = *Two" in the facet well
+  Then I should see "Titles *Two" in the facet well
   Then I should see 1 collection with title "titleTwo"
 
 Scenario: Boolean OR search
@@ -29,7 +29,7 @@ Scenario: Boolean OR search
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "any" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see "Titles = *Two" in the facet well
+  Then I should see "Titles *Two" in the facet well
   And I should see 2 collections with titles "titleTwo, titleThree"
 
 Scenario: Boolean NOT search
@@ -38,7 +38,7 @@ Scenario: Boolean NOT search
   When I fill in "Creator" with "*" within "#advanced_search"
   And I select "any" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see "Titles = -*Two" in the facet well
+  Then I should see "Titles -*Two" in the facet well
   Then I should see 2 collections with titles "titleOne, titleThree"
 
 Scenario: Wildcard search
@@ -49,7 +49,7 @@ Scenario: Wildcard search
   When I fill in "Creator" with "*" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see "Titles = *e*e*" in the facet well
+  Then I should see "Titles *e*e*" in the facet well
   Then I should see 2 collections with titles "titleOne, titleThree"
 
 Scenario: Single character query
@@ -60,23 +60,23 @@ Scenario: Single character query
   And I fill in "Creator" with "*" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see "Titles = Z" in the facet well
+  Then I should see "Titles Z" in the facet well
   Then I should see 1 collection with title "Z"
 
 Scenario: Resetting all search terms
   When I search for "titleone" in facet "Collection" with id "blacklight-root_collection_id_ssi"
-  Then I should see 1 visible element "#browse_clear_all"
+  Then I should see 1 visible element ".catalog_startOverLink"
   And I should see "titleone" in the facet well
   When I press "#advanced_search_button"
   And I fill in "Title" with "*Two" within "#advanced_search"
   And I fill in "Creator" with "*Two" within "#advanced_search"
   And I select "all" from ".query-criteria #op"
   And I press "#advanced-search-submit"
-  Then I should see 1 visible element "#browse_clear_all"
+  Then I should see 1 visible element ".catalog_startOverLink"
   And I should see "titleone" in the facet well
-  And I should see "Titles = *Two" in the facet well
-  And I should see "Creators = *Two" in the facet well
-  When I click "#browse_clear_all"
+  And I should see "Titles *Two" in the facet well
+  And I should see "Creators *Two" in the facet well
+  When I click ".catalog_startOverLink"
   Then I should not see "t1" in the facet well
-  And I should not see "Titles = *Two" in the facet well
-  And I should not see "Creators = *Two" in the facet well
+  And I should not see "Titles *Two" in the facet well
+  And I should not see "Creators *Two" in the facet well

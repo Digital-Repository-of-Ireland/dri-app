@@ -9,7 +9,7 @@
   <dl class="dri_object_metadata_readview">
     <%= render partial: 'shared/show_doi' %>
 
-    <% blacklight_config.show_fields.each do |solr_fname, field| -%>
+    <% document_presenter(document).fields_to_render.each do |solr_fname, field| -%>
       <% if should_render_show_field? document, field %>
         <dt class="blacklight-<%= solr_fname.parameterize %>">
           <%= render_document_show_field_label field: solr_fname %>

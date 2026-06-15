@@ -34,7 +34,7 @@ module ApplicationHelper
 
   def has_constraint_params?
     # get all blacklight constraint keys
-    constraint_keys = %i[f f_inclusive q q_ws] + search_fields_for_advanced_search.symbolize_keys.keys
+    constraint_keys = %i[f f_inclusive q q_ws clause] + search_fields_for_advanced_search.symbolize_keys.keys
     constraint_vals = params.select {|k, v| constraint_keys.include?(k.to_sym)}
     # show constaints if at least one constraint param is non-empty and not on advanced search
     !constraint_vals.empty? && controller_name != 'advanced'

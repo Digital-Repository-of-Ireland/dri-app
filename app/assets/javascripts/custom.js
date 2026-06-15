@@ -31,17 +31,10 @@
 //= require js.cookie
 //= require jquery.validate
 //= require jquery.validate-additional-methods
-// require bootstrap/affix
 //= require popper
 //= require bootstrap
-// require bootstrap/carousel
-// require bootstrap/tooltip
-// require bootstrap/popover
-// require bootstrap/tab
 //= require jquery.bootstrap-duallistbox
 //= require jquery.readyselector
-// Required by Blacklight
-//= require blacklight/blacklight
 //
 //= require jquery-xmleditor
 //= require spin
@@ -51,7 +44,5 @@
 //= require dri/forms
 //= require dri/spinner
 //= require dri/access_controls
-//= require dri
-//
 //= require dri/autocomplete_vocabs
-//
+//= require dri

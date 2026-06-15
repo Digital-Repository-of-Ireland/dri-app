@@ -21,15 +21,14 @@ module BlacklightHelper
     content_tag('div', content.join('\n').html_safe, class: 'documentFunctions')
   end
 
-  def link_to_saved_search(params)
-    label = title_to_saved_search(params)
-    link_to(raw(label), search_catalog_path(params.symbolize_keys)).html_safe
+   def link_to_saved_search(params)
+    search_state = controller.search_state_class.new(params, blacklight_config, self)
+    link_to(raw(title_to_saved_search(params) + " (" + render(Blacklight::ConstraintsComponent.for_search_history(search_state: search_state, classes: 'constraint')) + ")"), search_action_path(params))
   end
 
   def title_to_saved_search(params)
     params[:mode] = params[:mode].presence || 'objects'
-
-    "#{params[:mode].to_s.capitalize} (" + [render_search_to_s_q(params), render_search_to_s_filters(params)].reject { |value| value.blank? }.join(", ") + ")"
+    params[:mode].to_s.capitalize
   end
 
   # Create a link back to the index screen, keeping the user's facet, query and paging choices intact by using session.
@@ -38,13 +37,13 @@ module BlacklightHelper
   #   link_back_to_catalog(label: 'Back to Search', route_set: my_engine)
   def link_back_to_catalog(opts = { label: nil })
     scope = opts.delete(:route_set) || self
-    query_params = current_search_session || {}
+    query_params = search_state.reset(current_search_session.try(:query_params)).to_hash
   
     if search_session['counter']
-      per_page = (search_session['per_page'] || default_per_page).to_i
+      per_page = (search_session['per_page'] || blacklight_config.default_per_page).to_i
       counter = search_session['counter'].to_i
 
-      query_params[:per_page] = per_page unless search_session['per_page'].to_i == default_per_page
+      query_params[:per_page] = per_page unless search_session['per_page'].to_i == blacklight_config.default_per_page
       query_params[:page] = ((counter - 1) / per_page) + 1
     end
 
@@ -152,5 +151,38 @@ module BlacklightHelper
       field_def.translated_label = translated_label
       [key, field_def]
     end.to_h
+  end
+
+  def label_tag_default_for(key)
+    if !params[key].blank?
+      return params[key]
+    elsif params["search_field"] == key
+      return params["q"]
+    else
+      return nil
+    end
+  end
+    
+  def select_menu_for_field_operator
+    options = {
+      t('blacklight_advanced_search.all') => 'AND',
+      t('blacklight_advanced_search.any') => 'OR'
+    }.sort
+
+    select_tag(:op, options_for_select(options, params[:op]), class: 'input-small')
+  end
+
+  # Current params without fields that will be over-written by adv. search,
+  # or other fields we don't want.
+  def advanced_search_context
+    my_params = search_state.params_for_search.except :page, :f_inclusive, :q, :search_field, :op, :index, :sort
+
+    my_params.except!(*search_fields_for_advanced_search.map { |_key, field_def| field_def[:key] })
+  end
+
+  def search_fields_for_advanced_search
+    @search_fields_for_advanced_search ||= begin
+      blacklight_config.search_fields.select { |_k, v| v.include_in_advanced_search || v.include_in_advanced_search.nil? }
+    end
   end
 end

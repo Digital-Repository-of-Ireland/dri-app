@@ -1,0 +1,29 @@
+<% # main container for facets/limits menu -%>
+<%= content_tag :div, id: @id, class: 'facets sidenav dri_facet_filters facets-toggleable-sm', title: t('dri.help.facets_title'), data: {"bs-content"=>t('dri.help.facets'), "bs-toggle"=>"popover", "bs-trigger"=>"hover", "bs-placement"=>"top"} do %>
+  <div class="panel-heading">
+    <%= content_tag :h2, class: 'dri_head_title facets-heading' do %>
+    <%= t('blacklight.search.facets.title') %>
+    <span class="dri_search_num" id="browse_results_count"><%= @response.response[:numFound] %></span>
+    <% end %>
+    <%= content_tag :button,
+      class: 'btn btn-outline-secondary dri_button_grey facet-toggle-button d-block d-md-none mt-1',
+      type: 'button',
+      data: {
+        toggle: 'collapse',
+        target: "##{@panel_id}",
+        'bs-toggle': 'collapse',
+        'bs-target': "##{@panel_id}"
+      },
+      aria: {
+        controls: @panel_id,
+        expanded: 'false',
+      } do %>
+      <span data-show-label><%= t('blacklight.search.facets.group.open') %></span>
+      <span data-hide-label><%= t('blacklight.search.facets.group.close') %></span>
+    <% end %>
+  </div>
+
+  <div id="<%= @panel_id %>" class="facets-collapse collapse">
+    <%= body %>
+  </div>
+<% end %>

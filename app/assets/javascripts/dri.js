@@ -122,23 +122,6 @@ $(function() {
   });
 });
 
-$(document).ready(function() {
-function togglePanel (){
-   var w = $(window).width();
-   if (w <= 766) {
-      $('#facet-panel-collapse').removeClass('in');
-   } else {
-      $('#facet-panel-collapse').addClass('in');
-   }
-}
-
- $(window).resize(function(){
-     togglePanel();
- });
-
- togglePanel();
- });
-
 $(document).on("click", "#download_surrogate", function () {
      var rootCollection = $(this).data('root-collection');
      var object = $(this).data('object');

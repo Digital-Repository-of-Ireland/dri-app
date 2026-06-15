@@ -16,6 +16,7 @@ ga:
         query_criteria_heading_html: "Aimsigh míreanna le match %{select_menu}"
         sort_label: Eagraigh de réir
         tips_title: Leideanna cuardaigh
+        search_context: laistigh den chuardach
       tips:
         boolean: Úsáid "OR", "AND", agus "NOT" chun loighic coimpléascach a cruthú. Is féidir leat lúibíní a úsáid.
         keywords: Cuingrigh eochairfhocail agus tréithe chun míreanna sainiúil a aimsiú.
@@ -161,6 +162,26 @@ ga:
           publishers: Foilsitheoir
           titles: Teideal
           subjects: Ábhair
+        search:
+          all_fields: Gach réimse
+          contributor: Rannpháirtithe
+          creator: Cruthaitheoirí
+          description: Cur síos
+          person: Ainmneacha
+          place: Áiteanna
+          publisher: Foilsitheoir
+          title: Teideal
+          subject: Ábhair
+        sort:
+          label: 'Eadraigh de réir %{field}' # TODO: Remove during major release
+          label_html: 'Eagraigh<span class="d-none d-sm-inline"> de réir %{field}</span>'
+          newest: Mír is déanaí
+          order/sequence: Ord/sraith
+          relevance: Ábharthacht
+          title: Teideal
+          title_A-Z: Teideal (A-Z)
+          title_Z-A: Teideal (Z-A)
+          submit: "sórtáil na torthaí"
       filters: 
         label: "%{label}:"
         remove: 
@@ -205,8 +226,10 @@ ga:
         order/sequence: Ord/sraith
         relevance: Ábharthacht
         title: Teideal
+        title_A-Z: Teideal (A-Z)
+        title_Z-A: Teideal (Z-A)
         submit: "sórtáil na torthaí"
-      start_over: "Tosaigh arís"
+      start_over: "Glan Gach Rud"
       title: "Torthaí an Chuardaigh %{application_name}"
     search_history: 
       clear: 

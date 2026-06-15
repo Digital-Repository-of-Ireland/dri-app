@@ -12,8 +12,7 @@
     <% if params[:mode].blank? %>
         <%= hidden_field_tag 'mode', 'objects' %>
     <% end %>
-
-    <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except(:q, :search_field, :qt, :page, :utf8)) %>
+    <%= render Blacklight::HiddenSearchStateComponent.new(params: search_state.params_for_search.except('q', 'search_field', 'qt', 'page', 'utf8', 'controller', 'action', 'q_ws')) %>
     <!-- ID for the search box of 'q_text', to distinguish from date range search when rendering filter constraints in the UI -->
     <label for="q" class="visually-hidden"><%= t('blacklight.search.form.search') %></label>
     <%= text_field_tag :q, params[:q], id: "q", class: "dri_search_term_text_input dri_help_popover_slow", :'data-bs-content' =>  t('dri.help.q'),  :'data-bs-title' =>  t('dri.help.q_title'), :'data-bs-trigger' => "hover", :'data-placement' => "left" %>

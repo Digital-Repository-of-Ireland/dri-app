@@ -3,6 +3,9 @@ class OaiPmhController < ApplicationController
   include BlacklightOaiProvider::Controller
   copy_blacklight_config_from(CatalogController)
 
+  blacklight_config.track_search_session.storage = false
+  blacklight_config.search_state_fields.push(*[:identifier])
+
   DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::Edm.instance)
   DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::OpenAire.instance)
   DRI::OaiProvider::SolrDocumentProvider.register_format(DRI::Formatters::Oai.instance)
