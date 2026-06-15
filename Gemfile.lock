@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: dacd1ce19a3dcc104a19c0e00278e1f6e6d917e5
-  branch: develop
+  revision: 313980b64cee0cb4f5855c2a2c999e84832a9d50
+  tag: v4.18.0
   specs:
     dri_data_models (4.18.0)
       hydra-derivatives
@@ -20,10 +20,10 @@ GIT
 
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
-  revision: e62528b9289189f8bf03bd0ae56b3fde36787b5f
-  branch: develop
+  revision: 5bb3ab993e5c01fd695830cf87fd031a4e300e2a
+  tag: v2.4.1
   specs:
-    user_group (2.4.1)
+    user_group (2.4.0)
       blacklight-access_controls
       devise
       devise-guests (~> 0.3)
@@ -63,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git
-  revision: f08896c5ad3f8eb7e122854c4d60a5ec4da6a99c
+  revision: de3d1924881389e6487c780e850ada4c1b35f726
   branch: af_optional
   specs:
     hydra-derivatives (4.1.0)
@@ -188,7 +188,7 @@ GEM
       activesupport (>= 3.0.0)
       rdf (>= 2.0.2, < 4.0)
       rdf-vocab (>= 2.0, < 4.0)
-    active_encode (2.0.0)
+    active_encode (2.0.1)
       addressable (~> 2.8)
       rails
       retriable
@@ -415,7 +415,7 @@ GEM
       concurrent-ruby (~> 1.0)
       dry-core (~> 1.1)
       zeitwerk (~> 2.6)
-    dry-struct (1.8.0)
+    dry-struct (1.8.1)
       dry-core (~> 1.1)
       dry-types (~> 1.8, >= 1.8.2)
       ice_nine (~> 0.11)
@@ -456,9 +456,9 @@ GEM
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
-    fastimage (2.4.0)
+    fastimage (2.4.1)
     ffaker (2.23.0)
-    ffi (1.17.3-x86_64-linux-gnu)
+    ffi (1.17.4-x86_64-linux-gnu)
     filesize (0.2.0)
     font-awesome-sass (6.7.2)
       sassc (~> 2.0)
@@ -481,14 +481,15 @@ GEM
     google-analytics-data-v1beta (0.19.1)
       gapic-common (~> 1.2)
       google-cloud-errors (~> 1.0)
-    google-apis-core (1.0.2)
-      addressable (~> 2.8, >= 2.8.7)
+    google-apis-core (1.2.3)
+      addressable (~> 2.9)
       faraday (~> 2.13)
       faraday-follow_redirects (~> 0.3)
       googleauth (~> 1.14)
       mini_mime (~> 1.1)
+      multi_json (~> 1.11)
       representable (~> 3.0)
-      retriable (~> 3.1)
+      retriable (>= 3.1, < 5.0)
     google-apis-drive_v3 (0.78.0)
       google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.3.1)
@@ -584,7 +585,7 @@ GEM
     iso8601 (0.13.0)
     it (2.0.0)
       actionpack (>= 3.0.0)
-    jbuilder (2.14.1)
+    jbuilder (2.15.1)
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     jmespath (1.6.2)
@@ -598,7 +599,7 @@ GEM
       railties (>= 3.1)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.19.8)
+    json (2.19.9)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -684,13 +685,13 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.1.0)
+    marcel (1.2.1)
     matrix (0.4.3)
     memoist3 (1.0.0)
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0303)
+    mime-types-data (3.2026.0414)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitar (1.1.0)
@@ -703,13 +704,12 @@ GEM
       nokogiri
       nokogiri-happymapper
     mono_logger (1.1.2)
-    multi_json (1.19.1)
+    multi_json (1.21.1)
     multi_test (1.1.0)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
-    mustermann (3.0.4)
-      ruby2_keywords (~> 0.0.1)
+    mustermann (3.1.1)
     mutex_m (0.3.0)
     mysql2 (0.5.5)
     namae (1.2.0)
@@ -846,7 +846,7 @@ GEM
     rails-i18n (8.1.0)
       i18n (>= 0.7, < 2)
       railties (>= 8.0.0, < 9)
-    rails_cloudflare_turnstile (0.4.4)
+    rails_cloudflare_turnstile (0.5.0)
       faraday (>= 1.0, < 3.0)
       rails (>= 6.0, < 8.2)
     railties (8.0.5)
@@ -976,7 +976,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    retriable (3.4.1)
+    retriable (4.2.0)
     rexml (3.4.4)
     riiif (2.8.1)
       deprecation (>= 1.0.0)
@@ -1044,7 +1044,6 @@ GEM
     ruby-vips (2.3.0)
       ffi (~> 1.12)
       logger
-    ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     rvm (1.11.3.9)
     sane_patch (1.0.0)
@@ -1205,7 +1204,7 @@ GEM
       rack (>= 2.0.9)
     webrick (1.9.1)
     websocket (1.2.10)
-    websocket-driver (0.8.0)
+    websocket-driver (0.8.1)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
