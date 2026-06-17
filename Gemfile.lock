@@ -88,6 +88,23 @@ GIT
       solrizer (~> 3.3)
 
 GIT
+  remote: https://github.com/kaminari/kaminari.git
+  revision: 76511e3c2c09d8adcd3a686d2c3ec6829a98f37e
+  specs:
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
+
+GIT
   remote: https://github.com/kesha-antonov/jstree-rails-4
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
@@ -617,18 +634,6 @@ GEM
       multi_json
     jwt (3.2.0)
       base64
-    kaminari (1.2.2)
-      activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.2)
-      kaminari-activerecord (= 1.2.2)
-      kaminari-core (= 1.2.2)
-    kaminari-actionview (1.2.2)
-      actionview
-      kaminari-core (= 1.2.2)
-    kaminari-activerecord (1.2.2)
-      activerecord
-      kaminari-core (= 1.2.2)
-    kaminari-core (1.2.2)
     launchy (2.5.2)
       addressable (~> 2.8)
     ld-patch (3.3.0)
@@ -1286,7 +1291,7 @@ DEPENDENCIES
   jsbundling-rails
   jstree-rails-4!
   jwt
-  kaminari (>= 1.2.1)
+  kaminari!
   launchy
   linkeddata
   listen
