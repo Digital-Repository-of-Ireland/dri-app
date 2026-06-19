@@ -1,6 +1,6 @@
 <!-- container for search, sort and pagination etc. navigations and search text input -->
 <div id="dri_search_features_nav_container_id" class="dri_search_features_nav_container">
-  <% unless controller_name == 'advanced' %>
+  <% unless controller_name == 'advanced' || @response.blank? %>
     <%= render 'shared/header_browse_sort_by'  %>
     <%= render 'shared/header_browse_per_page' %>
   <% end %>

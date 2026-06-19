@@ -72,7 +72,7 @@
 
     	<%#  the blacklight maps gem seems to set a 'constraint' even when none appears to exist %>
     	<%# - check below is to see if a facet or text query exists %>
-    	<% if has_constraint_params? %>
+    	<% if has_constraint_params? && controller.action_name != "show" %>
     	  <%= render 'constraints' %>
     	<% end %>
 
