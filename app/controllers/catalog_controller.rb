@@ -191,31 +191,17 @@ class CatalogController < ApplicationController
   # OVER-RIDDEN from BL
   def index
     params.delete(:q_ws)
-
-    # geojson facet is slow to load
-    if params[:view].presence == 'maps'
-      blacklight_config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
-    end
-
-    @response = search_service.search_results
-    @document_list = @response.documents
-    load_assets_for_document_list if params[:mode].presence == 'objects' && params[:view].presence != 'maps'
-    @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
-      load_collection_titles
-    }
+    configure_map_facet_if_needed
+    load_search_results
+    load_assets_if_needed
+    load_collection_titles
+    load_timeline_data_if_needed
     
-    # Get Timeline data if view is Timeline
-    @available_timelines = available_timelines_from_facets
-    if params[:view].present? && params[:view].include?('timeline')
-      @timeline_data = timeline_data
-    end
-
     respond_to do |format|
-      format.html { store_preferred_view }
-      format.rss  { render layout: false }
-      format.atom { render layout: false }
-      format.json { render json: render_search_results_as_json }
-
+      format.html  { store_preferred_view }
+      format.rss   { render layout: false }
+      format.atom  { render layout: false }
+      format.json  { render json: render_search_results_as_json }
       additional_response_formats(format)
       document_export_formats(format)
     end
@@ -224,65 +210,62 @@ class CatalogController < ApplicationController
   # get a single document from the index
   # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    @document = search_service.fetch(params[:id])
-    if @document.generic_file?
-      @document = nil
-      raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
+  @document = fetch_and_validate_document
+  show_organisations
+  load_document_type_data
+  @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
+  @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
+  load_doi_data
+  load_analytics_data
+
+  respond_to do |format|
+    format.html { @search_context = setup_next_and_previous_documents }
+    format.json { render_formatted(DRI::Formatters::Json, :as_json) }
+    format.ttl  { render_formatted(DRI::Formatters::Rdf, :ttl, plain: true) }
+    format.rdf  { render_formatted(DRI::Formatters::Rdf, :xml, plain: true) }
+    format.js   { render layout: false }
+    additional_export_formats(@document, format)
+  end
+end
+
+private
+  def configure_map_facet_if_needed
+    return unless map_view?
+
+    blacklight_config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
+  end
+
+  def map_view?
+    params[:view].presence == 'maps'
+  end
+
+  def load_collection_data
+    @config = CollectionConfig.find_by(collection_id: @document.id)
+    @children = @document
+      .children(chunk: 100, sort: @config&.subcollection_sort)
+      .select(&:published?)
+    @file_display_type_count = @document.file_display_type_count(published_only: true)
+  end
+
+  def load_analytics_data
+    return unless @document.published?
+
+    @dimensions = {
+      collection: @document.root_collection_id,
+      object: @document.id
+    }.tap do |dims|
+      dims[:organisation] = @document.depositing_institute.name if @document.depositing_institute.present?
     end
+    @track_download = true
+  end
 
-    show_organisations
+  def load_assets_if_needed
+    return unless params[:mode].presence == 'objects' && !map_view?
 
-    if @document.collection?
-      @config = CollectionConfig.find_by(collection_id: @document.id)
-      @children = @document.children(chunk: 100, sort: @config&.subcollection_sort).select { |child| child.published? }
-      @file_display_type_count = @document.file_display_type_count(published_only: true)
-    else
-      # assets ordered by label, excludes preservation only files
-      @assets = @document.assets(ordered: true)
-      @thumbnail = @document.thumbnail
-    end
+    load_assets_for_document_list
+  end
 
-    @presenter = DRI::ObjectInCatalogPresenter.new(@document, view_context)
-    @reader_group = governing_reader_group(@document.collection_id) unless @document.collection?
-
-    if @document.doi
-      doi = DataciteDoi.where(object_id: @document.id).current
-      @doi = doi.doi if doi.present? && doi.minted?
-    end
-
-    if @document.published?
-      dimensions = { collection: @document.root_collection_id, object: @document.id }
-      dimensions[:organisation] = @document.depositing_institute.name if @document.depositing_institute.present?
-      @dimensions = dimensions
-      @track_download = true
-    end
-
-    respond_to do |format|
-      format.html { @search_context = setup_next_and_previous_documents }
-      format.json do
-        options = {}
-        options[:with_assets] = true if can?(:read, @document)
-        options[:with_metadata] = true
-        formatter = DRI::Formatters::Json.new(self, @document, options)
-        render json: formatter.format(func: :as_json)
-      end
-      format.ttl do
-        options = {}
-        options[:with_assets] = true if can?(:read, @document)
-        options[:with_metadata] = true
-        formatter = DRI::Formatters::Rdf.new(self, @document, options)
-        render plain: formatter.format({format: :ttl})
-      end
-      format.rdf do
-        options = {}
-        options[:with_assets] = true if can?(:read, @document)
-        options[:with_metadata] = true
-        formatter = DRI::Formatters::Rdf.new(self, @document, options)
-        render plain: formatter.format({format: :xml})
-      end
-      format.js { render layout: false }
-
-      additional_export_formats(@document, format)
-    end
+  def formatter_options
+    super.merge(with_metadata: true)
   end
 end

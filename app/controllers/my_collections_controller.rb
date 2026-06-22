@@ -198,127 +198,100 @@ class MyCollectionsController < ApplicationController
   end
   
   def index
-    @response = search_service.search_results
-    @document_list = @response.documents
-    load_assets_for_document_list if params[:mode].presence == 'objects'
-    @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) {
-      load_collection_titles
-    }
-
-    @available_timelines = available_timelines_from_facets
-    if params[:view].present? && params[:view].include?('timeline')
-      @timeline_data = timeline_data
-    end
-
+    load_search_results
+    load_assets_if_needed
+    load_collection_titles
+    load_timeline_data_if_needed
+    
     respond_to do |format|
-      format.html { store_preferred_view }
-      format.rss  { render layout: false }
-      format.atom { render layout: false }
-      format.json { render json: render_search_results_as_json }
-
+      format.html  { store_preferred_view }
+      format.rss   { render layout: false }
+      format.atom  { render layout: false }
+      format.json  { render json: render_search_results_as_json }
       additional_response_formats(format)
       document_export_formats(format)
     end
   end
 
-  # get a single document from the index
-  # to add responses for formats other than html or json see _Blacklight::Document::Export_
   def show
-    @document = search_service.fetch(params[:id])
-    if @document.generic_file?
-      @document = nil
-      raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile"
-    end
-
+    @document = fetch_and_validate_document
     show_organisations
-    
-    if @document.collection?
-      @config = CollectionConfig.find_by(collection_id: @document.id)
-      # published subcollections unless admin or edit permission
-      @children = @document.children(chunk: 100, sort: @config&.subcollection_sort).select { |child| child.published? || (current_user.is_admin? || can?(:edit, @document)) }
-      @file_display_type_count = @document.file_display_type_count
-    else
-      # assets including preservation only files, ordered by label
-      @assets = @document.assets(with_preservation: true, ordered: true)
-      @thumbnail = @document.thumbnail
-    end
-
+    load_document_type_data
     @reader_group = find_reader_group(@document)
-
-    if @document.doi
-      doi = DataciteDoi.where(object_id: @document.id).current
-      @doi = doi.doi if doi.present? && doi.minted?
-    end
-
-    # Get any aggregation config
-    @aggregation = (Aggregation.find_by(collection_id: @document.id) || Aggregation.new) if @document.collection?
-    tpstory = TpStory.where(dri_id: @document.id)
-    @tp_ready = tpstory.size > 0 ? true : false
-    if @tp_ready 
-      tpitems = TpItem.where(story_id: tpstory.first.story_id)
-      @tp_fetched = tpitems.size > 0 ? true : false
-    end
-
+    load_doi_data
+    load_aggregation_data
+    load_tp_story_data
     @presenter = DRI::ObjectInMyCollectionsPresenter.new(@document, view_context)
     @track_download = false
-
     supported_licences
     supported_copyrights
 
     respond_to do |format|
       format.html { @search_context = setup_next_and_previous_documents }
-      format.json do
-        options = {}
-        options[:with_assets] = true if can?(:read, @document)
-        formatter = DRI::Formatters::Json.new(self, @document, options)
-        render json: formatter.format(func: :as_json)
-      end
-      format.ttl do
-        options = {}
-        options[:with_assets] = true if can?(:read, @document)
-        formatter = DRI::Formatters::Rdf.new(self, @document, options)
-        render plain: formatter.format({format: :ttl})
-      end
-      format.rdf do
-        options = {}
-        options[:with_assets] = true if can?(:read, @document)
-        formatter = DRI::Formatters::Rdf.new(self, @document, options)
-        render plain: formatter.format({format: :xml})
-      end
-      format.js { render layout: false }
-
+      format.json { render_formatted(DRI::Formatters::Json, :as_json) }
+      format.ttl  { render_formatted(DRI::Formatters::Rdf,  :ttl, plain: true) }
+      format.rdf  { render_formatted(DRI::Formatters::Rdf,  :xml, plain: true) }
+      format.js   { render layout: false }
       additional_export_formats(@document, format)
     end
   end
 
   def duplicates
     enforce_permissions!('manage_collection', params[:id])
-
     @object = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.unknown_object') + " ID: #{params[:id]}" if @object.nil?
 
-    params[:sort] ||= 'title_sorted_ssi asc'
-
+    params[:sort]     ||= 'title_sorted_ssi asc'
     params[:per_page] ||= blacklight_config.default_per_page
+
     @response, document_list = @object.duplicates(params[:sort])
     @document_list = Kaminari.paginate_array(document_list).page(params[:page]).per(params[:per_page])
   end
 
   private
 
-    def find_reader_group(document)
-      read_groups = document["#{Solr::SchemaFields.searchable_symbol('read_access_group')}"]
+  def load_assets_if_needed
+    load_assets_for_document_list if params[:mode].presence == 'objects'
+  end
 
-      if read_groups.present? && read_groups.include?(document.alternate_id)
-        UserGroup::Group.find_by(name: document.alternate_id)
-      end
-    end
+  def load_collection_data
+    @config   = CollectionConfig.find_by(collection_id: @document.id)
+    @children = @document
+      .children(chunk: 100, sort: @config&.subcollection_sort)
+      .select { |child| child.published? || admin_or_can_edit? }
+    @file_display_type_count = @document.file_display_type_count
+  end
 
-    def search_service
-      search_service_class.new(
-        config: blacklight_config,
-        user_params: search_state.to_h.merge({"q" => params[:q_ws]}),
-        current_ability: current_ability
-      )
-    end
+  def load_aggregation_data
+    return unless @document.collection?
+
+    @aggregation = Aggregation.find_by(collection_id: @document.id) || Aggregation.new
+  end
+
+  def load_tp_story_data
+    tpstory      = TpStory.where(dri_id: @document.id)
+    @tp_ready    = tpstory.any?
+    return unless @tp_ready
+
+    @tp_fetched  = TpItem.where(story_id: tpstory.first.story_id).any?
+  end
+
+  def admin_or_can_edit?
+    current_user.is_admin? || can?(:edit, @document)
+  end
+
+  def find_reader_group(document)
+    read_groups = document["#{Solr::SchemaFields.searchable_symbol('read_access_group')}"]
+    return unless read_groups.present? && read_groups.include?(document.alternate_id)
+
+    UserGroup::Group.find_by(name: document.alternate_id)
+  end
+
+  def search_service
+    search_service_class.new(
+      config:           blacklight_config,
+      user_params:      search_state.to_h.merge({ "q" => params[:q_ws] }),
+      current_ability:  current_ability
+    )
+  end
 end
