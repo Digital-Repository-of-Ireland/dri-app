@@ -10,7 +10,8 @@ class CatalogController < ApplicationController
     config.search_state_fields.push(*[:mode, :show_subs, :tl_field, :view, :id,
       :collection, :verb, :object_id, :method, :licence, :commit, :metadataPrefix,
       :all_fields, :title, :subject, :description, :creator,
-      :contributor, :publisher, :person, :place, :context])
+      :contributor, :publisher, :person, :place, :context,
+      :coordinates, :spatial_search_type])
 
     config.show.route = { controller: 'catalog' }
     config.per_page = [12, 24, 36, 48]
