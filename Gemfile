@@ -9,7 +9,7 @@ gem 'jsbundling-rails'
 gem 'blacklight', '~> 8'
 gem 'blacklight_advanced_search', '~> 8'
 gem 'blacklight_oai_provider', git: 'https://github.com/projectblacklight/blacklight_oai_provider'
-gem 'kaminari', '>= 1.2.1'
+gem 'kaminari', git: 'https://github.com/kaminari/kaminari.git'
 gem 'rsolr'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'af_optional'

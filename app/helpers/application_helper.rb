@@ -29,7 +29,7 @@ module ApplicationHelper
   end
 
   def has_search_parameters?
-    params[:q].present? || params[:f].present? || params[:search_field].present?
+    params[:q_ws].present? || params[:q].present? || params[:f].present? || params[:search_field].present?
   end
 
   def has_constraint_params?

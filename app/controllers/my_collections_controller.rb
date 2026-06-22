@@ -22,7 +22,8 @@ class MyCollectionsController < ApplicationController
     config.search_builder_class = ::MyCollectionsSearchBuilder
     config.search_state_fields.push(*[:q_ws, :mode, :show_subs, :tl_field, :view,
       :id, :collection, :verb, :object_id,
-      :method, :licence, :commit, :metadataPrefix])
+      :method, :licence, :commit, :metadataPrefix,
+      :coordinates, :spatial_search_type])
     
     config.show.route = { controller: 'my_collections' }
     config.per_page = [12, 24, 36, 48, 72, 96]
