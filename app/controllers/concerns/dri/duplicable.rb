@@ -14,7 +14,7 @@ module DRI::Duplicable
     duplicates = find_object_duplicates(object)
     return if duplicates.blank?
 
-    warning = t(
+    warning = I18n.t(
       'dri.flash.notice.duplicate_object_ingested',
       duplicates: duplicates.map { |o| "'" + o["id"] + "'" }.join(", ").html_safe
     )
