@@ -334,7 +334,7 @@ GEM
       csl (~> 2.0)
     clamby (1.6.10)
     clipboard-rails (1.7.1)
-    concurrent-ruby (1.3.6)
+    concurrent-ruby (1.3.7)
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
@@ -459,7 +459,7 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faraday (2.14.2)
+    faraday (2.14.3)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -616,7 +616,7 @@ GEM
       railties (>= 3.1)
     jsbundling-rails (1.3.1)
       railties (>= 6.0.0)
-    json (2.19.9)
+    json (2.20.0)
     json-canonicalization (1.0.0)
     json-ld (3.3.2)
       htmlentities (~> 4.3)
@@ -740,7 +740,7 @@ GEM
     noid-rails (3.3.0)
       actionpack (>= 5.0.0, < 9)
       noid (~> 0.9)
-    nokogiri (1.19.3-x86_64-linux-gnu)
+    nokogiri (1.19.4-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri-happymapper (0.9.0)
       nokogiri (~> 1.5)
@@ -1222,7 +1222,7 @@ GEM
       psych (>= 3.3)
       rdf (~> 3.3)
       rdf-xsd (~> 3.3)
-    yard (0.9.43)
+    yard (0.9.44)
     zeitwerk (2.8.2)
 
 PLATFORMS
@@ -1297,7 +1297,7 @@ DEPENDENCIES
   moab-versioning (~> 4.4, >= 4.4.2)
   mysql2
   nest
-  nokogiri (>= 1.19.3)
+  nokogiri (>= 1.19.4)
   oauth
   observer
   om!
