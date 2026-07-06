@@ -37,7 +37,7 @@ class UserCollections
     end
 
     def admin_query
-      "depositor_sim:#{user.email}"
+      "depositor_sim:\"#{user.email}\""
     end
 
     def user_collections_data
@@ -51,8 +51,8 @@ class UserCollections
     end
 
     def user_query
-      query = "#{Solr::SchemaFields.searchable_symbol('manager_access_person')}:#{user.email} OR "\
-        "#{Solr::SchemaFields.searchable_symbol('edit_access_person')}:#{user.email}"
+      query = "manager_access_person_ssim:\"#{user.email}\" OR "\
+        "edit_access_person_ssim:\"#{user.email}\""
 
       read_query = read_group_query(user)
       query <<   " OR (" + read_query + ")" unless read_query.nil?
