@@ -1,266 +1,74 @@
-class DRI::Formatters::Linkset
-  require 'json'
+# frozen_string_literal: true
 
-    SCHEMA_TYPES = {
-      'text' 			          => 'https://schema.org/DigitalDocument',
-      'image' 			        => 'https://schema.org/ImageObject',
-      'movingimage' 		    => 'https://schema.org/VideoObject',
-      'interactiveresource' => 'https://schema.org/WebApplication',
-      'sound' 			        => 'https://schema.org/AudioObject',
-      'software' 		        => 'https://schema.org/SoftwareApplication',
-      'dataset' 			      => 'https://schema.org/Dataset',
-      'article'             => 'https://schema.org/ScholarlyArticle',
-      'collection'          => 'https://schema.org/Collection',
-      'object'              => 'https://schema.org/object',
-      '3d'                  => 'https://schema.org/3DModel'
-    }.freeze
+module DRI
+  module Formatters
+    # Builds a Signposting-style "linkset" for a document, describing its
+    # DOI, schema.org type, authors (ORCID), licence/copyright, descendant
+    # items (assets or collection children), metadata link, and reverse
+    # collection links - rendered either as the RFC 9264 "lset" line
+    # format or as JSON.
+    #
+    # This class is kept as a thin orchestrator: field-mapping-ish
+    # concerns each live in their own collaborator class under
+    # app/models/dri/formatters/linkset/. Every method that existed on the
+    # original class is preserved here (as a delegating wrapper) so
+    # existing callers keep working unchanged.
+    class Linkset
+      require "json"
 
-    XML_PROFILE = {
-      'DRI::QualifiedDublinCore'  => 'http://dublincore.org/schemas/xmls/qdc/2008/02/11/qualifieddc.xsd',
-      'DRI::Mods'                 => 'http://www.loc.gov/standards/mods/v3/mods-3-7.xsd',
-      'DRI::EadComponent'         => 'http://www.loc.gov/ead/ead.xsd',
-      'DRI::EadCollection'        => 'http://www.loc.gov/ead/ead.xsd',
-      'DRI::Marc'                 => 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd'
-    }.freeze
-
-    def initialize(controller, document, options = {})
-      @controller = controller
-      @document = document
-    end
-
-    def format(options = {})
-      output_format = options[:format].presence || :lset
-      output_format == :lset ? lset : json
-    end
-
-    def lset
-      schema_link = mapped_links(@document.type)
-        
-      doi = DataciteDoi.where(object_id: @document.id).current
-      @doi = doi.doi if doi.present? && doi.minted?
-          
-      orcid_links = contributors
-
-      license_link = document_licence_link
-      copyright_link = @document.copyright&.url
-
-      link_descendants =  if @document.collection?
-                            collection_objects
-                          else
-                            object_items(@document.assets, @document.id)
-                          end
-
-      describedby = metadata_link
-      linkset = []
-      
-      anchor_url = @controller.catalog_url(@document.id)
-      if @doi.present?
-        linkset << "<#{"https://doi.org/"+ doi.doi}> ; rel=\"cite-as\" ; anchor=\"#{anchor_url}\""
+      def initialize(controller, document, options = {})
+        @controller = controller
+        @document = document
       end
 
-      if schema_link.present?
-        linkset << "<#{schema_link}> ; rel=\"type\" ; anchor=\"#{anchor_url}\""
-      end
-      linkset << "<https://schema.org/AboutPage> ; rel=\"type\" ; anchor=\"#{anchor_url}\""
-
-      if orcid_links.present?
-        orcid_links.each do |orcid|
-          linkset << "<#{orcid}> ; rel=\"author\" ; anchor=\"#{anchor_url}\""
-        end
+      def format(options = {})
+        output_format = options[:format].presence || :lset
+        output_format == :lset ? lset : json
       end
 
-      if link_descendants.present?
-        link_descendants.each do |asset|
-          linkset << "<#{asset[:href]}> ; rel=\"item\" ; type=\"#{asset[:type]}\" ; anchor=\"#{anchor_url}\""
-        end
+      def lset
+        LsetRenderer.new(context).render
       end
 
-      linkset << "<#{describedby[:href]}> ; rel=\"describedby\" ; type=\"application/xml\" ; anchor=\"#{anchor_url}\""
-      if license_link.present?
-        linkset << "<#{license_link}> ; rel=\"license\" ; anchor=\"#{anchor_url}\""
+      def json
+        JsonRenderer.new(context).render
       end
 
-      if copyright_link.present?
-        linkset << "<#{copyright_link}> ; rel=\"copyright\" ; anchor=\"#{anchor_url}\""
+      # --- Backward-compatible wrappers around the extracted collaborators ---
+
+      def mapped_links(target_types, map = SchemaTypeMapper::SCHEMA_TYPES)
+        SchemaTypeMapper.lookup(target_types, map)
       end
 
-      ancestor_id = ancestor_id = @document['isGovernedBy_ssim'] || @document['ancestor_id_ssim']  
-      reverse_link = reverse_link_builder(link_descendants, ancestor_id, @document.id)
-      reverse_link.each do |item|
-        item_json = JSON.parse(item.to_json)
-        linkset << "<#{item_json["collection"][0]["href"]}> ; rel=\"collection\" ; type=\"#{item_json["collection"][0]["type"]}\" ; anchor=\"#{item_json["anchor"]}\""
+      def contributors
+        ContributorLinks.for(@document)
       end
 
-      linkset
-    end
-
-    def json
-      schema_link = mapped_links(@document.type);
-     
-      doi = DataciteDoi.where(object_id: @document.id).current
-      @doi = doi.doi if doi.present? && doi.minted?
-
-      orcid_links = contributors
-      license_link = document_licence_link
-      copyright_link = @document.copyright&.url
-
-      link_descendants =  if @document.collection?
-                            collection_objects
-                          else
-                            object_items(@document.assets, @document.id)
-                          end
-        
-      describedby = metadata_link
-      linkset = {}
-      linkset[:anchor] = @controller.catalog_url(@document.id)
-
-      if @doi.present?
-        linkset[:"cite-as"] = [{"href" => "https://doi.org/"+ doi.doi}] 
-      end
-      linkset[:type] = if schema_link.present?
-                         [{"href" => schema_link},{"href" => "https://schema.org/AboutPage"}]
-                       else
-                         [{"href" => "https://schema.org/AboutPage"}]
-                       end
-
-      if orcid_links.present?
-        orcid = []
-        orcid_links.each do |author|
-          holder = {}
-          holder[:href] = author
-          orcid << holder
-        end
-        linkset[:author] = orcid  
+      def collection_objects
+        CollectionLinkBuilder.new(@controller).build(@document)
       end
 
-      linkset[:item] = link_descendants if link_descendants.present?
-      linkset[:describedby] = [describedby]
-      linkset[:license] = [{"href" => license_link}] if license_link.present?
-      linkset[:copyright] = [{"href" => copyright_link}] if copyright_link.present?
-      
-      # 'isGovernedBy_ssim' will link objects to Sub-collection, 'ancestor_id_ssim' will scape Sub-collection.
-      ancestor_id = @document['isGovernedBy_ssim'] || @document['ancestor_id_ssim']  
-
-      reverse_link = reverse_link_builder(link_descendants, ancestor_id, @document.id)
-
-      linkset_hash = { "linkset" => [linkset, reverse_link] }
-
-      JSON.pretty_generate(linkset_hash)
-    end
-
-    def mapped_links(target_types, map = SCHEMA_TYPES)
-      target_types.each do |type|
-        link = map[type.downcase]
-        return link if link.present?
-      end
-      
-      nil
-    end
-
-    def contributors
-      return nil unless @document['contributor_tesim'].present?
-
-      @document['contributor_tesim'].map do |entry|
-        match = entry.match(/https:\/\/orcid\.org\/\S+/)
-        match&.to_s
-      end.compact
-    end
-    
-    def collection_objects
-      # get objects and subcollections that are direct children of this collection only
-      objects_collection = @document.children(chunk: 1000, sort: nil, subcollections_only: false)
-      objects_link = []
-      
-      objects_collection.each do |object|
-        place_holder = { href: @controller.catalog_url(object.id) }
-
-        # Check if it's a subcollection
-        if object.collection?
-          place_holder[:type] = "text/html"
-        else
-          place_holder[:type] = object.mime_type
-        end
-        objects_link << place_holder
+      def object_items(assets, id)
+        AssetLinkBuilder.new(@controller, @document).build(assets, id)
       end
 
-      objects_link
-    end
-
-    def object_items(assets, id)
-      asset_link = []
-      assets.each do |asset|
-        id_file = asset&.fetch("id", nil).to_s.gsub(/[\[\]"]/, '')
-        mime_type = asset&.fetch("mime_type_tesim", nil).to_s.gsub(/[\[\]"]/, '')
-
-        if asset.text? || asset.pdf?
-          if mime_type.include?('application/pdf')
-            item_link(asset, id, asset_link, "surrogate", id_file, mime_type)
-          else 
-            item_link(asset, id, asset_link, "surrogate", id_file, "application/pdf")
-            if @document.read_master? && asset.text? && !mime_type.include?('application/pdf')
-              item_link(asset, id, asset_link, "masterfile", id_file, mime_type)
-            end
-          end
-        elsif asset.threeD?
-          if @document.read_master?
-            item_link(asset, id, asset_link, "masterfile", id_file, mime_type)
-          else
-            item_link(asset, id, asset_link, "surrogate", id_file, mime_type)
-          end
-        else
-          item_link(asset, id, asset_link, "surrogate", id_file, mime_type)
-        end
+      def document_licence_link
+        LicenceLink.for(@document)
       end
 
-      asset_link
-    end
-
-    def document_licence_link
-      if @document.licence.present? && @document.licence.respond_to?(:url)
-        return @document.licence&.url
-      end
-    end
-
-    def item_link(asset, id, asset_link, type, id_file, mime_type)
-      place_holder = {}
-      file = @controller.file_download_url(id: id_file, object_id: id, type: 'surrogate')
-      place_holder[:href] = file
-      place_holder[:type] = mime_type
-      asset_link << place_holder
-    end
-  
-    def metadata_link
-      describedby_link = {}
-      metadata_type = "application/xml"
-      metadata_url = @controller.object_metadata_url(@document.id)
-      describedby_link[:href] = metadata_url
-      describedby_link[:type] = metadata_type
-      xml_type = @document['has_model_ssim']
-      profile = mapped_links(xml_type, XML_PROFILE)
-
-      describedby_link[:profile] = profile if profile.present?
-
-      describedby_link
-    end
-
-    def reverse_link_builder(link_descendants, ancestor_id, object_id)
-      reverse = []
-      ancestor_link = ancestor_id.present? ? @controller.catalog_url(ancestor_id.last) : @controller.catalog_url(@document.id)
-      object_link = @controller.catalog_url(object_id) || ''
-      
-      link_descendants.each do|item|
-        place_holder = {}
-        arr_holder = []
-        collection = {}
-        collection[:href] = ancestor_link
-        collection[:type] = "text/html"
-        arr_holder << collection
-        anchor = item.to_a
-        place_holder[:anchor] = anchor[0][1] || nil
-        place_holder[:collection] = arr_holder
-        reverse << place_holder
+      def metadata_link
+        MetadataLinkBuilder.new(@controller).build(@document)
       end
 
-      reverse
+      def reverse_link_builder(link_descendants, ancestor_id, object_id)
+        ReverseLinkBuilder.new(@controller).build(link_descendants, ancestor_id, object_id)
+      end
+
+      private
+
+      def context
+        Context.new(@controller, @document)
+      end
     end
   end
+end
