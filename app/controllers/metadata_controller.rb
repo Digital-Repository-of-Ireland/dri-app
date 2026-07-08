@@ -48,8 +48,6 @@ class MetadataController < ApplicationController
 
   private
 
-  # --- show helpers ---
-
   def load_object_for_show
     @object = retrieve_object!(params[:id])
     true
@@ -85,8 +83,6 @@ class MetadataController < ApplicationController
   def object_with_metadata
     @object && @object.attached_files.key?(:descMetadata)
   end
-
-  # --- update helpers ---
 
   def xml_datastream
     @xml_datastream ||= begin
