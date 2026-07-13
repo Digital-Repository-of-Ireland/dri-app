@@ -372,13 +372,6 @@ class ObjectsController < BaseObjectsController
     group.save
   end
 
-  def after_create_failure(exception)
-    respond_to do |format|
-      format.html  { raise exception }
-      format.json  { raise exception }
-    end
-  end
-
   def after_create_success(object, warnings)
     respond_to do |format|
       format.html do

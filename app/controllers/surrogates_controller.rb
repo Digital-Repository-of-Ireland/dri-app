@@ -6,7 +6,6 @@ class SurrogatesController < ApplicationController
   before_action :read_only, only: [:update]
 
   def index
-    raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!("show_digital_object", params[:id])
     raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can? :read, params[:id]
 
@@ -18,12 +17,11 @@ class SurrogatesController < ApplicationController
     all_surrogates([object_doc])
 
     respond_to do |format|
-      format.json { @surrogates.to_json }
+      format.json { render json: @surrogates }
     end
   end
 
   def show
-    raise DRI::Exceptions::BadRequest unless params[:object_id].present?
     enforce_permissions!("show_digital_object", params[:object_id])
     raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
@@ -44,7 +42,6 @@ class SurrogatesController < ApplicationController
   end
 
   def download
-    raise DRI::Exceptions::BadRequest unless params[:object_id].present?
     enforce_permissions!("show_digital_object", params[:object_id])
     raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless can?(:read, params[:object_id])
 
@@ -53,7 +50,7 @@ class SurrogatesController < ApplicationController
       @object_document = SolrDocument.find(params[:object_id])
 
       file = file_path(params[:object_id], params[:id], surrogate_type_name)
-      raise DRI::Exceptions::NotFound unless file
+      raise DRI::Exceptions::NotFound, 'Unable to find file' unless file
 
       type, ext = mime_type(file)
       name = "#{params[:id]}#{ext}"
@@ -75,7 +72,6 @@ class SurrogatesController < ApplicationController
   end
 
   def update
-    raise DRI::Exceptions::BadRequest unless params[:id].present?
     enforce_permissions!('edit', params[:id])
 
     doc = SolrDocument.find(params[:id])

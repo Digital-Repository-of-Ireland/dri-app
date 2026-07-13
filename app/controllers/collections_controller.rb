@@ -78,13 +78,14 @@ class CollectionsController < BaseObjectsController
   def lock
     raise Blacklight::AccessControls::AccessDenied.new(t('dri.views.exceptions.access_denied')) unless current_user.is_admin?
 
-    @object = retrieve_object!(params[:id])
+    @object    = SolrDocument.find(params[:id])
     raise DRI::Exceptions::BadRequest unless @object.collection?
 
+    lock_id = @object.root_collection_id
     if request.post?
-      CollectionLock.create(collection_id: @object.root_collection.first)
+      CollectionLock.create(collection_id: lock_id)
     elsif request.delete?
-      CollectionLock.delete_all("collection_id = '#{@object.root_collection.first}'")
+      CollectionLock.where(collection_id: lock_id).delete_all
     end
 
     flash[:notice] = t('dri.flash.notice.updated')
