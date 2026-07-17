@@ -38,7 +38,7 @@ class AssetsController < ApplicationController
 
   def download
     @generic_file = retrieve_object!(params[:id])
-    raise DRI::Exceptions::NotFound unless @generic_file && File.file?(@generic_file.path)
+    raise DRI::Exceptions::NotFound unless @generic_file&.path && File.file?(@generic_file.path)
 
     @document = SolrDocument.find(params[:object_id])
     enforce_viewable!
@@ -133,7 +133,7 @@ class AssetsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to object_file_url(@object.alternate_id, @generic_file.alternate_id) }
       format.json do
-        response = { checksum: file_content.checksum }
+        response = { checksum: @generic_file.original_checksum }
         response[:warning] = @warnings if @warnings
         render json: response, status: :ok
       end
