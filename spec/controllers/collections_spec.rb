@@ -515,5 +515,443 @@ describe CollectionsController do
 
       expect(flash[:error]).to be_present
     end
+
+    # NOTE: :new/:create are intentionally excluded from the `locked`
+    # before_action's except-list check (see the controller's
+    # `except: %i[index cover lock new create]`), so they should work
+    # normally even while some collection is locked.
+    it 'still allows access to the new collection form despite another collection being locked' do
+      get :new
+
+      expect(response).to be_successful
+    end
+  end
+
+  # NOTE: several tests below sign in via `FactoryBot.create(:user)` to get
+  # a signed-in user with no special admin/collection-manager privileges,
+  # to exercise permission-denial branches. If this app doesn't have a
+  # plain `:user` factory (as opposed to `:admin`/`:collection_manager`),
+  # these will need a different non-privileged factory/trait.
+
+  describe 'new' do
+    it 'sets sensible defaults for a fresh collection object' do
+      get :new
+
+      object = assigns(:object)
+      expect(object.type).to eq(['Collection'])
+      expect(object.title).to eq([''])
+      expect(object.creator).to eq([''])
+      expect(object.discover_groups_string).to eq('public')
+      expect(object.read_groups_string).to eq('public')
+      expect(object.master_file_access).to eq('private')
+    end
+
+    it 'denies a signed-in user who is not a collection manager or admin' do
+      sign_out @login_user
+      @plain_user = FactoryBot.create(:user)
+      sign_in @plain_user
+      request.env["HTTP_REFERER"] = search_catalog_path
+
+      get :new
+
+      expect(flash[:error]).to be_present
+
+      @plain_user.destroy
+    end
+  end
+
+  describe 'edit' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'loads the collection for editing' do
+      get :edit, params: { id: @collection.alternate_id }
+
+      expect(response).to be_successful
+      expect(assigns(:object).alternate_id).to eq(@collection.alternate_id)
+    end
+
+    it 'warns when the collection is published and has a doi' do
+      @collection.status = 'published'
+      @collection.doi = ['10.5072/example']
+      @collection.save
+
+      get :edit, params: { id: @collection.alternate_id }
+
+      expect(flash[:alert]).to be_present
+    end
+
+    it 'does not warn when the published collection has no doi' do
+      @collection.status = 'published'
+      @collection.save
+
+      get :edit, params: { id: @collection.alternate_id }
+
+      expect(flash[:alert]).to be_nil
+    end
+  end
+
+  describe 'lock' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.save
+    end
+
+    after(:each) do
+      CollectionLock.where(collection_id: @collection.alternate_id).delete_all
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'denies non-admin users, even collection managers' do
+      sign_out @login_user
+      @manager = FactoryBot.create(:collection_manager)
+      sign_in @manager
+
+      expect {
+        post :lock, params: { id: @collection.alternate_id }
+      }.to_not change { CollectionLock.where(collection_id: @collection.alternate_id).count }
+
+      @manager.destroy
+    end
+
+    it 'returns a bad request when the target is not a collection' do
+      @object = FactoryBot.create(:sound)
+      @object.save
+
+      post :lock, params: { id: @object.alternate_id }
+
+      expect(response.status).to eq(400)
+
+      @object.destroy
+    end
+
+    it 'creates a collection lock on POST' do
+      expect {
+        post :lock, params: { id: @collection.alternate_id }
+      }.to change { CollectionLock.where(collection_id: @collection.alternate_id).count }.by(1)
+
+      expect(flash[:notice]).to be_present
+    end
+
+    it 'removes the collection lock on DELETE' do
+      CollectionLock.create(collection_id: @collection.alternate_id)
+
+      expect {
+        delete :lock, params: { id: @collection.alternate_id }
+      }.to change { CollectionLock.where(collection_id: @collection.alternate_id).count }.by(-1)
+
+      expect(flash[:notice]).to be_present
+    end
+  end
+
+  describe 'add_cover_image validations' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.send(:delete_bucket)
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'returns a bad request when no cover image is given' do
+      put :add_cover_image, params: { id: @collection.alternate_id, digital_object: { cover_image: '' } }
+
+      expect(response.status).to eq(400)
+    end
+  end
+
+  describe 'cover with an externally-hosted image' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.cover_image = 'https://example.com/cover.jpg'
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'redirects directly to the external image url instead of streaming a file' do
+      get :cover, params: { id: @collection.alternate_id }
+
+      expect(response).to redirect_to('https://example.com/cover.jpg')
+    end
+  end
+
+  # NOTE: as currently written, BaseObjectsController#set_licence saves
+  # unconditionally and only skips `increment_version` when no licence is
+  # given - it doesn't require a licence value at all. The test below
+  # expects a fix requiring the value (flash[:error], no save/preserve
+  # attempted) rather than the current silent-no-op-then-preserve-error
+  # behavior.
+  describe 'set_licence' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'requires a licence value - omitting it should not proceed to save/preserve' do
+      put :set_licence, params: { id: @collection.alternate_id, digital_object: { licence: '' } }
+
+      expect(flash[:error]).to be_present
+      expect(flash[:notice]).to be_nil
+    end
+
+    it 'denies a non-manager' do
+      sign_out @login_user
+      @plain_user = FactoryBot.create(:user)
+      sign_in @plain_user
+
+      put :set_licence, params: { id: @collection.alternate_id, digital_object: { licence: '' } }
+
+      expect(response.status).to eq(401)
+
+      @plain_user.destroy
+    end
+  end
+
+  # NOTE: same fix expected as set_licence above - a copyright value
+  # should be required, not silently optional.
+  describe 'set_copyright' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'requires a copyright value - omitting it should not proceed to save/preserve' do
+      put :set_copyright, params: { id: @collection.alternate_id, digital_object: { copyright: '' } }
+
+      expect(flash[:error]).to be_present
+      expect(flash[:notice]).to be_nil
+    end
+
+    it 'denies a non-manager' do
+      sign_out @login_user
+      @plain_user = FactoryBot.create(:user)
+      sign_in @plain_user
+
+      put :set_copyright, params: { id: @collection.alternate_id, digital_object: { copyright: '' } }
+
+      expect(response.status).to eq(401)
+
+      @plain_user.destroy
+    end
+  end
+
+  describe 'review' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.status = 'draft'
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'returns a bad request when the target is not a collection' do
+      @object = FactoryBot.create(:sound)
+      @object.save
+
+      post :review, params: { id: @object.alternate_id }
+
+      expect(response.status).to eq(400)
+
+      @object.destroy
+    end
+
+    it 'denies a non-manager' do
+      sign_out @login_user
+      @plain_user = FactoryBot.create(:user)
+      sign_in @plain_user
+
+      post :review, params: { id: @collection.alternate_id }
+
+      expect(response.status).to eq(401)
+
+      @plain_user.destroy
+    end
+
+    it 'enqueues a review job for descendants when apply_all is requested' do
+      @object = FactoryBot.create(:sound)
+      @object.save
+      @collection.governed_items << @object
+      @collection.save
+
+      expect(Resque).to receive(:enqueue).with(ReviewCollectionJob, @collection.alternate_id, @login_user.id)
+
+      post :review, params: { id: @collection.alternate_id, apply_all: 'yes' }
+
+      expect(flash[:notice]).to be_present
+
+      @object.destroy
+    end
+
+    it 'does not enqueue a review job when apply_all is not requested' do
+      expect(Resque).to_not receive(:enqueue)
+
+      post :review, params: { id: @collection.alternate_id }
+    end
+  end
+
+  describe 'publish validations' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'returns a bad request when the target is not a collection' do
+      @object = FactoryBot.create(:sound)
+      @object.save
+
+      post :publish, params: { id: @object.alternate_id }
+
+      expect(response.status).to eq(400)
+
+      @object.destroy
+    end
+
+    it 'denies a non-manager' do
+      sign_out @login_user
+      @plain_user = FactoryBot.create(:user)
+      sign_in @plain_user
+
+      post :publish, params: { id: @collection.alternate_id }
+
+      expect(response.status).to eq(401)
+
+      @plain_user.destroy
+    end
+
+    it 'flashes an alert instead of raising when the publish job fails to enqueue' do
+      allow(Resque).to receive(:enqueue).and_raise(StandardError, 'queue unavailable')
+
+      post :publish, params: { id: @collection.alternate_id }
+
+      expect(flash[:alert]).to be_present
+    end
+  end
+
+  describe 'destroy validations' do
+    it 'denies deleting a published collection for a non-admin manager' do
+      sign_out @login_user
+      @manager = FactoryBot.create(:collection_manager)
+      sign_in @manager
+
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @manager.email
+      @collection.manager_users_string = @manager.email
+      @collection.creator = [@manager.email]
+      @collection.status = 'published'
+      @collection.save
+
+      delete :destroy, params: { id: @collection.alternate_id }
+
+      expect(response.status).to eq(401)
+
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @manager.destroy
+    end
+  end
+
+  describe 'check_for_cancel' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.creator = [@login_user.email]
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'redirects without applying changes when the cancel button is used' do
+      original_title = @collection.title
+
+      put :update, params: {
+        id: @collection.alternate_id,
+        commit: I18n.t('dri.views.objects.buttons.cancel'),
+        digital_object: { title: ['Should not be applied'] }
+      }
+
+      expect(response).to redirect_to(controller: 'my_collections', action: 'show', id: @collection.alternate_id)
+
+      @collection.reload
+      expect(@collection.title).to eq(original_title)
+    end
+  end
+
+  describe 'create validations' do
+    it 'returns a bad request for an invalid metadata file' do
+      request.env["HTTP_ACCEPT"] = 'application/json'
+      @request.env["CONTENT_TYPE"] = "multipart/form-data"
+
+      bad_file = Tempfile.new(['bad_metadata', '.xml'])
+      bad_file.write('this is not valid xml')
+      bad_file.rewind
+      @file = Rack::Test::UploadedFile.new(bad_file.path, 'text/xml')
+
+      post :create, params: { metadata_file: @file }
+
+      expect(response.status).to eq(400)
+
+      bad_file.close
+      bad_file.unlink
+    end
+
+    it 'flashes an alert and re-renders the form when manager/editor permissions are missing from create params' do
+      post :create, params: { digital_object: { title: ['A collection'] } }
+
+      expect(flash[:alert]).to be_present
+      expect(response).to be_successful
+    end
+  end
+
+  describe 'index' do
+    it 'returns a successful json response' do
+      get :index, params: { format: :json }
+
+      expect(response).to be_successful
+    end
   end
 end
