@@ -337,6 +337,6 @@ class AssetsController < ApplicationController
       mime_type
     rescue DRI::Exceptions::VirusDetected => e
       flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-      raise DRI::Exceptions::BadRequest, t('dri.views.exceptions.invalid_file', name: file_upload&.original_filename || params[:file_name].presence)
+      raise DRI::Exceptions::BadRequest, t('dri.flash.alert.virus_detected', virus: e.message)
     end
 end
