@@ -92,10 +92,11 @@ end
 gem 'execjs', '2.7.0'
 gem 'terser'
 
+gem 'mysql2'
+
 group :production do
   gem 'clamby'
   gem 'honeybadger'
-  gem 'mysql2'
 end
 
 group :development, :test do
