@@ -42,6 +42,7 @@ gem 'omniauth', '~> 2'
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-shibboleth'
 gem 'sqlite3'
+gem 'mysql2'
 
 # Storage-related gems
 gem 'bagit'
@@ -86,7 +87,6 @@ gem 'sinatra', '~> 4'
 
 group :development, :production do
   gem 'appsignal'
-  gem 'mysql2'
 end
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
