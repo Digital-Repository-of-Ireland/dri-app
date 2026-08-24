@@ -86,13 +86,12 @@ gem 'sinatra', '~> 4'
 
 group :development, :production do
   gem 'appsignal'
+  gem 'mysql2'
 end
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'execjs', '2.7.0'
 gem 'terser'
-
-gem 'mysql2'
 
 group :production do
   gem 'clamby'
