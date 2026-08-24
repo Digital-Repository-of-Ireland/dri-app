@@ -15,8 +15,7 @@ development:
   database: db/development.sqlite3
 <% end %>
 
-test:
-  <<: *default
+test: &test
 <% if ENV["DB_HOST"] %>
   adapter: mysql2
   encoding: utf8mb4
