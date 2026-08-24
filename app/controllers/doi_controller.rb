@@ -25,8 +25,8 @@ class DoiController < ApplicationController
 
       doi = "#{DoiConfig.prefix}/DRI.#{params[:id]}"
 
-      @history = DataciteDoi.where(object_id: @object_id).ordered
-      current = @history.first
+      @history = DataciteDoi.where(object_id: @object_id).order(:version)
+      current = @history.last
 
       if @available && doi == current.doi
         redirect_to(solr_document_path(@object_id))

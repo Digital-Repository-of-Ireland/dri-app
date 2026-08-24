@@ -175,7 +175,7 @@ describe 'ProcessBatchIngest' do
       expect(master_file.status_code).to eq 'FAILED'
     end
 
-    it "should rollback object save if Solr error saving metadata" do
+    it "should rollback object save if Solr error saving metadata", truncate: true do
       allow_any_instance_of(DRI::DigitalObject).to receive(:update_index).and_return(false)
 
       tmp_file = Tempfile.new(['metadata', '.xml'])

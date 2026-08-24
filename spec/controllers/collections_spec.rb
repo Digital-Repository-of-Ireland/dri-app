@@ -53,6 +53,8 @@ describe CollectionsController do
       expect(DRI.queue).to receive(:push).with(an_instance_of(DeleteCollectionJob)).once
 
       delete :destroy, params: { id: @collection.alternate_id }
+
+      @collection.destroy
     end
 
   end
@@ -94,6 +96,7 @@ describe CollectionsController do
       expect(Resque).to receive(:enqueue).once
 
       post :publish, params: { id: @collection.alternate_id }
+      @collection.destroy
     end
   end
 
@@ -188,6 +191,7 @@ describe CollectionsController do
       @subcollection.reload
       expect(@subcollection.title).to eq(["A modified sub collection title"])
 
+      @subcollection.destroy
       @collection.destroy
     end
 
@@ -233,6 +237,7 @@ describe CollectionsController do
       expect(Resque).to receive(:enqueue).with(UpdateDescendantsJob, @collection.alternate_id)
       put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
       
+      @subcollection.destroy
       @collection.destroy
     end
 
@@ -277,7 +282,8 @@ describe CollectionsController do
 
       expect(Resque).to_not receive(:enqueue).with(UpdateDescendantsJob, @collection.alternate_id)
       put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] }
-      
+    
+      @subcollection.destroy  
       @collection.destroy
     end
 
@@ -308,6 +314,8 @@ describe CollectionsController do
     end
 
     it 'should mint a doi for an update of mandatory fields' do
+      #DataciteDoi.all.destroy_all
+
       @collection = DRI::DigitalObject.with_standard :qdc
       @collection[:title] = ["A collection"]
       @collection[:description] = ["This is a Collection"]
@@ -335,9 +343,9 @@ describe CollectionsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @collection.alternate_id)
+      doi = DataciteDoi.create(object_id: @collection.alternate_id)
 
-      expect(Resque).to receive(:enqueue).with(MintDoiJob, 2)
+      expect(Resque).to receive(:enqueue).with(MintDoiJob, doi.id + 1)
       params = {}
 
       params[:digital_object] = {}
@@ -346,8 +354,9 @@ describe CollectionsController do
       params[:digital_object][:edit_users_string] = @login_user.email
       expect { put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] } }.to change{ DataciteDoi.count }.by(1)
 
-      DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       Settings.doi.enable = false
+      @collection.destroy
+      doi.destroy
     end
 
     it 'should not mint a doi for no update of mandatory fields' do
@@ -378,7 +387,7 @@ describe CollectionsController do
         )
       Settings.doi.enable = true
 
-      DataciteDoi.create(object_id: @collection.alternate_id)
+      doi = DataciteDoi.create(object_id: @collection.alternate_id)
 
       expect(Resque).to_not receive(:enqueue).with(MintDoiJob, 2)
       params = {}
@@ -388,8 +397,9 @@ describe CollectionsController do
       params[:digital_object][:edit_users_string] = @login_user.email
       expect { put :update, params: { id: @collection.alternate_id, digital_object: params[:digital_object] } }.to change{ DataciteDoi.count }.by(0)
 
-      DataciteDoi.where(object_id: @collection.alternate_id).first.delete
       Settings.doi.enable = false
+      @collection.destroy
+      doi.destroy
     end
 
   end
