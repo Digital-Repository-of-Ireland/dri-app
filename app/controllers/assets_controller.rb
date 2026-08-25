@@ -319,47 +319,4 @@ class AssetsController < ApplicationController
       response.header['Content-Length'] = content_length.to_s
       send_data IO.binread(path, content_length, begin_point), options.merge(status: status)
     end
-<<<<<<< HEAD
-
-    def upload_from_params
-      if params[:file].blank? && params[:local_file].blank? && params[:s3_url].blank?
-        flash[:notice] = t('dri.flash.notice.specify_file')
-        redirect_to controller: 'catalog', action: 'show', id: params[:object_id]
-        return
-      end
-
-      upload = if params[:local_file].present?
-                 local_file_ingest(params[:local_file])
-               elsif params[:s3_url].present?
-                  s3_file_ingest(params[:s3_url])
-                else
-                 params[:file].presence
-               end
-
-      mime_type = validate_upload(upload)
-
-      { 
-        file_upload: upload,
-        mime_type: mime_type,
-        filename: params[:file_name].presence || upload.original_filename
-      }
-    end
-
-    def validate_upload(file_upload)
-      mime_type = Validators.file_type(file_upload)
-      Validators.validate_file(file_upload, mime_type)
-
-      mime_type
-    rescue DRI::Exceptions::UnknownMimeType, DRI::Exceptions::WrongExtension, DRI::Exceptions::InappropriateFileType
-      message = t('dri.flash.alert.invalid_file_type')
-      flash[:alert] = message
-      @warnings = message
-      mime_type
-    rescue DRI::Exceptions::VirusDetected => e
-      flash[:error] = t('dri.flash.alert.virus_detected', virus: e.message)
-      raise DRI::Exceptions::BadRequest, t('dri.flash.alert.virus_detected', virus: e.message)
-    end
 end
-=======
-end
->>>>>>> refactor
