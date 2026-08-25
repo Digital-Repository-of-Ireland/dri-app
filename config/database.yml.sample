@@ -1,30 +1,43 @@
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
+default: &default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+
 development:
+  <<: *default
+<% if ENV["DB_HOST"] %>
+  adapter: mysql2
+  encoding: utf8mb4
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  username: <%= ENV.fetch("DB_USER", "root") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  database: <%= ENV.fetch("DB_NAME", "development") %>
+<% else %>
   adapter: sqlite3
   database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
+<% end %>
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test: &test
+<% if ENV["DB_HOST"] %>
+  adapter: mysql2
+  encoding: utf8mb4
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  username: <%= ENV.fetch("DB_USER", "root") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "") %>
+  database: <%= ENV.fetch("DB_NAME_TEST", "test") %>
+<% else %>
   adapter: sqlite3
   database: db/test.sqlite3
-  # for parallel tests use the following
-  # database: db/test<%= ENV['TEST_ENV_NUMBER'] %>.sqlite3
-  pool: 5
-  timeout: 15000
+<% end %>
 
+# No defaults here on purpose: a missing env var should fail loudly at boot
+# in production.
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
-  pool: 5
-  timeout: 5000
+  <<: *default
+  adapter: mysql2
+  encoding: utf8mb4
+  host: <%= ENV.fetch("DB_HOST") { raise "DB_HOST is not set" if Rails.env.production? } %>
+  username: <%= ENV.fetch("DB_USER") { raise "DB_USER is not set" if Rails.env.production? } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { raise "DB_PASSWORD is not set" if Rails.env.production? } %>
+  database: <%= ENV.fetch("DB_NAME") { raise "DB_NAME is not set" if Rails.env.production? } %>
 
 cucumber:
   <<: *test

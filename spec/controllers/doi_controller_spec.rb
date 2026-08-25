@@ -41,6 +41,8 @@ describe DoiController do
 
       get :show, params: { object_id: @object.alternate_id, id: doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(assigns(:history)).to eq([doi])
+
+      doi.destroy
     end
 
     it "alerts if doi is not the latest" do
@@ -49,6 +51,9 @@ describe DoiController do
 
       get :show, params: { object_id: @object.alternate_id, id: initial_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(flash[:notice]).to be_present
+
+      initial_doi.destroy
+      updated_doi.destroy
     end
 
     it "redirects if DOI is current" do
@@ -57,6 +62,9 @@ describe DoiController do
 
       get :show, params: { object_id: @object.alternate_id, id: updated_doi.doi.split("#{DoiConfig.prefix}/DRI.")[1] }
       expect(response).to redirect_to(solr_document_path(@object.alternate_id))
+
+      initial_doi.destroy
+      updated_doi.destroy
     end
 
     it "updates doi" do
@@ -71,7 +79,7 @@ describe DoiController do
       @collection[:published_date] = ["1916-04-01"]
       @collection[:status] = "published"
       @collection.save
-      DataciteDoi.create(object_id: @collection.alternate_id)
+      doi = DataciteDoi.create(object_id: @collection.alternate_id)
 
       expect(Resque).to receive(:enqueue).once
       expect {
@@ -79,7 +87,8 @@ describe DoiController do
       }.to change{ DataciteDoi.count }.by(1)
 
       DataciteDoi.where(object_id: @collection.alternate_id).first.delete
-      @collection.delete
+      @collection.destroy
+      doi.destroy
     end
 
     it "returns 404 for unknown DOI" do
@@ -87,6 +96,8 @@ describe DoiController do
 
       get :show, params: { object_id: @object.alternate_id, id: 'aaa-9' }
       expect(response.status).to eq(404)
+
+      doi.destroy
     end
 
   end

@@ -544,7 +544,7 @@ describe ObjectsController do
 
       before(:each) do
         Settings.add_source!(file_fixture("settings-ro.yml").to_s)
-	      Settings.reload!
+        Settings.reload!
 
         @tmp_assets_dir = Dir.mktmpdir
         Settings.dri.files = @tmp_assets_dir
@@ -637,6 +637,301 @@ describe ObjectsController do
       put :update, params: { id: @object.alternate_id, digital_object: params[:digital_object] }
 
       expect(flash[:error]).to be_present
+    end
+
+    it 'should not allow access to the new object form' do
+      get :new, params: { collection: @collection.alternate_id }
+
+      expect(flash[:error]).to be_present
+    end
+  end
+
+  describe 'new' do
+    before(:each) do
+      @login_user = FactoryBot.create(:admin)
+      sign_in @login_user
+      @collection = FactoryBot.create(:collection)
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.delete
+    end
+
+    # NOTE: these three tests use `assigns(:object)`, which requires the
+    # rails-controller-testing gem in newer Rails/RSpec versions. If that
+    # gem isn't part of this app's test setup, these will need to be
+    # rewritten (e.g. against rendered view content) or removed.
+    it 'initialises a new object with a blank creator' do
+      get :new, params: { collection: @collection.alternate_id }
+
+      expect(assigns(:object).creator).to eq([''])
+    end
+
+    it 'sets the type to Collection when creating a sub-collection' do
+      get :new, params: { collection: @collection.alternate_id, is_sub_collection: 'true' }
+
+      expect(assigns(:object).type).to eq(['Collection'])
+    end
+
+    it 'does not set the type to Collection for a regular object' do
+      get :new, params: { collection: @collection.alternate_id }
+
+      expect(assigns(:object).type).to_not eq(['Collection'])
+    end
+  end
+
+  describe 'edit' do
+    before(:each) do
+      @login_user = FactoryBot.create(:collection_manager)
+      sign_in @login_user
+
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.discover_groups_string = "public"
+      @collection.read_groups_string = "registered"
+      @collection.creator = [@login_user.email]
+
+      @object = FactoryBot.create(:sound)
+      @object.depositor = @login_user.email
+      @object.manager_users_string = @login_user.email
+      @object.creator = [@login_user.email]
+      @object.save
+
+      @collection.governed_items << @object
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.delete
+    end
+
+    it 'loads the requested object successfully' do
+      get :edit, params: { id: @object.alternate_id }
+
+      expect(response).to be_successful
+    end
+
+    it 'reorders types so a recognised primary type comes first' do
+      @object.type = ['Some Custom Type', 'Sound']
+      @object.save
+
+      get :edit, params: { id: @object.alternate_id }
+
+      expect(assigns(:object).type.first).to eq('sound')
+    end
+
+    it 'warns when the object is published and has a doi' do
+      # SolrDocument#published? also requires every ancestor collection to
+      # be published (see #ancestors_published?), not just the object
+      # itself.
+      @collection.status = 'published'
+      @collection.save
+
+      @object.status = 'published'
+      @object.doi = ['10.5072/example']
+      @object.save
+
+      get :edit, params: { id: @object.alternate_id }
+
+      expect(flash[:alert]).to be_present
+    end
+
+    it 'does not warn when the published object has no doi' do
+      # As above: the collection has to be published too, otherwise this
+      # test would pass regardless of whether the doi branch works, since
+      # #published? would already be false via ancestors_published?.
+      @collection.status = 'published'
+      @collection.save
+
+      @object.status = 'published'
+      @object.save
+
+      get :edit, params: { id: @object.alternate_id }
+
+      expect(flash[:alert]).to be_nil
+    end
+  end
+
+  describe 'show' do
+    before(:each) do
+      @login_user = FactoryBot.create(:admin)
+      sign_in @login_user
+      @collection = FactoryBot.create(:collection)
+      @object = FactoryBot.create(:sound)
+      @collection.governed_items << @object
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.delete
+    end
+
+    it 'redirects to the catalog page for html requests' do
+      get :show, params: { id: @object.alternate_id }
+
+      expect(response).to redirect_to(catalog_path(@object.alternate_id))
+    end
+
+    it 'renders a json representation including licence, copyright, doi and related objects' do
+      get :show, params: { id: @object.alternate_id, format: :json }
+
+      expect(response).to be_successful
+      json = response.parsed_body
+      expect(json).to have_key('licence')
+      expect(json).to have_key('copyright')
+      expect(json).to have_key('doi')
+      expect(json).to have_key('related_objects')
+    end
+  end
+
+  describe 'citation' do
+    before(:each) do
+      @login_user = FactoryBot.create(:admin)
+      sign_in @login_user
+      @collection = FactoryBot.create(:collection)
+      @object = FactoryBot.create(:sound)
+      @collection.governed_items << @object
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.delete
+    end
+
+    it 'renders successfully' do
+      get :citation, params: { id: @object.alternate_id }
+
+      expect(response).to be_successful
+    end
+  end
+
+  describe 'retrieve' do
+    before(:each) do
+      @login_user = FactoryBot.create(:admin)
+      sign_in @login_user
+      @collection = FactoryBot.create(:collection)
+      @object = FactoryBot.create(:sound)
+      @collection.governed_items << @object
+      @collection.save
+
+      @downloads_dir = Dir.mktmpdir
+      Settings.dri.downloads = @downloads_dir
+
+      request.env["HTTP_REFERER"] = my_collections_path(@collection.alternate_id)
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.delete
+      FileUtils.remove_dir(@downloads_dir, force: true)
+    end
+
+    it 'streams the archive file when it exists and the user can read the object' do
+      archive_name = "#{@object.alternate_id}.zip"
+      FileUtils.touch(File.join(@downloads_dir, archive_name))
+
+      get :retrieve, params: { id: @object.alternate_id, archive: archive_name }
+
+      expect(response).to be_successful
+      expect(response.headers['Content-Type']).to include('application/zip')
+    end
+
+    it 'shows an error when the archive file is missing' do
+      get :retrieve, params: { id: @object.alternate_id, archive: "#{@object.alternate_id}.zip", format: :html }
+
+      expect(flash[:error]).to be_present
+    end
+  end
+
+  describe 'status validations' do
+    before(:each) do
+      @login_user = FactoryBot.create(:collection_manager)
+      sign_in @login_user
+      @collection = FactoryBot.create(:collection)
+      @collection.depositor = @login_user.email
+      @collection.manager_users_string = @login_user.email
+      @collection.discover_groups_string = "public"
+      @collection.read_groups_string = "registered"
+      @collection.creator = [@login_user.email]
+
+      @object = FactoryBot.create(:sound)
+      @object.depositor = @login_user.email
+      @object.manager_users_string = @login_user.email
+      @object.creator = [@login_user.email]
+      @object.save
+
+      @collection.governed_items << @object
+      @collection.save
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+      @login_user.delete
+    end
+
+    it 'returns a bad request when no status is given' do
+      post :status, params: { id: @object.alternate_id }
+
+      expect(response.status).to eq(400)
+    end
+
+    it 'returns a bad request when the target is a collection' do
+      post :status, params: { id: @collection.alternate_id, status: 'reviewed' }
+
+      expect(response.status).to eq(400)
+    end
+  end
+
+  describe 'handle_zip_request (show, format: :zip)' do
+    before(:each) do
+      @collection = FactoryBot.create(:collection)
+      @collection.status = 'published'
+      @collection.save
+
+      @object = FactoryBot.create(:sound)
+      # Explicit public visibility, and the collection published above, so
+      # the anonymous-user example below doesn't depend on unknown
+      # factory defaults for either the object's own visibility or its
+      # ancestor's publication status (permission checks appear to
+      # cascade from ancestors, similar to SolrDocument#published?).
+      @object.discover_groups_string = 'public'
+      @object.read_groups_string = 'public'
+      @object.status = 'published'
+      @object.save
+      @collection.governed_items << @object
+      @collection.save
+
+      request.env["HTTP_REFERER"] = my_collections_path(@collection.alternate_id)
+    end
+
+    after(:each) do
+      @collection.destroy if DRI::Identifier.object_exists?(@collection.alternate_id)
+    end
+
+    it 'enqueues an archiving job and notifies a signed-in user' do
+      @login_user = FactoryBot.create(:admin)
+      sign_in @login_user
+
+      expect(Resque).to receive(:enqueue).with(CreateArchiveJob, @object.alternate_id, @login_user.email)
+
+      get :show, params: { id: @object.alternate_id, format: :zip }
+
+      expect(flash[:notice]).to be_present
+
+      @login_user.delete
+    end
+
+    it 'alerts an anonymous user that they must log in to archive' do
+      expect(Resque).to_not receive(:enqueue)
+
+      get :show, params: { id: @object.alternate_id, format: :zip }
+
+      expect(flash[:alert]).to be_present
     end
   end
 end

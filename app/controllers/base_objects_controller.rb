@@ -1,5 +1,4 @@
 class BaseObjectsController < CatalogController
-  include DRI::Citable
   include DRI::Versionable
 
   def doi
@@ -8,6 +7,13 @@ class BaseObjectsController < CatalogController
   end
 
   protected
+
+    def after_create_failure(exception)
+      respond_to do |format|
+        format.html  { raise exception }
+        format.json  { raise exception }
+      end
+    end
 
     def create_params
       params.fetch(:digital_object, {}).permit!
@@ -23,91 +29,64 @@ class BaseObjectsController < CatalogController
       ).permit!
     end
 
-    def save_and_index
-      @object.index_needs_update = false
-
-      DRI::DigitalObject.transaction do
-        if doi
-          doi_params = update_params.select { |key, _value| doi.metadata_fields.include?(key) }
-          doi_params[:resource_type] = doi_params.delete(:type) if doi_params.key?(:type)
-          doi.update_metadata(doi_params)
-          new_doi_if_required(@object, doi, 'metadata updated')
-        end
-
-        begin
-          raise ActiveRecord::Rollback unless @object.save && @object.update_index
-          true
-        rescue RSolr::Error::Http => e
-          raise ActiveRecord::Rollback
-          false
-        end
-      end
-    end
-
-    # Updates the licence.
-    #
     def set_licence
-      @object = retrieve_object!(params[:id])
-      licence = params[:digital_object][:licence]
-      
-      if licence.present?
-        @object.licence = licence
-        @object.increment_version
+      @object  = retrieve_object!(params[:id])
+      licence  = params.dig(:digital_object, :licence)
+ 
+      if licence.blank?
+        flash[:error] = t('dri.flash.error.licence_not_updated')
+        return redirect_to_object
       end
-
+ 
+      @object.licence = licence
+      @object.increment_version
+ 
       updated = @object.save
-      
+ 
       if updated
-        record_version_committer(@object, current_user, 'update')
-        preservation = Preservation::Preservator.new(@object)
-        preservation.preserve
-      end
-
-      respond_to do |format|
-        if updated
-          flash[:notice] = t('dri.flash.notice.licence_updated')
-        else
-          flash[:error] = t('dri.flash.error.licence_not_updated')
-        end
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-      end
-    end
-
-    def set_copyright
-      @object = retrieve_object!(params[:id])
-      copyright = params[:digital_object][:copyright]
-
-      if copyright.present?
-        @object.copyright = copyright
-        @object.increment_version
-      end
-
-      updated = @object.save 
-
-      if updated
-        record_version_committer(@object, current_user, 'update')
-        preservation = Preservation::Preservator.new(@object)
-        preservation.preserve
-      end
-    
-      respond_to do |format|
-        if updated
-          flash[:notice] = t('dri.flash.notice.copyright_updated')
-        else
-          flash[:error] = t('dri.flash.error.copyright_not_updated')
-        end
-        format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id }
-      end
-    end
-  
-    def visibility_label field
-      case field
-      when 'registered'
-        'logged-in'
-      when 'public'
-        'public'
+        ObjectPostSaveService.new(@object).call { record_version_committer(@object, current_user, 'update') }
+        flash[:notice] = t('dri.flash.notice.licence_updated')
       else
-        'restricted'
+        flash[:error] = t('dri.flash.error.licence_not_updated')
       end
+ 
+      redirect_to_object
+    end
+ 
+    def set_copyright
+      @object    = retrieve_object!(params[:id])
+      copyright  = params.dig(:digital_object, :copyright)
+ 
+      if copyright.blank?
+        flash[:error] = t('dri.flash.error.copyright_not_updated')
+        return redirect_to_object
+      end
+ 
+      @object.copyright = copyright
+      @object.increment_version
+ 
+      updated = @object.save
+ 
+      if updated
+        ObjectPostSaveService.new(@object).call { record_version_committer(@object, current_user, 'update') }
+        flash[:notice] = t('dri.flash.notice.copyright_updated')
+      else
+        flash[:error] = t('dri.flash.error.copyright_not_updated')
+      end
+ 
+      redirect_to_object
+    end
+
+
+    def visibility_label(field)
+      case field
+      when 'registered' then 'logged-in'
+      when 'public'     then 'public'
+      else                   'restricted'
+      end
+    end
+
+    def redirect_to_object
+      respond_to { |format| format.html { redirect_to controller: 'my_collections', action: 'show', id: @object.alternate_id } }
     end
 end

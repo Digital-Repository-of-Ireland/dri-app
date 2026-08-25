@@ -42,6 +42,7 @@ gem 'omniauth', '~> 2'
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-shibboleth'
 gem 'sqlite3'
+gem 'mysql2'
 
 # Storage-related gems
 gem 'bagit'
@@ -95,7 +96,6 @@ gem 'terser'
 group :production do
   gem 'clamby'
   gem 'honeybadger'
-  gem 'mysql2'
 end
 
 group :development, :test do

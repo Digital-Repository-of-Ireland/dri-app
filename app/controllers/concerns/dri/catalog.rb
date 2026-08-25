@@ -38,6 +38,57 @@ module DRI::Catalog
     extend(ClassMethods)
   end
 
+  def load_search_results
+    @response      = search_service.search_results
+    @document_list = @response.documents
+  end
+
+  def fetch_and_validate_document
+    document = search_service.fetch(params[:id])
+    raise DRI::Exceptions::BadRequest, "Invalid object type DRI::GenericFile" if document.generic_file?
+    document
+  end
+
+  def load_collection_titles
+    @collection_titles = Rails.cache.fetch('root_collection_titles', expires_in: 12.hours) do
+      super
+    end
+  end
+
+  def load_timeline_data_if_needed
+    @available_timelines = available_timelines_from_facets
+    @timeline_data = timeline_data if timeline_view?
+  end
+
+  def load_document_type_data
+    @document.collection? ? load_collection_data : load_object_data
+  end
+
+  def load_object_data
+    @assets    = @document.assets(ordered: true)
+    @thumbnail = @document.thumbnail
+  end
+
+  def load_doi_data
+    return unless @document.doi
+
+    doi  = DataciteDoi.where(object_id: @document.id).current
+    @doi = doi.doi if doi.present? && doi.minted?
+  end
+
+  def render_formatted(formatter_class, fmt, plain: false)
+    formatter = formatter_class.new(self, @document, formatter_options)
+    plain ? render(plain: formatter.format({ format: fmt })) : render(json: formatter.format(func: fmt))
+  end
+
+  def formatter_options
+    {}.tap { |opts| opts[:with_assets] = true if can?(:read, @document) }
+  end
+
+  def timeline_view?
+    params[:view].present? && params[:view].include?('timeline')
+  end
+
   # override this method to change the JSON response from #index
   def render_search_results_as_json
     @presenter = Blacklight::JsonPresenter.new(@response, blacklight_config)

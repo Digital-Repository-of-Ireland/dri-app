@@ -1,146 +1,167 @@
 # frozen_string_literal: true
-class DRI::Formatters::OpenAire < OAI::Provider::Metadata::Format
-  attr_reader :controller
 
-  def initialize
-    @prefix = "oai_openaire"
-    @schema = "https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd"
-    @namespace = "http://namespace.openaire.eu/schema/oaire/"
-  end
+module DRI
+  module Formatters
+    # OAI-PMH metadata formatter that renders a DRI record as an OpenAIRE
+    # Guidelines for Literature Repositories (oaire) XML document.
+    #
+    # As with the Edm and Linkset formatters, this class is kept as a thin
+    # orchestrator: the resource-type table, access-rights table,
+    # published-date fallback logic, DOI lookup, and license-condition
+    # resolution each live in their own collaborator class under
+    # app/models/dri/formatters/open_aire/.
+    class OpenAire < OAI::Provider::Metadata::Format
+      attr_reader :controller
 
-  def header_specification
-  end
-
-  def resource_header
-    {
-      'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-      'xmlns:rdf' => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-      'xmlns:dc' => "http://purl.org/dc/elements/1.1/",
-      'xmlns:datacite' => "http://datacite.org/schema/kernel-4",
-      'xmlns:vc' => "http://www.w3.org/2007/XMLSchema-versioning",
-      'xmlns:oaire' => "http://namespace.openaire.eu/schema/oaire/",
-      'xsi:schemaLocation' => "http://namespace.openaire.eu/schema/oaire/ https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd"
-    }
-  end
-
-  def encode(model, record)
-    @controller = model.controller
-    return "" unless valid?(record)
-   
-    xml = Builder::XmlMarkup.new
-    xml.tag!("resource", resource_header) do
-      doi = DataciteDoi.find_by(object_id: record.id)
-      xml.tag!('datacite:identifier', { identifierType: 'DOI' }, doi.doi) if doi
-      
-      xml.tag!('datacite:alternateIdentifiers', {}) do
-        xml.tag!('datacite:alternateIdentifier', { identifierType: 'URL' }, "https://repository.dri.ie/catalog/#{record.id}")
+      def initialize
+        @prefix = "oai_openaire"
+        @schema = "https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd"
+        @namespace = "http://namespace.openaire.eu/schema/oaire/"
       end
 
-      xml.tag!("datacite:creators", {}) do
-        record['creator_tesim'].each do |c|
-          xml.tag!("datacite:creator", {}) do 
-            xml.tag!("datacite:creatorName", c)
+      def header_specification; end
+
+      def resource_header
+        {
+          "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance",
+          "xmlns:rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+          "xmlns:dc" => "http://purl.org/dc/elements/1.1/",
+          "xmlns:datacite" => "http://datacite.org/schema/kernel-4",
+          "xmlns:vc" => "http://www.w3.org/2007/XMLSchema-versioning",
+          "xmlns:oaire" => "http://namespace.openaire.eu/schema/oaire/",
+          "xsi:schemaLocation" => "http://namespace.openaire.eu/schema/oaire/ https://www.openaire.eu/schema/repo-lit/4.0/openaire.xsd"
+        }
+      end
+
+      def valid?(record)
+        return false unless record.allow_aggregation?
+        return false unless record.setspec.include?("openaire_data")
+        return false unless record.published?
+        return false unless record.depositing_institute.present?
+        return false unless record.assets.size > 0
+
+        true
+      end
+
+      def encode(model, record)
+        @controller = model.controller
+        return "" unless valid?(record)
+
+        xml = Builder::XmlMarkup.new
+        xml.tag!("resource", resource_header) do
+          write_identifiers(xml, record)
+          write_creators(xml, record)
+          write_titles(xml, record)
+          write_descriptions(xml, record)
+          write_contributors(xml, record)
+          write_dates(xml, record)
+          write_access_rights(xml, record)
+          write_license_condition(xml, record)
+          write_subjects(xml, record)
+          write_resource_type(xml, record)
+        end
+
+        xml.target!
+      end
+
+      def parse_published_at(record)
+        PublishedDateResolver.parse_published_at(record)
+      end
+
+      private
+
+      def write_identifiers(xml, record)
+        doi = DoiFinder.find(record)
+        xml.tag!("datacite:identifier", { identifierType: "DOI" }, doi.doi) if doi
+
+        xml.tag!("datacite:alternateIdentifiers", {}) do
+          xml.tag!(
+            "datacite:alternateIdentifier",
+            { identifierType: "URL" },
+            "https://repository.dri.ie/catalog/#{record.id}"
+          )
+        end
+      end
+
+      def write_creators(xml, record)
+        xml.tag!("datacite:creators", {}) do
+          record["creator_tesim"].each do |creator|
+            xml.tag!("datacite:creator", {}) do
+              xml.tag!("datacite:creatorName", creator)
+            end
           end
         end
       end
 
-      xml.tag!("datacite:titles", {}) do
-        record['title_tesim'].each do |title|
-          xml.tag!("datacite:title", title)
+      def write_titles(xml, record)
+        xml.tag!("datacite:titles", {}) do
+          record["title_tesim"].each do |title|
+            xml.tag!("datacite:title", title)
+          end
         end
       end
 
-      record['description_tesim'].each do |description|
-        xml.tag!("dc:description", description)
-      end
+      def write_descriptions(xml, record)
+        record["description_tesim"].each do |description|
+          xml.tag!("dc:description", description)
+        end
 
-      record['rights_tesim'].each do |rights|
-        xml.tag!("dc:description", "Rights: #{rights}")
-      end
- 
-      if (record.copyright.present? && record.copyright&.url.present?)
-        copyright = record.copyright.url
+        record["rights_tesim"].each do |rights|
+          xml.tag!("dc:description", "Rights: #{rights}")
+        end
+
+        return unless record.copyright.present? && record.copyright&.url.present?
+
         xml.tag!("dc:description", "#{record.copyright.name} #{record.copyright.url}")
       end
 
-      xml.tag!("datacite:contributors") do
-        xml.tag!("datacite:contributor", { "contributorType" => "RightsHolder"}) do
-          xml.tag!("datacite:contributorName", {}, record.depositing_institute.try(:name))
+      def write_contributors(xml, record)
+        xml.tag!("datacite:contributors") do
+          xml.tag!("datacite:contributor", { "contributorType" => "RightsHolder" }) do
+            xml.tag!("datacite:contributorName", {}, record.depositing_institute.try(:name))
+          end
         end
       end
 
-      xml.tag!("datacite:dates", {}) do
-        published_date = if record.key?('published_date_tesim') && record['published_date_tesim'].present?
-                           parsed = DRI::Metadata::Transformations.date_range(record['published_date_tesim'].first)
-                           parsed.key?("start") ? parsed['start'] : parse_published_at(record)
-                         else
-                           parse_published_at(record)
-                         end
-        xml.tag!("datacite:date", { dateType: "Issued" }, published_date)
-      end
-
-      case record.visibility
-        when "public"
-          xml.tag!("datacite:rights", { "rightsURI" => "http://purl.org/coar/access_right/c_abf2" }, "open access")
-        when "restricted"
-          xml.tag!("datacite:rights", { "rightsURI" => "http://purl.org/coar/access_right/c_14cb" }, "metadata only access")
-        when "logged-in"
-          xml.tag!("datacite:rights", { "rightsURI" => "http://purl.org/coar/access_right/c_16ec" }, "restricted access")
-        end
-
-      if record.licence
-        if !record.licence&.url.blank?
-          xml.tag!("oaire:licenseCondition", { "uri" => record.licence.url }, record.licence.name)
-        else
-          xml.tag!("oaire:licenseCondition", { "uri" => "https://repository.dri.ie/catalog/#{record.id}"}, record.licence.name)
+      def write_dates(xml, record)
+        xml.tag!("datacite:dates", {}) do
+          xml.tag!("datacite:date", { dateType: "Issued" }, PublishedDateResolver.resolve(record))
         end
       end
 
-      if record['subject_tesim'].present?
+      def write_access_rights(xml, record)
+        rights = AccessRightsMapper.for(record.visibility)
+        return unless rights
+
+        xml.tag!("datacite:rights", { "rightsURI" => rights[:uri] }, rights[:label])
+      end
+
+      def write_license_condition(xml, record)
+        license = LicenseConditionBuilder.for(record)
+        return unless license
+
+        xml.tag!("oaire:licenseCondition", { "uri" => license[:uri] }, license[:label])
+      end
+
+      def write_subjects(xml, record)
+        return unless record["subject_tesim"].present?
+
         xml.tag!("datacite:subjects") do
-          record['subject_tesim'].each do |subject|
+          record["subject_tesim"].each do |subject|
             xml.tag!("datacite:subject", {}, subject)
           end
         end
       end
-    
-      type = record.object_type.first.downcase
 
-      if record.text? || type == "text"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "literature", "uri" => "http://purl.org/coar/resource_type/c_18cf" }, "text")
-      elsif record.image? || type == "image"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_c513" }, "image")
-      elsif record.video? || type == "video"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_12ce" }, "video")
-      elsif record.audio? || type == "sound"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_18cc" }, "sound")
-      elsif record.threeD? || type == "3d"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_e9a0" }, "interactive resource")
-      elsif record.interactive_resource? || type == "interactiveresource"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_e9a0" }, "interactive resource")
-      elsif type == "software"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "software", "uri" => "http://purl.org/coar/resource_type/c_5ce6" }, "software")
-      elsif type == "dataset"
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "dataset", "uri" => "http://purl.org/coar/resource_type/c_1843" }, "other")
-      else
-        xml.tag!("oaire:resourceType", { "resourceTypeGeneral" => "other research product", "uri" => "http://purl.org/coar/resource_type/c_1843" }, "other")
+      def write_resource_type(xml, record)
+        resource_type = ResourceTypeMapper.for(record)
+
+        xml.tag!(
+          "oaire:resourceType",
+          { "resourceTypeGeneral" => resource_type[:resource_type_general], "uri" => resource_type[:uri] },
+          resource_type[:label]
+        )
       end
     end
-
-    xml.target!
-  end
-
-  def parse_published_at(record)
-    DateTime.parse(record['published_at_dttsi']).strftime('%Y-%m-%d')
-  end
-
-  def valid?(record)
-    return false unless record.allow_aggregation?
-    return false unless record.setspec.include?("openaire_data")
-    return false unless record.published?
-    return false unless record.depositing_institute.present?
-    return false unless record.assets.size > 0
-
-    true
   end
 end

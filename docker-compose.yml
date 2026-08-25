@@ -1,0 +1,92 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: development
+      MYSQL_USER: driapp
+      MYSQL_PASSWORD: CHANGEME
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql-init.sh:/docker-entrypoint-initdb.d/mysql-init.sh
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  solr:
+    image: solr:9
+    environment:
+      SOLR_MODULES: "extraction,langid,ltr,analysis-extras"
+    ports:
+      - "8983:8983"
+    volumes:
+      - solr_data:/var/solr
+      - ./solr/config:/opt/solr-configs/development
+    command: solr-precreate development /opt/solr-configs/development
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  ministack:
+    image: ministackorg/ministack
+    environment:
+      GATEWAY_PORT: 4566
+      LOG_LEVEL: INFO
+      S3_PERSIST: 1
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "4566:4566"
+    volumes:
+      - ministack_data:/tmp/ministack-data/s3
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4566/_ministack/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+  web:
+    build:
+      context: .
+      ssh:
+        - default
+    depends_on:
+      db:
+        condition: service_healthy
+      solr:
+        condition: service_started
+      ministack:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: driapp
+      DB_PASSWORD: CHANGEME
+      DB_NAME: development
+      SOLR_URL: http://solr:8983/solr/development
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_ENDPOINT: http://ministack:4566
+    volumes:
+      - .:/app
+
+volumes:
+  mysql_data:
+  solr_data:
+  ministack_data:
