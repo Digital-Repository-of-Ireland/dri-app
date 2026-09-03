@@ -148,9 +148,10 @@ module DRI::IiifViewable
 
     seed = {
       '@id' => seed_id,
-      'label' => @document.title.join(','),
-      'description' => @document.description.join(' ')
+      'label' => @document.title.join(',')
     }
+
+    seed['description'] => @document.description.join(' ') if @document.description.present?
   end
 
   def attached_images(solr_id = nil)
