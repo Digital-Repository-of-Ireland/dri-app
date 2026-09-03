@@ -30,14 +30,8 @@ class DRI::Formatters::Oai < OAI::Provider::Metadata::Format
       isPartOf: "collection_id_tesim",
       spatial: "geographical_coverage_tesim",
       temporal: "temporal_coverage_tesim",
-      license: lambda do |record|
-        licence = record.licence
-        licence.present? ? [licence.url || licence.name] : [nil]
-      end,
-      copyright: lambda do |record|
-        copyright = record.copyright
-        copyright.present? ? [copyright.url || copyright.name] : [nil]
-      end
+      license: ->(record) { [named_attribute_value(record.licence)] },
+      copyright: ->(record) { [named_attribute_value(record.copyright)] }
     },
     edm: {
       provider: lambda { |record| ["Digital Repository of Ireland"] },
@@ -86,6 +80,16 @@ class DRI::Formatters::Oai < OAI::Provider::Metadata::Format
     Array(field).map do |f|
       record[f] || []
     end.flatten.compact
+  end
+
+  # Returns a display value for a licence/copyright attribute: the model's
+  # URL if present, else its name, else the plain value itself (string or nil).
+  # Defined as a class method since the PREFIXES lambdas above are evaluated
+  # in the class body, where `self` is the class itself.
+  def self.named_attribute_value(attribute)
+    return attribute.url || attribute.name if attribute.respond_to?(:url)
+
+    attribute
   end
 
   def valid?(record)
