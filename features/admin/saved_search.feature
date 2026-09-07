@@ -14,6 +14,7 @@ Feature: Saved Search criteria
   Scenario: Save collection search
     When I fill in "q" with "sample"
     And I press the button to "search" within "searchform"
+    And I wait for "1" second
     And I select the "collections" tab
     Then I should see a search result "Sample Collection"
     When I press the button to "save search"
@@ -23,6 +24,7 @@ Feature: Saved Search criteria
   Scenario: Delete collection saved search
     When I fill in "q" with "sample"
     When I press the button to "search" within "searchform"
+    And I wait for "1" second
     And I select the "collections" tab
     Then I should see a search result "Sample Collection"
     When I press the button to "save search"
@@ -35,6 +37,7 @@ Feature: Saved Search criteria
   Scenario: Clear saved collection search
     When I fill in "q" with "sample"
     When I press the button to "search" within "searchform"
+    And I wait for "1" second
     And I select the "collections" tab
     Then I should see a search result "Sample Collection"
     When I press the button to "save search"

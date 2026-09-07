@@ -173,23 +173,25 @@ Run bundler. Virus scanning should now take place when an asset is uploaded.
 == Storage
 
 Surrogate files are stored using the S3 interface. To create surrogates
-you will need access to an S3 server. LocalStack can be used for testing purposes. 
+you will need access to an S3 server. MiniStack (or another similar S3 compatible emulator) can be used 
+for testing purposes. 
+
 This can be installed using pip:
 
- $ python3 -m pip install --upgrade localstack
+ $ pip install ministack
 
 You may need to add the local bin dir to your path, if not previously done:
 
  $ export PATH=/home/$USER/.local/bin:$PATH
 
-For tests, where you don't want files to persist, start the server using:
+You can start the service with
 
- $ SERVICES=s3:8081 localstack start
+ $ ministack
 
 The settings should then be modified to the following:
 
   S3:
-    server: 127.0.0.1:8081
+    server: http://localhost:4566
     use_ssl: false
     access_key_id: anything
     secret_access_key: anything

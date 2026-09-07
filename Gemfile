@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 8.0'
+gem 'rails',  '8.0.5.1'
 gem 'jsbundling-rails'
 
 gem 'blacklight', '~> 8'
@@ -22,8 +22,8 @@ gem 'openseadragon'
 gem 'riiif'
 
 gem "devise", ">= 4.7.1"
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.18.0'
-gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.4.1'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.18.1'
+gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.4.3'
 
 gem 'paper_trail'
 
@@ -42,6 +42,7 @@ gem 'omniauth', '~> 2'
 gem "omniauth-rails_csrf_protection"
 gem 'omniauth-shibboleth'
 gem 'sqlite3'
+gem 'mysql2'
 
 # Storage-related gems
 gem 'bagit'
@@ -95,7 +96,6 @@ gem 'terser'
 group :production do
   gem 'clamby'
   gem 'honeybadger'
-  gem 'mysql2'
 end
 
 group :development, :test do

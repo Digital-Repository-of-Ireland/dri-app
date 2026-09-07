@@ -228,20 +228,18 @@ class SolrDocument
   end
 
   def licence
-    licence_key = 'licence_tesim'.freeze
-    if self[licence_key].present?
-      Licence.where(name: self[licence_key]).first || self[licence_key]
-    else
-      retrieve_ancestor_licence
-    end
+    find_licenced_attribute('licence_tesim', Licence) { retrieve_ancestor_licence }
+  end
+ 
+  def copyright
+    find_licenced_attribute(COPYRIGHT_KEY, Copyright) { retrieve_ancestor_copyright }
   end
 
-  def copyright
-    if self[COPYRIGHT_KEY].present?
-      Copyright.where(name: self[COPYRIGHT_KEY]).first || self[COPYRIGHT_KEY]
-    else
-      retrieve_ancestor_copyright
-    end
+  def find_licenced_attribute(key, model_class)
+    values = self[key]
+    return yield if values.blank?
+ 
+    model_class.where(name: values).first || Array(values).first
   end
 
   def find_metadata_matches

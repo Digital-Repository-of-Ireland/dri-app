@@ -45,7 +45,7 @@ Then /^the AIP for the saved pid should have "(.*?)" version(?:|s)$/ do |count|
     index += 2
   }
   aip_dir = File.join(Settings.dri.files, dir, @pid)
-  (Dir.entries(aip_dir).size - 2).to_s.should eql count
+  (Dir.entries(aip_dir).size - 2).to_s.should eq count
 end
 
 Then /^the manifest for version "(.*?)" for the saved pid should be valid$/ do |version|
