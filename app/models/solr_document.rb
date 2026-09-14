@@ -239,7 +239,13 @@ class SolrDocument
     values = self[key]
     return yield if values.blank?
  
-    model_class.where(name: values).first || Array(values).first
+    model_class.where(name: values).first || fallback_licenced_attribute(Array(values).first)
+  end
+
+  def fallback_licenced_attribute(name)
+    return nil if name.blank?
+
+    OpenStruct.new(name: name, url: nil, description: nil, logo: nil)
   end
 
   def find_metadata_matches
