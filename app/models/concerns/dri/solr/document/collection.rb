@@ -142,7 +142,7 @@ module DRI::Solr::Document::Collection
         fq: fq,
         facet: true,
         "facet.mincount" => 1,
-        "facet.field" => "#{Solrizer.solr_name('file_type_display', :facetable, type: :string)}"
+        "facet.field" => "file_type_display_sim"
       }
     response = Solr::Query.new('*:*', 100, query_params).get
     counts = Hash[*response['facet_counts']['facet_fields']['file_type_display_sim']]

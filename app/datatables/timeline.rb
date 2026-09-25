@@ -1,8 +1,8 @@
 class Timeline
   include ApplicationHelper
 
-  TITLE_KEY = Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym
-  DESCRIPTION_KEY = Solrizer.solr_name('description', :stored_searchable, type: :string).to_sym
+  TITLE_KEY = :title_tesim
+  DESCRIPTION_KEY = :description_tesim
 
   delegate :can?, :asset_url, :asset_path, :link_to, :controller_name, :url_for, :cover_image_path, :object_file_path, to: :@view
 

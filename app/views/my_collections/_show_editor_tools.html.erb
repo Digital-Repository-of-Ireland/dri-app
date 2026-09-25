@@ -23,28 +23,32 @@
   <% if @document.published? && @document.doi.present? %>
     <% options[:onclick] = "return warnOnReplace();" %>
   <% end %>
-  <%= link_to new_object_file_path(@document), options do %>
-     <li><%= t('dri.views.catalog.links.upload_file') %></li>
-  <% end %>
-
-  <% if current_user.is_admin? %>
-    <%= link_to object_fixity_check_path(@document), method: :put, id: "fixity_check" do %>
-      <li><%= t('dri.views.catalog.links.fixity_check') %></li>
+  <li>
+    <%= link_to new_object_file_path(@document), options do %>
+      <%= t('dri.views.catalog.links.upload_file') %>
     <% end %>
-
-    <% if @tp_ready %>
-      <%= link_to '', id: 'tp_data', :'data-bs-target' => '#dri_tp_data_modal_id', :'data-bs-toggle' => 'modal' do %>
-        <li>
-          <%= t('dri.views.objects.buttons.fetch_tp_data') %>
-        </li>
+  </li>
+  <% if current_user.is_admin? %>
+    <li>
+      <%= link_to object_fixity_check_path(@document), method: :put, id: "fixity_check" do %>
+        <%= t('dri.views.catalog.links.fixity_check') %>
       <% end %>
+    </li>
+    <% if @tp_ready %>
+      <li>
+        <%= link_to '', id: 'tp_data', :'data-bs-target' => '#dri_tp_data_modal_id', :'data-bs-toggle' => 'modal' do %>
+            <%= t('dri.views.objects.buttons.fetch_tp_data') %>
+        <% end %>
+      </li>
     <% end %>
   <% end %>
 
   <% if @tp_fetched %>
-    <%= link_to review_tp_data_path(@document), method: :get, id: "review_tp_data" do %>
-      <li><%= t('dri.views.objects.buttons.review_tp_data') %></li>
-    <% end %>
+    <li>
+      <%= link_to review_tp_data_path(@document), method: :get, id: "review_tp_data" do %>
+        <%= t('dri.views.objects.buttons.review_tp_data') %>
+      <% end %>
+    </li>
   <% end %>
 
   <% if @document.status != 'published' || current_user.is_admin? %>
@@ -64,11 +68,11 @@
     </li>
 
     <% if @document.editable? && (@document.status != 'published' || current_user.is_admin?) %>
-      <%= link_to '', id: 'delete_object', :'data-bs-target' => '#dri_delete_object_modal_id', :'data-bs-toggle' => 'modal' do %>
-        <li>
-          <%= t('dri.views.objects.buttons.delete_object') %>
-        </li>
-      <% end %>
+      <li>
+        <%= link_to '', id: 'delete_object', :'data-bs-target' => '#dri_delete_object_modal_id', :'data-bs-toggle' => 'modal' do %>
+            <%= t('dri.views.objects.buttons.delete_object') %>
+        <% end %>
+      </li>
     <% end %>
   <% end %>
 
@@ -83,12 +87,11 @@
         <div class="accordion-inner">
           <ul class="dri_subnav_edit_list">
            <% if @document.editable? %>
-            <%= link_to edit_object_path(@document), id: "edit_record" do %>
-              <li>
+             <li> 
+              <%= link_to edit_object_path(@document), id: "edit_record" do %>
                 <%= t('dri.views.catalog.buttons.edit_metadata') %>
-              </li>
-            <% end %>
-
+              <% end %>
+            </li>
             <!-- Replace metadata only visible if non-EAD collection AND not a Documentation object -->
             <% if @document.active_fedora_model != "DRI::Documentation" %>
               <% if signed_in? && can?(:manage, @document.id) %>
@@ -105,19 +108,16 @@
              <li>
                <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-bs-toggle' => 'modal',  :'data-bs-target' => '#dri_access_controls_modal_id' %>
              </li>
-
-             <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence" do %>
-                <li>
-                  <%= t('dri.views.catalog.buttons.set_licence') %>
-                </li>
-             <% end %>
-
-             <%= link_to '', :'data-bs-target' => '#dri_copyright_modal_id', :'data-bs-toggle' => 'modal', id: "manage_copyright" do %>
-                <li class="dri_subnav_edit_list_last">
+             <li>
+               <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence" do %>
+                    <%= t('dri.views.catalog.buttons.set_licence') %>
+                <% end %>
+             </li>
+              <li class="dri_subnav_edit_list_last">
+                <%= link_to '', :'data-bs-target' => '#dri_copyright_modal_id', :'data-bs-toggle' => 'modal', id: "manage_copyright" do %>
                   <%= t('dri.views.catalog.buttons.set_copyright') %>
-                </li>
-             <% end %>
-
+                <% end %>
+              </li>
            <% end %>
           </ul>
       </div>

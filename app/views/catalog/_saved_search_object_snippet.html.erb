@@ -13,10 +13,10 @@
           <% end %>
         </div>
         <!-- close image -->
-        <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+        <h1><%= document[:title_tesim][0] %></h1>
         <p class="dri_publishing_institute">
-          <% unless document[Solrizer.solr_name('institute', :stored_searchable, type: :string).to_sym].nil? %>
-              <%= document[Solrizer.solr_name('institute', :stored_searchable, type: :string).to_sym][0] %>
+          <% unless document[:institute_tesim].nil? %>
+              <%= document[:institute_tesim][0] %>
           <% end %>
         </p>
       </div>
@@ -31,17 +31,17 @@
 <% else %>
 
   <div class="dri_content_block">
-    <h1><%= document[Solrizer.solr_name('title', :stored_searchable, type: :string).to_sym][0] %></h1>
+    <h1><%= document[:title_tesim][0] %></h1>
     <div class="dri_image">
        <% present(document, DRI::ImagePresenter) do |images| %>
         <%= image_tag images.image_for_search %>
       <% end %>
     </div><!-- close image -->
     <p class="dri_subject">
-      <% if document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym] %>
-          <% document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].each do |subject| %>
+      <% if document[:subject_tesim] %>
+          <% document[:subject_tesim].each do |subject| %>
               <%= subject %>
-              <% unless document[Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym].last == subject %> | <% end %>
+              <% unless document[:subject_tesim].last == subject %> | <% end %>
           <% end %>
       <% else %>
           n/a
@@ -60,7 +60,7 @@
           </span>
         <% else %>
           <!-- takes value from metadata -->
-          <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
+          <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
         <% end %>
       <% end %>
     </div>

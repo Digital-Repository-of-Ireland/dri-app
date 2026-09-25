@@ -1,26 +1,6 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "01a797c347b950bc5b36ccb05f65307c7a4362a3d9ec1aff1deeac7970e15a04",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/concerns/dri/solr/document/collection.rb",
-      "line": 89,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveFedora::SolrService.count(((\"#{Solrizer.solr_name(\"ancestor_id\", :facetable, :type => :string)}:#{id}\" + \" AND #{Solrizer.solr_name(\"status\", :stored_searchable, :type => :symbol)}:#{status}\") + \" AND #{Solrizer.solr_name(\"is_collection\", :searchable, :type => :symbol)}:#{subcoll}\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "DRI::Solr::Document::Collection",
-        "method": "status_count"
-      },
-      "user_input": "Solrizer.solr_name(\"is_collection\", :searchable, :type => :symbol)",
-      "confidence": "Weak",
-      "note": "This is fine."
-    },
-    {
       "warning_type": "File Access",
       "warning_code": 16,
       "fingerprint": "0f8d8e79ff9c7f3384ddde2ca62d527fc3bf508493ada8e3857e4e2efb7293ac",
@@ -99,26 +79,6 @@
       "user_input": "params[:id]",
       "confidence": "Weak",
       "note": "This is safe, called in a private method from code that does appropriate checks before hand, cannot be used to download arbitrary files."
-    },
-    {
-      "warning_type": "SQL Injection",
-      "warning_code": 0,
-      "fingerprint": "3d05af24c837ddc763b72974602d4a0cf94cd82fe0f5f1f7815618c1a5917c15",
-      "check_name": "SQL",
-      "message": "Possible SQL injection",
-      "file": "app/models/solr_document.rb",
-      "line": 102,
-      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "ActiveFedora::SolrService.count(((\"active_fedora_model_ssi:\\\"DRI::GenericFile\\\"\" + \" AND #{Solrizer.solr_name(\"isPartOf\", :symbol)}:#{id}\") + \" AND #{Solrizer.solr_name(\"file_type\", :facetable)}:\\\"image\\\"\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "SolrDocument",
-        "method": "contains_images?"
-      },
-      "user_input": "Solrizer.solr_name(\"file_type\", :facetable)",
-      "confidence": "Weak",
-      "note": "This is safe."
     },
     {
       "warning_type": "File Access",

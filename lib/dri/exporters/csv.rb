@@ -84,7 +84,7 @@ module DRI::Exporters
       elsif key == 'relations'
         relation
       else
-        @object_doc[Solrizer.solr_name(key, :stored_searchable, type: :string)]
+        @object_doc["#{key}_tesim"]
       end
     end
 

@@ -38,7 +38,7 @@
 					mode: 'collections',
 					search_field: 'all_fields',
 					view: 'grid',
-					f: { Solrizer.solr_name('institute', :facetable).to_sym => [@presenter.depositing_organisation[:name].mb_chars.downcase] }
+					f: { institute_sim: [@presenter.depositing_organisation[:name].mb_chars.downcase] }
 					}
 				%>
 				<%= link_to @presenter.depositing_organisation[:name], main_app.my_collections_index_path(institute_browse_params), id: 'depositing_institute' %>

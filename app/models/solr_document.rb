@@ -293,7 +293,7 @@ class SolrDocument
   def retrieve_ancestor_licence
     return nil unless ancestor_docs.present?
 
-    licence_key = Solrizer.solr_name('licence', :stored_searchable, type: :string).to_sym
+    licence_key = :licence_tesim
 
     ancestor_ids.each do |id|
       doc = ancestor_docs[id]

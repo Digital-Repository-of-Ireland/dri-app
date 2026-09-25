@@ -11,7 +11,7 @@
 	    </span>
 	<% else %>
 	    <!-- takes value from metadata -->
-	    <span class="dri_icon_text"><%= document[Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first %></span>
+	    <span class="dri_icon_text"><%= document[:object_type_ssm].first %></span>
 	<% end %>
 <% end %>
 <% if document.visibility == "restricted" %>
