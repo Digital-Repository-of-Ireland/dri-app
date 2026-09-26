@@ -2,7 +2,7 @@
 	<div class="dri_bookmark_tool">
 		<label class="dri_bookmark">
 			<span class="dri_bookmark_object_label dri_float_left toggle-bookmark">
-				<% if local_assigns[:document][Solrizer.solr_name('object_type', :displayable, type: :string).to_sym].first == 'Collection' %>
+				<% if local_assigns[:document][:object_type_ssm].first == 'Collection' %>
 					<%= t('dri.views.catalog.forms.bookmark_collection') %>
 				<% else %>
 					<%= t('dri.views.catalog.forms.bookmark_object') %>

@@ -119,7 +119,7 @@ module FacetsHelper
     doc = SolrDocument.find(value)
     return 'nil' if doc.nil?
 
-    title_field = doc[Solrizer.solr_name('title', :stored_searchable, type: :string)]
+    title_field = doc['title_tesim']
     return 'nil' if title_field.nil? || title_field.empty?
 
     title_field.first.downcase

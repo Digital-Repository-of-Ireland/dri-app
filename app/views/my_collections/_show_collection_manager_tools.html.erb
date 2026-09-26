@@ -134,9 +134,11 @@
 
             <!-- Duplicate Stats Block -->
             <% if duplicate_total > 0 %>
-                <%= link_to collection_duplicates_path(@document.id) do %>
-                    <li class="dri_subnav_review_list_last dri_warning"><%= "#{t('dri.views.catalog.links.duplicates')} (#{duplicate_total})" %></li>
-                <% end %>
+                <li class="dri_subnav_review_list_last dri_warning">
+                  <%= link_to collection_duplicates_path(@document.id) do %>
+                    <%= "#{t('dri.views.catalog.links.duplicates')} (#{duplicate_total})" %>
+                  <% end %>
+                </li>
             <% end %>
             <!-- end Duplicate Stats Block -->
 
@@ -151,21 +153,22 @@
               <i class="fa-regular fa-square-caret-down fa-lg"></i> <%= t('dri.views.catalog.links.add_object') %>
             </a>
             <div id="dri_add_object_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
-            <div class="accordion-inner">
-            <ul class="dri_subnav_add_object">
-              <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
-                <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object" do %>
-                  <li>
-                    <%= t('dri.views.catalog.links.metadata_form') %>
+              <div class="accordion-inner">
+                <ul class="dri_subnav_add_object">
+                  <% if @document.active_fedora_model == 'DRI::QualifiedDublinCore' %>
+                    <li>
+                      <%= link_to new_object_path(collection: document.id, method: 'form'), :id => "add_object", class: "dri_sidenav_link" do %>
+                          <%= t('dri.views.catalog.links.metadata_form') %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                  <li class="accordion_last">
+                    <%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml", class: "dri_sidenav_link" do %>
+                      <%= t('dri.views.catalog.links.add_object_xml') %>
+                    <% end %>
                   </li>
-                <% end %>
-              <% end %>
-
-              <%= link_to new_object_path(collection: document.id, method: 'upload'), :id => "add_object_xml" do %>
-                <li class="accordion_last"><%= t('dri.views.catalog.links.add_object_xml') %></li>
-              <% end %>
-            </ul>
-            </div>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -182,10 +185,13 @@
           <div id="dri_add_documentation_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
           <div class="accordion-inner">
             <ul class="dri_subnav_add_object dri_help_popover" data-bs-content="<%= t('dri.help.add_documentation_help_text') %>" title="<%= t('dri.help.add_documentation_help_title') %>" data-bs-trigger="hover" data-bs-placement="left">
-              <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object" do %><li><%= t('dri.views.catalog.links.metadata_form') %></li><% end %>
-              <%= link_to new_object_path(collection: document.id, method: 'upload', is_documentation: 'true'), class: "accordion_last", id: "add_documentation_object_xml" do %>
-                <li class="accordion_last"><%= t('dri.views.catalog.links.add_documentation_xml') %></li>
+              <%= link_to new_object_path(collection: document.id, method: 'form', :is_documentation => 'true'), :id => "add_documentation_object", class: "dri_sidenav_link" do %><li><%= t('dri.views.catalog.links.metadata_form') %></li><% end %>
+
+              <li class="accordion_last">
+                <%= link_to new_object_path(collection: document.id, method: 'upload', is_documentation: 'true'), class: "accordion_last, dri_sidenav_link", id: "add_documentation_object_xml" do %>
+                  <%= t('dri.views.catalog.links.add_documentation_xml') %>
               <% end %>
+              </li>
             </ul>
           </div>
           </div>
@@ -194,55 +200,69 @@
     </li>
         
     <% if @document.editable? %>
-      <%= link_to new_object_path(collection: document.id, method: 'form', :is_sub_collection => 'true'), :id => "add_sub_collection" do %>
-        <li><%= t('dri.views.catalog.links.add_sub_collection') %></li>
-      <% end %>
+      <li>
+        <%= link_to new_object_path(collection: document.id, method: 'form', :is_sub_collection => 'true'), :id => "add_sub_collection", class: "dri_sidenav_link" do %>
+         <%= t('dri.views.catalog.links.add_sub_collection') %>
+        <% end %>
+      </li>
     <% end %>
 
     <li>
-      <%= link_to access_controls_review_path(@document), id: "access_controls_review" do %>
+      <%= link_to access_controls_review_path(@document), id: "access_controls_review", class: "dri_sidenav_link" do %>
         <%= t('dri.views.collection.access_controls_review') %>
       <% end %>
-      <%= link_to "(#{t('dri.views.collection.access_controls_csv')})", access_controls_review_path(@document, format: 'csv') %>
     </li>
 
     <% if @document.published? && @document.doi %>
-       <%= link_to '', :'data-bs-target' => '#dri_doi_modal_id', :'data-bs-toggle' => 'modal', id: "request_doi" do %>
-         <li><%= t('dri.views.catalog.links.request_doi') %></li>
-       <% end %>
+       <li>
+         <%= link_to '', :'data-bs-target' => '#dri_doi_modal_id', :'data-bs-toggle' => 'modal', id: "request_doi", class: "dri_sidenav_link" do %>
+           <%= t('dri.views.catalog.links.request_doi') %></li>
+         <% end %>
+       </li>
     <% end %>
 
     <% if current_user.is_admin? %>
-      <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate" do %>
-        <li><%= t('dri.views.catalog.links.generate_surrogates') %></li>
-      <% end %>
+      <li>
+        <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_surrogates') }, :id => "surrogates_generate", class: "dri_sidenav_link" do %>
+          <%= t('dri.views.catalog.links.generate_surrogates') %>
+        <% end %>
+      </li>
 
-      <%= link_to '', :'data-bs-target' => '#dri_edmsettings_modal_id', :'data-bs-toggle' => 'modal', id: "edm_settings" do %>
-       <li><%= t('dri.views.catalog.links.edm_settings') %></li>
-     <% end %>
+      <li>
+        <%= link_to '', :'data-bs-target' => '#dri_edmsettings_modal_id', :'data-bs-toggle' => 'modal', id: "edm_settings", class: "dri_sidenav_link" do %>
+          <%= t('dri.views.catalog.links.edm_settings') %>
+        <% end %>
+      </li>
 
-      <%= link_to oai_pmh_oai_path(verb: "ListRecords", metadataPrefix: "edm", set: "collection:#{@document.id}") do %>
-        <li><%= t('dri.views.catalog.links.view_edm_feed') %></li>
-      <% end %>
+      <li>
+        <%= link_to oai_pmh_oai_path(verb: "ListRecords", metadataPrefix: "edm", set: "collection:#{@document.id}"), class: "dri_sidenav_link" do %>
+          <%= t('dri.views.catalog.links.view_edm_feed') %>
+        <% end %>
+      </li>
 
       <% if @document.root_collection? %>
-        <%= link_to fixity_check_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, id: "fixity_check" do %>
-          <li><%= t('dri.views.catalog.links.fixity_check') %></li>
-        <% end %>
+        <li>
+          <%= link_to fixity_check_path(@document), method: :put, data: { confirm: t('dri.views.collection.confirm_fixity') }, id: "fixity_check", class: "dri_sidenav_link" do %>
+            <%= t('dri.views.catalog.links.fixity_check') %>
+          <% end %>
+        </li>
       <% end %>
     <% end %>
-   <%= link_to '', :'data-bs-target' => '#dri_organisation_modal_id', :'data-bs-toggle' => 'modal', id: "manage_organisations" do %>
-     <li><%= t('dri.views.collection.institute.manage') %></li>
-   <% end %>
+
+   <li>
+     <%= link_to '', :'data-bs-target' => '#dri_organisation_modal_id', :'data-bs-toggle' => 'modal', id: "manage_organisations", class: "dri_sidenav_link" do %>
+       <%= t('dri.views.collection.institute.manage') %>
+     <% end %>
+   </li>
 
   <!-- If (root collection OR not EAD collection) enable delete collection link -->
   <!-- This is to allow to delete any sub-collection except for EAD -->
   <% if (!@document.published? || current_user.is_admin?) && (@document.root_collection? || @document.editable?) %>
-      <%= link_to '', :'data-bs-target' => '#dri_delete_modal_id', :'data-bs-toggle' => 'modal', id: 'delete_object' do %>
-        <li>
-          <%= t('dri.views.collection.buttons.delete_collection') %>
-        </li>
-      <% end %>
+      <li>
+        <%= link_to '', :'data-bs-target' => '#dri_delete_modal_id', :'data-bs-toggle' => 'modal', id: 'delete_object', class: "dri_sidenav_link" do %>
+            <%= t('dri.views.collection.buttons.delete_collection') %>
+        <% end %>
+      </li>
   <% end %>
 
     <li class="dri_edit_collection">
@@ -253,38 +273,44 @@
   	        </a>
 
   	      <div id="dri_edit_record_tools_collapsed_id" class="accordion-body collapse" style="height: 0px; ">
-  	      <div class="accordion-inner">
-  		    <ul class="dri_subnav_edit_list">
-            <%= link_to '', :'data-bs-target' => '#dri_cover_image_modal_id', :'data-bs-toggle' => 'modal', id: "add_cover_image" do %>
-              <li><%= t('dri.views.collection.buttons.add_cover_image') %></li>
-          <% end %>
+    	      <div class="accordion-inner">
+      		    <ul class="dri_subnav_edit_list">
+                <li>
+                  <%= link_to '', :'data-bs-target' => '#dri_cover_image_modal_id', :'data-bs-toggle' => 'modal', id: "add_cover_image", class: "dri_sidenav_link" do %>
+                    <%= t('dri.views.collection.buttons.add_cover_image') %>
+                  <% end %>
+                </li>
 
-  		    <% if @document.editable? %>
-            <%= link_to edit_collection_path, id: "edit_collection" do %>
-  		        <li><%= t('dri.views.collection.buttons.edit_metadata') %></li>
-  		      <% end %>
-            <li>
-              <%= render partial: 'my_collections/tools/replace_metadata' %>
-            </li>
-          <% end %>
-
-          <%= link_to collection_config_path(collection_id: @document.id), id: "collection_config" do %>
-            <li><%= t('dri.views.collection.buttons.options') %></li>
-          <% end %>
-
-  		    <li>
-  		      <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-bs-toggle' => 'modal', :'data-bs-target' => '#dri_access_controls_modal_id' %>
-  		    </li>
-
-  			  <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence" do %>
-  			    <li><%= t('dri.views.catalog.buttons.set_licence') %></li>
-  			  <% end %>
-
-          <%= link_to '', :'data-bs-target' => '#dri_copyright_modal_id', :'data-bs-toggle' => 'modal', id: "manage_copyright" do %>
-  			    <li class="dri_subnav_edit_list_last"><%= t('dri.views.catalog.buttons.set_copyright') %></li>
-  			  <% end %>
-  			  </ul>
-  	      </div>
+      		    <% if @document.editable? %>
+                <li>
+                  <%= link_to edit_collection_path, id: "edit_collection", class: "dri_sidenav_link" do %>
+        		        <%= t('dri.views.collection.buttons.edit_metadata') %>
+        		      <% end %>
+                </li>
+                <li>
+                  <%= render partial: 'my_collections/tools/replace_metadata' %>
+                </li>
+              <% end %>
+              <li>
+                <%= link_to collection_config_path(collection_id: @document.id), id: "collection_config", class: "dri_sidenav_link" do %>
+                  <%= t('dri.views.collection.buttons.options') %>
+                <% end %>
+              </li>
+      		    <li>
+      		      <%= link_to t('dri.views.catalog.buttons.edit_access_controls'), access_controls_path(@document.id, format: 'js'), id: "edit_access_controls", remote: true, :'data-bs-toggle' => 'modal', :'data-bs-target' => '#dri_access_controls_modal_id', class: "dri_sidenav_link" %>
+      		    </li>
+              <li>
+        			  <%= link_to '', :'data-bs-target' => '#dri_licence_modal_id', :'data-bs-toggle' => 'modal', id: "manage_licence", class: "dri_sidenav_link" do %>
+        			    <%= t('dri.views.catalog.buttons.set_licence') %>
+        			  <% end %>
+              </li>
+              <li class="dri_subnav_edit_list_last">
+                <%= link_to '', :'data-bs-target' => '#dri_copyright_modal_id', :'data-bs-toggle' => 'modal', id: "manage_copyright", class: "dri_sidenav_link" do %>
+        			    <%= t('dri.views.catalog.buttons.set_copyright') %>
+        			  <% end %>
+              </li>
+      			  </ul>
+    	      </div>
   	      </div>
   	    </div>
   	  </div>
@@ -292,11 +318,11 @@
 
 	<!-- Link to manage pending memberships for the read group -->
 	<% if @reader_group %>
-	  <%= link_to collection_manage_requests_path(@document), id: "manage_read_requests" do %>
-	    <li>
-		    <%= t('dri.views.collection.manage_read_requests') %>
-	    </li>
-	  <% end %>
+    <li>
+  	  <%= link_to collection_manage_requests_path(@document), id: "manage_read_requests", class: "dri_sidenav_link" do %>
+  		    <%= t('dri.views.collection.manage_read_requests') %>
+  	  <% end %>
+    </li>
 	<% end %>
 
   </ul>

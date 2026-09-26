@@ -7,7 +7,7 @@ class ReviewJob
     user = UserGroup::User.find(user_id)
 
     # get objects within this collection, not including sub-collections
-    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{collection_id}\""
+    q_str = "collection_id_sim:\"#{collection_id}\""
     q_str += " AND status_ssi:draft"
     f_query = "is_collection_ssi:false"
 

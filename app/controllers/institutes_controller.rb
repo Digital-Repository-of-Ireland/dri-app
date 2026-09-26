@@ -101,7 +101,12 @@ class InstitutesController < ApplicationController
 
     if current_user.is_admin?
       @inst.depositing = params[:institute][:depositing] if params[:institute][:depositing].present?
-      @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+
+      begin
+        @inst.manager = params[:institute][:manager] if params[:institute][:manager].present?
+      rescue ArgumentError => e
+        flash[:error] = t('dri.flash.error.user_must_be_om')
+      end
     end
     @inst.save
 

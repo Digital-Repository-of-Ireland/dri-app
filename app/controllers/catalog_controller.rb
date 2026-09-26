@@ -82,32 +82,32 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the show (single result) view
     # The ordering of the field names is the order of the display
-    config.add_show_field Solrizer.solr_name('title', :stored_searchable, type: :string), label: 'title'
-    config.add_show_field Solrizer.solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
-    config.add_show_field Solrizer.solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
-    config.add_show_field Solrizer.solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
-    config.add_show_field Solrizer.solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
-    config.add_show_field Solrizer.solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
+    config.add_show_field 'title_tesim', label: 'title'
+    config.add_show_field 'subtitle_tesim', label: 'subtitle:'
+    config.add_show_field 'description_tesim', label: 'description', helper_method: :render_description
+    config.add_show_field 'description_gle_tesim', label: 'description_gle', helper_method: :render_description
+    config.add_show_field 'description_eng_tesim', label: 'description_eng', helper_method: :render_description
+    config.add_show_field 'creator_tesim', label: 'creators', helper_method: :parse_orcid
     DRI::Vocabulary.marc_relators.each do |role|
-      config.add_show_field Solrizer.solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
+      config.add_show_field "role_#{role}_tesim", label: 'role_' + role, helper_method: :parse_orcid
     end
-    config.add_show_field Solrizer.solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
-    config.add_show_field Solrizer.solr_name('publisher', :stored_searchable), label: 'publishers'
-    config.add_show_field Solrizer.solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
-    config.add_show_field Solrizer.solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
-    config.add_show_field Solrizer.solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
+    config.add_show_field 'contributor_tesim', label: 'contributors', helper_method: :parse_orcid
+    config.add_show_field 'publisher_tesim', label: 'publishers'
+    config.add_show_field 'creation_date_tesim', label: 'creation_date', date: true, helper_method: :parse_era
+    config.add_show_field 'published_date_tesim', label: 'published_date', date: true, helper_method: :parse_era
+    config.add_show_field 'date_tesim', label: 'date', date: true, helper_method: :parse_era
     config.add_show_field 'published_at_dttsi', label: 'published_by_dri', date: true, helper_method: :parse_date
-    config.add_show_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
-    config.add_show_field Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
-    config.add_show_field Solrizer.solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
-    config.add_show_field Solrizer.solr_name('name_coverage', :stored_searchable, type: :string), label: 'name_coverage'
-    config.add_show_field Solrizer.solr_name('format', :stored_searchable), label: 'format'
-    config.add_show_field Solrizer.solr_name('type', :stored_searchable, type: :string), label: 'type'
-    config.add_show_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
-    config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
+    config.add_show_field 'subject_tesim', label: 'subjects'
+    config.add_show_field 'geographical_coverage_tesim', label: 'geographical_coverage'
+    config.add_show_field 'temporal_coverage_tesim', label: 'temporal_coverage'
+    config.add_show_field 'name_coverage_tesim', label: 'name_coverage'
+    config.add_show_field 'format_tesim', label: 'format'
+    config.add_show_field 'type_tesim', label: 'type'
+    config.add_show_field 'language_tesim', label: 'language', helper_method: :label_language
+    config.add_show_field 'source_tesim', label: 'sources'
     config.add_show_field 'identifier_ssim', label: 'identifier'
-    config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
-    config.add_show_field Solrizer.solr_name('access_rights', :stored_searchable, type: :string), label: 'access_rights'
+    config.add_show_field 'rights_tesim', label: 'rights'
+    config.add_show_field 'access_rights_tesim', label: 'access_rights'
 
 
     config.add_search_field 'all_fields', label: 'All Fields'

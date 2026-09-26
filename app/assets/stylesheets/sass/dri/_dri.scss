@@ -458,7 +458,7 @@ div.error_page {
     }
 }
 a .dri_signin_facebook {
-    background: image-url("dri/signin_facebook.png") no-repeat;
+    background: url("dri/signin_facebook.png") no-repeat;
     background-color: #3B5998;
     border: 1px solid #132547;
     @include border_radius;
@@ -468,7 +468,7 @@ a .dri_signin_facebook {
     }
 }
 a .dri_signin_google {
-    background: image-url("dri/signin_google.png") no-repeat;
+    background: url("dri/signin_google.png") no-repeat;
     background-color: #D7515D;
     border: 1px solid #A32E38;
     @include border_radius;
@@ -478,7 +478,7 @@ a .dri_signin_google {
     }
 }
 a .dri_signin_twitter {
-    background: image-url("dri/signin_twitter.png") no-repeat;
+    background: url("dri/signin_twitter.png") no-repeat;
     background-color: #4195C1;
     border: 1px solid #1A658B;
     @include border_radius;
@@ -488,7 +488,7 @@ a .dri_signin_twitter {
     }
 }
 a .dri_signin_edugate {
-    background: image-url("dri/signin_edugate.png") no-repeat;
+    background: url("dri/signin_edugate.png") no-repeat;
     background-color: #7D4391;
     border: 1px solid #612E76;
     @include border_radius;
@@ -1259,9 +1259,9 @@ ol.breadcrumb {
             margin: 0px 0 0px 0;
             padding: 6px 8px 6px 8px;
             border: none;
-            border-top-right-radius: none;
-            border-top-left-radius: none;
-            border-bottom: none;
+            border-top-right-radius: 0;
+            border-top-left-radius: 0;
+            border-bottom: 0;
             display: block;
             font-size: 100%;
         }
@@ -2450,7 +2450,7 @@ ul.dri_stats {
 
 .dri_vc_image {
     border: 1px solid $dri_thingrey;
-    width: 300x;
+    width: 300px;
     height: 170px;
     margin-top: 5px;
     overflow: hidden;
@@ -2681,8 +2681,6 @@ ul.dri_view_collection {
         }
     }
     .dri_collection_institutes_modal_img {
-        padding-top: -30px;
-        padding-bottom: -30px;
         margin-top: 40px;
         margin-bottom: 40px;
         img {
@@ -3144,7 +3142,7 @@ dd.dri_copyright{
                 height: 2em;
                 font-size: 16px;
                 -webkit-border-style: none;
-                -webkit-border-radius: none;
+                -webkit-border-radius: 0;
                 -moz-border-radius: 0px;
                 vertical-align: top;
                 width: 150px;
@@ -3326,7 +3324,7 @@ dd.dri_copyright{
         height: 2em;
         font-size: 16px;
         -webkit-border-style: none;
-        -webkit-border-radius: none;
+        -webkit-border-radius: 0;
         -moz-border-radius: 0px;
         vertical-align: top;
         padding-bottom: 12px;

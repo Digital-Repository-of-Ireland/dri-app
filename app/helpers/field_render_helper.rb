@@ -145,7 +145,7 @@ module FieldRenderHelper
     search_arg = "f[" << facet << "][]"
 
     if person_facet?(facet)
-      search_arg = "f[" << Solrizer.solr_name('person', :facetable) << "][]"
+      search_arg = "f[person_sim][]"
     end
 
     search_arg
@@ -157,7 +157,7 @@ module FieldRenderHelper
   def standardise_facet(args)
     facet = args[:facet]
 
-    standardised = if facet == Solrizer.solr_name('language', :facetable)
+    standardised = if facet == 'language_sim'
                      DRI::Metadata::Descriptors.standardise_language_code(args[:value]) || args[:value]
                    else
                      args[:value]
@@ -167,8 +167,8 @@ module FieldRenderHelper
   end
 
   def standardise_value(args)
-    if [Solrizer.solr_name('temporal_coverage', :facetable, type: :string),
-        Solrizer.solr_name('geographical_coverage', :facetable, type: :string)
+    if ['temporal_coverage_sim',
+        'geographical_coverage_sim'
        ].include?(args[:facet_name])
       value_from_solr_field(args[:value], "name")
     else
@@ -181,7 +181,7 @@ module FieldRenderHelper
     fields.each do |field, value|
       next unless facet?(field)
 
-      facet_name = Solrizer.solr_name(field, :facetable)
+      facet_name = "#{field}_sim"
       facet_arg = search_arg_from_facet(facet: facet_name)
       url_args[facet_arg] = value
     end
@@ -190,14 +190,14 @@ module FieldRenderHelper
   end
 
   def facet?(field)
-    blacklight_config.facet_fields.key?(Solrizer.solr_name(field, :facetable))
+    blacklight_config.facet_fields.key?("#{field}_sim")
   end
 
   def person_facet?(facet)
     (
       role_field?(facet)) ||
-      (facet == Solrizer.solr_name('creator', :facetable)) ||
-      (facet == Solrizer.solr_name('contributor', :facetable)
+      (facet == 'creator_sim') ||
+      (facet == 'contributor_sim'
     )
   end
 
@@ -206,9 +206,9 @@ module FieldRenderHelper
   end
 
   def render_facet_link(args, field, value, indexed_value)
-    facet_name = Solrizer.solr_name(field, :facetable)
+    facet_name = "#{field}_sim"
     if role_field?(args[:field])
-      facet_name = Solrizer.solr_name("person", :facetable)
+      facet_name = 'person_sim'
     end
     facet_arg = search_arg_from_facet(facet: facet_name)
 

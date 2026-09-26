@@ -59,7 +59,7 @@ module DRI
     end
 
     def subjects
-      subject_key = Solrizer.solr_name('subject', :stored_searchable, type: :string).to_sym
+      subject_key = :subject_tesim
       return nil unless document.key?(subject_key)
 
       document[subject_key].reject { |s| uri?(s) }[0..2].join(" | ")
@@ -97,7 +97,7 @@ module DRI
     end
 
     def display_child(child_doc)
-      link_text = child_doc[Solrizer.solr_name('title', :stored_searchable, type: :string)].first
+      link_text = child_doc['title_tesim'].first
       # FIXME: For now, the EAD type is indexed last in the type solr index, review in the future
       type = child_doc['file_type_display_tesim'].last
       cover = child_doc['cover_image_ss'].presence

@@ -36,12 +36,12 @@ class MyCollectionsController < ApplicationController
     }
 
     # solr field configuration for search results/index views
-    config.index.title_field = Solrizer.solr_name('title', :stored_searchable, type: :string)
-    config.index.record_tsim_type = Solrizer.solr_name('has_model', :stored_searchable, type: :symbol)
+    config.index.title_field = 'title_tesim'
+    config.index.record_tsim_type = 'has_model_ssim'
 
     # solr field configuration for document/show views
-    config.show.title_field = Solrizer.solr_name('title', :stored_searchable, type: :string)
-    config.show.display_type_field = Solrizer.solr_name('file_type', :stored_searchable, type: :string)
+    config.show.title_field = 'title_tesim'
+    config.show.display_type_field = 'file_type_tesim'
 
     config.show.document_actions.delete(:email)
     config.show.document_actions.delete(:sms)
@@ -54,43 +54,43 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'pdate_range_start_isi', show: false, include_in_advanced_search: false
     config.add_facet_field 'date_range_start_isi', show: false, include_in_advanced_search: false
 
-    config.add_facet_field Solrizer.solr_name('licence', :facetable), label: 'Licence', limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('copyright', :facetable), label: 'Copyright', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'licence_sim', label: 'Licence', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'copyright_sim', label: 'Copyright', limit: 20, include_in_advanced_search: false
     config.add_facet_field 'status_ssi', label: 'Record Status', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('master_file_access', :facetable), label: 'Master File Access', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('subject', :facetable), limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('subject_gle', :facetable), label: 'Subjects (in Irish)', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('subject_eng', :facetable), label: 'Subjects (in English)', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('geographical_coverage', :facetable), helper_method: :parse_location, show: false, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('placename_field', :facetable), limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('geographical_coverage_gle', :facetable), label: 'Subject (Place) (in Irish)', limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('geographical_coverage_eng', :facetable), label: 'Subject (Place) (in English)', limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('temporal_coverage', :facetable), helper_method: :parse_era, limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('temporal_coverage_gle', :facetable), label: 'Subject (Era) (in Irish)', limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('temporal_coverage_eng', :facetable), label: 'Subject (Era) (in English)', limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('name_coverage', :facetable), label: 'Subject (Name)', limit: 20, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('creator', :facetable), label: 'creators', show: false, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('contributor', :facetable), label: 'contributors', show: false, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('person', :facetable), limit: 20, helper_method: :parse_orcid, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('language', :facetable), helper_method: :label_language, limit: true, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('creation_date', :dateable), label: 'Creation Date', date: true, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('published_date', :dateable), label: 'Published/Broadcast Date', date: true, include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('width', :facetable, type: :integer), label: 'Image Width', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('height', :facetable, type: :integer), label: 'Image Height', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('area', :facetable, type: :integer), label: 'Image Size', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('geojson', :symbol), limit: -2, label: 'Coordinates', show: false, include_in_advanced_search: false
+    config.add_facet_field 'master_file_access_sim', label: 'Master File Access', include_in_advanced_search: false
+    config.add_facet_field 'subject_sim', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'subject_gle_sim', label: 'Subjects (in Irish)', include_in_advanced_search: false
+    config.add_facet_field 'subject_eng_sim', label: 'Subjects (in English)', include_in_advanced_search: false
+    config.add_facet_field 'geographical_coverage_sim', helper_method: :parse_location, show: false, include_in_advanced_search: false
+    config.add_facet_field 'placename_field_sim', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'geographical_coverage_gle_sim', label: 'Subject (Place) (in Irish)', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'geographical_coverage_eng_sim', label: 'Subject (Place) (in English)', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'temporal_coverage_sim', helper_method: :parse_era, limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'temporal_coverage_gle_sim', label: 'Subject (Era) (in Irish)', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'temporal_coverage_eng_sim', label: 'Subject (Era) (in English)', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'name_coverage_sim', label: 'Subject (Name)', limit: 20, include_in_advanced_search: false
+    config.add_facet_field 'creator_sim', label: 'creators', show: false, include_in_advanced_search: false
+    config.add_facet_field 'contributor_sim', label: 'contributors', show: false, include_in_advanced_search: false
+    config.add_facet_field 'person_sim', limit: 20, helper_method: :parse_orcid, include_in_advanced_search: false
+    config.add_facet_field 'language_sim', helper_method: :label_language, limit: true, include_in_advanced_search: false
+    config.add_facet_field 'creation_date_dtsim', label: 'Creation Date', date: true, include_in_advanced_search: false
+    config.add_facet_field 'published_date_dtsim', label: 'Published/Broadcast Date', date: true, include_in_advanced_search: false
+    config.add_facet_field 'width_sim', label: 'Image Width', include_in_advanced_search: false
+    config.add_facet_field 'height_sim', label: 'Image Height', include_in_advanced_search: false
+    config.add_facet_field 'area_sim', label: 'Image Size', include_in_advanced_search: false
+    config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false, include_in_advanced_search: false
     # duration is measured in milliseconds
-    config.add_facet_field Solrizer.solr_name('duration_total', :stored_sortable, type: :integer), label: 'Total Duration', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('channels', :facetable, type: :integer), label: 'Audio Channels', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('sample_rate', :facetable, type: :integer), label: 'Sample Rate', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('bit_depth', :facetable, type: :integer), label: 'Bit Depth', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('file_count', :stored_sortable, type: :integer), label: 'Number of Files', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('mime_type', :facetable), label: 'MIME Type', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('file_format', :facetable), label: 'File Format', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('file_type_display', :facetable), include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('object_type', :facetable), label: 'Type (from Metadata)', include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('depositor', :facetable), include_in_advanced_search: false
-    config.add_facet_field Solrizer.solr_name('institute', :facetable), include_in_advanced_search: false
+    config.add_facet_field 'duration_total_isi', label: 'Total Duration', include_in_advanced_search: false
+    config.add_facet_field 'channels_sim', label: 'Audio Channels', include_in_advanced_search: false
+    config.add_facet_field 'sample_rate_sim', label: 'Sample Rate', include_in_advanced_search: false
+    config.add_facet_field 'bit_depth_sim', label: 'Bit Depth', include_in_advanced_search: false
+    config.add_facet_field 'file_count_isi', label: 'Number of Files', include_in_advanced_search: false
+    config.add_facet_field 'mime_type_sim', label: 'MIME Type', include_in_advanced_search: false
+    config.add_facet_field 'file_format_sim', label: 'File Format', include_in_advanced_search: false
+    config.add_facet_field 'file_type_display_sim', include_in_advanced_search: false
+    config.add_facet_field 'object_type_sim', label: 'Type (from Metadata)', include_in_advanced_search: false
+    config.add_facet_field 'depositor_sim', include_in_advanced_search: false
+    config.add_facet_field 'institute_sim', include_in_advanced_search: false
     config.add_facet_field 'root_collection_id_ssi', helper_method: :collection_title, limit: 20, include_in_advanced_search: false
     config.add_facet_field 'ancestor_id_ssim', label: 'ancestor_id', helper_method: :collection_title, show: false, include_in_advanced_search: false
     config.add_facet_field 'is_collection_ssi', label: 'is_collection', helper_method: :is_collection, show: false, include_in_advanced_search: false
@@ -101,42 +101,42 @@ class MyCollectionsController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     # The ordering of the field names is the order of the display
-    config.add_index_field Solrizer.solr_name('title', :stored_searchable, type: :string), label: 'title'
-    config.add_index_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
-    config.add_index_field Solrizer.solr_name('creator', :stored_searchable, type: :string), label: 'creators'
-    config.add_index_field Solrizer.solr_name('format', :stored_searchable), label: 'format'
-    config.add_index_field Solrizer.solr_name('file_type_display', :stored_searchable, type: :string), label: 'Mediatype'
-    config.add_index_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
-    config.add_index_field Solrizer.solr_name('published', :stored_searchable, type: :string), label: 'Published:'
+    config.add_index_field 'title_tesim', label: 'title'
+    config.add_index_field 'subject_tesim', label: 'subjects'
+    config.add_index_field 'creator_tesim', label: 'creators'
+    config.add_index_field 'format_tesim', label: 'format'
+    config.add_index_field 'file_type_display_tesim', label: 'Mediatype'
+    config.add_index_field 'language_tesim', label: 'language', helper_method: :label_language
+    config.add_index_field 'published_tesim', label: 'Published:'
 
     # solr fields to be displayed in the show (single result) view
     # The ordering of the field names is the order of the display
-    config.add_show_field Solrizer.solr_name('title', :stored_searchable, type: :string), label: 'title'
-    config.add_show_field Solrizer.solr_name('subtitle', :stored_searchable, type: :string), label: 'subtitle:'
-    config.add_show_field Solrizer.solr_name('description', :stored_searchable, type: :string), label: 'description', helper_method: :render_description
-    config.add_show_field Solrizer.solr_name('description_gle', :stored_searchable, type: :string), label: 'description_gle', helper_method: :render_description
-    config.add_show_field Solrizer.solr_name('description_eng', :stored_searchable, type: :string), label: 'description_eng', helper_method: :render_description
-    config.add_show_field Solrizer.solr_name('creator', :stored_searchable, type: :string), label: 'creators', helper_method: :parse_orcid
+    config.add_show_field 'title_tesim', label: 'title'
+    config.add_show_field 'subtitle_tesim', label: 'subtitle:'
+    config.add_show_field 'description_tesim', label: 'description', helper_method: :render_description
+    config.add_show_field 'description_gle_tesim', label: 'description_gle', helper_method: :render_description
+    config.add_show_field 'description_eng_tesim', label: 'description_eng', helper_method: :render_description
+    config.add_show_field 'creator_tesim', label: 'creators', helper_method: :parse_orcid
     DRI::Vocabulary.marc_relators.each do |role|
-      config.add_show_field Solrizer.solr_name('role_' + role, :stored_searchable, type: :string), label: 'role_' + role, helper_method: :parse_orcid
+      config.add_show_field "role_#{role}_tesim", label: 'role_' + role, helper_method: :parse_orcid
     end
-    config.add_show_field Solrizer.solr_name('contributor', :stored_searchable, type: :string), label: 'contributors', helper_method: :parse_orcid
-    config.add_show_field Solrizer.solr_name('creation_date', :stored_searchable), label: 'creation_date', date: true, helper_method: :parse_era
-    config.add_show_field Solrizer.solr_name('publisher', :stored_searchable), label: 'publishers'
-    config.add_show_field Solrizer.solr_name('published_date', :stored_searchable), label: 'published_date', date: true, helper_method: :parse_era
-    config.add_show_field Solrizer.solr_name('date', :stored_searchable), label: 'date', date: true, helper_method: :parse_era
+    config.add_show_field 'contributor_tesim', label: 'contributors', helper_method: :parse_orcid
+    config.add_show_field 'creation_date_tesim', label: 'creation_date', date: true, helper_method: :parse_era
+    config.add_show_field 'publisher_tesim', label: 'publishers'
+    config.add_show_field 'published_date_tesim', label: 'published_date', date: true, helper_method: :parse_era
+    config.add_show_field 'date_tesim', label: 'date', date: true, helper_method: :parse_era
     config.add_show_field 'published_at_dttsi', label: 'published_by_dri', date: true, helper_method: :parse_date
-    config.add_show_field Solrizer.solr_name('subject', :stored_searchable, type: :string), label: 'subjects'
-    config.add_show_field Solrizer.solr_name('geographical_coverage', :stored_searchable, type: :string), label: 'geographical_coverage'
-    config.add_show_field Solrizer.solr_name('temporal_coverage', :stored_searchable, type: :string), label: 'temporal_coverage'
-    config.add_show_field Solrizer.solr_name('name_coverage', :stored_searchable, type: :string), label: 'name_coverage'
-    config.add_show_field Solrizer.solr_name('format', :stored_searchable), label: 'format'
-    config.add_show_field Solrizer.solr_name('type', :stored_searchable, type: :string), label: 'type'
-    config.add_show_field Solrizer.solr_name('language', :stored_searchable, type: :string), label: 'language', helper_method: :label_language
-    config.add_show_field Solrizer.solr_name('source', :stored_searchable, type: :string), label: 'sources'
+    config.add_show_field 'subject_tesim', label: 'subjects'
+    config.add_show_field 'geographical_coverage_tesim', label: 'geographical_coverage'
+    config.add_show_field 'temporal_coverage_tesim', label: 'temporal_coverage'
+    config.add_show_field 'name_coverage_tesim', label: 'name_coverage'
+    config.add_show_field 'format_tesim', label: 'format'
+    config.add_show_field 'type_tesim', label: 'type'
+    config.add_show_field 'language_tesim', label: 'language', helper_method: :label_language
+    config.add_show_field 'source_tesim', label: 'sources'
     config.add_show_field 'identifier_ssim', label: 'identifier'
-    config.add_show_field Solrizer.solr_name('rights', :stored_searchable, type: :string), label: 'rights'
-    config.add_show_field Solrizer.solr_name('access_rights', :stored_searchable, type: :string), label: 'access_rights'
+    config.add_show_field 'rights_tesim', label: 'rights'
+    config.add_show_field 'access_rights_tesim', label: 'access_rights'
 
     config.add_search_field 'all_fields', label: 'All Fields'
     config.dri_display_search_fields = %i[all_fields title subject person place]

@@ -109,13 +109,13 @@ class ReadersController < ApplicationController
     def notify_managers(group)
       # inform managers for reader group requests
       doc = SolrDocument.find(@collection.alternate_id)
-      managers = doc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
+      managers = doc['manager_access_person_ssim']
 
       # if no manager set for this collection it could be inherited, iterate up the tree
       if managers.nil?
         doc['ancestor_id_ssim'].reverse_each do |ancestor|
           ancestordoc = SolrDocument.find(ancestor)
-          managers = ancestordoc[Solrizer.solr_name('manager_access_person', :stored_searchable, type: :symbol)]
+          managers = ancestordoc['manager_access_person_ssim']
           break if managers.present? && managers.size > 0
         end
       end

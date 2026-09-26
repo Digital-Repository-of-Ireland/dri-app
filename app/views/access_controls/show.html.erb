@@ -4,6 +4,8 @@
 <div id="collectionPermissionsSelectable">
 </div>
 
+<%= link_to "#{t('dri.views.collection.access_controls_csv')}", access_controls_review_path(@collection.id, format: 'csv') %>
+
 <script>
    var collections = JSON.parse('<%= raw escape_javascript(@access_controls.to_json) %>');
    $("#collectionPermissionsSelectable").jstree({

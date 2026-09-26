@@ -5,7 +5,7 @@ module DRI::Readable
   # If the restricted read is inherited find the correct reader group to use
   def governing_reader_group(collection_id)
     doc = SolrDocument.find(collection_id)
-    read_groups = doc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
+    read_groups = doc['read_access_group_ssim']
     return UserGroup::Group.find_by(name: collection_id) if read_groups&.include?(collection_id)
 
     # Else check to see if ancestors have the read group set
@@ -20,7 +20,7 @@ module DRI::Readable
 
     doc['ancestor_id_ssim'].reverse_each do |ancestor_id|
       ancestordoc = ancestor_docs[ancestor_id]
-      read_groups = ancestordoc[Solrizer.solr_name('read_access_group', :stored_searchable, type: :symbol)]
+      read_groups = ancestordoc['read_access_group_ssim']
       if read_groups&.include?(ancestor_id)
         read_group = UserGroup::Group.find_by(name: ancestor_id)
         break

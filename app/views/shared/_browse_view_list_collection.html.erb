@@ -32,7 +32,7 @@
           <% end %>
         </p>
         <%# If ROOT COLLECTION %>
-        <% if document[Solrizer.solr_name('collection_id', :stored_searchable, type: :string)].nil? %>
+        <% if document['collection_id_tesim'].nil? %>
             <% collection_objects_params = { f: {'root_collection_id_ssi'.to_sym => [document['root_collection_id_ssi']]}, mode: "objects", view: params[:view] } %>
         <% else %>
             <%# If SUB-COLLECTION %>

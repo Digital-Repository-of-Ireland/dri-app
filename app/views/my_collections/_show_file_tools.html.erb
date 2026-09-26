@@ -16,11 +16,11 @@
 				<%= link_to t('dri.views.catalog.links.view_assets'), object_files_path(@document), id: "object_assets" %>
 			</li>
 	    <% if current_user.is_admin? %>
-           <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, id: "surrogates_generate" do %>
-             	<li>
-					<%= t('dri.views.catalog.links.generate_surrogates') %>
-				</li>
-           <% end %>
+	      <li>
+            <%= link_to surrogates_generate_path(@document), method: :put, data: { confirm: t('dri.views.objects.confirm.surrogates') }, id: "surrogates_generate" do %>
+				<%= t('dri.views.catalog.links.generate_surrogates') %>
+            <% end %>
+          </li>
          <% end %>
 	  <% end %>
 

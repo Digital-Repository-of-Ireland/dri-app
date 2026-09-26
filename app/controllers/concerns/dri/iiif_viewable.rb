@@ -199,10 +199,10 @@ module DRI::IiifViewable
 
   def child_objects
     # query for objects within this collection
-    q_str = "#{Solrizer.solr_name('collection_id', :facetable, type: :string)}:\"#{@document.id}\""
+    q_str = "collection_id_sim:\"#{@document.id}\""
     q_str += " AND status_ssi:\"published\""
-    q_str += " AND #{Solrizer.solr_name('file_count', :stored_sortable, type: :integer)}:[1 TO *]"
-    q_str += " AND #{Solrizer.solr_name('file_type', :facetable)}:\"image\""
+    q_str += " AND file_count_isi:[1 TO *]"
+    q_str += " AND file_type_sim:\"image\""
     # excluding sub-collections
     f_query = "is_collection_ssi:false"
 
@@ -246,7 +246,7 @@ module DRI::IiifViewable
         '@id' => url_for(controller: 'iiif', action: 'manifest', id: object.id, format: 'json',
         protocol: Rails.application.config.action_mailer.default_url_options[:protocol]),
         '@type' => 'sc:Manifest',
-        'label' => object[Solrizer.solr_name('title')].join(', ')
+        'label' => object['title_tesim'].join(', ')
     }
   end
 
@@ -271,7 +271,7 @@ module DRI::IiifViewable
     {
         '@id' => iiif_collection_manifest_url(id: collection.id, format: 'json'),
         '@type' => 'sc:Collection',
-        'label' => collection[Solrizer.solr_name('title')].join(', ')
+        'label' => collection['title_tesim'].join(', ')
     }
   end
 
