@@ -88,11 +88,11 @@ describe CreateArchiveJob do
     Zip::File.open(zip_file.first) do |zip_file|
     # Handle entries one by one
       zip_file.each do |entry|
-        fpath = File.join("#{@tmp_downloads_dir}","#{@object.alternate_id}", entry.to_s)
-        FileUtils.mkdir_p(File.dirname(fpath))
+        fpath = File.join("#{@tmp_downloads_dir}", "#{@object.alternate_id}")
+        FileUtils.mkdir_p(File.join(fpath, File.dirname(entry.to_s)))
         # the block is for handling an existing file.
         # returning true will overwrite the files.
-        zip_file.extract(entry, fpath){ true }
+        entry.extract(destination_directory: fpath) { true }
       end
     end
 
