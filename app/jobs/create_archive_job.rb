@@ -44,7 +44,7 @@ class CreateArchiveJob
 
     # pick the filname and location
     tmp = Tempfile.new("#{object.alternate_id}_")
-    zipfile = Zip::File.open(tmp.path, Zip::File::CREATE)
+    zipfile = Zip::File.open(tmp.path, create: true)
 
     files_to_zip = bag.bag_files + Dir.glob(File.join(bag_dir, '*.txt'))
     files_to_zip.each { |file| zipfile.add(relative_filename(bag_dir, file), file) }
