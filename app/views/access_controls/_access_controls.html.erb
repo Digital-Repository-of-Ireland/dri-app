@@ -5,18 +5,6 @@
     var edit_user_textbox;
     var manager_user_textbox;
 
-    $('#dri_access_control_fields').ready(function () {
-        read_user_textbox = new ImprovedTextBox('#digital_object_read_users_string');
-        read_group_textbox = new ImprovedTextBox('#digital_object_read_groups_string');
-        init_read_access();
-
-        edit_user_textbox = new ImprovedTextBox('#digital_object_edit_users_string');
-        init_edit_access();
-
-        manager_user_textbox = new ImprovedTextBox('#digital_object_manager_users_string');
-        init_manager_access();
-    });
-
     function init_read_access(){
         var inherit_disabled = $('#dri_access_control_fields').data('inherit-disabled');
         var original_value_user = read_user_textbox.value();
@@ -286,4 +274,18 @@
 	<% end %>
 </div>
 
+<script type="text/javascript">
+  (function() {
+    if ($('#dri_access_control_fields').length) {
+        read_user_textbox = new ImprovedTextBox('#digital_object_read_users_string');
+        read_group_textbox = new ImprovedTextBox('#digital_object_read_groups_string');
+        init_read_access();
 
+        edit_user_textbox = new ImprovedTextBox('#digital_object_edit_users_string');
+        init_edit_access();
+
+        manager_user_textbox = new ImprovedTextBox('#digital_object_manager_users_string');
+        init_manager_access();
+    }
+  })();
+</script>

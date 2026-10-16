@@ -5,14 +5,27 @@
     "esbuild": "^0.28.1"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets"
+    "build": "yarn build:esm && yarn build:legacy",
+    "build:esm": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
+    "build:legacy": "esbuild app/javascript/legacy/*.js --bundle --sourcemap --format=iife --outdir=app/assets/builds --public-path=/assets"
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.20",
+    "@popperjs/core": "^2.11.8",
     "@uppy/aws-s3": "^5.0.2",
     "@uppy/core": "^5.1.1",
     "@uppy/dashboard": "^5.0.4",
-    "@uppy/xhr-upload": "^5.0.2"
+    "@uppy/xhr-upload": "^5.0.2",
+    "bootstrap": "5.3.8",
+    "clipboard": "^2.0.11",
+    "datatables.net": "^1.13",
+    "jquery": "^3.7",
+    "jquery-ui": "~1.13",
+    "jquery-validation": "^1.22.1",
+    "js-cookie": "^3"
+  },
+  "resolutions": {
+    "**/jquery": "3.7.1"
   }
 }

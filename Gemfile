@@ -178,8 +178,6 @@ gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
 gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps', branch: 'blacklight8' 
 
-gem 'remotipart'
-
 # # api documentation generator / presenter
 gem 'rswag-api', '~> 2.0'
 gem 'rswag-ui', '~> 2.0'

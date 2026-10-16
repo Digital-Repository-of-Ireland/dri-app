@@ -963,7 +963,6 @@ GEM
     regexp_parser (2.11.3)
     reline (0.7.0)
       io-console (~> 0.5)
-    remotipart (1.4.4)
     representable (3.3.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -1313,7 +1312,6 @@ DEPENDENCIES
   rails (= 8.0.5.1)
   rails-controller-testing
   redis (~> 4)
-  remotipart
   resque
   rest-client (~> 2.0)
   riiif

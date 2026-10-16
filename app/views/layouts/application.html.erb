@@ -21,9 +21,10 @@
     <%= stylesheet_link_tag "dri/dri_print", media: "print" %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" crossOrigin="anonymous">
   
+    <%= javascript_include_tag "legacy" %>
     <%= javascript_include_tag "custom" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
-    <%= javascript_include_tag "blacklight/blacklight", type: 'module' %>
+    <%= javascript_include_tag "blacklight/blacklight", type: "module" %>
 
     <script>
       window.dataLayer = window.dataLayer || [];

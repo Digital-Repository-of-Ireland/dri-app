@@ -13,7 +13,7 @@ function fileUploadHelper(thisObj) {
     </div>
     <div id="dri_add_institutes_block" class="collapse">
     <div class="dri_file_upload">
-                <%= form_for(@inst, remote: true) do |f| %>
+                <%= form_for(@inst) do |f| %>
                     <div>
                         <a class='btn btn-default' href='javascript:;'>
                         <h5 class="dri_upload_file_text"><i class="fa fa-upload">&nbsp;</i><%= "#{t('dri.views.collection.institute.form.logo')}"%></h5>
