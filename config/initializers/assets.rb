@@ -25,7 +25,7 @@ Rails.application.config.assets.precompile += [
     'dri/dri_grid.css','dri/dri_layouts.css', 'dri/dri_print.css', 'blacklight_maps.css',
     'blacklight_oai_provider/oai_dri.xsl', 'cookieconsent-config.js',
     %w( replay/ui.js replay/sw.js ),
-    %w( jquery-xmleditor/vendor/cycle.js iiif_viewer.js three_js_viewer.js dri/modals.js analytics.js jquery.colorbox.js )
+    %w( iiif_viewer.js three_js_viewer.js dri/modals.js analytics.js jquery.colorbox.js )
 ]
 
 Rails.application.config.assets.css_compressor = nil

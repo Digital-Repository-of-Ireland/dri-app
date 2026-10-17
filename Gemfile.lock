@@ -131,10 +131,10 @@ GIT
 
 GIT
   remote: https://github.com/stkenny/jquery-xmleditor-rails.git
-  revision: 28a5b2c42d48a1d35d84fa561c4afdd9beb693c0
-  branch: form_upload
+  revision: 6a46717ec29ba40424e1c7e4ddb624ad30c45c3f
+  tag: v0.3.0
   specs:
-    jquery-xmleditor-rails (0.2.0)
+    jquery-xmleditor-rails (0.3.0)
 
 GIT
   remote: https://github.com/stkenny/timelineJS3-rails.git
