@@ -13,3 +13,7 @@ window.Cookies = Cookies
 
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.js"
 window.bootstrap = bootstrap
+
+import { Spinner } from "spin.js"
+import "spin.js/spin.css"
+window.Spinner = Spinner

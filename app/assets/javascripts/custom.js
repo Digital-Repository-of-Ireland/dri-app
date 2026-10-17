@@ -22,7 +22,6 @@
 //= require jquery.bootstrap-duallistbox
 //
 //= require jquery-xmleditor
-//= require spin
 //= require timelineJS3
 //= require dri_batch_ingest
 //= require dri/timeline
