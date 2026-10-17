@@ -55,7 +55,12 @@
 
     <%= favicon_link_tag asset_path('favicon.ico') %>
     <script type="text/javascript">
-      I18n.locale = "<%= I18n.locale %>";
+      window.DRI = window.DRI || {};
+      DRI.i18n = {
+        locale: "<%= j I18n.locale.to_s %>",
+        copy_success: "<%= j t('dri.views.catalog.forms.copy_success') %>",
+        copy_failure: "<%= j t('dri.views.catalog.forms.copy_failure') %>"
+      };
     </script>
   </head>
 

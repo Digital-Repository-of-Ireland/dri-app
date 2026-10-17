@@ -12,9 +12,7 @@
 //
 //= require jquery_ujs
 //= require datatables
-//= require i18n
-//= require i18n/translations
-
+//
 // Required by Blacklight-Maps
 //= require leaflet
 //= require leaflet.markercluster

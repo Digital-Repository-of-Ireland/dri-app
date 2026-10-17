@@ -54,7 +54,6 @@ gem "image_processing", ">= 1.12.2"
 
 # Language and translation related gems
 gem 'http_accept_language'
-gem 'i18n-js', '< 4'
 gem 'i18n-tasks'
 gem 'it'
 
