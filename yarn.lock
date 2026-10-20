@@ -257,14 +257,6 @@
     "@uppy/companion-client" "^5.1.1"
     "@uppy/utils" "^7.2.0"
 
-"blacklight-maps@github:projectblacklight/blacklight-maps#f2819731cb8af243ff8cab0febda7bb9c6d3ad5f":
-  version "2.0.0"
-  resolved "https://codeload.github.com/projectblacklight/blacklight-maps/tar.gz/f2819731cb8af243ff8cab0febda7bb9c6d3ad5f"
-  dependencies:
-    "@hotwired/stimulus" "^3.2.2"
-    leaflet "^1.9.4"
-    leaflet.markercluster "^1.5.3"
-
 bootstrap@5.3.8:
   version "5.3.8"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.8.tgz#6401a10057a22752d21f4e19055508980656aeed"
