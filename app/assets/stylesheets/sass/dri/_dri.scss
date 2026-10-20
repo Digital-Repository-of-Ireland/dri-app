@@ -1041,7 +1041,8 @@ ol.breadcrumb {
         border-left: none;
         margin: 10px 10px 0 0;
         padding: 4px 4px 4px 4px;
-          
+
+        line-height: 1.5;
         &:hover {
             color: $dri_white;
             background-color: $dri_red;
@@ -1074,6 +1075,9 @@ ol.breadcrumb {
             border-radius: 5%;
             @include border_radius (3px);
         }
+    }
+    span.constraint-value {
+        line-height: 1;
     }
 }
 
