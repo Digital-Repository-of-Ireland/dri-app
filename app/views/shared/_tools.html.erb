@@ -35,6 +35,19 @@
         <% end %>
       </li>
     <% end %>
+
+    <% if current_user && @document.collection? && CollectionConfig.can_export_full_collection?(@document.id)
+    %>
+      <li>  
+        <%= link_to t('dri.views.catalog.links.export_full_collection'),
+            '#',
+            id: "export_full_collection",
+            :'data-bs-toggle' => 'modal',
+            :'data-bs-target' => '#dri_collection_export_modal_id',
+            class: "dri_sidenav_link" %>
+      </li>
+    <% end %>
+
 		<li>
 			<%= link_to t('blacklight.tools.endnote'), object_path(@document, format: 'endnote'), class: "dri_sidenav_link" %>
 		</li>
@@ -153,4 +166,31 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="dri_collection_export_modal_id">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><%= t('dri.views.catalog.links.export_full_collection') %></h2>
+                <button type="button" class="dri-btn-close" data-bs-dismiss="modal" aria-hidden="true" aria-label="close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><%= t('dri.views.collection.confirm_full_export') %></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="dri_button_black btn-default" data-bs-dismiss="modal">
+                  <%= t('dri.window.modal.close') %>
+                </button>
+                <%= button_to collection_exports_path, 
+                      method: :post, 
+                      params: { collection_id: @document.id }, 
+                      class: "dri_button_black btn-default" do %>
+                    <%= t('dri.views.collection.buttons.proceed_full_export') %>
+                <% end %>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 

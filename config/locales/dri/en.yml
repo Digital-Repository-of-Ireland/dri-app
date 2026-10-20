@@ -60,6 +60,8 @@ en:
       config:
         allow_aggregation: Allow harvesting by select aggregators
         allow_export: Allow export of collection metadata
+        allow_full_collection_export: Allow full collection export
+        allow_full_collection_export_disabled: (not available for this collection as it exceeds 500 MB)
         default_sort: Default sort
         subcollection_sort: Sub-Collection display order
         title: Options
@@ -181,6 +183,7 @@ en:
         cover_image_not_saved: Unable to save cover image
         download_no_file: Unable to find your archive file, please check the url and try again.
         exporting: "Error submitting 'export' background task."
+        exporting_full: "Error submitting 'export full collection' background task."
         locked: This collection has been temporarily locked by an administrator. Contact tech@dri.ie for more information.
         manager_user_invalid: 'User %{email} does not exist, please have the user create an account first.'
         manager_user_permission: You do not have permission to create a Collection Manager
@@ -205,6 +208,7 @@ en:
       notice:
         access_controls_updated: Access controls updated.
         archiving: An archive of this object is being created. This may take some time. You will receive an email when it is available. Please check your spam folder or whitelist the address no-reply@dri.ie if you do not receive an email.
+        collection_archiving: An archive of this collection is being created. This may take some time. You will receive an email when it is available. Please check your spam folder or whitelist the address no-reply@dri.ie if you do not receive an email.
         asset_deleted: Asset deleted.
         collection_created: Collection object has been successfully created.
         collection_deleted: Delete collection process successfully started.
@@ -215,6 +219,7 @@ en:
         doi_not_latest: A more recent version of this object exists.
         duplicate_object_ingested: 'Possible duplicate objects found: %{duplicates}'
         exporting: An export of this collection is being created. You will receive an email when it is available.
+        exporting_full: An export of this collection is being created. Depending on the collection size, this may take some time. You will receive an email when it is available.
         file_uploaded: Asset has been successfully uploaded.
         fixity_check_running: Fixity check is running.
         fixity_check_completed: Fixity check completed.
@@ -526,6 +531,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
+          export_full_collection: Export full collection
           view_edm_feed: View EDM Feed
           fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
@@ -560,6 +566,7 @@ en:
           delete_collection: Delete Collection
           edit_metadata: Edit Metadata
           options: Options
+          proceed_full_export: Proceed
         access_controls_review: Review Access Controls
         access_controls_csv: Download as csv
         confirm_all_descendants_reviewed: By proceeding all of the objects, and sub-collections that are part of this collection will also be marked as reviewed.
@@ -570,6 +577,7 @@ en:
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
         confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
         confirm_surrogates: This will (re)generate surrogates for all objects within the collection. Continue?
+        confirm_full_export: This will create a zip file of the full collection. Depending on the collection size, it may take some time. Please do not resubmit unless you are certain that the process has failed. You will receive an email when the file is available.
         depositing_organisation_not_set: Depositing organisation not set
         doi_modification: DOI change log entry
         duplicates_found: "%{duplicates_count} duplicate objects have been found."

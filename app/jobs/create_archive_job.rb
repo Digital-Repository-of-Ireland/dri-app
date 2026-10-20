@@ -9,58 +9,91 @@ class CreateArchiveJob
   def self.perform(object_id, email)
     object = DRI::Identifier.retrieve_object(object_id)
 
-    # Get metadata
-    # Get assets if masterfile
-    # Get surrogates if read
-    # Actually, if not read cannot ever download the archive
+    bag_dir = create_bag(object)
 
-    # 'optimised' directory containing all surrogates
-    # 'originals' directory containing all master assets if master asset is accessible
+    begin
+      zip_path = zip_bag(bag_dir, object.alternate_id)
+
+      # Move the archive to the downloads directory
+      filename = File.basename(zip_path)
+      FileUtils.mv(zip_path, Settings.dri.downloads)
+
+      # Notify the user
+      JobMailer.archive_ready_mail(filename, email, object).deliver_now
+    ensure
+      FileUtils.remove_dir(bag_dir) if Dir.exist?(bag_dir)
+      FileUtils.rm_f(zip_path) if zip_path
+    end
+  end
+
+  # Create a BagIt bag and return its directory
+  # The caller is responsible for deleting the directory
+  def self.create_bag(object)
     Rails.logger.info "Creating archive package for object #{object.alternate_id}"
 
     bag_dir = Dir.mktmpdir("#{object.alternate_id}_")
-    bag = ::BagIt::Bag.new bag_dir
-    bag.write_bag_info({ "Source-Organization" => "Digital Repository of Ireland" })
-    bag.write_bag_info(bag_info(object))
 
-    # descMetadata
-    metadata = metadata(object)
-    bag.add_file(File.join('metadata', 'metadata.xml'), metadata.path)
+    begin
+      bag = ::BagIt::Bag.new(bag_dir)
 
-    # Licence.txt
-    licence = licence(object)
-    bag.add_file(File.join('metadata', 'Licence.txt'), licence.path)
+      bag.write_bag_info({ "Source-Organization" => "Digital Repository of Ireland" })
+      bag.write_bag_info(bag_info(object))
 
-    copyright = copyright(object)
-    bag.add_file(File.join('metadata', 'Copyright.txt'), copyright.path)
+      # descMetadata
+      metadata = metadata(object)
+      bag.add_file(File.join('metadata', 'metadata.xml'), metadata.path)
 
-    # End User Agreement
-    bag.add_file(File.join('metadata', 'End_User_Agreement.txt'), "app/assets/text/End_User_Agreement.txt")
+      # Licence
+      licence = licence(object)
+      bag.add_file(File.join('metadata', 'Licence.txt'), licence.path)
 
-    add_assets_to_bag(object, bag)
+      # Copyright
+      copyright = copyright(object)
+      bag.add_file(File.join('metadata', 'Copyright.txt'), copyright.path)
 
-    # create the bag
-    bag.manifest!
+      # End User Agreement
+      bag.add_file(File.join('metadata', 'End_User_Agreement.txt'), "app/assets/text/End_User_Agreement.txt")
 
-    # pick the filname and location
-    tmp = Tempfile.new("#{object.alternate_id}_")
-    zipfile = Zip::File.open(tmp.path, create: true)
+      add_assets_to_bag(object, bag)
 
-    files_to_zip = bag.bag_files + Dir.glob(File.join(bag_dir, '*.txt'))
-    files_to_zip.each { |file| zipfile.add(relative_filename(bag_dir, file), file) }
+      # Finalise the BagIt manifests
+      bag.manifest!
 
-    zipfile.close
-    metadata.unlink
-    licence.unlink
-    copyright.unlink
-    FileUtils.remove_dir(bag_dir, force: true)
-
-    JobMailer.archive_ready_mail(File.basename(tmp.path), email, object).deliver_now
-
-    # Move the file to the downloads dir
-    FileUtils.mv(tmp.path, Settings.dri.downloads)
-    tmp.unlink
+      bag_dir
+    rescue
+      FileUtils.remove_dir(bag_dir) if Dir.exist?(bag_dir)
+      raise
+    ensure
+      metadata&.close!
+      licence&.close!
+      copyright&.close!
+    end
   end
+
+
+  # Create a ZIP archive from a completed bag
+  def self.zip_bag(bag_dir, identifier)
+    tmp = Tempfile.new("#{identifier}_")
+    zip_path = tmp.path
+    tmp.close
+
+    begin
+      Zip::File.open(zip_path, create: true) do |zipfile|
+        Dir.glob(File.join(bag_dir, '**', '*'), File::FNM_DOTMATCH).each do |file|
+          next unless File.file?(file)
+
+          zipfile.add(relative_filename(bag_dir, file), file)
+        end
+      end
+
+      zip_path
+    rescue
+      FileUtils.rm_f(zip_path)
+      raise
+    end
+  end
+
+
 
   def self.add_assets_to_bag(object, bag)
     checksums = []
@@ -68,6 +101,7 @@ class CreateArchiveJob
       # exclude preservation files
       next if gf.preservation_only?
 
+      # only include masterfile if it's public
       if inherited_masterfile_access(object) == "public"
         bag.add_file(File.join('originals', "#{gf.alternate_id}_#{gf.label}"), gf.path)
         checksums << "#{gf.original_checksum.first} originals/#{gf.alternate_id}_#{gf.label}"
