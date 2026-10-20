@@ -62,7 +62,9 @@ Rails.application.routes.draw do
 
     resources :session, only: [:create]
 
-    resources :collections, only: [:index, :new, :create, :update, :edit, :destroy]
+    resources :collections, only: [:index, :new, :create, :update, :edit, :destroy] do
+      post :export_full, on: :member
+    end
 
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations
@@ -186,9 +188,6 @@ Rails.application.routes.draw do
 
     get 'linkset/:id/json' => 'linksets#json', as: :linkset_json
     get 'linkset/:id/lset' => 'linksets#lset', as: :linkset_lset
-
-    # full collection exports
-    resources :collection_exports, only: [:create, :show]
 
     #API paths
     post 'get_objects' => 'api#objects'
