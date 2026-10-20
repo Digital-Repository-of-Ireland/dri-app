@@ -41,7 +41,7 @@ class CreateCollectionArchiveJob
       FileUtils.mv(zip_path, Settings.dri.downloads)
 
       # Notify the user
-      JobMailer.archive_ready_mail(filename, email, collection).deliver_now
+      JobMailer.collection_archive_ready_mail(filename, email, collection).deliver_now
 
     ensure
       FileUtils.rm_f(zip_path) if zip_path
@@ -51,7 +51,7 @@ class CreateCollectionArchiveJob
   def self.zip_collection(workspace, identifier)
     zip_path = File.join(
       Dir.tmpdir,
-      "#{identifier}_#{SecureRandom.hex(8)}.zip"
+      "#{identifier}_#{SecureRandom.hex(8)}"
     )
 
     begin
