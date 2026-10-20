@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 class CatalogController < ApplicationController
   include DRI::Catalog
+  include BlacklightMaps::Controller
   include BlacklightAdvancedSearch::Controller
   
   configure_blacklight do |config|
@@ -234,6 +235,14 @@ private
     return unless map_view?
 
     blacklight_config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false
+    blacklight_config.add_facet_field :coordinates,
+                          filter_class: BlacklightMaps::CoordinatesFilterField,
+                          filter_query_builder: BlacklightMaps::SpatialFilterQuery,
+                          item_presenter: BlacklightMaps::SpatialItemPresenter,
+                          show: false,
+                          include_in_request: false,
+                          include_in_advanced_search: false,
+                          label: 'Spatial Search'
   end
 
   def map_view?

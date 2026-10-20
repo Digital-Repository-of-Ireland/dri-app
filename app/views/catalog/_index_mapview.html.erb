@@ -1,0 +1,9 @@
+<%= blacklight_map_tag('blacklight-index-map',
+                       data: {
+                         'blacklight-maps-leaflet-geojson-value': geojson_features,
+                         'blacklight-maps-leaflet-searchcontrol-value': true,
+                         'blacklight-maps-leaflet-catalogpath-value': url_for({controller: request_controller, action: 'index', only_path: true}),
+                         'blacklight-maps-leaflet-placenamefield-value': blacklight_config.view.maps.placename_field,
+                         'blacklight-maps-leaflet-clustercount-value': 'hits',
+                         'blacklight-maps-leaflet-searchresultsview-value': default_document_index_view_type
+                       }) %>

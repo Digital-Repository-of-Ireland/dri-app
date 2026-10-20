@@ -257,6 +257,14 @@
     "@uppy/companion-client" "^5.1.1"
     "@uppy/utils" "^7.2.0"
 
+"blacklight-maps@github:projectblacklight/blacklight-maps#f2819731cb8af243ff8cab0febda7bb9c6d3ad5f":
+  version "2.0.0"
+  resolved "https://codeload.github.com/projectblacklight/blacklight-maps/tar.gz/f2819731cb8af243ff8cab0febda7bb9c6d3ad5f"
+  dependencies:
+    "@hotwired/stimulus" "^3.2.2"
+    leaflet "^1.9.4"
+    leaflet.markercluster "^1.5.3"
+
 bootstrap@5.3.8:
   version "5.3.8"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.8.tgz#6401a10057a22752d21f4e19055508980656aeed"
@@ -363,6 +371,16 @@ js-cookie@^3:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.8.tgz#444e6f4b27a5d844594fef61c9d6bca5f0787688"
   integrity sha512-yeJd4aNAdYZQjaon2bpD/Gb0B/omw7HQOsynXXcOiWVCacbBcPlgn8S/d1X6blFSaHao7ozqtW7NZW19xpCtIw==
+
+leaflet.markercluster@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.5.3.tgz#9cdb52a4eab92671832e1ef9899669e80efc4056"
+  integrity sha512-vPTw/Bndq7eQHjLBVlWpnGeLa3t+3zGiuM7fJwCkiMFq+nmRuG3RI3f7f4N4TDX7T4NpbAXpR2+NTRSEGfCSeA==
+
+leaflet@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.9.4.tgz#23fae724e282fa25745aff82ca4d394748db7d8d"
+  integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
 
 lodash@^4.17.21, lodash@^4.17.23:
   version "4.18.1"

@@ -13,10 +13,6 @@
 //= require jquery_ujs
 //= require datatables
 //
-// Required by Blacklight-Maps
-//= require leaflet
-//= require leaflet.markercluster
-//= require blacklight-maps/blacklight-maps-browse
 //= require jquery.bootstrap-duallistbox
 //
 //= require jquery-xmleditor

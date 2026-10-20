@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 class SearchBuilder < Blacklight::SearchBuilder
   include Blacklight::Solr::SearchBuilderBehavior
-  include BlacklightMaps::MapsSearchBuilderBehavior
   include Blacklight::AccessControls::Enforcement
 
   self.default_processor_chain += [

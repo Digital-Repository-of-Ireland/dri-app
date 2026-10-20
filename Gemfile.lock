@@ -37,15 +37,6 @@ GIT
       rb-gravatar
 
 GIT
-  remote: https://github.com/Digital-Repository-of-Ireland/blacklight-maps
-  revision: b7bb6f9bbf0432e3ea66fc052072445eb14e3885
-  branch: blacklight8
-  specs:
-    blacklight-maps (1.2.0)
-      blacklight (> 7, < 9)
-      rails (~> 8)
-
-GIT
   remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
   revision: c4a58b5ec0b81db645dcf7196794700e3b80af11
   branch: main
@@ -78,7 +69,7 @@ GIT
 
 GIT
   remote: https://github.com/kaminari/kaminari.git
-  revision: 76511e3c2c09d8adcd3a686d2c3ec6829a98f37e
+  revision: ae23bc6b7c88310b0d749c241d4e51c78cacab90
   specs:
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -98,6 +89,16 @@ GIT
   revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
   specs:
     jstree-rails-4 (3.3.9)
+
+GIT
+  remote: https://github.com/projectblacklight/blacklight-maps.git
+  revision: f2819731cb8af243ff8cab0febda7bb9c6d3ad5f
+  ref: f2819731cb8af243ff8cab0febda7bb9c6d3ad5f
+  specs:
+    blacklight-maps (2.0.0)
+      blacklight (~> 8.0)
+      rails (~> 8.0)
+      stimulus-rails (~> 1.3)
 
 GIT
   remote: https://github.com/projectblacklight/blacklight_oai_provider
@@ -387,7 +388,7 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    date (3.5.1)
+    date (3.6.0)
     debug_inspector (1.1.0)
     declarative (0.0.20)
     deep_merge (1.2.2)
@@ -716,14 +717,14 @@ GEM
       uri (>= 0.11.1)
     net-http-persistent (4.0.8)
       connection_pool (>= 2.2.4, < 4)
-    net-imap (0.6.7)
+    net-imap (0.6.8)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
     net-protocol (0.4.0)
       timeout
-    net-smtp (0.5.1)
+    net-smtp (0.5.2)
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.5)
@@ -791,7 +792,7 @@ GEM
     popper_js (2.11.8)
     pp (0.6.4)
       prettyprint
-    prettyprint (0.2.0)
+    prettyprint (0.2.1)
     prism (1.9.0)
     pstore (0.2.1)
     psych (5.5.0)
@@ -939,7 +940,7 @@ GEM
     rdf-xsd (3.3.0)
       rdf (~> 3.3)
       rexml (~> 3.2)
-    rdoc (8.0.0)
+    rdoc (8.1.0)
       erb
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
@@ -1149,6 +1150,8 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     sqlite3 (2.9.6-x86_64-linux-gnu)
+    stimulus-rails (1.3.4)
+      railties (>= 6.0.0)
     stringio (3.2.0)
     sxp (1.3.0)
       matrix (~> 0.4)
@@ -1182,7 +1185,7 @@ GEM
     unicode (0.4.4.4)
     unicode-display_width (2.4.2)
     unicode-types (1.10.0)
-    uri (1.1.1)
+    uri (1.1.2)
     useragent (0.16.11)
     validatable (1.6.7)
     valkyrie (3.6.1)
@@ -1200,7 +1203,7 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.15)
-    view_component (4.15.0)
+    view_component (4.16.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
       concurrent-ruby (~> 1)

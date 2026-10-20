@@ -175,7 +175,9 @@ gem 'clipboard-rails'
 gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', tag: 'v0.3.0'
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
-gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps', branch: 'blacklight8' 
+gem 'blacklight-maps',
+       github: 'projectblacklight/blacklight-maps',
+       ref: 'f2819731cb8af243ff8cab0febda7bb9c6d3ad5f' 
 
 # # api documentation generator / presenter
 gem 'rswag-api', '~> 2.0'

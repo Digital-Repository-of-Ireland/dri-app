@@ -6,6 +6,7 @@
 
 <% if (params[:view] == "maps") %>
     <%= stylesheet_link_tag "blacklight_maps" %>
+    <%= javascript_include_tag "maps", type: "module" %>
 <% end %>
 
 <% @page_title = t('blacklight.search.title', application_name: application_name) %>
