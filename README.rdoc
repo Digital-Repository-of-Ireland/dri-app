@@ -112,6 +112,20 @@ that these files are not commited to the repository.
 
 == Background jobs
 
+=== System initiated background jobs
+The application stores certain generated archive files in a downloads directory
+(this can be modified in the dri.downloads setting in the file config/settings.yml).
+
+These should be periodically deleted. The retention periods of the different types
+archive files is also configured in config/settings.yml.
+
+To automatically delete files older than the applicable retention period run
+ 
+  $ bundle exec rake archives:cleanup
+
+This should be configured to run nightly in production.
+
+=== User-initiated background jobs
 The application includes a queueing system based on Resque and Redis to allow
 asynchronous processing of background jobs. This introduces the following dependencies:
 
