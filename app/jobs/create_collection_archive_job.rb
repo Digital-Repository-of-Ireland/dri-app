@@ -51,7 +51,7 @@ class CreateCollectionArchiveJob
   def self.zip_collection(workspace, identifier)
     zip_path = File.join(
       Dir.tmpdir,
-      "#{identifier}_#{SecureRandom.hex(8)}"
+      "collection_#{identifier}_#{SecureRandom.hex(8)}"
     )
 
     begin

@@ -36,7 +36,7 @@
       </li>
     <% end %>
 
-    <% if current_user && @document.collection? && CollectionConfig.can_export_full_collection?(@document.id)
+    <% if current_user && @document.collection? && CollectionConfig.can_export_full_collection?(@document.id) && collection_file_size(@document.id) < Settings.archives.max_collection_dl_size
     %>
       <li>  
         <%= link_to t('dri.views.catalog.links.export_full_collection'),

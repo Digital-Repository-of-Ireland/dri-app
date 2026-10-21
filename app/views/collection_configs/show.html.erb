@@ -8,13 +8,21 @@
      <b><%= t('dri.collection.config.allow_export') %></b>
     <% end %>
   </div>
- 
+
+  <% too_large = collection_file_size(@document.id) > Settings.archives.max_collection_dl_size %>
   <div class="form-check mb-1">
-    <%= f.check_box :allow_full_collection_export, { class: 'form-check-input'} %>
-    <%= f.label :allow_full_collection_export, { class: 'form-check-label pt-1' } do %>
+    <%= f.check_box :allow_full_collection_export, class: 'form-check-input', disabled: too_large %>
+    <%= f.label :allow_full_collection_export, class: "form-check-label pt-1 #{'text-muted' if too_large}" do %>
      <b><%= t('dri.collection.config.allow_full_collection_export') %></b>
     <% end %>
+
+    <% if too_large %>
+      <div class="text-muted form-check-label pt-1">
+        <%= t('dri.collection.config.allow_full_collection_export_disabled') %>
+      </div>
+    <% end %>
   </div>
+
 
   <% if @document.root_collection? %>
     <div class="form-check mb-1">

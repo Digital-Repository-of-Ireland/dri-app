@@ -531,7 +531,7 @@ en:
           duplicates: Duplicates
           edit_this_record: Edit
           export_collection_metadata: Export all Metadata
-          export_full_collection: Export full collection
+          export_full_collection: Export full Collection
           view_edm_feed: View EDM Feed
           fixity_check: Perform Fixity Check
           generate_surrogates: Regenerate Surrogates
@@ -577,7 +577,7 @@ en:
         confirm_review_subcollection: "Bear in mind that for this collection to be published you will have to mark all of its parent sub-collections as reviewed beforehand, otherwise the collection won't be accessible after publishing"
         confirm_review_summary: "(This operation will affect %{subcolls} sub-collections and %{objects} objects)"
         confirm_surrogates: This will (re)generate surrogates for all objects within the collection. Continue?
-        confirm_full_export: This will create a zip file of the full collection. Depending on the collection size, it may take some time. Please do not resubmit unless you are certain that the process has failed. You will receive an email when the file is available.
+        confirm_full_export: Download the full collection as a zip file. This operation may take some time. You will receive an email when your download is available. If you don’t receive the email, check your spam folder and contact archivist@dri.ie.
         depositing_organisation_not_set: Depositing organisation not set
         doi_modification: DOI change log entry
         duplicates_found: "%{duplicates_count} duplicate objects have been found."

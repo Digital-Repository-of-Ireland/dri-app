@@ -50,4 +50,7 @@ edm:
   sound: ["SOUND","AUDIO"]
   text: "TEXT"
   image: ["IMAGE", "STILLIMAGE", "STILL IMAGE"]
-
+archives:
+  max_collection_dl_size: 524288000 # in bytes
+  collection_dl_retention_period: 2 # in days
+  object_dl_retention_period: 30 # in days
