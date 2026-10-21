@@ -423,7 +423,7 @@ div.error_page {
 .dri_input_error input {
     @include border_radius;
     background-color: $dri_white;
-    color: darken ($dri_red, 20%);
+    color: darken($dri_red, 20%);
     margin: 6px 0 14px 0;
     padding: 6px 15px 6px 15px;
     border: 1px solid $dri_grey_border;
@@ -957,7 +957,7 @@ ol.breadcrumb {
 
 .dri_pagination_nav {
     color: $dri_black;
-    padding: 0x;
+    padding: 0px;
     display: block;
     span{
         text-align:right;
@@ -1255,9 +1255,8 @@ ol.breadcrumb {
         margin-top: 10px;
         min-width: 10%;
         li a {
-            color: none;
-            margin: 0px 0 0px 0;
-            padding: 6px 8px 6px 8px;
+            margin: 0;
+            padding: 6px 8px;
             border: none;
             border-top-right-radius: 0;
             border-top-left-radius: 0;
