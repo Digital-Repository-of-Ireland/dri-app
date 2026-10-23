@@ -17,7 +17,6 @@
 //
 //= require jquery-xmleditor
 //= require timelineJS3
-//= require dri_batch_ingest
 //= require dri/timeline
 //= require dri/forms
 //= require dri/spinner

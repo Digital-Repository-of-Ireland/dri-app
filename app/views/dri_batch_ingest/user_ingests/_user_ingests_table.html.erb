@@ -1,0 +1,45 @@
+<%= paginate @ingests %>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Started</th>
+        <th>Finished</th>
+        <th>Objects</th>
+     </tr>
+    </thead>
+    <tbody>
+      <% @ingests.each do |ingest| %>
+        <tr>
+          <td><%= ingest.id %></td>
+          <td><%= ingest.created_at %></td>
+          <% batch = ingest.batches.first %>
+          <% if batch %>
+              <% batch_info = @batches[batch.id] %>
+              <% if (batch_info[:completed] + batch_info[:failed]) == batch_info[:total] %>
+                <td><%= batch.finished_at %></td>
+              <% else %>
+                <td>-</td>
+              <% end %>
+              <% if batch_info[:completed] == batch_info[:total] %>
+                 <% status = "success" %>
+              <% elsif batch_info[:failed] > 0 %>
+                 <% status = "danger" %>
+              <% else %>
+                 <% status = "info" %>
+              <% end %>
+              <td class="<%= status %>">
+                <%= link_to batch_info[:total], batch_path(batch) %>
+                (completed: <%= link_to batch_info[:completed], batch_path(id: batch.id, status: 'COMPLETED') %> / 
+                pending: <%= link_to batch_info[:pending], batch_path(id: batch.id, status: 'PENDING') %> / 
+                failed: <%= link_to batch_info[:failed], batch_path(id: batch.id, status: 'FAILED') %>)
+              </td>
+          <% else %>
+            <td>-</td>
+            <td class="info">-</td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>

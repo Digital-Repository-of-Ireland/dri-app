@@ -31,8 +31,7 @@ gem 'linkeddata'
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
 gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
-gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
+gem 'filesize'
 gem 'roo'
 
 gem 'config'
@@ -133,7 +132,7 @@ group :test do
   gem 'ffaker'
   gem 'launchy'
   gem 'observer'
-  gem 'shoulda', '~> 4'
+  gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'syntax'
   gem 'syslog'

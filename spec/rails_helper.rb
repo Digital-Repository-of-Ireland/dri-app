@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'capybara/rspec'
 require 'selenium-webdriver'
+require 'shoulda/matchers'
 
 if ENV['RUN_COVERAGE']
   require 'simplecov'
@@ -44,6 +45,12 @@ RSpec.configure do |config|
   config.include Rails.application.routes.url_helpers
   config.include DeviseRequestSpecHelper, type: :request
   config.include PreservationHelper
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
 end
 
 Rails.application.eager_load!

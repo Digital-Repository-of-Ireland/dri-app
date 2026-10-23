@@ -1,0 +1,49 @@
+<div id="dri_crumbtrail_nav_container_id">
+  <ol class="breadcrumb">
+    <li><%= link_to "Ingests", ingests_path %></li>
+    <li>Objects</li>
+  </ol>
+</div>
+
+<% if request.query_string.include?('FAILED') %>
+  <%= form_for update_batch_path(@batch.id), method: 'put', html: { class: "form-inline"} do |f| %>
+    <%= f.submit "Retry Failed", class: 'dri_button_grey' %>
+  <% end %>
+<% end %>
+
+<%= paginate @media_objects %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Object</th>
+    <th>Time</th>
+    <th>Location</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  <% @media_objects.each do |mo| %>
+    <% if mo.finished_processing? %>
+      <% if mo.succeeded? %>
+        <% row_class = "success" %>
+        <% status = "COMPLETED" %>
+      <% else %>
+        <% row_class = "danger" %>
+        <% status = "FAILED" %>
+      <% end %>
+    <% else %>
+      <% if mo.failed? %>
+        <% row_class = "danger" %>
+        <% status = "FAILED" %>
+      <% else %>
+        <% row_class = "info" %>
+        <% status = "PENDING" %>
+      <% end %>
+    <% end %>
+    <tr class="<%= row_class %>" style="cursor: pointer" onclick="document.location = '<%= media_object_path(@batch.id, mo.id) %>'">
+    <td><%= mo.id %></td><td><%= mo.updated_at %></td><td><%= mo.parts.metadata.file_location %></td><td><%= status %></td>    
+    </tr>
+  <% end %>
+</tbody>
+</table>

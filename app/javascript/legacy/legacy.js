@@ -17,3 +17,7 @@ window.bootstrap = bootstrap
 import { Spinner } from "spin.js"
 import "spin.js/spin.css"
 window.Spinner = Spinner
+
+import "jstree"        // also used by access_controls/show
+import "./vendor/smartwizard"
+import "./dri_batch_ingest/create_ingest"

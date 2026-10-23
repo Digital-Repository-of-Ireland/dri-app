@@ -11,13 +11,22 @@ Rails.application.routes.draw do
 
     mount UserGroup::Engine => "/user_groups"
     mount Riiif::Engine => '/images', as: 'riiif'
-    mount DRIBatchIngest::Engine => '/ingest'
 
     mount Blacklight::Engine => '/'
     mount BlacklightAdvancedSearch::Engine => '/'
 
     concern :searchable, Blacklight::Routes::Searchable.new
     concern :exportable, Blacklight::Routes::Exportable.new
+
+    scope '/ingest', module: 'dri_batch_ingest' do
+      get '/', to: 'ingest#new'
+      get 'batch', to: 'ingest#new', as: :new_batch
+      get 'batch/:id', to: 'ingest#show', as: :batch
+      post 'batch', to: 'ingest#create', as: :batch_ingest
+      put 'batch/:id', to: 'ingest#update', as: :update_batch
+      get 'batch/:id/media/:media_id', to: 'media_objects#show', as: :media_object
+      get 'ingests', to: 'user_ingests#index', as: :ingests
+    end
 
     delete "saved_searches/clear",       :to => "saved_searches#clear",   :as => "clear_saved_searches"
     get "saved_searches",       :to => "saved_searches#index",   :as => "saved_searches"

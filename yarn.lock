@@ -354,7 +354,7 @@ jquery-validation@^1.22.1:
   resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.22.1.tgz#fc1ae3256110332c929245a44d69ee76fee0e481"
   integrity sha512-ePLXLWK7Rh5eR652YsuIu7YPeGlCXrsJUteVw5iZopiU17yaMd3FaDggs6yyNMl56p8TYVeDRmKGK3fPZrMeQw==
 
-"jquery@1.8 - 4", jquery@3.7.1, "jquery@>=1.8.0 <4.0.0", jquery@^3.7:
+"jquery@1.8 - 4", jquery@3.7.1, "jquery@>=1.8.0 <4.0.0", jquery@^3.5.0, jquery@^3.7:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.7.1.tgz#083ef98927c9a6a74d05a6af02806566d16274de"
   integrity sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==
@@ -363,6 +363,13 @@ js-cookie@^3:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.8.tgz#444e6f4b27a5d844594fef61c9d6bca5f0787688"
   integrity sha512-yeJd4aNAdYZQjaon2bpD/Gb0B/omw7HQOsynXXcOiWVCacbBcPlgn8S/d1X6blFSaHao7ozqtW7NZW19xpCtIw==
+
+jstree@3.3.16:
+  version "3.3.16"
+  resolved "https://registry.yarnpkg.com/jstree/-/jstree-3.3.16.tgz#43e3a8a1ee270ddff514317250d5e85b95d63c52"
+  integrity sha512-yeeIJffi2WAqyMeHufXj/Ozy7GqgKdDkxfN8L8lwbG0h1cw/TgDafWmyhroH4AKgDSk9yW1W6jiJZu4zXAqzXw==
+  dependencies:
+    jquery "^3.5.0"
 
 leaflet.markercluster@^1.5.3:
   version "1.5.3"
@@ -437,6 +444,11 @@ shallow-equal@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-3.1.0.tgz#e7a54bac629c7f248eff6c2f5b63122ba4320bec"
   integrity sha512-pfVOw8QZIXpMbhBWvzBISicvToTiM5WBF1EeAUZDDSb5Dt29yl4AYbyywbJFSEsRUMr7gJaxqCdr4L3tQf9wVg==
+
+smartwizard@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/smartwizard/-/smartwizard-5.1.1.tgz#16313081f66a7b6a1ed6d7b2787a4960967d22c0"
+  integrity sha512-AFeP/zDXOEE4/AsHTsWIHQC/HyJlavOus7EtCs2nwsh1MkRDNtRFFadOLXCw7BlgT9xExQwmSIqxZdXKHuyFrw==
 
 spin.js@^4.1.2:
   version "4.1.2"

@@ -1,0 +1,37 @@
+<div class="dri_main_content_container">
+<div>
+  <h3>Current and previous ingests</h3>
+</div>
+<div>
+  <%= render partial: 'dri_batch_ingest/user_ingests/user_ingests_table' %>
+</div>
+
+<div>
+  <h3>Start new ingest</h3>
+</div>
+
+<div style="margin-bottom:10px">
+  <% if @user_dirs.nil? %>
+    <p><i class="fa fa-exclamation-triangle"></i> Your user directory could not be found in ingest storage.
+       If you have not yet done so, please go to <a href='https://repository.dri.ie/cloud' target="_blank">repository.dri.ie/cloud</a>
+       and sign in to create the storage area. Metadata and files must be uploaded to this area before starting the ingest here.
+    </p>
+  <% else %>
+    <a class="btn btn-primary" href="#" id="create"><i class="fa fa-wrench"></i> Create ingest from files</a>
+  <% end %>
+</div>
+
+<div id="ingest-wizard-container" class="ingest-wizard-container">
+
+<div id="create_manifest" style="display:none">
+  <%= render partial: 'form_create' %>
+</div>
+</div>
+</div>
+<script>
+
+$("#create").click(function() {
+  $("#create_manifest").toggle();
+});
+</script>
+

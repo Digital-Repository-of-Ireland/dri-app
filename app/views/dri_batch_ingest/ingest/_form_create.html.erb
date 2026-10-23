@@ -1,0 +1,112 @@
+  <div class="wizard" id="ingestWizard">
+    <ul class="nav">
+      <li>
+        <a class="nav-link" href="#step-1">
+          Collection
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-2">
+          Metadata
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-3">
+          Assets
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" href="#step-4">
+          Preservation Assets
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="step-1" class="tab-pane" role="tabpanel">
+        <%= form_tag(batch_ingest_path, id: 'ingest_wizard_form', method: 'post') do %>
+          <%= hidden_field_tag 'metadata_path' %>
+          <%= hidden_field_tag 'asset_path' %>
+          <%= hidden_field_tag 'preservation_path' %>
+          <%= hidden_field_tag 'type', 'create' %>
+          <%= hidden_field_tag 'collection_id' %>
+
+          <h4>Collection for ingest</h4>
+          <p>Select the collection to ingest to</p>
+          <div class="form-group">
+            <div id="collectionsSelectable">
+            </div>
+          </div>
+      </div>
+
+      <div id="step-2" class="tab-pane" role="tabpanel">
+          <h4>Select metadata directory</h4>
+          <p>This directory should contain the XML metadata files with the file extension <b>.xml</b></p>
+
+          <div class="form-group">
+            <div id="metadataSelectableFolder">
+           </div>
+          </div>
+      </div>
+
+      <div id="step-3" class="tab-pane" role="tabpanel">
+            <h4>Select asset directory</h4>
+            <p>Asset files for a given object should have the same base filename as the metadata file, for example, the metadata file myobject_1.xml
+             corresponds to the asset file myobject_1.pdf. If you have more than one asset file for a given object then an underscore and sequence  number should be appended to the basename, for example:</br>
+             <ul><li>myobject_1_001.tiff</li><li>myobject_1_002.tiff</li><li>myobject_1_003.pdf</li></ul>
+             </br>
+            </p>
+            <div class="form-group">
+              <div id="assetSelectableFolder">
+              </div>
+            </div>
+      </div>
+
+      <div id="step-4" class="tab-pane" role="tabpanel">
+            <h4>Select preservation asset directory</h4>
+            <p>Preservation files can be added to the object. These files will not have surrogates generated from them and will
+              only be displayed to editors or users that have been granted permission.
+            </p>
+             <div class="form-group">
+               <div id="preservationSelectableFolder">
+               </div>
+            </div>
+      </div>
+
+      <% end %> <!-- close form tag -->
+    </div>
+
+  <script>
+    $(document).ready(function() {
+      var folders = JSON.parse('<%= raw escape_javascript(@user_dirs.to_json) %>');
+      var collections = JSON.parse('<%= raw escape_javascript(@collections.to_json) %>');
+
+      $("#ingestWizard #collectionsSelectable").jstree({
+        'core' : {
+          'data' : collections,
+          'multiple' : false
+        }
+      })
+
+      $("#metadataSelectableFolder").jstree({
+        'core' : {
+          'data' : folders,
+          'multiple' : false
+        }
+      })
+
+      $("#assetSelectableFolder").jstree({
+        'core' : {
+          'data' : folders,
+          'multiple' : false
+        }
+      })
+
+      $("#preservationSelectableFolder").jstree({
+        'core' : {
+          'data' : folders,
+          'multiple' : false
+        }
+      })
+    });
+  </script>

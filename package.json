@@ -24,8 +24,10 @@
     "jquery-ui": "~1.13",
     "jquery-validation": "^1.22.1",
     "js-cookie": "^3",
+    "jstree": "3.3.16",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
+    "smartwizard": "5.1.1",
     "spin.js": "^4.1.2"
   },
   "resolutions": {

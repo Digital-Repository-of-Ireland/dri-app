@@ -1,0 +1,41 @@
+<div id="dri_crumbtrail_nav_container_id">
+  <ol class="breadcrumb">
+    <li><%= link_to "Ingests", ingests_path %></li>
+    <li><%= link_to "Objects", batch_path(@batch.id) %></li>
+    <li>Files</li>
+  </ol>
+</div>
+
+<%= paginate @files %>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>File</th>
+    <th>Time</th>
+    <th>Location</th>
+    <th>Status</th>
+  </tr>
+</thead>
+<tbody>
+  <% @files.each do |mf| %>
+    <% title = @file_info[mf.id][:title] %>
+    <% url =  @file_info[mf.id][:url] %>
+    <% size = @file_info[mf.id][:size] %>
+    <% if mf.status_code == 'COMPLETED' %>
+      <% row_class = "success" %>
+  	<% elsif mf.status_code == 'FAILED' %>
+      <% row_class = "danger" %>
+    <% elsif mf.status_code == 'PENDING' %>
+      <% row_class = "info" %>
+    <% end %>
+    <tr class="<%= row_class %>" id="popover" data-toggle="popover" data-placement="bottom" title="<%= title %>" data-content="<%= "Link: <a href='#{mf.file_location}'>#{title}</a><br/>Size: #{size}" %>">
+      <td><%= mf.id %></td><td><%= mf.updated_at %></td><td><%= mf.file_location %></td><td><%= mf.status_code %></td>
+    </tr>
+  <% end %>
+</tbody>
+</table>
+
+<script>  
+  $(function () { $("[data-toggle='popover']").popover({ html : true }); });
+</script> 

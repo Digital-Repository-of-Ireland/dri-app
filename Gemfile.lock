@@ -37,22 +37,6 @@ GIT
       rb-gravatar
 
 GIT
-  remote: https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest
-  revision: c4a58b5ec0b81db645dcf7196794700e3b80af11
-  branch: main
-  specs:
-    dri_batch_ingest (1.5.0)
-      browse-everything
-      filesize
-      iconv
-      kaminari
-      rails (> 6)
-      resque
-      rest-client (~> 2.0)
-      roo
-      underscore-rails
-
-GIT
   remote: https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git
   revision: de3d1924881389e6487c780e850ada4c1b35f726
   branch: af_optional
@@ -83,12 +67,6 @@ GIT
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-
-GIT
-  remote: https://github.com/kesha-antonov/jstree-rails-4
-  revision: 86621893e92d1197a67b2717c1ce532cdc4edb45
-  specs:
-    jstree-rails-4 (3.3.9)
 
 GIT
   remote: https://github.com/projectblacklight/blacklight-maps.git
@@ -1181,7 +1159,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
-    underscore-rails (1.8.3)
     unicode (0.4.4.4)
     unicode-display_width (2.4.2)
     unicode-types (1.10.0)
@@ -1260,13 +1237,13 @@ DEPENDENCIES
   database_cleaner
   devise (>= 4.7.1)
   dotenv-rails
-  dri_batch_ingest!
   dri_data_models!
   execjs (= 2.7.0)
   factory_bot_rails
   faraday
   faraday-httpclient (~> 2.0)
   ffaker
+  filesize
   font-awesome-sass (~> 6.7.2)
   gender_detector
   google-analytics-data-v1beta
@@ -1288,7 +1265,6 @@ DEPENDENCIES
   js_cookie_rails
   jsbundling-rails
   json (~> 2)
-  jstree-rails-4!
   jwt
   kaminari!
   launchy
@@ -1326,7 +1302,7 @@ DEPENDENCIES
   sane_patch (~> 1.0)
   seedbank (~> 0.5.0)
   selenium-webdriver
-  shoulda (~> 4)
+  shoulda
   shoulda-matchers
   show_me_the_cookies
   simplecov
