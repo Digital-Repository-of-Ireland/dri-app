@@ -30,7 +30,7 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
+gem 'aws-sdk-s3'
 gem 'filesize'
 gem 'roo'
 

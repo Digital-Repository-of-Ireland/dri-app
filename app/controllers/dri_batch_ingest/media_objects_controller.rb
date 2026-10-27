@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 class DRIBatchIngest::MediaObjectsController < ApplicationController
+  include DRIBatchIngest::BatchLookup
+  
   before_action :authenticate_user_from_token!
   before_action :authenticate_user!
 
   def show
-    @batch = DRIBatchIngest::IngestBatch.find(params[:id])
+    @batch = find_user_batch(params[:id])
     @media_object = DRIBatchIngest::MediaObject.find(params[:media_id])
 
     @files = @media_object.parts.page params[:page]

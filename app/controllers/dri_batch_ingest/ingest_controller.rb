@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 class DRIBatchIngest::IngestController < ApplicationController
-  before_action :authenticate_user!
-  before_action :read_only, except: [:index, :show]
-
+  include DRIBatchIngest::BatchLookup
   include DRI::Renderers::Json
   include DRIBatchIngest::BatchSummaries
 
+  before_action :authenticate_user!
+  before_action :read_only, except: [:index, :show]
+  before_action :set_batch, only: %i[show update]
+
   def base_dir
-    @base_dir ||= set_base_dir
+    @base_dir ||= DRIBatchIngest::UserStorage.home_for(current_user.email)
   end
 
   def index; end
@@ -25,8 +27,6 @@ class DRIBatchIngest::IngestController < ApplicationController
   end
 
   def show
-    @batch = DRIBatchIngest::IngestBatch.find(params[:id])
-
     @media_objects = if params[:status]
                        @batch.media_objects.status(params[:status]).page(params[:page]).per(25)
                      else
@@ -36,24 +36,25 @@ class DRIBatchIngest::IngestController < ApplicationController
 
   def create
     collection = params[:collection_id]
+
+    begin
+      validate_ingest_paths!
+    rescue ArgumentError
+      return head :bad_request
+    end
+    
     ingest = DRIBatchIngest::UserIngest.create(user_id: current_user.id)
 
-    if params.dig(:type) == 'manifest'
-      Resque.enqueue(DRIBatchIngest::ProcessManifest, ingest.id, collection, params['selected_files'], provider_tokens)
-    else
-      metadata_path = params[:metadata_path]
-      asset_path = params[:asset_path]
-      preservation_path = params[:preservation_path]
+    metadata_path = params[:metadata_path]
+    asset_path = params[:asset_path]
+    preservation_path = params[:preservation_path]
 
-      Resque.enqueue(DRIBatchIngest::CreateManifest, ingest.id, base_dir, current_user.email, collection, metadata_path, asset_path, preservation_path)
-    end
-
+    Resque.enqueue(DRIBatchIngest::CreateManifest, ingest.id, base_dir, current_user.email, collection, metadata_path, asset_path.presence, preservation_path.presence)
+   
     redirect_to ingests_url
   end
 
   def update
-    @batch = DRIBatchIngest::IngestBatch.find(params[:id])
-
     media_object_ids = @batch.media_objects.status('FAILED').pluck(:id)
     Resque.enqueue(DRIBatchIngest::ProcessBatch, @batch.id, media_object_ids)
 
@@ -61,6 +62,19 @@ class DRIBatchIngest::IngestController < ApplicationController
   end
 
   private
+  
+  def set_batch
+    @batch = find_user_batch(params[:id])
+  end
+
+  def validate_ingest_paths!
+    raise ArgumentError, 'metadata path required' if params[:metadata_path].blank?
+
+    %i[metadata_path asset_path preservation_path].each do |key|
+      next if params[key].blank?
+      DRIBatchIngest::UserStorage.resolve(current_user.email, params[key])
+    end
+  end
 
   def user_collections
     # User should see any collections that they have manage or edit permissions for
@@ -109,22 +123,5 @@ class DRIBatchIngest::IngestController < ApplicationController
     end
 
     data
-  end
-
-  def provider_tokens
-    tokens = {}
-    browser = BrowseEverything::Browser.new
-    browser.providers.values.each do |p|
-      tokens["#{p.key}_token"] = session["#{p.key}_token"] if session["#{p.key}_token"].present?
-    end
-
-    tokens
-  end
-
-  def set_base_dir
-    url_options = BrowseEverything.config
-    url_options['sandbox_file_system'][:current_user] = current_user.email if url_options['sandbox_file_system'].present?
-    browser = BrowseEverything::Browser.new(url_options)
-    browser.providers['sandbox_file_system'].home
   end
 end

@@ -26,12 +26,14 @@ describe 'ProcessBatchIngest' do
 
     it "should create an object from metadata and asset" do
       tmp_download_dir = Dir.mktmpdir
+      tmp_storage_dir = Dir.mktmpdir
       Settings.downloads.directory = tmp_download_dir
+      allow(Settings.ingest).to receive(:storage_root).and_return(tmp_storage_dir)
 
-      tmp_file = Tempfile.new(['metadata', '.xml'])
+      tmp_file = Tempfile.new(['metadata', '.xml'], tmp_storage_dir)
       FileUtils.cp(file_fixture('valid_metadata.xml'), tmp_file.path)
 
-      asset_tmp_file = Tempfile.new(['sample_image', '.jpeg'])
+      asset_tmp_file = Tempfile.new(['sample_image', '.jpeg'], tmp_storage_dir)
       FileUtils.cp(file_fixture('sample_image.jpeg'), asset_tmp_file.path)
 
       ingest_message = {}
@@ -64,6 +66,7 @@ describe 'ProcessBatchIngest' do
       expect(asset_master_file.status_code).to eq 'COMPLETED'
 
       FileUtils.remove_dir(tmp_download_dir, force: true)
+      FileUtils.remove_dir(tmp_storage_dir, force: true)
     end
 
   end
@@ -218,10 +221,13 @@ describe 'ProcessBatchIngest' do
     end
 
     it "should rescue errors if metadata file not found" do
-      Settings.downloads.directory = Dir.mktmpdir
+      tmp_download_dir = Dir.mktmpdir
+      tmp_storage_dir = Dir.mktmpdir
+      Settings.downloads.directory = tmp_download_dir
+      allow(Settings.ingest).to receive(:storage_root).and_return(tmp_storage_dir)
 
-      allow_any_instance_of(BrowseEverything::Retriever).to receive(:retrieve).and_raise(Errno::ENOENT)
-      tmp_file = Tempfile.new(['metadata', '.xml'])
+      allow(FileUtils).to receive(:cp).and_raise(Errno::ENOENT)
+      tmp_file = Tempfile.new(['metadata', '.xml'], tmp_storage_dir)
 
       ingest_message = {}
       ingest_message['collection'] = @collection_id
@@ -240,16 +246,21 @@ describe 'ProcessBatchIngest' do
 
       master_file.reload
       expect(master_file.status_code).to eq 'FAILED'
+
+      FileUtils.remove_dir(tmp_download_dir, force: true)
+      FileUtils.remove_dir(tmp_storage_dir, force: true)
     end
 
     it "should rescue errors if asset file not found" do
       tmp_download_dir = Dir.mktmpdir
+      tmp_storage_dir = Dir.mktmpdir
       Settings.downloads.directory = tmp_download_dir
+      allow(Settings.ingest).to receive(:storage_root).and_return(tmp_storage_dir)
 
-      tmp_file = Tempfile.new(['metadata', '.xml'])
+      tmp_file = Tempfile.new(['metadata', '.xml'], tmp_storage_dir)
       FileUtils.cp(file_fixture('valid_metadata.xml'), tmp_file.path)
 
-      asset_tmp_file = Tempfile.new(['sample_image', '.jpeg'])
+      asset_tmp_file = Tempfile.new(['sample_image', '.jpeg'], tmp_storage_dir)
       FileUtils.rm asset_tmp_file
 
       ingest_message = {}
@@ -282,6 +293,7 @@ describe 'ProcessBatchIngest' do
       expect(asset_master_file.status_code).to eq 'FAILED'
 
       FileUtils.remove_dir(tmp_download_dir, force: true)
+      FileUtils.remove_dir(tmp_storage_dir, force: true)
     end
   end
 end

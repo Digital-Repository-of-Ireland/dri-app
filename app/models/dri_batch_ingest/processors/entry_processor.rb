@@ -40,30 +40,12 @@ module DRIBatchIngest
       end
 
       def download_spec(user, file_path, opts)
-        path = Pathname.new(file_path)
-        (url, extra) = provider_file_info(user, path, opts)
+        raise ArgumentError, "unsupported provider: #{opts['provider']}" unless opts['provider'] == 'sandbox_file_system'
 
-        result = { 'url' => url }
-        result.merge!(extra.stringify_keys) unless extra.nil?
-        result['expires'] = result['expires'].iso8601 if result.key?('expires')
-
-        result
-      end
-
-      def provider_file_info(user, file_path, opts)
-        url_options = BrowseEverything.config
-        url_options['sandbox_file_system'][:current_user] = user.email if url_options['sandbox_file_system'].present?
-
-        browser = BrowseEverything::Browser.new(url_options)
-        browser.providers.values.each do |p|
-          p.token = opts["#{p.key}_token"]
-        end
-        if opts['provider'] == 'sandbox_file_system' && browser.providers['sandbox_file_system']&.home
-          file_path = File.join(browser.providers['sandbox_file_system'].home, file_path)
-          browser.providers[opts['provider']].link_for(file_path.to_s)
-        else
-          browser.providers['file_system'].link_for(file_path.to_s)
-        end
+        full_path = DRIBatchIngest::UserStorage.resolve(user.email, file_path.to_s)
+        spec = { 'url' => "file://#{full_path}", 'file_name' => File.basename(full_path) }
+        spec['file_size'] = File.size(full_path) if File.file?(full_path)
+        spec
       end
     end
   end

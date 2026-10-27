@@ -88,18 +88,6 @@ GIT
       rexml
 
 GIT
-  remote: https://github.com/samvera/browse-everything.git
-  revision: efb9aadb8fecb367749b92a7341c019db2a08cb3
-  specs:
-    browse-everything (2.0.0.alpha.2)
-      addressable (~> 2.5)
-      aws-sdk-s3
-      faraday (~> 2.0)
-      google-apis-drive_v3
-      googleauth (>= 0.6.6, < 2.0)
-      rails (>= 4.2, < 8.2)
-
-GIT
   remote: https://github.com/stkenny/avalon_ingest
   revision: 14ef32f5c00b0097de54c823151c6c06871ba1a0
   specs:
@@ -217,21 +205,22 @@ GEM
     ast (2.4.3)
     auth-sanitizer (0.2.3)
       version_gem (~> 1.1, >= 1.1.14)
-    aws-eventstream (1.4.0)
-    aws-partitions (1.1280.0)
-    aws-sdk-core (3.254.1)
-      aws-eventstream (~> 1, >= 1.3.0)
+    aws-eventstream (1.4.1)
+    aws-partitions (1.1299.0)
+    aws-sdk-core (3.261.0)
+      aws-eventstream (~> 1, >= 1.4.1)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       base64
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.130.0)
-      aws-sdk-core (~> 3, >= 3.254.0)
+      rexml (~> 3.4, >= 3.4.2)
+    aws-sdk-kms (1.136.0)
+      aws-sdk-core (~> 3, >= 3.260.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.229.0)
-      aws-sdk-core (~> 3, >= 3.254.1)
+    aws-sdk-s3 (1.235.0)
+      aws-sdk-core (~> 3, >= 3.258.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -470,17 +459,6 @@ GEM
     google-analytics-data-v1beta (0.19.1)
       gapic-common (~> 1.2)
       google-cloud-errors (~> 1.0)
-    google-apis-core (1.2.5)
-      addressable (~> 2.9)
-      faraday (~> 2.13)
-      faraday-follow_redirects (~> 0.3)
-      googleauth (~> 1.14)
-      mini_mime (~> 1.1)
-      multi_json (~> 1.11)
-      representable (~> 3.0)
-      retriable (>= 3.1, < 5.0)
-    google-apis-drive_v3 (0.85.0)
-      google-apis-core (>= 0.15.0, < 2.a)
     google-cloud-env (2.4.0)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
@@ -1209,6 +1187,7 @@ PLATFORMS
 DEPENDENCIES
   appsignal
   avalon_ingest!
+  aws-sdk-s3
   bagit
   better_errors
   binding_of_caller
@@ -1221,7 +1200,6 @@ DEPENDENCIES
   bootstrap-glyphicons
   bootstrap-switch-rails
   brakeman
-  browse-everything!
   byebug
   capybara
   citeproc-ruby

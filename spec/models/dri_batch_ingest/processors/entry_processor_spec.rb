@@ -19,6 +19,15 @@ describe DRIBatchIngest::Processors::EntryProcessor do
     let(:user_ingest) { DRIBatchIngest::UserIngest.new }
     let(:ingest_batch) { DRIBatchIngest::IngestBatch.new }
 
+    let(:storage_root) { Dir.mktmpdir }
+    before do
+      allow(Settings.ingest).to receive(:storage_root).and_return(storage_root)
+      dir = File.join(storage_root, user.email, 'files')
+      FileUtils.mkdir_p(File.join(dir, 'metadata')); FileUtils.mkdir_p(File.join(dir, 'assets'))
+      FileUtils.touch(File.join(dir, 'metadata/object_1.xml')); FileUtils.touch(File.join(dir, 'assets/object_1.png'))
+    end
+    after { FileUtils.remove_entry(storage_root) }
+
     it 'should process an entry' do
       user_ingest.user = user
       user_ingest.save
@@ -31,14 +40,15 @@ describe DRIBatchIngest::Processors::EntryProcessor do
       files << { label: 'asset', file: 'assets/object_1.png' }
 
       processor = described_class.new({}, files, {}, 1, dummy_manifest.new)
-      allow(processor).to receive(:provider_file_info) do |_user, path, _opts|
-        ["file:///tmp/#{path}", { file_name: File.basename(path.to_s), file_size: 1234 }]
-      end
 
       expect {
         processor.process!('batch' => ingest_batch.id, 'provider' => 'sandbox_file_system')
       }.to change { DRIBatchIngest::MediaObject.count }.by(1)
 
+      spec = JSON.parse(ingest_batch.media_objects.first.parts.first.download_spec)
+      expect(spec.keys).to match_array(%w[url file_name file_size])
+      expect(spec['url']).to start_with('file://')
+      
       expect(ingest_batch.media_objects.count).to eq 1
       expect(ingest_batch.media_objects.first.parts.count).to eq 2
 

@@ -27,6 +27,8 @@ storage:
   driver: s3_interface
 downloads:
   directory: /tmp
+ingest:
+  storage_root: /var/lib/owncloud 
 S3:
   server: http://localhost:8081
   use_ssl: false

@@ -4,6 +4,8 @@ require 'validators'
 class ProcessBatchIngest
   @queue = :process_batch_ingest
 
+  FILE_URL_PREFIX = 'file://'
+
   def self.perform(user_id, collection_id, ingest_json)
     ingest_batch = JSON.parse(ingest_json)
 
@@ -27,7 +29,7 @@ class ProcessBatchIngest
       assets = retrieve_files(download_path, ingest_batch['files'])
       unless assets.empty?
         object.increment_version
-
+        
         # potentially loses connection during file downloads
         ActiveRecord::Base.connection_handler.clear_active_connections!
         object.save
@@ -233,16 +235,13 @@ class ProcessBatchIngest
   end
 
   def self.download(download_location, download_spec)
-    downloaded = 0
-    retriever = BrowseEverything::Retriever.new
-    File.open download_location, 'wb' do |dest|
-      # Retrieve the file, yielding each chunk to a block
-      retriever.retrieve(download_spec) do |chunk, retrieved, total|
-        dest.write chunk
-        downloaded = retrieved
-      end
-    end
+    url = download_spec['url'].to_s
+    raise ArgumentError, "unsupported URL: #{url}" unless url.start_with?(FILE_URL_PREFIX)
 
+    source = Pathname.new(url.delete_prefix(FILE_URL_PREFIX)).cleanpath.to_s
+    raise ArgumentError, 'source outside ingest storage' unless source.start_with?("#{DRIBatchIngest::UserStorage.root}/")
+
+    FileUtils.cp(source, download_location)
     download_location
   rescue Errno::ENOENT => e
     "error: #{e.message}"
