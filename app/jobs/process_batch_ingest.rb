@@ -11,8 +11,9 @@ class ProcessBatchIngest
 
     user = UserGroup::User.find(user_id)
 
-    download_path = File.join(Settings.downloads.directory, collection_id)
-    FileUtils.mkdir_p(download_path) unless File.exist?(download_path)
+    download_path = File.join(Settings.downloads.directory, collection_id,
+                            "mo#{ingest_batch['media_object']}-#{SecureRandom.hex(4)}")
+    FileUtils.mkdir_p(download_path)
 
     # retrieve information about metadata file to be ingested
     metadata_info = ingest_batch['metadata']
@@ -39,43 +40,39 @@ class ProcessBatchIngest
       ActiveRecord::Base.connection_handler.clear_active_connections!
       record_committer(object, user)
     end
+  rescue StandardError => e
+    fail_unfinished_files(ingest_batch, e)   # the helper from my previous message
+    raise
+  ensure
+    FileUtils.rm_rf(download_path) if download_path
   end
 
   def self.ingest_assets(user, object, assets)
     filenames = []
+    ingested = []
 
     assets.each do |asset|
-      # the asset file was not found
       if asset[:path].start_with?('error:')
         update_master_file(asset[:master_file_id], { status_code: 'FAILED', file_location: asset[:path] })
         next
       end
 
-      preservation = asset[:label] == 'preservation'
-      build_generic_file(object: object, user: user, preservation: preservation)
+      build_generic_file(object: object, user: user, preservation: asset[:label] == 'preservation')
+      moab_filename = ingest_file(user, asset[:path], object, 'content', File.basename(asset[:path]))
 
-      original_file_name = File.basename(asset[:path])
-
-      moab_filename = ingest_file(user, asset[:path], object, 'content', original_file_name)
-      saved = if moab_filename.nil?
-                false
-              else
-                filenames << moab_filename
-                true
-              end
-
-      update = if saved
-                 { status_code: 'COMPLETED',
-                   file_location: Rails.application.routes.url_helpers.object_file_path(object.alternate_id, @generic_file.alternate_id) }
-               else
-                 { status_code: 'FAILED' }
-               end
-
-      update_master_file(asset[:master_file_id], update)
+      if moab_filename.nil?
+        update_master_file(asset[:master_file_id],
+                           { status_code: 'FAILED', file_location: 'error: the file could not be saved to the repository' })
+      else
+        filenames << moab_filename
+        ingested << { id: asset[:master_file_id],
+                      location: Rails.application.routes.url_helpers.object_file_path(object.alternate_id, @generic_file.alternate_id) }
+      end
     end
 
-    preservation = Preservation::Preservator.new(object)
-    preservation.preserve_assets({ added: { 'content' => filenames }})
+    Preservation::Preservator.new(object).preserve_assets({ added: { 'content' => filenames } })
+
+    ingested.each { |f| update_master_file(f[:id], { status_code: 'COMPLETED', file_location: f[:location] }) }
 
     assets.reject { |asset| asset[:path].start_with?('error:') }.each { |asset| FileUtils.rm_f(asset[:path]) }
   end
@@ -208,6 +205,24 @@ class ProcessBatchIngest
     group.save
   end
 
+  def self.fail_unfinished_files(ingest_batch, error)
+    return unless ingest_batch
+
+    ids = ingest_batch['files'].to_a.map { |f| f['id'] }
+    ids << ingest_batch.dig('metadata', 'id')
+
+    files = DRIBatchIngest::MasterFile.where(id: ids.compact)
+    unfinished = files.where(status_code: nil).or(files.where.not(status_code: DRIBatchIngest::MasterFile::END_STATES))
+
+    unfinished.update_all(
+      status_code: 'FAILED',
+      file_location: "error: #{error.class}: #{error.message}".truncate(1000),
+      updated_at: Time.current
+    )
+  rescue StandardError => e
+    Rails.logger.error("Could not record failure for ingest message: #{e.message}")
+  end
+
   def self.file_data(path)
     file_upload = OpenStruct.new
     file_upload.tempfile = File.new(path)
@@ -220,15 +235,12 @@ class ProcessBatchIngest
     downloaded_files = []
 
     files.each do |file|
-      # using the path of the file in cloud storage to handle case when
-      # preservation asset and display asset have same filename and extension
       cloud_path = File.dirname(file['download_spec']['url']).split('/').last
-      FileUtils.mkdir_p(File.join(download_path, cloud_path))
-      download_location = File.join(download_path, cloud_path, file['download_spec']['file_name'])
-      download_location = download(download_location, file['download_spec'])
+      target_dir = File.join(download_path, file['label'].to_s, cloud_path)   # label keeps asset/preservation apart
+      FileUtils.mkdir_p(target_dir)
+      download_location = download(File.join(target_dir, file['download_spec']['file_name']), file['download_spec'])
 
-      download = { label: file['label'], path: download_location, master_file_id: file['id'] }
-      downloaded_files << download
+      downloaded_files << { label: file['label'], path: download_location, master_file_id: file['id'] }
     end
 
     downloaded_files

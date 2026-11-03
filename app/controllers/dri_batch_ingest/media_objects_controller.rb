@@ -7,18 +7,7 @@ class DRIBatchIngest::MediaObjectsController < ApplicationController
 
   def show
     @batch = find_user_batch(params[:id])
-    @media_object = DRIBatchIngest::MediaObject.find(params[:media_id])
-
-    @files = @media_object.parts.page params[:page]
-
-    @file_info = {}
-    @files.each do |f|
-      info = {}
-      ds = JSON.parse(f['download_spec'])
-      info[:title] = ds['file_name']
-      info[:size] = ::Filesize.from("#{f.file_size} B").pretty
-      info[:url] = ds['url']
-      @file_info[f.id] = info
-    end
+    @media_object = @batch.media_objects.find(params[:media_id])
+    @files = @media_object.parts.order(:id).page(params[:page])
   end
 end

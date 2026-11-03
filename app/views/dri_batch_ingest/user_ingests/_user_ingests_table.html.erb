@@ -1,45 +1,63 @@
-<%= paginate @ingests %>
+<%= paginate @ingests if local_assigns.fetch(:paginate, true) %>
 
-<table class="table">
+<% if @ingests.empty? %>
+  <p class="text-body-secondary">No ingests yet.</p>
+<% else %>
+  <table class="table table-hover align-middle">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Started</th>
-        <th>Finished</th>
-        <th>Objects</th>
-     </tr>
+        <th><%= t('dri.batch_ingest.breadcrumb.ingest') %></th>
+        <th><%= t('dri.batch_ingest.started') %></th>
+        <th><%= t('dri.headerlinks.collection') %></th>
+        <th><%= t('dri.datatables.assets.status') %></th>
+        <th><%= t('dri.headerlinks.objects') %></th>
+        <th><%= t('dri.batch_ingest.finished') %></th>
+      </tr>
     </thead>
     <tbody>
       <% @ingests.each do |ingest| %>
+        <% batch = ingest.batches.first %>
+        <% counts = batch&.confirmed? ? @batches[batch.id] : nil %>
         <tr>
-          <td><%= ingest.id %></td>
-          <td><%= ingest.created_at %></td>
-          <% batch = ingest.batches.first %>
-          <% if batch %>
-              <% batch_info = @batches[batch.id] %>
-              <% if (batch_info[:completed] + batch_info[:failed]) == batch_info[:total] %>
-                <td><%= batch.finished_at %></td>
-              <% else %>
-                <td>-</td>
-              <% end %>
-              <% if batch_info[:completed] == batch_info[:total] %>
-                 <% status = "success" %>
-              <% elsif batch_info[:failed] > 0 %>
-                 <% status = "danger" %>
-              <% else %>
-                 <% status = "info" %>
-              <% end %>
-              <td class="<%= status %>">
-                <%= link_to batch_info[:total], batch_path(batch) %>
-                (completed: <%= link_to batch_info[:completed], batch_path(id: batch.id, status: 'COMPLETED') %> / 
-                pending: <%= link_to batch_info[:pending], batch_path(id: batch.id, status: 'PENDING') %> / 
-                failed: <%= link_to batch_info[:failed], batch_path(id: batch.id, status: 'FAILED') %>)
-              </td>
-          <% else %>
-            <td>-</td>
-            <td class="info">-</td>
-          <% end %>
+          <td><%= batch ? link_to("Ingest ##{ingest.id}", batch_path(batch)) : "Ingest ##{ingest.id}" %></td>
+          <td><%= ingest_time(ingest.created_at) %></td>
+          <td><%= batch ? batch.collection_id : '-' %></td>
+
+          <td>
+            <% if batch %>
+              <% state, state_class = batch_state(batch, counts) %>
+              <span class="badge <%= state_class %>"><%= state %></span>
+            <% elsif ingest.error.present? %>
+              <span class="badge text-bg-danger">Could not be prepared</span>
+              <div class="small text-danger"><%= truncate(ingest.error, length: 140) %></div>
+            <% elsif ingest.created_at < 1.hour.ago %>
+              <span class="badge text-bg-warning">Stalled</span>
+              <div class="small text-body-secondary">No batch was created. Please start the ingest again.</div>
+            <% else %>
+              <span class="badge text-bg-info">Preparing&hellip;</span>
+            <% end %>
+          </td>
+
+          <td>
+            <% if counts %>
+              <%= link_to pluralize(counts[:total], 'object'), batch_path(batch) %>
+              <div class="small"><%= count_links(batch, counts) %></div>
+            <% elsif batch %>
+              <%= link_to 'Review before ingesting', batch_path(batch) %>
+            <% else %>
+              -
+            <% end %>
+          </td>
+
+          <td>
+            <% if counts && counts[:total].positive? && (counts[:completed] + counts[:failed]) == counts[:total] %>
+              <%= ingest_time(batch.finished_at) %>
+            <% else %>
+              -
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
   </table>
+<% end %>

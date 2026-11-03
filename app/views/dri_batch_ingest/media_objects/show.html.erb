@@ -1,41 +1,52 @@
-<div id="dri_crumbtrail_nav_container_id">
-  <ol class="breadcrumb">
-    <li><%= link_to "Ingests", ingests_path %></li>
-    <li><%= link_to "Objects", batch_path(@batch.id) %></li>
-    <li>Files</li>
-  </ol>
+<%= render 'dri_batch_ingest/shared/breadcrumbs', batch: @batch, media_object: @media_object %>
+
+<% object_label = @batch.confirmed? ? @media_object.status_label : 'NOT STARTED' %>
+
+<div class="mb-3">
+  <h3>
+    <%= @media_object.display_name %>
+    <span class="fs-6 align-middle"><%= status_badge(object_label) %></span>
+  </h3>
+  <p class="text-body-secondary mb-0">
+    <%= t('dri.batch_ingest.breadcrumb.ingest') %> #<%= @batch.user_ingest_id %> &middot;
+    <%= t('dri.headerlinks.collection') %> <%= @batch.collection_id %> &middot;
+    <%= "#{t('dri.batch_ingest.tables.files')} #{@files.total_count}" %>
+  </p>
 </div>
 
 <%= paginate @files %>
 
-<table class="table">
+<table class="table table-hover align-middle">
   <thead>
-  <tr>
-    <th>File</th>
-    <th>Time</th>
-    <th>Location</th>
-    <th>Status</th>
-  </tr>
-</thead>
-<tbody>
-  <% @files.each do |mf| %>
-    <% title = @file_info[mf.id][:title] %>
-    <% url =  @file_info[mf.id][:url] %>
-    <% size = @file_info[mf.id][:size] %>
-    <% if mf.status_code == 'COMPLETED' %>
-      <% row_class = "success" %>
-  	<% elsif mf.status_code == 'FAILED' %>
-      <% row_class = "danger" %>
-    <% elsif mf.status_code == 'PENDING' %>
-      <% row_class = "info" %>
-    <% end %>
-    <tr class="<%= row_class %>" id="popover" data-toggle="popover" data-placement="bottom" title="<%= title %>" data-content="<%= "Link: <a href='#{mf.file_location}'>#{title}</a><br/>Size: #{size}" %>">
-      <td><%= mf.id %></td><td><%= mf.updated_at %></td><td><%= mf.file_location %></td><td><%= mf.status_code %></td>
+    <tr>
+      <th><%= t('dri.views.export.table.file') %></th>
+      <th><%= t('dri.datatables.stats.files.file_type') %></th>
+      <th><%= t('dri.datatables.stats.size') %></th>
+      <th><%= t('dri.datatables.assets.status') %></th>
+      <th><%= t('dri.datatables.activity.updated_at') %></th>
+      <th></th>
     </tr>
-  <% end %>
-</tbody>
+  </thead>
+  <tbody>
+    <% @files.each do |mf| %>
+      <% file_label = @batch.confirmed? ? (mf.status_code.presence || 'PENDING') : 'NOT STARTED' %>
+      <tr>
+        <td><%= mf.display_name %></td>
+        <td><%= mf.kind %></td>
+        <td><%= mf.size_bytes ? number_to_human_size(mf.size_bytes) : '-' %></td>
+        <td>
+          <%= status_badge(file_label) %>
+          <% if (error = mf.error_message) %>
+            <div class="small text-danger"><%= error %></div>
+          <% end %>
+        </td>
+        <td><%= ingest_time(mf.updated_at) %></td>
+        <td>
+          <% if (location = mf.repository_location) %>
+            <%= link_to t('dri.batch_ingest.links.view_in_repository'), location, target: '_blank', rel: 'noopener' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
-
-<script>  
-  $(function () { $("[data-toggle='popover']").popover({ html : true }); });
-</script> 

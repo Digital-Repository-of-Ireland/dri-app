@@ -1,49 +1,91 @@
-<div id="dri_crumbtrail_nav_container_id">
-  <ol class="breadcrumb">
-    <li><%= link_to "Ingests", ingests_path %></li>
-    <li>Objects</li>
-  </ol>
+<%= render 'dri_batch_ingest/shared/breadcrumbs', batch: @batch %>
+
+<% state, state_class = batch_state(@batch, @counts) %>
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <h3>
+      <%= t('dri.batch_ingest.breadcrumb.ingest') %> #<%= @batch.user_ingest_id %>
+      <span class="badge <%= state_class %> align-middle fs-6"><%= state %></span>
+    </h3>
+    <p class="text-body-secondary mb-0">
+      <%= t('dri.batch_ingest.started') %> <%= ingest_time(@batch.created_at) %> &middot;
+      <%= t('dri.headerlinks.collection') %> <%= @batch.collection_id %> &middot;
+      <%= "#{t('dri.headerlinks.objects')} #{@counts[:total]}" %>
+    </p>
+  </div>
+
+  <% if @batch.confirmed? && @counts[:failed].positive? %>
+    <%= button_to "Retry #{pluralize(@counts[:failed], 'failed object')}", update_batch_path(@batch),
+                  method: :put, class: 'btn btn-warning' %>
+  <% end %>
 </div>
 
-<% if request.query_string.include?('FAILED') %>
-  <%= form_for update_batch_path(@batch.id), method: 'put', html: { class: "form-inline"} do |f| %>
-    <%= f.submit "Retry Failed", class: 'dri_button_grey' %>
-  <% end %>
+<% unless @batch.confirmed? %>
+  <% s = @batch.summary %>
+  <div class="alert alert-info">
+    <h4>Review before ingesting</h4>
+    <p>Nothing has been ingested yet. Check the objects below, then start the ingest or discard it.</p>
+    <p><%= s[:objects] %> objects, <%= s[:assets] %> assets,
+       <%= s[:preservation_files] %> preservation files (<%= number_to_human_size(s[:total_bytes]) %>)</p>
+    <% if s[:objects_without_assets] > 0 %><p>&#9888; <%= s[:objects_without_assets] %> objects have no asset files.</p><% end %>
+    <% if s[:missing_files] > 0 %><p>&#9888; <%= s[:missing_files] %> files could not be found on disk.</p><% end %>
+    <% (@batch.report['unmatched_assets'] || []).first(20).each do |f| %><p>&#9888; Asset not matched to any metadata file: <%= f %></p><% end %>
+    <%= button_to 'Start ingest', confirm_batch_path(@batch), method: :post, class: 'btn btn-success' %>
+    <%= button_to 'Discard', discard_batch_path(@batch), method: :delete, class: 'btn btn-outline-danger',
+                  data: { turbo_confirm: 'Discard this ingest?' } %>
+  </div>
+<% end %>
+
+<% if @batch.confirmed? %>
+  <ul class="nav nav-tabs mb-3">
+    <% [['All', nil, @counts[:total]],
+        ['Completed', 'COMPLETED', @counts[:completed]],
+        ['Pending', 'PENDING', @counts[:pending]],
+        ['Failed', 'FAILED', @counts[:failed]]].each do |label, status, count| %>
+      <li class="nav-item">
+        <%= link_to "#{label} (#{count})", batch_path(@batch, status: status),
+                    class: "nav-link #{'active' if params[:status].presence == status}" %>
+      </li>
+    <% end %>
+  </ul>
 <% end %>
 
 <%= paginate @media_objects %>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Object</th>
-    <th>Time</th>
-    <th>Location</th>
-    <th>Status</th>
-  </tr>
-</thead>
-<tbody>
-  <% @media_objects.each do |mo| %>
-    <% if mo.finished_processing? %>
-      <% if mo.succeeded? %>
-        <% row_class = "success" %>
-        <% status = "COMPLETED" %>
-      <% else %>
-        <% row_class = "danger" %>
-        <% status = "FAILED" %>
+<% if @media_objects.empty? %>
+  <p class="text-body-secondary">No objects<%= " with status #{params[:status].downcase}" if params[:status].present? %>.</p>
+<% else %>
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th><%= t('dri.headerlinks.object') %></th>
+        <th><%= t('dri.batch_ingest.tables.files') %></th>
+        <th><%= t('dri.datatables.assets.status') %></th>
+        <th><%= t('dri.datatables.activity.updated_at') %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @media_objects.each do |mo| %>
+        <% label = @batch.confirmed? ? mo.status_label : 'NOT STARTED' %>
+        <tr>
+          <td><%= link_to mo.display_name, media_object_path(@batch.id, mo.id) %></td>
+          <td><%= mo.parts.size %></td>
+          <td>
+            <%= status_badge(label) %>
+            <% if (error = mo.error_message) %>
+              <div class="small text-danger"><%= truncate(error, length: 140) %></div>
+            <% end %>
+          </td>
+          <td><%= ingest_time(mo.updated_at) %></td>
+          <td>
+            <% if label == 'COMPLETED' && (location = mo.repository_location) %>
+              <%= link_to t('dri.batch_ingest.links.view_in_repository'), location %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-    <% else %>
-      <% if mo.failed? %>
-        <% row_class = "danger" %>
-        <% status = "FAILED" %>
-      <% else %>
-        <% row_class = "info" %>
-        <% status = "PENDING" %>
-      <% end %>
-    <% end %>
-    <tr class="<%= row_class %>" style="cursor: pointer" onclick="document.location = '<%= media_object_path(@batch.id, mo.id) %>'">
-    <td><%= mo.id %></td><td><%= mo.updated_at %></td><td><%= mo.parts.metadata.file_location %></td><td><%= status %></td>    
-    </tr>
-  <% end %>
-</tbody>
-</table>
+    </tbody>
+  </table>
+<% end %>

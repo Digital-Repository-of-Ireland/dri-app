@@ -29,9 +29,18 @@ class DRIBatchIngest::CreateManifest
       'file_system_token' => nil
     )
 
+    batch.update!(report: {
+      'unmatched_assets' => creator.unmatched_assets,
+      'unmatched_preservation' => creator.unmatched_preservation
+    })
     ingest.batches << batch
-
-    Resque.enqueue(DRIBatchIngest::ProcessBatch, batch.id)
     ingest.save
+  rescue StandardError => e
+    message = case e
+            when Errno::ENOENT then 'The selected directory could not be found.'
+            else 'Something went wrong while reading the files. Please try again or contact support.'
+            end
+    DRIBatchIngest::UserIngest.where(id: ingest_id).update_all(error: message)
+    raise
   end
 end

@@ -1,15 +1,9 @@
-# frozen_string_literal: true
-module DRIBatchIngest::BatchSummaries
-  extend ActiveSupport::Concern
+module DRIBatchIngest
+  module BatchSummaries
+    extend ActiveSupport::Concern
 
-  def user_batches
-    batches = {}
-
-    @ingests.each do |i|
-      next unless i.batches.first
-      batch = i.batches.first
-
-      batches[batch.id] = {
+    def batch_counts(batch)
+      {
         total: batch.media_objects.count,
         pending: batch.media_objects.excluding_failed.pending.count,
         completed: batch.media_objects.status('COMPLETED').count,
@@ -17,6 +11,13 @@ module DRIBatchIngest::BatchSummaries
       }
     end
 
-    batches
+    def user_batches
+      @ingests.each_with_object({}) do |ingest, batches|
+        batch = ingest.batches.first
+        next unless batch&.confirmed?
+
+        batches[batch.id] = batch_counts(batch)
+      end
+    end
   end
 end

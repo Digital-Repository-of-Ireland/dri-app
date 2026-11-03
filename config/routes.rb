@@ -22,6 +22,8 @@ Rails.application.routes.draw do
       get '/', to: 'ingest#new'
       get 'batch', to: 'ingest#new', as: :new_batch
       get 'batch/:id', to: 'ingest#show', as: :batch
+      post   'batch/:id/confirm', to: 'ingest#confirm', as: :confirm_batch
+      delete 'batch/:id',         to: 'ingest#destroy', as: :discard_batch
       post 'batch', to: 'ingest#create', as: :batch_ingest
       put 'batch/:id', to: 'ingest#update', as: :update_batch
       get 'batch/:id/media/:media_id', to: 'media_objects#show', as: :media_object

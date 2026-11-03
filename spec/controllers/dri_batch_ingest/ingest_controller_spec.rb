@@ -28,9 +28,10 @@ RSpec.describe DRIBatchIngest::IngestController, type: :controller do
     DRIBatchIngest::UserIngest.create!(user: owner, created_at: created_at)
   end
 
-  def create_batch(ingest)
+  def create_batch(ingest, confirmed_at: Time.current)
     DRIBatchIngest::IngestBatch.create!(
-      user_ingest: ingest, collection_id: 'col1', email: ingest.user.email
+      user_ingest: ingest, collection_id: 'col1', email: ingest.user.email,
+      confirmed_at: confirmed_at
     )
   end
 
@@ -342,6 +343,53 @@ RSpec.describe DRIBatchIngest::IngestController, type: :controller do
           expect { put :update, params: { id: other_batch.id } }.to raise_error(ActiveRecord::RecordNotFound)
           expect(Resque).not_to have_received(:enqueue)
         end
+      end
+    end
+
+    describe 'POST #confirm' do
+      let(:batch) { create_batch(create_ingest, confirmed_at: nil) }
+
+      it 'marks the batch confirmed and enqueues processing' do
+        post :confirm, params: { id: batch.id }
+
+        expect(batch.reload.confirmed_at).to be_present
+        expect(Resque).to have_received(:enqueue).with(DRIBatchIngest::ProcessBatch, batch.id)
+        expect(response).to redirect_to(batch_path(batch))
+      end
+
+      it 'enqueues only once when confirmed twice' do
+        2.times { post :confirm, params: { id: batch.id } }
+
+        expect(Resque).to have_received(:enqueue).once
+      end
+
+      it "does not confirm another user's batch" do
+        other_batch = create_batch(create_ingest(other_user), confirmed_at: nil)
+
+        expect { post :confirm, params: { id: other_batch.id } }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(other_batch.reload.confirmed_at).to be_nil
+        expect(Resque).not_to have_received(:enqueue)
+      end
+    end
+
+    describe 'DELETE #destroy' do
+      it 'discards an unconfirmed batch and its objects' do
+        batch = create_batch(create_ingest, confirmed_at: nil)
+        create_media_object(batch, 'PENDING')
+
+        expect { delete :destroy, params: { id: batch.id } }
+          .to change(DRIBatchIngest::IngestBatch, :count).by(-1)
+          .and change(DRIBatchIngest::MediaObject, :count).by(-1)
+          .and change(DRIBatchIngest::MasterFile, :count).by(-1)
+
+        expect(response).to redirect_to(ingests_path)
+      end
+
+      it 'refuses to discard a confirmed batch' do
+        batch = create_batch(create_ingest)
+
+        expect { delete :destroy, params: { id: batch.id } }.not_to change(DRIBatchIngest::IngestBatch, :count)
+        expect(response).to have_http_status(:conflict)
       end
     end
 

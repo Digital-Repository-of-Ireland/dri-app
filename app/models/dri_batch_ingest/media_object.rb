@@ -41,5 +41,30 @@ module DRIBatchIngest
     def failed?
       parts.any?(&:failed?)
     end
+
+    def metadata_part
+      parts.detect(&:metadata?)
+    end
+
+    def status_label
+      if finished_processing?
+        succeeded? ? 'COMPLETED' : 'FAILED'
+      else
+        failed? ? 'FAILED' : 'PENDING'
+      end
+    end
+
+    def display_name
+      metadata_part&.file_name || "Object #{id}"
+    end
+
+    def error_message
+      parts.filter_map(&:error_message).first
+    end
+
+    def repository_location
+      location = metadata_part&.file_location
+      location if location.present? && !location.start_with?('error:')
+    end
   end
 end

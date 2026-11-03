@@ -542,6 +542,8 @@ ga:
       export:
         headers:
           export_all_metadata: Easpórtáil gach meitashonraí
+        table:
+          file: Comhad
       citation:
         publisher_name: Taisclann Dhigiteach na hÉireann
         depositor: "[Taisceoir]"
@@ -728,3 +730,17 @@ ga:
         activity_report: Tuairisc Ghníomhaíochta
         fixity_report: Tuairisc Sheastachta
         stats: Tuairisc ar Staidreamh Bailiúcháin
+    batch_ingest:
+      new_ingest: Ionchur Nua
+      recent_ingests: Ionchuir le Déanaí
+      started: Thosaigh ag
+      finished: Críochnaithe ag
+      links:
+        view_all_ingests: Féach ar gach ionchur
+        view_in_repository: Amharc sa taisclann
+      breadcrumb:
+        ingest: Ionghabh
+        ingests: Ionghabhann
+      tables:
+        files: Comhaid
+

@@ -4,6 +4,7 @@ require "tmpdir"
 
 class DRIBatchIngest::CsvCreator
   attr_reader :csv_file
+  attr_reader :unmatched_assets, :unmatched_preservation
 
   def initialize(base_dir, user_email, collection)
     @user_email = user_email
@@ -39,6 +40,9 @@ class DRIBatchIngest::CsvCreator
       # Does it have any corresponding preservation-only data files?
       preservation_files(preservation, preservation_path, basename) unless preservation_path.nil?
     end
+
+    @unmatched_assets = unmatched(asset_path, assets)
+    @unmatched_preservation = unmatched(preservation_path, preservation)
 
     [metadata, assets, preservation]
   end
@@ -88,5 +92,12 @@ class DRIBatchIngest::CsvCreator
     return 0 if files_hash.blank?
 
     files_hash.values.max_by(&:length).length
+  end
+
+  def unmatched(path, matched)
+    return [] if path.blank?
+
+    ignored = %w[.DS_Store Thumbs.db]
+    Dir.glob(File.join(path, '**', '*')).select { |f| File.file?(f) && !ignored.include?(File.basename(f)) } - matched.values.flatten
   end
 end

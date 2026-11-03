@@ -1,37 +1,37 @@
+<%= render 'dri_batch_ingest/shared/breadcrumbs', current: 'New ingest' %>
+
 <div class="dri_main_content_container">
-<div>
-  <h3>Current and previous ingests</h3>
-</div>
-<div>
-  <%= render partial: 'dri_batch_ingest/user_ingests/user_ingests_table' %>
-</div>
+  <h3><%= t('dri.batch_ingest.new_ingest') %></h3>
 
-<div>
-  <h3>Start new ingest</h3>
-</div>
-
-<div style="margin-bottom:10px">
   <% if @user_dirs.nil? %>
-    <p><i class="fa fa-exclamation-triangle"></i> Your user directory could not be found in ingest storage.
-       If you have not yet done so, please go to <a href='https://repository.dri.ie/cloud' target="_blank">repository.dri.ie/cloud</a>
-       and sign in to create the storage area. Metadata and files must be uploaded to this area before starting the ingest here.
-    </p>
+    <div class="alert alert-warning">
+      <i class="fa fa-exclamation-triangle"></i>
+      Your user directory could not be found in ingest storage.
+      If you have not yet done so, please go to
+      <a href="https://repository.dri.ie/cloud" target="_blank" rel="noopener">repository.dri.ie/cloud</a>
+      and sign in to create the storage area. Metadata and files must be uploaded to this area before starting the ingest here.
+    </div>
+  <% elsif @collections.empty? %>
+    <div class="alert alert-warning">
+      <i class="fa fa-exclamation-triangle"></i>
+      You do not have manage or edit access to any collections, so there is nothing to ingest into.
+    </div>
   <% else %>
-    <a class="btn btn-primary" href="#" id="create"><i class="fa fa-wrench"></i> Create ingest from files</a>
+    <p class="text-body-secondary">
+      Choose the collection to ingest into, then the folders in your ingest storage that hold the metadata (XML)
+      files and, optionally, the asset and preservation files. You will be able to review the objects before
+      anything is ingested.
+    </p>
+
+    <div id="ingest-wizard-container" class="ingest-wizard-container">
+      <%= render 'form_create' %>
+    </div>
   <% end %>
-</div>
 
-<div id="ingest-wizard-container" class="ingest-wizard-container">
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+    <h4 class="mb-0"><%= t('dri.batch_ingest.recent_ingests') %></h4>
+    <%= link_to t('dri.batch_ingests.links.view_all_ingests'), ingests_path %>
+  </div>
 
-<div id="create_manifest" style="display:none">
-  <%= render partial: 'form_create' %>
+  <%= render 'dri_batch_ingest/user_ingests/user_ingests_table', paginate: false %>
 </div>
-</div>
-</div>
-<script>
-
-$("#create").click(function() {
-  $("#create_manifest").toggle();
-});
-</script>
-

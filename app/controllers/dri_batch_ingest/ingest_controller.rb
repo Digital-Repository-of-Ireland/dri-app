@@ -6,7 +6,7 @@ class DRIBatchIngest::IngestController < ApplicationController
 
   before_action :authenticate_user!
   before_action :read_only, except: [:index, :show]
-  before_action :set_batch, only: %i[show update]
+  before_action :set_batch, only: %i[show update confirm destroy]
 
   def base_dir
     @base_dir ||= DRIBatchIngest::UserStorage.home_for(current_user.email)
@@ -27,11 +27,15 @@ class DRIBatchIngest::IngestController < ApplicationController
   end
 
   def show
-    @media_objects = if params[:status]
-                       @batch.media_objects.status(params[:status]).page(params[:page]).per(25)
-                     else
-                       @batch.media_objects.page(params[:page]).per(25)
-                     end
+    @counts = batch_counts(@batch)
+
+    media_objects = @batch.media_objects.preload(:parts)
+    media_objects = case params[:status]
+                    when 'PENDING' then media_objects.excluding_failed.pending
+                    when 'COMPLETED', 'FAILED' then media_objects.status(params[:status])
+                    else media_objects
+                    end
+    @media_objects = media_objects.page(params[:page]).per(25)
   end
 
   def create
@@ -59,6 +63,21 @@ class DRIBatchIngest::IngestController < ApplicationController
     Resque.enqueue(DRIBatchIngest::ProcessBatch, @batch.id, media_object_ids)
 
     redirect_to ingests_url
+  end
+
+  def confirm
+    # Atomic claim, so a double click can't enqueue the batch twice.
+    claimed = DRIBatchIngest::IngestBatch.where(id: @batch.id, confirmed_at: nil)
+                                         .update_all(confirmed_at: Time.current)
+    Resque.enqueue(DRIBatchIngest::ProcessBatch, @batch.id) if claimed == 1
+    redirect_to batch_path(@batch)
+  end
+
+  def destroy
+    return head :conflict if @batch.confirmed?
+
+    @batch.discard!
+    redirect_to ingests_path
   end
 
   private

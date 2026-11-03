@@ -6,13 +6,13 @@ describe DRIBatchIngest::CreateManifest do
   let(:user) { FactoryBot.create(:collection_manager) }
   let(:user_ingest) { DRIBatchIngest::UserIngest.new }
 
-  it 'should create manifest and start process batch' do
+  it 'should create manifest' do
     user_ingest.user_id = user.id
     user_ingest.save
 
     base_dir = File.join(file_fixture_path, 'ingest')
 
-    expect(Resque).to receive(:enqueue).once
+    #expect(Resque).to receive(:enqueue).once
 
     described_class.perform(
       user_ingest.id,
