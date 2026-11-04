@@ -14,7 +14,6 @@ gem 'rsolr'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'af_optional'
 gem 'nokogiri', '>= 1.19.4'
-#gem 'solrizer'
 
 gem 'iiif-presentation'
 gem 'openseadragon'

@@ -300,7 +300,7 @@ GEM
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
     connection_pool (3.0.2)
-    crass (1.0.7)
+    crass (1.0.8)
     csl (2.0.0)
       namae (~> 1.0)
       rexml
