@@ -926,6 +926,14 @@ en:
       recent_ingests: Recent Ingests
       started: Started
       finished: Finished
+      start_ingest: Start Ingest
+      discard: Discard
+      confirm_discard: 'Discard this ingest?'
+      states:
+        completed: Completed
+        pending: Pending
+        failed: Failed
+        all: All
       links:
         view_all_ingests: View all ingests
         view_in_repository: View in repository

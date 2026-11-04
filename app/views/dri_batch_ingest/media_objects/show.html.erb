@@ -9,7 +9,7 @@
   </h3>
   <p class="text-body-secondary mb-0">
     <%= t('dri.batch_ingest.breadcrumb.ingest') %> #<%= @batch.user_ingest_id %> &middot;
-    <%= t('dri.headerlinks.collection') %> <%= @batch.collection_id %> &middot;
+    <%= t('dri.headerlinks.collection') %> '<%= @collection_title %>' &middot;
     <%= "#{t('dri.batch_ingest.tables.files')} #{@files.total_count}" %>
   </p>
 </div>

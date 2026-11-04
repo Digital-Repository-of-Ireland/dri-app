@@ -10,7 +10,7 @@
     </h3>
     <p class="text-body-secondary mb-0">
       <%= t('dri.batch_ingest.started') %> <%= ingest_time(@batch.created_at) %> &middot;
-      <%= t('dri.headerlinks.collection') %> <%= @batch.collection_id %> &middot;
+      <%= t('dri.headerlinks.collection') %> '<%= @collection_title %>' &middot;
       <%= "#{t('dri.headerlinks.objects')} #{@counts[:total]}" %>
     </p>
   </div>
@@ -31,18 +31,18 @@
     <% if s[:objects_without_assets] > 0 %><p>&#9888; <%= s[:objects_without_assets] %> objects have no asset files.</p><% end %>
     <% if s[:missing_files] > 0 %><p>&#9888; <%= s[:missing_files] %> files could not be found on disk.</p><% end %>
     <% (@batch.report['unmatched_assets'] || []).first(20).each do |f| %><p>&#9888; Asset not matched to any metadata file: <%= f %></p><% end %>
-    <%= button_to 'Start ingest', confirm_batch_path(@batch), method: :post, class: 'btn btn-success' %>
-    <%= button_to 'Discard', discard_batch_path(@batch), method: :delete, class: 'btn btn-outline-danger',
-                  data: { turbo_confirm: 'Discard this ingest?' } %>
+    <%= button_to t('dri.batch_ingest.start_ingest'), confirm_batch_path(@batch), method: :post, class: 'btn btn-success' %>
+    <%= button_to t('dri.batch_ingest.discard'), discard_batch_path(@batch), method: :delete, class: 'btn btn-outline-danger',
+                  data: { turbo_confirm: t('dri.batch_ingest.confirm_discard') } %>
   </div>
 <% end %>
 
 <% if @batch.confirmed? %>
   <ul class="nav nav-tabs mb-3">
-    <% [['All', nil, @counts[:total]],
-        ['Completed', 'COMPLETED', @counts[:completed]],
-        ['Pending', 'PENDING', @counts[:pending]],
-        ['Failed', 'FAILED', @counts[:failed]]].each do |label, status, count| %>
+    <% [[t('dri.batch_ingest.states.all'), nil, @counts[:total]],
+        [t('dri.batch_ingest.states.completed'), 'COMPLETED', @counts[:completed]],
+        [t('dri.batch_ingest.states.pending'), 'PENDING', @counts[:pending]],
+        [t('dri.batch_ingest.states.failed'), 'FAILED', @counts[:failed]]].each do |label, status, count| %>
       <li class="nav-item">
         <%= link_to "#{label} (#{count})", batch_path(@batch, status: status),
                     class: "nav-link #{'active' if params[:status].presence == status}" %>

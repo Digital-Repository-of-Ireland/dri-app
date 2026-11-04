@@ -28,6 +28,7 @@ class DRIBatchIngest::IngestController < ApplicationController
 
   def show
     @counts = batch_counts(@batch)
+    @collection_title = collection_title || @batch.collection_id
 
     media_objects = @batch.media_objects.preload(:parts)
     media_objects = case params[:status]
@@ -82,6 +83,11 @@ class DRIBatchIngest::IngestController < ApplicationController
 
   private
   
+  def collection_title
+    collection_id = @batch.collection_id
+    DRI::DigitalObject.find_by_alternate_id(collection_id)&.title&.first
+  end
+
   def set_batch
     @batch = find_user_batch(params[:id])
   end

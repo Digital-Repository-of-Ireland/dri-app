@@ -735,6 +735,14 @@ ga:
       recent_ingests: Ionchuir le Déanaí
       started: Thosaigh ag
       finished: Críochnaithe ag
+      start_ingest: Tosaigh ar Ionghabháil
+      discard: Caith Uait
+      confirm_discard: 'An scriosfar an t-ionghabháil seo?'
+      states:
+        completed: Críochnaithe
+        pending: Ar feitheamh
+        failed: Teipthe
+        all: Uile
       links:
         view_all_ingests: Féach ar gach ionchur
         view_in_repository: Amharc sa taisclann
