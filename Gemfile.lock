@@ -1,7 +1,7 @@
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-data-models.git
-  revision: 94772feec087687eca96cd897beb7a7434ca1341
-  branch: develop
+  revision: e435723579438b2b9a28ec89e43c3b24f166146c
+  tag: v4.19.1
   specs:
     dri_data_models (4.19.1)
       hydra-derivatives
@@ -21,7 +21,7 @@ GIT
 GIT
   remote: git@github.com:Digital-Repository-of-Ireland/dri-user-group.git
   revision: 362c937d56415f612ba2cfc749eddbcc70af9094
-  branch: develop
+  tag: v2.4.4
   specs:
     user_group (2.4.4)
       blacklight-access_controls
@@ -53,20 +53,20 @@ GIT
 
 GIT
   remote: https://github.com/kaminari/kaminari.git
-  revision: ae23bc6b7c88310b0d749c241d4e51c78cacab90
+  revision: e3d7834dbafef40ad48935e0623aec2ca93eb7d8
   specs:
-    kaminari (1.2.2)
+    kaminari (1.3.3)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.2)
-      kaminari-activerecord (= 1.2.2)
-      kaminari-core (= 1.2.2)
-    kaminari-actionview (1.2.2)
+      kaminari-actionview (= 1.3.3)
+      kaminari-activerecord (= 1.3.3)
+      kaminari-core (= 1.3.3)
+    kaminari-actionview (1.3.3)
       actionview
-      kaminari-core (= 1.2.2)
-    kaminari-activerecord (1.2.2)
+      kaminari-core (= 1.3.3)
+    kaminari-activerecord (1.3.3)
       activerecord
-      kaminari-core (= 1.2.2)
-    kaminari-core (1.2.2)
+      kaminari-core (= 1.3.3)
+    kaminari-core (1.3.3)
 
 GIT
   remote: https://github.com/projectblacklight/blacklight-maps.git
@@ -278,7 +278,7 @@ GEM
       racc
     builder (3.3.0)
     byebug (12.0.0)
-    cancancan (3.6.1)
+    cancancan (3.7.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -434,7 +434,7 @@ GEM
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
-    fastimage (2.4.1)
+    fastimage (2.4.3)
     ffaker (2.23.0)
     ffi (1.17.4-x86_64-linux-gnu)
     filesize (0.2.0)
@@ -492,7 +492,7 @@ GEM
       tilt
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
-    hashie (5.1.0)
+    hashie (5.2.0)
       logger
     health-monitor-rails (12.9.0)
       railties (>= 6.1)
@@ -719,11 +719,11 @@ GEM
       snaky_hash (~> 2.0, >= 2.0.7)
       version_gem (~> 1.1, >= 1.1.14)
     observer (0.1.2)
-    omniauth (2.1.4)
-      hashie (>= 3.4.6)
+    omniauth (2.3.1)
+      hashie (>= 3.5.2)
       logger
-      rack (>= 2.2.3)
-      rack-protection
+      rack (>= 2.2.8)
+      rack-protection (>= 2.2.0)
     omniauth-rails_csrf_protection (1.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
@@ -1159,10 +1159,10 @@ GEM
       reform (~> 2.2)
       reform-rails
     version_gem (1.1.15)
-    view_component (4.16.0)
+    view_component (4.23.0)
       actionview (>= 7.1.0)
       activesupport (>= 7.1.0)
-      concurrent-ruby (~> 1)
+      prism (>= 1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
     webrick (1.9.1)
