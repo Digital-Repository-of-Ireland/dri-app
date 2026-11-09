@@ -7,38 +7,45 @@ class ProcessBatchIngest
   FILE_URL_PREFIX = 'file://'
 
   def self.perform(user_id, collection_id, ingest_json)
-    ingest_batch = JSON.parse(ingest_json)
+    ingest_batch = nil
+    download_path = nil
+    
+    DRI::Indexing.batch do
+      ingest_batch = JSON.parse(ingest_json)
 
-    user = UserGroup::User.find(user_id)
+      user = UserGroup::User.find(user_id)
 
-    download_path = File.join(Settings.downloads.directory, collection_id,
-                            "mo#{ingest_batch['media_object']}-#{SecureRandom.hex(4)}")
-    FileUtils.mkdir_p(download_path)
+      download_path = File.join(Settings.downloads.directory, collection_id,
+                              "mo#{ingest_batch['media_object']}-#{SecureRandom.hex(4)}")
+      FileUtils.mkdir_p(download_path)
 
-    # retrieve information about metadata file to be ingested
-    metadata_info = ingest_batch['metadata']
+      # retrieve information about metadata file to be ingested
+      metadata_info = ingest_batch['metadata']
 
-    rc, object = if metadata_info['object_id'].present?
-                   # metadata ingest was successful so only ingest missing assets
-                   [0, DRI::DigitalObject.find_by_alternate_id(metadata_info['object_id'])]
-                 else
-                   metadata = retrieve_files(download_path, [metadata_info])[0]
-                   ingest_metadata(collection_id, user, metadata)
-                 end
+      rc, object = if metadata_info['object_id'].present?
+                     # metadata ingest was successful so only ingest missing assets
+                     [0, DRI::DigitalObject.find_by_alternate_id(metadata_info['object_id'])]
+                   else
+                     metadata = retrieve_files(download_path, [metadata_info])[0]
+                     ingest_metadata(collection_id, user, metadata)
+                   end
 
-    if rc == 0 && object
-      assets = retrieve_files(download_path, ingest_batch['files'])
-      unless assets.empty?
-        object.increment_version
-        
-        # potentially loses connection during file downloads
+      if rc == 0 && object
+        assets = retrieve_files(download_path, ingest_batch['files'])
+        unless assets.empty?
+          object.increment_version
+          
+          # potentially loses connection during file downloads
+          ActiveRecord::Base.connection_handler.clear_active_connections!
+          object.save
+
+          ingest_assets(user, object, assets)
+        end
         ActiveRecord::Base.connection_handler.clear_active_connections!
-        object.save
+        record_committer(object, user)
 
-        ingest_assets(user, object, assets)
+        commit_index
       end
-      ActiveRecord::Base.connection_handler.clear_active_connections!
-      record_committer(object, user)
     end
   rescue StandardError => e
     fail_unfinished_files(ingest_batch, e)   # the helper from my previous message
@@ -139,12 +146,18 @@ class ProcessBatchIngest
 
     DRI::DigitalObject.transaction do
       begin
-        raise ActiveRecord::Rollback unless object.save && object.update_index
+        raise ActiveRecord::Rollback unless object.save && DRI::SolrRetry.with_retries { object.update_index }
       rescue RSolr::Error::Http => e
         raise ActiveRecord::Rollback
       end
     end
     object.persisted?
+  end
+
+  def self.commit_index
+    Valkyrie::MetadataAdapter.find(:index_solr).connection.commit(params: { softCommit: true })
+  rescue RSolr::Error::Http, Errno::ECONNRESET, Net::ReadTimeout => e
+    Rails.logger.warn("Solr commit after ingest failed: #{e.message}")
   end
 
   def self.ingest_file(user, file_path, object, datastream, filename)
