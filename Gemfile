@@ -14,14 +14,13 @@ gem 'rsolr'
 
 gem 'hydra-derivatives', git: 'https://github.com/Digital-Repository-of-Ireland/hydra-derivatives.git', branch: 'af_optional'
 gem 'nokogiri', '>= 1.19.4'
-#gem 'solrizer'
 
 gem 'iiif-presentation'
 gem 'openseadragon'
 gem 'riiif'
 
 gem "devise", ">= 4.7.1"
-gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.19.0'
+gem 'dri_data_models', git: 'git@github.com:Digital-Repository-of-Ireland/dri-data-models.git', tag: 'v4.19.1'
 gem 'user_group', git: 'git@github.com:Digital-Repository-of-Ireland/dri-user-group.git', tag: 'v2.4.4'
 
 gem 'paper_trail'
@@ -30,9 +29,8 @@ gem 'linkeddata'
 
 # batch ingest
 gem 'avalon_ingest', git: 'https://github.com/stkenny/avalon_ingest'
-gem 'browse-everything', git: 'https://github.com/samvera/browse-everything.git'
-gem 'dri_batch_ingest', git: 'https://github.com/Digital-Repository-of-Ireland/dri-batch-ingest', branch: 'main'
-gem 'jstree-rails-4', git: 'https://github.com/kesha-antonov/jstree-rails-4'
+gem 'aws-sdk-s3'
+gem 'filesize'
 gem 'roo'
 
 gem 'config'
@@ -54,7 +52,6 @@ gem "image_processing", ">= 1.12.2"
 
 # Language and translation related gems
 gem 'http_accept_language'
-gem 'i18n-js', '< 4'
 gem 'i18n-tasks'
 gem 'it'
 
@@ -134,7 +131,7 @@ group :test do
   gem 'ffaker'
   gem 'launchy'
   gem 'observer'
-  gem 'shoulda', '~> 4'
+  gem 'shoulda'
   gem 'shoulda-matchers'
   gem 'syntax'
   gem 'syslog'
@@ -173,12 +170,12 @@ gem 'rvm'
 # UI widgets
 gem 'bootstrap-switch-rails'
 gem 'clipboard-rails'
-gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', branch: 'form_upload'
+gem 'jquery-xmleditor-rails', git: 'https://github.com/stkenny/jquery-xmleditor-rails.git', tag: 'v0.3.0'
 gem 'openlayers-rails'
 gem 'timelineJS3-rails', git: 'https://github.com/stkenny/timelineJS3-rails.git'
-gem 'blacklight-maps', git: 'https://github.com/Digital-Repository-of-Ireland/blacklight-maps', branch: 'blacklight8' 
-
-gem 'remotipart'
+gem 'blacklight-maps',
+       github: 'projectblacklight/blacklight-maps',
+       ref: 'f2819731cb8af243ff8cab0febda7bb9c6d3ad5f' 
 
 # # api documentation generator / presenter
 gem 'rswag-api', '~> 2.0'

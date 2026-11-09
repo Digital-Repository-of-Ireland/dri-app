@@ -46,6 +46,8 @@ config/authorities.yml
 config/browse_everything_providers.yml
 
 spec/reports/*
+spec/fixtures/manifest.csv.error
+spec/fixtures/manifest.csv.processed
 .sass-cache/
 # *.html
 public/static/stylesheets/dri/*.css

@@ -1,15 +1,12 @@
 <%= stylesheet_link_tag "blacklight_maps" %>
+<%= javascript_include_tag "maps", type: "module" %>
 
 <% if @document[blacklight_config.view.maps.geojson_field.to_sym] || @document[blacklight_config.view.maps.coordinates_field.to_sym] %>
-  <% geojson_features = serialize_geojson(@document) %>
   <%= blacklight_map_tag('blacklight-show-map',
-        {
-          data: {
-                  initialzoom: blacklight_config.view.maps.show_initial_zoom,
-                  singlemarkermode: true
-                },
-          style: "height: 480px; width: 100%"
-        })
-  %>
-  <%= javascript_tag "$('#blacklight-show-map').blacklight_leaflet_map(#{geojson_features});" %>
+        data: {
+          'blacklight-maps-leaflet-geojson-value': serialize_geojson(@document),
+          'blacklight-maps-leaflet-initialzoom-value': blacklight_config.view.maps.show_initial_zoom,
+          'blacklight-maps-leaflet-singlemarkermode-value': true
+        },
+        style: "height: 480px; width: 100%") %>
 <% end %>

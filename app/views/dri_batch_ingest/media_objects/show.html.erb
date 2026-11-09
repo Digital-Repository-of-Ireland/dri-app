@@ -1,0 +1,52 @@
+<%= render 'dri_batch_ingest/shared/breadcrumbs', batch: @batch, media_object: @media_object %>
+
+<% object_label = @batch.confirmed? ? @media_object.status_label : 'NOT STARTED' %>
+
+<div class="mb-3">
+  <h3>
+    <%= @media_object.display_name %>
+    <span class="fs-6 align-middle"><%= status_badge(object_label) %></span>
+  </h3>
+  <p class="text-body-secondary mb-0">
+    <%= t('dri.batch_ingest.breadcrumb.ingest') %> #<%= @batch.user_ingest_id %> &middot;
+    <%= t('dri.headerlinks.collection') %> '<%= @collection_title %>' &middot;
+    <%= "#{t('dri.batch_ingest.tables.files')} #{@files.total_count}" %>
+  </p>
+</div>
+
+<%= paginate @files %>
+
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th><%= t('dri.views.export.table.file') %></th>
+      <th><%= t('dri.datatables.stats.files.file_type') %></th>
+      <th><%= t('dri.datatables.stats.size') %></th>
+      <th><%= t('dri.datatables.assets.status') %></th>
+      <th><%= t('dri.datatables.activity.updated_at') %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @files.each do |mf| %>
+      <% file_label = @batch.confirmed? ? (mf.status_code.presence || 'PENDING') : 'NOT STARTED' %>
+      <tr>
+        <td><%= mf.display_name %></td>
+        <td><%= mf.kind %></td>
+        <td><%= mf.size_bytes ? number_to_human_size(mf.size_bytes) : '-' %></td>
+        <td>
+          <%= status_badge(file_label) %>
+          <% if (error = mf.error_message) %>
+            <div class="small text-danger"><%= error %></div>
+          <% end %>
+        </td>
+        <td><%= ingest_time(mf.updated_at) %></td>
+        <td>
+          <% if (location = mf.repository_location) %>
+            <%= link_to t('dri.batch_ingest.links.view_in_repository'), location, target: '_blank', rel: 'noopener' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

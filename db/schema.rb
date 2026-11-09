@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_27_185311) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_02_113458) do
   create_table "aggregations", force: :cascade do |t|
     t.string "collection_id"
     t.string "aggregation_id"
@@ -122,6 +122,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_27_185311) do
     t.boolean "email_sent", default: false
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
+    t.datetime "confirmed_at"
+    t.text "report"
+    t.index ["user_ingest_id"], name: "index_ingest_batches_on_user_ingest_id"
   end
 
   create_table "dri_batch_ingest_master_files", force: :cascade do |t|
@@ -134,6 +137,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_27_185311) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "metadata"
+    t.index ["media_object_id", "status_code"], name: "index_master_files_on_media_object_id_and_status_code"
     t.index ["media_object_id"], name: "index_dri_batch_ingest_master_files_on_media_object_id"
   end
 
@@ -149,6 +153,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_27_185311) do
     t.integer "user_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.text "error"
     t.index ["user_id"], name: "index_dri_batch_ingest_user_ingests_on_user_id"
   end
 
@@ -186,6 +191,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_27_185311) do
     t.string "dataset"
     t.string "thumbnail"
     t.text "setspec"
+    t.integer "order"
     t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
     t.index ["governing_collection_type", "governing_collection_id"], name: "governing_index"
     t.index ["metadata_checksum"], name: "metadata_chksm_index"

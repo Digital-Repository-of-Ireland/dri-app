@@ -921,6 +921,27 @@ en:
       500_error: Error 500 - Internal Server Error
       500_message: The server encountered an error and could not complete your request.
       500_explanation: The server encountered an unexpected condition that prevented it from fulfilling the request.
+    batch_ingest:
+      new_ingest: New Ingest
+      recent_ingests: Recent Ingests
+      started: Started
+      finished: Finished
+      start_ingest: Start Ingest
+      discard: Discard
+      confirm_discard: 'Discard this ingest?'
+      states:
+        completed: Completed
+        pending: Pending
+        failed: Failed
+        all: All
+      links:
+        view_all_ingests: View all ingests
+        view_in_repository: View in repository
+      breadcrumb:
+        ingest: Ingest
+        ingests: Ingests
+      tables:
+        files: Files
   blacklight:
     search:
       start_over: "Clear All"

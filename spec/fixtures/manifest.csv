@@ -1,0 +1,4 @@
+test1-2019-09-16_15-48-18,user@example.com
+Title,Creator,Date Issued,File,Label,File,Label,File,Label
+object1,user@example.com,2019-09-16 15:48:18 +0100,metadata/object1.xml,metadata,data/object1.jpeg,asset,preservation/object1.jpeg,preservation
+object2,user@example.com,2019-09-16 15:48:18 +0100,metadata/object2.xml,metadata,data/object2.jpeg,asset,preservation/object2.jpeg,preservation

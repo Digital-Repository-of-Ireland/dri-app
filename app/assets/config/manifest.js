@@ -3,4 +3,5 @@
 //= link custom.js
 //= link user_group/application.css
 //= link_tree ../builds
-//= link_tree ../javascripts/schemas 
+//= link_tree ../javascripts/schemas
+//= link jquery-xmleditor/vendor/cycle.js

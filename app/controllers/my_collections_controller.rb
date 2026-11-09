@@ -6,6 +6,7 @@ class MyCollectionsController < ApplicationController
   before_action :authenticate_user_from_token!
   include DRI::Catalog
   include DRI::MyCollectionsSearchExtension
+  include BlacklightMaps::Controller
   before_action :authenticate_user!
 
   self.search_service_class = ::SearchService
@@ -79,6 +80,14 @@ class MyCollectionsController < ApplicationController
     config.add_facet_field 'height_sim', label: 'Image Height', include_in_advanced_search: false
     config.add_facet_field 'area_sim', label: 'Image Size', include_in_advanced_search: false
     config.add_facet_field 'geojson_ssim', limit: -2, label: 'Coordinates', show: false, include_in_advanced_search: false
+    config.add_facet_field :coordinates,
+                              filter_class: BlacklightMaps::CoordinatesFilterField,
+                              filter_query_builder: BlacklightMaps::SpatialFilterQuery,
+                              item_presenter: BlacklightMaps::SpatialItemPresenter,
+                              show: false,
+                              include_in_request: false,
+                              include_in_advanced_search: false,
+                              label: 'Spatial Search'
     # duration is measured in milliseconds
     config.add_facet_field 'duration_total_isi', label: 'Total Duration', include_in_advanced_search: false
     config.add_facet_field 'channels_sim', label: 'Audio Channels', include_in_advanced_search: false

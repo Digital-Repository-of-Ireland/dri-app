@@ -1,3 +1,4 @@
-/*
-*= require blacklight_maps/blacklight-maps
-*/
+@import url("https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css");
+@import url("https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.css");
+@import url("https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css");
+@import "blacklight_maps/blacklight-maps";

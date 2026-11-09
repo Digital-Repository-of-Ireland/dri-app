@@ -19,11 +19,13 @@
     <%= favicon_link_tag asset_path('favicon.ico') %>
     <%= stylesheet_link_tag "dri/dri_layouts", media: "all" %>
     <%= stylesheet_link_tag "dri/dri_print", media: "print" %>
+    <%= stylesheet_link_tag "legacy" %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.0.1/dist/cookieconsent.css" crossOrigin="anonymous">
   
+    <%= javascript_include_tag "legacy" %>
     <%= javascript_include_tag "custom" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
-    <%= javascript_include_tag "blacklight/blacklight", type: 'module' %>
+    <%= javascript_include_tag "blacklight/blacklight", type: "module" %>
 
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -53,7 +55,12 @@
 
     <%= favicon_link_tag asset_path('favicon.ico') %>
     <script type="text/javascript">
-      I18n.locale = "<%= I18n.locale %>";
+      window.DRI = window.DRI || {};
+      DRI.i18n = {
+        locale: "<%= j I18n.locale.to_s %>",
+        copy_success: "<%= j t('dri.views.catalog.forms.copy_success') %>",
+        copy_failure: "<%= j t('dri.views.catalog.forms.copy_failure') %>"
+      };
     </script>
   </head>
 

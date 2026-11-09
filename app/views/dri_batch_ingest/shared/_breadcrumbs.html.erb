@@ -1,0 +1,22 @@
+<% batch = local_assigns[:batch] %>
+<% media_object = local_assigns[:media_object] %>
+<% current = local_assigns[:current] %>
+<% link_class = 'text-decoration-underline' %>
+<div id="dri_crumbtrail_nav_container_id">
+  <ol class="breadcrumb">
+    <% if batch.nil? && current.nil? %>
+      <li aria-current="page" class="active"><%= t('dri.batch_ingest.breadcrumb.ingest') %></li>
+    <% elsif batch.nil? %>
+      <li><%= link_to t('dri.batch_ingest.breadcrumb.ingest'), ingests_path, class: link_class %></li>
+      <li aria-current="page" class="active"><%= current %></li>
+    <% else %>
+      <li><%= link_to t('dri.batch_ingest.breadcrumb.ingests'), ingests_path, class: link_class %></li>
+      <% if media_object %>
+        <li><%= link_to "#{t('dri.batch_ingest.breadcrumb.ingest')} ##{batch.user_ingest_id}", batch_path(batch), class: link_class %></li>
+        <li aria-current="page" class="active"><%= media_object.display_name %></li>
+      <% else %>
+        <li aria-current="page" class="active"><%= t('dri.batch_ingest.breadcrumb.ingest') %> #<%= batch.user_ingest_id %></li>
+      <% end %>
+    <% end %>
+  </ol>
+</div>

@@ -102,13 +102,13 @@ $(document).ready(function() {
   var clipboard = new Clipboard('.clipboard-btn');
 
   clipboard.on('success', function(e) {
-    setTooltip(e.trigger, I18n.t("dri.views.catalog.forms.copy_success"));
+    setTooltip(e.trigger, DRI.i18n.copy_success);
     hideTooltip(e.trigger);
     e.clearSelection();
   });
 
   clipboard.on('error', function(e) {
-    setTooltip(e.trigger, I18n.t("dri.views.catalog.forms.copy_failure"));
+    setTooltip(e.trigger, DRI.i18n.copy_failure);
     hideTooltip(e.trigger);
   });
 });
