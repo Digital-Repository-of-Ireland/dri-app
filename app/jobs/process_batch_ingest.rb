@@ -13,14 +13,17 @@ class ProcessBatchIngest
     DRI::Indexing.batch do
       ingest_batch = JSON.parse(ingest_json)
 
-      user = UserGroup::User.find(user_id)
-
-      download_path = File.join(Settings.downloads.directory, collection_id,
+      download_root = Settings.downloads.directory
+      unless File.directory?(download_root) && File.writable?(download_root)
+        raise "Download directory #{download_root} is not available (mount down?)"
+      end
+      download_path = File.join(download_root, collection_id,
                               "mo#{ingest_batch['media_object']}-#{SecureRandom.hex(4)}")
       FileUtils.mkdir_p(download_path)
 
       # retrieve information about metadata file to be ingested
       metadata_info = ingest_batch['metadata']
+      user = UserGroup::User.find(user_id)
 
       rc, object = if metadata_info['object_id'].present?
                      # metadata ingest was successful so only ingest missing assets
