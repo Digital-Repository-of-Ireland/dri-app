@@ -299,7 +299,7 @@ GEM
     config (5.5.2)
       deep_merge (~> 1.2, >= 1.2.1)
       ostruct
-    connection_pool (3.0.2)
+    connection_pool (3.0.3)
     crass (1.0.8)
     csl (2.0.0)
       namae (~> 1.0)
