@@ -1243,7 +1243,7 @@ DEPENDENCIES
   jquery-xmleditor-rails!
   js_cookie_rails
   jsbundling-rails
-  json (~> 2)
+  json (= 2.21.2)
   jwt
   kaminari!
   launchy
