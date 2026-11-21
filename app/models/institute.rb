@@ -83,7 +83,7 @@ class Institute < ActiveRecord::Base
   private
 
   def collections_query
-    "#{Solr::SchemaFields.searchable_string('institute')}:\"" + name.mb_chars.downcase +
+    "#{Solr::SchemaFields.searchable_string('institute')}:\"" + name.downcase +
       "\" AND " + "#{Solr::SchemaFields.searchable_string('type')}:Collection"
   end
 

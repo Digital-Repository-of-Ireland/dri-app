@@ -50,7 +50,7 @@ describe CitationsHelper, testing: true do
     end
 
     it "renders an APA citation" do
-      expect(helper.export_as_apa_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. (2021, November 24). A test of citations. Digital Repository of Ireland; Depositing Institute. https://doi.org/10.7486/DRI.XXXXX")
+      expect(helper.export_as_apa_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. (2021, November 24). A test of citations. Depositing Institute. Digital Repository of Ireland. https://doi.org/10.7486/DRI.XXXXX")
     end
 
     it "renders an MLA citation" do
@@ -58,7 +58,7 @@ describe CitationsHelper, testing: true do
     end
 
     it "renders a Chicago citation" do
-      expect(helper.export_as_chicago_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. “A Test of Citations.” Digital Repository of Ireland. Depositing Institute, November 24, 2021. https://doi.org/10.7486/DRI.XXXXX.")
+      expect(helper.export_as_chicago_citation(object, "10.7486/DRI.XXXXX", "Depositing Institute")).to eq("A. Tester. “A Test of Citations.” Digital Repository of Ireland, Depositing Institute, November 24, 2021. https://doi.org/10.7486/DRI.XXXXX.")
     end
 
     it "renders a DRI General citation" do

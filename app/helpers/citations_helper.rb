@@ -4,14 +4,13 @@ module CitationsHelper
 
   STYLE_AND_FORMAT = {
     apa: { style: 'apa', format: 'text' },
-    chicago: { style: 'chicago-note-bibliography', format: 'text' },
+    chicago: { style: 'chicago-notes-bibliography', format: 'text' },
     mla: { style: 'modern-language-association', format: 'text' }
   }.freeze
   module PriorityTypes
     # The TYPES array represents the hierarchy of types in line with Europeana practices.
     TYPES = ['Collection', '3D', 'Software', 'InteractiveResource', 'MovingImage', 'Sound', 'Dataset', 'Text', 'Image'].freeze
   end
-  ACCESS_DATE_STRING = "#{Time.current.strftime('%Y/%m/%d')}".freeze
 
   def export_as_apa_citation(object, doi = nil, depositing_institute = nil)
     render_citation(STYLE_AND_FORMAT[:apa], object, doi, depositing_institute)
@@ -128,7 +127,8 @@ module CitationsHelper
   end
 
   def add_current_date(citation_parts)
-    citation_parts << "(#{t('dri.views.citation.accessed')}: #{ACCESS_DATE_STRING})"
+    access_date_string = "#{Time.current.strftime('%Y/%m/%d')}"
+    citation_parts << "(#{t('dri.views.citation.accessed')}: #{access_date_string})"
   end
 
   def extract_dates(dates)

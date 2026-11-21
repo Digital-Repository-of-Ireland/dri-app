@@ -3,7 +3,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rails',  '8.0.5.2'
+gem 'rails',  '~> 8.1'
 gem 'jsbundling-rails'
 
 gem 'blacklight', '~> 8'

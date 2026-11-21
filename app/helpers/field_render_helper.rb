@@ -163,7 +163,7 @@ module FieldRenderHelper
                      args[:value]
                    end
 
-    standardised.mb_chars.downcase
+    standardised.downcase
   end
 
   def standardise_value(args)
