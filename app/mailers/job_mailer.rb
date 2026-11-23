@@ -20,4 +20,15 @@ class JobMailer < ActionMailer::Base
       mail(to: email, subject: "Your download is ready")
     end
   end
+
+  def collection_archive_ready_mail(file, user, object)
+    Rails.logger.debug("[Job MAILER] sending mail to #{user}")
+    if user.present?
+      @user = user
+      @file = file
+      @object = object
+      @title = object.title.first
+      mail(to: @user, subject: "Your download is ready")
+    end
+  end
 end

@@ -60,4 +60,15 @@ module ApplicationHelper
   rescue URI::BadURIError, URI::InvalidURIError
     false
   end
+
+  def collection_file_size(collection_id)
+    # return the total file size for all objects in the collection
+    stats = Solr::Query.new(
+      "{!join from=id to=isPartOf_ssim}root_collection_id_ssi:#{collection_id} && is_collection_ssi:false",
+      0,
+      { stats: true, 'stats.field' => 'file_size_ltsi' }
+    ).get
+
+    stats.dig('stats', 'stats_fields', 'file_size_ltsi', 'sum') || 0
+  end
 end

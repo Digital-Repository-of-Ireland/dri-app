@@ -273,6 +273,16 @@ class CollectionsController < BaseObjectsController
     end
   end
 
+  def export_full
+    collection_id = params[:id]
+    raise DRI::Exceptions::Unauthorized unless CollectionConfig.can_export_full_collection?(collection_id)
+
+    Resque.enqueue(CreateCollectionArchiveJob, collection_id, current_user.email)
+    flash[:notice] = t('dri.flash.notice.exporting_full')
+    redirect_back(fallback_location: root_path)
+  end
+
+
   private
 
     # Stores a cover image for @object. Returns the URL on success, nil on failure.
@@ -452,4 +462,5 @@ class CollectionsController < BaseObjectsController
     def valid_root_permissions?
       params[:digital_object][:manager_users_string].present? || params[:digital_object][:edit_users_string].present?
     end
+
 end

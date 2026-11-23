@@ -73,7 +73,9 @@ Rails.application.routes.draw do
 
     resources :session, only: [:create]
 
-    resources :collections, only: [:index, :new, :create, :update, :edit, :destroy]
+    resources :collections, only: [:index, :new, :create, :update, :edit, :destroy] do
+      post :export_full, on: :member
+    end
 
     post 'collections/:object_id/doi', to: 'doi#update', as: :collection_doi
     post 'collections/:id/organisations', to: 'institutes#set', as: :collection_organisations

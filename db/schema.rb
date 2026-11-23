@@ -50,6 +50,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_155236) do
     t.datetime "updated_at", null: false
     t.string "default_sort"
     t.string "subcollection_sort"
+    t.boolean "allow_full_collection_export", default: false, null: false
     t.index ["collection_id"], name: "index_collection_configs_on_collection_id"
   end
 
@@ -123,7 +124,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_155236) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.datetime "confirmed_at"
-    t.text "report"
+    t.text "report", limit: 16777215
     t.index ["user_ingest_id"], name: "index_ingest_batches_on_user_ingest_id"
   end
 
@@ -191,7 +192,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_155236) do
     t.string "dataset"
     t.string "thumbnail"
     t.text "setspec"
-    t.integer "order"
     t.index ["documentation_for_type", "documentation_for_id"], name: "doc_for_index"
     t.index ["governing_collection_type", "governing_collection_id"], name: "governing_index"
     t.index ["metadata_checksum"], name: "metadata_chksm_index"

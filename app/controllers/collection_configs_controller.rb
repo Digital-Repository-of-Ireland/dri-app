@@ -36,6 +36,6 @@ class CollectionConfigsController < ApplicationController
   private
 
   def collection_config_params
-    params.require(:collection_config).permit(:allow_export, :default_sort, :subcollection_sort)
+    params.require(:collection_config).permit(:allow_export, :allow_full_collection_export, :default_sort, :subcollection_sort)
   end
 end
