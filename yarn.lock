@@ -403,6 +403,11 @@ nanoid@^5.0.9:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.1.16.tgz#fe345c0a1f9007c32fbb5c139e1208bfd3f41ef7"
   integrity sha512-kVrnsrJqMR8+oLJnGEmSWw9BivK5mt7H3FZatVRjrc5wGqFYuBxX1yG7+A7Gi5AefkX6t/oCkizcQgpu0cY1dQ==
 
+openseadragon@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/openseadragon/-/openseadragon-6.1.1.tgz#fcdb1a106b4e2440ed4336b5eff4a79c0a3390e6"
+  integrity sha512-g4iKe2q8B642SaBT3+x4ZF3/8b1TxPPydyjmtrOLgDrlYWMKd9ZXM+1Cb/xa9DVySkvs/7l6HR1nHKfD5F3Tsw==
+
 p-queue@^8.0.0:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-8.1.1.tgz#dac3e8c57412fffa18fe6c341b141dbb3a16408b"

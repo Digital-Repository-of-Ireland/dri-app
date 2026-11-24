@@ -27,6 +27,7 @@
     "jstree": "3.3.16",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
+    "openseadragon": "^6.1.1",
     "smartwizard": "5.1.1",
     "spin.js": "^4.1.2"
   },
