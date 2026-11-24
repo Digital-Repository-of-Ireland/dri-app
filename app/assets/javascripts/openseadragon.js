@@ -1,2 +1,2 @@
-//= require openseadragon/openseadragon
-//= require openseadragon/rails
+//= require openseadragon/build/openseadragon/openseadragon
+//= require openseadragon-rails/openseadragon-rails
